@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Illumination
 {
-    public class ShadowMapReceiverEffect : GraphicsEffect
+    public class ShadowMapReceiverEffect : ModelEffect
     {
         public float Bias { get; set; }
         public float Alpha { get; set; }

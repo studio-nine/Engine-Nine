@@ -238,7 +238,6 @@ namespace Isles.Graphics.ParticleEffects
                 ParticleEffect.View = view;
                 ParticleEffect.Projection = projection;
                 ParticleEffect.World = Matrix.Identity;
-                ParticleEffect.VertexSkinningEnabled = false;
                 ParticleEffect.ParticleType = ParticleType;
 
                 BeginParticleRenderStates(GraphicsDevice.RenderState);

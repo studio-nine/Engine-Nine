@@ -87,22 +87,5 @@ namespace Isles.Graphics.Models
 
             return skin;
         }
-
-
-        /// <summary>
-        /// Gets the skinning data associated with the specified model.
-        /// Works with models that are processed by Isles.Pipeline.Processors.ExtendedModelProcessor.
-        /// </summary>
-        public static ModelSkinning FromModel(Model model)
-        {
-            object result = null;
-
-            Dictionary<string, object> dictionary = model.Tag as Dictionary<string, object>;
-
-            if (dictionary != null)
-                dictionary.TryGetValue("SkinningData", out result);
-
-            return result as ModelSkinning;
-        }
     }
 }

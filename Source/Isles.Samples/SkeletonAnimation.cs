@@ -65,10 +65,10 @@ namespace Isles.Samples
 
             animation = new ModelAnimation(model, null);
 
-            animation.AnimationClip = AnimationClip.FromModel(model, 0);
+            animation.AnimationClip = ModelExtensions.GetAnimation(model, 0);
             animation.Play();
 
-            skinner = ModelSkinning.FromModel(model);
+            skinner = ModelExtensions.GetSkinning(model);
 
             BoundingSphere sphere = new BoundingSphere();
 

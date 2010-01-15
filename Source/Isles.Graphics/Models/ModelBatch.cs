@@ -132,6 +132,9 @@ namespace Isles.Graphics.Models
 
         public void Draw(Model model, GraphicsEffect effect, GameTime time, Matrix world, Matrix view, Matrix projection)
         {
+            if (effect is ModelEffect)
+                (effect as ModelEffect).VertexSkinningEnabled = false;
+
             Matrix[] transforms = new Matrix[model.Bones.Count];
             
             model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -150,7 +153,6 @@ namespace Isles.Graphics.Models
                     effect.World = transforms[mesh.ParentBone.Index] * world;
                     effect.View = view;
                     effect.Projection = projection;
-                    effect.VertexSkinningEnabled = false;
 
                     effect.Begin(graphics, time);
 
@@ -173,6 +175,9 @@ namespace Isles.Graphics.Models
 
             graphics.Indices = mesh.IndexBuffer;
 
+            if (effect is ModelEffect)
+                (effect as ModelEffect).VertexSkinningEnabled = false;
+
 
             foreach (ModelMeshPart part in mesh.MeshParts)
             {
@@ -182,7 +187,6 @@ namespace Isles.Graphics.Models
                 effect.World = transforms[mesh.ParentBone.Index] * world;
                 effect.View = view;
                 effect.Projection = projection;
-                effect.VertexSkinningEnabled = false;
 
                 effect.Begin(graphics, time);
 
@@ -193,7 +197,7 @@ namespace Isles.Graphics.Models
         }
 
 
-        public void Draw(Model model, GraphicsEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
+        public void Draw(Model model, ModelEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
         {
             GraphicsDevice graphics = model.Meshes[0].Effects[0].GraphicsDevice;
 
@@ -222,7 +226,7 @@ namespace Isles.Graphics.Models
         }
 
 
-        public void Draw(Model model, ModelMesh mesh, GraphicsEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
+        public void Draw(Model model, ModelMesh mesh, ModelEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
         {
             GraphicsDevice graphics = mesh.Effects[0].GraphicsDevice;
 

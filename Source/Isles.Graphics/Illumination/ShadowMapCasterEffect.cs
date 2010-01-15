@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Illumination
 {
-    public class ShadowMapCasterEffect : GraphicsEffect
+    public class ShadowMapCasterEffect : ModelEffect
     {
         public Effect Effect { get; private set; }
         public Matrix LightViewProjection { get; set; }

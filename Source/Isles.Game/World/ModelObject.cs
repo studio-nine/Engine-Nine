@@ -34,7 +34,7 @@ namespace Isles.Game.World
         public ModelAnimation Animation { get; internal set; }
         public ModelBatch ModelBatch { get; set; }
         public Matrix Transform { get; set; }
-        public GraphicsEffect Effect { get; set; }
+        public ModelEffect Effect { get; set; }
 
 
         public Model Model
@@ -46,9 +46,9 @@ namespace Isles.Game.World
 
                 if (model != null)
                 {
-                    skinning = ModelSkinning.FromModel(model);
+                    skinning = ModelExtensions.GetSkinning(model);
                     Animation.Model = model;
-                    Animation.AnimationClip = AnimationClip.FromModel(model, 0);
+                    Animation.AnimationClip = ModelExtensions.GetAnimation(model, 0);
                     Animation.Play();
                 }
                 else

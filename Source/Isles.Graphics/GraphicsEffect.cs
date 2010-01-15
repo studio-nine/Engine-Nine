@@ -27,16 +27,10 @@ namespace Isles.Graphics
         public Matrix World { get; set; }
 
         [ContentSerializerIgnore]
-        public Matrix[] Bones { get; set; }
-
-        [ContentSerializerIgnore]
         public Matrix View { get; set; }
 
         [ContentSerializerIgnore]
         public Matrix Projection { get; set; }
-
-        [ContentSerializerIgnore]
-        public bool VertexSkinningEnabled { get; set; }
 
         [ContentSerializerIgnore]
         public Texture Texture { get; set; }

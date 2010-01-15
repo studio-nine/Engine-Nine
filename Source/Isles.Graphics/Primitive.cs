@@ -251,7 +251,6 @@ namespace Isles.Graphics
             effect.World = world;
             effect.View = view;
             effect.Projection = projection;
-            effect.VertexSkinningEnabled = false;
 
             // Set our vertex declaration, vertex buffer, and index buffer.
             GraphicsDevice.VertexDeclaration = VertexDeclaration;

@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Effects
 {
-    public class BasicSkinnedEffect : GraphicsEffect
+    public class BasicSkinnedEffect : ModelEffect
     {
         public Effect Effect { get; private set; }
 

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Cameras\FreeCamera.cs" />
     <Compile Include="Cameras\TopDownCamera.cs" />
+    <Compile Include="ModelEffect.cs" />
     <Compile Include="DirectionalLight.cs" />
     <Compile Include="Filters\ColorMatrixFilter.cs" />
     <Compile Include="Filters\HeightMapFilter.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Illumination\LightmapShrinker.cs" />
     <Compile Include="Landscape\SkyBoxEffect.cs" />
     <Compile Include="Landscape\WaterSurfaceEffect.cs" />
+    <Compile Include="Models\ModelExtensions.cs" />
     <Compile Include="ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="ParticleEffects\BoxEmitter.cs" />
     <Compile Include="ParticleEffects\BoneEmitter.cs" />
