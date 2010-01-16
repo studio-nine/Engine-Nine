@@ -69,6 +69,7 @@
     <Compile Include="Components\Timer.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="XmlReflectiveLoader.cs" />
     <Compile Include="ParseHelper.cs" />
     <Compile Include="XmlLoader.cs" />
     <Compile Include="EnumerationCollection.cs" />

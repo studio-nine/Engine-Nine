@@ -28,10 +28,16 @@ namespace Isles
         {
             string[] split = value.Split(new char[] { ',' }, 3);
 
-            if (split.Length >= 3)
+            if (split.Length == 3)
                 return new Color(byte.Parse(split[0]),
                                  byte.Parse(split[1]),
                                  byte.Parse(split[2]), 255);
+            else if (split.Length > 3)
+                return new Color(byte.Parse(split[0]),
+                                 byte.Parse(split[1]),
+                                 byte.Parse(split[2]),
+                                 byte.Parse(split[3]));
+
             return Color.White;
         }
 
@@ -58,6 +64,20 @@ namespace Isles
                     float.Parse(split[2]));
 
             return Vector3.Zero;
+        }
+
+        public static Vector4 ToVector4(string value)
+        {
+            string[] split = value.Split(new Char[] { ',' }, 3);
+
+            if (split.Length >= 4)
+                return new Vector4(
+                    float.Parse(split[0]),
+                    float.Parse(split[1]),
+                    float.Parse(split[2]),
+                    float.Parse(split[3]));
+
+            return Vector4.Zero;
         }
 
         public static Matrix ToMatrix(string value)
@@ -99,12 +119,38 @@ namespace Isles
 
             return Quaternion.Identity;
         }
+
+        public static Point ToPoint(string value)
+        {
+            string[] split = value.Split(new Char[] { ',' }, 2);
+
+            if (split.Length >= 2)
+                return new Point(
+                    int.Parse(split[0]),
+                    int.Parse(split[1]));
+
+            return Point.Zero;
+        }
+
+        public static Rectangle ToRectangle(string value)
+        {
+            string[] split = value.Split(new Char[] { ',' }, 4);
+
+            if (split.Length >= 4)
+                return new Rectangle(
+                    int.Parse(split[0]),
+                    int.Parse(split[1]),
+                    int.Parse(split[2]),
+                    int.Parse(split[3]));
+
+            return Rectangle.Empty;
+        }
         #endregion
 
         #region ToString
         public static string ToString(Color c)
-        {
-            return c.R + ", " + c.G + ", " + c.B;
+        {            
+            return c.R + ", " + c.G + ", " + c.B + ", " + c.A;
         }
 
         public static string ToString(Vector2 v)
@@ -115,6 +161,11 @@ namespace Isles
         public static string ToString(Vector3 v)
         {
             return v.X + ", " + v.Y + ", " + v.Z;
+        }
+
+        public static string ToString(Vector4 v)
+        {
+            return v.X + ", " + v.Y + ", " + v.Z + ", " + v.W;
         }
 
         public static string ToString(Matrix m)
@@ -129,6 +180,16 @@ namespace Isles
         public static string ToString(Quaternion q)
         {
             return q.X + ", " + q.Y + ", " + q.Z + ", " + q.W;
+        }
+
+        public static string ToString(Point p)
+        {
+            return p.X + ", " + p.Y;
+        }
+
+        public static string ToString(Rectangle r)
+        {
+            return r.X + ", " + r.Y + ", " + r.Width + ", " + r.Height;
         }
         #endregion
     }

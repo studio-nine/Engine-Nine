@@ -79,7 +79,7 @@ namespace Isles.Samples
             terrain.Draw(gameTime, Camera.View, Camera.Projection);
         }
 
-        [SampleMethod(Startup = true)]
+        [SampleMethod(Startup = false)]
         public static void Test()
         {
             using (TerrainGeometrySample game = new TerrainGeometrySample())

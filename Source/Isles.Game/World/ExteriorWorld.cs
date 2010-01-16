@@ -1,7 +1,7 @@
-#region Copyright 2009 (c) Nightin Games
+﻿#region Copyright 2010 (c) Nightin Games
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2010 (c) Nightin Games. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -10,22 +10,22 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Text;
 using System.IO;
-using System.Reflection;
 using System.Xml;
-using System.Xml.Serialization;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Isles.Graphics;
+using Isles.Graphics.Models;
+using Isles.Graphics.Landscape;
 #endregion
 
 
-namespace Isles.Designer
+namespace Isles.Game.World
 {
-    public interface IDesigner
+    public class ExteriorWorld : World
     {
-
+        public Terrain Terrain { get; set; }
     }
 }

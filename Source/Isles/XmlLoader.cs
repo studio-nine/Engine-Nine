@@ -16,6 +16,7 @@ using System.IO;
 using System.Xml;
 using System.Reflection;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
@@ -28,6 +29,7 @@ namespace Isles
     }
 
 
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
     public sealed class XmlLoaderAttribute : Attribute
     {
         public string Name { get; set; }
@@ -133,6 +135,16 @@ namespace Isles
         }
         #endregion
 
+        public ContentManager ContentManager { get; set; }
+        
+        public T Load<T>(XmlReader input, IServiceProviderEx services)
+        {
+            XmlDocument doc = new XmlDocument();
+
+            doc.Load(input);
+
+            return Load<T>(doc.DocumentElement, services);
+        }
 
         public T Load<T>(XmlElement input, IServiceProviderEx services)
         {
@@ -157,8 +169,17 @@ namespace Isles
 
         public object Load(XmlElement input, IServiceProviderEx services, IDictionary<string, IXmlLoader> loaders)
         {
+            if (services == null)
+                services = new ServiceProviderEx();
+
+            // Add services
+            if (ContentManager != null)
+                services.AddService<ContentManager>(null, ContentManager);
+
             services.AddService<IXmlLoader>(null, this);
 
+
+            // Load using specifed loaders
             IXmlLoader objectLoader = null;
 
             if (!loaders.TryGetValue(input.Name, out objectLoader))

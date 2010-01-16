@@ -35,21 +35,37 @@ using Isles.Movements;
 namespace Isles.Samples
 {
     [SampleClass]
-    public class MovementSample : BasicModelViewerGame
+    public class MovementSample : SampleGame
     {
+        TopDownEditorCamera camera;
         Terrain terrain;
         Model tank;
         ModelBatch batch;
         
         CharactorMovement movement;
 
+        private void XmlLoaderTest()
+        {
+            XmlLoader loader = new XmlLoader();
+
+            loader.ContentManager = Content;
+            object o = loader.Load<object>(XmlReader.Create("Content/Misc/Loader.ix"), null);
+        }
 
         protected override void LoadContent()
         {
+
+            XmlLoaderTest();
+
+            IsMouseVisible = true;
+
+            camera = new TopDownEditorCamera(this);
+            //camera = new FreeCamera(new Vector3(-40, -40, 60), 0.1f, 10f);
+
             BasicTextureEffect basic = new BasicTextureEffect();
 
             basic.Texture = Content.Load<Texture2D>("Terrain/Tile");
-            basic.TessellationU = basic.TessellationV = 32;
+            basic.TessellationU = basic.TessellationV = 8;
 
             terrain = new Terrain(GraphicsDevice, Content.Load<TerrainGeometry>("Terrain/RF1"));
             terrain.Layers.Add(basic);
@@ -66,20 +82,12 @@ namespace Isles.Samples
             movement = new CharactorMovement();
             movement.Surface = terrain.Geometry;
             movement.Target = new Vector3(10, 0, 0);
-
-
-            Input.KeyDown += new EventHandler<KeyboardEventArgs>(Input_KeyDown);
-
-            base.LoadContent();
         }
 
-        void Input_KeyDown(object sender, KeyboardEventArgs e)
-        {
-
-        }
 
         protected override void Update(GameTime gameTime)
         {
+            //camera.Update(gameTime);
             movement.Update(gameTime);
 
             base.Update(gameTime);
@@ -87,18 +95,17 @@ namespace Isles.Samples
 
         protected override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
-
+            GraphicsDevice.Clear(Color.Black);
             GraphicsDevice.RenderState.AlphaBlendEnable = false;
 
-            terrain.Draw(gameTime, Camera.View, Camera.Projection);
+            terrain.Draw(gameTime, camera.View, camera.Projection);
 
             batch.Begin();
-            batch.Draw(tank, movement.Transform, Camera.View, Camera.Projection);
+            batch.Draw(tank, movement.Transform, camera.View, camera.Projection);
             batch.End();
         }
 
-        [SampleMethod]
+        [SampleMethod(Startup=true)]
         public static void Test()
         {
             using (MovementSample game = new MovementSample())

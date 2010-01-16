@@ -46,7 +46,7 @@ namespace Isles.Graphics.Filters
             // Gets the scaled width and height
             int width = (int)(input.Width * RenderTargetScale);
             int height = (int)(input.Height * RenderTargetScale);
-            SurfaceFormat format = GraphicsDevice.PresentationParameters.BackBufferFormat;
+            SurfaceFormat format = input.Format;
             
 
             if (renderTarget == null || renderTarget.Width != width || renderTarget.Height != height)

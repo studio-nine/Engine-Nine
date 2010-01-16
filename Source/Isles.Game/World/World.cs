@@ -18,40 +18,76 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Isles.Graphics;
 using Isles.Graphics.Models;
-using Isles.Transitions;
 #endregion
 
 
 namespace Isles.Game.World
 {
-    public class World
+    public class World : IDisplayObject
     {
+        public Matrix Transform { get; set; }
+        public ModelBatch ModelBatch { get; private set; }
         public ICollection<object> WorldObjects { get { return worldObjects; } }
 
-        internal EnumerationCollection<object, LinkedList<object>> worldObjects = new EnumerationCollection<object, LinkedList<object>>();
-    }
 
-
-    [XmlLoader(typeof(World))]
-    public class WorldLoader : IXmlLoader
-    {
-        public object Load(XmlElement input, IServiceProviderEx services)
+        #region WorldObjects
+        [Loader("WorldObjects", Serializer=typeof(WorldObjectsLoader))]
+        internal EnumerationCollection<object, LinkedList<object>> worldObjects = 
+             new EnumerationCollection<object, LinkedList<object>>();
+        
+        internal class WorldObjectsLoader : IXmlLoader
         {
-            World world = new World();
-
-
-            foreach (XmlNode childNode in input.SelectSingleNode("WorldObjects").ChildNodes)
+            public object Load(XmlElement input, IServiceProviderEx services)
             {
-                if (childNode is XmlElement)
-                {
-                    object child = services.GetService<IXmlLoader>(null).Load(childNode as XmlElement, services);
+                EnumerationCollection<object, LinkedList<object>> worldObjects =
+                    new EnumerationCollection<object, LinkedList<object>>();
 
-                    if (child != null)
-                        world.worldObjects.Add(child);
+                foreach (XmlNode childNode in input.ChildNodes)
+                {
+                    if (childNode is XmlElement)
+                    {
+                        object child = services.GetService<IXmlLoader>(null).Load(childNode as XmlElement, services);
+
+                        if (child != null)
+                            worldObjects.Add(child);
+                    }
                 }
+
+                return worldObjects;
+            }
+        }
+        #endregion
+
+
+        public World()
+        {
+            ModelBatch = new ModelBatch();
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            foreach (object o in worldObjects)
+            {
+                ITickObject tick = o as ITickObject;
+
+                if (tick != null)
+                    tick.Update(gameTime);
+            }
+        }
+
+        public virtual void Draw(GameTime gameTime, Matrix view, Matrix projection)
+        {
+            ModelBatch.Begin();
+
+            foreach (object o in worldObjects)
+            {
+                IDisplayObject disp = o as IDisplayObject;
+
+                if (disp != null)
+                    disp.Draw(gameTime, view, projection);
             }
 
-            return world;
+            ModelBatch.End();
         }
     }
 }

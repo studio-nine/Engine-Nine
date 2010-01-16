@@ -21,7 +21,6 @@ using Isles.Graphics.Models;
 using Isles.Graphics.Illumination;
 using Isles.Graphics.Effects;
 using Isles.Graphics.Landscape;
-using Isles.Graphics.Cameras;
 using Isles.Graphics.Filters;
 #endregion
 
@@ -91,7 +90,7 @@ namespace Isles.Samples
 
             waterSurface.WaveTexture = Content.Load<Texture2D>("Textures/WAVES2");
 
-            Isles.Designer.Forms.PropertyBrowser.ShowForm("Editor").SelectedObject = waterSurface;
+            PropertyBrowser.ShowForm("Editor").SelectedObject = waterSurface;
 
             base.LoadContent();
         }

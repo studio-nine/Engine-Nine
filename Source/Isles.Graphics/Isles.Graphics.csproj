@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cameras\FreeCamera.cs" />
-    <Compile Include="Cameras\TopDownCamera.cs" />
+    <Compile Include="Cameras\TopDownEditorCamera.cs" />
     <Compile Include="ModelEffect.cs" />
     <Compile Include="DirectionalLight.cs" />
     <Compile Include="Filters\ColorMatrixFilter.cs" />

@@ -40,6 +40,8 @@ namespace Isles.Pipeline.Importers
         private List<Vector2> texCoords;
         private List<Vector3> normals;
 
+        // Current mesh name
+        private string meshName;
 
         // The current mesh being constructed
         private MeshBuilder meshBuilder;
@@ -187,9 +189,9 @@ namespace Isles.Pipeline.Importers
                     // Begin a new mesh
                     // The next token is an optional name
                     if (lineTokens.Length > 1)
-                        StartMesh(lineTokens[1]);
+                        meshName = lineTokens[1]; //StartMesh(lineTokens[1]);
                     else
-                        StartMesh(null);
+                        meshName = null; // StartMesh(null);
                     break;
 
                 // Smoothing group
@@ -210,7 +212,7 @@ namespace Isles.Pipeline.Importers
                     // If the builder is null, this face is outside of a group
                     // Start a new, unnamed group
                     if (meshBuilder == null)
-                        StartMesh(null);
+                        StartMesh();
 
                     // For each triangle vertex
                     for (int vertexIndex = 1; vertexIndex <= 3; vertexIndex++)
@@ -295,7 +297,7 @@ namespace Isles.Pipeline.Importers
                     // If the builder is null, OBJ most likely lacks groups
                     // Start a new, unnamed group
                     if (meshBuilder == null)
-                        StartMesh(null);
+                        StartMesh();
 
                     // Next token is material name
                     string materialName = lineTokens[1];
@@ -327,9 +329,9 @@ namespace Isles.Pipeline.Importers
         /// Starts a new mesh and fills it with mesh mapped positions.
         /// </summary>
         /// <param name="name">Name of mesh.</param>
-        private void StartMesh(string name)
+        private void StartMesh()
         {
-            meshBuilder = MeshBuilder.StartMesh(name);
+            meshBuilder = MeshBuilder.StartMesh(meshName);
 
             // Obj files need their winding orders swapped
             meshBuilder.SwapWindingOrder = true;

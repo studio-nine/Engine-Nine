@@ -37,7 +37,7 @@ namespace Isles.Samples
         Grid grid1;
         public bool ShowAxis { get; set; }
         public bool ShowGrid { get; set; }
-        Isles.Designer.Forms.PropertyBrowser browser; 
+        PropertyBrowser browser; 
        
 
         public Axis Axis { get; private set; }
@@ -83,7 +83,7 @@ namespace Isles.Samples
                 graphicsManager.ToggleFullScreen();
             else if (e.Key == Microsoft.Xna.Framework.Input.Keys.E)
             {
-                browser = Isles.Designer.Forms.PropertyBrowser.ShowForm("Designer");
+                browser = PropertyBrowser.ShowForm("Designer");
                 browser.SelectedObject = this;
             }
         }

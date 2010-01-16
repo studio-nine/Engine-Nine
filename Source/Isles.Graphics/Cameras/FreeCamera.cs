@@ -67,7 +67,7 @@ namespace Isles.Graphics.Cameras
         {
             this.Speed = speed;
             this.TurnSpeed = turnSpeed;
-            this.position = position;
+            Position = position;
                 
             Projection = Matrix.CreatePerspectiveFieldOfView(
                     MathHelper.PiOver4, 4.0f / 3.0f, 1, 1000);

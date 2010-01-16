@@ -44,6 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components.cs" />
+    <Compile Include="PropertyBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyBrowser.designer.cs">
+      <DependentUpon>PropertyBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Water.cs" />
     <Compile Include="PostProcessing.cs" />
     <Compile Include="ParticleSystem.cs" />
@@ -69,16 +75,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="PropertyBrowser.resx">
+      <DependentUpon>PropertyBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="SamplesForm.resx">
       <DependentUpon>SamplesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Isles.Designer\Isles.Designer.csproj">
-      <Project>{1C5D43AD-D124-4F1A-A3E6-12ADC4978F20}</Project>
-      <Name>Isles.Designer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Isles.Game\Isles.Game.csproj">
       <Project>{483F40D4-18C6-4284-8304-7F637B1BF881}</Project>
       <Name>Isles.Game</Name>

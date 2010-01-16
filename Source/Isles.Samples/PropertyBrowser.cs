@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Reflection;
 
 
-namespace Isles.Designer.Forms
+namespace Isles.Samples
 {
     public partial class PropertyBrowser : UserControl
     {

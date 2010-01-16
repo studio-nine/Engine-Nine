@@ -1,4 +1,4 @@
-﻿namespace Isles.Designer.Forms
+﻿namespace Isles.Samples
 {
     partial class PropertyBrowser
     {

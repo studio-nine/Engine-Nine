@@ -24,9 +24,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Game
 {
-    public interface IDisplayObject
+    public interface ITickObject
     {
         void Update(GameTime gameTime);
+    }
+
+    public interface IDisplayObject : ITickObject
+    {
+        Matrix Transform { get; set; }
+
         void Draw(GameTime gameTime, Matrix view, Matrix projection);
     }
 }
