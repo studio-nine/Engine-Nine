@@ -53,10 +53,10 @@ namespace Isles
         /// </summary>
         public void Add(object item, Matrix transform, BoundingSphere? sphere)
         {
-            if (!((item is BoundingBox?) || (item is BoundingFrustum) ||
-                  (item is BoundingSphere?) || (item is IPickable) || (item is IGeometry)))
+            if (!((item.GetType() == typeof(BoundingBox)) || (item is BoundingFrustum) ||
+                  (item.GetType() == typeof(BoundingSphere)) || (item is IPickable) || (item is IGeometry)))
             {
-                throw new ArgumentException("Pick engine only support BoundingBox?, BoundingSphere?, BoundingFrustum, IPickable and IGeometry");
+                throw new ArgumentException("Pick engine only support BoundingBox, BoundingSphere, BoundingFrustum, IPickable and IGeometry");
             }
 
             Entry e = new PickEngine.Entry();
@@ -88,14 +88,14 @@ namespace Isles
                 Vector3 pickPoint = Vector3.Transform(point, e.InverseTransform);
 
 
-                if (e.Object is BoundingBox? &&
-                    ((e.Object as BoundingBox?).Value.Contains(pickPoint) == ContainmentType.Contains))
+                if (e.Object.GetType() == typeof(BoundingBox) &&
+                    (((BoundingBox)e.Object).Contains(pickPoint) == ContainmentType.Contains))
                 {
                     return e.Object;
                 }
 
-                if (e.Object is BoundingSphere? &&
-                    ((e.Object as BoundingSphere?).Value.Contains(pickPoint) == ContainmentType.Contains))
+                if (e.Object.GetType() == typeof(BoundingSphere) &&
+                    (((BoundingSphere)e.Object).Contains(pickPoint) == ContainmentType.Contains))
                 {
                     return e.Object;
                 }
@@ -125,8 +125,8 @@ namespace Isles
         public object Pick(Ray ray, out float? distance)
         {
             object result = null;
-            distance = null;
             float? point = null;
+            distance = null;
 
 
             foreach (Entry e in objects)
@@ -135,10 +135,10 @@ namespace Isles
                 Ray pickRay = TransformRay(ray, e.InverseTransform);
 
 
-                if (e.Object is BoundingBox?)
-                    point = (e.Object as BoundingBox?).Value.Intersects(pickRay);
-                else if (e.Object is BoundingSphere?)
-                    point = (e.Object as BoundingSphere?).Value.Intersects(pickRay);
+                if (e.Object.GetType() == typeof(BoundingBox))
+                    point = ((BoundingBox)e.Object).Intersects(pickRay);
+                else if (e.Object.GetType() == typeof(BoundingSphere))
+                    point = ((BoundingSphere)e.Object).Intersects(pickRay);
                 else if (e.Object is BoundingFrustum)
                     point = (e.Object as BoundingFrustum).Intersects(pickRay);
                 else if (e.Object is IGeometry)
@@ -149,7 +149,7 @@ namespace Isles
 
                 if (point.HasValue)
                 {
-                    if (!distance.HasValue || point.Value < distance.Value)
+                    if (distance == null || point.Value < distance.Value)
                     {
                         result = picked;
                         distance = point.Value;

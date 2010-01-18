@@ -24,7 +24,7 @@ using Isles.Graphics.Models;
 
 namespace Isles.Game.World
 {
-    public class WorldObject 
+    public class WorldObject : IDisplayObject, IPickable
     {
         struct Binding
         {
@@ -44,16 +44,18 @@ namespace Isles.Game.World
         
         internal class ComponentsLoader : IXmlLoader
         {
-            public object Load(XmlElement input, IServiceProviderEx services)
+            public object Load(XmlElement input, IServiceProvider services)
             {
                 EnumerationCollection<object, List<object>> components =
                     new EnumerationCollection<object, List<object>>();
+
+                XmlLoader loader = new XmlLoader();
 
                 foreach (XmlNode childNode in input.ChildNodes)
                 {
                     if (childNode is XmlElement)
                     {
-                        object child = services.GetService<IXmlLoader>(null).Load(childNode as XmlElement, services);
+                        object child = loader.Load(childNode as XmlElement, services);
 
                         if (child != null)
                             components.Add(child);
@@ -72,7 +74,7 @@ namespace Isles.Game.World
         public ModelEffect Effect { get; set; }
         public ICollection<object> Components { get { return components; } }
         public ModelAnimation Animation { get; internal set; }
-
+        public Geometry Collision { get; set; }
 
         [Loader(IsContent=true)]
         public Model Model
@@ -195,6 +197,32 @@ namespace Isles.Game.World
                 if (disp != null)
                     disp.Draw(gameTime, view, projection);
             }
+        }
+
+        public object Pick(Vector3 point)
+        {
+            if (Collision == null)
+                return null;
+
+            if (PickEngine.Intersects(Collision, point, Collision.BoundingSphere))
+                return this;
+
+            return null;
+        }
+
+        public object Pick(Ray ray, out float? distance)
+        {
+            distance = null;
+
+            if (Collision == null)
+                return null;
+
+            distance = PickEngine.Intersects(Collision, ray, Collision.BoundingSphere);
+
+            if (distance != null && distance.HasValue)
+                return this;
+
+            return null;
         }
     }
 }

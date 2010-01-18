@@ -25,9 +25,10 @@ namespace Isles.Game.World
 {
     public class World : IDisplayObject
     {
-        public Matrix Transform { get; set; }
+        [Loader(IsService=true)]
         public ModelBatch ModelBatch { get; private set; }
         public ICollection<object> WorldObjects { get { return worldObjects; } }
+        public Matrix Transform { get; set; }
 
 
         #region WorldObjects
@@ -37,16 +38,18 @@ namespace Isles.Game.World
         
         internal class WorldObjectsLoader : IXmlLoader
         {
-            public object Load(XmlElement input, IServiceProviderEx services)
+            public object Load(XmlElement input, IServiceProvider services)
             {
                 EnumerationCollection<object, LinkedList<object>> worldObjects =
                     new EnumerationCollection<object, LinkedList<object>>();
+
+                XmlLoader loader = new XmlLoader();
 
                 foreach (XmlNode childNode in input.ChildNodes)
                 {
                     if (childNode is XmlElement)
                     {
-                        object child = services.GetService<IXmlLoader>(null).Load(childNode as XmlElement, services);
+                        object child = loader.Load(childNode as XmlElement, services);
 
                         if (child != null)
                             worldObjects.Add(child);

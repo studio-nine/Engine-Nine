@@ -23,12 +23,33 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    public sealed class LoaderIgnoreAttribute : Attribute { }
+
+
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple=false, Inherited=true)]
     public sealed class LoaderAttribute : Attribute
     {
         public string Name { get; set; }
+
+        /// <summary>
+        /// Indicates that the field is a content and should be loaded from the specifed ContentManager.
+        /// </summary>
         public bool IsContent { get; set; }
+
+        /// <summary>
+        /// Indicates that the field is a service and should be initialized from the specfied IServiceProvider.
+        /// </summary>
         public bool IsService { get; set; }
+
+        /// <summary>
+        /// Indicates that the field is should be initialized from the object with the specified name.
+        /// </summary>
+        public bool IsReference { get; set; }
+
+        /// <summary>
+        /// Indicates that the field should be loaded using a custom loader.
+        /// </summary>
         public Type Serializer { get; set; }
 
         public LoaderAttribute() { }
@@ -39,17 +60,13 @@ namespace Isles
     }
 
 
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-    public sealed class LoaderIgnoreAttribute : Attribute { }
-
-
     [XmlLoader("Object")]
     internal sealed class XmlReflectiveLoader : IXmlLoader
     {
         ContentManager Content = null;
-        IServiceProviderEx Services = null;
+        IServiceProvider Services = null;
 
-        public object Load(XmlElement input, IServiceProviderEx services)
+        public object Load(XmlElement input, IServiceProvider services)
         {
             string typeName;
 
@@ -67,10 +84,35 @@ namespace Isles
             object instance = Activator.CreateInstance(type);
 
             Services = services;
-            Content = services.GetService<ContentManager>(null);
+            Content = services.GetService(typeof(ContentManager)) as ContentManager;
 
-            Dictionary<string, string> nameRemap = BuildNameRemap(type);
+
+            // Add the object to INamedObjectManager if it has a name attribute
+            INamedObjectManager nameManager = 
+                Services.GetService(typeof(INamedObjectManager)) as INamedObjectManager;
+
+            if (nameManager != null)
+            {
+                string name;
+
+                if (!string.IsNullOrEmpty(name = input.GetAttribute("Name")))
+                    nameManager.Add(name, instance);
+            }
+
+
+            // Process LoaderAttribute of the given type
+            Dictionary<string, string> nameRemap;
+            List<MemberInfo> serviceFields;
+
+            ProcessLoaderAttribute(type, out nameRemap, out serviceFields);
+
+
+            // Initialize service fields
+            foreach (MemberInfo member in serviceFields)
+                SetServiceField(instance, member, services);
+
             
+            // Initialie other fields
             foreach (XmlNode child in input.ChildNodes)
             {
                 XmlElement element = child as XmlElement;
@@ -90,9 +132,12 @@ namespace Isles
             return instance;
         }
 
-        private Dictionary<string, string> BuildNameRemap(Type type)
+        private void ProcessLoaderAttribute(Type type, 
+                                        out Dictionary<string, string> nameRemap,
+                                        out List<MemberInfo> serviceFields)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            serviceFields = new List<MemberInfo>();
+            nameRemap = new Dictionary<string, string>();
 
             foreach (MemberInfo member in type.GetMembers(
                      BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
@@ -100,10 +145,37 @@ namespace Isles
                 LoaderAttribute loaderInfo = GetLoaderAttribute(member);
 
                 if (loaderInfo != null && !string.IsNullOrEmpty(loaderInfo.Name))
-                    result.Add(loaderInfo.Name, member.Name);
-            }
+                    nameRemap.Add(loaderInfo.Name, member.Name);
 
-            return result;
+                if (loaderInfo != null && loaderInfo.IsService)
+                    serviceFields.Add(member);
+            }
+        }
+
+        private LoaderAttribute GetLoaderAttribute(MemberInfo member)
+        {
+            object[] attributes = member.GetCustomAttributes(typeof(LoaderAttribute), true);
+
+            if (attributes != null && attributes.Length == 1)
+                return attributes[0] as LoaderAttribute;
+
+            return null;
+        }
+
+        private void SetServiceField(object instance, MemberInfo member, IServiceProvider services)
+        {
+            if (member is FieldInfo)
+            {
+                FieldInfo field = member as FieldInfo;
+
+                field.SetValue(instance, services.GetService(field.FieldType));
+            }
+            else if (member is PropertyInfo)
+            {
+                PropertyInfo property = member as PropertyInfo;
+
+                property.SetValue(instance, services.GetService(property.PropertyType), null);
+            }
         }
 
         private bool SetField(object instance, string propertyName, XmlElement input)
@@ -178,28 +250,25 @@ namespace Isles
             return true;
         }
 
-        private LoaderAttribute GetLoaderAttribute(MemberInfo member)
-        {
-            object[] attributes = member.GetCustomAttributes(typeof(LoaderAttribute), true);
-
-            if (attributes != null && attributes.Length == 1)
-                return attributes[0] as LoaderAttribute;
-
-            return null;
-        }
-
         private object GetObjectValue(Type type, XmlElement input, LoaderAttribute loaderInfo)
         {
             if (loaderInfo != null)
             {
-                if (loaderInfo.IsContent && Content != null)
-                {
-                    return Content.Load<object>(input.InnerXml);
-                }
-
                 if (loaderInfo.IsService && Services != null)
+                    throw new InvalidDataException("Services cannot be initialized: " + type.Name);
+
+                if (loaderInfo.IsContent && Content != null)
+                    return Content.Load<object>(input.InnerXml);
+
+                if (loaderInfo.IsReference && Services != null)
                 {
-                    return Services.GetService<object>(input.InnerXml);
+                    INamedObjectManager nameTable = 
+                        Services.GetService(typeof(INamedObjectManager)) as INamedObjectManager;
+
+                    if (nameTable != null)
+                        return nameTable.GetObjectByName(input.InnerXml);
+
+                    return null;
                 }
 
                 if (loaderInfo.Serializer != null)

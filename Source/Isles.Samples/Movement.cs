@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Isles.Components;
 using Isles.Graphics;
@@ -46,10 +47,13 @@ namespace Isles.Samples
 
         private void XmlLoaderTest()
         {
+            Services.AddService(typeof(ContentManager), Content);
+            Services.AddService(typeof(ModelBatch), new ModelBatch());
+            Services.AddService(typeof(INamedObjectManager), new NamedObjectManager());
+
             XmlLoader loader = new XmlLoader();
 
-            loader.ContentManager = Content;
-            object o = loader.Load<object>(XmlReader.Create("Content/Misc/Loader.ix"), null);
+            object o = loader.Load<object>(XmlReader.Create("Content/Misc/Loader.ix"), Services);
         }
 
         protected override void LoadContent()

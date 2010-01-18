@@ -37,11 +37,7 @@ namespace Isles.Graphics.Illumination
 
         protected override void LoadContent()
         {
-            CompiledEffect compiled = Effect.CompileEffectFromFile("ShadowReceiver.fx", null, null, CompilerOptions.None, TargetPlatform.Windows);
-
-            Effect = new Effect(GraphicsDevice, compiled.GetEffectCode(), CompilerOptions.None, null);
-
-            //Effect = InternalContents.ShadowReceiverEffect(GraphicsDevice);
+            Effect = InternalContents.ShadowReceiverEffect(GraphicsDevice);
         }
 
         protected override bool Begin(GameTime time)
@@ -59,8 +55,8 @@ namespace Isles.Graphics.Illumination
             else
                 Effect.Parameters["World"].SetValue(World);
 
-            Effect.Parameters["Alpha"].SetValue(Alpha);
-            Effect.Parameters["Fudge"].SetValue(Bias);
+            //Effect.Parameters["Alpha"].SetValue(Alpha);
+            //Effect.Parameters["Fudge"].SetValue(Bias);
             Effect.Parameters["ShadowMap"].SetValue(Texture);
             Effect.Parameters["ViewProjection"].SetValue(Matrix.Multiply(View, Projection));
             Effect.Parameters["LightViewProjection"].SetValue(LightViewProjection);

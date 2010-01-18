@@ -73,7 +73,7 @@
     <Compile Include="ParseHelper.cs" />
     <Compile Include="XmlLoader.cs" />
     <Compile Include="EnumerationCollection.cs" />
-    <Compile Include="ServiceProviderEx.cs" />
+    <Compile Include="NamedObjectManager.cs" />
     <Compile Include="Designer\Attributes.cs" />
     <Compile Include="Movements\ProjectileMovement.cs" />
     <Compile Include="SurfaceContainer.cs" />

@@ -25,7 +25,7 @@ namespace Isles
 {
     public interface IXmlLoader
     {
-        object Load(XmlElement input, IServiceProviderEx services);
+        object Load(XmlElement input, IServiceProvider services);
     }
 
 
@@ -134,10 +134,8 @@ namespace Isles
             return result;
         }
         #endregion
-
-        public ContentManager ContentManager { get; set; }
         
-        public T Load<T>(XmlReader input, IServiceProviderEx services)
+        public T Load<T>(XmlReader input, IServiceProvider services)
         {
             XmlDocument doc = new XmlDocument();
 
@@ -146,38 +144,28 @@ namespace Isles
             return Load<T>(doc.DocumentElement, services);
         }
 
-        public T Load<T>(XmlElement input, IServiceProviderEx services)
+        public T Load<T>(XmlElement input, IServiceProvider services)
         {
             return (T)Load(input, services);
         }
 
 
-        public object Load(XmlElement input, IServiceProviderEx services)
+        public object Load(XmlElement input, IServiceProvider services)
         {
-            if (StandardLoaders == null)
-                InitializeStandardLoaders();
-
             return Load(input, services, StandardLoaders);
         }
 
 
-        public object Load(XmlElement input, IServiceProviderEx services, Type[] loaders)
+        public object Load(XmlElement input, IServiceProvider services, Type[] loaders)
         {
             return Load(input, services, LoaderFromTypes(loaders));
         }
 
 
-        public object Load(XmlElement input, IServiceProviderEx services, IDictionary<string, IXmlLoader> loaders)
+        public object Load(XmlElement input, IServiceProvider services, IDictionary<string, IXmlLoader> loaders)
         {
-            if (services == null)
-                services = new ServiceProviderEx();
-
-            // Add services
-            if (ContentManager != null)
-                services.AddService<ContentManager>(null, ContentManager);
-
-            services.AddService<IXmlLoader>(null, this);
-
+            if (services == null || input == null)
+                throw new ArgumentNullException();
 
             // Load using specifed loaders
             IXmlLoader objectLoader = null;

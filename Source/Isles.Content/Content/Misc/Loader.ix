@@ -4,7 +4,6 @@
   <worldObjects>
 
     <Object Type="Isles.Game.World.WorldObject, Isles.Game, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <ModelBatch />
       <Model>Models/Ship</Model>
       <Transform>-0.207912, 0.978148, -4.275621E-08, 0, 0, -4.371139E-08, -1, 0, -0.978148, -0.207912, 9.088122E-09, 0, 124.1633, 57.98195, -7.610699, 1</Transform>
       <Components>
