@@ -34,7 +34,7 @@ namespace Isles.Graphics.Filters
 
         protected override void LoadContent()
         {
-            effect = ScaleFilter_Code.CreateEffect(GraphicsDevice);
+            effect = LuminanceFilter_Code.CreateEffect(GraphicsDevice);
         }
         protected override void Begin(Texture2D input)
         {
