@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Cameras\FreeCamera.cs" />
     <Compile Include="Cameras\TopDownEditorCamera.cs" />
+    <Compile Include="Filters\LuminanceFilter_Code.cs" />
+    <Compile Include="Filters\LuminanceFilter.cs" />
     <Compile Include="Filters\ScaleFilter_Code.cs" />
     <Compile Include="Filters\ScaleFilter.cs" />
     <Compile Include="ModelEffect.cs" />
