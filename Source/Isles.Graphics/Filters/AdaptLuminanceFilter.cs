@@ -34,6 +34,12 @@ namespace Isles.Graphics.Filters
             set;
         }
 
+        public TimeSpan DeltaTime
+        {
+            get;
+            set;
+        }
+
         public AdaptLuminanceFilter()
         {
         }
@@ -52,6 +58,7 @@ namespace Isles.Graphics.Filters
         {
             effect.Parameters["SourceTexture0"].SetValue(input);
             effect.Parameters["SourceTexture1"].SetValue(PreviousFrameLuminanceTexture);
+            effect.Parameters["g_fDeltaTime"].SetValue((float)DeltaTime.TotalSeconds);
             effect.Parameters["g_vSourceDimensions"].SetValue(new Vector2(input.Width, input.Height));
 
             Vector2 destDimensions = new Vector2();
