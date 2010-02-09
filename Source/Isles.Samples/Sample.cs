@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using System.Windows.Forms;
 #endregion
 
 
@@ -56,7 +57,16 @@ namespace Isles.Samples
         public void Run()
         {
             if (EntryPoint != null)
-                EntryPoint.Invoke(null, null);
+            {
+                try
+                {
+                    EntryPoint.Invoke(null, null);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
 
