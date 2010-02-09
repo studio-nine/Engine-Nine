@@ -81,21 +81,19 @@ namespace Isles.Samples
                         {
                             if (attribute is SampleMethodAttribute)
                             {
+                                Sample sample = new Sample();
+
+                                sample.EntryPoint = info;
+                                sample.Name = (attribute as SampleMethodAttribute).Name;
+
+                                if (string.IsNullOrEmpty(sample.Name))
+                                    sample.Name = info.ReflectedType.Name + "." + info.Name;
+
+                                samples.Add(sample);
+
                                 if ((attribute as SampleMethodAttribute).Startup)
                                 {
                                     info.Invoke(null, null);
-                                }
-                                else
-                                {
-                                    Sample sample = new Sample();
-
-                                    sample.EntryPoint = info;
-                                    sample.Name = (attribute as SampleMethodAttribute).Name;
-
-                                    if (string.IsNullOrEmpty(sample.Name))
-                                        sample.Name = info.ReflectedType.Name + "." + info.Name;
-
-                                    samples.Add(sample);
                                 }
                             }
                         }
@@ -120,10 +118,13 @@ namespace Isles.Samples
                     foreach (Attribute attribute in type.GetCustomAttributes(false))
                     {
                         if (attribute is SampleClassAttribute)
+                        {
                             samples.AddRange(FromType(type));
+                            break;
+                        }
                     }
                 }
-                catch (Exception ex) { }
+                catch /*(Exception ex)*/ { }
             }
 
             return samples;

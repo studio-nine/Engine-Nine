@@ -74,7 +74,7 @@ namespace Isles.Samples
             Filter.Draw(GraphicsDevice, texture, null);
         }
     
-        [SampleMethod(Startup=true)]
+        [SampleMethod("Post Processing Sample", Startup=true)]
         public static void Test()
         {
             using (PostProcessingGame game = new PostProcessingGame())
