@@ -30,7 +30,7 @@ namespace Isles.Graphics.Filters
 
         }
 
-        protected override void Begin(Texture2D input)
+        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
         {
 
         }

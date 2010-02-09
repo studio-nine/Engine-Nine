@@ -65,7 +65,11 @@ namespace Isles.Graphics.Filters
                                                                                 ResourceType.Texture2D,
                                                                                 SurfaceFormat.HalfVector4); 
         }
-        protected override void Begin(Texture2D input)
+
+        /// <summary>
+        /// For a correct result, 'renderTarget' parameter should be 1/4 size of the input texture.
+        /// </summary>
+        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
         {
             effect.Parameters["SourceTexture0"].SetValue(input);
             effect.Parameters["g_vSourceDimensions"].SetValue(new Vector2(input.Width, input.Height));
@@ -86,25 +90,12 @@ namespace Isles.Graphics.Filters
                 }
             }
 
-            effect.Begin();
-            effect.CurrentTechnique.Passes[0].Begin();
-        }
-
-        /// <summary>
-        /// For a correct result, 'renderTarget' parameter should be 1/4 size of the input texture.
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="input"></param>
-        /// <param name="destination"></param>
-        /// <param name="renderTarget"></param>
-        public override void Draw(GraphicsDevice graphics, Texture2D input, Rectangle destination, RenderTarget2D renderTarget)
-        {
-            Vector2 destDimensions = new Vector2();
+            Vector2 destDimensions;
 
             if (renderTarget == null)
             {
-                destDimensions.X = graphics.PresentationParameters.BackBufferWidth;
-                destDimensions.Y = graphics.PresentationParameters.BackBufferHeight;
+                destDimensions.X = GraphicsDevice.PresentationParameters.BackBufferWidth;
+                destDimensions.Y = GraphicsDevice.PresentationParameters.BackBufferHeight;
             }
             else
             {
@@ -114,7 +105,8 @@ namespace Isles.Graphics.Filters
 
             effect.Parameters["g_vDestinationDimensions"].SetValue(destDimensions);
 
-            base.Draw(graphics, input, destination, renderTarget);
+            effect.Begin();
+            effect.CurrentTechnique.Passes[0].Begin();
         }
 
         protected override void End()

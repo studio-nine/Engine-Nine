@@ -37,6 +37,7 @@ namespace Isles.Samples
     public class PostProcessingGame : BasicModelViewerGame
     {
         public FilterCollection PostEffects { get; set; }
+        public IFilter Filter { get; set; }
 
         SpriteBatch sprite;
         Texture2D texture;
@@ -47,12 +48,8 @@ namespace Isles.Samples
             // Chainning post processing effects
             PostEffects = new FilterCollection();
 
-            //PostEffects.Add(new BloomFilter());
-            PostEffects.Add(new BlurFilter());
-            //PostEffects.Add(new BlurFilter());
-            //PostEffects.Add(new SaturationFilter());
 
-            PostEffects[0].RenderTargetScale = 0.1f;
+            Filter = new SaturationFilter();
 
 
             sprite = new SpriteBatch(GraphicsDevice);
@@ -74,17 +71,10 @@ namespace Isles.Samples
             GraphicsDevice.Clear(Color.Black);
 
 
-            sprite.Begin();
-            sprite.Draw(texture, new Rectangle(
-                0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-            sprite.End();
-
-
-            // Draw post chain
-            PostEffects.Draw(GraphicsDevice, null, GraphicsDevice.Viewport.TitleSafeArea);
+            Filter.Draw(GraphicsDevice, texture, null);
         }
     
-        [SampleMethod(Startup=false)]
+        [SampleMethod(Startup=true)]
         public static void Test()
         {
             using (PostProcessingGame game = new PostProcessingGame())

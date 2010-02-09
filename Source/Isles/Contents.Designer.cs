@@ -39,7 +39,7 @@ namespace Isles {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Isles.Graphics.Contents", typeof(Contents).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Isles.Contents", typeof(Contents).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -182,13 +182,6 @@ namespace Isles {
         internal static byte[] TerrainLayer {
             get {
                 object obj = ResourceManager.GetObject("TerrainLayer", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] Water {
-            get {
-                object obj = ResourceManager.GetObject("Water", resourceCulture);
                 return ((byte[])(obj));
             }
         }

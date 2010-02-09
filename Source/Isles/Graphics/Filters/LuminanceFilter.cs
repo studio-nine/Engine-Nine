@@ -36,23 +36,15 @@ namespace Isles.Graphics.Filters
         {
             effect = LuminanceFilter_Code.CreateEffect(GraphicsDevice);
         }
-        protected override void Begin(Texture2D input)
-        {
-            effect.Parameters["SourceTexture0"].SetValue(input);
-            effect.Parameters["g_vSourceDimensions"].SetValue(new Vector2(input.Width, input.Height));
 
-            effect.Begin();
-            effect.CurrentTechnique.Passes[0].Begin();
-        }
-
-        public override void Draw(GraphicsDevice graphics, Texture2D input, Rectangle destination, RenderTarget2D renderTarget)
+        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
         {
             Vector2 destDimensions = new Vector2();
 
             if (renderTarget == null)
             {
-                destDimensions.X = graphics.PresentationParameters.BackBufferWidth;
-                destDimensions.Y = graphics.PresentationParameters.BackBufferHeight;
+                destDimensions.X = GraphicsDevice.PresentationParameters.BackBufferWidth;
+                destDimensions.Y = GraphicsDevice.PresentationParameters.BackBufferHeight;
             }
             else
             {
@@ -61,8 +53,11 @@ namespace Isles.Graphics.Filters
             }
 
             effect.Parameters["g_vDestinationDimensions"].SetValue(destDimensions);
-
-            base.Draw(graphics, input, destination, renderTarget);
+            effect.Parameters["SourceTexture0"].SetValue(input);
+            effect.Parameters["g_vSourceDimensions"].SetValue(new Vector2(input.Width, input.Height));
+            
+            effect.Begin();
+            effect.CurrentTechnique.Passes[0].Begin();
         }
 
         protected override void End()

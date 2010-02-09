@@ -35,7 +35,7 @@ namespace Isles.Graphics.Filters
             effect = InternalContents.SaturationEffect(GraphicsDevice);
         }
 
-        protected override void Begin(Texture2D input)
+        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
         {
             effect.Parameters["Saturation"].SetValue(Saturation);
 

@@ -31,7 +31,7 @@ namespace Isles.Graphics.Filters
             effect = InternalContents.DebugShader1(GraphicsDevice);
         }
 
-        protected override void Begin(Texture2D input)
+        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
         {
             Vector2 pixelSize;
 

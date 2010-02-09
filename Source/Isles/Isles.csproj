@@ -78,9 +78,9 @@
     <Compile Include="Components\World.cs" />
     <Compile Include="Components\WorldObject.cs" />
     <Compile Include="Contents.Designer.cs">
-      <DependentUpon>Contents.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Contents.resx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Filters\AdaptLuminanceFilter.cs" />
     <Compile Include="Graphics\Filters\AdaptLuminanceFilter_Code.cs" />
@@ -103,7 +103,6 @@
     <Compile Include="Graphics\Effects\FloatTextureEffect.cs" />
     <Compile Include="Graphics\Effects\RenderToTextureEffect.cs" />
     <Compile Include="Graphics\SpriteAnimation.cs" />
-    <Compile Include="Graphics\Filters\BloomFilter.cs" />
     <Compile Include="Graphics\Filters\BlurFilter.cs" />
     <Compile Include="Graphics\Filters\ColorMatrixFilter.cs" />
     <Compile Include="Graphics\Filters\DistortionFilter.cs" />
@@ -202,13 +201,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Contents.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Contents.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BasicSkinned.xnb" />
     <None Include="Resources\BasicTexture.xnb" />
     <None Include="Resources\BloomCombine.xnb" />
@@ -228,6 +220,13 @@
     <None Include="Resources\SplatTexture.xnb" />
     <None Include="Resources\TerrainLayer.xnb" />
     <None Include="Resources\Water.xnb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Contents.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Contents.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

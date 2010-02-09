@@ -40,7 +40,7 @@ namespace Isles.Graphics.Filters
             effect = InternalContents.GaussianBlurEffect(GraphicsDevice);
         }
 
-        protected override void Begin(Texture2D input)
+        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
         {
             SetBlurEffectParameters(
                 DerivationX / GraphicsDevice.Viewport.Width,

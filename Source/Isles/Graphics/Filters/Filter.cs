@@ -18,72 +18,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Filters
 {
-    public abstract class Filter
+    public interface IFilter
+    {
+        void Draw(GraphicsDevice graphics, Texture2D input, RenderTarget2D renderTarget);
+    }
+
+
+    public abstract class Filter : IFilter
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
-        public float RenderTargetScale { get; set; }
 
 
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget;
 
 
-        public Filter()
-        {
-            RenderTargetScale = 1.0f;
-        }
-
-        public Texture2D Process(GraphicsDevice graphics, Texture2D input)
-        {
-            LoadContent(graphics);
-
-            Rectangle rc;
-
-            rc.X = rc.Y = 0;
-            rc.Width = input.Width;
-            rc.Height = input.Height;
-
-            // Gets the scaled width and height
-            int width = (int)(input.Width * RenderTargetScale);
-            int height = (int)(input.Height * RenderTargetScale);
-            SurfaceFormat format = input.Format;
-            
-
-            if (renderTarget == null || renderTarget.Width != width || renderTarget.Height != height)
-            {
-                if (renderTarget != null)
-                    renderTarget.Dispose();
-                renderTarget = new RenderTarget2D(GraphicsDevice, width, height, 1, format);
-            }
-
-
-            Draw(graphics, input, rc, renderTarget);
-
-            return renderTarget.GetTexture();
-        }
-
-
-        public void Draw(GraphicsDevice graphics, Texture2D input)
-        {
-            LoadContent(graphics);
-
-            Rectangle rc;
-
-            rc.X = rc.Y = 0;
-            rc.Width = input.Width;
-            rc.Height = input.Height;
-
-            Draw(graphics, input, rc, null);
-        }
-
-        public void Draw(GraphicsDevice graphics, Texture2D input, Rectangle destination)
-        {
-            LoadContent(graphics);
-
-            Draw(graphics, input, destination, null);
-        }
-
-        public virtual void Draw(GraphicsDevice graphics, Texture2D input, Rectangle destination, RenderTarget2D renderTarget)
+        public void Draw(GraphicsDevice graphics, Texture2D input, RenderTarget2D renderTarget)
         {
             LoadContent(graphics);
 
@@ -103,7 +53,20 @@ namespace Isles.Graphics.Filters
             // Draw fullscreen quad
             spriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
 
-            Begin(input);
+            Begin(input, renderTarget);
+
+            Rectangle destination = Rectangle.Empty;
+
+            if (renderTarget == null)
+            {
+                destination.Width = GraphicsDevice.PresentationParameters.BackBufferWidth;
+                destination.Height = GraphicsDevice.PresentationParameters.BackBufferHeight;
+            }
+            else
+            {
+                destination.Width = renderTarget.Width;
+                destination.Height = renderTarget.Height;
+            }
 
             spriteBatch.Draw(input, destination, Color.White);
 
@@ -139,7 +102,7 @@ namespace Isles.Graphics.Filters
         }
 
         protected abstract void LoadContent();
-        protected abstract void Begin(Texture2D input);
+        protected abstract void Begin(Texture2D input, RenderTarget2D renderTarget);
         protected abstract void End();
     }
 }
