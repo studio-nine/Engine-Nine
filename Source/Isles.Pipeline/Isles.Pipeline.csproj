@@ -54,10 +54,6 @@
     <Compile Include="SpriteSheetContent.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Isles.Graphics\Isles.Graphics.csproj">
-      <Project>{911AE18E-0840-4CDE-B037-988BBCFB184E}</Project>
-      <Name>Isles.Graphics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Isles\Isles.csproj">
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
       <Name>Isles</Name>

@@ -25,14 +25,22 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Isles
 {
     /// <summary>
-    /// Represents a peace of surface with Z axis facing up.
+    /// Object that react to game updates.
     /// </summary>
-    public interface ISurface
+    public interface IUpdateObject
     {
-        /// <summary>
-        /// Returns true if the point is on the surface.
-        /// </summary>
-        bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal);
+        void Update(GameTime gameTime);
+    }
+
+
+    /// <summary>
+    /// Object that can be displayed on the screen.
+    /// </summary>
+    public interface IDisplayObject : IUpdateObject
+    {
+        Matrix Transform { get; set; }
+
+        void Draw(GameTime gameTime, Matrix view, Matrix projection);
     }
 
 
@@ -76,43 +84,6 @@ namespace Isles
 
 
     /// <summary>
-    /// Interface for playable animation
-    /// </summary>
-    public interface IAnimation
-    {
-        /// <summary>
-        /// Gets or sets the playing speed of the animation. 1 is the normal speed.
-        /// </summary>
-        float Speed { get; set; }
-
-        /// <summary>
-        /// Gets the total length of the animation.
-        /// </summary>
-        TimeSpan Duration { get; }
-
-        /// <summary>
-        /// Play the animation from start.
-        /// </summary>
-        void Play();
-
-        /// <summary>
-        /// Stop playing the animation.
-        /// </summary>
-        void Stop();
-
-        /// <summary>
-        /// Resume the animation from last stopped point.
-        /// </summary>
-        void Resume();
-        
-        /// <summary>
-        /// Fired when the animation has completed.
-        /// </summary>
-        event EventHandler Complete;
-    }
-
-
-    /// <summary>
     /// Interface for game camera
     /// </summary>
     public interface ICamera
@@ -130,33 +101,54 @@ namespace Isles
 
 
     /// <summary>
-    /// Interface for transitions
+    /// Interface for playable animation
     /// </summary>
-    public interface ITransition<T>
+    public interface IAnimation : IUpdateObject
     {
-        T Update(GameTime time);
+        /// <summary>
+        /// Play the animation from start.
+        /// </summary>
+        void Play();
+        
+        /// <summary>
+        /// Fired when the animation has completed.
+        /// </summary>
+        event EventHandler Complete;
     }
 
 
     /// <summary>
     /// Interface for object movement
     /// </summary>
-    public interface IMovement
+    public interface IMovable : IUpdateObject
     {
         Vector3 Position { get; set; }
-        Vector3 Target { get; set; }
+        Vector3 Forward { get; }                        
         Matrix Transform { get; }
+        float Speed { get; }
+        float MaxSpeed { get; }
 
-        /// <summary>
-        /// Gets the normalized heading of the moving entity.
-        /// </summary>
-        Vector3 Heading { get; set; }
-
-
-        void Update(GameTime time);
+        void ApplyForce(Vector3 steeringForce);
+    }
 
 
-        event EventHandler TargetReached;
-        event EventHandler TargetFailed;
+    /// <summary>
+    /// A container that contains one or more components.
+    /// </summary>
+    public interface IComponentContainer
+    {
+        ICollection<object> Components { get; }
+
+        T GetComponent<T>();
+        IEnumerable<T> GetComponents<T>();
+    }
+
+
+    /// <summary>
+    /// A component that can be added to a container.
+    /// </summary>
+    public interface IComponent
+    {
+        IComponentContainer Parent { get; set; }
     }
 }

@@ -48,7 +48,7 @@ namespace Isles.Samples
             ParticleSystem.ParticleEffect = new BasicParticleEffect();
             ParticleSystem.ParticleEffect.Texture = Content.Load<Texture2D>("Textures/flake");
 
-            CircularTransition transition = new CircularTransition();
+            SpinnerTransition<Vector3> transition = new SpinnerTransition<Vector3>();
 
             transition.Radius = 10;
 

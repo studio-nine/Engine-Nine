@@ -1,11 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles.Graphics", "Isles.Graphics\Isles.Graphics.csproj", "{911AE18E-0840-4CDE-B037-988BBCFB184E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E4F84943-5258-4F67-9C6C-739C18A47120} = {E4F84943-5258-4F67-9C6C-739C18A47120}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles.Samples", "Isles.Samples\Isles.Samples.csproj", "{DB4F295E-6A46-4E56-A898-74703670465D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E4F84943-5258-4F67-9C6C-739C18A47120} = {E4F84943-5258-4F67-9C6C-739C18A47120}
@@ -16,8 +11,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles.Pipeline", "Isles.Pipeline\Isles.Pipeline.csproj", "{AC6F35A9-124E-447E-99DD-21F68A0C226B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles.Content", "Isles.Content\Isles.Content.csproj", "{BFBE0063-C011-419E-B5BB-3DAB95034677}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles.Game", "Isles.Game\Isles.Game.csproj", "{483F40D4-18C6-4284-8304-7F637B1BF881}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,18 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Release|Win32.ActiveCfg = Release|Any CPU
-		{911AE18E-0840-4CDE-B037-988BBCFB184E}.Release|x86.ActiveCfg = Release|Any CPU
 		{DB4F295E-6A46-4E56-A898-74703670465D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB4F295E-6A46-4E56-A898-74703670465D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB4F295E-6A46-4E56-A898-74703670465D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -91,18 +72,6 @@ Global
 		{BFBE0063-C011-419E-B5BB-3DAB95034677}.Release|Win32.ActiveCfg = Release|x86
 		{BFBE0063-C011-419E-B5BB-3DAB95034677}.Release|x86.ActiveCfg = Release|x86
 		{BFBE0063-C011-419E-B5BB-3DAB95034677}.Release|x86.Build.0 = Release|x86
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Release|Any CPU.Build.0 = Release|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Release|Win32.ActiveCfg = Release|Any CPU
-		{483F40D4-18C6-4284-8304-7F637B1BF881}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C794FDA-3A5D-4E5D-990B-CE52F8163D4F}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{7C794FDA-3A5D-4E5D-990B-CE52F8163D4F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{7C794FDA-3A5D-4E5D-990B-CE52F8163D4F}.Debug|Win32.ActiveCfg = Debug|x86

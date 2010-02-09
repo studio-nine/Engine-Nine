@@ -68,15 +68,18 @@ namespace Isles.Pipeline.Processors
         /// </summary>
         public override TerrainGeometry Process(Texture2DContent input, ContentProcessorContext context)
         {
-            PixelBitmapContent<float> heightfield;
+            PixelBitmapContent<Alpha8> heightfield;
 
             MeshBuilder builder = MeshBuilder.StartMesh("Terrain");
 
             // Convert the input texture to float format, for ease of processing.
-            input.ConvertBitmapType(typeof(PixelBitmapContent<float>));
+            GrayScaleTextureProcessor grayProcessor = new GrayScaleTextureProcessor();
+            input = grayProcessor.Process(input, context) as Texture2DContent;
                                     
-            heightfield = (PixelBitmapContent<float>)input.Mipmaps[0];
+            heightfield = (PixelBitmapContent<Alpha8>)input.Mipmaps[0];
 
+            if (heightfield.Width * heightfield.Height > ushort.MaxValue)
+                throw new InvalidContentException("Input texture too large for a heightmap");
 
             // Create the terrain vertices.
             for (int y = 0; y < heightfield.Height; y++)
@@ -87,7 +90,7 @@ namespace Isles.Pipeline.Processors
 
                     position.X = scale * (x - ((heightfield.Width - 1) / 2.0f));
                     position.Y = scale * (y - ((heightfield.Height - 1) / 2.0f));
-                    position.Z = heightfield.GetPixel(x, y) * bumpiness;
+                    position.Z = heightfield.GetPixel(x, y).ToAlpha() * bumpiness;
 
                     builder.CreatePosition(position);
                 }

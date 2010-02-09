@@ -41,6 +41,23 @@ namespace Isles.Pipeline.Processors
         [DefaultValue(false)]
         public bool GenerateTextureCoordinates { get; set; }
 
+        [DefaultValue(0f)]
+        public virtual float RotationX { get; set; }
+
+        [DefaultValue(0f)]
+        public virtual float RotationY { get; set; }
+
+        [DefaultValue(0f)]
+        public virtual float RotationZ { get; set; }
+
+        [DefaultValue(1f)]
+        public virtual float Scale { get; set; }
+
+
+        public GeometryProcessor()
+        {
+            Scale = 1.0f;
+        }
 
         public override Geometry Process(NodeContent input, ContentProcessorContext context)
         {
@@ -50,12 +67,17 @@ namespace Isles.Pipeline.Processors
             List<Vector3> normals = new List<Vector3>();
             List<Vector2> textureCoordinates = new List<Vector2>();
 
-            ProcessNode(input, positions, indices);
+            Matrix transform = Matrix.CreateRotationX(RotationX) *
+                               Matrix.CreateRotationY(RotationY) *
+                               Matrix.CreateRotationZ(RotationZ) *
+                               Matrix.CreateScale(Scale);
+
+            ProcessNode(transform, input, positions, indices);
 
             return new Geometry(positions, indices);
         }
 
-        private static void ProcessNode(NodeContent input, List<Vector3> positions, List<ushort> indices)
+        private static void ProcessNode(Matrix transform, NodeContent input, List<Vector3> positions, List<ushort> indices)
         {
             if (input != null)
             {
@@ -69,7 +91,7 @@ namespace Isles.Pipeline.Processors
                         int currentVertex = positions.Count;
 
                         foreach (Vector3 position in geometry.Vertices.Positions)
-                            positions.Add(Vector3.Transform(position, mesh.AbsoluteTransform));
+                            positions.Add(Vector3.Transform(position, mesh.AbsoluteTransform * transform));
 
                         foreach (int index in geometry.Indices)
                             indices.Add((ushort)(currentVertex + index));
@@ -77,7 +99,7 @@ namespace Isles.Pipeline.Processors
                 }
 
                 foreach (NodeContent child in input.Children)
-                    ProcessNode(child, positions, indices);
+                    ProcessNode(transform, child, positions, indices);
             }
         }
     }

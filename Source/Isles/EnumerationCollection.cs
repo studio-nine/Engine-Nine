@@ -23,12 +23,16 @@ namespace Isles
     /// <summary>
     /// A collection that can be manipulated during enumeration.
     /// </summary>
-    public class EnumerationCollection<TValue, TList>
+    internal class EnumerationCollection<TValue, TList>
         : IEnumerable<TValue>, ICollection<TValue> where TList : ICollection<TValue>, new()
     {
         private bool isDirty = true;
         private TList elements = new TList();
         private List<TValue> copy = new List<TValue>();
+
+
+        public event EventHandler Added;
+        public event EventHandler Removed;
 
 
         public TList Elements
@@ -59,12 +63,20 @@ namespace Isles
         {
             isDirty = true;
             elements.Add(e);
+
+            if (Added != null)
+                Added(this, EventArgs.Empty);
         }
 
         public bool Remove(TValue e)
         {
             isDirty = true;
-            return elements.Remove(e);
+            bool result = elements.Remove(e);
+
+            if (Removed != null)
+                Removed(this, EventArgs.Empty);
+
+            return result;
         }
 
         public void Clear()

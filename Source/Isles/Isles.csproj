@@ -37,6 +37,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,32 +62,121 @@
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\MovementComponent.cs" />
+    <Compile Include="Components\ExteriorWorld.cs" />
     <Compile Include="Components\Timer.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="Components\World.cs" />
+    <Compile Include="Components\WorldObject.cs" />
+    <Compile Include="Contents.Designer.cs">
+      <DependentUpon>Contents.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Graphics\Filters\AdaptLuminanceFilter.cs" />
+    <Compile Include="Graphics\Filters\AdaptLuminanceFilter_Code.cs" />
+    <Compile Include="Graphics\Filters\LuminanceFilter.cs" />
+    <Compile Include="Graphics\Filters\LuminanceFilter_Code.cs" />
+    <Compile Include="Graphics\Filters\ScaleFilter.cs" />
+    <Compile Include="Graphics\Filters\ScaleFilter_Code.cs" />
+    <Compile Include="Navigation\FlockingMovement.cs" />
+    <Compile Include="Navigation\Flocking\BasicFlockingBehaviors.cs" />
+    <Compile Include="Navigation\Flocking\ObstacleAvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\Flocking\GroupFlockingBehaviors.cs" />
+    <Compile Include="SpacialObjectManager.cs" />
+    <Compile Include="Graphics\Cameras\FreeCamera.cs" />
+    <Compile Include="Graphics\Cameras\ModelViewerCamera.cs" />
+    <Compile Include="Graphics\Cameras\TopDownEditorCamera.cs" />
+    <Compile Include="Graphics\Canvas.cs" />
+    <Compile Include="Graphics\DirectionalLight.cs" />
+    <Compile Include="Graphics\Effects\BasicSkinnedEffect.cs" />
+    <Compile Include="Graphics\Effects\BasicTextureEffect.cs" />
+    <Compile Include="Graphics\Effects\FloatTextureEffect.cs" />
+    <Compile Include="Graphics\Effects\RenderToTextureEffect.cs" />
+    <Compile Include="Graphics\SpriteAnimation.cs" />
+    <Compile Include="Graphics\Filters\BloomFilter.cs" />
+    <Compile Include="Graphics\Filters\BlurFilter.cs" />
+    <Compile Include="Graphics\Filters\ColorMatrixFilter.cs" />
+    <Compile Include="Graphics\Filters\DistortionFilter.cs" />
+    <Compile Include="Graphics\Filters\Filter.cs" />
+    <Compile Include="Graphics\Filters\FilterCollection.cs" />
+    <Compile Include="Graphics\Filters\HeightMapFilter.cs" />
+    <Compile Include="Graphics\Filters\PostEffect.cs" />
+    <Compile Include="Graphics\Filters\SaturationFilter.cs" />
+    <Compile Include="Graphics\Geometry.cs" />
+    <Compile Include="Graphics\GeometryVisualizer.cs" />
+    <Compile Include="Graphics\GraphicsEffect.cs" />
+    <Compile Include="Graphics\Effects\LightmapEffect.cs" />
+    <Compile Include="Graphics\Effects\LightmapShrinker.cs" />
+    <Compile Include="Graphics\Effects\ShadowMapCasterEffect.cs" />
+    <Compile Include="Graphics\Effects\ShadowMapEffect.cs" />
+    <Compile Include="Graphics\Effects\ShadowMapReceiverEffect.cs" />
+    <Compile Include="Graphics\Landscape\SkyBoxEffect.cs" />
+    <Compile Include="Graphics\Landscape\Terrain.cs" />
+    <Compile Include="Graphics\Landscape\TerrainGeometry.cs" />
+    <Compile Include="Graphics\Landscape\TerrainLayerEffect.cs" />
+    <Compile Include="Graphics\Landscape\TerrainSplatEffect.cs" />
+    <Compile Include="Graphics\Landscape\WaterSurfaceEffect.cs" />
+    <Compile Include="Graphics\ModelEffect.cs" />
+    <Compile Include="Graphics\Models\AnimationClip.cs" />
+    <Compile Include="Graphics\Models\Keyframe.cs" />
+    <Compile Include="Graphics\Models\ModelAnimation.cs" />
+    <Compile Include="Graphics\Models\ModelBatch.cs" />
+    <Compile Include="Graphics\Models\ModelExtensions.cs" />
+    <Compile Include="Graphics\Models\ModelSkinning.cs" />
+    <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\BoneEmitter.cs" />
+    <Compile Include="Graphics\ParticleEffects\BoxEmitter.cs" />
+    <Compile Include="Graphics\ParticleEffects\FloatParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleSystem.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
+    <Compile Include="Graphics\ParticleEffects\PointEmitter.cs" />
+    <Compile Include="Graphics\ParticleEffects\SphereEmitter.cs" />
+    <Compile Include="Graphics\PointLight.cs" />
+    <Compile Include="Graphics\Primitive.cs" />
+    <Compile Include="Graphics\PrimitiveBatch.cs" />
+    <Compile Include="Graphics\Primitives\Arrow.cs" />
+    <Compile Include="Graphics\Primitives\Axis.cs" />
+    <Compile Include="Graphics\Primitives\Bezier.cs" />
+    <Compile Include="Graphics\Primitives\Centrum.cs" />
+    <Compile Include="Graphics\Primitives\Cube.cs" />
+    <Compile Include="Graphics\Primitives\Cylinder.cs" />
+    <Compile Include="Graphics\Primitives\Dome.cs" />
+    <Compile Include="Graphics\Primitives\Grid.cs" />
+    <Compile Include="Graphics\Primitives\Plane.cs" />
+    <Compile Include="Graphics\Primitives\Skeleton.cs" />
+    <Compile Include="Graphics\Primitives\Sphere.cs" />
+    <Compile Include="Graphics\Primitives\Teapot.cs" />
+    <Compile Include="Graphics\Primitives\Torus.cs" />
+    <Compile Include="Graphics\SpriteSheet.cs" />
+    <Compile Include="Graphics\Vertices\VertexPositionNormalDueTexture.cs" />
+    <Compile Include="Graphics\Vertices\VertexPositionNormalTangentTexture.cs" />
+    <Compile Include="InternalContents.cs" />
     <Compile Include="XmlReflectiveLoader.cs" />
-    <Compile Include="ParseHelper.cs" />
+    <Compile Include="ParseExtensions.cs" />
     <Compile Include="XmlLoader.cs" />
     <Compile Include="EnumerationCollection.cs" />
     <Compile Include="NamedObjectManager.cs" />
-    <Compile Include="Designer\Attributes.cs" />
-    <Compile Include="Movements\ProjectileMovement.cs" />
-    <Compile Include="SurfaceContainer.cs" />
-    <Compile Include="Movements\CharactorMovement.cs" />
-    <Compile Include="Movements\AircraftMovement.cs" />
-    <Compile Include="Movements\Movement.cs" />
-    <Compile Include="Movements\VehicleMovement.cs" />
+    <Compile Include="Navigation\ProjectileMovement.cs" />
+    <Compile Include="Surface.cs" />
+    <Compile Include="Navigation\CharactorMovement.cs" />
+    <Compile Include="Navigation\AircraftMovement.cs" />
+    <Compile Include="Navigation\VehicleMovement.cs" />
     <Compile Include="PickEngine.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Transitions\BasicTransitions.cs" />
-    <Compile Include="Transitions\CircularTransition.cs" />
+    <Compile Include="Transitions\SpinnerTransition.cs" />
     <Compile Include="Transitions\TransitionManager.cs" />
-    <Compile Include="Transitions\ShakeTransition.cs" />
     <Compile Include="Transitions\Transition.cs" />
     <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Input.cs" />
@@ -110,6 +200,34 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Contents.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Contents.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BasicSkinned.xnb" />
+    <None Include="Resources\BasicTexture.xnb" />
+    <None Include="Resources\BloomCombine.xnb" />
+    <None Include="Resources\BloomExtract.xnb" />
+    <None Include="Resources\ColorMatrix.xnb" />
+    <None Include="Resources\DebugShader.fx" />
+    <None Include="Resources\DebugShader1.fx" />
+    <None Include="Resources\FloatTexture.xnb" />
+    <None Include="Resources\GaussianBlur.xnb" />
+    <None Include="Resources\Heightmap.xnb" />
+    <None Include="Resources\LightCircle.xnb" />
+    <None Include="Resources\ParticleEffect.xnb" />
+    <None Include="Resources\Saturation.xnb" />
+    <None Include="Resources\ShadowCaster.xnb" />
+    <None Include="Resources\ShadowReceiver.xnb" />
+    <None Include="Resources\SkyBox.xnb" />
+    <None Include="Resources\SplatTexture.xnb" />
+    <None Include="Resources\TerrainLayer.xnb" />
+    <None Include="Resources\Water.xnb" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

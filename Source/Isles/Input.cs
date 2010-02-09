@@ -300,7 +300,9 @@ namespace Isles
             // Make sure we are called by xna component system
             if (Assembly.GetCallingAssembly() != typeof(Game).Assembly)
                 throw new InvalidOperationException("Do not call Input.Update directly. Use Game.Components.Add instead.");
-            
+
+            if (!Game.IsActive)
+                return;
 
             // Handle mouse input variables
             mouseStateLastFrame = mouseState;

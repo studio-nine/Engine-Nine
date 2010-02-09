@@ -28,9 +28,7 @@ using Isles.Graphics.Models;
 namespace Isles.Pipeline.Processors
 {
     /// <summary>
-    /// The NormalMapTextureProcessor takes in an encoded normal map, and outputs
-    /// a texture in the NormalizedByte4 format.  Every pixel in the source texture
-    /// is remapped so that values ranging from 0 to 1 will range from -1 to 1.
+    /// This processor gray scales the input texture and produces an output texture with 8bit per pixel.
     /// </summary>
     [ContentProcessor(DisplayName="Gray Scale Texture Processor - Isles")]
     public class GrayScaleTextureProcessor : ContentProcessor<TextureContent, TextureContent>
@@ -44,10 +42,30 @@ namespace Isles.Pipeline.Processors
         /// <returns></returns>
         public override TextureContent Process(TextureContent input, ContentProcessorContext context)
         {
-            input.ConvertBitmapType(typeof(PixelBitmapContent<Alpha8>));
-            input.GenerateMipmaps(false);
+            Texture2DContent result = new Texture2DContent();
 
-            return input;
+            if (input.Faces[0][0] is PixelBitmapContent<Alpha8>)
+                return input;
+
+            input.ConvertBitmapType(typeof(PixelBitmapContent<Vector3>));
+
+            PixelBitmapContent<Vector3> source = input.Faces[0][0] as PixelBitmapContent<Vector3>;
+            PixelBitmapContent<Alpha8> bitmap = new PixelBitmapContent<Alpha8>(source.Width, source.Height);
+
+            for (int y = 0; y < source.Height; y++)
+            {
+                for (int x = 0; x < source.Width; x++)
+                {
+                    Vector3 src = source.GetPixel(x, y);
+
+                    bitmap.SetPixel(x, y, new Alpha8(
+                        0.3f * src.X + 0.59f * src.Y + 0.11f * src.Z));
+                }
+            }
+
+            result.Mipmaps.Add(bitmap);
+            
+            return result;
         }
     }
 }

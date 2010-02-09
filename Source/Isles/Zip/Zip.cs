@@ -33,7 +33,7 @@ using Microsoft.Xna.Framework.Audio;
 namespace Isles.Zip
 {
     #region ZipEntry
-    public class ZipEntry
+    internal class ZipEntry
     {
 
         private const int ZipEntrySignature = 0x04034b50;
@@ -732,7 +732,7 @@ namespace Isles.Zip
     #endregion
 
     #region ZipDirEntry
-    public class ZipDirEntry
+    internal class ZipDirEntry
     {
 
         internal const int ZipDirEntrySignature = 0x02014b50;
@@ -874,7 +874,7 @@ namespace Isles.Zip
     #endregion
 
     #region ZipFile
-    public class ZipFile : System.Collections.Generic.IEnumerable<ZipEntry>,
+    internal class ZipFile : System.Collections.Generic.IEnumerable<ZipEntry>,
       IDisposable
     {
         private string _name;
@@ -1218,7 +1218,7 @@ namespace Isles.Zip
     /// Calculates a 32bit Cyclic Redundancy Checksum (CRC) using the
     /// same polynomial used by Zip.
     /// </summary>
-    public class CRC32
+    internal class CRC32
     {
         private UInt32[] crc32Table;
         private const int BUFFER_SIZE = 8192;

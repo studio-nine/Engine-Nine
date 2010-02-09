@@ -225,6 +225,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\TerrainLayer.fx">
+      <Name>TerrainLayer</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
     <None Include="Misc\Loader.ix">
       <Name>Loader</Name>
       <Importer>XmlImporter</Importer>

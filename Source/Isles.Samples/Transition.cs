@@ -32,6 +32,7 @@ namespace Isles.Samples
     {
         int index = 0;
         List<ITransition<Vector2>> transitions = new List<ITransition<Vector2>>();
+        TransitionManager transitionManager = new TransitionManager();
 
         public TransitionGame()
         {
@@ -44,8 +45,7 @@ namespace Isles.Samples
             {
                 index = (index + 1) % transitions.Count;
 
-                if (transitions[index] is IAnimation)
-                    (transitions[index] as IAnimation).Play();
+                transitionManager.Start(transitions[index], FrameRate, "Position", TimeSpan.FromSeconds(0.1f), true);
 
                 Window.Title = "Transition Type: " + transitions[index].GetType().Name;
             }
@@ -73,7 +73,6 @@ namespace Isles.Samples
             ExponentialTransition<Vector2> exp = new ExponentialTransition<Vector2>();
 
             exp.Power = 32;
-            exp.Delay = TimeSpan.FromSeconds(1);
             exp.Start = new Vector2(100, 100);
             exp.End = new Vector2(100, 400);
             exp.Effect = TransitionEffect.Pulse;
@@ -90,7 +89,7 @@ namespace Isles.Samples
             transitions.Add(curve);
 
 
-            CircularTransition circular = new CircularTransition();
+            SpinnerTransition<Vector2> circular = new SpinnerTransition<Vector2>();
 
             circular.Radius = 100;
             circular.Position = new Vector3(200, 200, 0);
@@ -112,7 +111,7 @@ namespace Isles.Samples
 
         protected override void Update(GameTime gameTime)
         {
-            FrameRate.Position = transitions[index].Update(gameTime);
+            transitionManager.Update(gameTime);
 
             base.Update(gameTime);
         }

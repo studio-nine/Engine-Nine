@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using System.IO;
+using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -34,7 +35,16 @@ namespace Isles.Pipeline.Processors
         // in a single pass. If you change this, update SkinnedModel.fx to match.
         const int MaxBones = 59;
 
-    
+        [DefaultValue("_n")]
+        public string NormalTextureExtension { get; set; }
+
+
+        public ExtendedModelProcessor()
+        {
+            NormalTextureExtension = "_n";
+        }
+
+        
         /// <summary>
         /// The main Process method converts an intermediate format content pipeline
         /// NodeContent tree to a ModelContent object with embedded animation data.
@@ -43,7 +53,7 @@ namespace Isles.Pipeline.Processors
         {
             ModelContent model;
             Dictionary<string, AnimationClip> animationClips;
-            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            ModelTag tag = new ModelTag();
 
             // Find the skeleton.
             BoneContent skeleton = MeshHelper.FindSkeleton(input);
@@ -54,11 +64,13 @@ namespace Isles.Pipeline.Processors
             {
                 // Not a skinned mesh
                 model = base.Process(input, context);
-                animationClips = ProcessAnimations(input);
-                if (animationClips != null && animationClips.Count > 0)
-                    dictionary.Add("AnimationData", animationClips);
 
-                model.Tag = dictionary;
+                animationClips = ProcessAnimations(input);
+
+                tag.Animations = animationClips;
+
+                model.Tag = tag;
+
                 AddNormalTextureToTag(model);
                 return model;
             }
@@ -95,10 +107,10 @@ namespace Isles.Pipeline.Processors
             model = base.Process(input, context);
 
             // Store our custom animation data in the Tag property of the model.
-            dictionary.Add("SkinningData", new ModelSkinning(inverseBindPose, skeletonIndex));
-            dictionary.Add("AnimationData", animationClips);
+            tag.Skinning = new ModelSkinning(inverseBindPose, skeletonIndex);
+            tag.Animations = animationClips;
 
-            model.Tag = dictionary;
+            model.Tag = tag;
 
             // Store normal texture
             AddNormalTextureToTag(model);
@@ -214,7 +226,7 @@ namespace Isles.Pipeline.Processors
             if (basicMaterial == null)
             {
                 throw new InvalidContentException(string.Format(
-                    "GameModelProcessor only supports BasicMaterialContent, " +
+                    "ExtendedModelProcessor only supports BasicMaterialContent, " +
                     "but input mesh uses {0}.", material.GetType()));
             }
 
@@ -228,7 +240,7 @@ namespace Isles.Pipeline.Processors
             string textureFilename = basicMaterial.Texture.Filename;
             string normalTextureFilename =
                 Path.GetDirectoryName(textureFilename) + "\\" +
-                Path.GetFileNameWithoutExtension(textureFilename) + "_n" +
+                Path.GetFileNameWithoutExtension(textureFilename) + NormalTextureExtension +
                 Path.GetExtension(textureFilename);
 
             // Checks if the normal texture exists

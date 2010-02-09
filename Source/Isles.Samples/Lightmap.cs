@@ -18,7 +18,6 @@ using Isles.Graphics;
 using Isles.Graphics.Cameras;
 using Isles.Graphics.Primitives;
 using Isles.Graphics.Models;
-using Isles.Graphics.Illumination;
 using Isles.Graphics.Effects;
 #endregion
 
@@ -65,7 +64,8 @@ namespace Isles.Samples
             PointLight pt = new PointLight();
 
             pt.Radius = 20.0f;
-            pt.Position = position.Update(gameTime);
+            position.Update(gameTime);
+            pt.Position = position.Value;
 
             lightmap.LightSource.Clear();
             lightmap.LightSource.Add(pt);

@@ -288,28 +288,28 @@ namespace Isles
                 return Enum.Parse(type, input.InnerXml);
 
             if (type == typeof(Matrix))
-                return ParseHelper.ToMatrix(input.InnerXml);
+                return ParseExtensions.ToMatrix(input.InnerXml);
 
             if (type == typeof(Quaternion))
-                return ParseHelper.ToQuaternion(input.InnerXml);
+                return ParseExtensions.ToQuaternion(input.InnerXml);
 
             if (type == typeof(Vector2))
-                return ParseHelper.ToVector2(input.InnerXml);
+                return ParseExtensions.ToVector2(input.InnerXml);
 
             if (type == typeof(Vector3))
-                return ParseHelper.ToVector3(input.InnerXml);
+                return ParseExtensions.ToVector3(input.InnerXml);
 
             if (type == typeof(Vector4))
-                return ParseHelper.ToVector4(input.InnerXml);
+                return ParseExtensions.ToVector4(input.InnerXml);
 
             if (type == typeof(Color))
-                return ParseHelper.ToColor(input.InnerXml);
+                return ParseExtensions.ToColor(input.InnerXml);
 
             if (type == typeof(Point))
-                return ParseHelper.ToPoint(input.InnerXml);
+                return ParseExtensions.ToPoint(input.InnerXml);
 
             if (type == typeof(Rectangle))
-                return ParseHelper.ToRectangle(input.InnerXml);
+                return ParseExtensions.ToRectangle(input.InnerXml);
 
             return null;
         }

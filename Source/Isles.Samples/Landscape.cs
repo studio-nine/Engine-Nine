@@ -20,7 +20,6 @@ using Isles.Graphics.Primitives;
 using Isles.Graphics.Models;
 using Isles.Graphics.Landscape;
 using Isles.Graphics.Effects;
-using Isles.Graphics.Illumination;
 #endregion
 
 

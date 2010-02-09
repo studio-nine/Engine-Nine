@@ -20,6 +20,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Transitions
 {
+    /// <summary>
+    /// Interface for transitions.
+    /// </summary>
+    public interface ITransition : IUpdateObject
+    {
+        object Value { get; }
+    }
+
+
+    /// <summary>
+    /// Generic interface for transitions
+    /// </summary>
+    public interface ITransition<T> : ITransition
+    {
+        T Value { get; }
+    }
+
+
     public enum TransitionEffect
     {
         None,
@@ -28,6 +46,7 @@ namespace Isles.Transitions
         Yoyo,
     }
 
+    public delegate T Interpolate<T>(T x, T y, float amount);
 
     public abstract class Transition<T> : ITransition<T>, IAnimation
     {
@@ -35,34 +54,34 @@ namespace Isles.Transitions
         public T End { get; set; }
         public T Value { get; set; }
 
-        public float Percentage { get; private set; }
+        private float Percentage;
 
-        public TimeSpan ElapsedTime { get; private set; }
-        public TimeSpan Delay { get; set; }
+        private TimeSpan ElapsedTime;
 
-        public delegate T Lerp(T x, T y, float amount);
-
-        public Lerp LerpFunction { get; set; }
+        public Interpolate<T> Lerp { get; set; }
 
         public TransitionEffect Effect { get; set; }
-
+        
+        object ITransition.Value
+        {
+            get { return Value; }
+        }
 
         public Transition()
         {
             IsPlaying = true;
             Speed = 1.0f;
             Duration = TimeSpan.FromSeconds(1);
-            Delay = TimeSpan.Zero;
             Effect = TransitionEffect.None;
         }
 
-        public virtual T Update(GameTime time)
+        public void Update(GameTime time)
         {
             if (IsPlaying)
             {
                 ElapsedTime += time.ElapsedGameTime;
 
-                TimeSpan elapsed = ElapsedTime - Delay;
+                TimeSpan elapsed = ElapsedTime;
 
                 if (elapsed > TimeSpan.Zero)
                 {
@@ -70,43 +89,41 @@ namespace Isles.Transitions
 
                     Percentage = Evaluate(position);
 
-                    if (LerpFunction != null)
-                        Value = LerpFunction(Start, End, Percentage);
+                    if (Lerp != null)
+                        Value = Lerp(Start, End, Percentage);
                     else
                         Value = (T)Interpolate(Start, End, Percentage);
 
                     if (position > 1.0f)
                     {
-                        if (Complete != null)
-                            Complete(this, EventArgs.Empty);
-
                         if (Effect == TransitionEffect.Yoyo || Effect == TransitionEffect.Pulse)
                         {
                             T temp = Start;
                             Start = End;
                             End = temp;
 
-                            ElapsedTime -= (Duration + Delay);
+                            ElapsedTime -= Duration;
 
                             if (Effect == TransitionEffect.Pulse)
                                 Effect = TransitionEffect.None;
                         }
                         else if (Effect == TransitionEffect.Loop)
                         {
-                            ElapsedTime -= (Duration + Delay);
+                            ElapsedTime -= Duration;
                         }
                         else
                         {
-                            Stop();
+                            if (Complete != null)
+                                Complete(this, EventArgs.Empty);
+
+                            IsPlaying = false;
                         }
                     }
                 }
             }
-
-            return Value;
         }
 
-        public abstract float Evaluate(float position);
+        protected abstract float Evaluate(float position);
 
 
         private static object Interpolate(object x, object y, float amount)
@@ -132,10 +149,9 @@ namespace Isles.Transitions
             return null;
         }
 
-        #region IAnimation Members
 
         public float Speed { get; set; }
-        public bool IsPlaying { get; set; }
+        private bool IsPlaying;
         public TimeSpan Duration { get; set; }
 
         public void Play()
@@ -145,18 +161,6 @@ namespace Isles.Transitions
             IsPlaying = true;
         }
 
-        public void Stop()
-        {
-            IsPlaying = false;
-        }
-
-        public void Resume()
-        {
-            IsPlaying = true;
-        }
-
         public event EventHandler Complete;
-
-        #endregion
     }
 }

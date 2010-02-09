@@ -57,7 +57,14 @@ namespace Isles.Samples
 
 
             terrain = new Terrain(GraphicsDevice, geometry);
-            terrain.Layers.Add(splat);
+            //terrain.Layers.Add(splat);
+
+            TerrainLayerEffect layer = new TerrainLayerEffect();
+            layer.TessellationU = layer.TessellationV = 32;
+            layer.Texture = Content.Load<Texture2D>("Terrain/Layer1");
+            layer.AlphaTexture = Content.Load<Texture2D>("Terrain/2");
+            terrain.Layers.Add(layer);
+
             terrain.Layers.Add(new FloatTextureEffect(Content.Load<Texture2D>("Terrain/clouds")));
 
             base.LoadContent();
