@@ -35,17 +35,16 @@
             // 
             this.Samples.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Samples.FormattingEnabled = true;
-            this.Samples.ItemHeight = 12;
             this.Samples.Location = new System.Drawing.Point(0, 0);
             this.Samples.Name = "Samples";
-            this.Samples.Size = new System.Drawing.Size(258, 436);
+            this.Samples.Size = new System.Drawing.Size(258, 472);
             this.Samples.TabIndex = 0;
             // 
             // SamplesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(258, 443);
+            this.ClientSize = new System.Drawing.Size(258, 480);
             this.Controls.Add(this.Samples);
             this.Name = "SamplesForm";
             this.Text = "Isles Test Tools";
