@@ -20,8 +20,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Effects
 {
-    public class ShadowMapReceiverEffect : ModelEffect
+    public class ShadowMapReceiverEffect : GraphicsEffect, IModelEffect
     {
+        public Matrix[] Bones { get; set; }
+        public bool SkinningEnabled { get; set; }
         public float Bias { get; set; }
         public float Alpha { get; set; }
         public Effect Effect { get; private set; }
@@ -50,7 +52,7 @@ namespace Isles.Graphics.Effects
             GraphicsDevice.SamplerStates[0].AddressV = TextureAddressMode.Border;
             
 
-            if (VertexSkinningEnabled)
+            if (SkinningEnabled)
                 Effect.Parameters["Bones"].SetValue(Bones);
             else
                 Effect.Parameters["World"].SetValue(World);
@@ -62,7 +64,7 @@ namespace Isles.Graphics.Effects
             Effect.Parameters["LightViewProjection"].SetValue(LightViewProjection);
 
             
-            int pass = VertexSkinningEnabled ? 1 : 0;
+            int pass = SkinningEnabled ? 1 : 0;
             
             Effect.Begin();
             Effect.CurrentTechnique.Passes[pass].Begin();
@@ -72,7 +74,7 @@ namespace Isles.Graphics.Effects
 
         public override void End()
         {
-            int pass = VertexSkinningEnabled ? 1 : 0;
+            int pass = SkinningEnabled ? 1 : 0;
 
             Effect.CurrentTechnique.Passes[pass].End();
             Effect.End();

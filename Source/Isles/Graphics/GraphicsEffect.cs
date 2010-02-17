@@ -21,6 +21,14 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics
 {
+    public interface IModelEffect
+    {
+        Matrix[] Bones { get; set; }
+        
+        bool SkinningEnabled { get; set; }
+    }
+
+
     public abstract class GraphicsEffect : IDisposable
     {
         [ContentSerializerIgnore]
@@ -35,10 +43,13 @@ namespace Isles.Graphics
         [ContentSerializerIgnore]
         public Texture Texture { get; set; }
 
-        /// <summary>
-        /// Gets the graphics device
-        /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+
+        public bool IsDisposed { get; private set; }
+
+
+        public event EventHandler Disposing;
 
 
         public GraphicsEffect() 
@@ -87,6 +98,11 @@ namespace Isles.Graphics
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+
+            IsDisposed = true;
+
+            if (Disposing != null)
+                Disposing(this, EventArgs.Empty);
         }
 
 

@@ -20,22 +20,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public sealed class BoneEmitter : IParticleEmitter
+    public sealed class BillboardVisual : IParticleVisual
     {
-        static Random random = new Random();
+        #region IParticleVisual Members
 
-        public Matrix[] Bones { get; set; }
-
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public void Draw(GraphicsDevice graphics, ParticleVertex[] particles, Matrix view, Matrix projection)
         {
-            ParticleVertex result;
-
-            result.Time = 0;
-            result.Random = Color.White;
-            result.Velocity = Vector3.Zero;
-            result.Position = Vector3.Zero;
-            
-            return result;
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

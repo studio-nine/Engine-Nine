@@ -144,6 +144,13 @@ namespace Isles {
             }
         }
         
+        internal static byte[] PointSprite {
+            get {
+                object obj = ResourceManager.GetObject("PointSprite", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] Saturation {
             get {
                 object obj = ResourceManager.GetObject("Saturation", resourceCulture);

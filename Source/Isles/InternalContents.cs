@@ -169,6 +169,11 @@ namespace Isles
         {
             return GetContentManager(graphics).Load<Effect>("TerrainLayer");
         }
+
+        public static Effect PointSpriteEffect(GraphicsDevice graphics)
+        {
+            return GetContentManager(graphics).Load<Effect>("PointSprite");
+        }
         #endregion
 
         #region Textures

@@ -20,8 +20,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Effects
 {
-    public class BasicSkinnedEffect : ModelEffect
+    public class BasicSkinnedEffect : GraphicsEffect, IModelEffect
     {
+        public Matrix[] Bones { get; set; }
+        public bool SkinningEnabled { get; set; }
         public Effect Effect { get; private set; }
 
 

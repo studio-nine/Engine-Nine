@@ -21,7 +21,7 @@ namespace Isles
 {
     public interface ISpacialObjectManager
     {
-        IEnumerable<object> GetObjectsFromArea(Vector3 position, float radius);
+        IEnumerable<object> GetNearbyObjects(Vector3 position, float radius);
     }
 
 
@@ -150,7 +150,7 @@ namespace Isles
         }
 
 
-        public IEnumerable<object> GetObjectsFromArea(Vector3 position, float radius)
+        public IEnumerable<object> GetNearbyObjects(Vector3 position, float radius)
         {
             List<Entry> list;
             float rr = radius * radius;

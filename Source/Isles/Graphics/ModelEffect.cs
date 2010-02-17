@@ -21,12 +21,4 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics
 {
-    public abstract class ModelEffect : GraphicsEffect
-    {
-        [ContentSerializerIgnore]
-        public Matrix[] Bones { get; set; }
-
-        [ContentSerializerIgnore]
-        public bool VertexSkinningEnabled { get; set; }
-    }
 }

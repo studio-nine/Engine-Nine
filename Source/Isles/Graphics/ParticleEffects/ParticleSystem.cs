@@ -20,16 +20,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public enum ParticleType
-    {
-        PointSprite,
-        Billboard,
-    }
-
-
     public interface IParticleEmitter
     {
         ParticleVertex Emit(GameTime time, float lerpAmount);
+    }
+
+
+    public interface IParticleAffector
+    {
+        void Update(ref ParticleVertex particle, float elapsedSeconds);
+    }
+
+
+    public interface IParticleVisual
+    {
+        void Draw(GraphicsDevice graphics, ParticleVertex[] particles, Matrix view, Matrix projection);
     }
 
 
@@ -42,18 +47,22 @@ namespace Isles.Graphics.ParticleEffects
         public Blend SourceBlend { get; set; }
         public Blend DestinationBlend { get; set; }
 
-        // Controls how much particles are influenced by the velocity of the object
-        // which created them. You can see this in action with the explosion effect,
-        // where the flames continue to move in the same direction as the source
-        // projectile. The projectile trail particles, on the other hand, set this
-        // value very low so they are less affected by the velocity of the projectile.
+        /// <summary>
+        /// Controls how much particles are influenced by the velocity of the object
+        /// which created them. You can see this in action with the explosion effect,
+        /// where the flames continue to move in the same direction as the source
+        /// projectile. The projectile trail particles, on the other hand, set this
+        /// value very low so they are less affected by the velocity of the projectile.        
+        /// </summary>
         public float EmitterVelocitySensitivity { get; set; }
 
         public TimeSpan Duration { get; set; }
-        public ParticleType ParticleType { get; set; }
 
-        public IParticleEmitter ParticleEmitter { get; set; }
-        public ParticleEffect ParticleEffect { get; set; }
+        public IParticleEmitter Emitter { get; set; }
+
+        public IParticleVisual Visual { get; set; }
+
+        public ICollection<IParticleAffector> Affectors { get; private set; }
 
         public GraphicsDevice GraphicsDevice { get; private set; }
 
@@ -177,6 +186,8 @@ namespace Isles.Graphics.ParticleEffects
 
 
             particles = new ParticleVertex[maxParticles];
+
+            Affectors = new List<IParticleAffector>();
         }
 
 
@@ -211,9 +222,6 @@ namespace Isles.Graphics.ParticleEffects
         /// </summary>
         public void Draw(GraphicsDevice graphics, GameTime gameTime, Matrix view, Matrix projection)
         {
-            if (ParticleEffect == null)
-                return;
-
             // If we are drawed for the first time, create vertex buffers.
             if (vertexBuffer == null)
             {
@@ -235,14 +243,9 @@ namespace Isles.Graphics.ParticleEffects
                 GraphicsDevice.Vertices[0].SetSource(vertexBuffer, 0, ParticleVertex.SizeInBytes);
 
 
-                ParticleEffect.View = view;
-                ParticleEffect.Projection = projection;
-                ParticleEffect.World = Matrix.Identity;
-                ParticleEffect.ParticleType = ParticleType;
-
                 BeginParticleRenderStates(GraphicsDevice.RenderState);
                 {
-                    ParticleEffect.Begin(GraphicsDevice, gameTime);
+                    //ParticleEffect.Begin(GraphicsDevice, gameTime);
                     {
                         if (firstActiveParticle < firstFreeParticle)
                         {
@@ -268,7 +271,7 @@ namespace Isles.Graphics.ParticleEffects
                             }
                         }
                     }
-                    ParticleEffect.End();
+                    //ParticleEffect.End();
                 }
                 EndParticleRenderStates(GraphicsDevice.RenderState);
             }
@@ -299,38 +302,38 @@ namespace Isles.Graphics.ParticleEffects
 
         void UpdateEmitter(GameTime time)
         {
-            if (ParticleEmitter == null)
-                return;
-
-            // Work out how much time has passed since the previous update.
-            float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
-            float timeBetweenParticles = 1.0f / Emission;
-
-            if (elapsedTime > 0)
+            if (Emitter != null)
             {
-                // If we had any time left over that we didn't use during the
-                // previous update, add that to the current elapsed time.
-                float timeToSpend = timeLeftOver + elapsedTime;
+                // Work out how much time has passed since the previous update.
+                float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
+                float timeBetweenParticles = 1.0f / Emission;
 
-                // Counter for looping over the time interval.
-                float currentTime = -timeLeftOver;
-
-                // Create particles as long as we have a big enough time interval.
-                while (timeToSpend > timeBetweenParticles)
+                if (elapsedTime > 0)
                 {
-                    currentTime += timeBetweenParticles;
-                    timeToSpend -= timeBetweenParticles;
+                    // If we had any time left over that we didn't use during the
+                    // previous update, add that to the current elapsed time.
+                    float timeToSpend = timeLeftOver + elapsedTime;
 
-                    // Work out the optimal position for this particle. This will produce
-                    // evenly spaced particles regardless of the object speed, particle
-                    // creation frequency, or game update rate.
-                    float mu = currentTime / elapsedTime;
+                    // Counter for looping over the time interval.
+                    float currentTime = -timeLeftOver;
 
-                    AddParticle(ParticleEmitter.Emit(time, mu));
+                    // Create particles as long as we have a big enough time interval.
+                    while (timeToSpend > timeBetweenParticles)
+                    {
+                        currentTime += timeBetweenParticles;
+                        timeToSpend -= timeBetweenParticles;
+
+                        // Work out the optimal position for this particle. This will produce
+                        // evenly spaced particles regardless of the object speed, particle
+                        // creation frequency, or game update rate.
+                        float mu = currentTime / elapsedTime;
+
+                        AddParticle(Emitter.Emit(time, mu));
+                    }
+
+                    // Store any time we didn't use, so it can be part of the next update.
+                    timeLeftOver = timeToSpend;
                 }
-
-                // Store any time we didn't use, so it can be part of the next update.
-                timeLeftOver = timeToSpend;
             }
         }
 

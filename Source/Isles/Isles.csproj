@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E4F84943-5258-4F67-9C6C-739C18A47120}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -84,6 +84,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Contents.resx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Batch.cs" />
+    <Compile Include="Graphics\LineSpriteBatch.cs" />
+    <Compile Include="Graphics\ParticleEffects\BillboardVisual.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
+    <Compile Include="Graphics\PointSpriteBatch.cs" />
     <Compile Include="Graphics\Filters\AdaptLuminanceFilter.cs" />
     <Compile Include="Graphics\Filters\AdaptLuminanceFilter_Code.cs" />
     <Compile Include="Graphics\Filters\LuminanceFilter.cs" />
@@ -134,15 +139,10 @@
     <Compile Include="Graphics\Models\ModelBatch.cs" />
     <Compile Include="Graphics\Models\ModelExtensions.cs" />
     <Compile Include="Graphics\Models\ModelSkinning.cs" />
-    <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
-    <Compile Include="Graphics\ParticleEffects\BoneEmitter.cs" />
-    <Compile Include="Graphics\ParticleEffects\BoxEmitter.cs" />
-    <Compile Include="Graphics\ParticleEffects\FloatParticleEffect.cs" />
-    <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\PointSpriteVisual.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleSystem.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
-    <Compile Include="Graphics\ParticleEffects\PointEmitter.cs" />
-    <Compile Include="Graphics\ParticleEffects\SphereEmitter.cs" />
     <Compile Include="Graphics\PointLight.cs" />
     <Compile Include="Graphics\Primitive.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
@@ -215,6 +215,7 @@
     <None Include="Resources\Heightmap.xnb" />
     <None Include="Resources\LightCircle.xnb" />
     <None Include="Resources\ParticleEffect.xnb" />
+    <None Include="Resources\PointSprite.xnb" />
     <None Include="Resources\Saturation.xnb" />
     <None Include="Resources\ShadowCaster.xnb" />
     <None Include="Resources\ShadowReceiver.xnb" />

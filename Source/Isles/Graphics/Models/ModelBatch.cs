@@ -90,7 +90,7 @@ namespace Isles.Graphics.Models
                     basicSkinnedEffect.Bones = bones;
                     basicSkinnedEffect.View = view;
                     basicSkinnedEffect.Projection = projection;
-                    basicSkinnedEffect.VertexSkinningEnabled = true;
+                    basicSkinnedEffect.SkinningEnabled = true;
 
                     basicSkinnedEffect.Begin(graphics, null);
 
@@ -119,7 +119,7 @@ namespace Isles.Graphics.Models
                 basicSkinnedEffect.Bones = bones;
                 basicSkinnedEffect.View = view;
                 basicSkinnedEffect.Projection = projection;
-                basicSkinnedEffect.VertexSkinningEnabled = true;
+                basicSkinnedEffect.SkinningEnabled = true;
 
                 basicSkinnedEffect.Begin(graphics, null);
 
@@ -132,8 +132,8 @@ namespace Isles.Graphics.Models
 
         public void Draw(Model model, GraphicsEffect effect, GameTime time, Matrix world, Matrix view, Matrix projection)
         {
-            if (effect is ModelEffect)
-                (effect as ModelEffect).VertexSkinningEnabled = false;
+            if (effect is IModelEffect)
+                (effect as IModelEffect).SkinningEnabled = false;
 
             Matrix[] transforms = new Matrix[model.Bones.Count];
             
@@ -175,8 +175,8 @@ namespace Isles.Graphics.Models
 
             graphics.Indices = mesh.IndexBuffer;
 
-            if (effect is ModelEffect)
-                (effect as ModelEffect).VertexSkinningEnabled = false;
+            if (effect is IModelEffect)
+                (effect as IModelEffect).SkinningEnabled = false;
 
 
             foreach (ModelMeshPart part in mesh.MeshParts)
@@ -197,8 +197,10 @@ namespace Isles.Graphics.Models
         }
 
 
-        public void Draw(Model model, ModelEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
+        public void Draw(Model model, GraphicsEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
         {
+            IModelEffect modelEffect = effect as IModelEffect;
+                        
             GraphicsDevice graphics = model.Meshes[0].Effects[0].GraphicsDevice;
 
             foreach (ModelMesh mesh in model.Meshes)
@@ -211,10 +213,10 @@ namespace Isles.Graphics.Models
                     graphics.Vertices[0].SetSource(mesh.VertexBuffer, part.StreamOffset, part.VertexStride);
 
                     effect.World = Matrix.Identity;
-                    effect.Bones = bones;
+                    modelEffect.Bones = bones;
                     effect.View = view;
                     effect.Projection = projection;
-                    effect.VertexSkinningEnabled = true;
+                    modelEffect.SkinningEnabled = true;
 
                     effect.Begin(graphics, time);
 
@@ -226,8 +228,10 @@ namespace Isles.Graphics.Models
         }
 
 
-        public void Draw(Model model, ModelMesh mesh, ModelEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
+        public void Draw(Model model, ModelMesh mesh, GraphicsEffect effect, GameTime time, Matrix[] bones, Matrix view, Matrix projection)
         {
+            IModelEffect modelEffect = effect as IModelEffect;
+
             GraphicsDevice graphics = mesh.Effects[0].GraphicsDevice;
 
             graphics.Indices = mesh.IndexBuffer;
@@ -239,10 +243,10 @@ namespace Isles.Graphics.Models
                 graphics.Vertices[0].SetSource(mesh.VertexBuffer, part.StreamOffset, part.VertexStride);
 
                 effect.World = Matrix.Identity;
-                effect.Bones = bones;
+                modelEffect.Bones = bones;
                 effect.View = view;
                 effect.Projection = projection;
-                effect.VertexSkinningEnabled = true;
+                modelEffect.SkinningEnabled = true;
 
                 effect.Begin(graphics, time);
 

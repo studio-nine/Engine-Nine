@@ -20,26 +20,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public sealed class FloatParticleEffect : ParticleEffect
+    public sealed class ParticleBatch
     {
-        public FloatParticleEffect()
-        {
-
-        }
-
-        protected override void LoadContent()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Begin(GameTime time)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void End()
-        {
-            throw new NotImplementedException();
-        }
+        public void Begin() { }
+        public void Draw(ParticleSystem particleSystem) { }
+        public void End() { }
     }
 }

@@ -71,7 +71,7 @@ namespace Isles.Components
         [Loader(IsService=true)]
         public ModelBatch ModelBatch { get; set; }
         public Matrix Transform { get; set; }
-        public ModelEffect Effect { get; set; }
+        public GraphicsEffect Effect { get; set; }
         public ICollection<object> Components { get { return components; } }
         public ModelAnimation Animation { get; internal set; }
         public Geometry Collision { get; set; }

@@ -20,6 +20,29 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
+    public abstract class PointSpriteVisual : IParticleVisual
+    {
+        #region IParticleVisual Members
+
+        public void Draw(GraphicsDevice graphics, ParticleVertex[] particles, Matrix view, Matrix projection)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+
+    public sealed class BasicPointSpriteVisual : PointSpriteVisual
+    {
+    }
+
+    public sealed class ExtendedPointSpriteVisual : PointSpriteVisual
+    {
+    }
+
+
+    /*
     public sealed class BasicParticleEffect : ParticleEffect
     {
         // How long these particles will last.
@@ -166,4 +189,5 @@ namespace Isles.Graphics.ParticleEffects
             Effect.End();
         }
     }
+     */
 }

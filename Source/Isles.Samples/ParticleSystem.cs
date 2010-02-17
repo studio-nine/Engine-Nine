@@ -22,6 +22,7 @@ using System.Runtime.Serialization.Formatters.Soap;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Isles.Transitions;
+using Isles.Graphics;
 using Isles.Graphics.ParticleEffects;
 #endregion
 
@@ -35,6 +36,10 @@ namespace Isles.Samples
 
         ITransition<Vector3> circle;
 
+        PointSpriteBatch pointSprite;
+        Texture2D texture;
+        Texture2D texture1;
+
         public ParticleSystemGame()
         {
 
@@ -43,10 +48,14 @@ namespace Isles.Samples
 
         protected override void LoadContent()
         {
+            pointSprite = new PointSpriteBatch(GraphicsDevice, 64);
+            texture = Content.Load<Texture2D>("Textures/fire");
+            texture1 = Content.Load<Texture2D>("Textures/flake"); 
+
             ParticleSystem = new ParticleSystem(1280);
-            ParticleSystem.ParticleEmitter = new BoxEmitter();
-            ParticleSystem.ParticleEffect = new BasicParticleEffect();
-            ParticleSystem.ParticleEffect.Texture = Content.Load<Texture2D>("Textures/flake");
+            ParticleSystem.Emitter = new BoxEmitter();
+            //ParticleSystem.ParticleEffect = new BasicParticleEffect();
+            //ParticleSystem.ParticleEffect.Texture = Content.Load<Texture2D>("Textures/flake");
 
             SpinnerTransition<Vector3> transition = new SpinnerTransition<Vector3>();
 
@@ -70,11 +79,18 @@ namespace Isles.Samples
         {
             base.Draw(gameTime);
 
-            ParticleSystem.Draw(GraphicsDevice, gameTime, Camera.View, Camera.Projection);
+            //ParticleSystem.Draw(GraphicsDevice, gameTime, Camera.View, Camera.Projection);
+
+            //GraphicsDevice.Clear(Color.Green);
+
+            pointSprite.Begin(Camera.View, Camera.Projection);
+            pointSprite.Draw(texture, Vector3.Zero, 5, Color.White);
+            pointSprite.Draw(texture1, new Vector3(10, 0, 0), 5, Color.White);
+            pointSprite.End();
         }
 
 
-        [SampleMethod(Startup = false)]
+        [SampleMethod(Startup = true)]
         public static void Test()
         {
             using (ParticleSystemGame game = new ParticleSystemGame())

@@ -20,8 +20,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Effects
 {
-    public class ShadowMapCasterEffect : ModelEffect
+    public class ShadowMapCasterEffect : GraphicsEffect, IModelEffect
     {
+        public Matrix[] Bones { get; set; }
+        public bool SkinningEnabled { get; set; }
         public Effect Effect { get; private set; }
         public Matrix LightViewProjection { get; set; }
 
@@ -33,7 +35,7 @@ namespace Isles.Graphics.Effects
 
         protected override bool Begin(GameTime time)
         {
-            if (VertexSkinningEnabled)
+            if (SkinningEnabled)
                 Effect.Parameters["Bones"].SetValue(Bones);
             else
                 Effect.Parameters["World"].SetValue(World);
@@ -41,7 +43,7 @@ namespace Isles.Graphics.Effects
             Effect.Parameters["ViewProjection"].SetValue(LightViewProjection);
 
             
-            int pass = VertexSkinningEnabled ? 1 : 0;
+            int pass = SkinningEnabled ? 1 : 0;
             
             Effect.Begin();
             Effect.CurrentTechnique.Passes[pass].Begin();
@@ -51,7 +53,7 @@ namespace Isles.Graphics.Effects
 
         public override void End()
         {
-            int pass = VertexSkinningEnabled ? 1 : 0;
+            int pass = SkinningEnabled ? 1 : 0;
 
             Effect.CurrentTechnique.Passes[pass].End();
             Effect.End();
