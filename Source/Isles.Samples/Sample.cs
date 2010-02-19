@@ -26,24 +26,22 @@ namespace Isles.Samples
     public sealed class SampleClassAttribute : Attribute { }
     
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public sealed class SampleMethodAttribute : Attribute 
+    public sealed class SampleMethodAttribute : DisplayNameAttribute 
     {
         public SampleMethodAttribute() { }
 
-        public SampleMethodAttribute(string name)
+        public SampleMethodAttribute(string displayName)
+            : base(displayName)
         {
-            Name = name;
-            Startup = false;
+            IsStartup = false;
         }
 
-        public SampleMethodAttribute(string name, bool startup)
+        public SampleMethodAttribute(string displayName, bool isStartup)
+            : base(displayName)
         {
-            Name = name;
-            Startup = startup;
+            IsStartup = isStartup;
         }
-
-        public string Name { get; set; }
-        public bool Startup { get; set; }
+        public bool IsStartup { get; set; }
     }
 
 
@@ -94,14 +92,14 @@ namespace Isles.Samples
                                 Sample sample = new Sample();
 
                                 sample.EntryPoint = info;
-                                sample.Name = (attribute as SampleMethodAttribute).Name;
+                                sample.Name = (attribute as SampleMethodAttribute).DisplayName;
 
                                 if (string.IsNullOrEmpty(sample.Name))
                                     sample.Name = info.ReflectedType.Name + "." + info.Name;
 
                                 samples.Add(sample);
 
-                                if ((attribute as SampleMethodAttribute).Startup)
+                                if ((attribute as SampleMethodAttribute).IsStartup)
                                 {
                                     info.Invoke(null, null);
                                 }
@@ -109,7 +107,7 @@ namespace Isles.Samples
                         }
                     }
                 }
-                catch (Exception ex) { }
+                catch /*(Exception ex)*/ { }
             }
 
             return samples;
@@ -159,7 +157,7 @@ namespace Isles.Samples
                     if (!file.EndsWith(".vshost.exe"))
                         samples.AddRange(FromAssembly(Assembly.LoadFile(file)));
                 }
-                catch (Exception ex) { }
+                catch /*(Exception ex)*/ { }
             }
 
             return samples;

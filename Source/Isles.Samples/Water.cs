@@ -148,7 +148,7 @@ namespace Isles.Samples
         }
 
 
-        [SampleMethod(Startup=false)]
+        [SampleMethod(IsStartup=false)]
         public static void Test()
         {
             using (WaterSample game = new WaterSample())

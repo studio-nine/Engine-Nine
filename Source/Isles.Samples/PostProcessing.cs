@@ -83,7 +83,7 @@ namespace Isles.Samples
             //Filter.Draw(GraphicsDevice, wave.Heightmap, null);
         }
     
-        [SampleMethod("Post Processing Sample", Startup=true)]
+        [SampleMethod("Post Processing Sample", IsStartup=true)]
         public static void Test()
         {
             using (PostProcessingGame game = new PostProcessingGame())

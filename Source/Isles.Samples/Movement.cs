@@ -83,7 +83,7 @@ namespace Isles.Samples
             batch.End();
         }
 
-        [SampleMethod(Startup=false)]
+        [SampleMethod(IsStartup=false)]
         public static void Test()
         {
             using (MovementSample game = new MovementSample())
