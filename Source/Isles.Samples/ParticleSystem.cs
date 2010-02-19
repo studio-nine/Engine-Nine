@@ -90,7 +90,7 @@ namespace Isles.Samples
         }
 
 
-        [SampleMethod(Startup = true)]
+        [SampleMethod(Startup = false)]
         public static void Test()
         {
             using (ParticleSystemGame game = new ParticleSystemGame())

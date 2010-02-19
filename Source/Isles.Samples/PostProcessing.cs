@@ -42,6 +42,7 @@ namespace Isles.Samples
         SpriteBatch sprite;
         Texture2D texture;
 
+        FFTWave wave;
 
         protected override void LoadContent()
         {
@@ -49,18 +50,20 @@ namespace Isles.Samples
             PostEffects = new FilterCollection();
 
 
-            Filter = new SaturationFilter();
+            //Filter = new SaturationFilter(1.0f);            
+            Filter = new HeightmapFilter();
 
 
             sprite = new SpriteBatch(GraphicsDevice);
-            texture = Content.Load<Texture2D>("Textures/glacier");
+            //texture = Content.Load<Texture2D>("Textures/glacier");
 
+            wave = new FFTWave(GraphicsDevice, 128, 1, 1.0f, Vector2.One, 6.0f, SurfaceFormat.Color);
             
             base.LoadContent();
         }
 
         protected override void Update(GameTime gameTime)
-        {
+        {            
             base.Update(gameTime);
         }
 
@@ -70,8 +73,14 @@ namespace Isles.Samples
 
             GraphicsDevice.Clear(Color.Black);
 
+            wave.Update(gameTime);
 
-            Filter.Draw(GraphicsDevice, texture, null);
+            sprite.Begin();
+            sprite.Draw(wave.Heightmap, Vector2.Zero, Color.White);
+            //sprite.Draw(wave.Heightmap, GraphicsDevice.Viewport.TitleSafeArea, Color.White);
+            sprite.End();
+
+            //Filter.Draw(GraphicsDevice, wave.Heightmap, null);
         }
     
         [SampleMethod("Post Processing Sample", Startup=true)]

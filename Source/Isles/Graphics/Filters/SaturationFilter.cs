@@ -30,6 +30,11 @@ namespace Isles.Graphics.Filters
             Saturation = 0.5f;
         }
 
+        public SaturationFilter(float saturation)
+        {
+            Saturation = saturation;
+        }
+
         protected override void LoadContent()
         {
             effect = InternalContents.SaturationEffect(GraphicsDevice);

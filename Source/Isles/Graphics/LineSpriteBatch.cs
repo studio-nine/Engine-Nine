@@ -23,6 +23,16 @@ namespace Isles.Graphics
 {
     public sealed class LineSpriteBatch : IDisposable
     {
+        #region Key
+        internal struct Key
+        {
+            public Texture2D Texture;
+            public EffectTechnique Technique;
+        }
+        #endregion
+
+
+        private bool hasBegin = false;
         private VertexBuffer vertices;
         private VertexDeclaration declaration;
 
@@ -54,7 +64,8 @@ namespace Isles.Graphics
 
         public void Draw(Texture2D texture, Vector3 start, Vector3 end, float width, Vector2 textureScale, Vector2 textureOffset, Rectangle? sourceRectangle, Color color)
         {
-
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called before end and draw calls");
         }
 
 
@@ -66,12 +77,16 @@ namespace Isles.Graphics
 
         public void Draw(Texture2D texture, Vector3[] lineStrip, float width, Vector2 textureScale, Vector2 textureOffset, Rectangle? sourceRectangle, Color color)
         {
-
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called before end and draw calls");
         }
 
 
         public void End()
         {
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called before end and draw calls");
+
             if (IsDisposed)
                 throw new ObjectDisposedException("LineSpriteBatch");
         }

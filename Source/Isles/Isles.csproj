@@ -85,6 +85,8 @@
       <DependentUpon>Contents.resx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Batch.cs" />
+    <Compile Include="Graphics\Landscape\Fourier.cs" />
+    <Compile Include="Graphics\Landscape\Wave.cs" />
     <Compile Include="Graphics\LineSpriteBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\BillboardVisual.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />

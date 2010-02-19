@@ -97,7 +97,7 @@ namespace Isles.Samples
         protected override void Update(GameTime gameTime)
         {
             camera.Update(gameTime);
-
+                        
             base.Update(gameTime);
         }
 
@@ -120,6 +120,7 @@ namespace Isles.Samples
 
             if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Q))
                 GraphicsDevice.RenderState.FillMode = FillMode.WireFrame;
+
 
             water.Draw(waterSurface, gameTime, Matrix.CreateRotationX(MathHelper.PiOver2), camera.View, camera.Projection);
 
