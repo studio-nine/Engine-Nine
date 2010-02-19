@@ -1,10 +1,10 @@
-﻿#region Copyright 2009 (c) Nightin Games
+﻿#region Copyright 2009-2010 (c) Nightin Games
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
 //
 //  Written By  : Mahdi Khodadadi Fard.
-//  Date        : 2010-Feb-08
+//  Date        : 2010-Feb-19
 //  Edit        : -
 //=============================================================================
 #endregion
@@ -46,6 +46,7 @@ namespace Isles.Graphics.Filters
 
         protected override void LoadContent()
         {
+            //Please DO NOT change this line:
             effect = AdaptLuminanceFilter_Code.CreateEffect(GraphicsDevice);
         }
 

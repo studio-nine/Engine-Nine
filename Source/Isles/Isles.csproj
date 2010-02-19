@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E4F84943-5258-4F67-9C6C-739C18A47120}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -61,8 +61,12 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -212,6 +216,13 @@
     <None Include="Resources\ColorMatrix.xnb" />
     <None Include="Resources\DebugShader.fx" />
     <None Include="Resources\DebugShader1.fx" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\AdaptLuminance.xnb" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\GaussianBlur7x7.xnb" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\Luminance.xnb" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\LuminanceScale4x4.xnb" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\Scale4x4_Code.xnb" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\Threshold_Code.xnb" />
+    <EmbeddedResource Include="Resources\Effects\Filters\HDR\ToneMap_Code.xnb" />
     <None Include="Resources\FloatTexture.xnb" />
     <None Include="Resources\GaussianBlur.xnb" />
     <None Include="Resources\Heightmap.xnb" />

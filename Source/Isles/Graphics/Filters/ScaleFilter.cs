@@ -55,6 +55,7 @@ namespace Isles.Graphics.Filters
 
         protected override void LoadContent()
         {
+            //Please DO NOT change this line:
             effect = ScaleFilter_Code.CreateEffect(GraphicsDevice);
 
             // Check to see if supports filter fp16

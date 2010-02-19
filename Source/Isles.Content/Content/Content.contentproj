@@ -235,6 +235,41 @@
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
+    <Compile Include="Effects\Filters\HDR\AdaptLuminance.fx">
+      <Name>AdaptLuminance</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Effects\Filters\HDR\Scale4x4_Code.fx">
+      <Name>Scale4x4_Code</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Effects\Filters\HDR\GaussianBlur7x7.fx">
+      <Name>GaussianBlur7x7</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Effects\Filters\HDR\Luminance.fx">
+      <Name>Luminance</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Effects\Filters\HDR\Threshold_Code.fx">
+      <Name>Threshold_Code</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Effects\Filters\HDR\ToneMap_Code.fx">
+      <Name>ToneMap_Code</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Effects\Filters\HDR\LuminanceScale4x4.fx">
+      <Name>LuminanceScale4x4</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
     <None Include="Misc\Loader.ix">
       <Name>Loader</Name>
       <Importer>XmlImporter</Importer>

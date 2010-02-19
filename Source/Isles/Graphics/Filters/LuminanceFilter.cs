@@ -34,6 +34,7 @@ namespace Isles.Graphics.Filters
 
         protected override void LoadContent()
         {
+            //Please DO NOT change this line:
             effect = LuminanceFilter_Code.CreateEffect(GraphicsDevice);
         }
 
