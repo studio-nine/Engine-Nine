@@ -42,7 +42,7 @@ namespace Isles.Samples
         SpriteBatch sprite;
         Texture2D texture;
 
-        FFTWave wave;
+        FourierWave wave;
 
         protected override void LoadContent()
         {
@@ -57,7 +57,7 @@ namespace Isles.Samples
             sprite = new SpriteBatch(GraphicsDevice);
             //texture = Content.Load<Texture2D>("Textures/glacier");
 
-            wave = new FFTWave(GraphicsDevice, 128, 1, 1.0f, Vector2.One, 6.0f, SurfaceFormat.Color);
+            wave = new FourierWave(GraphicsDevice, 128, 1, 1.0f, Vector2.One, 6.0f, SurfaceFormat.Color);
             
             base.LoadContent();
         }

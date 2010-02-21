@@ -137,6 +137,13 @@ namespace Isles {
             }
         }
         
+        internal static byte[] LineSprite {
+            get {
+                object obj = ResourceManager.GetObject("LineSprite", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] ParticleEffect {
             get {
                 object obj = ResourceManager.GetObject("ParticleEffect", resourceCulture);

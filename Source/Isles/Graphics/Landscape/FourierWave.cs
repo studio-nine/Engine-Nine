@@ -29,10 +29,9 @@ namespace Isles.Graphics.Landscape
     /// <summary>
     /// this class implements the generation of the heightmap using the oceanographic
     /// statistical based model. The algorithm is described in imulating ocean water?
-    /// Jerry Tessendorf , available here: 
-    ///     http://www.finelightvisualtechnology.com/pages/coursematerials.php
+    /// Jerry Tessendorf.
     /// </summary>    
-    public sealed class FFTWave
+    public sealed class FourierWave
     {
         Complex[] initialWaves;
         Complex[] currentWaves;
@@ -52,11 +51,11 @@ namespace Isles.Graphics.Landscape
         public SurfaceFormat Format { get; private set; }
 
 
-        public FFTWave(GraphicsDevice graphics, int resolution)
+        public FourierWave(GraphicsDevice graphics, int resolution)
             : this(graphics, resolution, 1, 1, Vector2.One, 6.0f, SurfaceFormat.Color)
         { }
 
-        public FFTWave(GraphicsDevice graphics, int resolution, int gridResolution,
+        public FourierWave(GraphicsDevice graphics, int resolution, int gridResolution,
                        float amplitude, Vector2 wind, float power, SurfaceFormat format)
         {
             if (graphics == null)

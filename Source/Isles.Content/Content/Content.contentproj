@@ -270,6 +270,11 @@
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
+    <Compile Include="Effects\LineSprite.fx">
+      <Name>LineSprite</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
     <None Include="Misc\Loader.ix">
       <Name>Loader</Name>
       <Importer>XmlImporter</Importer>

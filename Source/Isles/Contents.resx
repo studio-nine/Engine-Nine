@@ -151,6 +151,9 @@
   <data name="LightCircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\lightcircle.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="LineSprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\linesprite.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ParticleEffect" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\particleeffect.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

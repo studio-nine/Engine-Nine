@@ -22,6 +22,10 @@ namespace Isles.Transitions
 {
     public sealed class LinearTransition<T> : Transition<T>
     {
+        public LinearTransition() { }
+        public LinearTransition(T start, T end) : base(start, end) { }
+        public LinearTransition(T start, T end, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { }
+
         protected override float Evaluate(float position)
         {
             return position;
@@ -31,13 +35,11 @@ namespace Isles.Transitions
     public sealed class ExponentialTransition<T> : Transition<T>
     {
         public float Power { get; set; }
-
-
-        public ExponentialTransition()
-        {
-            Power = MathHelper.E;
-        }
-
+        
+        public ExponentialTransition() { Power = MathHelper.E; }
+        public ExponentialTransition(T start, T end, float power) : base(start, end) { Power = power; }
+        public ExponentialTransition(T start, T end, float power, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { Power = power; }
+        
         protected override float Evaluate(float position)
         {
             return (float)((Math.Pow(Power, position) - 1) / (Power - 1));
@@ -46,6 +48,10 @@ namespace Isles.Transitions
 
     public sealed class SinTransition<T> : Transition<T>
     {
+        public SinTransition() { }
+        public SinTransition(T start, T end) : base(start, end) { }
+        public SinTransition(T start, T end, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { }
+
         protected override float Evaluate(float position)
         {
             return (float)Math.Sin((position * 2 - 1) * MathHelper.PiOver2) * 0.5f + 0.5f;
@@ -54,6 +60,10 @@ namespace Isles.Transitions
 
     public sealed class SmoothTransition<T> : Transition<T>
     {
+        public SmoothTransition() { }
+        public SmoothTransition(T start, T end) : base(start, end) { }
+        public SmoothTransition(T start, T end, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { }
+
         protected override float Evaluate(float position)
         {
             return MathHelper.SmoothStep(0, 1, position);
@@ -94,6 +104,10 @@ namespace Isles.Transitions
             }
         }
 
+        public CurveTransition() { }
+        public CurveTransition(T start, T end, Curve curve) : base(start, end) { Curve = curve; }
+        public CurveTransition(T start, T end, Curve curve, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { Curve = curve; }
+                
         protected override float Evaluate(float position)
         {
             return Curve != null ? 

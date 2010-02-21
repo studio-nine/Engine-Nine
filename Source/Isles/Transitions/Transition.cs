@@ -75,6 +75,26 @@ namespace Isles.Transitions
             Effect = TransitionEffect.None;
         }
 
+        public Transition(T start, T end)
+        {
+            Start = start;
+            End = end;
+            IsPlaying = true;
+            Speed = 1.0f;
+            Duration = TimeSpan.FromSeconds(1);
+            Effect = TransitionEffect.None;
+        }
+
+        public Transition(T start, T end, TimeSpan duration, TransitionEffect effect)
+        {
+            Start = start;
+            End = end;
+            IsPlaying = true;
+            Speed = 1.0f;
+            Duration = duration;
+            Effect = effect;
+        }
+
         public void Update(GameTime time)
         {
             if (IsPlaying)

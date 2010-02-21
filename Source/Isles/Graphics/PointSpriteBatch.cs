@@ -65,8 +65,7 @@ namespace Isles.Graphics
         private Effect effect;
 
 
-        public Blend SourceBlend { get; set; }
-        public Blend DestinationBlend { get; set; }
+        public SpriteBlendMode BlendMode { get; set; }
 
         public GraphicsDevice GraphicsDevice { get; private set; }
         public bool IsDisposed { get; private set; }
@@ -80,8 +79,7 @@ namespace Isles.Graphics
             if (capacity < 32)
                 throw new ArgumentException("Capacity should be at least 32");
 
-            SourceBlend = Blend.SourceAlpha;
-            DestinationBlend = Blend.InverseSourceAlpha;
+            BlendMode = SpriteBlendMode.AlphaBlend;
 
             GraphicsDevice = graphics;
 
@@ -95,7 +93,12 @@ namespace Isles.Graphics
         }
 
 
-        public void Begin(Matrix view, Matrix projection) 
+        public void Begin(Matrix view, Matrix projection)
+        {
+            Begin(BlendMode, view, projection);
+        }
+
+        public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("PointSpriteBatch");
@@ -104,18 +107,13 @@ namespace Isles.Graphics
 
             this.view = view;
             this.projection = projection;
+            this.BlendMode = blendMode;
 
             batch.Clear();
         }
 
 
-        public void Draw(Texture2D texture, Vector3 position, float size, Color color)
-        {
-            Draw(texture, position, size, 0, null, color);
-        }
-
-
-        public void Draw(Texture2D texture, Vector3 position, float size, float rotation, Rectangle? sourceRectangle, Color color)
+        public void Draw(Texture2D texture, Vector3 position, float size, float rotation, Color color)
         {
             if (!hasBegin)
                 throw new InvalidOperationException("Begin must be called before end and draw calls");
@@ -125,9 +123,6 @@ namespace Isles.Graphics
 
             if (texture == null)
                 throw new ArgumentNullException();
-
-            if (sourceRectangle != null)
-                throw new NotImplementedException();
 
 
             Key key;
@@ -143,7 +138,9 @@ namespace Isles.Graphics
 
             vertex.Position = position;
             vertex.Color = color;
-            vertex.Size = size;
+            
+            // Note that we scale texture coordinates in our shader
+            vertex.Size = (float)(size * Math.Sqrt(2));
             vertex.Rotation = rotation;
 
             try
@@ -174,10 +171,7 @@ namespace Isles.Graphics
             renderState.PointSizeMax = 256;
 
             // Set the alpha blend mode.
-            renderState.AlphaBlendEnable = true;
-            renderState.AlphaBlendOperation = BlendFunction.Add;
-            renderState.SourceBlend = SourceBlend;
-            renderState.DestinationBlend = DestinationBlend;
+            renderState.SetSpriteBlendMode(BlendMode);
 
             // Set the alpha test mode.
             renderState.AlphaTestEnable = true;

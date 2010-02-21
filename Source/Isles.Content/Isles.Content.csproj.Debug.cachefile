@@ -24,6 +24,7 @@ Content\Effects\Filters\HDR\Luminance.xnb
 Content\Effects\Filters\HDR\Threshold_Code.xnb
 Content\Effects\Filters\HDR\ToneMap_Code.xnb
 Content\Effects\Filters\HDR\LuminanceScale4x4.xnb
+Content\Effects\LineSprite.xnb
 Content\Fonts\Arial.xnb
 Content\Models\Ship.xnb
 Content\Terrain\clouds.xnb
