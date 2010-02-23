@@ -68,9 +68,14 @@ namespace Isles.Samples
             circle = transition as ITransition<Vector3>;
 
 
-            transitions.Start(
+            //transitions.Start(
+            //    new LinearTransition<Vector2>(
+            //        Vector2.Zero, Vector2.UnitY, TimeSpan.FromSeconds(1), TransitionEffect.Loop), this, "Offset");
+
+            transitions.Start<Vector2>(
                 new LinearTransition<Vector2>(
-                    Vector2.Zero, Vector2.UnitY, TimeSpan.FromSeconds(1), TransitionEffect.Loop), this, "Offset");
+                    Vector2.Zero, Vector2.UnitY, TimeSpan.FromSeconds(1), TransitionEffect.Loop),
+                        x => Offset = (Vector2)x);
 
             base.LoadContent();
         }

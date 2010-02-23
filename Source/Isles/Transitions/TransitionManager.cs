@@ -31,17 +31,75 @@ namespace Isles.Transitions
             public MemberInfo Info;
             public object Target;
             public string Member;
+            public Action<object> Action;
             public bool Smooth;
         }
 
         List<Entry> delayedTransitions = new List<Entry>();
         EnumerationCollection<Entry, List<Entry>> transitions = new EnumerationCollection<Entry, List<Entry>>();
 
+        
+        // TODO: Is there a way to use Action<T> rather than Action<object> ???
+        public void Start<T>(ITransition<T> transition, Action<object> action)
+        {
+            Start(transition, action, TimeSpan.Zero, false);
+        }
+
+
+        public void Start<T>(ITransition<T> transition, Action<object> action, TimeSpan delay, bool smooth)
+        {
+            if (transition == null || action == null)
+                throw new ArgumentNullException();
+
+            // Remove existing transitions
+            if (delay > TimeSpan.Zero)
+            {
+                for (int i = 0; i < delayedTransitions.Count; i++)
+                {
+                    if (delayedTransitions[i].Action == action)
+                    {
+                        delayedTransitions.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < transitions.Count; i++)
+                {
+                    if (transitions.Elements[i].Action == action)
+                    {
+                        transitions.Elements.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
+
+            // Add new transition
+            Entry e = new Entry();
+
+            e.Transition = transition;
+            e.Animation = transition as IAnimation;
+            e.Delay = delay;
+            e.Action = action;
+            e.Smooth = smooth;
+
+            if (e.Animation != null)
+                e.Animation.Complete += new EventHandler(Animation_Complete);
+
+            if (delay >= TimeSpan.Zero)
+                delayedTransitions.Add(e);
+            else
+                transitions.Add(e);
+        }
+
 
         public void Start(ITransition transition, object target, string member)
         {
             Start(transition, target, member, TimeSpan.Zero, false);
         }
+        
 
         /// <summary>
         /// Starts a new transition on the specified member of the target.
@@ -55,7 +113,7 @@ namespace Isles.Transitions
         /// </param>
         public void Start(ITransition transition, object target, string member, TimeSpan delay, bool smooth)
         {
-            if (transition == null)
+            if (transition == null || target == null || string.IsNullOrEmpty(member))
                 throw new ArgumentNullException();
 
             // Remove existing transitions
@@ -134,6 +192,7 @@ namespace Isles.Transitions
 
         public void Update(GameTime gameTime)
         {
+            // Process delayed transitions
             for (int i = 0; i < delayedTransitions.Count; i++)
             {
                 Entry e = delayedTransitions[i];
@@ -146,7 +205,7 @@ namespace Isles.Transitions
                     transitions.Add(e);
                     i--;
 
-                    if (e.Smooth) 
+                    if (e.Smooth && e.Transition.GetType().GetGenericTypeDefinition() == typeof(Transition<>)) 
                     {
                         object value = null;
 
@@ -168,17 +227,28 @@ namespace Isles.Transitions
             }
 
 
+            // Process transitions
             foreach (Entry e in transitions)
             {
                 e.Transition.Update(gameTime);
 
-                if (e.Info is FieldInfo)
+                // Delegates
+                if (e.Action != null)
                 {
-                    (e.Info as FieldInfo).SetValue(e.Target, e.Transition.Value);
+                    e.Action(e.Transition.Value);
                 }
-                else if (e.Info is PropertyInfo)
+
+                // Reflections
+                else
                 {
-                    (e.Info as PropertyInfo).SetValue(e.Target, e.Transition.Value, null);
+                    if (e.Info is FieldInfo)
+                    {
+                        (e.Info as FieldInfo).SetValue(e.Target, e.Transition.Value);
+                    }
+                    else if (e.Info is PropertyInfo)
+                    {
+                        (e.Info as PropertyInfo).SetValue(e.Target, e.Transition.Value, null);
+                    }
                 }
             }
         }
