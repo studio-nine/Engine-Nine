@@ -32,18 +32,18 @@ namespace Isles.Samples
     [SampleClass]
     public class ParticleSystemGame : BasicModelViewerGame
     {
-        public ParticleSystem ParticleSystem { get; set; }
+        public ParticleEffect ParticleSystem { get; set; }
 
         ITransition<Vector3> circle;
         TransitionManager transitions = new TransitionManager();
 
-        PointSpriteBatch pointSprite;
-        LineSpriteBatch lineSprite;
+        ParticleBatch batch;
 
         Texture2D texture;
         Texture2D texture1;
 
         public Vector2 Offset { get; set; }
+
 
         public ParticleSystemGame()
         {
@@ -53,16 +53,13 @@ namespace Isles.Samples
 
         protected override void LoadContent()
         {
-            pointSprite = new PointSpriteBatch(GraphicsDevice, 64);
-            lineSprite = new LineSpriteBatch(GraphicsDevice, 64);
+            batch = new ParticleBatch(GraphicsDevice, 64, 64, 8);
 
             texture = Content.Load<Texture2D>("Textures/fire");
             texture1 = Content.Load<Texture2D>("Textures/flake"); 
 
-            ParticleSystem = new ParticleSystem(1280);
-            ParticleSystem.Emitter = new BoxEmitter();
-            //ParticleSystem.ParticleEffect = new BasicParticleEffect();
-            //ParticleSystem.ParticleEffect.Texture = Content.Load<Texture2D>("Textures/flake");
+            ParticleSystem = new ParticleEffect(512);
+            ParticleSystem.Texture = Content.Load<Texture2D>("Textures/flake");
 
             SpinnerTransition<Vector3> transition = new SpinnerTransition<Vector3>();
 
@@ -81,7 +78,10 @@ namespace Isles.Samples
 
         protected override void Update(GameTime gameTime)
         {
-            //(ParticleSystem.ParticleEmitter as PointEmitter).Position = circle.Update(gameTime);
+            circle.Update(gameTime);
+
+            (ParticleSystem.SpacialEmitter as PointEmitter).Position = circle.Value;
+
             ParticleSystem.Update(gameTime);
 
             transitions.Update(gameTime);
@@ -91,23 +91,11 @@ namespace Isles.Samples
 
         protected override void Draw(GameTime gameTime)
         {
-            ShowAxis = false;
+            //ShowAxis = false;
             ShowGrid = false;
 
             base.Draw(gameTime);
 
-            //ParticleSystem.Draw(GraphicsDevice, gameTime, Camera.View, Camera.Projection);
-
-            //GraphicsDevice.Clear(Color.Green);
-
-            /*
-            pointSprite.Begin(Camera.View, Camera.Projection);
-            pointSprite.Draw(texture, Vector3.Zero, 5, 0, Color.White);
-            pointSprite.Draw(texture1, new Vector3(10, 0, 0), 5, 0, Color.White);
-            pointSprite.End();
-            */
-
-            lineSprite.BlendMode = SpriteBlendMode.AlphaBlend;
 
             List<Vector3> vv = new List<Vector3>();
 
@@ -131,10 +119,13 @@ namespace Isles.Samples
             }
 
 
-            lineSprite.Begin(Camera.View, Camera.Projection);
-            lineSprite.Draw(texture1, vv.ToArray(), 1, Vector2.One * 0.5f, Offset, Color.White);
-            lineSprite.Draw(texture, ring.ToArray(), 1, Vector2.One, Offset, Color.White);
-            lineSprite.End();
+            batch.Begin(SpriteBlendMode.Additive, Camera.View, Camera.Projection);
+            batch.Draw(texture, Vector3.Zero, 5, 0, Color.White);
+            batch.Draw(texture1, new Vector3(10, 0, 0), 5, 0, Color.White);
+            batch.Draw(texture1, vv.ToArray(), 1, Vector2.One * 0.5f, Offset, Color.White);
+            batch.Draw(texture, ring.ToArray(), 1, Vector2.One, Offset, Color.White);
+            batch.Draw(ParticleSystem, gameTime);
+            batch.End();
         }
 
 

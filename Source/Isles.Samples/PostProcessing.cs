@@ -39,6 +39,11 @@ namespace Isles.Samples
         public FilterCollection PostEffects { get; set; }
         public IFilter Filter { get; set; }
 
+        IFilter anotherFilter;
+        IFilter anotherFilter1;
+
+        RenderTarget2D renderTarget;
+
         SpriteBatch sprite;
         Texture2D texture;
 
@@ -46,19 +51,24 @@ namespace Isles.Samples
 
         protected override void LoadContent()
         {
+            Window.AllowUserResizing = true;
+
             // Chainning post processing effects
             PostEffects = new FilterCollection();
 
 
             //Filter = new SaturationFilter(1.0f);            
             Filter = new HeightmapFilter();
-
+            anotherFilter = new BlurFilter(5.0f);
+            anotherFilter1 = new SaturationFilter(0);
 
             sprite = new SpriteBatch(GraphicsDevice);
             //texture = Content.Load<Texture2D>("Textures/glacier");
 
-            wave = new FourierWave(GraphicsDevice, 128, 1, 1.0f, Vector2.One, 6.0f, SurfaceFormat.Color);
-            
+            wave = new FourierWave(GraphicsDevice, 128, 1, 4.0f, Vector2.One, 6.0f, SurfaceFormat.Color);
+
+            renderTarget = new RenderTarget2D(GraphicsDevice, 128, 128, 0, SurfaceFormat.Color);
+
             base.LoadContent();
         }
 
@@ -76,14 +86,17 @@ namespace Isles.Samples
             wave.Update(gameTime);
 
             sprite.Begin();
-            sprite.Draw(wave.Heightmap, Vector2.Zero, Color.White);
+            //sprite.Draw(wave.Heightmap, Vector2.Zero, Color.White);
             //sprite.Draw(wave.Heightmap, GraphicsDevice.Viewport.TitleSafeArea, Color.White);
             sprite.End();
 
-            //Filter.Draw(GraphicsDevice, wave.Heightmap, null);
+
+            Filter.Draw(GraphicsDevice, wave.Heightmap, renderTarget);
+            anotherFilter.Draw(GraphicsDevice, renderTarget.GetTexture(), renderTarget);
+            anotherFilter1.Draw(GraphicsDevice, renderTarget.GetTexture(), null);
         }
     
-        [SampleMethod("Post Processing Sample", IsStartup=true)]
+        [SampleMethod("Post Processing Sample", IsStartup=false)]
         public static void Test()
         {
             using (PostProcessingGame game = new PostProcessingGame())

@@ -19,7 +19,7 @@ using Isles.Graphics.Vertices;
 #endregion
 
 
-namespace Isles.Graphics
+namespace Isles.Graphics.ParticleEffects
 {
     public sealed class PointSpriteBatch : IDisposable
     {
@@ -63,23 +63,17 @@ namespace Isles.Graphics
         private VertexDeclaration declaration;
         private Batch<Key, Vertex> batch;
         private Effect effect;
+        private SpriteBlendMode blendMode;
 
-
-        public SpriteBlendMode BlendMode { get; set; }
 
         public GraphicsDevice GraphicsDevice { get; private set; }
         public bool IsDisposed { get; private set; }
         
-        
-        public event EventHandler Disposing;
-
 
         public PointSpriteBatch(GraphicsDevice graphics, int capacity)
         {
             if (capacity < 32)
                 throw new ArgumentException("Capacity should be at least 32");
-
-            BlendMode = SpriteBlendMode.AlphaBlend;
 
             GraphicsDevice = graphics;
 
@@ -93,11 +87,6 @@ namespace Isles.Graphics
         }
 
 
-        public void Begin(Matrix view, Matrix projection)
-        {
-            Begin(BlendMode, view, projection);
-        }
-
         public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
         {
             if (IsDisposed)
@@ -107,7 +96,7 @@ namespace Isles.Graphics
 
             this.view = view;
             this.projection = projection;
-            this.BlendMode = blendMode;
+            this.blendMode = blendMode;
 
             batch.Clear();
         }
@@ -143,14 +132,7 @@ namespace Isles.Graphics
             vertex.Size = (float)(size * Math.Sqrt(2));
             vertex.Rotation = rotation;
 
-            try
-            {
-                batch.Add(key, vertex);
-            }
-            catch (OutOfMemoryException ex) 
-            {
-                // Don't crash when too much sprites are being rendered
-            }
+            batch.Add(key, vertex);
         }
 
 
@@ -164,6 +146,9 @@ namespace Isles.Graphics
 
             hasBegin = false;
 
+            if (batch.Count <= 0)
+                return;
+
             RenderState renderState = GraphicsDevice.RenderState;
 
             // Enable point sprites.
@@ -171,7 +156,7 @@ namespace Isles.Graphics
             renderState.PointSizeMax = 256;
 
             // Set the alpha blend mode.
-            renderState.SetSpriteBlendMode(BlendMode);
+            renderState.SetSpriteBlendMode(blendMode);
 
             // Set the alpha test mode.
             renderState.AlphaTestEnable = true;
@@ -231,9 +216,6 @@ namespace Isles.Graphics
                 declaration.Dispose();
 
             IsDisposed = true;
-
-            if (Disposing != null)
-                Disposing(this, EventArgs.Empty);
         }
     }
 }

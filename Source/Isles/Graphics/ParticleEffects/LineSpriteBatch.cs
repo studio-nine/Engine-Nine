@@ -19,7 +19,7 @@ using Isles.Graphics.Vertices;
 #endregion
 
 
-namespace Isles.Graphics
+namespace Isles.Graphics.ParticleEffects
 {
     public sealed class LineSpriteBatch : IDisposable
     {
@@ -34,14 +34,10 @@ namespace Isles.Graphics
         private int vertexCount = 0;
         private Effect effect;
         private Vector3 eyePosition;
-
-        public SpriteBlendMode BlendMode { get; set; }
+        private SpriteBlendMode blendMode;
 
         public GraphicsDevice GraphicsDevice { get; private set; }
         public bool IsDisposed { get; private set; }
-        
-        
-        public event EventHandler Disposing;
 
 
         public LineSpriteBatch(GraphicsDevice graphics, int capacity)
@@ -50,8 +46,6 @@ namespace Isles.Graphics
 
             if (capacity < 32)
                 throw new ArgumentException("Capacity should be at least 32");
-
-            BlendMode = SpriteBlendMode.AlphaBlend;
 
             GraphicsDevice = graphics;
 
@@ -68,11 +62,6 @@ namespace Isles.Graphics
             declaration = new VertexDeclaration(graphics, VertexPositionColorTexture.VertexElements);
         }
 
-        
-        public void Begin(Matrix view, Matrix projection)
-        {
-            Begin(BlendMode, view, projection);
-        }
 
         public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
         {
@@ -81,7 +70,7 @@ namespace Isles.Graphics
 
             hasBegin = true;
 
-            this.BlendMode = blendMode;
+            this.blendMode = blendMode;
             this.view = view;
             this.projection = projection;
 
@@ -293,10 +282,13 @@ namespace Isles.Graphics
 
             hasBegin = false;
 
+            if (batch.Count <= 0)
+                return;
+
             RenderState renderState = GraphicsDevice.RenderState;
 
             // Set the alpha blend mode.
-            renderState.SetSpriteBlendMode(BlendMode);
+            renderState.SetSpriteBlendMode(blendMode);
 
             // Set the alpha test mode.
             renderState.AlphaTestEnable = true;
@@ -363,9 +355,6 @@ namespace Isles.Graphics
                 declaration.Dispose();
 
             IsDisposed = true;
-
-            if (Disposing != null)
-                Disposing(this, EventArgs.Empty);
         }
     }
 }

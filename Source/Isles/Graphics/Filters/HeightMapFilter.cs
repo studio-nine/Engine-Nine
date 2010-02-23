@@ -28,7 +28,7 @@ namespace Isles.Graphics.Filters
 
         protected override void LoadContent()
         {
-            effect = InternalContents.DebugShader1(GraphicsDevice);
+            effect = InternalContents.HeightmapEffect(GraphicsDevice);
         }
 
         protected override void Begin(Texture2D input, RenderTarget2D renderTarget)

@@ -34,6 +34,20 @@ namespace Isles.Graphics.Filters
             DerivationX = 1.0f;
             DerivationY = 1.0f;
         }
+        
+        public BlurFilter(float blurAmount)
+        {
+            BlurAmount = blurAmount;
+            DerivationX = 1.0f;
+            DerivationY = 1.0f;
+        }
+
+        public BlurFilter(float blurAmount, float derivationX, float derivationY)
+        {
+            BlurAmount = blurAmount;
+            DerivationX = derivationX;
+            DerivationY = derivationY;
+        }
 
         protected override void LoadContent()
         {

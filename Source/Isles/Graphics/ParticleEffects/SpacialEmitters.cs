@@ -20,7 +20,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public sealed class PointEmitter : IParticleEmitter
+    public interface ISpacialEmitter
+    {
+        ParticleVertex Emit(GameTime time, float lerpAmount);
+    }
+
+
+    public sealed class PointEmitter : ISpacialEmitter
     {
         private Vector3 previousPosition;
 
@@ -70,7 +76,7 @@ namespace Isles.Graphics.ParticleEffects
     }
 
 
-    public sealed class BoxEmitter : IParticleEmitter
+    public sealed class BoxEmitter : ISpacialEmitter
     {
         static Random random = new Random();
 
@@ -100,7 +106,7 @@ namespace Isles.Graphics.ParticleEffects
     }
 
 
-    public sealed class SphereEmitter : IParticleEmitter
+    public sealed class SphereEmitter : ISpacialEmitter
     {
         static Random random = new Random();
 
@@ -135,7 +141,7 @@ namespace Isles.Graphics.ParticleEffects
     }
 
 
-    public sealed class CylinderEmitter : IParticleEmitter
+    public sealed class CylinderEmitter : ISpacialEmitter
     {
         static Random random = new Random();
 
@@ -160,7 +166,7 @@ namespace Isles.Graphics.ParticleEffects
     }
 
 
-    public sealed class RingEmitter : IParticleEmitter
+    public sealed class RingEmitter : ISpacialEmitter
     {
         static Random random = new Random();
 
@@ -183,7 +189,7 @@ namespace Isles.Graphics.ParticleEffects
     }
 
 
-    public sealed class BoneEmitter : IParticleEmitter
+    public sealed class BoneEmitter : ISpacialEmitter
     {
         static Random random = new Random();
 

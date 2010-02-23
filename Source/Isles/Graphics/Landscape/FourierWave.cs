@@ -56,7 +56,7 @@ namespace Isles.Graphics.Landscape
         { }
 
         public FourierWave(GraphicsDevice graphics, int resolution, int gridResolution,
-                       float amplitude, Vector2 wind, float power, SurfaceFormat format)
+                       float amplitude, Vector2 wind, float smoothness, SurfaceFormat format)
         {
             if (graphics == null)
                 throw new ArgumentNullException();
@@ -71,7 +71,7 @@ namespace Isles.Graphics.Landscape
             Wind = wind;
             Amplitude = amplitude;
             Format = format;
-            kwPower = power;
+            kwPower = smoothness;
             Resolution = resolution;
 
 

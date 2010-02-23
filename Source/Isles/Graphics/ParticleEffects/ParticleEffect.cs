@@ -20,32 +20,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public interface IParticleEmitter
+    public sealed class ParticleEffect : IDisposable
     {
-        ParticleVertex Emit(GameTime time, float lerpAmount);
-    }
+        #region Properties
 
+        public ParticleEmitter Emitter { get; private set; }
 
-    public interface IParticleAffector
-    {
-        void Update(ref ParticleVertex particle, float elapsedSeconds);
-    }
+        public ISpacialEmitter SpacialEmitter
+        {
+            get { return Emitter.SpacialEmitter; }
+            set { Emitter.SpacialEmitter = value; }
+        }
 
+        public GraphicsDevice GraphicsDevice { get; private set; }
 
-    public interface IParticleVisual
-    {
-        void Draw(GraphicsDevice graphics, ParticleVertex[] particles, Matrix view, Matrix projection);
-    }
-
-
-    public sealed class ParticleSystem : IDisposable
-    {
-        public float Emission { get; set; }
-        public bool IsContinuous { get; set; }
-        
-        // Alpha blending settings.
-        public Blend SourceBlend { get; set; }
-        public Blend DestinationBlend { get; set; }
+        /// <summary>
+        /// Gets or sets the texture used by this particle system.
+        /// </summary>
+        public Texture2D Texture { get; set; }
 
         /// <summary>
         /// Controls how much particles are influenced by the velocity of the object
@@ -56,18 +48,127 @@ namespace Isles.Graphics.ParticleEffects
         /// </summary>
         public float EmitterVelocitySensitivity { get; set; }
 
+        /// <summary>
+        /// Duration of each particle.
+        /// </summary>
         public TimeSpan Duration { get; set; }
 
-        public IParticleEmitter Emitter { get; set; }
+        /// <summary>
+        /// If greater than zero, some particles will last a shorter time than others.
+        /// </summary>
+        public float DurationRandomness { get; set; }
 
-        public IParticleVisual Visual { get; set; }
+        /// <summary>
+        /// Range of values controlling how much X and Y axis velocity to give each
+        /// particle. Values for individual particles are randomly chosen from somewhere
+        /// between these limits.
+        /// </summary>
+        public float MinHorizontalVelocity { get; set; }
 
-        public ICollection<IParticleAffector> Affectors { get; private set; }
+        /// <summary>
+        /// Range of values controlling how much X and Y axis velocity to give each
+        /// particle. Values for individual particles are randomly chosen from somewhere
+        /// between these limits.
+        /// </summary>
+        public float MaxHorizontalVelocity { get; set; }
+        
+        /// <summary>
+        /// Range of values controlling how much Z axis velocity to give each particle.
+        /// Values for individual particles are randomly chosen from somewhere between
+        /// these limits.
+        /// </summary>
+        public float MinVerticalVelocity { get; set; }
 
-        public GraphicsDevice GraphicsDevice { get; private set; }
+        /// <summary>
+        /// Range of values controlling how much Z axis velocity to give each particle.
+        /// Values for individual particles are randomly chosen from somewhere between
+        /// these limits.
+        /// </summary>
+        public float MaxVerticalVelocity { get; set; }
 
 
-        float timeLeftOver = 0;
+        /// <summary>
+        /// Direction and strength of the gravity effect. Note that this can point in any
+        /// direction, not just down! The fire effect points it upward to make the flames
+        /// rise, and the smoke plume points it sideways to simulate wind.
+        /// </summary>
+        public Vector3 Gravity { get; set; }
+
+
+        /// <summary>
+        /// Controls how the particle velocity will change over their lifetime. If set
+        /// to 1, particles will keep going at the same speed as when they were created.
+        /// If set to 0, particles will come to a complete stop right before they die.
+        /// Values greater than 1 make the particles speed up over time.
+        /// </summary>
+        public float EndVelocity { get; set; }
+
+
+        /// <summary>
+        /// Range of values controlling the particle color and alpha. Values for
+        /// individual particles are randomly chosen from somewhere between these limits.
+        /// </summary>
+        public Color MinColor { get; set; }
+        public Color MaxColor { get; set; }
+
+
+        /// <summary>
+        /// Range of values controlling how fast the particles rotate. Values for
+        /// individual particles are randomly chosen from somewhere between these
+        /// limits. If both these values are set to 0, the particle system will
+        /// automatically switch to an alternative shader technique that does not
+        /// support rotation, and thus requires significantly less GPU power. This
+        /// means if you don't need the rotation effect, you may get a performance
+        /// boost from leaving these values at 0.
+        /// </summary>
+        public float MinRotateSpeed { get; set; }
+
+        /// <summary>
+        /// Range of values controlling how fast the particles rotate. Values for
+        /// individual particles are randomly chosen from somewhere between these
+        /// limits. If both these values are set to 0, the particle system will
+        /// automatically switch to an alternative shader technique that does not
+        /// support rotation, and thus requires significantly less GPU power. This
+        /// means if you don't need the rotation effect, you may get a performance
+        /// boost from leaving these values at 0.
+        /// </summary>
+        public float MaxRotateSpeed { get; set; }
+
+
+        /// <summary>
+        /// Range of values controlling how big the particles are when first created.
+        /// Values for individual particles are randomly chosen from somewhere between
+        /// these limits.
+        /// </summary>
+        public float MinStartSize { get; set; }
+
+        /// <summary>
+        /// Range of values controlling how big the particles are when first created.
+        /// Values for individual particles are randomly chosen from somewhere between
+        /// these limits.
+        /// </summary>
+        public float MaxStartSize { get; set; }
+
+
+        /// <summary>
+        /// Range of values controlling how big particles become at the end of their
+        /// life. Values for individual particles are randomly chosen from somewhere
+        /// between these limits.
+        /// </summary>
+        public float MinEndSize { get; set; }
+
+
+        /// <summary>
+        /// Range of values controlling how big particles become at the end of their
+        /// life. Values for individual particles are randomly chosen from somewhere
+        /// between these limits.
+        /// </summary>
+        public float MaxEndSize { get; set; }
+
+        #endregion
+
+
+        #region Fields
 
         // An array of particles, treated as a circular queue.
         ParticleVertex[] particles;
@@ -75,7 +176,7 @@ namespace Isles.Graphics.ParticleEffects
 
         // A vertex buffer holding our particles. This contains the same data as
         // the particles array, but copied across to where the GPU can access it.
-        VertexBuffer vertexBuffer = null;
+        DynamicVertexBuffer vertexBuffer = null;
 
 
         // Vertex declaration describes the format of our ParticleVertex structure.
@@ -171,23 +272,36 @@ namespace Isles.Graphics.ParticleEffects
         // Shared random number generator.
         static Random random = new Random();
 
+        #endregion
 
-        public ParticleSystem(int maxParticles)
+
+        public ParticleEffect(int maxParticles)
         {
-            IsContinuous = true;
-            Emission = 100;
-            Duration = TimeSpan.FromSeconds(1);
-            EmitterVelocitySensitivity = 0;
+            Duration = TimeSpan.FromSeconds(2);
 
+            DurationRandomness = 1;
 
-            // Use additive blending.
-            SourceBlend = Blend.SourceAlpha;
-            DestinationBlend = Blend.One;
+            MinHorizontalVelocity = 0;
+            MaxHorizontalVelocity = 15;
 
+            MinVerticalVelocity = -10;
+            MaxVerticalVelocity = 10;
+
+            // Set gravity upside down, so the flames will 'fall' upward.
+            Gravity = new Vector3(0, 0, -10);
+
+            MinColor = new Color(255, 255, 255, 10);
+            MaxColor = new Color(255, 255, 255, 40);
+
+            MinStartSize = 1;
+            MaxStartSize = 2;
+
+            MinEndSize = 3;
+            MaxEndSize = 4;
+
+            Emitter = new ParticleEmitter();
 
             particles = new ParticleVertex[maxParticles];
-
-            Affectors = new List<IParticleAffector>();
         }
 
 
@@ -198,8 +312,12 @@ namespace Isles.Graphics.ParticleEffects
         {
             currentTime += (float)time.ElapsedGameTime.TotalSeconds;
 
-            UpdateEmitter(time);
-
+            if (Emitter != null)
+            {
+                foreach (ParticleVertex particle in Emitter.Update(time))
+                    AddParticle(particle);
+            }
+            
             RetireActiveParticles();
             FreeRetiredParticles();
 
@@ -220,7 +338,7 @@ namespace Isles.Graphics.ParticleEffects
         /// <summary>
         /// Draws the particle system.
         /// </summary>
-        public void Draw(GraphicsDevice graphics, GameTime gameTime, Matrix view, Matrix projection)
+        internal void Draw(GraphicsDevice graphics, GameTime gameTime)
         {
             // If we are drawed for the first time, create vertex buffers.
             if (vertexBuffer == null)
@@ -242,38 +360,29 @@ namespace Isles.Graphics.ParticleEffects
                 GraphicsDevice.VertexDeclaration = vertexDeclaration;
                 GraphicsDevice.Vertices[0].SetSource(vertexBuffer, 0, ParticleVertex.SizeInBytes);
 
-
-                BeginParticleRenderStates(GraphicsDevice.RenderState);
+                if (firstActiveParticle < firstFreeParticle)
                 {
-                    //ParticleEffect.Begin(GraphicsDevice, gameTime);
-                    {
-                        if (firstActiveParticle < firstFreeParticle)
-                        {
-                            // If the active particles are all in one consecutive range,
-                            // we can draw them all in a single call.
-                            GraphicsDevice.DrawPrimitives(PrimitiveType.PointList,
-                                                  firstActiveParticle,
-                                                  firstFreeParticle - firstActiveParticle);
-                        }
-                        else
-                        {
-                            // If the active particle range wraps past the end of the queue
-                            // back to the start, we must split them over two draw calls.
-                            GraphicsDevice.DrawPrimitives(PrimitiveType.PointList,
-                                                  firstActiveParticle,
-                                                  particles.Length - firstActiveParticle);
-
-                            if (firstFreeParticle > 0)
-                            {
-                                GraphicsDevice.DrawPrimitives(PrimitiveType.PointList,
-                                                      0,
-                                                      firstFreeParticle);
-                            }
-                        }
-                    }
-                    //ParticleEffect.End();
+                    // If the active particles are all in one consecutive range,
+                    // we can draw them all in a single call.
+                    GraphicsDevice.DrawPrimitives(PrimitiveType.PointList,
+                                          firstActiveParticle,
+                                          firstFreeParticle - firstActiveParticle);
                 }
-                EndParticleRenderStates(GraphicsDevice.RenderState);
+                else
+                {
+                    // If the active particle range wraps past the end of the queue
+                    // back to the start, we must split them over two draw calls.
+                    GraphicsDevice.DrawPrimitives(PrimitiveType.PointList,
+                                          firstActiveParticle,
+                                          particles.Length - firstActiveParticle);
+
+                    if (firstFreeParticle > 0)
+                    {
+                        GraphicsDevice.DrawPrimitives(PrimitiveType.PointList,
+                                              0,
+                                              firstFreeParticle);
+                    }
+                }
             }
 
             drawCounter++;
@@ -283,8 +392,7 @@ namespace Isles.Graphics.ParticleEffects
         void LoadContent(GraphicsDevice graphics)
         {
             GraphicsDevice = graphics;
-
-
+                        
             vertexDeclaration = new VertexDeclaration(GraphicsDevice, ParticleVertex.VertexElements);
 
             // Create a dynamic vertex buffer.
@@ -292,49 +400,11 @@ namespace Isles.Graphics.ParticleEffects
 
             int size = ParticleVertex.SizeInBytes * particles.Length;
 
-            vertexBuffer = new VertexBuffer(GraphicsDevice, size, usage);
+            vertexBuffer = new DynamicVertexBuffer(GraphicsDevice, size, usage);
 
             // Initialize the vertex buffer contents. This is necessary in order
             // to correctly restore any existing particles after a lost device.
             vertexBuffer.SetData(particles);
-        }
-
-
-        void UpdateEmitter(GameTime time)
-        {
-            if (Emitter != null)
-            {
-                // Work out how much time has passed since the previous update.
-                float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
-                float timeBetweenParticles = 1.0f / Emission;
-
-                if (elapsedTime > 0)
-                {
-                    // If we had any time left over that we didn't use during the
-                    // previous update, add that to the current elapsed time.
-                    float timeToSpend = timeLeftOver + elapsedTime;
-
-                    // Counter for looping over the time interval.
-                    float currentTime = -timeLeftOver;
-
-                    // Create particles as long as we have a big enough time interval.
-                    while (timeToSpend > timeBetweenParticles)
-                    {
-                        currentTime += timeBetweenParticles;
-                        timeToSpend -= timeBetweenParticles;
-
-                        // Work out the optimal position for this particle. This will produce
-                        // evenly spaced particles regardless of the object speed, particle
-                        // creation frequency, or game update rate.
-                        float mu = currentTime / elapsedTime;
-
-                        AddParticle(Emitter.Emit(time, mu));
-                    }
-
-                    // Store any time we didn't use, so it can be part of the next update.
-                    timeLeftOver = timeToSpend;
-                }
-            }
         }
 
 
@@ -410,7 +480,7 @@ namespace Isles.Graphics.ParticleEffects
                 vertexBuffer.SetData(firstNewParticle * stride, particles,
                                      firstNewParticle,
                                      firstFreeParticle - firstNewParticle,
-                                     stride);
+                                     stride, SetDataOptions.NoOverwrite);
             }
             else
             {
@@ -419,13 +489,13 @@ namespace Isles.Graphics.ParticleEffects
                 vertexBuffer.SetData(firstNewParticle * stride, particles,
                                      firstNewParticle,
                                      particles.Length - firstNewParticle,
-                                     stride);
+                                     stride, SetDataOptions.NoOverwrite);
 
                 if (firstFreeParticle > 0)
                 {
                     vertexBuffer.SetData(0, particles,
                                          0, firstFreeParticle,
-                                         stride);
+                                         stride, SetDataOptions.NoOverwrite);
                 }
             }
 
@@ -459,55 +529,27 @@ namespace Isles.Graphics.ParticleEffects
                                       (byte)random.Next(255),
                                       (byte)random.Next(255));
 
-            vertex.Velocity = vertex.Velocity * EmitterVelocitySensitivity;
+            vertex.Velocity *= EmitterVelocitySensitivity;
+
+            // Add in some random amount of horizontal velocity.
+            float horizontalVelocity = MathHelper.Lerp(MinHorizontalVelocity,
+                                                       MaxHorizontalVelocity,
+                                                       (float)random.NextDouble());
+
+            double horizontalAngle = random.NextDouble() * MathHelper.TwoPi;
+
+            vertex.Velocity.X += horizontalVelocity * (float)Math.Cos(horizontalAngle);
+            vertex.Velocity.Y += horizontalVelocity * (float)Math.Sin(horizontalAngle);
+
+            // Add in some random amount of vertical velocity.
+            vertex.Velocity.Z += MathHelper.Lerp(MinVerticalVelocity,
+                                                MaxVerticalVelocity,
+                                                (float)random.NextDouble());
 
             particles[firstFreeParticle] = vertex;
 
             firstFreeParticle = nextFreeParticle;
         }
-
-
-        /// <summary>
-        /// Helper for setting the renderstates used to draw particles.
-        /// </summary>
-        void BeginParticleRenderStates(RenderState renderState)
-        {
-            // Enable point sprites.
-            renderState.PointSpriteEnable = true;
-            renderState.PointSizeMax = 256;
-
-            // Set the alpha blend mode.
-            renderState.AlphaBlendEnable = true;
-            renderState.AlphaBlendOperation = BlendFunction.Add;
-            renderState.SourceBlend = SourceBlend;
-            renderState.DestinationBlend = DestinationBlend;
-
-            // Set the alpha test mode.
-            renderState.AlphaTestEnable = true;
-            renderState.AlphaFunction = CompareFunction.Greater;
-            renderState.ReferenceAlpha = 0;
-
-            // Enable the depth buffer (so particles will not be visible through
-            // solid objects like the ground plane), but disable depth writes
-            // (so particles will not obscure other particles).
-            renderState.DepthBufferEnable = true;
-            renderState.DepthBufferWriteEnable = false;
-        }
-
-
-        /// <summary>
-        /// Helper for setting the renderstates used to draw particles.
-        /// </summary>
-        void EndParticleRenderStates(RenderState renderState)
-        {
-            renderState.PointSpriteEnable = false;
-            renderState.AlphaBlendEnable = false;
-            renderState.SourceBlend = Blend.SourceAlpha;
-            renderState.DestinationBlend = Blend.InverseSourceAlpha;
-            renderState.AlphaTestEnable = false;
-            renderState.DepthBufferWriteEnable = true;
-        }
-
 
         public void Dispose()
         {
