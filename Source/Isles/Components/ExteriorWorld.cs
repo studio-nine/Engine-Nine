@@ -26,6 +26,6 @@ namespace Isles.Components
 {
     public class ExteriorWorld : World
     {
-        public Terrain Terrain { get; set; }
+        //public Terrain Terrain { get; set; }
     }
 }

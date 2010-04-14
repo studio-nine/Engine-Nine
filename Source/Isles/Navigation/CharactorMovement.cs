@@ -100,7 +100,7 @@ namespace Isles.Navigation
             Position += force * MaxSpeed * elapsedSeconds;
 
             if (Surface != null)
-                Surface.TryGetHeightAndNormal(Position, out height, out normal);
+                Surface.TryGetHeightAndNormal(Position, ref height, ref normal);
 
             position.Z = height;
 

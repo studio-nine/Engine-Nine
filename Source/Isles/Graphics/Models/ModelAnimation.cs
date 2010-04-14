@@ -40,13 +40,13 @@ namespace Isles.Graphics.Models
         public ModelAnimation() 
         {
             Speed = 1.0f;
-            IsPlaying = false;
+            IsPlaying = true;
         }
 
         public ModelAnimation(Model model, AnimationClip clip)
         {
             Speed = 1.0f;
-            IsPlaying = false;
+            IsPlaying = true;
 
             Model = model;
             AnimationClip = clip;

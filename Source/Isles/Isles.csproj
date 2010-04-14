@@ -103,7 +103,7 @@
     <Compile Include="Graphics\Filters\LuminanceFilter_Code.cs" />
     <Compile Include="Graphics\Filters\ScaleFilter.cs" />
     <Compile Include="Graphics\Filters\ScaleFilter_Code.cs" />
-    <Compile Include="Navigation\FlockingMovement.cs" />
+    <Compile Include="Navigation\Flocking\FlockingMovement.cs" />
     <Compile Include="Navigation\Flocking\BasicFlockingBehaviors.cs" />
     <Compile Include="Navigation\Flocking\ObstacleAvoidanceBehaviors.cs" />
     <Compile Include="Navigation\Flocking\GroupFlockingBehaviors.cs" />
@@ -116,16 +116,13 @@
     <Compile Include="Graphics\Effects\BasicSkinnedEffect.cs" />
     <Compile Include="Graphics\Effects\BasicTextureEffect.cs" />
     <Compile Include="Graphics\Effects\FloatTextureEffect.cs" />
-    <Compile Include="Graphics\Effects\RenderToTextureEffect.cs" />
+    <Compile Include="Graphics\RenderToTextureEffect.cs" />
     <Compile Include="Graphics\SpriteAnimation.cs" />
     <Compile Include="Graphics\Filters\BlurFilter.cs" />
-    <Compile Include="Graphics\Filters\ColorMatrixFilter.cs" />
     <Compile Include="Graphics\Filters\DistortionFilter.cs" />
     <Compile Include="Graphics\Filters\Filter.cs" />
     <Compile Include="Graphics\Filters\FilterCollection.cs" />
     <Compile Include="Graphics\Filters\HeightMapFilter.cs" />
-    <Compile Include="Graphics\Filters\PostEffect.cs" />
-    <Compile Include="Graphics\Filters\SaturationFilter.cs" />
     <Compile Include="Graphics\Geometry.cs" />
     <Compile Include="Graphics\GeometryVisualizer.cs" />
     <Compile Include="Graphics\GraphicsEffect.cs" />
@@ -135,7 +132,6 @@
     <Compile Include="Graphics\Effects\ShadowMapEffect.cs" />
     <Compile Include="Graphics\Effects\ShadowMapReceiverEffect.cs" />
     <Compile Include="Graphics\Landscape\SkyBoxEffect.cs" />
-    <Compile Include="Graphics\Landscape\Terrain.cs" />
     <Compile Include="Graphics\Landscape\TerrainGeometry.cs" />
     <Compile Include="Graphics\Landscape\TerrainLayerEffect.cs" />
     <Compile Include="Graphics\Landscape\TerrainSplatEffect.cs" />
@@ -210,6 +206,43 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\Landscape\TerrainEffectCollection.cs" />
+    <Compile Include="Graphics\Landscape\Terrain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\Vertices\TerrainVertex.cs" />
+    <Compile Include="Graphics\Landscape\TerrainPatch.cs" />
+    <Compile Include="ServiceProviderExtensions.cs" />
+    <Compile Include="Graphics\Filters\BlurEffect.cs" />
+    <Compile Include="Graphics\Filters\BlurEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Filters\ColorMatrixEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Filters\ColorMatrixEffect.cs" />
+    <Compile Include="Graphics\Filters\ScreenEffect.cs" />
+    <Compile Include="Graphics\Filters\SaturationEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaturationEffect.fx</DependentUpon>
+    </Compile>
+    <None Include="Graphics\Filters\ColorMatrixEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Filters\SaturationEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SaturationEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Filters\BlurEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\BasicSkinned.xnb" />
     <None Include="Resources\BasicTexture.xnb" />
     <None Include="Resources\BloomCombine.xnb" />

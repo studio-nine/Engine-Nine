@@ -27,7 +27,7 @@ namespace Isles
         /// <summary>
         /// Returns true if the point is on the surface.
         /// </summary>
-        bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal);
+        bool TryGetHeightAndNormal(Vector3 position, ref float height, ref Vector3 normal);
     }
 
 
@@ -35,7 +35,7 @@ namespace Isles
     {
         public float Height { get; set; }
 
-        public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
+        public bool TryGetHeightAndNormal(Vector3 position, ref float height, ref Vector3 normal)
         {
             height = Height;
             normal = Vector3.UnitZ;
@@ -49,12 +49,12 @@ namespace Isles
     {
         public float ObjectHeight { get; set; }
 
-        public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
+        public bool TryGetHeightAndNormal(Vector3 position, ref float height, ref Vector3 normal)
         {
             // TODO: Include object height
 
-            Vector3 v;
-            float h;
+            Vector3 v = Vector3.UnitZ;
+            float h = 0;
             float min = float.MaxValue;
             bool result = false;
 
@@ -64,7 +64,7 @@ namespace Isles
             foreach (ISurface surface in this)
             {
                 if (surface != null &&
-                    surface.TryGetHeightAndNormal(position, out h, out v))
+                    surface.TryGetHeightAndNormal(position, ref h, ref v))
                 {
                     if (Math.Abs(position.Z - h) < min)
                     {

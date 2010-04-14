@@ -22,21 +22,23 @@ namespace Isles.Graphics.Effects
 {
     public sealed class ShadowMapEffect : IDisposable
     {
-        private DepthStencilBuffer depthStencil;
-        private DepthStencilBuffer storedDepthStencil;
-        private RenderTarget2D renderTarget;
-
         public GraphicsDevice GraphicsDevice { get; private set; }
-        public int TextureResolution { get; private set; }
+        public int Resolution { get; private set; }
         public Texture2D ShadowMap { get; private set; }
+        public SurfaceFormat SurfaceFormat { get; private set; }
+
+
+        private RenderToTextureEffect renderToTexture;
         
 
-        public ShadowMapEffect(GraphicsDevice graphics) : this(graphics, 1024) { }
+        public ShadowMapEffect(GraphicsDevice graphics) : this(graphics, 1024, SurfaceFormat.Single) { }
 
-        public ShadowMapEffect(GraphicsDevice graphics, int resolution)
+        public ShadowMapEffect(GraphicsDevice graphics, int resolution, SurfaceFormat surfaceFormat)
         {
             GraphicsDevice = graphics;
-            TextureResolution = resolution;
+
+            Resolution = resolution;
+            SurfaceFormat = surfaceFormat;
 
             CreateRenderTarget();
         }
@@ -45,15 +47,10 @@ namespace Isles.Graphics.Effects
         {
             try
             {
-                // Create a stencil buffer in case our screen is not large
-                // enough to hold the render target.
-                depthStencil = new DepthStencilBuffer(
-                    GraphicsDevice, TextureResolution, TextureResolution,
-                    GraphicsDevice.DepthStencilBuffer.Format);
-
-                // Create textures
-                renderTarget = new RenderTarget2D(
-                    GraphicsDevice, TextureResolution, TextureResolution, 1, SurfaceFormat.Single);
+                renderToTexture = new RenderToTextureEffect(GraphicsDevice,
+                                                            Resolution,
+                                                            Resolution,
+                                                            SurfaceFormat);
             }
             catch (Exception e)
             {
@@ -61,12 +58,14 @@ namespace Isles.Graphics.Effects
 
                 try
                 {
-                    renderTarget = new RenderTarget2D(
-                        GraphicsDevice, TextureResolution, TextureResolution, 1, SurfaceFormat.Color);
+                    // Some device may not support 32-bit floating point texture
+                    renderToTexture = new RenderToTextureEffect(GraphicsDevice,
+                                                                Resolution,
+                                                                Resolution,
+                                                                SurfaceFormat.Color);
                 }
                 catch (Exception ex)
                 {
-                    // Some device may not support 32-bit floating point texture
                     ex.ToString();
                 }
             }
@@ -77,21 +76,9 @@ namespace Isles.Graphics.Effects
         /// Begins a shadow mapping generation process
         /// </summary>
         public bool Begin()
-        {            
-            if (renderTarget != null && (renderTarget.IsDisposed || renderTarget.IsContentLost))
-                CreateRenderTarget();
-
-            // Return false if the shadow mapping effect is not initialized
-            if (renderTarget == null || depthStencil == null)
+        {
+            if (!renderToTexture.Begin())
                 return false;
-
-
-            // Store current stencil buffer
-            storedDepthStencil = GraphicsDevice.DepthStencilBuffer;
-
-            // Set shadow mapping targets
-            GraphicsDevice.SetRenderTarget(0, renderTarget);
-            GraphicsDevice.DepthStencilBuffer = depthStencil;
 
             GraphicsDevice.RenderState.DepthBufferEnable = true;
             GraphicsDevice.Clear(Color.White);
@@ -108,31 +95,12 @@ namespace Isles.Graphics.Effects
         /// </returns>
         public Texture2D End()
         {
-            // Begin must be called first
-            if (storedDepthStencil != null)
-            {
-                // Restore everything
-                GraphicsDevice.SetRenderTarget(0, null);
-                GraphicsDevice.DepthStencilBuffer = storedDepthStencil;
-                storedDepthStencil = null;
-
-                // Resolve render target, retrieve our shadow map
-                return ShadowMap = renderTarget.GetTexture();
-            }
-
-            return null;
+            return ShadowMap = renderToTexture.End();
         }
 
         public void Dispose()
         {
-            if (depthStencil != null)
-                depthStencil.Dispose();
-
-            if (renderTarget != null)
-                renderTarget.Dispose();
-
-            if (ShadowMap != null)
-                ShadowMap.Dispose();
+            renderToTexture.Dispose();
         }
     }
 }

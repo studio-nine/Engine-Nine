@@ -184,7 +184,27 @@ namespace Isles.Graphics.ParticleEffects
 
         public ParticleVertex Emit(GameTime time, float lerpAmount)
         {
-            throw new NotImplementedException();
+            ParticleVertex result;
+
+            double angle = random.NextDouble() * Math.PI * 2;
+
+            result.Position.Z = 0;
+            result.Position.X = Radius * (float)Math.Cos(angle);
+            result.Position.Y = Radius * (float)Math.Sin(angle);
+
+            float dot = Vector3.Dot(Vector3.UnitZ, Up);
+
+            Matrix transform = Matrix.CreateFromAxisAngle(
+                Vector3.Cross(Vector3.UnitZ, Up), (float)Math.Cos(dot));
+
+            result.Position = Vector3.Transform(result.Position, transform);
+
+            result.Position += Center;
+            result.Time = 0;
+            result.Random = Color.White;
+            result.Velocity = Vector3.Zero;
+
+            return result;
         }
     }
 

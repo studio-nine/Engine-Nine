@@ -1,15 +1,16 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GeometricPrimitive.cs
+﻿#region Copyright 2009 - 2010 (c) Nightin Games
+//=============================================================================
 //
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
 #endregion
+
 
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -22,112 +23,117 @@ namespace Isles.Graphics.Landscape
     public sealed class Terrain : IDisposable
     {
         public TerrainGeometry Geometry { get; private set; }
-        public List<GraphicsEffect> Layers { get; private set; }
-        public GraphicsDevice Graphics { get; private set; }
+        public TerrainEffectCollection Effects { get; private set; }
+        public GraphicsDevice GraphicsDevice { get; private set; }
+        public ReadOnlyCollection<TerrainPatch> Patches { get; private set; }
+        public int PatchTessellation { get; private set; }
+        public object Tag { get; set; }
+        public string Name { get; set; }
+
+        public Vector3 Position
+        {
+            get { return position; }
+            set { position = value; UpdatePatchPositions(); }
+        }
+
+        private Vector3 position;
 
 
-        private VertexBuffer vertices;
-        private IndexBuffer indices;
-        private VertexDeclaration declaration;
-        private int vertexCount;
-        private int primitiveCount;
+        public BoundingBox BoundingBox
+        {
+            get
+            {
+                BoundingBox box;
+
+                box.Min = Geometry.BoundingBox.Min + position;
+                box.Max = Geometry.BoundingBox.Max + position;
+
+                return box;
+            }
+        }
 
 
-        public Terrain(GraphicsDevice graphics, TerrainGeometry geometry)
+        public Terrain(GraphicsDevice graphics, float step, int tessellationU, int tessellationV, int patchTessellation)
+            : this(graphics, new TerrainGeometry(step, tessellationU, tessellationV), patchTessellation)
+        { }
+
+        public Terrain(GraphicsDevice graphics, TerrainGeometry geometry, int patchTessellation)
         {
             if (graphics == null || geometry == null)
                 throw new ArgumentNullException();
 
+            if (patchTessellation < 2 ||
+                geometry.TessellationU % patchTessellation != 0 ||
+                geometry.TessellationV % patchTessellation != 0)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
 
-            Graphics = graphics;
+
+            Effects = new TerrainEffectCollection(this);
+            PatchTessellation = patchTessellation;
+            GraphicsDevice = graphics;
             Geometry = geometry;
 
+            Geometry.Invalidate += (a, b) => Invalidate();
 
-            Layers = new List<GraphicsEffect>();
-            vertices = new VertexBuffer(graphics, VertexPositionNormalTexture.SizeInBytes * geometry.Positions.Count, BufferUsage.None);
-            indices = new IndexBuffer(graphics, typeof(ushort), geometry.Indices.Count, BufferUsage.None);
-            declaration = new VertexDeclaration(graphics, VertexPositionNormalTexture.VertexElements);
-            
+            // Create patches
+            int xPatchCount = geometry.TessellationU / patchTessellation;
+            int yPatchCount = geometry.TessellationV / patchTessellation;
 
-            // Fill vertices
-            vertexCount = geometry.Positions.Count;
+            TerrainPatch[] patches = new TerrainPatch[xPatchCount * yPatchCount];
 
-            VertexPositionNormalTexture[] vertexData = new VertexPositionNormalTexture[vertexCount];
+            int i = 0;
 
-            for (int i = 0; i < vertexCount; i++)
+            for (int y = 0; y < yPatchCount; y++)
             {
-                vertexData[i].Position = geometry.Positions[i];
-                vertexData[i].Normal = -geometry.NormalData[i];
-                vertexData[i].TextureCoordinate.X = 1.0f * (i % geometry.HeightmapWidth) / geometry.HeightmapWidth;
-                vertexData[i].TextureCoordinate.Y = 1.0f * (i / geometry.HeightmapHeight) / geometry.HeightmapHeight; 
-            }
-
-            vertices.SetData<VertexPositionNormalTexture>(vertexData);
-
-
-            // Fill indices
-            primitiveCount = geometry.Indices.Count / 3;
-
-            ushort[] indexData = new ushort[geometry.Indices.Count];
-
-            geometry.Indices.CopyTo(indexData, 0);
-
-            indices.SetData<ushort>(indexData);
-        }
-
-
-        public void Draw(GameTime time, Matrix view, Matrix projection)
-        {
-            if (Layers.Count > 0)
-            {
-                Graphics.Indices = indices;
-                Graphics.VertexDeclaration = declaration;
-                Graphics.Vertices[0].SetSource(vertices, 0, VertexPositionNormalTexture.SizeInBytes);
-
-
-                foreach (GraphicsEffect layer in Layers)
+                for (int x = 0; x < xPatchCount; x++)
                 {
-                    layer.View = view;
-                    layer.Projection = projection;
-                    layer.World = Geometry.Transform;
+                    patches[i] = new TerrainPatch(graphics, geometry, x, y, patchTessellation);
 
-                    layer.Begin(Graphics, time);
-
-                    Graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexCount, 0, primitiveCount);
-
-                    layer.End();
+                    i++;
                 }
             }
+
+            Patches = new ReadOnlyCollection<TerrainPatch>(patches);
+
+            // Store these values in case they change
+            tu = Geometry.TessellationU;
+            tv = Geometry.TessellationV;
         }
 
+        private int tu, tv;
 
-        public void Draw(GraphicsEffect effect, GameTime time, Matrix view, Matrix projection)
+        public void Invalidate()
         {
-            Graphics.Indices = indices;
-            Graphics.VertexDeclaration = declaration;
-            Graphics.Vertices[0].SetSource(vertices, 0, VertexPositionNormalTexture.SizeInBytes);
+            // Make sure we don't change geometry tessellation
+            if (Geometry.TessellationU != tu ||
+                Geometry.TessellationV != tv)
+            {
+                throw new InvalidOperationException();
+            }
 
-
-            effect.View = view;
-            effect.Projection = projection;
-            effect.World = Geometry.Transform;
-
-            effect.Begin(Graphics, time);
-
-            Graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexCount, 0, primitiveCount);
-
-            effect.End();
+            foreach (TerrainPatch patch in Patches)
+            {
+                patch.Invalidate();
+            }
+        }
+        
+        private void UpdatePatchPositions()
+        {
+            foreach (TerrainPatch patch in Patches)
+            {
+                patch.Position = position;
+            }
         }
 
 
         public void Dispose()
         {
-            if (vertices != null)
-                vertices.Dispose();
-            if (indices != null)
-                indices.Dispose();
-            if (declaration != null)
-                declaration.Dispose();
+            foreach (TerrainPatch patch in Patches)
+            {
+                patch.Dispose();
+            }
         }
     }
 }

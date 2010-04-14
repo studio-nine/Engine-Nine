@@ -60,13 +60,13 @@ namespace Isles.Samples
                                       Matrix.CreateRotationZ(MathHelper.PiOver2) *
                                       Matrix.CreateRotationY(MathHelper.PiOver2);
 
-            batch = new ModelBatch();
             sprite = new SpriteBatch(GraphicsDevice);
 
             Matrix lightViewProjection =
                 Matrix.CreateLookAt(new Vector3(0, 0, 30), Vector3.Zero, Vector3.UnitX) *
                 Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 1, 0.1f, 100.0f);
 
+            batch = new ModelBatch();
             shadow = new ShadowMapEffect(GraphicsDevice);
             caster = new ShadowMapCasterEffect();
             receiver = new ShadowMapReceiverEffect();
