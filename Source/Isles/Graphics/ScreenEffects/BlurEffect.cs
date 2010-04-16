@@ -1,75 +1,86 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// BloomComponent.cs
+#region Copyright 2009 - 2010 (c) Nightin Games
+//=============================================================================
 //
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
 #endregion
+
 
 #region Using Statements
 using System;
-using System.IO;
-using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Isles.Graphics.Vertices;
 #endregion
 
-namespace Isles.Graphics.Filters
+
+namespace Isles.Graphics.ScreenEffects
 {
-    public sealed class BlurFilter : Filter
+    /// <summary>
+    /// A post processing screen effect that blurs the whole screen.
+    /// </summary>
+    public partial class BlurEffect
     {
-        private Effect effect;
+        private float blurAmount;
+        private float direction;
+        private float step;
 
-
-        public float BlurAmount { get; set; }
-        public float DerivationX { get; set; }
-        public float DerivationY { get; set; }
-
-
-        public BlurFilter()
+        /// <summary>
+        /// Gets or sets the amount of bluring.
+        /// </summary>
+        public float BlurAmount
         {
-            BlurAmount = 2.0f;
-            DerivationX = 1.0f;
-            DerivationY = 1.0f;
+            get { return blurAmount; }
+            set { blurAmount = value; Update(); }
+        }
+
+        /// <summary>
+        /// Gets or sets the step of sampled points.
+        /// </summary>
+        public float Step
+        {
+            get { return step; }
+            set { step = value; Update(); }
+        }
+
+        /// <summary>
+        /// Gets or sets the direction of bluring in radians.
+        /// </summary>
+        public float Direction
+        {
+            get { return direction; }
+            set { direction = value; Update(); }
+        }
+
+        /// <summary>
+        /// Creates a new instance of Gaussian blur post processing.
+        /// </summary>
+        public BlurEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
+
+        /// <summary>
+        /// Creates a new instance of Gaussian blur post processing.
+        /// </summary>
+        public BlurEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
+                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        {
+            InitializeComponent();
+
+            step = 1.0f;
+
+            BlurAmount = 1.0f;
         }
         
-        public BlurFilter(float blurAmount)
-        {
-            BlurAmount = blurAmount;
-            DerivationX = 1.0f;
-            DerivationY = 1.0f;
-        }
 
-        public BlurFilter(float blurAmount, float derivationX, float derivationY)
-        {
-            BlurAmount = blurAmount;
-            DerivationX = derivationX;
-            DerivationY = derivationY;
-        }
-
-        protected override void LoadContent()
-        {
-            effect = InternalContents.GaussianBlurEffect(GraphicsDevice);
-        }
-
-        protected override void Begin(Texture2D input, RenderTarget2D renderTarget)
+        private void Update()
         {
             SetBlurEffectParameters(
-                DerivationX / GraphicsDevice.Viewport.Width,
-                DerivationY / GraphicsDevice.Viewport.Height);
-
-            effect.Begin();
-            effect.CurrentTechnique.Passes[0].Begin();
+                (float)Math.Cos(-direction) / GraphicsDevice.Viewport.Width, 
+                (float)Math.Sin(-direction) / GraphicsDevice.Viewport.Height);
         }
-
-        protected override void End()
-        {
-            effect.CurrentTechnique.Passes[0].End();
-            effect.End();
-        }
-
 
         /// <summary>
         /// Computes sample weightings and texture coordinate offsets
@@ -80,8 +91,8 @@ namespace Isles.Graphics.Filters
             // Look up the sample weight and offset effect parameters.
             EffectParameter weightsParameter, offsetsParameter;
 
-            weightsParameter = effect.Parameters["SampleWeights"];
-            offsetsParameter = effect.Parameters["SampleOffsets"];
+            weightsParameter = Parameters["sampleWeights"];
+            offsetsParameter = Parameters["sampleOffsets"];
 
             // Look up how many samples our gaussian blur effect supports.
             int sampleCount = weightsParameter.Elements.Count;
@@ -150,4 +161,3 @@ namespace Isles.Graphics.Filters
         }
     }
 }
-

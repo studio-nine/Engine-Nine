@@ -80,9 +80,9 @@ namespace Isles.Graphics
 
             // Store current stencil buffer
             storedDepthStencil = GraphicsDevice.DepthStencilBuffer;
+            previousRenderTarget = GraphicsDevice.GetRenderTarget(0) as RenderTarget2D;
 
             // Set shadow mapping targets
-            previousRenderTarget = GraphicsDevice.GetRenderTarget(0) as RenderTarget2D;
             GraphicsDevice.SetRenderTarget(0, renderTarget);
             GraphicsDevice.DepthStencilBuffer = depthStencil;
 

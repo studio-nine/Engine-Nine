@@ -177,6 +177,7 @@ namespace Isles.Graphics.Landscape
         private TerrainGeometry geometry;
         private BoundingBox boundingBox;
         private Vector3 position;
+        internal Vector2 TextureScale = Vector2.One;
         #endregion
 
         /// <summary>
@@ -255,8 +256,8 @@ namespace Isles.Graphics.Landscape
                     vertexPool[i].Position = geometry.GetPosition(x, y);
                     vertexPool[i].Normal = geometry.Normals[geometry.GetIndex(x, y)];
                     vertexPool[i].Tangent = geometry.Tangents[geometry.GetIndex(x, y)];
-                    vertexPool[i].TextureCoordinate.X = 1.0f * x / Tessellation;
-                    vertexPool[i].TextureCoordinate.Y = 1.0f * y / Tessellation;
+                    vertexPool[i].TextureCoordinate.X = 1.0f * x / Tessellation / TextureScale.X;
+                    vertexPool[i].TextureCoordinate.Y = 1.0f * y / Tessellation / TextureScale.Y;
 
                     i++;
                 }

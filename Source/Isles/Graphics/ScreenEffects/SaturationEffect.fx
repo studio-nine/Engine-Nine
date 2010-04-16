@@ -1,6 +1,9 @@
-// Pixel shader combines the bloom image with the original
-// scene, using tweakable intensity levels and saturation.
-// This is the final step in applying a bloom postprocess.
+//=============================================================================
+//
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
+
 
 sampler Sampler : register(s0);
 
@@ -8,7 +11,7 @@ sampler Sampler : register(s0);
 float Saturation
 <
     string SasUiDescription =  "Gets or sets saturation amount.";
-> = 1.0;
+> = 0.5f;
 
 
 // Helper for modifying the saturation of a color.

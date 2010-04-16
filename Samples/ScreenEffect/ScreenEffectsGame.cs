@@ -15,7 +15,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Isles;
-using Isles.Graphics.Filters;
+using Isles.Graphics;
+using Isles.Graphics.ScreenEffects;
 #endregion
 
 
@@ -61,8 +62,12 @@ namespace ScreenEffects
             // add several fullscreen effects from Isles.Graphics.Filters namespace.
             screenEffect = new ScreenEffect(GraphicsDevice);
 
-            screenEffect.Effects.Add(new SaturationEffect(GraphicsDevice) { Saturation = 0.0f });
-            screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrixEffect.CreateBrightness(1.0f) });
+
+            screenEffect.Effects.Add(new SaturationEffect(GraphicsDevice) { Saturation = 0.3f });
+            screenEffect.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(45), BlurAmount = 2 });
+            //screenEffect.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(-45), BlurAmount = 2 });
+            screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = MatrixExtensions.CreateBrightness(1.0f) });        
+            screenEffect.Effects.Add(new BloomEffect(GraphicsDevice));
         }
 
         /// <summary>
@@ -79,17 +84,19 @@ namespace ScreenEffects
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
-
                         
             if (screenEffect.Begin())
             {
                 // Draw the scene between screen effect Begin/End
-                spriteBatch.Begin();
-                spriteBatch.Draw(background, GraphicsDevice.Viewport.TitleSafeArea, Color.White);
-                spriteBatch.End();
+                GraphicsDevice.DrawSprite(background, GraphicsDevice.Viewport.TitleSafeArea, null, Color.White, null);
+            
+                // Draw screen effect
+                screenEffect.End();
             }
-            screenEffect.End();
 
+            if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
+                GraphicsDevice.DrawSprite(background, GraphicsDevice.Viewport.TitleSafeArea, null, Color.White, null);
+            
 
             base.Draw(gameTime);
         }

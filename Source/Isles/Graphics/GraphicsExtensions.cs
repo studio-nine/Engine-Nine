@@ -21,7 +21,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics
 {
-    internal static class GraphicsExtensions
+    #region GraphicsExtensions
+    public static class GraphicsExtensions
     {
         public static void SetSpriteBlendMode(this RenderState renderState, SpriteBlendMode blend)
         {
@@ -42,5 +43,40 @@ namespace Isles.Graphics
                 renderState.DestinationBlend = Blend.One;
             }
         }
+
+        static SpriteBatch spriteBatch;
+
+        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Rectangle? destination, Rectangle? source, Color color, Effect effect)
+        {
+            if (spriteBatch == null)
+                spriteBatch = new SpriteBatch(graphics);
+            
+            spriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
+
+            if (effect != null)
+            {
+                effect.Begin();
+                effect.CurrentTechnique.Passes[0].Begin();
+            }
+
+            if (destination == null)
+            {
+                destination = new Rectangle(graphics.Viewport.X,
+                                            graphics.Viewport.Y,
+                                            graphics.Viewport.Width,
+                                            graphics.Viewport.Height);
+            }
+
+            spriteBatch.Draw(texture, destination.Value, source, color);
+
+            if (effect != null)
+            {
+                effect.End();
+                effect.CurrentTechnique.Passes[0].End();
+            }
+
+            spriteBatch.End();
+        }
     }
+    #endregion
 }

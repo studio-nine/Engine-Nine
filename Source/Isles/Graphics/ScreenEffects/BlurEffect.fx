@@ -1,6 +1,9 @@
-// Pixel shader applies a one dimensional gaussian blur filter.
-// This is used twice by the bloom postprocess, first to
-// blur horizontally, and then again to blur vertically.
+//=============================================================================
+//
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
+
 
 sampler TextureSampler : register(s0);
 
@@ -9,6 +12,10 @@ sampler TextureSampler : register(s0);
 float2 sampleOffsets[SAMPLE_COUNT];
 float sampleWeights[SAMPLE_COUNT];
 
+
+// Pixel shader applies a one dimensional gaussian blur filter.
+// This is used twice by the bloom postprocess, first to
+// blur horizontally, and then again to blur vertically.
 float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
 {
     float4 c = 0;

@@ -1,7 +1,7 @@
-#region Copyright 2010 (c) Nightin Games
+﻿#region Copyright 2009 (c) Nightin Games
 //=============================================================================
 //
-//  Copyright 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -10,17 +10,95 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
+using System.IO;
 using System.Xml;
-using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 
 namespace Isles
 {
+    #region ServiceProviderExtensions
+    public static class ServiceProviderExtensions
+    {
+        public static T GetService<T>(this IServiceProvider provider) where T : class
+        {
+            return provider.GetService(typeof(T)) as T;
+        }
+
+        public static K GetService<T, K>(this IServiceProvider provider)
+            where T : class, K
+            where K : class
+        {
+            return provider.GetService(typeof(T)) as K;
+        }
+
+        public static K GetService<K>(this IServiceProvider provider, Type type)
+            where K : class
+        {
+            return provider.GetService(type) as K;
+        }
+
+        public static K GetService<K>(this IServiceProvider provider, string type)
+            where K : class
+        {
+            return provider.GetService(Type.GetType(type)) as K;
+        }
+    }
+    #endregion
+
+    #region MatrixExtensions
+    public static class MatrixExtensions
+    {
+        // Color matrix
+        public static Matrix CreateColorMatrix(float brightness, float contrast, float saturation, float hue)
+        {
+            return Matrix.Identity;
+        }
+
+        public static Matrix CreateBrightness(float amount)
+        {
+            return Matrix.CreateTranslation(amount, amount, amount);
+        }
+
+        public static Matrix CreateContrast(float amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Matrix CreateHue(float amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Matrix CreateSaturation(float amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+        // 2D matrix transform
+        public static Matrix CreateTranslation(float x, float y)
+        {
+            return Matrix.CreateTranslation(x, y, 0);
+        }
+
+        public static Matrix CreateRotation(float radians)
+        {
+            return Matrix.CreateRotationZ(radians);
+        }
+
+        public static Matrix CreateScale(float x, float y)
+        {
+            return Matrix.CreateScale(x, y, 1);
+        }
+    }
+    #endregion
+
+    #region ParseExtensions
     public static class ParseExtensions
     {
         #region String parser
@@ -149,7 +227,7 @@ namespace Isles
 
         #region ToString
         public static string ToString(Color c)
-        {            
+        {
             return c.R + ", " + c.G + ", " + c.B + ", " + c.A;
         }
 
@@ -193,4 +271,5 @@ namespace Isles
         }
         #endregion
     }
+    #endregion
 }

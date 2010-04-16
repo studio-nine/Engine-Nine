@@ -39,6 +39,15 @@ namespace Isles.Graphics.Landscape
         private Vector3 position;
 
 
+        public Vector2 TextureScale
+        {
+            get { return textureScale; }
+            set { textureScale = value; UpdatePatchTextureScale(); }
+        }
+
+        private Vector2 textureScale = Vector2.One;
+
+
         public BoundingBox BoundingBox
         {
             get
@@ -127,6 +136,15 @@ namespace Isles.Graphics.Landscape
             }
         }
 
+        private void UpdatePatchTextureScale()
+        {
+            foreach (TerrainPatch patch in Patches)
+            {
+                patch.TextureScale = textureScale;
+            }
+
+            Invalidate();
+        }
 
         public void Dispose()
         {

@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Input;
 using Isles;
 using Isles.Graphics;
 using Isles.Graphics.Cameras;
+using Isles.Graphics.Effects;
 using Isles.Graphics.Landscape;
 #endregion
 
@@ -33,6 +34,8 @@ namespace TerrainSample
 
         Terrain terrain;
         BasicEffect basicEffect;
+        ScrollEffect scrollEffect;
+        NormalMappingEffect normalMappingEffect;
         
 
         public TerrainGame()
@@ -67,8 +70,24 @@ namespace TerrainSample
             basicEffect.DirectionalLight0.Enabled = true;
             basicEffect.DirectionalLight0.DiffuseColor = Color.Yellow.ToVector3();
             basicEffect.DirectionalLight0.Direction = Vector3.Normalize(-Vector3.One);
+            basicEffect.Texture = Content.Load<Texture2D>("grass");
+            basicEffect.TextureEnabled = true;
             basicEffect.LightingEnabled = true;
             basicEffect.PreferPerPixelLighting = true;
+
+
+            scrollEffect = new ScrollEffect(GraphicsDevice);
+            scrollEffect.Texture = Content.Load<Texture2D>("clouds");
+            scrollEffect.Alpha = 0.5f;
+            scrollEffect.Direction = MathHelper.ToRadians(45);
+            scrollEffect.TextureScale = Vector2.One * 10;
+            scrollEffect.Speed = 0.2f;
+
+
+            normalMappingEffect = new NormalMappingEffect(GraphicsDevice);
+            normalMappingEffect.Texture = Content.Load<Texture2D>("grass");
+            normalMappingEffect.NormalTexture = Content.Load<Texture2D>("grass_n");
+            normalMappingEffect.LightPosition = Vector3.UnitZ * 100;
         }
 
         /// <summary>
@@ -76,6 +95,8 @@ namespace TerrainSample
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
+            scrollEffect.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -94,6 +115,12 @@ namespace TerrainSample
                 GraphicsDevice.RenderState.FillMode = FillMode.Solid;
 
 
+            // Enable alpha blending
+            GraphicsDevice.RenderState.AlphaBlendEnable = true;
+            GraphicsDevice.RenderState.AlphaSourceBlend = Blend.SourceAlpha;
+            GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
+
+
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
 
@@ -107,11 +134,23 @@ namespace TerrainSample
                     basicEffect.View = camera.View;
                     basicEffect.Projection = camera.Projection;
 
+
+                    scrollEffect.World = patch.Transform;
+                    scrollEffect.View = camera.View;
+                    scrollEffect.Projection = camera.Projection;
+
+
+                    normalMappingEffect.World = patch.Transform;
+                    normalMappingEffect.View = camera.View;
+                    normalMappingEffect.Projection = camera.Projection;
+
+
                     // Draw each path with the specified effect
                     patch.Draw(basicEffect);
+                    //patch.Draw(normalMappingEffect);
+                    patch.Draw(scrollEffect);
                 }
             }
-
 
             base.Draw(gameTime);
         }
