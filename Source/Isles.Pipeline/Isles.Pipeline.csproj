@@ -48,8 +48,7 @@
     <Compile Include="Importers\RawTextureImporter.cs" />
     <Compile Include="Processors\GrayScaleTextureProcessor.cs" />
     <Compile Include="Processors\SpriteSheetProcessor.cs" />
-    <Compile Include="SplatTextureContent.cs" />
-    <Compile Include="Processors\SplatTextureProcessor.cs" />
+    <Compile Include="Processors\SplatterTextureProcessor.cs" />
     <Compile Include="Processors\ExtendedModelProcessor.cs" />
     <Compile Include="Processors\HeightmapProcessor.cs" />
     <Compile Include="Processors\GeometryProcessor.cs" />

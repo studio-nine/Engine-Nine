@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -84,7 +85,8 @@ namespace Isles.Graphics.ScreenEffects
         public GraphicsDevice GraphicsDevice { get; private set; }
 
 
-        RenderToTextureEffect renderToTexture;
+        int current = 0;
+        List<RenderToTextureEffect> renderTargets = new List<RenderToTextureEffect>(2);
 
 
         /// <summary>
@@ -95,11 +97,11 @@ namespace Isles.Graphics.ScreenEffects
         {
             GraphicsDevice = graphics;
 
-            renderToTexture = new RenderToTextureEffect(
-                                              graphics,
-                                              graphics.PresentationParameters.BackBufferWidth,
-                                              graphics.PresentationParameters.BackBufferHeight,                                              
-                                              graphics.PresentationParameters.BackBufferFormat);
+            renderTargets.Add(new RenderToTextureEffect(
+                                              GraphicsDevice,
+                                              GraphicsDevice.PresentationParameters.BackBufferWidth,
+                                              GraphicsDevice.PresentationParameters.BackBufferHeight,
+                                              GraphicsDevice.PresentationParameters.BackBufferFormat));
 
             Effects = new ScreenEffectCollection();
         }
@@ -113,7 +115,17 @@ namespace Isles.Graphics.ScreenEffects
             if (Effects.Count < 1)
                 throw new InvalidOperationException("Must contain at least one effect");
 
-            return renderToTexture.Begin();
+            // We need 2 render target if we have more then 2 effects
+            if (Effects.Count > 1 && renderTargets.Count == 1)
+            {
+                renderTargets.Add(new RenderToTextureEffect(
+                                              GraphicsDevice,
+                                              GraphicsDevice.PresentationParameters.BackBufferWidth,
+                                              GraphicsDevice.PresentationParameters.BackBufferHeight,
+                                              GraphicsDevice.PresentationParameters.BackBufferFormat));
+            }
+
+            return renderTargets[current].Begin();
         }
 
         /// <summary>
@@ -129,17 +141,20 @@ namespace Isles.Graphics.ScreenEffects
             screen.Height = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
 
-            Texture2D backbuffer = renderToTexture.End();
+            Texture2D backbuffer = renderTargets[current].End();
 
 
             // Draw first n - 1 effects to render target
             for (int i = 0; i < Effects.Count - 1; i++)
             {
-                renderToTexture.Begin();
+                // Switch to next render target
+                current = (current + 1) % renderTargets.Count;
+
+                renderTargets[current].Begin();
 
                 Draw(screen, backbuffer, Effects[i]);
 
-                backbuffer = renderToTexture.End();
+                backbuffer = renderTargets[current].End();
             }
 
             // Draw last effect to the backbuffer
@@ -163,8 +178,11 @@ namespace Isles.Graphics.ScreenEffects
         /// </summary>
         public void Dispose()
         {
-            if (renderToTexture != null)
-                renderToTexture.Dispose();
+            foreach (RenderToTextureEffect renderTarget in renderTargets)
+            {
+                if (renderTarget != null)
+                    renderTarget.Dispose();
+            }
         }
     }
     #endregion

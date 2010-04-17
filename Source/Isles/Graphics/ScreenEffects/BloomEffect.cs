@@ -22,12 +22,13 @@ namespace Isles.Graphics.ScreenEffects
     /// <summary>
     /// A post processing screen effect that blooms the whole screen.
     /// </summary>
-    public sealed class BloomEffect : IScreenEffect
+    public sealed class BloomEffect : IScreenEffect, IDisposable
     {
         private Threshold extract;
         private BlurEffect blur;
         private BloomCombine combine;
-        private RenderToTextureEffect renderToTexture;
+        private RenderToTextureEffect renderTarget1;
+        private RenderToTextureEffect renderTarget2;
 
         /// <summary>
         /// Gets the GraphicsDevice associated with this instance.
@@ -91,7 +92,13 @@ namespace Isles.Graphics.ScreenEffects
             blur.BlurAmount = 2.0f;
 
             // Scale down render target
-            renderToTexture = new RenderToTextureEffect(
+            renderTarget1 = new RenderToTextureEffect(
+                                    GraphicsDevice,
+                                    GraphicsDevice.Viewport.Width / 2,
+                                    GraphicsDevice.Viewport.Height / 2,
+                                    GraphicsDevice.PresentationParameters.BackBufferFormat);
+
+            renderTarget2 = new RenderToTextureEffect(
                                     GraphicsDevice,
                                     GraphicsDevice.Viewport.Width / 2,
                                     GraphicsDevice.Viewport.Height / 2,
@@ -108,37 +115,46 @@ namespace Isles.Graphics.ScreenEffects
 
             
             // Extract
-            renderToTexture.Begin();
+            renderTarget1.Begin();
 
             GraphicsDevice.DrawSprite(texture, null, null, Color.White, extract);
 
-            intermediate = renderToTexture.End();
+            intermediate = renderTarget1.End();
 
             
             // Blur U
             blur.Direction = MathHelper.ToRadians(45);
 
-            renderToTexture.Begin();
+            renderTarget2.Begin();
 
             GraphicsDevice.DrawSprite(intermediate, null, null, Color.White, blur);
 
-            intermediate = renderToTexture.End();
+            intermediate = renderTarget2.End();
 
 
             // Blur V
             blur.Direction = MathHelper.ToRadians(-45);
 
-            renderToTexture.Begin();
+            renderTarget1.Begin();
 
             GraphicsDevice.DrawSprite(intermediate, null, null, Color.White, blur);
 
-            intermediate = renderToTexture.End();
+            intermediate = renderTarget1.End();
             
 
             // Combine
             GraphicsDevice.Textures[1] = intermediate;
             GraphicsDevice.DrawSprite(texture, null, null, Color.White, combine);
             GraphicsDevice.Textures[1] = null;
+        }
+
+        /// <summary>
+        /// Disposes any resources associated with this instance.
+        /// </summary>
+        public void Dispose()
+        {
+            renderTarget1.Dispose();
+            renderTarget2.Dispose();
         }
     }
 }

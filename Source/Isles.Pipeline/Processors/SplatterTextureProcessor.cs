@@ -27,11 +27,14 @@ using Isles.Graphics.Models;
 
 namespace Isles.Pipeline.Processors
 {
-    [ContentProcessor(DisplayName="Splat Texture Processor - Isles")]
-    public class SplatTextureProcessor : ContentProcessor<SplatTextureContent, TextureContent>
+    [ContentProcessor(DisplayName="Splatter Texture Processor - Isles")]
+    public class SplatterTextureProcessor : ContentProcessor<string[], TextureContent>
     {
-        public override TextureContent Process(SplatTextureContent input, ContentProcessorContext context)
+        public override TextureContent Process(string[] input, ContentProcessorContext context)
         {
+            if (input.Length > 4)
+                throw new ArgumentOutOfRangeException("SplatterTextureProcessor supports at most 4 textures.");
+
             int width = 0;
             int height = 0;
 
@@ -43,22 +46,10 @@ namespace Isles.Pipeline.Processors
             PixelBitmapContent<float> bitmapA = null;
 
 
-            if (!string.IsNullOrEmpty(input.LayerA))
+            if (!string.IsNullOrEmpty(input[0]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
-                    new ExternalReference<TextureContent>(input.LayerA), null);
-
-                texture.ConvertBitmapType(typeof(PixelBitmapContent<float>));
-                bitmapA = (PixelBitmapContent<float>)texture.Mipmaps[0];
-
-                width = bitmapA.Width;
-                height = bitmapA.Height;
-            }
-
-            if (!string.IsNullOrEmpty(input.LayerR))
-            {
-                texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
-                    new ExternalReference<TextureContent>(input.LayerR), null);
+                    new ExternalReference<TextureContent>(input[0]), null);
 
                 texture.ConvertBitmapType(typeof(PixelBitmapContent<float>));
                 bitmapR = (PixelBitmapContent<float>)texture.Mipmaps[0];
@@ -67,10 +58,10 @@ namespace Isles.Pipeline.Processors
                 height = bitmapR.Height;
             }
 
-            if (!string.IsNullOrEmpty(input.LayerG))
+            if (!string.IsNullOrEmpty(input[1]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
-                    new ExternalReference<TextureContent>(input.LayerG), null);
+                    new ExternalReference<TextureContent>(input[1]), null);
 
                 texture.ConvertBitmapType(typeof(PixelBitmapContent<float>));
                 bitmapG = (PixelBitmapContent<float>)texture.Mipmaps[0];
@@ -79,10 +70,10 @@ namespace Isles.Pipeline.Processors
                 height = bitmapG.Height;
             }
 
-            if (!string.IsNullOrEmpty(input.LayerB))
+            if (!string.IsNullOrEmpty(input[2]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
-                    new ExternalReference<TextureContent>(input.LayerB), null);
+                    new ExternalReference<TextureContent>(input[2]), null);
 
                 texture.ConvertBitmapType(typeof(PixelBitmapContent<float>));
                 bitmapB = (PixelBitmapContent<float>)texture.Mipmaps[0];
@@ -91,6 +82,17 @@ namespace Isles.Pipeline.Processors
                 height = bitmapB.Height;
             }
 
+            if (!string.IsNullOrEmpty(input[3]))
+            {
+                texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
+                    new ExternalReference<TextureContent>(input[3]), null);
+
+                texture.ConvertBitmapType(typeof(PixelBitmapContent<float>));
+                bitmapA = (PixelBitmapContent<float>)texture.Mipmaps[0];
+
+                width = bitmapA.Width;
+                height = bitmapA.Height;
+            }
 
             PixelBitmapContent<Vector4> bitmap = new PixelBitmapContent<Vector4>(width, height);
 

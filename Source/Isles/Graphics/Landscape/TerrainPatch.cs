@@ -21,13 +21,15 @@ namespace Isles.Graphics.Landscape
 {
     #region TerrainPatchPart
     /// <summary>
-    /// A terrain patch part is 8 triangles that makes up the following shape:
+    /// A terrain patch part is 8 triangles that makes up a square block.
+    /// </summary>
+    /// <remarks>
     ///  ____ ____
     /// |0 / | \ 3|
     /// |_/_1|2_\_|
     /// | \ 5|6 / |
     /// |4_\_|_/_7|
-    /// </summary>
+    /// </remarks>
     public sealed class TerrainPatchPart
     {
         /// <summary>
@@ -110,37 +112,72 @@ namespace Isles.Graphics.Landscape
         #endregion
     }
     #endregion
-
-
-    #region TerrainPatchPart
+    
+    #region TerrainPatch
     /// <summary>
-    /// A square block made up of terrain patch parts.
+    /// A square block made up of terrain patch parts. The whole terrain is rendered patch by patch.
     /// </summary>
     public sealed class TerrainPatch : IDisposable
     {
+        /// <summary>
+        /// Gets the level of tessellation of this patch.
+        /// </summary>
         public int Tessellation { get; internal set; }
 
+        /// <summary>
+        /// Gets vertex buffer of this patch.
+        /// </summary>
         public VertexBuffer VertexBuffer { get; private set; }
 
+        /// <summary>
+        /// Gets index buffer of this patch.
+        /// </summary>
         public IndexBuffer IndexBuffer { get; private set; }
 
+        /// <summary>
+        /// Gets vertex declaration of this patch.
+        /// </summary>
         public VertexDeclaration VertexDeclaration { get; private set; }
 
+        /// <summary>
+        /// Gets the number of primitives that made up the patch.
+        /// </summary>
         public int PrimitiveCount { get; private set; }
 
+        /// <summary>
+        /// Gets the number of vertices that made up the patch.
+        /// </summary>
         public int VertexCount { get { return (Tessellation + 1) * (Tessellation + 1); } }
 
+        /// <summary>
+        /// Gets all the patch parts of this patch.
+        /// </summary>
         public ReadOnlyCollection<TerrainPatchPart> PatchParts { get; private set; }
 
+        /// <summary>
+        /// Gets all the effects used to draw the terrain patch.
+        /// </summary>
         public Collection<Effect> Effects { get; internal set; }
 
+        /// <summary>
+        /// Gets the underlying GraphicsDevice.
+        /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
+        /// <summary>
+        /// Gets the transform matrix used to draw the patch.
+        /// </summary>
         public Matrix Transform { get { return Matrix.CreateTranslation(position); } }
 
+        /// <summary>
+        /// Gets or sets any user data.
+        /// </summary>
         public object Tag { get; set; }
 
         #region BoundingBox & Position
+        /// <summary>
+        /// Gets the axis aligned bounding box of this terrain patch.
+        /// </summary>
         public BoundingBox BoundingBox
         {
             get
@@ -154,6 +191,9 @@ namespace Isles.Graphics.Landscape
             }
         }
 
+        /// <summary>
+        /// Gets or sets the center position of the terrain patch.
+        /// </summary>
         public Vector3 Position
         {
             get 
@@ -316,6 +356,9 @@ namespace Isles.Graphics.Landscape
             }
         }
 
+        /// <summary>
+        /// Draws this terrain patch.
+        /// </summary>
         public void Draw()
         {
             if (Effects.Count <= 0 || PrimitiveCount <= 0)
@@ -342,6 +385,9 @@ namespace Isles.Graphics.Landscape
             }
         }
 
+        /// <summary>
+        /// Draws this terrain patch using the specified effect.
+        /// </summary>
         public void Draw(Effect effect)
         {
             if (effect == null || PrimitiveCount <= 0)
@@ -365,6 +411,9 @@ namespace Isles.Graphics.Landscape
             effect.End();
         }
 
+        /// <summary>
+        /// Disposes any resources associated with this instance.
+        /// </summary>
         public void Dispose()
         {
             if (VertexBuffer != null)

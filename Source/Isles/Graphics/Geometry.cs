@@ -53,7 +53,7 @@ namespace Isles.Graphics
         internal Geometry() { }
 
 
-        public bool TryGetHeightAndNormal(Vector3 position, ref float height, ref Vector3 normal)
+        public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
             throw new NotImplementedException();
         }

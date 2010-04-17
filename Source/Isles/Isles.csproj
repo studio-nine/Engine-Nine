@@ -119,7 +119,6 @@
     <Compile Include="Graphics\Effects\ShadowMapReceiverEffect.cs" />
     <Compile Include="Graphics\Landscape\SkyBoxEffect.cs" />
     <Compile Include="Graphics\Landscape\TerrainGeometry.cs" />
-    <Compile Include="Graphics\Landscape\TerrainSplatEffect.cs" />
     <Compile Include="Graphics\Landscape\WaterSurfaceEffect.cs" />
     <Compile Include="Graphics\ModelEffect.cs" />
     <Compile Include="Graphics\Models\AnimationClip.cs" />
@@ -191,6 +190,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Graphics\Effects\BasicTextureEffect.cs" />
+    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Graphics\Effects\DecalEffect.cs">
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\NormalMappingEffect.cs">
       <DependentUpon>NormalMappingEffect.fx</DependentUpon>
     </Compile>
@@ -206,6 +213,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ScrollEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SplatterEffect.cs">
+      <DependentUpon>SplatterEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SplatterEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
     <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
@@ -246,7 +261,6 @@
     <Compile Include="Graphics\Landscape\Terrain.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\Landscape\TerrainLayerEffect.cs" />
     <Compile Include="Graphics\Vertices\TerrainVertex.cs" />
     <Compile Include="Graphics\Landscape\TerrainPatch.cs" />
     <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
@@ -266,6 +280,14 @@
       <DependentUpon>SaturationEffect.fx</DependentUpon>
     </Compile>
     <None Include="Graphics\Effects\BasicEffect.fx" />
+    <None Include="Graphics\Effects\DecalEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\SplatterEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SplatterEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\NormalMappingEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>NormalMappingEffect.Designer.cs</LastGenOutput>

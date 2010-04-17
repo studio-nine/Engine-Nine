@@ -63,11 +63,11 @@ namespace ScreenEffects
             screenEffect = new ScreenEffect(GraphicsDevice);
 
 
-            screenEffect.Effects.Add(new SaturationEffect(GraphicsDevice) { Saturation = 0.3f });
-            screenEffect.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(45), BlurAmount = 2 });
-            //screenEffect.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(-45), BlurAmount = 2 });
-            screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = MatrixExtensions.CreateBrightness(1.0f) });        
             screenEffect.Effects.Add(new BloomEffect(GraphicsDevice));
+            screenEffect.Effects.Add(new SaturationEffect(GraphicsDevice) { Saturation = 0.3f });
+            //screenEffect.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(45), BlurAmount = 2 });
+            //screenEffect.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(-45), BlurAmount = 2 });
+            //screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = MatrixExtensions.CreateBrightness(1.0f) });                    
         }
 
         /// <summary>
