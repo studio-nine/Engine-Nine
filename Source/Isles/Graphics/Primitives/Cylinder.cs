@@ -18,7 +18,7 @@ namespace Isles.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing cylinders.
     /// </summary>
-    public class Cylinder : Primitive
+    internal class Cylinder : Primitive
     {
         /// <summary>
         /// Constructs a new cylinder primitive, using default settings.

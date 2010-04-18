@@ -19,7 +19,7 @@ namespace Isles.Graphics.Primitives
     /// Base class for primitives that are made out of cubic bezier patches
     /// (a type of curved surface). This is used by the TeapotPrimitive.
     /// </summary>
-    public abstract class Bezier : Primitive
+    internal abstract class Bezier : Primitive
     {
         /// <summary>
         /// Creates indices for a patch that is tessellated at the specified level.

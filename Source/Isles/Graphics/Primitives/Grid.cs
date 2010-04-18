@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Primitives
 {
-    public class Grid : Primitive
+    internal class Grid : Primitive
     {
         public float Width { get; private set; }
         public float Height { get; private set; }

@@ -22,16 +22,9 @@ namespace Isles.Graphics.Effects
 {
     public partial class DecalEffect
     {
-        Vector3 upAxis = Vector3.UnitZ;
         Vector2 scale = Vector2.One;
         Vector3 position;
         float rotation;
-
-        public Vector3 Up
-        {
-            get { return upAxis; }
-            set { upAxis = value; Update(); }
-        }
 
         public Vector3 Position
         {
@@ -51,7 +44,7 @@ namespace Isles.Graphics.Effects
             set { scale = value; Update(); }
         }
 
-        public BoundingSphere BoundingSphere { get; private set; }
+        public BoundingBox BoundingBox { get; private set; }
 
         public DecalEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
         
@@ -65,15 +58,17 @@ namespace Isles.Graphics.Effects
 
         private void Update()
         {
-            Matrix matrix = Matrix.CreateTranslation(-position);
-            matrix *= Matrix.CreateFromAxisAngle(
-                 Vector3.Cross(Up, Vector3.UnitZ), (float)Math.Cos(Vector3.Dot(Up, Vector3.UnitZ)));
+            Matrix matrix = Matrix.CreateTranslation(-position + new Vector3(scale.X / 2, scale.Y / 2, 0));
             matrix *= Matrix.CreateRotationZ(-rotation);
             matrix *= Matrix.CreateScale(1.0f / scale.X, 1.0f / scale.Y, 1);
 
             TextureTransform = matrix;
 
-            BoundingSphere = new BoundingSphere(position, (float)(Math.Max(scale.X, scale.Y) * Math.Sqrt(2)));
+            float size = (float)(Math.Max(scale.X, scale.Y) * Math.Sqrt(2) * 0.5f);
+
+            BoundingBox = new BoundingBox(
+                position - new Vector3(size, size, float.MaxValue),
+                position + new Vector3(size, size, float.MaxValue));
         }
     }
 }

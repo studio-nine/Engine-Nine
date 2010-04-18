@@ -24,7 +24,7 @@ namespace Isles.Graphics.Landscape
     /// A triangle mesh constructed from heightmap to represent game terrain. 
     /// The up axis of the terrain is Vector.UnitZ.
     /// </summary>    
-    public sealed class Terrain : IDisposable
+    public sealed class Terrain : IDisposable, ISurface, IPickable
     {
         /// <summary>
         /// Gets the underlying geometry that contains height, normal, tangent data.
@@ -181,6 +181,14 @@ namespace Isles.Graphics.Landscape
                 patch.Invalidate();
             }
         }
+
+        /// <summary>
+        /// Gets the position of a point.
+        /// </summary>
+        public Vector3 GetPosition(TerrainPatch patch, TerrainPatchPart part, Point index)
+        {
+            return patch.GetPosition(part, index);
+        }
         
         private void UpdatePatchPositions()
         {
@@ -200,6 +208,7 @@ namespace Isles.Graphics.Landscape
             Invalidate();
         }
 
+        #region IDisposable Members
         /// <summary>
         /// Disposes any resources associated with this instance.
         /// </summary>
@@ -210,5 +219,80 @@ namespace Isles.Graphics.Landscape
                 patch.Dispose();
             }
         }
+        #endregion
+
+        #region ISurface Members
+        /// <summary>
+        /// Gets the height and normal of the terrain at a given location.
+        /// </summary>
+        /// <returns>False if the location is outside the boundary of the terrain.</returns>
+        public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
+        {
+            return Geometry.TryGetHeightAndNormal(position - Position, out height, out normal);
+        }
+        #endregion
+
+        #region IPickable Members
+        /// <summary>
+        /// Points under the heightmap and are within the boundary are picked.
+        /// </summary>
+        /// <returns>This TerrainGeometry instance</returns>
+        public object Pick(Vector3 point)
+        {
+            return Geometry.Pick(point - position) != null ? this : null;
+        }
+        
+        /// <summary>
+        /// Checks whether a ray intersects the terrain mesh.
+        /// </summary>
+        /// <returns>This TerrainGeometry instance</returns>
+        public object Pick(Ray ray, out float? distance)
+        {
+            float minDistance = float.MaxValue;
+            distance = null;
+            int i = 0;
+            Vector3[] vertices = new Vector3[3];                            
+
+            foreach (TerrainPatch patch in Patches)
+            {
+                if (ray.Intersects(patch.BoundingBox).HasValue)
+                {
+                    foreach (TerrainPatchPart part in patch.PatchParts)
+                    {
+                        if (ray.Intersects(part.BoundingBox).HasValue)
+                        {
+                            i = 0;
+
+                            foreach (Point pt in patch.PatchParts[i].Indices)
+                            {
+                                vertices[i++] = GetPosition(patch, part, pt);
+
+                                if (i == 3)
+                                {
+                                    i = 0;
+
+                                    PickEngine.Intersects(ref ray, ref vertices[0],
+                                                                   ref vertices[1],
+                                                                   ref vertices[2],
+                                                                   out distance);
+
+                                    if (distance.HasValue && distance.Value < minDistance)
+                                        minDistance = distance.Value;
+                                }
+                            }                    
+                        }
+                    }
+                }
+            }
+
+            if (minDistance < float.MaxValue)
+            {
+                distance = minDistance;
+                return this;
+            }
+
+            return null;
+        }
+        #endregion
     }
 }

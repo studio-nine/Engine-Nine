@@ -18,7 +18,7 @@ namespace Isles.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing toruses.
     /// </summary>
-    public class Torus : Primitive
+    internal class Torus : Primitive
     {
         /// <summary>
         /// Constructs a new torus primitive, using default settings.

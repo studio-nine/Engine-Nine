@@ -29,7 +29,7 @@ namespace Isles.Graphics.Primitives
     /// graphics programmers have come to think of it as a standard geometric
     /// primitive, right up there with cubes and spheres!
     /// </summary>
-    public class Teapot : Bezier
+    internal class Teapot : Bezier
     {
         /// <summary>
         /// Constructs a new teapot primitive, using default settings.

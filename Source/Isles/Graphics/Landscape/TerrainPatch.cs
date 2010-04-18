@@ -19,101 +19,6 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics.Landscape
 {
-    #region TerrainPatchPart
-    /// <summary>
-    /// A terrain patch part is 8 triangles that makes up a square block.
-    /// </summary>
-    /// <remarks>
-    ///  ____ ____
-    /// |0 / | \ 3|
-    /// |_/_1|2_\_|
-    /// | \ 5|6 / |
-    /// |4_\_|_/_7|
-    /// </remarks>
-    public sealed class TerrainPatchPart
-    {
-        /// <summary>
-        /// Whether each triangle is visible.
-        /// </summary>
-        public byte Mask { get; set; }
-
-        /// <summary>
-        /// Center position of this patch part.
-        /// </summary>
-        public Vector3 Position { get; internal set; }
-
-        /// <summary>
-        /// Constructor is for internal use only.
-        /// </summary>
-        internal TerrainPatchPart() { }
-
-        #region Indices
-        internal IEnumerable<Point> Indices
-        {
-            get 
-            {
-                if ((Mask > 0) & 0x01 == 1)
-                {
-                    yield return points[0];
-                    yield return points[1];
-                    yield return points[3];
-                }
-                if ((Mask > 1) & 0x01 == 1)
-                {
-                    yield return points[3];
-                    yield return points[1];
-                    yield return points[4];
-                }
-                if ((Mask > 2) & 0x01 == 1)
-                {
-                    yield return points[1];
-                    yield return points[5];
-                    yield return points[4];
-                }
-                if ((Mask > 3) & 0x01 == 1)
-                {
-                    yield return points[1];
-                    yield return points[2];
-                    yield return points[5];
-                }
-                if ((Mask > 4) & 0x01 == 1)
-                {
-                    yield return points[3];
-                    yield return points[7];
-                    yield return points[6];
-                }
-                if ((Mask > 5) & 0x01 == 1)
-                {
-                    yield return points[3];
-                    yield return points[4];
-                    yield return points[7];
-                }
-                if ((Mask > 6) & 0x01 == 1)
-                {
-                    yield return points[4];
-                    yield return points[5];
-                    yield return points[7];
-                }
-                if ((Mask > 7) & 0x01 == 1)
-                {
-                    yield return points[5];
-                    yield return points[8];
-                    yield return points[7];
-                }
-            }
-        }
-
-        private static Point[] points = new Point[]
-        {
-            new Point(0, 0), new Point(1, 0), new Point(2, 0),
-            new Point(0, 1), new Point(1, 1), new Point(2, 1),
-            new Point(0, 2), new Point(1, 2), new Point(2, 2),
-        };
-        #endregion
-    }
-    #endregion
-    
-    #region TerrainPatch
     /// <summary>
     /// A square block made up of terrain patch parts. The whole terrain is rendered patch by patch.
     /// </summary>
@@ -255,13 +160,23 @@ namespace Isles.Graphics.Landscape
             // Initialize patch parts
             TerrainPatchPart[] parts = new TerrainPatchPart[tessellation * tessellation / 4];
 
-            for (int i = 0; i < parts.Length; i++)
+            int i = 0;
+            int part = tessellation / 2;
+
+            for (int y = 0; y < part; y++)
             {
-                TerrainPatchPart part = new TerrainPatchPart();
+                for (int x = 0; x < part; x++)
+                {
+                    TerrainPatchPart p = new TerrainPatchPart();
 
-                part.Mask = 0xFF;
+                    p.Mask = 0xFF;
+                    p.X = x;
+                    p.Y = y;
 
-                parts[i] = part;
+                    parts[i] = p;
+
+                    i++;
+                }
             }
 
             PatchParts = new ReadOnlyCollection<TerrainPatchPart>(parts);
@@ -334,6 +249,13 @@ namespace Isles.Graphics.Landscape
             UpdatePartPositions();
         }
 
+        internal Vector3 GetPosition(TerrainPatchPart part, Point pt)
+        {
+            return position + geometry.GetPosition(
+                pt.X + part.X * 2 + xPatch * Tessellation, 
+                pt.Y + part.Y * 2 + yPatch * Tessellation);
+        }
+
         private IEnumerable<Vector3> EnumeratePositions()
         {
             for (int i = 0; i < VertexCount; i++)
@@ -349,9 +271,28 @@ namespace Isles.Graphics.Landscape
             {
                 for (int x = 0; x < part; x++)
                 {
-                    PatchParts[i++].Position = new Vector3(
-                        (x + 0.5f - part * 0.5f) * geometry.Step * 2 + Position.X,
-                        (y + 0.5f - part * 0.5f) * geometry.Step * 2 + Position.Y, Position.Z);
+                    float max = float.MinValue;
+                    Vector3 position;
+
+                    position.X = (x + 0.5f - part * 0.5f) * geometry.Step * 2 + Position.X;
+                    position.Y = (y + 0.5f - part * 0.5f) * geometry.Step * 2 + Position.Y;
+                    position.Z = Position.Z;
+
+                    PatchParts[i].Position = position;
+
+                    foreach (Point pt in PatchParts[i].Indices)
+                    {
+                        Vector3 v = GetPosition(PatchParts[i], pt);
+
+                        if (v.Z > max)
+                            max = v.Z;
+                    }
+
+                    PatchParts[i].BoundingBox = new BoundingBox(
+                        new Vector3(position.X - geometry.Step, position.Y - geometry.Step, position.Z),
+                        new Vector3(position.X + geometry.Step, position.Y + geometry.Step, max));
+
+                    i++;
                 }
             }
         }
@@ -426,5 +367,4 @@ namespace Isles.Graphics.Landscape
                 VertexDeclaration.Dispose();
         }
     }
-    #endregion
 }

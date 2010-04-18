@@ -18,7 +18,7 @@ namespace Isles.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing spheres.
     /// </summary>
-    public class Dome : Primitive
+    internal class Dome : Primitive
     {
         /// <summary>
         /// Constructs a new sphere primitive, using default settings.

@@ -20,6 +20,7 @@ using Isles.Graphics;
 using Isles.Graphics.Cameras;
 using Isles.Graphics.Effects;
 using Isles.Graphics.Landscape;
+using Isles.Graphics.Primitives;
 #endregion
 
 
@@ -37,7 +38,6 @@ namespace TerrainSample
         ScrollEffect scrollEffect;
         SplatterEffect splatterEffect;
         DecalEffect decalEffect;
-
 
         public TerrainGame()
         {
@@ -98,8 +98,8 @@ namespace TerrainSample
 
             decalEffect = new DecalEffect(GraphicsDevice);
             decalEffect.Texture = Content.Load<Texture2D>("checker");
-            decalEffect.Position = Vector3.One * 10;
-            decalEffect.Rotation = MathHelper.ToRadians(10);
+            //decalEffect.Position = Vector3.One * 10;
+            //decalEffect.Rotation = MathHelper.ToRadians(10);
             decalEffect.Scale = Vector2.One * 10;
         }
 
@@ -113,32 +113,6 @@ namespace TerrainSample
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// Unproject a point on the screen to a ray in the 3D world
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public Ray Unproject(int x, int y, Matrix view, Matrix projection)
-        {
-            Ray ray;
-
-            Matrix viewInverse = Matrix.Invert(view);
-            Matrix viewProjectionInverse = Matrix.Invert(view * projection);
-
-            Vector3 v;
-            v.X = (((2.0f * x) / GraphicsDevice.Viewport.Width) - 1);
-            v.Y = -(((2.0f * y) / GraphicsDevice.Viewport.Height) - 1);
-            v.Z = 0.0f;
-
-            ray.Position.X = viewInverse.M41;
-            ray.Position.Y = viewInverse.M42;
-            ray.Position.Z = viewInverse.M43;
-            ray.Direction = Vector3.Normalize(
-                Vector3.Transform(v, viewProjectionInverse) - ray.Position);
-
-            return ray;
-        }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -155,21 +129,25 @@ namespace TerrainSample
                 GraphicsDevice.RenderState.FillMode = FillMode.Solid;
 
 
-            // Enable alpha blending
+            // Initialize render state
             GraphicsDevice.RenderState.AlphaBlendEnable = true;
             GraphicsDevice.RenderState.AlphaSourceBlend = Blend.SourceAlpha;
             GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
+            GraphicsDevice.RenderState.DepthBufferEnable = true;
+            GraphicsDevice.RenderState.DepthBufferWriteEnable = true;            
 
             
-            // Terrain picking            
-            //float? distance;
-            //Ray ray = Unproject(Mouse.GetState().X, Mouse.GetState().Y, camera.View, camera.Projection);
+            // Terrain picking    
+            float? distance;
 
-            //terrain.Geometry.Pick(ray, out distance);
+            Ray ray = PickEngine.RayFromScreen(GraphicsDevice, 
+                            Mouse.GetState().X, Mouse.GetState().Y, camera.View, camera.Projection);
 
-            //if (distance.HasValue)
-            //    decalEffect.Position = ray.Position + ray.Direction * distance.Value;
-            //terrain.Geometry.Pick(new Ray(new Vector3(0, 0, 100), -Vector3.UnitZ), out distance);
+            terrain.Pick(ray, out distance);
+
+            if (distance.HasValue)
+                decalEffect.Position = ray.Position + ray.Direction * distance.Value;
+
 
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
@@ -205,7 +183,9 @@ namespace TerrainSample
                     patch.Draw(splatterEffect);
                     patch.Draw(scrollEffect);
 
-                    if (patch.BoundingBox.Intersects(decalEffect.BoundingSphere))
+
+                    // Draw decal
+                    if (patch.BoundingBox.Intersects(decalEffect.BoundingBox))
                     {
                         patch.Draw(decalEffect);
 
@@ -215,9 +195,6 @@ namespace TerrainSample
                     }
                 }
             }
-
-
-            //GraphicsDevice.DrawSprite(splatterEffect.Textures[0], null, null, Color.White, null);
 
             base.Draw(gameTime);
         }

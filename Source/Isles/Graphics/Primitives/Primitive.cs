@@ -14,8 +14,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Graphics
+namespace Isles.Graphics.Primitives
 {
+    #region Primitive
     /// <summary>
     /// Base class for simple geometric primitive models. This provides a vertex
     /// buffer, an index buffer, plus methods for drawing the model. Classes for
@@ -23,7 +24,7 @@ namespace Isles.Graphics
     /// derived from this common base, and use the AddVertex and AddIndex methods
     /// to specify their geometry.
     /// </summary>
-    public abstract class Primitive : IDisposable, IGeometry
+    internal abstract class Primitive : IDisposable, IGeometry
     {
         #region Fields
 
@@ -320,4 +321,5 @@ namespace Isles.Graphics
 
         #endregion
     }
+    #endregion
 }

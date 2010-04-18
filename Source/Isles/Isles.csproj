@@ -104,7 +104,6 @@
     <Compile Include="Graphics\Cameras\FreeCamera.cs" />
     <Compile Include="Graphics\Cameras\ModelViewerCamera.cs" />
     <Compile Include="Graphics\Cameras\TopDownEditorCamera.cs" />
-    <Compile Include="Graphics\Canvas.cs" />
     <Compile Include="Graphics\DirectionalLight.cs" />
     <Compile Include="Graphics\Effects\BasicSkinnedEffect.cs" />
     <Compile Include="Graphics\RenderToTextureEffect.cs" />
@@ -131,19 +130,15 @@
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
     <Compile Include="Graphics\PointLight.cs" />
-    <Compile Include="Graphics\Primitive.cs" />
-    <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="Graphics\Primitives\Arrow.cs" />
     <Compile Include="Graphics\Primitives\Axis.cs" />
     <Compile Include="Graphics\Primitives\Bezier.cs" />
     <Compile Include="Graphics\Primitives\Centrum.cs" />
-    <Compile Include="Graphics\Primitives\Cube.cs" />
     <Compile Include="Graphics\Primitives\Cylinder.cs" />
     <Compile Include="Graphics\Primitives\Dome.cs" />
     <Compile Include="Graphics\Primitives\Grid.cs" />
     <Compile Include="Graphics\Primitives\Plane.cs" />
     <Compile Include="Graphics\Primitives\Skeleton.cs" />
-    <Compile Include="Graphics\Primitives\Sphere.cs" />
     <Compile Include="Graphics\Primitives\Teapot.cs" />
     <Compile Include="Graphics\Primitives\Torus.cs" />
     <Compile Include="Graphics\SpriteSheet.cs" />
@@ -189,6 +184,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\DebugVisual.cs" />
     <Compile Include="Graphics\Effects\BasicTextureEffect.cs" />
     <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
@@ -223,6 +219,10 @@
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
+    <Compile Include="Graphics\Landscape\TerrainPatchPart.cs" />
+    <Compile Include="Graphics\Primitives\Primitive.cs" />
+    <Compile Include="Graphics\Primitives\Cube.cs" />
+    <Compile Include="Graphics\Primitives\Sphere.cs" />
     <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
       <DependentUpon>BloomCombine.fx</DependentUpon>
     </Compile>
@@ -230,6 +230,30 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BloomCombine.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.cs">
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.cs">
+      <DependentUpon>SilouetteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SilouetteEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\Threshold.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -299,6 +323,18 @@
     <None Include="Graphics\ScreenEffects\BloomCombine.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>BloomCombine.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\PixelateEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>PixelateEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\RadialBlurEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>RadialBlurEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\SilouetteEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SilouetteEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\Threshold.fx">
       <Generator>EffectCustomTool</Generator>

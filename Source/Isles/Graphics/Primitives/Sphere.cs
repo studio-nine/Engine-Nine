@@ -18,8 +18,10 @@ namespace Isles.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing spheres.
     /// </summary>
-    public class Sphere : Primitive
+    internal class Sphere : Primitive
     {
+        float radius;
+
         /// <summary>
         /// Constructs a new sphere primitive, using default settings.
         /// </summary>
@@ -36,6 +38,8 @@ namespace Isles.Graphics.Primitives
         public Sphere(GraphicsDevice graphicsDevice,
                                float diameter, int tessellation)
         {
+            this.radius = diameter / 2;
+
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
@@ -108,6 +112,16 @@ namespace Isles.Graphics.Primitives
             }
 
             InitializePrimitive(graphicsDevice);
+        }
+
+
+        public void Draw(BoundingSphere sphere, Matrix view, Matrix projection, Color color)
+        {
+            Matrix world = //Matrix.CreateTranslation(0, 0, radius) *
+                           Matrix.CreateScale(sphere.Radius / radius) *
+                           Matrix.CreateTranslation(sphere.Center);
+
+            Draw(world, view, projection, color);
         }
     }
 }

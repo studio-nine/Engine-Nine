@@ -17,8 +17,10 @@ namespace Isles.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing cubes.
     /// </summary>
-    public class Cube : Primitive
+    internal class Cube : Primitive
     {
+        private float size;
+
         /// <summary>
         /// Constructs a new cube primitive, using default settings.
         /// </summary>
@@ -33,6 +35,8 @@ namespace Isles.Graphics.Primitives
         /// </summary>
         public Cube(GraphicsDevice graphicsDevice, float size)
         {
+            this.size = size;
+
             // A cube has six faces, each one pointing in a different direction.
             Vector3[] normals =
             {
@@ -68,6 +72,15 @@ namespace Isles.Graphics.Primitives
             }
 
             InitializePrimitive(graphicsDevice);
+        }
+
+
+        public void Draw(BoundingBox box, Matrix view, Matrix projection, Color color)
+        {
+            Matrix world = Matrix.CreateScale((box.Max - box.Min) / size) * 
+                           Matrix.CreateTranslation((box.Min + box.Max) / 2);
+
+            Draw(world, view, projection, color);
         }
     }
 }

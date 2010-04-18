@@ -318,7 +318,9 @@ namespace Isles.Graphics.Landscape
         /// <returns>This TerrainGeometry instance</returns>
         public object Pick(Ray ray, out float? distance)
         {
-            
+            // This method doesn't work correctly for now
+            throw new NotImplementedException();
+
             distance = null;
 
             // Get two vertices to draw a line through the
@@ -451,7 +453,10 @@ namespace Isles.Graphics.Landscape
         #endregion
 
         #region ISurface Members
-
+        /// <summary>
+        /// Gets the height of the terrain at a given location.
+        /// </summary>
+        /// <returns>Null if the location is outside the boundary of the terrain.</returns>
         public float? GetHeight(float x, float y)
         {
             float result;
@@ -468,6 +473,10 @@ namespace Isles.Graphics.Landscape
             return null;
         }
 
+        /// <summary>
+        /// Gets the height and normal of the terrain at a given location.
+        /// </summary>
+        /// <returns>False if the location is outside the boundary of the terrain.</returns>
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
             // first we'll figure out where on the heightmap "position" is...
