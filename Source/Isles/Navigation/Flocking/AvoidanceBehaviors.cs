@@ -124,7 +124,7 @@ namespace Isles.Navigation.Flocking
         }
 
         private float Evaluate(float value)
-        {
+        {            
             return (float)((Math.Pow(Elasticity, value) - 1) / (Elasticity - 1));
         }
     }

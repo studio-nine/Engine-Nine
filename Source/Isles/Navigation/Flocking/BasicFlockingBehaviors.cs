@@ -33,7 +33,14 @@ namespace Isles.Navigation.Flocking
 
         public Vector3 Update(GameTime gameTime, IMovable movingEnity)
         {
-            return Vector3.Normalize(Target - movingEnity.Position) * movingEnity.MaxSpeed - movingEnity.Forward * movingEnity.Speed;
+            Vector3 toTarget = Target - movingEnity.Position;
+
+            float dist = toTarget.Length();
+
+            if (dist > 0)
+                return Vector3.Normalize(toTarget) * movingEnity.MaxSpeed - movingEnity.Forward * movingEnity.Speed;
+
+            return Vector3.Zero;
         }
     }
     #endregion
@@ -45,7 +52,14 @@ namespace Isles.Navigation.Flocking
 
         public Vector3 Update(GameTime gameTime, IMovable movingEnity)
         {
-            return Vector3.Normalize(movingEnity.Position - Target) * movingEnity.MaxSpeed - movingEnity.Forward * movingEnity.Speed;
+            Vector3 toTarget = Target - movingEnity.Position;
+
+            float dist = toTarget.Length();
+
+            if (dist > 0)
+                return Vector3.Normalize(movingEnity.Position - Target) * movingEnity.MaxSpeed - movingEnity.Forward * movingEnity.Speed;
+
+            return Vector3.Zero;
         }
     }
     #endregion
@@ -53,6 +67,8 @@ namespace Isles.Navigation.Flocking
     #region ArriveBehavior
     public sealed class ArriveBehavior : IFlockingBehavior
     {
+        SeekBehavior seek = new SeekBehavior();
+
         public Vector3 Target { get; set; }
         public float Deceleration { get; set; }
         public float DecelerateRange { get; set; }
@@ -96,7 +112,8 @@ namespace Isles.Navigation.Flocking
             else
             {
                 // Seek
-                return Vector3.Normalize(Target - movingEnity.Position) * movingEnity.MaxSpeed - movingEnity.Forward * movingEnity.Speed;        
+                seek.Target = Target;
+                return seek.Update(gameTime, movingEnity);
             }
         }
     }

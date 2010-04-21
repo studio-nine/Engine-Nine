@@ -185,7 +185,7 @@ namespace Isles.Navigation.Flocking
             Mass = 1.0f;
             StopSpeed = 1.0f;
             MaxSpeed = 10.0f;
-            MaxForce = 1.0f;
+            MaxForce = 0.5f;
             Forward = Vector3.UnitX;
             
             Behaviors = new FlockingBehaviorCollection();
