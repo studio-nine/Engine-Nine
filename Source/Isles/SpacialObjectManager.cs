@@ -30,11 +30,11 @@ namespace Isles
         internal struct Entry
         {
             public object Object;
-            public Vector3 Position;
+            public Vector2 Position;
         }
 
-        private Vector3 position;
-        private Vector3 dimension = new Vector3(128, 128, 0);
+        private Vector2 position;
+        private Vector2 dimension = new Vector2(128, 128);
         private int tessellationX = 16;
         private int tessellationY = 16;
         private Dictionary<int, List<Entry>> dictionary = new Dictionary<int, List<Entry>>();
@@ -63,7 +63,7 @@ namespace Isles
             }
         }
 
-        public Vector3 Position
+        public Vector2 Position
         {
             get { return position; }
             set
@@ -75,7 +75,7 @@ namespace Isles
             }
         }
 
-        public Vector3 Dimension
+        public Vector2 Dimension
         {
             get { return dimension; }
             set
@@ -85,15 +85,27 @@ namespace Isles
 
                 dimension = value;
             }
-        } 
+        }
+
+        public GridObjectManager() { }
+
+        public GridObjectManager(float width, float height, float x, float y, int tessellationX, int tessellationY)
+        {
+            Position = new Vector2(x, y);
+
+            Dimension = new Vector2(width, height);
+
+            TessellationX = tessellationX;
+            TessellationY = tessellationY;
+        }
 
 
-        public void Add(object obj, Vector3 position)
+        public void Add(object obj, float x, float y)
         {
             if (obj == null)
                 throw new ArgumentException();
 
-            Point pt = PointFromPosition(position.X, position.Y);
+            Point pt = PointFromPosition(x, y);
 
             int key = pt.Y * tessellationX + pt.X;
 
@@ -104,7 +116,8 @@ namespace Isles
                 Entry e;
 
                 e.Object = obj;
-                e.Position = position;
+                e.Position.X = x;
+                e.Position.Y = y;
 
                 list.Add(e);
             }
@@ -115,7 +128,8 @@ namespace Isles
                 Entry e;
 
                 e.Object = obj;
-                e.Position = position;
+                e.Position.X = x;
+                e.Position.Y = y;
 
                 list.Add(e);
 

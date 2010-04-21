@@ -50,54 +50,6 @@ namespace Isles
     }
     #endregion
 
-    #region MatrixExtensions
-    public static class MatrixExtensions
-    {
-        // Color matrix
-        public static Matrix CreateColorMatrix(float brightness, float contrast, float saturation, float hue)
-        {
-            return Matrix.Identity;
-        }
-
-        public static Matrix CreateBrightness(float amount)
-        {
-            return Matrix.CreateTranslation(amount, amount, amount);
-        }
-
-        public static Matrix CreateContrast(float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Matrix CreateHue(float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Matrix CreateSaturation(float amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-        // 2D matrix transform
-        public static Matrix CreateTranslation(float x, float y)
-        {
-            return Matrix.CreateTranslation(x, y, 0);
-        }
-
-        public static Matrix CreateRotation(float radians)
-        {
-            return Matrix.CreateRotationZ(radians);
-        }
-
-        public static Matrix CreateScale(float x, float y)
-        {
-            return Matrix.CreateScale(x, y, 1);
-        }
-    }
-    #endregion
-
     #region ParseExtensions
     public static class ParseExtensions
     {

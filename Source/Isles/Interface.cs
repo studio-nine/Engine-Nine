@@ -117,20 +117,6 @@ namespace Isles
     }
 
 
-    /// <summary>
-    /// Interface for object movement
-    /// </summary>
-    public interface IMovable : IUpdateObject
-    {
-        Vector3 Position { get; set; }
-        Vector3 Forward { get; }                        
-        Matrix Transform { get; }
-        float Speed { get; }
-        float MaxSpeed { get; }
-
-        void ApplyForce(Vector3 steeringForce);
-    }
-
 
     /// <summary>
     /// A container that contains one or more components.

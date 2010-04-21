@@ -28,14 +28,22 @@ namespace Isles.Graphics
         public static float Alpha { get; set; }
         public static Matrix View { get; set; }
         public static Matrix Projection { get; set; }
+        public static bool LightingEnabled { get; set; }
 
-        static DebugVisual() { Alpha = 0.5f; Projection = Matrix.Identity; }
+
+        static DebugVisual() 
+        {
+            Alpha = 0.5f; 
+            Projection = Matrix.Identity; 
+            LightingEnabled = true; 
+        }
 
 
         static Cube cube;
         static Sphere sphere;
         static Axis axis;
         static Arrow arrow;
+        static Grid grid;        
 
 
         public static void DrawBox(GraphicsDevice graphics, BoundingBox box, Color color)
@@ -44,6 +52,7 @@ namespace Isles.Graphics
                 cube = new Cube(graphics);
 
             color.A = (byte)(color.A * Alpha);
+            cube.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
 
@@ -58,6 +67,7 @@ namespace Isles.Graphics
                 sphere = new Sphere(graphics);
 
             color.A = (byte)(color.A * Alpha);
+            sphere.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
 
@@ -84,6 +94,7 @@ namespace Isles.Graphics
                 sphere = new Sphere(graphics);
 
             color.A = (byte)(color.A * Alpha);
+            sphere.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
 
@@ -94,6 +105,11 @@ namespace Isles.Graphics
 
         public static void DrawArrow(GraphicsDevice graphics, Vector3 position, Vector3 target, Color color)
         {
+            DrawArrow(graphics, position, target, color, 1.0f);
+        }
+
+        public static void DrawArrow(GraphicsDevice graphics, Vector3 position, Vector3 target, Color color, float scale)
+        {
             if (arrow == null)
                 arrow = new Arrow(graphics);
 
@@ -101,13 +117,27 @@ namespace Isles.Graphics
 
             Begin(graphics);
 
-            Matrix mx = Matrix.CreateScale(1, (target - position).Length(), 1) *
+            Matrix mx = Matrix.CreateScale(scale, (target - position).Length(), scale) *
                         Matrix.CreateRotationX(-MathHelper.PiOver2) *
                         Matrix.CreateWorld(position, Vector3.Normalize(target - position), Vector3.Up);
-            
+
             arrow.Draw(mx, View, Projection, color);
 
-            End(graphics);
+            End(graphics);            
+        }
+
+        public static void DrawGrid(GraphicsDevice graphics, Vector3 position, float step, int x, int y, Color color)
+        {
+            if (grid == null || grid.ResolutionU != x || grid.ResolutionV != y)
+                grid = new Grid(graphics, step * x, step * y, x, y);
+
+            color.A = (byte)(color.A * Alpha);
+
+            Begin(graphics);
+
+            grid.Draw(Matrix.CreateTranslation(position), View, Projection, color);
+
+            End(graphics);     
         }
 
         static void Begin(GraphicsDevice graphics)

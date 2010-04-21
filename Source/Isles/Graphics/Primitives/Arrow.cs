@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Primitives
 {
-    public class Arrow : IDisposable, IGeometry
+    internal class Arrow : IDisposable, IGeometry
     {
         Cylinder body;
         Centrum cap;

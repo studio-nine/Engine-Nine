@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Isles.Graphics;
 using Isles.Graphics.Models;
+using Isles.Navigation;
 #endregion
 
 
@@ -52,10 +53,10 @@ namespace Isles.Components
         {
             if (Movement != null)
             {
-                Movement.Update(gameTime);
+                //Movement.Update(gameTime);
 
-                if (displayObject != null)
-                    displayObject.Transform = Movement.Transform;
+                //if (displayObject != null)
+                //    displayObject.Transform = Movement.Transform;
             }
 
             if (Animation != null)

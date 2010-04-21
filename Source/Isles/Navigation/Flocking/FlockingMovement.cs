@@ -28,128 +28,241 @@ using Microsoft.Xna.Framework.Graphics;
 //=============================================================================
 namespace Isles.Navigation.Flocking
 {
+    #region IFlockingBehavior
     public interface IFlockingBehavior
     {
-        IMovable Movable { get; set; }
-        
-        Vector3 Update(GameTime gameTime);
+        Vector3 Update(GameTime gameTime, IMovable movingEntity);
     }
+    #endregion
 
-
-    public sealed class FlockingBehaviorCollection : Collection<IFlockingBehavior>
+    #region FlockingBehaviorCollection
+    public sealed class FlockingBehaviorCollection : ICollection<IFlockingBehavior>
     {
-        internal FlockingBehaviorCollection() { }
-
-        internal IMovable Movable;
-
-        internal void SetMovable(IMovable movable)
+        Collection<KeyValuePair<IFlockingBehavior, float>> array = new Collection<KeyValuePair<IFlockingBehavior,float>>();
+        
+        public void Add(IFlockingBehavior behavior, float weight)
         {
-            Movable = movable;
-
-            foreach (IFlockingBehavior behavior in this)
-                behavior.Movable = movable;
+            array.Add(new KeyValuePair<IFlockingBehavior, float>(behavior, weight));
         }
 
-        protected override void InsertItem(int index, IFlockingBehavior item)
+        public float GetWeight(IFlockingBehavior behavior)
         {
-            if (item == null)
-                throw new ArgumentNullException();
+            for (int i = 0; i < Count; i++)
+            {
+                if (array[i].Key == behavior)
+                {
+                    return array[i].Value;
+                }
+            }
 
-            item.Movable = Movable;
-
-            base.InsertItem(index, item);
+            return 0;
         }
 
-        protected override void SetItem(int index, IFlockingBehavior item)
+        public T Get<T>()
         {
-            if (item == null)
-                throw new ArgumentNullException();
+            for (int i = 0; i < Count; i++)
+                if (array[i].Key is T)
+                    return (T)array[i].Key;
 
-            item.Movable = Movable;
-
-            base.SetItem(index, item);
+            return default(T);
         }
+
+        internal float GetWeightByIndex(int index)
+        {
+            return array[index].Value;
+        }
+
+        public IFlockingBehavior this[int index]
+        {
+            get { return array[index].Key; }
+        }
+
+        #region ICollection<IFlockingBehavior> Members
+
+        public void Add(IFlockingBehavior behavior)
+        {
+            array.Add(new KeyValuePair<IFlockingBehavior, float>(behavior, 1.0f));
+        }
+
+        public void Clear()
+        {
+            array.Clear();
+        }
+
+        public bool Contains(IFlockingBehavior item)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (array[i].Key == item)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void CopyTo(IFlockingBehavior[] array, int arrayIndex)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                array[i + arrayIndex] = this.array[i].Key;
+            }
+        }
+
+        public int Count
+        {
+            get { return array.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public bool Remove(IFlockingBehavior item)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (array[i].Key == item)
+                {
+                    array.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region IEnumerable<IFlockingBehavior> Members
+
+        public IEnumerator<IFlockingBehavior> GetEnumerator()
+        {
+            for (int i = 0; i < Count; i++)
+                yield return array[i].Key;
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
+    #endregion
 
-
+    #region FlockingMovement
     public class FlockingMovement : IMovable
     {
-        private IMovable movable;
+        public Vector3 Position { get; set; }
 
-        public IMovable Movable
-        {
-            get { return movable; }
-            set { movable = value; Behaviors.SetMovable(value); }
-        }
+        public Vector3 Forward { get; private set; }
 
-        public Vector3 Position
-        {
-            get { return movable.Position; }
-            set { movable.Position = value; }
-        }
+        public float Speed { get; private set; }
 
-        public Vector3 Forward
-        {
-            get { return movable.Forward; }
-        }
-
-        public Matrix Transform
-        {
-            get { return movable.Transform; }
-        }
-
-        public float Speed
-        {
-            get { return movable.Speed; }
-        }
-
-        public float MaxSpeed
-        {
-            get { return movable.MaxSpeed; }
-        }
+        public float MaxSpeed { get; set; }
 
         public FlockingBehaviorCollection Behaviors { get; private set; }
 
-        public Vector3 Force { get; private set; }
         public float Mass { get; set; }
+
+        public float MaxForce { get; set; }
+
+        public float StopSpeed { get; set; }
+
+
+        Vector3 velocity;
 
 
         public FlockingMovement()
         {
             Mass = 1.0f;
+            StopSpeed = 1.0f;
+            MaxSpeed = 10.0f;
+            MaxForce = 1.0f;
+            Forward = Vector3.UnitX;
+            
             Behaviors = new FlockingBehaviorCollection();
-        }
-
-        public FlockingMovement(IMovable innerMovable)
-        {
-            Behaviors = new FlockingBehaviorCollection();
-            Movable = innerMovable;
-        }
-
-        public void ApplyForce(Vector3 steeringForce)
-        {
-            Movable.ApplyForce(steeringForce);
         }
 
         public void Update(GameTime gameTime)
         {
-            float multiplier = Mass;
+            float elapsedTime = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-            if (gameTime.ElapsedGameTime.TotalSeconds > 0)
+            if (elapsedTime <= 0)
+                return;
+
+            Vector3 force = Vector3.Zero;
+
+            // Calculate force
+            for (int i = 0; i < Behaviors.Count; i++)
             {
-                multiplier = (float)(Mass / (gameTime.ElapsedGameTime.TotalSeconds *
-                                             gameTime.ElapsedGameTime.TotalSeconds));
+                if (!AccumulateForce(ref force,
+                                     Behaviors.GetWeightByIndex(i) *
+                                     Behaviors[i].Update(gameTime, this)))
+                {
+                    break;
+                }
             }
 
-            foreach (IFlockingBehavior behavior in Behaviors)
+            Vector3 acceleration = force / Mass;
+
+            velocity += acceleration;
+
+            Speed = velocity.Length();
+
+            // Stop when speed is too small
+            if (Speed < StopSpeed && acceleration.LengthSquared() <= 0)
             {
-                Force += multiplier *behavior.Update(gameTime);
+                velocity = Vector3.Zero;
+                Speed = 0;
             }
 
-            movable.ApplyForce(Force);
-            movable.Update(gameTime);
+            // Turncate speed
+            if (Speed > MaxSpeed)
+            {
+                float inv = (float)(MaxSpeed / Speed);
 
-            Force = Vector3.Zero;
+                velocity.X *= inv;
+                velocity.Y *= inv;
+                velocity.Z *= inv;
+
+                Speed = MaxSpeed;
+            }
+
+            Position += velocity * elapsedTime;
+
+            if (Speed > 0)
+            {
+                Forward = Vector3.Normalize(velocity);
+            }
+        }
+
+        private bool AccumulateForce(ref Vector3 force, Vector3 steeringForce)
+        {
+            force += steeringForce;
+
+            float lengthSq = force.LengthSquared();
+
+            if (lengthSq > MaxForce * MaxForce)
+            {
+                float inv = (float)(MaxForce / Math.Sqrt(lengthSq));
+
+                force.X *= inv;
+                force.Y *= inv;
+                force.Z *= inv;
+
+                return false;
+            }
+
+            return true;
         }
     }
+    #endregion
 }

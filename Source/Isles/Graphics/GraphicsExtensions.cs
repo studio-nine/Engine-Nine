@@ -52,12 +52,14 @@ namespace Isles.Graphics
                 spriteBatch = new SpriteBatch(graphics);
             
             spriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
-
+            
+            
             if (effect != null)
             {
                 effect.Begin();
-                effect.CurrentTechnique.Passes[0].Begin();
+                effect.CurrentTechnique.Passes[0].Begin();         
             }
+
 
             if (destination == null)
             {
@@ -67,7 +69,9 @@ namespace Isles.Graphics
                                             graphics.Viewport.Height);
             }
 
+
             spriteBatch.Draw(texture, destination.Value, source, color);
+
 
             if (effect != null)
             {

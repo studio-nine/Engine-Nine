@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Primitives
 {
-    public class Axis : IDisposable
+    internal class Axis : IDisposable
     {
         public Arrow Arrow { get; private set; }
 

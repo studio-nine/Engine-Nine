@@ -98,7 +98,7 @@
     <Compile Include="Graphics\ParticleEffects\PointSpriteBatch.cs" />
     <Compile Include="Navigation\Flocking\FlockingMovement.cs" />
     <Compile Include="Navigation\Flocking\BasicFlockingBehaviors.cs" />
-    <Compile Include="Navigation\Flocking\ObstacleAvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\Flocking\AvoidanceBehaviors.cs" />
     <Compile Include="Navigation\Flocking\GroupFlockingBehaviors.cs" />
     <Compile Include="SpacialObjectManager.cs" />
     <Compile Include="Graphics\Cameras\FreeCamera.cs" />
@@ -275,9 +275,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Luminance.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ScreenEffects\SaturationEffect.cs">
-      <DependentUpon>SaturationEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\ScreenEffects\Threshold.cs">
       <DependentUpon>Threshold.fx</DependentUpon>
     </Compile>
@@ -298,11 +295,7 @@
       <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
-    <Compile Include="Graphics\ScreenEffects\SaturationEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SaturationEffect.fx</DependentUpon>
-    </Compile>
+    <Compile Include="Navigation\Movable.cs" />
     <None Include="Graphics\Effects\BasicEffect.fx" />
     <None Include="Graphics\Effects\DecalEffect.fx">
       <Generator>EffectCustomTool</Generator>
@@ -347,10 +340,6 @@
     <None Include="Graphics\ScreenEffects\Luminance.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>Luminance.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ScreenEffects\SaturationEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>SaturationEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\BlurEffect.fx">
       <Generator>EffectCustomTool</Generator>
