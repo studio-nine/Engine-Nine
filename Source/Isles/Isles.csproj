@@ -96,10 +96,10 @@
     <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\PointSpriteBatch.cs" />
-    <Compile Include="Navigation\Flocking\FlockingMovement.cs" />
-    <Compile Include="Navigation\Flocking\BasicFlockingBehaviors.cs" />
-    <Compile Include="Navigation\Flocking\AvoidanceBehaviors.cs" />
-    <Compile Include="Navigation\Flocking\GroupFlockingBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\SteeringMovement.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\BasicSteeringBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\AvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\FlockingBehaviors.cs" />
     <Compile Include="SpacialObjectManager.cs" />
     <Compile Include="Graphics\Cameras\FreeCamera.cs" />
     <Compile Include="Graphics\Cameras\ModelViewerCamera.cs" />

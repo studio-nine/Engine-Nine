@@ -61,8 +61,9 @@ namespace DebuggerPrimitives
             DebugVisual.DrawBox(GraphicsDevice, new BoundingBox(-Vector3.One, Vector3.One), Color.Yellow);
             DebugVisual.DrawSphere(GraphicsDevice, new BoundingSphere(Vector3.Zero, 1), Color.Red);
             DebugVisual.DrawAxis(GraphicsDevice, Matrix.Identity);
-            DebugVisual.DrawArrow(GraphicsDevice, Vector3.Zero, Vector3.One * 2, Color.White);
-            DebugVisual.DrawPoint(GraphicsDevice, Vector3.One * 2, Color.Black, 0.2f);
+            DebugVisual.DrawArrow(GraphicsDevice, Vector3.Zero, Vector3.One, Color.White);
+            DebugVisual.DrawPoint(GraphicsDevice, Vector3.One, Color.Black, 0.2f);
+            DebugVisual.DrawLine(GraphicsDevice, Vector3.Zero, Vector3.UnitZ, 1, Color.Cornsilk);
 
 
             base.Draw(gameTime);

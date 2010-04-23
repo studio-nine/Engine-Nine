@@ -43,7 +43,8 @@ namespace Isles.Graphics
         static Sphere sphere;
         static Axis axis;
         static Arrow arrow;
-        static Grid grid;        
+        static Grid grid;
+        static Cylinder cylinder;
 
 
         public static void DrawBox(GraphicsDevice graphics, BoundingBox box, Color color)
@@ -136,6 +137,25 @@ namespace Isles.Graphics
             Begin(graphics);
 
             grid.Draw(Matrix.CreateTranslation(position), View, Projection, color);
+
+            End(graphics);     
+        }
+
+        public static void DrawLine(GraphicsDevice graphics, Vector3 bottom, Vector3 up, float radius, Color color)
+        {
+            if (cylinder == null)
+                cylinder = new Cylinder(graphics);
+
+            color.A = (byte)(color.A * Alpha);
+
+            Begin(graphics);
+
+            Matrix world = Matrix.CreateTranslation(0, 0.5f, 0) *
+                           Matrix.CreateScale(radius * 2, (up - bottom).Length(), radius * 2) *                           
+                           Matrix.CreateRotationX(-MathHelper.PiOver2) *
+                           Matrix.CreateWorld(bottom, Vector3.Normalize(up - bottom), Vector3.Up);
+
+            cylinder.Draw(world, View, Projection, color);
 
             End(graphics);     
         }

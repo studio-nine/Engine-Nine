@@ -19,13 +19,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles
 {
+    #region ISpacialObjectManager
     public interface ISpacialObjectManager
     {
         IEnumerable<object> GetNearbyObjects(Vector3 position, float radius);
     }
-
-
-    public class GridObjectManager : ISpacialObjectManager
+    #endregion
+    
+    #region GridObjectManager
+    public class GridObjectManager : ISpacialObjectManager, ICollection<object>
     {
         internal struct Entry
         {
@@ -135,6 +137,8 @@ namespace Isles
 
                 dictionary.Add(key, list);
             }
+
+            Count++;
         }
 
 
@@ -161,6 +165,8 @@ namespace Isles
         public void Clear()
         {
             dictionary.Clear();
+
+            Count = 0;
         }
 
 
@@ -192,5 +198,104 @@ namespace Isles
                 }
             }
         }
+
+        #region ICollection<object> Members
+
+        public void Add(object item)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool Contains(object item)
+        {
+            foreach (object o in this)
+            {
+                if (o == item)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void CopyTo(object[] array, int arrayIndex)
+        {
+            foreach (object o in this)
+            {
+                array[arrayIndex++] = o;
+            }
+        }
+
+        public int Count { get; private set; }
+
+        public bool IsReadOnly
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool Remove(object item)
+        {
+            if (item == null)
+                return false;
+
+            List<Entry> list = null;
+            int index = -1;
+
+            foreach (List<Entry> entry in dictionary.Values)
+            {
+                if (entry != null)
+                {
+                    for (int i = 0; i < entry.Count; i++)
+                    {
+                        if (entry[i].Object == item)
+                        {
+                            index = i;
+                            list = entry;
+                            break;
+                        }
+                    }
+                }
+
+                if (index >= 0)
+                    break;
+            }
+
+            if (index >= 0)
+            {
+                list.RemoveAt(index);
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region IEnumerable<object> Members
+
+        public IEnumerator<object> GetEnumerator()
+        {
+            foreach (List<Entry> entry in dictionary.Values)
+            {
+                if (entry != null)
+                {
+                    foreach (Entry e in entry)
+                    {
+                        yield return e.Object;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
+    #endregion
 }
