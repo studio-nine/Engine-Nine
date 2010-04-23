@@ -18,13 +18,18 @@ using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 
-namespace Isles.Movements
+namespace Isles.Navigation
 {
-    public class ProjectileMovement : Movement
+    public interface IMovable
     {
-        protected override void UpdatePosition(GameTime time)
-        {
-            throw new NotImplementedException();
-        }
-    }
+        Vector3 Position { get; set; }
+
+        Vector3 Forward { get; }
+
+        float Speed { get; }
+
+        float MaxSpeed { get; }
+
+        float BoundingRadius { get; }
+    }    
 }

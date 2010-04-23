@@ -18,14 +18,10 @@ using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 
-namespace Isles.Movements
+namespace Isles.Navigation
 {
-    public class AircraftMovement : Movement
+    public class ProjectileMovement 
     {
 
-        protected override void UpdatePosition(GameTime time)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
