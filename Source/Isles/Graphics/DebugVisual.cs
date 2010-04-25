@@ -43,11 +43,13 @@ namespace Isles.Graphics
         static Sphere sphere;
         static Axis axis;
         static Arrow arrow;
-        static Grid grid;
         static Cylinder cylinder;
+        static Grid grid;
+        static GeometryVisualizer geometry;
+        static IGeometry currentGeometry;
 
 
-        public static void DrawBox(GraphicsDevice graphics, BoundingBox box, Color color)
+        public static void DrawBox(GraphicsDevice graphics, BoundingBox box, Matrix world, Color color)
         {
             if (cube == null)
                 cube = new Cube(graphics);
@@ -57,10 +59,30 @@ namespace Isles.Graphics
 
             Begin(graphics);
 
-            cube.Draw(box, View, Projection, color);
+            Matrix m = Matrix.CreateScale((box.Max - box.Min)) *
+                       Matrix.CreateTranslation((box.Min + box.Max) / 2);
+
+            cube.Draw(m * world, View, Projection, color);
 
             End(graphics);
         }
+
+        public static void DrawBox(GraphicsDevice graphics, Vector3 center, Vector3 size, Matrix world, Color color)
+        {
+            if (cube == null)
+                cube = new Cube(graphics);
+
+            color.A = (byte)(color.A * Alpha);
+            cube.BasicEffect.LightingEnabled = LightingEnabled;
+
+            Begin(graphics);
+
+            cube.Draw(Matrix.CreateScale(size) *
+                      Matrix.CreateTranslation(center) * world, View, Projection, color);
+
+            End(graphics);
+        }
+
 
         public static void DrawSphere(GraphicsDevice graphics, BoundingSphere region, Color color)
         {
@@ -104,12 +126,7 @@ namespace Isles.Graphics
             End(graphics);
         }
 
-        public static void DrawArrow(GraphicsDevice graphics, Vector3 position, Vector3 target, Color color)
-        {
-            DrawArrow(graphics, position, target, color, 1.0f);
-        }
-
-        public static void DrawArrow(GraphicsDevice graphics, Vector3 position, Vector3 target, Color color, float scale)
+        public static void DrawArrow(GraphicsDevice graphics, Vector3 position, Vector3 target, float scale, Color color)
         {
             if (arrow == null)
                 arrow = new Arrow(graphics);
@@ -147,18 +164,41 @@ namespace Isles.Graphics
                 cylinder = new Cylinder(graphics);
 
             color.A = (byte)(color.A * Alpha);
+            cylinder.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
 
             Matrix world = Matrix.CreateTranslation(0, 0.5f, 0) *
-                           Matrix.CreateScale(radius * 2, (up - bottom).Length(), radius * 2) *                           
-                           Matrix.CreateRotationX(-MathHelper.PiOver2) *
-                           Matrix.CreateWorld(bottom, Vector3.Normalize(up - bottom), Vector3.Up);
+                           Matrix.CreateScale(radius * 2, (up - bottom).Length(), radius * 2) *
+                           Matrix.CreateRotationX(-MathHelper.PiOver2);
+
+            if (up.Y == bottom.Y)
+                world *= Matrix.CreateWorld(bottom, Vector3.Normalize(up - bottom), Vector3.Up);
+            else
+                world *= Matrix.CreateWorld(bottom, Vector3.Normalize(up - bottom), Vector3.UnitZ);
 
             cylinder.Draw(world, View, Projection, color);
 
             End(graphics);     
         }
+
+        public static void DrawGeometry(GraphicsDevice graphics, IGeometry geom, Matrix world, Color faceColor, Color borderColor)
+        {
+            if (geometry == null && currentGeometry != geom)
+                geometry = new GeometryVisualizer(graphics, geom);
+
+
+            faceColor.A = (byte)(faceColor.A * Alpha);
+            borderColor.A = (byte)(borderColor.A * Alpha);
+            geometry.BasicEffect.LightingEnabled = LightingEnabled;
+
+            Begin(graphics);
+
+            geometry.Draw(world, View, Projection, faceColor, borderColor);
+
+            End(graphics);
+        }
+
 
         static void Begin(GraphicsDevice graphics)
         {

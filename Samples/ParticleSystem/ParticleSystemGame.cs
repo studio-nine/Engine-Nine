@@ -109,7 +109,7 @@ namespace ParticleSystem
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.DarkSlateGray);
 
             particleBatch.Begin(SpriteBlendMode.Additive, camera.View, camera.Projection);
             particleBatch.Draw(snow, gameTime);

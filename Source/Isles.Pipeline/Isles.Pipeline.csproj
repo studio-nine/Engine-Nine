@@ -47,14 +47,12 @@
     <Compile Include="Importers\ObjModelImporter.cs" />
     <Compile Include="Importers\RawTextureImporter.cs" />
     <Compile Include="Processors\GrayScaleTextureProcessor.cs" />
-    <Compile Include="Processors\SpriteSheetProcessor.cs" />
     <Compile Include="Processors\SplatterTextureProcessor.cs" />
     <Compile Include="Processors\ExtendedModelProcessor.cs" />
     <Compile Include="Processors\HeightmapProcessor.cs" />
     <Compile Include="Processors\GeometryProcessor.cs" />
     <Compile Include="Processors\NormalTextureProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpriteSheetContent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Isles\Isles.csproj">

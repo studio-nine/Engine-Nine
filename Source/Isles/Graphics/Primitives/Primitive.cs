@@ -247,33 +247,6 @@ namespace Isles.Graphics.Primitives
         }
 
 
-        public void Draw(GraphicsEffect effect, GameTime time, Matrix world, Matrix view, Matrix projection)
-        {
-            effect.World = world;
-            effect.View = view;
-            effect.Projection = projection;
-
-            // Set our vertex declaration, vertex buffer, and index buffer.
-            GraphicsDevice.VertexDeclaration = VertexDeclaration;
-            GraphicsDevice.Vertices[0].SetSource(VertexBuffer, 0, VertexPositionNormalTexture.SizeInBytes);
-            GraphicsDevice.Indices = IndexBuffer;
-
-            effect.Begin(GraphicsDevice, time);
-
-            if (Indices.Count > 0)
-            {
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                                                 Vertices.Count, 0, Indices.Count / 3);
-            }
-            else
-            {
-                GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, Vertices.Count / 3);
-            }
-
-            effect.End();
-        }
-
-
         /// <summary>
         /// Draws the primitive model, using a BasicEffect shader with default
         /// lighting. Unlike the other Draw overload where you specify a custom

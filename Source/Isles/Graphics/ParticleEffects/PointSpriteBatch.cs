@@ -77,7 +77,7 @@ namespace Isles.Graphics.ParticleEffects
 
             GraphicsDevice = graphics;
 
-            effect = InternalContents.PointSpriteEffect(GraphicsDevice);
+            effect = new PointSpriteEffect(graphics);
 
             batch = new Batch<Key, Vertex>(capacity);
 

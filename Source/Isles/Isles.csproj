@@ -75,22 +75,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\MovementComponent.cs" />
-    <Compile Include="Components\ExteriorWorld.cs" />
     <Compile Include="Components\Timer.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
-    <Compile Include="Components\World.cs" />
-    <Compile Include="Components\WorldObject.cs" />
-    <Compile Include="Contents.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Contents.resx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Batch.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Graphics\Landscape\Fourier.cs" />
-    <Compile Include="Graphics\Landscape\FourierWave.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffectBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs" />
@@ -104,22 +92,11 @@
     <Compile Include="Graphics\Cameras\FreeCamera.cs" />
     <Compile Include="Graphics\Cameras\ModelViewerCamera.cs" />
     <Compile Include="Graphics\Cameras\TopDownEditorCamera.cs" />
-    <Compile Include="Graphics\DirectionalLight.cs" />
-    <Compile Include="Graphics\Effects\BasicSkinnedEffect.cs" />
     <Compile Include="Graphics\RenderToTextureEffect.cs" />
     <Compile Include="Graphics\SpriteAnimation.cs" />
     <Compile Include="Graphics\Geometry.cs" />
-    <Compile Include="Graphics\GeometryVisualizer.cs" />
-    <Compile Include="Graphics\GraphicsEffect.cs" />
-    <Compile Include="Graphics\Effects\LightmapEffect.cs" />
-    <Compile Include="Graphics\Effects\LightmapShrinker.cs" />
-    <Compile Include="Graphics\Effects\ShadowMapCasterEffect.cs" />
-    <Compile Include="Graphics\Effects\ShadowMapEffect.cs" />
-    <Compile Include="Graphics\Effects\ShadowMapReceiverEffect.cs" />
-    <Compile Include="Graphics\Landscape\SkyBoxEffect.cs" />
+    <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
     <Compile Include="Graphics\Landscape\TerrainGeometry.cs" />
-    <Compile Include="Graphics\Landscape\WaterSurfaceEffect.cs" />
-    <Compile Include="Graphics\ModelEffect.cs" />
     <Compile Include="Graphics\Models\AnimationClip.cs" />
     <Compile Include="Graphics\Models\Keyframe.cs" />
     <Compile Include="Graphics\Models\ModelAnimation.cs" />
@@ -129,7 +106,6 @@
     <Compile Include="Graphics\ParticleEffects\SpacialEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
-    <Compile Include="Graphics\PointLight.cs" />
     <Compile Include="Graphics\Primitives\Arrow.cs" />
     <Compile Include="Graphics\Primitives\Axis.cs" />
     <Compile Include="Graphics\Primitives\Bezier.cs" />
@@ -141,19 +117,10 @@
     <Compile Include="Graphics\Primitives\Skeleton.cs" />
     <Compile Include="Graphics\Primitives\Teapot.cs" />
     <Compile Include="Graphics\Primitives\Torus.cs" />
-    <Compile Include="Graphics\SpriteSheet.cs" />
     <Compile Include="Graphics\Vertices\VertexPositionNormalDueTexture.cs" />
     <Compile Include="Graphics\Vertices\VertexPositionNormalTangentTexture.cs" />
-    <Compile Include="InternalContents.cs" />
-    <Compile Include="XmlReflectiveLoader.cs" />
-    <Compile Include="XmlLoader.cs" />
-    <Compile Include="EnumerationCollection.cs" />
     <Compile Include="NamedObjectManager.cs" />
-    <Compile Include="Navigation\ProjectileMovement.cs" />
     <Compile Include="Surface.cs" />
-    <Compile Include="Navigation\CharactorMovement.cs" />
-    <Compile Include="Navigation\AircraftMovement.cs" />
-    <Compile Include="Navigation\VehicleMovement.cs" />
     <Compile Include="PickEngine.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Transitions\BasicTransitions.cs" />
@@ -164,7 +131,6 @@
     <Compile Include="Input.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Zip\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -184,8 +150,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerationCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Graphics\DebugVisual.cs" />
-    <Compile Include="Graphics\Effects\BasicTextureEffect.cs" />
+    <Compile Include="Graphics\Effects\SkinnedEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkinnedEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -210,6 +183,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScrollEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Effects\SkinnedEffect.cs">
+      <DependentUpon>SkinnedEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\SplatterEffect.cs">
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
@@ -219,7 +195,39 @@
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
+    <Compile Include="Graphics\Landscape\SkyBoxEffect.cs">
+      <DependentUpon>SkyBoxEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Landscape\SkyBoxEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkyBoxEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Landscape\TerrainPatchPart.cs" />
+    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
+      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleShaderEffect.cs">
+      <DependentUpon>ParticleShaderEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleShaderEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParticleShaderEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.cs">
+      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Primitives\Primitive.cs" />
     <Compile Include="Graphics\Primitives\Cube.cs" />
     <Compile Include="Graphics\Primitives\Sphere.cs" />
@@ -282,7 +290,7 @@
     <Compile Include="Graphics\Landscape\Terrain.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\Vertices\TerrainVertex.cs" />
+    <Compile Include="Graphics\Vertices\VertexPositionColorNormalTangentTexture.cs" />
     <Compile Include="Graphics\Landscape\TerrainPatch.cs" />
     <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -295,8 +303,14 @@
       <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
+    <Compile Include="Navigation\Graphing\PathGraph.cs" />
+    <Compile Include="Navigation\Graphing\PriorityQueue.cs" />
+    <Compile Include="Navigation\Graphing\GraphSearch.cs" />
     <Compile Include="Navigation\Movable.cs" />
-    <None Include="Graphics\Effects\BasicEffect.fx" />
+    <None Include="Graphics\Effects\SkinnedEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SkinnedEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\DecalEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
@@ -312,6 +326,22 @@
     <None Include="Graphics\Effects\ScrollEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ScrollEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Landscape\SkyBoxEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ParticleEffects\LineSpriteEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>LineSpriteEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ParticleEffects\ParticleShaderEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ParticleShaderEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ParticleEffects\PointSpriteEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>PointSpriteEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\BloomCombine.fx">
       <Generator>EffectCustomTool</Generator>
@@ -345,37 +375,6 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\BasicSkinned.xnb" />
-    <None Include="Resources\BasicTexture.xnb" />
-    <None Include="Resources\BloomCombine.xnb" />
-    <None Include="Resources\BloomExtract.xnb" />
-    <None Include="Resources\ColorMatrix.xnb" />
-    <None Include="Resources\DebugShader.fx" />
-    <None Include="Resources\DebugShader1.fx" />
-    <None Include="Resources\FloatTexture.xnb" />
-    <None Include="Resources\GaussianBlur.xnb" />
-    <None Include="Resources\Heightmap.xnb" />
-    <None Include="Resources\LightCircle.xnb" />
-    <None Include="Resources\LineSprite.xnb" />
-    <None Include="Resources\ParticleEffect.xnb" />
-    <None Include="Resources\PointSprite.xnb" />
-    <None Include="Resources\Saturation.xnb" />
-    <None Include="Resources\ShadowCaster.xnb" />
-    <None Include="Resources\ShadowReceiver.xnb" />
-    <None Include="Resources\SkyBox.xnb" />
-    <None Include="Resources\SplatTexture.xnb" />
-    <None Include="Resources\TerrainLayer.xnb" />
-    <None Include="Resources\Water.xnb" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Contents.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Contents.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Effects\Filters\HDR\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

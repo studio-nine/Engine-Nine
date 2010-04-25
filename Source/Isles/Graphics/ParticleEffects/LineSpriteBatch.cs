@@ -32,7 +32,7 @@ namespace Isles.Graphics.ParticleEffects
         private Batch<Texture2D, ushort> batch;
         private VertexPositionColorTexture[] vertexArray;
         private int vertexCount = 0;
-        private Effect effect;
+        private LineSpriteEffect effect;
         private Vector3 eyePosition;
         private SpriteBlendMode blendMode;
 
@@ -49,7 +49,7 @@ namespace Isles.Graphics.ParticleEffects
 
             GraphicsDevice = graphics;
 
-            effect = InternalContents.LineSpriteEffect(GraphicsDevice);
+            effect = new LineSpriteEffect(graphics);
 
             vertexArray = new VertexPositionColorTexture[capacity * 4];
 
@@ -301,8 +301,8 @@ namespace Isles.Graphics.ParticleEffects
             renderState.DepthBufferEnable = true;
             renderState.DepthBufferWriteEnable = false;
 
-            effect.Parameters["View"].SetValue(view);
-            effect.Parameters["Projection"].SetValue(projection);
+            effect.View = view;
+            effect.Projection = projection;
 
 
             vertices.SetData<VertexPositionColorTexture>(vertexArray, 0, vertexCount, SetDataOptions.None);
@@ -317,7 +317,7 @@ namespace Isles.Graphics.ParticleEffects
                 
                 GraphicsDevice.Indices = indices;
 
-                effect.Parameters["Texture"].SetValue(batchItem.Key);
+                effect.Texture = batchItem.Key;
 
                 effect.Begin();
 

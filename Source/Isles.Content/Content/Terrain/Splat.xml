@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<XnaContent>
-  <!-- TODO: replace this Asset with your own XML asset data. -->
-  <Asset Type="Isles.Pipeline.SplatTextureContent">
-    <LayerR>Terrain/2.bmp</LayerR>
-    <LayerG>Terrain/3.bmp</LayerG>
-  </Asset>
-</XnaContent>

@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.Primitives
 {
-    public class Skeleton : IDisposable
+    internal class Skeleton : IDisposable
     {
         Sphere sphere;
         Cube cube;

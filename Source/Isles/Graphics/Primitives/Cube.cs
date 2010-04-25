@@ -73,14 +73,5 @@ namespace Isles.Graphics.Primitives
 
             InitializePrimitive(graphicsDevice);
         }
-
-
-        public void Draw(BoundingBox box, Matrix view, Matrix projection, Color color)
-        {
-            Matrix world = Matrix.CreateScale((box.Max - box.Min) / size) * 
-                           Matrix.CreateTranslation((box.Min + box.Max) / 2);
-
-            Draw(world, view, projection, color);
-        }
     }
 }

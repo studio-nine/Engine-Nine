@@ -115,7 +115,6 @@ namespace Isles
         public KeyboardState KeyboardState { get { return keyboardState; } }
         #endregion
 
-
         #region Events
         public event EventHandler<KeyboardEventArgs> KeyDown;
         public event EventHandler<KeyboardEventArgs> KeyUp;
@@ -125,7 +124,6 @@ namespace Isles
         public event EventHandler<MouseEventArgs> Wheel;
         public event EventHandler<MouseEventArgs> MouseMove;
         #endregion
-
 
         #region Method
         /// <summary>
@@ -288,7 +286,6 @@ namespace Isles
                 }
         }
         #endregion
-
 
         #region Update
         /// <summary>

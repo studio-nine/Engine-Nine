@@ -123,7 +123,7 @@ namespace FlockingBehaviors
                 movement.Position = NextPosition();
                 movement.Resistance = 6.0f;
                 movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-                movement.Behaviors.Add(new SeparationBehavior() { SpacialObjectManager = objects, SeparationRadius = 3.0f });
+                movement.Behaviors.Add(new SeparationBehavior() { SpacialObjectManager = objects, SeparationRadius = 2.35f });
                 movingEntities.Add(movement);
             }
         }
@@ -196,7 +196,7 @@ namespace FlockingBehaviors
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.DarkSlateGray);
 
 
             DebugVisual.Alpha = 1.0f;
@@ -210,7 +210,7 @@ namespace FlockingBehaviors
 
 
             // Draw world bounds
-            DebugVisual.DrawBox(GraphicsDevice, bounds, new Color(Color.Gray, 80));
+            DebugVisual.DrawBox(GraphicsDevice, bounds, Matrix.Identity, new Color(Color.Gray, 80));
 
 
             // Draw all moving entities

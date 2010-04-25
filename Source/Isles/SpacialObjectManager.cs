@@ -26,8 +26,65 @@ namespace Isles
     }
     #endregion
     
+    #region GridPartition
+    public abstract class GridPartition
+    {
+        public int TessellationX { get; protected set; }
+        public int TessellationY { get; protected set; }
+        public Vector2 Position { get; protected set; }
+        public Vector2 Dimension { get; protected set; }
+
+
+        public GridPartition(float width, float height, float x, float y, int tessellationX, int tessellationY)
+        {
+            Position = new Vector2(x, y);
+            Dimension = new Vector2(width, height);
+            TessellationX = tessellationX;
+            TessellationY = tessellationY;
+        }
+
+        public bool Contains(float x, float y)
+        {
+            return x >= -Dimension.X / 2 && y >= -Dimension.Y / 2 &&
+                   x < Dimension.X / 2 && y < Dimension.Y / 2;
+        }
+
+        public Point PositionToGrid(float x, float y, bool clamp)
+        {
+            Point pt;
+
+            pt.X = (int)((x - Position.X + Dimension.X / 2) * TessellationX / Dimension.X);
+            pt.Y = (int)((y - Position.Y + Dimension.Y / 2) * TessellationY / Dimension.Y);
+
+            if (clamp)
+            {
+                if (pt.X < 0)
+                    pt.X = 0;
+                if (pt.X >= TessellationX)
+                    pt.X = TessellationX - 1;
+                if (pt.Y < 0)
+                    pt.Y = 0;
+                if (pt.Y >= TessellationY)
+                    pt.Y = TessellationY - 1;
+            }
+
+            return pt;
+        }
+
+        public Vector2 GridToPosition(int x, int y)
+        {
+            Vector2 v;
+
+            v.X = -Dimension.X / 2 + (x + 0.5f) * Dimension.X / TessellationX;
+            v.Y = -Dimension.Y / 2 + (y + 0.5f) * Dimension.Y / TessellationY;
+
+            return v;
+        }
+    }
+    #endregion
+
     #region GridObjectManager
-    public class GridObjectManager : ISpacialObjectManager, ICollection<object>
+    public class GridObjectManager : GridPartition, ISpacialObjectManager, ICollection<object>
     {
         internal struct Entry
         {
@@ -35,81 +92,23 @@ namespace Isles
             public Vector2 Position;
         }
 
-        private Vector2 position;
-        private Vector2 dimension = new Vector2(128, 128);
-        private int tessellationX = 16;
-        private int tessellationY = 16;
         private Dictionary<int, List<Entry>> dictionary = new Dictionary<int, List<Entry>>();
 
-        public int TessellationX
-        {
-            get { return tessellationX; }
-            set
-            {
-                if (dictionary.Count > 0)
-                    throw new InvalidOperationException("Cannot adjust grid count when dictionary is not empty");
-                
-                tessellationX = value;
-            }
-        }
-
-        public int TessellationY
-        {
-            get { return tessellationY; }
-            set
-            {
-                if (dictionary.Count > 0)
-                    throw new InvalidOperationException("Cannot adjust grid count when dictionary is not empty");
-
-                tessellationY = value;
-            }
-        }
-
-        public Vector2 Position
-        {
-            get { return position; }
-            set
-            {
-                if (dictionary.Count > 0)
-                    throw new InvalidOperationException("Cannot adjust position when dictionary is not empty");
-
-                position = value;
-            }
-        }
-
-        public Vector2 Dimension
-        {
-            get { return dimension; }
-            set
-            {
-                if (dictionary.Count > 0)
-                    throw new InvalidOperationException("Cannot adjust dimension when dictionary is not empty");
-
-                dimension = value;
-            }
-        }
-
-        public GridObjectManager() { }
 
         public GridObjectManager(float width, float height, float x, float y, int tessellationX, int tessellationY)
+            : base(width, height, x, y, tessellationX, tessellationY)
         {
-            Position = new Vector2(x, y);
 
-            Dimension = new Vector2(width, height);
-
-            TessellationX = tessellationX;
-            TessellationY = tessellationY;
         }
-
-
+        
         public void Add(object obj, float x, float y)
         {
             if (obj == null)
                 throw new ArgumentException();
 
-            Point pt = PointFromPosition(x, y);
+            Point pt = PositionToGrid(x, y, true);
 
-            int key = pt.Y * tessellationX + pt.X;
+            int key = pt.Y * TessellationX + pt.X;
 
             List<Entry> list;
 
@@ -141,27 +140,6 @@ namespace Isles
             Count++;
         }
 
-
-        private Point PointFromPosition(float x, float y)
-        {
-            Point pt;
-
-            pt.X = (int)((x - position.X + dimension.X / 2) * tessellationX / dimension.X);
-            pt.Y = (int)((y - position.Y + dimension.Y / 2) * tessellationY / dimension.Y);
-
-            if (pt.X < 0)
-                pt.X = 0;
-            if (pt.X >= tessellationX)
-                pt.X = tessellationX - 1;
-            if (pt.Y < 0)
-                pt.Y = 0;
-            if (pt.Y >= tessellationY)
-                pt.Y = tessellationY - 1;
-
-            return pt;
-        }
-
-
         public void Clear()
         {
             dictionary.Clear();
@@ -175,14 +153,14 @@ namespace Isles
             List<Entry> list;
             float rr = radius * radius;
 
-            Point ul = PointFromPosition(position.X - radius, position.Y - radius);
-            Point br = PointFromPosition(position.X + radius, position.Y + radius);
+            Point ul = PositionToGrid(position.X - radius, position.Y - radius, true);
+            Point br = PositionToGrid(position.X + radius, position.Y + radius, true);
 
             for (int y = ul.Y; y <= br.Y; y++)
             {
                 for (int x = ul.X; x <= br.X; x++)
                 {
-                    if (dictionary.TryGetValue(y * tessellationX + x, out list))
+                    if (dictionary.TryGetValue(y * TessellationX + x, out list))
                     {
                         foreach (Entry e in list)
                         {

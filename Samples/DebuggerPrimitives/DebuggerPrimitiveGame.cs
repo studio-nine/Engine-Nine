@@ -58,10 +58,10 @@ namespace DebuggerPrimitives
             DebugVisual.Alpha = 0.8f;
 
 
-            DebugVisual.DrawBox(GraphicsDevice, new BoundingBox(-Vector3.One, Vector3.One), Color.Yellow);
+            DebugVisual.DrawBox(GraphicsDevice, new BoundingBox(-Vector3.One, Vector3.One), Matrix.Identity, Color.Yellow);
             DebugVisual.DrawSphere(GraphicsDevice, new BoundingSphere(Vector3.Zero, 1), Color.Red);
             DebugVisual.DrawAxis(GraphicsDevice, Matrix.Identity);
-            DebugVisual.DrawArrow(GraphicsDevice, Vector3.Zero, Vector3.One, Color.White);
+            DebugVisual.DrawArrow(GraphicsDevice, Vector3.Zero, Vector3.One, 1.0f, Color.White);
             DebugVisual.DrawPoint(GraphicsDevice, Vector3.One, Color.Black, 0.2f);
             DebugVisual.DrawLine(GraphicsDevice, Vector3.Zero, Vector3.UnitZ, 1, Color.Cornsilk);
 

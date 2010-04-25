@@ -18,16 +18,16 @@ using Isles.Graphics.Vertices;
 #endregion
 
 
-namespace Isles.Graphics.Landscape
+namespace Isles.Graphics.ParticleEffects
 {
-    public partial class SkyBoxEffect
-    {        
-        public SkyBoxEffect(GraphicsDevice graphicsDevice) : 
+    internal partial class LineSpriteEffect
+    {
+        public LineSpriteEffect(GraphicsDevice graphicsDevice) : 
                 this(graphicsDevice, null)
         {
         }
         
-        public SkyBoxEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
+        public LineSpriteEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
                 base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
         {
             InitializeComponent();

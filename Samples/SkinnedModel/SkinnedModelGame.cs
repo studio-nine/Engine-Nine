@@ -59,7 +59,7 @@ namespace SkinnedModel
             camera = new ModelViewerCamera(this);
 
             // Model batch makes drawing models easier
-            modelBatch = new ModelBatch();
+            modelBatch = new ModelBatch(GraphicsDevice);
 
             // Load our model assert.
             // If the model is processed by our ExtendedModelProcesser,

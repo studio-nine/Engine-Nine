@@ -52,7 +52,7 @@ namespace Isles.Graphics.ParticleEffects
 
             GraphicsDevice = graphics;
 
-            effect = InternalContents.BasicParticleEffect(GraphicsDevice);
+            effect = new ParticleShaderEffect(graphics);
 
             batch = new Batch<Key, ParticleEffect>(capacity);
         }
