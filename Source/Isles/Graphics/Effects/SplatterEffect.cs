@@ -56,12 +56,10 @@ namespace Isles.Graphics.Effects
         public SplatterTextureCollection Textures { get; private set; }
 
 
-        bool fogEnabled = false;
-
         public bool FogEnabled
         {
-            get { return fogEnabled; }
-            set { fogEnabled = value; FogMask = (value ? 1.0f : 0.0f); }
+            get { return FogMask > 0.5f; }
+            set { FogMask = (value ? 1.0f : 0.0f); }
         }
 
 

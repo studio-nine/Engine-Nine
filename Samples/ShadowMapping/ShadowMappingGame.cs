@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Isles;
 using Isles.Graphics;
 using Isles.Graphics.Effects;
@@ -29,17 +30,16 @@ namespace ShadowMapping
     /// </summary>
     public class ShadowMappingGame : Microsoft.Xna.Framework.Game
     {
+        SpriteBatch spriteBatch;
+
         Model model;
         Model terrain;
-        ModelBatch modelBatch;
 
-        ModelViewerCamera light;
         TopDownEditorCamera camera;
 
-
-        ShadowMapEffect shadowMap;
-        ShadowMapCasterEffect shadowCaster;
-        ShadowMapReceiverEffect shadowReceiver;
+        DepthEffect depth;
+        ShadowEffect shadow;
+        RenderToTextureEffect renderTarget;
 
 
         public ShadowMappingGame()
@@ -61,30 +61,26 @@ namespace ShadowMapping
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a model viewer camera to help us visualize the scene
-            light = new ModelViewerCamera(this);
-            camera = new TopDownEditorCamera(this);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Model batch makes drawing models easier
-            modelBatch = new ModelBatch();
+            // Create a model viewer camera to help us visualize the scene
+            camera = new TopDownEditorCamera(this);
 
             // Load our model assert.
             model = Content.Load<Model>("dude");
             terrain = Content.Load<Model>("Terrain");
 
-            // Create shadow map related effects
-            shadowMap = new ShadowMapEffect(GraphicsDevice);
+            // Create shadow map related effects, depth is used to generate shadow maps,
+            // shadow is used to draw a shadow receiver with a shadow map.
+            depth = new DepthEffect(GraphicsDevice);
+            shadow = new ShadowEffect(GraphicsDevice);
 
-            shadowCaster = new ShadowMapCasterEffect();
-            shadowReceiver = new ShadowMapReceiverEffect();
-        }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// </summary>
-        protected override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
+            // Create a floating point render target for shadowmap.
+            // If your device doesn't support SurfaceFormat.Single, you can fall back to SurfaceFormat.Single.
+            //
+            // RenderToTextureEffect is just there to automatically save and restore render target and
+            // depth buffer between Begin and End.
+            renderTarget = new RenderToTextureEffect(GraphicsDevice, 256, 256, SurfaceFormat.Color);
         }
 
         /// <summary>
@@ -92,44 +88,102 @@ namespace ShadowMapping
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkSlateGray);
-            
+            // Light view and light projection defines a light frustum.
+            // Shadows will be projected based on this frustom.
+            shadow.LightView = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ);
+            shadow.LightProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi / 2.5f, 1, 8.0f, 80.0f);
 
-            Matrix worldModel = Matrix.CreateScale(0.3f) *
-                                Matrix.CreateRotationX(MathHelper.PiOver2);
+
+            // These two matrices are to adjust the position of the two models
+            Matrix worldModel = Matrix.CreateScale(0.3f) * Matrix.CreateRotationX(MathHelper.PiOver2);
+            Matrix worldTerrain = Matrix.CreateTranslation(-5, 0, 1) * Matrix.CreateScale(10f) * Matrix.CreateRotationX(MathHelper.PiOver2);
 
 
-            Matrix worldTerrain = Matrix.CreateTranslation(-5, 0, 0) *
-                                  Matrix.CreateScale(10f) *
-                                  Matrix.CreateRotationX(MathHelper.PiOver2);
-
-            if (shadowMap.Begin())
+            // We need to draw the shadow casters on to a render target.
+            renderTarget.Begin();
             {
-                // Generate shadow map
-                shadowCaster.LightViewProjection =
-                shadowReceiver.LightViewProjection = light.View * light.Projection;
+                // Clear everything to black. This is required.
+                GraphicsDevice.Clear(Color.White);
 
-                modelBatch.Begin();
-                modelBatch.Draw(model, shadowCaster, gameTime, worldModel, camera.View, camera.Projection);
-                modelBatch.End();
+                // Draw shadow casters using depth effect with the matrices set to light view and projection.
+                DrawModel(model, depth, worldModel, shadow.LightView, shadow.LightProjection);
 
-                shadowReceiver.Texture = shadowMap.End();
-
-                // Draw Scene
-                modelBatch.Begin();
-                modelBatch.Draw(model, worldModel, camera.View, camera.Projection);
-                modelBatch.Draw(terrain, worldTerrain, camera.View, camera.Projection);
-                modelBatch.End();
-
-
-                // Draw shadow map overlay for shadow receivers
-                modelBatch.Begin();
-                modelBatch.Draw(terrain, shadowReceiver, gameTime, worldTerrain, camera.View, camera.Projection);
-                modelBatch.End();
+                // We got a shadow map rendered.
+                shadow.ShadowMap = renderTarget.End();
             }
 
+            // Now we begin drawing real scene.
+            GraphicsDevice.Clear(Color.DarkSlateGray);
+
+            // This value needs to be tweaked
+            shadow.DepthBias = 0.005f;
+
+            DrawModel(model, shadow, worldModel, camera.View, camera.Projection);
+            
+            // Draw all shadow receivers with the shadow effect
+            DrawModel(terrain, shadow, worldTerrain, camera.View, camera.Projection);
+
+            // Draw shadow map
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState);
+                spriteBatch.Draw(shadow.ShadowMap, Vector2.Zero, Color.White);
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
+        }
+
+
+        /// <summary>
+        /// When XNA 4.0 released, IEffectMatrices will be integrated to ModelBatch,
+        /// then we don't need these chunck of tricky code to draw a model with a custom effect.
+        /// </summary>
+        private void DrawModel(Model model, Effect effect, Matrix world, Matrix view, Matrix projection)
+        {
+            Matrix[] bones = new Matrix[model.Bones.Count];
+
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                BasicEffect[] effects = new BasicEffect[mesh.MeshParts.Count];
+
+                for (int i = 0; i < mesh.MeshParts.Count; i++)
+                {
+                    // Store the basic effect associated with the model
+                    effects[i] = mesh.MeshParts[i].Effect as BasicEffect;
+
+                    // If we are using the default basic effect
+                    if (effect == null)
+                    {
+                        effects[i].EnableDefaultLighting();
+                        effect = effects[i];
+                    }
+
+                    mesh.MeshParts[i].Effect = effect;
+
+                    // Set effect properties through reflection
+                    SetProperty(effect, "World", bones[mesh.ParentBone.Index] * world);
+                    SetProperty(effect, "View", view);
+                    SetProperty(effect, "Projection", projection);
+                    SetProperty(effect, "Texture", effects[i].Texture);
+                }
+
+                mesh.Draw();
+
+                // Restore basic effect
+                for (int i = 0; i < mesh.MeshParts.Count; i++)
+                {
+                    mesh.MeshParts[i].Effect = effects[i];
+                }
+            }
+        }
+
+        private void SetProperty(Effect effect, string field, object value)
+        {
+            if (effect.GetType().GetProperty(field) != null)
+                effect.GetType().GetProperty(field).SetValue(effect, value, null);
         }
     }
 }

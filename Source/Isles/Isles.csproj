@@ -154,6 +154,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Graphics\DebugVisual.cs" />
+    <Compile Include="Graphics\Effects\DepthEffect.cs">
+      <DependentUpon>DepthEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DepthEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DepthEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\ShadowEffect.cs">
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\SkinnedEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -307,6 +323,14 @@
     <Compile Include="Navigation\Graphing\PriorityQueue.cs" />
     <Compile Include="Navigation\Graphing\GraphSearch.cs" />
     <Compile Include="Navigation\Movable.cs" />
+    <None Include="Graphics\Effects\DepthEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DepthEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\ShadowEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ShadowEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\SkinnedEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>SkinnedEffect.Designer.cs</LastGenOutput>
