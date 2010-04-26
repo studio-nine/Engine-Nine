@@ -51,7 +51,7 @@ namespace Isles.Graphics
             if (spriteBatch == null)
                 spriteBatch = new SpriteBatch(graphics);
             
-            spriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
+            spriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.SaveState);
             
             
             if (effect != null)

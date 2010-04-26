@@ -29,7 +29,7 @@ namespace Isles.Graphics
 
         public GraphicsDevice GraphicsDevice { get; private set; }
         public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Height { get; private set; }        
         public SurfaceFormat SurfaceFormat { get; private set; }
         public Texture2D Texture { get; private set; }
                 

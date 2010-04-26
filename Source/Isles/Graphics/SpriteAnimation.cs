@@ -10,6 +10,7 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.IO;
 using System.Xml;
@@ -20,62 +21,154 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics
 {
-    public class SpriteAnimation : IAnimation
+    #region FrameAnimation
+    public abstract class FrameAnimation : IAnimation
     {
+        private int currentFrame = 0;
+        private float timer = 0;
+
+        public abstract int Count { get; }
+
         public float Speed { get; set; }
-        public Texture2D CurrentFrame { get; set; }
-        public List<Texture2D> Frames { get; set; }
-        
-        private TimeSpan startTime = TimeSpan.Zero;
 
+        public float FramesPerSecond { get; set; }
 
-        public SpriteAnimation()
+        public bool IsPlaying { get; private set; }
+
+        public int CurrentFrame
         {
-            Speed = 1.0f;
-            Frames = new List<Texture2D>();
+            get { return currentFrame; }
+
+            private set 
+            {
+                int previousFrame = currentFrame;
+
+                currentFrame = value;
+
+                OnFrameChanged(previousFrame);
+
+                if (FrameChanged != null)
+                    FrameChanged(this, EventArgs.Empty);
+            }
         }
 
-        public SpriteAnimation(IEnumerable<Texture2D> textures)
+        public TimeSpan CurrentTime
+        {
+            get { return TimeSpan.FromSeconds(CurrentFrame / FramesPerSecond + timer); }
+        }
+
+        public TimeSpan Duration
+        {
+            get { return TimeSpan.FromSeconds(Count / FramesPerSecond); }
+        }
+
+        public FrameAnimation()
         {
             Speed = 1.0f;
-            Frames = new List<Texture2D>(textures);
+            IsPlaying = true;
+            FramesPerSecond = 30.0f;
         }
 
         public void Update(GameTime time)
         {
-            if (startTime == TimeSpan.Zero)
-                startTime = time.TotalGameTime;
+            if (IsPlaying && Count > 0)
+            {
+                timer += (float)time.ElapsedGameTime.TotalSeconds * Speed;
 
-            TimeSpan duration = time.TotalGameTime - startTime;
+                float targetTime = 1.0f / FramesPerSecond;
 
-            CurrentFrame = Frames[(int)(duration.TotalMilliseconds * 0.001f * Speed * 24) % Frames.Count];
+                while (timer >= targetTime)
+                {
+                    int frame = CurrentFrame;
+
+                    frame = (frame + 1) % Count;
+
+                    if (frame == 0 && Complete != null)
+                    {
+                        Complete(this, EventArgs.Empty);
+
+                        // In case we do something in the Complete event
+                        if (!IsPlaying)
+                            return;
+                    }
+
+                    CurrentFrame = frame;
+
+                    timer -= targetTime;
+                }
+            }
         }
 
-        #region IAnimation Members
-
-
-        public TimeSpan Duration
-        {
-            get { throw new NotImplementedException(); }
-        }
+        protected virtual void OnFrameChanged(int previousFrame) { }
 
         public void Play()
         {
-            throw new NotImplementedException();
+            IsPlaying = true;
+            CurrentFrame = 0;
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            IsPlaying = false;
+            CurrentFrame = 0;
+        }
+
+        public void Pause()
+        {
+            IsPlaying = false;
         }
 
         public void Resume()
         {
-            throw new NotImplementedException();
+            IsPlaying = true;
+        }
+
+        public void Seek(int frame)
+        {
+            if (frame < 0 || frame >= Count)
+                throw new ArgumentOutOfRangeException();
+
+            timer = 0;
+            CurrentFrame = frame;
+        }
+
+        public void Seek(TimeSpan time)
+        {
+            int frame = (int)(time.TotalSeconds * FramesPerSecond) % Count;
+
+            float targetTime = 1.0f / FramesPerSecond;
+            
+            timer = (float)time.TotalSeconds;
+
+            while (timer >= targetTime)
+            {
+                timer -= targetTime;
+            }
+
+            CurrentFrame = frame;
         }
 
         public event EventHandler Complete;
 
-        #endregion
+        public event EventHandler FrameChanged;
     }
+    #endregion
+
+    #region SpriteAnimation
+    public class SpriteAnimation : FrameAnimation
+    {
+        public override int Count
+        {
+            get { return Textures.Count; }
+        }
+
+        public List<Texture2D> Textures { get; private set; }
+        public Texture2D CurrentTexture { get { return Textures[CurrentFrame]; } }
+
+        public SpriteAnimation()
+        {
+            Textures = new List<Texture2D>();
+        }
+    }
+    #endregion
 }

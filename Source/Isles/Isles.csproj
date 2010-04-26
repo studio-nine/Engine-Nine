@@ -162,6 +162,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Effects\ShadowMap.cs" />
     <Compile Include="Graphics\Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>

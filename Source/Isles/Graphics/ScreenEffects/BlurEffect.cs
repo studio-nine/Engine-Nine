@@ -57,6 +57,18 @@ namespace Isles.Graphics.ScreenEffects
         }
 
         /// <summary>
+        /// Gets or sets the blur sample count. Should be one of 3, 7, 11, 15.
+        /// </summary>
+        public int SampleCount
+        {
+            get { int index = Parameters["ShaderIndex"].GetValueInt32(); return index * 4 + 3; }
+            set { Parameters["ShaderIndex"].SetValue((int)((value - 3) / 4)); }
+        }
+
+        public const int MaxSampleCount = 15;
+        public const int MinSampleCount = 3;
+
+        /// <summary>
         /// Creates a new instance of Gaussian blur post processing.
         /// </summary>
         public BlurEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
@@ -95,7 +107,8 @@ namespace Isles.Graphics.ScreenEffects
             offsetsParameter = Parameters["sampleOffsets"];
 
             // Look up how many samples our gaussian blur effect supports.
-            int sampleCount = weightsParameter.Elements.Count;
+            //int sampleCount = weightsParameter.Elements.Count;
+            int sampleCount = SampleCount;
 
             // Create temporary arrays for computing our filter 
             float[] sampleWeights = new float[sampleCount];

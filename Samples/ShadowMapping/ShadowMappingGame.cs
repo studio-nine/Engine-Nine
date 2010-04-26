@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Input;
 using Isles;
 using Isles.Graphics;
 using Isles.Graphics.Effects;
+using Isles.Graphics.ScreenEffects;
 using Isles.Graphics.Cameras;
 using Isles.Graphics.Models;
 #endregion
@@ -39,7 +40,7 @@ namespace ShadowMapping
 
         DepthEffect depth;
         ShadowEffect shadow;
-        RenderToTextureEffect renderTarget;
+        ShadowMap shadowMap;
 
 
         public ShadowMappingGame()
@@ -74,13 +75,13 @@ namespace ShadowMapping
             // shadow is used to draw a shadow receiver with a shadow map.
             depth = new DepthEffect(GraphicsDevice);
             shadow = new ShadowEffect(GraphicsDevice);
-
-            // Create a floating point render target for shadowmap.
-            // If your device doesn't support SurfaceFormat.Single, you can fall back to SurfaceFormat.Single.
-            //
-            // RenderToTextureEffect is just there to automatically save and restore render target and
-            // depth buffer between Begin and End.
-            renderTarget = new RenderToTextureEffect(GraphicsDevice, 256, 256, SurfaceFormat.Color);
+            shadowMap = new ShadowMap(GraphicsDevice, 256);
+            
+            // Enable shadowmap bluring, this will produce smoothed shadow edge.
+            // You can increase the shadow quality by using a larger shadowmap resolution (like 1024 or 2048),
+            // and increase the blur samples.
+            //shadowMap.Blur.SampleCount = BlurEffect.MaxSampleCount;
+            shadowMap.BlurEnabled = true;
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace ShadowMapping
 
 
             // We need to draw the shadow casters on to a render target.
-            renderTarget.Begin();
+            if (shadowMap.Begin())
             {
                 // Clear everything to black. This is required.
                 GraphicsDevice.Clear(Color.White);
@@ -109,7 +110,7 @@ namespace ShadowMapping
                 DrawModel(model, depth, worldModel, shadow.LightView, shadow.LightProjection);
 
                 // We got a shadow map rendered.
-                shadow.ShadowMap = renderTarget.End();
+                shadow.ShadowMap = shadowMap.End();
             }
 
             // Now we begin drawing real scene.

@@ -24,6 +24,7 @@ namespace Isles.Graphics.Models
     public class ModelAnimation : IAnimation
     {
         public float Speed { get; set; }
+        public float BlendWeight { get; set; }
         public bool IsPlaying { get; private set; }
         public AnimationClip AnimationClip { get; set; }
         public int CurrentFrame { get; private set; }
@@ -45,6 +46,7 @@ namespace Isles.Graphics.Models
 
         public ModelAnimation(Model model, AnimationClip clip)
         {
+            BlendWeight = 1.0f;
             Speed = 1.0f;
             IsPlaying = true;
 
@@ -121,8 +123,8 @@ namespace Isles.Graphics.Models
                 if (keyframe.Time > CurrentTime)
                     break;
 
-                // Use this keyframe.
-                boneTransforms[keyframe.Bone] = keyframe.Transform;
+                // Use this keyframe.      
+                boneTransforms[keyframe.Bone] = keyframe.Transform * BlendWeight;
 
                 CurrentFrame++;
             }
