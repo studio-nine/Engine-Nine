@@ -6,17 +6,13 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.Effects
 {
@@ -24,31 +20,21 @@ namespace Isles.Graphics.Effects
     {
         public bool FogEnabled
         {
-            get { return FogMask > 0.5f; }
-            set { FogMask = (value ? 1.0f : 0.0f); }
-        }
-        
-        public Matrix View
-        {
-            get { return ViewMatrix; }
-            set { ViewMatrix = value; EyePosition = Matrix.Invert(value).Translation; }
+            get { return fogMask > 0.5f; }
+            set { fogMask = (value ? 1.0f : 0.0f); }
         }
 
-        public Matrix LightProjection
-        {
-            get { return LightProjectionMatrix; }
-            set { LightProjectionMatrix = value; FarClip = Math.Abs(value.M43 / (Math.Abs(value.M33) - 1)); }
-        }
-
-        public ShadowEffect(GraphicsDevice graphicsDevice) : 
-                this(graphicsDevice, null)
-        {
-        }
-        
-        public ShadowEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public ShadowEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
+        }
+
+        protected override void OnApply()
+        {
+            farClip = Math.Abs(LightProjection.M43 / (Math.Abs(LightProjection.M33) - 1));
+            eyePosition = Matrix.Invert(View).Translation;
+
+            base.OnApply();
         }
     }
 }

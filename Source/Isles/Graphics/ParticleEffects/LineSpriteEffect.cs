@@ -6,29 +6,19 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.ParticleEffects
 {
-    internal partial class LineSpriteEffect
+    public partial class LineSpriteEffect
     {
-        public LineSpriteEffect(GraphicsDevice graphicsDevice) : 
-                this(graphicsDevice, null)
-        {
-        }
-        
-        public LineSpriteEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public LineSpriteEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
         }

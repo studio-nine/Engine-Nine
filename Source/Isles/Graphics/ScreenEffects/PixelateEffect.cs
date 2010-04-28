@@ -1,22 +1,24 @@
-// -----------------------------------------------------------------------------
-// Changes to this file will not be modified by the code generator.
-// -----------------------------------------------------------------------------
+#region Copyright 2009 - 2010 (c) Nightin Games
+//=============================================================================
+//
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
+#endregion
+
+#region Using Statements
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+#endregion
+
 namespace Isles.Graphics.ScreenEffects
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    
-    
     public partial class PixelateEffect
     {
-        
-        public PixelateEffect(GraphicsDevice graphicsDevice) : 
-                this(graphicsDevice, null)
-        {
-        }
-        
-        public PixelateEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public PixelateEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
         }

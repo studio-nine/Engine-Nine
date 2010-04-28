@@ -17,12 +17,13 @@ float BlurAmount
 sampler TextureSampler : register(s0);
 
 
-float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
+float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 {
+	int i = 0;
 	float2 s = texCoord;
       
     float2 coords[16];
-    for (int i = 0; i < 16; i++)
+    for (i = 0; i < 16; i++)
     {
         float scale = 1.0f + BlurAmount * (i * 0.0066666f);
         coords[i] = (s - Center) * scale + Center;
@@ -30,7 +31,7 @@ float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
     
     float4 final = 0;
     
-    for (int i = 0; i < 16; i++)
+    for (i = 0; i < 16; i++)
     {
 		final += tex2D(TextureSampler, coords[i]);
     }
@@ -44,6 +45,6 @@ technique RadialBlur
 {
 	pass P0
 	{ 
-		PixelShader = compile ps_2_0 PixelShader(); 
+		PixelShader = compile ps_2_0 PS(); 
 	}
 }

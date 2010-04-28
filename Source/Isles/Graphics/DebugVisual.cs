@@ -54,7 +54,8 @@ namespace Isles.Graphics
             if (cube == null)
                 cube = new Cube(graphics);
 
-            color.A = (byte)(color.A * Alpha);
+            // Use premultiplied alpha
+            color *= Alpha;
             cube.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
@@ -72,7 +73,7 @@ namespace Isles.Graphics
             if (cube == null)
                 cube = new Cube(graphics);
 
-            color.A = (byte)(color.A * Alpha);
+            color *= Alpha;
             cube.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
@@ -89,7 +90,7 @@ namespace Isles.Graphics
             if (sphere == null)
                 sphere = new Sphere(graphics);
 
-            color.A = (byte)(color.A * Alpha);
+            color *= Alpha;
             sphere.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
@@ -116,7 +117,7 @@ namespace Isles.Graphics
             if (sphere == null)
                 sphere = new Sphere(graphics);
 
-            color.A = (byte)(color.A * Alpha);
+            color *= Alpha;
             sphere.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
@@ -131,7 +132,7 @@ namespace Isles.Graphics
             if (arrow == null)
                 arrow = new Arrow(graphics);
 
-            color.A = (byte)(color.A * Alpha);
+            color *= Alpha;
 
             Begin(graphics);
 
@@ -149,7 +150,7 @@ namespace Isles.Graphics
             if (grid == null || grid.ResolutionU != x || grid.ResolutionV != y)
                 grid = new Grid(graphics, step * x, step * y, x, y);
 
-            color.A = (byte)(color.A * Alpha);
+            color *= Alpha;
 
             Begin(graphics);
 
@@ -163,7 +164,7 @@ namespace Isles.Graphics
             if (cylinder == null)
                 cylinder = new Cylinder(graphics);
 
-            color.A = (byte)(color.A * Alpha);
+            color *= Alpha;
             cylinder.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
@@ -188,8 +189,8 @@ namespace Isles.Graphics
                 geometry = new GeometryVisualizer(graphics, geom);
 
 
-            faceColor.A = (byte)(faceColor.A * Alpha);
-            borderColor.A = (byte)(borderColor.A * Alpha);
+            faceColor *= Alpha;
+            borderColor *= Alpha;
             geometry.BasicEffect.LightingEnabled = LightingEnabled;
 
             Begin(graphics);
@@ -205,17 +206,12 @@ namespace Isles.Graphics
             if (Projection == Matrix.Identity)
                 throw new InvalidOperationException("Have you setup view and projection matrix?");
 
-            graphics.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            graphics.RenderState.DepthBufferEnable = true;
-            graphics.RenderState.DepthBufferWriteEnable = true;
-            graphics.RenderState.FillMode = FillMode.Solid;
+            graphics.RasterizerState = RasterizerState.CullCounterClockwise;
         }
 
         static void End(GraphicsDevice graphics)
         {
-            graphics.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            graphics.SamplerStates[0].AddressU = TextureAddressMode.Wrap;
-            graphics.SamplerStates[0].AddressV = TextureAddressMode.Wrap;
+            graphics.SamplerStates[0] = SamplerState.LinearWrap;
         }
     }
 }

@@ -28,13 +28,11 @@ namespace Isles.Graphics.ParticleEffects
         private bool hasBegin = false;
         private DynamicVertexBuffer vertices;
         private DynamicIndexBuffer indices;
-        private VertexDeclaration declaration;
         private Batch<Texture2D, ushort> batch;
         private VertexPositionColorTexture[] vertexArray;
         private int vertexCount = 0;
         private LineSpriteEffect effect;
         private Vector3 eyePosition;
-        private SpriteBlendMode blendMode;
 
         public GraphicsDevice GraphicsDevice { get; private set; }
         public bool IsDisposed { get; private set; }
@@ -58,19 +56,16 @@ namespace Isles.Graphics.ParticleEffects
             vertices = new DynamicVertexBuffer(graphics, typeof(VertexPositionColorTexture), capacity * 4, BufferUsage.WriteOnly);
 
             indices = new DynamicIndexBuffer(graphics, typeof(ushort), capacity * 6, BufferUsage.WriteOnly);
-
-            declaration = new VertexDeclaration(graphics, VertexPositionColorTexture.VertexElements);
         }
 
 
-        public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
+        public void Begin(Matrix view, Matrix projection)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("LineSpriteBatch");
 
             hasBegin = true;
 
-            this.blendMode = blendMode;
             this.view = view;
             this.projection = projection;
 
@@ -284,7 +279,7 @@ namespace Isles.Graphics.ParticleEffects
 
             if (batch.Count <= 0)
                 return;
-
+            /* TODO
             RenderState renderState = GraphicsDevice.RenderState;
 
             // Set the alpha blend mode.
@@ -300,6 +295,7 @@ namespace Isles.Graphics.ParticleEffects
             // (so particles will not obscure other particles).
             renderState.DepthBufferEnable = true;
             renderState.DepthBufferWriteEnable = false;
+            */
 
             effect.View = view;
             effect.Projection = projection;
@@ -307,8 +303,7 @@ namespace Isles.Graphics.ParticleEffects
 
             vertices.SetData<VertexPositionColorTexture>(vertexArray, 0, vertexCount, SetDataOptions.None);
 
-            GraphicsDevice.Vertices[0].SetSource(vertices, 0, VertexPositionColorTexture.SizeInBytes);
-            GraphicsDevice.VertexDeclaration = declaration;
+            GraphicsDevice.SetVertexBuffer(vertices);
 
 
             foreach (BatchItem<Texture2D> batchItem in batch.Batches)
@@ -319,27 +314,23 @@ namespace Isles.Graphics.ParticleEffects
 
                 effect.Texture = batchItem.Key;
 
-                effect.Begin();
-
-                effect.CurrentTechnique.Passes[0].Begin();
+                effect.CurrentTechnique.Passes[0].Apply();
 
                 GraphicsDevice.DrawIndexedPrimitives(
                     PrimitiveType.TriangleList, 0, 0, vertexCount, 0, batchItem.Count / 3);
-
-                effect.CurrentTechnique.Passes[0].End();
-
-                effect.End();
 
                 GraphicsDevice.Indices = null;
             }
 
             // Reset render states to default value
+            /* TODO
             renderState.PointSpriteEnable = false;
             renderState.AlphaBlendEnable = false;
             renderState.SourceBlend = Blend.SourceAlpha;
             renderState.DestinationBlend = Blend.InverseSourceAlpha;
             renderState.AlphaTestEnable = false;
             renderState.DepthBufferWriteEnable = true;
+             */
         }
 
 
@@ -350,9 +341,6 @@ namespace Isles.Graphics.ParticleEffects
 
             if (indices != null)
                 indices.Dispose();
-
-            if (declaration != null)
-                declaration.Dispose();
 
             IsDisposed = true;
         }

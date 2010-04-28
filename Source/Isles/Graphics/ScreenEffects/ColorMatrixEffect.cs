@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 #endregion
 
-
 namespace Isles.Graphics.ScreenEffects
 {
     /// <summary>
@@ -29,17 +27,11 @@ namespace Isles.Graphics.ScreenEffects
         /// <summary>
         /// Creates a new instance of color matrix post processing.
         /// </summary>
-        public ColorMatrixEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
-
-        /// <summary>
-        /// Creates a new instance of color matrix post processing.
-        /// </summary>
-        public ColorMatrixEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) :
-            base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public ColorMatrixEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics)) 
         {
             InitializeComponent();
         }
-
+        
         public static Matrix CreateColorMatrix(float brightness, float contrast, float saturation, float hue)
         {
             return CreateBrightness(brightness) *

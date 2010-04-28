@@ -42,7 +42,7 @@ struct VertexShaderOutput
 
 
 
-VertexShaderOutput VertexShader(VertexShaderInput input)
+VertexShaderOutput VS(VertexShaderInput input)
 {
     VertexShaderOutput output;
     
@@ -62,7 +62,7 @@ struct PixelShaderInput
 
 
 
-float4 PixelShader(PixelShaderInput input) : COLOR0
+float4 PS(PixelShaderInput input) : COLOR0
 {
     return tex2D(Sampler, input.TexCoord) * input.Color;
 }
@@ -72,7 +72,7 @@ technique Default
 {
     pass P0
     {
-        VertexShader = compile vs_1_1 VertexShader();
-        PixelShader = compile ps_1_1 PixelShader();
+        VertexShader = compile vs_2_0 VS();
+        PixelShader = compile ps_2_0 PS();
     }
 }

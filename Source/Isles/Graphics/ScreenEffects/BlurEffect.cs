@@ -6,17 +6,13 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.ScreenEffects
 {
@@ -25,45 +21,25 @@ namespace Isles.Graphics.ScreenEffects
     /// </summary>
     public partial class BlurEffect
     {
-        private float blurAmount;
-        private float direction;
-        private float step;
-
         /// <summary>
         /// Gets or sets the amount of bluring.
         /// </summary>
-        public float BlurAmount
-        {
-            get { return blurAmount; }
-            set { blurAmount = value; Update(); }
-        }
+        public float BlurAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the step of sampled points.
         /// </summary>
-        public float Step
-        {
-            get { return step; }
-            set { step = value; Update(); }
-        }
+        public float Step { get; set; }
 
         /// <summary>
         /// Gets or sets the direction of bluring in radians.
         /// </summary>
-        public float Direction
-        {
-            get { return direction; }
-            set { direction = value; Update(); }
-        }
+        public float Direction { get; set; }
 
         /// <summary>
         /// Gets or sets the blur sample count. Should be one of 3, 7, 11, 15.
         /// </summary>
-        public int SampleCount
-        {
-            get { int index = Parameters["ShaderIndex"].GetValueInt32(); return index * 4 + 3; }
-            set { Parameters["ShaderIndex"].SetValue((int)((value - 3) / 4)); }
-        }
+        public int SampleCount { get; set; }
 
         public const int MaxSampleCount = 15;
         public const int MinSampleCount = 3;
@@ -71,28 +47,24 @@ namespace Isles.Graphics.ScreenEffects
         /// <summary>
         /// Creates a new instance of Gaussian blur post processing.
         /// </summary>
-        public BlurEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
-
-        /// <summary>
-        /// Creates a new instance of Gaussian blur post processing.
-        /// </summary>
-        public BlurEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public BlurEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
-            InitializeComponent();
-
-            step = 1.0f;
-
+            Step = 1.0f;
             BlurAmount = 1.0f;
-        }
-        
+            SampleCount = 15;
 
-        private void Update()
+            InitializeComponent();
+        }
+
+        protected override void OnApply()
         {
             SetBlurEffectParameters(
-                (float)Math.Cos(-direction) / GraphicsDevice.Viewport.Width, 
-                (float)Math.Sin(-direction) / GraphicsDevice.Viewport.Height);
+                (float)Math.Cos(-Direction) / GraphicsDevice.Viewport.Width,
+                (float)Math.Sin(-Direction) / GraphicsDevice.Viewport.Height);
+
+            base.OnApply();
         }
+
 
         /// <summary>
         /// Computes sample weightings and texture coordinate offsets
@@ -100,12 +72,6 @@ namespace Isles.Graphics.ScreenEffects
         /// </summary>
         void SetBlurEffectParameters(float dx, float dy)
         {
-            // Look up the sample weight and offset effect parameters.
-            EffectParameter weightsParameter, offsetsParameter;
-
-            weightsParameter = Parameters["sampleWeights"];
-            offsetsParameter = Parameters["sampleOffsets"];
-
             // Look up how many samples our gaussian blur effect supports.
             //int sampleCount = weightsParameter.Elements.Count;
             int sampleCount = SampleCount;
@@ -143,7 +109,7 @@ namespace Isles.Graphics.ScreenEffects
                 // positioning us nicely in between two texels.
                 float sampleOffset = i * 2 + 1.5f;
 
-                Vector2 delta = new Vector2(dx, dy) * sampleOffset;
+                Vector2 delta = new Vector2(dx, dy) * sampleOffset * Step;
 
                 // Store texture coordinate offsets for the positive and negative taps.
                 sampleOffsets[i * 2 + 1] = delta;
@@ -157,8 +123,8 @@ namespace Isles.Graphics.ScreenEffects
             }
 
             // Tell the effect about our new filter 
-            weightsParameter.SetValue(sampleWeights);
-            offsetsParameter.SetValue(sampleOffsets);
+            this.sampleOffsets = sampleOffsets;
+            this.sampleWeights = sampleWeights;
         }
 
 

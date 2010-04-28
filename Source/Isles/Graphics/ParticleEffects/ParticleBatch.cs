@@ -44,14 +44,14 @@ namespace Isles.Graphics.ParticleEffects
             particleEffect = new ParticleEffectBatch(graphics, particleCapacity);
         }
 
-        public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
+        public void Begin(Matrix view, Matrix projection)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("LineSpriteBatch");
 
-            pointSprite.Begin(blendMode, view, projection);
-            lineSprite.Begin(blendMode, view, projection);
-            particleEffect.Begin(blendMode, view, projection);
+            pointSprite.Begin(view, projection);
+            lineSprite.Begin(view, projection);
+            particleEffect.Begin(view, projection);
         }
 
         public void Draw(Texture2D texture, Vector3 position, float size, float rotation, Color color)

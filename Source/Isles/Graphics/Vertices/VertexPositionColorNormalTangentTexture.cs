@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
@@ -16,11 +15,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-
 namespace Isles.Graphics.Vertices
 {
     [Serializable]
-    public struct VertexPositionColorNormalTangentTexture
+    public struct VertexPositionColorNormalTangentTexture : IVertexType
     {
         #region Variables
         /// <summary>
@@ -63,18 +61,17 @@ namespace Isles.Graphics.Vertices
         {
             // Construct new vertex declaration with tangent info
             // First the normal stuff (we should already have that)
-            new VertexElement(0, 0, VertexElementFormat.Vector3,
-                VertexElementMethod.Default, VertexElementUsage.Position, 0),
-            new VertexElement(0, 12, VertexElementFormat.Vector2,
-                VertexElementMethod.Default,
-                VertexElementUsage.TextureCoordinate, 0),
-            new VertexElement(0, 20, VertexElementFormat.Vector3,
-                VertexElementMethod.Default, VertexElementUsage.Normal, 0),
-            new VertexElement(0, 32, VertexElementFormat.Vector3,
-                VertexElementMethod.Default, VertexElementUsage.Tangent, 0),
-            new VertexElement(0, 44, VertexElementFormat.Color,
-                VertexElementMethod.Default, VertexElementUsage.Color, 0),
+            new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+            new VertexElement(12, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
+            new VertexElement(20, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
+            new VertexElement(32, VertexElementFormat.Vector3, VertexElementUsage.Tangent, 0),
+            new VertexElement(44, VertexElementFormat.Color, VertexElementUsage.Color, 0),
         };
         #endregion
+
+        public VertexDeclaration VertexDeclaration
+        {
+            get { return new Microsoft.Xna.Framework.Graphics.VertexDeclaration(VertexElements); }
+        }
     }
 }

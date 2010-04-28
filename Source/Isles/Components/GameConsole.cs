@@ -232,10 +232,13 @@ namespace Isles.Components
             // Use Graphics.Clear to draw a background quad
             int y = GraphicsDevice.PresentationParameters.BackBufferHeight - lineCount * height - Border;
 
+            /*
             GraphicsDevice.Clear(
                 ClearOptions.Target, BackgroundColor, 0, 0,
                 new Rectangle[] { new Rectangle(
                     Border, y, GraphicsDevice.PresentationParameters.BackBufferWidth - Border * 2, lineCount * height) });
+            */
+
 
             // Draw text
             float fontScale = 1.0f * FontSize / (Font.MeasureString("A").Y - 10);
@@ -253,7 +256,7 @@ namespace Isles.Components
             }
 
             // Update text cursor
-            currentBlinkTime += (float)gameTime.ElapsedRealTime.TotalMilliseconds;
+            currentBlinkTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (currentBlinkTime > CursorBlinkInterval)
                 currentBlinkTime = -CursorBlinkInterval;

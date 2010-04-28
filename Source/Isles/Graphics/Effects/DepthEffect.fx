@@ -6,7 +6,7 @@
 float4x4 World;
 float4x4 Bones[MaxBones];
 float4x4 View;
-float4x4 projectionMatrix;
+float4x4 Projection;
 float    farClip;
 
 
@@ -23,7 +23,7 @@ void VertShadow( float4 Pos : POSITION,
     //
     oPos = mul( Pos, World );
     oPos = mul( oPos, View );
-    oPos = mul( oPos, projectionMatrix );
+    oPos = mul( oPos, Projection );
 
     //
     // Store z and w in our spare texcoord
@@ -56,7 +56,7 @@ void VertShadowSkinned( float4 Pos : POSITION,
     oPos = mul( Pos, skinTransform );
     oPos = mul( oPos, World );
     oPos = mul( oPos, View );
-    oPos = mul( oPos, projectionMatrix );
+    oPos = mul( oPos, Projection );
 
     //
     // Store z and w in our spare texcoord

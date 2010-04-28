@@ -94,7 +94,7 @@ uniform const float3	LightSpecularColor	: register(c13) = 0;
 //-----------------------------------------------------------------------------
 
 uniform const float4x4	World		: register(vs, c20);	// 20 - 23
-uniform const float4x4	viewMatrix	: register(vs, c24);	// 24 - 27
+uniform const float4x4	View		: register(vs, c24);	// 24 - 27
 uniform const float4x4	Projection	: register(vs, c28);	// 28 - 31
 
 uniform const float2	SplatterTextureScale = 1;
@@ -171,7 +171,7 @@ ColorPair ComputePerPixelLights(float3 E, float3 N)
 	float dt = max(0,dot(L,N));
     result.Diffuse += LightDiffuseColor * dt;
     if (dt != 0)
-		result.Specular += LightSpecularColor * pow(max(0,dot(H,N)), SpecularPower);
+		result.Specular += LightSpecularColor * pow(max(0.00001f,dot(H,N)), SpecularPower);
     
     result.Diffuse *= DiffuseColor;
     result.Diffuse += EmissiveColor;
@@ -199,7 +199,7 @@ PixelLightingVSOutputTx VSBasicPixelLightingNmTxVc(VSInputNmTxVc vin)
 	PixelLightingVSOutputTx vout;
 	
 	float4 pos_ws = mul(vin.Position, World);
-	float4 pos_vs = mul(pos_ws, viewMatrix);
+	float4 pos_vs = mul(pos_ws, View);
 	float4 pos_ps = mul(pos_vs, Projection);
 	
 	vout.PositionPS		= pos_ps;

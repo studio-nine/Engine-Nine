@@ -38,12 +38,7 @@ namespace Isles.Graphics.Landscape
         /// Gets index buffer of this patch.
         /// </summary>
         public IndexBuffer IndexBuffer { get; private set; }
-
-        /// <summary>
-        /// Gets vertex declaration of this patch.
-        /// </summary>
-        public VertexDeclaration VertexDeclaration { get; private set; }
-
+        
         /// <summary>
         /// Gets the number of primitives that made up the patch.
         /// </summary>
@@ -146,9 +141,6 @@ namespace Isles.Graphics.Landscape
 
 
             // Initialize vertices and indices
-            VertexDeclaration = new VertexDeclaration(graphics,
-                                            Vertices.VertexPositionNormalTangentTexture.VertexElements);
-
             VertexBuffer = new VertexBuffer(graphics,
                                             typeof(Vertices.VertexPositionNormalTangentTexture),
                                             VertexCount, BufferUsage.WriteOnly);
@@ -306,23 +298,16 @@ namespace Isles.Graphics.Landscape
                 return;            
 
             GraphicsDevice.Indices = IndexBuffer;
-            GraphicsDevice.VertexDeclaration = VertexDeclaration;
-            GraphicsDevice.Vertices[0].SetSource(VertexBuffer, 0, Vertices.VertexPositionNormalTangentTexture.SizeInBytes);
+            GraphicsDevice.SetVertexBuffer(VertexBuffer);
 
             foreach (Effect effect in Effects)
             {
-                effect.Begin();
-
                 foreach (EffectPass pass in effect.CurrentTechnique.Passes)
                 {
-                    pass.Begin();
+                    pass.Apply();
 
                     GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VertexCount, 0, PrimitiveCount);
-
-                    pass.End();
                 }
-
-                effect.End();
             }
         }
 
@@ -335,21 +320,14 @@ namespace Isles.Graphics.Landscape
                 return;
 
             GraphicsDevice.Indices = IndexBuffer;
-            GraphicsDevice.VertexDeclaration = VertexDeclaration;
-            GraphicsDevice.Vertices[0].SetSource(VertexBuffer, 0, Vertices.VertexPositionNormalTangentTexture.SizeInBytes);
-
-            effect.Begin();
-
+            GraphicsDevice.SetVertexBuffer(VertexBuffer);
+            
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
-                pass.Begin();
+                pass.Apply();
 
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VertexCount, 0, PrimitiveCount);
-
-                pass.End();
             }
-
-            effect.End();
         }
 
         /// <summary>
@@ -362,9 +340,6 @@ namespace Isles.Graphics.Landscape
 
             if (IndexBuffer != null)
                 IndexBuffer.Dispose();
-
-            if (VertexDeclaration != null)
-                VertexDeclaration.Dispose();
         }
     }
 }

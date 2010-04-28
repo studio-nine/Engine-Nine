@@ -6,69 +6,50 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.Effects
 {
     public partial class DecalEffect
     {
-        Vector2 scale = Vector2.One;
-        Vector3 position;
-        float rotation;
+        public Vector3 Position { get; set; }
 
-        public Vector3 Position
+        public float Rotation { get; set; }
+
+        public Vector2 Scale { get; set; }
+
+        public BoundingBox BoundingBox
         {
-            get { return position; }
-            set { position = value; Update(); }
+            get
+            {
+                float size = (float)(Math.Max(Scale.X, Scale.Y) * Math.Sqrt(2) * 0.5f);
+
+                return new BoundingBox(
+                    Position - new Vector3(size, size, float.MaxValue),
+                    Position + new Vector3(size, size, float.MaxValue));
+            }
         }
 
-        public float Rotation
-        {
-            get { return rotation; }
-            set { rotation = value; Update(); }
-        }
-
-        public Vector2 Scale
-        {
-            get { return scale; }
-            set { scale = value; Update(); }
-        }
-
-        public BoundingBox BoundingBox { get; private set; }
-
-        public DecalEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
-        
-        public DecalEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public DecalEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
-
-            Update();
         }
 
-        private void Update()
+        protected override void OnApply()
         {
-            Matrix matrix = Matrix.CreateTranslation(-position + new Vector3(scale.X / 2, scale.Y / 2, 0));
-            matrix *= Matrix.CreateRotationZ(-rotation);
-            matrix *= Matrix.CreateScale(1.0f / scale.X, 1.0f / scale.Y, 1);
+            Matrix matrix = Matrix.CreateTranslation(-Position + new Vector3(Scale.X / 2, Scale.Y / 2, 0));
+            matrix *= Matrix.CreateRotationZ(-Rotation);
+            matrix *= Matrix.CreateScale(1.0f / Scale.X, 1.0f / Scale.Y, 1);
 
-            TextureTransform = matrix;
+            textureTransform = matrix;
 
-            float size = (float)(Math.Max(scale.X, scale.Y) * Math.Sqrt(2) * 0.5f);
-
-            BoundingBox = new BoundingBox(
-                position - new Vector3(size, size, float.MaxValue),
-                position + new Vector3(size, size, float.MaxValue));
+            base.OnApply();
         }
     }
 }

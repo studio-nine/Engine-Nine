@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,6 @@ using Microsoft.Xna.Framework.Content;
 using Isles.Graphics.Vertices;
 #endregion
 
-
 namespace Isles.Graphics.Effects
 {
     public partial class ScrollEffect
@@ -26,15 +24,8 @@ namespace Isles.Graphics.Effects
         public float Direction { get; set; }
 
         private TimeSpan startTime = TimeSpan.Zero;
-
-
-        public ScrollEffect(GraphicsDevice graphicsDevice) : 
-                this(graphicsDevice, null)
-        {
-        }
-        
-        public ScrollEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+                        
+        public ScrollEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
 
@@ -53,7 +44,7 @@ namespace Isles.Graphics.Effects
             float dy = (float)(duration.TotalSeconds * Speed * Math.Sin(Direction));
 
 
-            TextureOffset = new Vector2(dx, dy);            
+            textureOffset = new Vector2(dx, dy);            
         }
     }
 }

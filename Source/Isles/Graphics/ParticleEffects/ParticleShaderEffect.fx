@@ -182,7 +182,7 @@ float4 ComputeParticleRotation(float randomValue, float age)
 
 
 // Custom vertex shader animates particles entirely on the GPU.
-VertexShaderOutput VertexShader(VertexShaderInput input)
+VertexShaderOutput VS(VertexShaderInput input)
 {
     VertexShaderOutput output;
     
@@ -279,8 +279,8 @@ technique NonRotatingParticles
 {
     pass P0
     {
-        VertexShader = compile vs_1_1 VertexShader();
-        PixelShader = compile ps_1_1 NonRotatingPixelShader();
+        VertexShader = compile vs_2_0 VS();
+        PixelShader = compile ps_2_0 NonRotatingPixelShader();
     }
 }
 
@@ -290,7 +290,7 @@ technique RotatingParticles
 {
     pass P0
     {
-        VertexShader = compile vs_1_1 VertexShader();
+        VertexShader = compile vs_2_0 VS();
         PixelShader = compile ps_2_0 RotatingPixelShader();
     }
 }

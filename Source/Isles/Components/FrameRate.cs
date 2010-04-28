@@ -152,13 +152,13 @@ namespace Isles.Components
             counter++;
             currentFrame++;
 
-            float elapsed = (float)(gameTime.TotalRealTime.TotalMilliseconds - storedTime);
+            float elapsed = (float)(gameTime.TotalGameTime.TotalMilliseconds - storedTime);
 
             if (elapsed > UpdateFrequency)
             {
                 fps = 1000 * counter / elapsed;
                 counter = 0;
-                storedTime = gameTime.TotalRealTime.TotalMilliseconds;
+                storedTime = gameTime.TotalGameTime.TotalMilliseconds;
 
                 fpsInterpolated =
                     MathHelper.Lerp(fpsInterpolated, fps, 0.5f);

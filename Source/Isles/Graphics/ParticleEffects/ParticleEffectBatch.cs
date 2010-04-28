@@ -37,7 +37,6 @@ namespace Isles.Graphics.ParticleEffects
         private bool hasBegin = false;
         private Batch<Key, ParticleEffect> batch;
         private Effect effect;
-        private SpriteBlendMode blendMode;
         private GameTime time;
 
 
@@ -58,7 +57,7 @@ namespace Isles.Graphics.ParticleEffects
         }
 
 
-        public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
+        public void Begin(Matrix view, Matrix projection)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("ParticleEffectBatch");
@@ -67,7 +66,6 @@ namespace Isles.Graphics.ParticleEffects
 
             this.view = view;
             this.projection = projection;
-            this.blendMode = blendMode;
 
             batch.Clear();
         }
@@ -130,49 +128,41 @@ namespace Isles.Graphics.ParticleEffects
             parameters["CurrentTime"].SetValue((float)time.TotalGameTime.TotalSeconds);
 
 
-            BeginParticleRenderStates(GraphicsDevice.RenderState);
+            //BeginParticleRenderStates(GraphicsDevice.RenderState);
             {
-                effect.Begin();
+                foreach (BatchItem<Key> batchItem in batch.Batches)
                 {
-                    foreach (BatchItem<Key> batchItem in batch.Batches)
+                    parameters["Texture"].SetValue(batchItem.Key.Texture);
+
+                    for (int i = 0; i < batchItem.Count; i++)
                     {
-                        parameters["Texture"].SetValue(batchItem.Key.Texture);
+                        ParticleEffect particleEffect = batch.Values[batchItem.StartIndex + i];
 
-                        batchItem.Key.Technique.Passes[0].Begin();
+                        parameters["Duration"].SetValue((float)particleEffect.Duration.TotalSeconds);
+                        parameters["DurationRandomness"].SetValue(particleEffect.DurationRandomness);
+                        parameters["Gravity"].SetValue(particleEffect.Gravity);
+                        parameters["EndVelocity"].SetValue(particleEffect.EndVelocity);
+                        parameters["MinColor"].SetValue(particleEffect.MinColor.ToVector4());
+                        parameters["MaxColor"].SetValue(particleEffect.MaxColor.ToVector4());
+                        parameters["RotateSpeed"].SetValue(new Vector2(particleEffect.MinRotateSpeed, particleEffect.MaxRotateSpeed));
+                        parameters["StartSize"].SetValue(new Vector2(particleEffect.MinStartSize, particleEffect.MaxStartSize));
+                        parameters["EndSize"].SetValue(new Vector2(particleEffect.MinEndSize, particleEffect.MaxEndSize));
 
-                        for (int i = 0; i < batchItem.Count; i++)
-                        {
-                            ParticleEffect particleEffect = batch.Values[batchItem.StartIndex + i];
+                        batchItem.Key.Technique.Passes[0].Apply();
 
-                            parameters["Duration"].SetValue((float)particleEffect.Duration.TotalSeconds);
-                            parameters["DurationRandomness"].SetValue(particleEffect.DurationRandomness);
-                            parameters["Gravity"].SetValue(particleEffect.Gravity);
-                            parameters["EndVelocity"].SetValue(particleEffect.EndVelocity);
-                            parameters["MinColor"].SetValue(particleEffect.MinColor.ToVector4());
-                            parameters["MaxColor"].SetValue(particleEffect.MaxColor.ToVector4());
-                            parameters["RotateSpeed"].SetValue(new Vector2(particleEffect.MinRotateSpeed, particleEffect.MaxRotateSpeed));
-                            parameters["StartSize"].SetValue(new Vector2(particleEffect.MinStartSize, particleEffect.MaxStartSize));
-                            parameters["EndSize"].SetValue(new Vector2(particleEffect.MinEndSize, particleEffect.MaxEndSize));
-
-                            effect.CommitChanges();
-
-                            particleEffect.Draw(GraphicsDevice, time);
-                        }
-
-                        batchItem.Key.Technique.Passes[0].End();
+                        particleEffect.Draw(GraphicsDevice, time);
                     }
                 }
-                effect.End();
             }
-            EndParticleRenderStates(GraphicsDevice.RenderState);
+            //EndParticleRenderStates(GraphicsDevice.RenderState);
         }
 
 
-
+        /*
         /// <summary>
         /// Helper for setting the renderstates used to draw particles.
         /// </summary>
-        void BeginParticleRenderStates(RenderState renderState)
+        void BeginParticleRenderStates(BlendState renderState)
         {
             // Enable point sprites.
             renderState.PointSpriteEnable = true;
@@ -206,5 +196,6 @@ namespace Isles.Graphics.ParticleEffects
             renderState.AlphaTestEnable = false;
             renderState.DepthBufferWriteEnable = true;
         }
+         */
     }
 }

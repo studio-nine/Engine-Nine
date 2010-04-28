@@ -13,7 +13,7 @@ float4 Threshold = 1;
 // to know the size of a texture,
 const float off = 0.1 / 256.0;
 
-float4 PixelShader(float2 TexCoord : TEXCOORD0) : COLOR0
+float4 PS(float2 TexCoord : TEXCOORD0) : COLOR0
 {
 	// Sample the neighbor pixels
 	float4 s00 = tex2D(TextureSampler, TexCoord + float2(-off, -off));
@@ -39,6 +39,6 @@ technique RenderScene
 {
     pass p0
     {
-        PixelShader = compile ps_2_0 PixelShader();
+        PixelShader = compile ps_2_0 PS();
     }
 }

@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.Effects
 {
@@ -28,21 +26,16 @@ namespace Isles.Graphics.Effects
             set { Parameters["ShaderIndex"].SetValue(value ? 1 : 0); }
         }
 
-        public Matrix Projection
-        {
-            get { return ProjectionMatrix; }
-            set { ProjectionMatrix = value; FarClip = Math.Abs(value.M43 / (Math.Abs(value.M33) - 1)); }
-        }
-
-        public DepthEffect(GraphicsDevice graphicsDevice) : 
-                this(graphicsDevice, null)
-        {
-        }
-        
-        public DepthEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public DepthEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
+        }
+
+        protected override void OnApply()
+        {
+            farClip = Math.Abs(Projection.M43 / (Math.Abs(Projection.M33) - 1));
+
+            base.OnApply();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Isles.Graphics.ParticleEffects
     public sealed class PointSpriteBatch : IDisposable
     {
         #region Vertex
-        internal struct Vertex
+        internal struct Vertex : IVertexType
         {
             public Vector3 Position;
             public Color Color;
@@ -34,15 +34,16 @@ namespace Isles.Graphics.ParticleEffects
             public static int SizeInBytes = 4 * (3 + 1 + 1 + 1);
             public static VertexElement[] VertexElements = new VertexElement[]
             {
-                new VertexElement(0, 0, VertexElementFormat.Vector3,
-                    VertexElementMethod.Default, VertexElementUsage.Position, 0),
-                new VertexElement(0, 12, VertexElementFormat.Color,
-                    VertexElementMethod.Default, VertexElementUsage.Color, 0),
-                new VertexElement(0, 16, VertexElementFormat.Single,
-                    VertexElementMethod.Default, VertexElementUsage.TextureCoordinate, 0),
-                new VertexElement(0, 20, VertexElementFormat.Single,
-                    VertexElementMethod.Default, VertexElementUsage.TextureCoordinate, 1),
+                new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
+                new VertexElement(12, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+                new VertexElement(16, VertexElementFormat.Single, VertexElementUsage.TextureCoordinate, 0),
+                new VertexElement(20, VertexElementFormat.Single, VertexElementUsage.TextureCoordinate, 1),
             };
+
+            public VertexDeclaration VertexDeclaration
+            {
+                get { return new VertexDeclaration(VertexElements); }
+            }
         }
         #endregion
 
@@ -60,10 +61,8 @@ namespace Isles.Graphics.ParticleEffects
         private Matrix projection;
         private bool hasBegin = false;
         private DynamicVertexBuffer vertices;
-        private VertexDeclaration declaration;
         private Batch<Key, Vertex> batch;
         private Effect effect;
-        private SpriteBlendMode blendMode;
 
 
         public GraphicsDevice GraphicsDevice { get; private set; }
@@ -81,13 +80,11 @@ namespace Isles.Graphics.ParticleEffects
 
             batch = new Batch<Key, Vertex>(capacity);
 
-            vertices = new DynamicVertexBuffer(graphics, typeof(Vertex), capacity, BufferUsage.Points | BufferUsage.WriteOnly);
-
-            declaration = new VertexDeclaration(graphics, Vertex.VertexElements);
+            //vertices = new DynamicVertexBuffer(graphics, typeof(Vertex), capacity, BufferUsage.Points | BufferUsage.WriteOnly);
         }
 
 
-        public void Begin(SpriteBlendMode blendMode, Matrix view, Matrix projection)
+        public void Begin(Matrix view, Matrix projection)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("PointSpriteBatch");
@@ -96,7 +93,6 @@ namespace Isles.Graphics.ParticleEffects
 
             this.view = view;
             this.projection = projection;
-            this.blendMode = blendMode;
 
             batch.Clear();
         }
@@ -148,16 +144,13 @@ namespace Isles.Graphics.ParticleEffects
 
             if (batch.Count <= 0)
                 return;
-
-            RenderState renderState = GraphicsDevice.RenderState;
+            /*
+            RasterizerState renderState = GraphicsDevice.RenderState;
 
             // Enable point sprites.
             renderState.PointSpriteEnable = true;
             renderState.PointSizeMax = 256;
-
-            // Set the alpha blend mode.
-            renderState.SetSpriteBlendMode(blendMode);
-
+            
             // Set the alpha test mode.
             renderState.AlphaTestEnable = true;
             renderState.AlphaFunction = CompareFunction.Greater;
@@ -168,6 +161,7 @@ namespace Isles.Graphics.ParticleEffects
             // (so particles will not obscure other particles).
             renderState.DepthBufferEnable = true;
             renderState.DepthBufferWriteEnable = false;
+            */
 
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
@@ -179,31 +173,27 @@ namespace Isles.Graphics.ParticleEffects
                 vertices.SetData<Vertex>(
                     batch.Values, batchItem.StartIndex, batchItem.Count, SetDataOptions.None);
 
-                GraphicsDevice.Vertices[0].SetSource(vertices, 0, Vertex.SizeInBytes);
-                GraphicsDevice.VertexDeclaration = declaration;
+                GraphicsDevice.SetVertexBuffer(vertices);
 
                 effect.Parameters["Texture"].SetValue(batchItem.Key.Texture);
+                                
+                batchItem.Key.Technique.Passes[0].Apply();
 
-                effect.Begin();
+                // TODO:
+                //GraphicsDevice.DrawPrimitives(PrimitiveType.PointList, 0, batchItem.Count);
 
-                batchItem.Key.Technique.Passes[0].Begin();
-
-                GraphicsDevice.DrawPrimitives(PrimitiveType.PointList, 0, batchItem.Count);
-             
-                batchItem.Key.Technique.Passes[0].End();
-
-                effect.End();
-                
-                GraphicsDevice.Vertices[0].SetSource(null, 0, 0);
+                GraphicsDevice.SetVertexBuffer(null);
             }
 
             // Reset render states to default value
+            /*
             renderState.PointSpriteEnable = false;
             renderState.AlphaBlendEnable = false;
             renderState.SourceBlend = Blend.SourceAlpha;
             renderState.DestinationBlend = Blend.InverseSourceAlpha;
             renderState.AlphaTestEnable = false;
             renderState.DepthBufferWriteEnable = true;
+             */
         }
 
 
@@ -211,9 +201,6 @@ namespace Isles.Graphics.ParticleEffects
         {
             if (vertices != null)
                 vertices.Dispose();
-
-            if (declaration != null)
-                declaration.Dispose();
 
             IsDisposed = true;
         }

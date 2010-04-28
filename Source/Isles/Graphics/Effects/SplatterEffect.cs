@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.Effects
 {
@@ -34,7 +32,7 @@ namespace Isles.Graphics.Effects
         public Texture2D this[int index]
         {
             get { return textures[index]; }
-            set { textures[index] = value; effect.UpdateTexture(); }
+            set { textures[index] = value; }
         }
 
         public IEnumerator<Texture2D> GetEnumerator()
@@ -58,43 +56,36 @@ namespace Isles.Graphics.Effects
 
         public bool FogEnabled
         {
-            get { return FogMask > 0.5f; }
-            set { FogMask = (value ? 1.0f : 0.0f); }
+            get { return fogMask > 0.5f; }
+            set { fogMask = (value ? 1.0f : 0.0f); }
         }
-
-
-        public Matrix View
-        {
-            get { return ViewMatrix; }
-            set { ViewMatrix = value; EyePosition = Matrix.Invert(value).Translation; }
-        }
-
-        
-        public SplatterEffect(GraphicsDevice graphicsDevice) : this(graphicsDevice, null) { }
-        
-        public SplatterEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) : 
-                base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+                
+        public SplatterEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
 
             Textures = new SplatterTextureCollection(this);
         }
 
-        internal void UpdateTexture() 
+        protected override void  OnApply()
         {
-            TextureX = Textures[0];
-            TextureY = Textures[1];
-            TextureZ = Textures[2];
-            TextureW = Textures[3];
+            textureX = Textures[0];
+            textureY = Textures[1];
+            textureZ = Textures[2];
+            textureW = Textures[3];
 
-            Vector4 mask;
+            Vector4 m;
 
-            mask.X = (Textures[0] != null ? 1.0f : 0.0f);
-            mask.Y = (Textures[1] != null ? 1.0f : 0.0f);
-            mask.Z = (Textures[2] != null ? 1.0f : 0.0f);
-            mask.W = (Textures[3] != null ? 1.0f : 0.0f);
+            m.X = (Textures[0] != null ? 1.0f : 0.0f);
+            m.Y = (Textures[1] != null ? 1.0f : 0.0f);
+            m.Z = (Textures[2] != null ? 1.0f : 0.0f);
+            m.W = (Textures[3] != null ? 1.0f : 0.0f);
 
-            Mask = mask;
+            mask = m;
+
+            eyePosition = Matrix.Invert(View).Translation;
+
+ 	        base.OnApply();
         }
     }
 }

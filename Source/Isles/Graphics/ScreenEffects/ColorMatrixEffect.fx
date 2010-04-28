@@ -14,7 +14,7 @@ float4x4 Matrix
 > = 0.5f;
 
 
-float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
+float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 {
     // Look up the bloom and original base image colors.
     return mul(tex2D(Sampler, texCoord), Matrix);
@@ -25,6 +25,6 @@ technique Saturation
 {
     pass Pass1
     {
-        PixelShader = compile ps_2_0 PixelShader();
+        PixelShader = compile ps_2_0 PS();
     }
 }

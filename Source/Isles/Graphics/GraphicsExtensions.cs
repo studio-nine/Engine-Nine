@@ -24,40 +24,18 @@ namespace Isles.Graphics
     #region GraphicsExtensions
     public static class GraphicsExtensions
     {
-        public static void SetSpriteBlendMode(this RenderState renderState, SpriteBlendMode blend)
-        {
-            if (blend == SpriteBlendMode.None)
-            {
-                renderState.AlphaBlendEnable = false;
-            }
-            else if (blend == SpriteBlendMode.AlphaBlend)
-            {
-                renderState.AlphaBlendEnable = true;
-                renderState.SourceBlend = Blend.SourceAlpha;
-                renderState.DestinationBlend = Blend.InverseSourceAlpha;
-            }
-            else if (blend == SpriteBlendMode.Additive)
-            {
-                renderState.AlphaBlendEnable = true;
-                renderState.SourceBlend = Blend.SourceAlpha;
-                renderState.DestinationBlend = Blend.One;
-            }
-        }
-
         static SpriteBatch spriteBatch;
 
         public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Rectangle? destination, Rectangle? source, Color color, Effect effect)
         {
             if (spriteBatch == null)
                 spriteBatch = new SpriteBatch(graphics);
-            
-            spriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.SaveState);
-            
-            
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+                        
             if (effect != null)
             {
-                effect.Begin();
-                effect.CurrentTechnique.Passes[0].Begin();         
+                effect.CurrentTechnique.Passes[0].Apply();     
             }
 
 
@@ -71,13 +49,6 @@ namespace Isles.Graphics
 
 
             spriteBatch.Draw(texture, destination.Value, source, color);
-
-
-            if (effect != null)
-            {
-                effect.End();
-                effect.CurrentTechnique.Passes[0].End();
-            }
 
             spriteBatch.End();
         }

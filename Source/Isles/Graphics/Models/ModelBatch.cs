@@ -77,60 +77,51 @@ namespace Isles.Graphics.Models
         }
 
 
-        public void Draw(Model model, Matrix[] bones, Matrix view, Matrix projection)
+        public void Draw(Model model, Matrix[] bones, Matrix world, Matrix view, Matrix projection)
         {
             GraphicsDevice graphics = model.Meshes[0].Effects[0].GraphicsDevice;
 
             foreach (ModelMesh mesh in model.Meshes)
             {
-                graphics.Indices = mesh.IndexBuffer;
-
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    graphics.VertexDeclaration = part.VertexDeclaration;
-                    graphics.Vertices[0].SetSource(mesh.VertexBuffer, part.StreamOffset, part.VertexStride);
+                    graphics.Indices = part.IndexBuffer;
+                    graphics.SetVertexBuffer(part.VertexBuffer, part.VertexOffset);
 
                     basicSkinnedEffect.Texture = (part.Effect as BasicEffect).Texture;
-                    basicSkinnedEffect.Bones = bones;
+                    basicSkinnedEffect.World = world;
                     basicSkinnedEffect.View = view;
                     basicSkinnedEffect.Projection = projection;
+                    basicSkinnedEffect.SetBoneTransforms(bones);
 
-                    basicSkinnedEffect.Begin();
-                    basicSkinnedEffect.CurrentTechnique.Passes[0].Begin();
+                    basicSkinnedEffect.CurrentTechnique.Passes[0].Apply();
 
-                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.BaseVertex, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
-
-                    basicSkinnedEffect.CurrentTechnique.Passes[0].End();
-                    basicSkinnedEffect.End();
+                    graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
                 }
             }
         }
 
 
-        public void Draw(Model model, ModelMesh mesh, Matrix[] bones, Matrix view, Matrix projection)
+        public void Draw(Model model, ModelMesh mesh, Matrix[] bones, Matrix world, Matrix view, Matrix projection)
         {
             GraphicsDevice graphics = mesh.Effects[0].GraphicsDevice;
 
-            graphics.Indices = mesh.IndexBuffer;
 
 
             foreach (ModelMeshPart part in mesh.MeshParts)
             {
-                graphics.VertexDeclaration = part.VertexDeclaration;
-                graphics.Vertices[0].SetSource(mesh.VertexBuffer, part.StreamOffset, part.VertexStride);
+                graphics.Indices = part.IndexBuffer;
+                graphics.SetVertexBuffer(part.VertexBuffer, part.VertexOffset);
 
                 basicSkinnedEffect.Texture = (part.Effect as BasicEffect).Texture;
-                basicSkinnedEffect.Bones = bones;
+                basicSkinnedEffect.World = world;
                 basicSkinnedEffect.View = view;
                 basicSkinnedEffect.Projection = projection;
+                basicSkinnedEffect.SetBoneTransforms(bones);
 
-                basicSkinnedEffect.Begin();
-                basicSkinnedEffect.CurrentTechnique.Passes[0].Begin();
+                basicSkinnedEffect.CurrentTechnique.Passes[0].Apply();
 
-                graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.BaseVertex, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
-
-                basicSkinnedEffect.CurrentTechnique.Passes[0].End();
-                basicSkinnedEffect.End();
+                graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
             }
         }
     }

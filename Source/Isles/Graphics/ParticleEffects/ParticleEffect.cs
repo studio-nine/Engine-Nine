@@ -179,10 +179,6 @@ namespace Isles.Graphics.ParticleEffects
         DynamicVertexBuffer vertexBuffer = null;
 
 
-        // Vertex declaration describes the format of our ParticleVertex structure.
-        VertexDeclaration vertexDeclaration = null;
-
-
         // The particles array and vertex buffer are treated as a circular queue.
         // Initially, the entire contents of the array are free, because no particles
         // are in use. When a new particle is created, this is allocated from the
@@ -356,6 +352,7 @@ namespace Isles.Graphics.ParticleEffects
             // If there are any active particles, draw them now!
             if (firstActiveParticle != firstFreeParticle)
             {
+                /* TODO
                 // Set the particle vertex buffer and vertex declaration.
                 GraphicsDevice.VertexDeclaration = vertexDeclaration;
                 GraphicsDevice.Vertices[0].SetSource(vertexBuffer, 0, ParticleVertex.SizeInBytes);
@@ -383,6 +380,7 @@ namespace Isles.Graphics.ParticleEffects
                                               firstFreeParticle);
                     }
                 }
+                 */
             }
 
             drawCounter++;
@@ -393,14 +391,10 @@ namespace Isles.Graphics.ParticleEffects
         {
             GraphicsDevice = graphics;
                         
-            vertexDeclaration = new VertexDeclaration(GraphicsDevice, ParticleVertex.VertexElements);
-
             // Create a dynamic vertex buffer.
-            BufferUsage usage = BufferUsage.WriteOnly | BufferUsage.Points;
+            BufferUsage usage = BufferUsage.WriteOnly;
 
-            int size = ParticleVertex.SizeInBytes * particles.Length;
-
-            vertexBuffer = new DynamicVertexBuffer(GraphicsDevice, size, usage);
+            vertexBuffer = new DynamicVertexBuffer(GraphicsDevice, typeof(ParticleVertex), particles.Length, usage);
 
             // Initialize the vertex buffer contents. This is necessary in order
             // to correctly restore any existing particles after a lost device.
@@ -555,8 +549,6 @@ namespace Isles.Graphics.ParticleEffects
         {
             if (vertexBuffer != null)
                 vertexBuffer.Dispose();
-            if (vertexDeclaration != null)
-                vertexDeclaration.Dispose();
         }
     }
 }

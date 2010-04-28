@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Phone Developer Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles", "Isles\Isles.csproj", "{E4F84943-5258-4F67-9C6C-739C18A47120}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isles.Pipeline", "Isles.Pipeline\Isles.Pipeline.csproj", "{AC6F35A9-124E-447E-99DD-21F68A0C226B}"

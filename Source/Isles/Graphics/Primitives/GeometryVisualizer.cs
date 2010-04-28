@@ -22,9 +22,10 @@ namespace Isles.Graphics.Primitives
     {
         public VertexBuffer VertexBuffer { get; private set; }
         public IndexBuffer IndexBuffer { get; private set; }
-        public VertexDeclaration VertexDeclaration { get; private set; }
         public BasicEffect BasicEffect { get; private set; }
 
+        int primitiveCount;
+        int vertexCount;
 
         public GeometryVisualizer(GraphicsDevice graphics, IGeometry geometry)
             : this(graphics, geometry.Positions, geometry.Indices)
@@ -40,24 +41,23 @@ namespace Isles.Graphics.Primitives
             foreach (Vector3 v in vertices)
                 vb.Add(new VertexPositionColor(v, Color.White));
 
+            vertexCount = vb.Count;
+            primitiveCount = ib.Count / 3;
 
             if (ib.Count <= 0)
                 throw new InvalidOperationException("Can't visualize the geometry because it doesn't have an index buffer");
 
 
             // Vertex buffer
-            VertexBuffer = new VertexBuffer(graphics, VertexPositionColor.SizeInBytes * vb.Capacity, BufferUsage.None);
+            VertexBuffer = new VertexBuffer(graphics, typeof(VertexPositionColor), vb.Capacity, BufferUsage.None);
             VertexBuffer.SetData<VertexPositionColor>(vb.ToArray());
 
             // Index buffer
             IndexBuffer = new IndexBuffer(graphics, typeof(ushort), ib.Count, BufferUsage.None);
             IndexBuffer.SetData<ushort>(ib.ToArray());
 
-            // Vertex declaraction
-            VertexDeclaration = new VertexDeclaration(graphics, VertexPositionColor.VertexElements);
 
-
-            BasicEffect = new BasicEffect(graphics, null);
+            BasicEffect = new BasicEffect(graphics);
         }
 
 
@@ -69,40 +69,27 @@ namespace Isles.Graphics.Primitives
             BasicEffect.DiffuseColor = faceColor.ToVector3();
             BasicEffect.LightingEnabled = false;
 
-            BasicEffect.Begin();
 
             // We know it ahead that basic effect contains only one pass
-            BasicEffect.CurrentTechnique.Passes[0].Begin();
+            BasicEffect.CurrentTechnique.Passes[0].Apply();
 
             GraphicsDevice graphics = VertexBuffer.GraphicsDevice;
 
             graphics.Indices = IndexBuffer;
-            graphics.VertexDeclaration = VertexDeclaration;
-            graphics.Vertices[0].SetSource(VertexBuffer, 0, VertexPositionColor.SizeInBytes);
+            graphics.SetVertexBuffer(VertexBuffer);
             
             // Draw face
-            graphics.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList, 0, 0, 
-                VertexBuffer.SizeInBytes / VertexPositionColor.SizeInBytes, 0,
-                IndexBuffer.SizeInBytes / 6);
+            graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexCount, 0, primitiveCount);
 
             // Draw border
-            graphics.RenderState.FillMode = FillMode.WireFrame;
+            graphics.RasterizerState.FillMode = FillMode.WireFrame;
 
             BasicEffect.DiffuseColor = borderColor.ToVector3();
-            BasicEffect.CommitChanges();
+            BasicEffect.CurrentTechnique.Passes[0].Apply();
 
-            graphics.DrawIndexedPrimitives(
-                PrimitiveType.TriangleList, 0, 0,
-                VertexBuffer.SizeInBytes / VertexPositionColor.SizeInBytes, 0,
-                IndexBuffer.SizeInBytes / 6);
+            graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexCount, 0, primitiveCount);
 
-            graphics.RenderState.FillMode = FillMode.Solid;
-
-
-            BasicEffect.CurrentTechnique.Passes[0].End();
-
-            BasicEffect.End();
+            graphics.RasterizerState.FillMode = FillMode.Solid;
         }
 
 

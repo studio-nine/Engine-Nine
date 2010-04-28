@@ -8,13 +8,13 @@
 sampler TextureSampler : register(s0);
 
 
-uniform half PixelCount = 80;
-uniform half Threshhold = 0.15;
-uniform half3 EdgeColor = {0.7, 0.7, 0.7};
+uniform float PixelCount = 80;
+uniform float Threshhold = 0.15;
+uniform float3 EdgeColor = {0.7, 0.7, 0.7};
 
-float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
+float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 {
-    half size = 1.0f / PixelCount;
+    float size = 1.0f / PixelCount;
     half2 Pbase = texCoord - fmod(texCoord, size.xx);
     half2 PCenter = Pbase + (size/2.0).xx;
     half2 st = (texCoord - Pbase)/size;
@@ -22,7 +22,7 @@ float4 PixelShader(float2 texCoord : TEXCOORD0) : COLOR0
     half4 c2 = (half4)0;
     half4 invOff = half4((1-EdgeColor),1);
     if (st.x > st.y) { c1 = invOff; }
-    half threshholdB =  1.0 - Threshhold;
+    float threshholdB =  1.0 - Threshhold;
     if (st.x > threshholdB) { c2 = c1; }
     if (st.y > threshholdB) { c2 = c1; }
     half4 cBottom = c2;
@@ -41,6 +41,6 @@ technique Tiling
 {
 	pass P0
 	{ 
-		PixelShader = compile ps_2_0 PixelShader(); 
+		PixelShader = compile ps_2_0 PS(); 
 	}
 }

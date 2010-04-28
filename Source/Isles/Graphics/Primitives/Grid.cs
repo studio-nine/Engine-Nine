@@ -63,26 +63,17 @@ namespace Isles.Graphics.Primitives
             GraphicsDevice graphicsDevice = effect.GraphicsDevice;
 
             // Set our vertex declaration, vertex buffer, and index buffer.
-            graphicsDevice.VertexDeclaration = VertexDeclaration;
-
-            graphicsDevice.Vertices[0].SetSource(VertexBuffer, 0,
-                                                 VertexPositionNormalTexture.SizeInBytes);
+            graphicsDevice.SetVertexBuffer(VertexBuffer);
 
             graphicsDevice.Indices = IndexBuffer;
 
             // Draw the model, using the specified effect.
-            effect.Begin();
-
             foreach (EffectPass effectPass in effect.CurrentTechnique.Passes)
             {
-                effectPass.Begin();
+                effectPass.Apply();
 
                 graphicsDevice.DrawPrimitives(PrimitiveType.LineList, 0, Vertices.Count / 2);
-
-                effectPass.End();
             }
-
-            effect.End();
         }
     }
 }

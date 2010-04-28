@@ -6,17 +6,13 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Isles.Graphics.Vertices;
 #endregion
-
 
 namespace Isles.Graphics.ScreenEffects
 {
@@ -28,16 +24,7 @@ namespace Isles.Graphics.ScreenEffects
         /// <summary>
         /// Creates a new instance of radial blur post processing.
         /// </summary>
-        public RadialBlurEffect(GraphicsDevice graphicsDevice) :
-            this(graphicsDevice, null)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new instance of radial blur post processing.
-        /// </summary>
-        public RadialBlurEffect(GraphicsDevice graphicsDevice, EffectPool effectPool) :
-            base(graphicsDevice, effectCode, CompilerOptions.None, effectPool)
+        public RadialBlurEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
         }

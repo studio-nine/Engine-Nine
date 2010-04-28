@@ -22,8 +22,6 @@ namespace Isles.Graphics
 {
     public sealed class RenderToTextureEffect : IDisposable
     {
-        private DepthStencilBuffer depthStencil;
-        private DepthStencilBuffer storedDepthStencil;
         private RenderTarget2D renderTarget;
         private RenderTarget2D previousRenderTarget;
 
@@ -49,19 +47,11 @@ namespace Isles.Graphics
 
         private void CreateRenderTarget()
         {
-            try
-            {
-                // Create a stencil buffer in case our screen is not large
-                // enough to hold the render target.
-                depthStencil = new DepthStencilBuffer(
-                    GraphicsDevice, Width, Height,
-                    GraphicsDevice.DepthStencilBuffer.Format);
-
-                // Create textures
-                renderTarget = new RenderTarget2D(
-                    GraphicsDevice, Width, Height, 0, SurfaceFormat);
-            }
-            catch (Exception e) { e.ToString(); }
+            // Create textures
+            renderTarget = new RenderTarget2D(
+                GraphicsDevice, Width, Height, 
+                GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef),
+                SurfaceFormat, GraphicsDevice.PresentationParameters.DepthStencilFormat);
         }
 
         
@@ -74,19 +64,18 @@ namespace Isles.Graphics
                 CreateRenderTarget();
 
             // Return false if the shadow mapping effect is not initialized
-            if (renderTarget == null || depthStencil == null)
+            if (renderTarget == null)
                 return false;
 
 
             // Store current stencil buffer
-            storedDepthStencil = GraphicsDevice.DepthStencilBuffer;
-            previousRenderTarget = GraphicsDevice.GetRenderTarget(0) as RenderTarget2D;
+            RenderTargetBinding[] bindings = GraphicsDevice.GetRenderTargets();
+
+            if (bindings.Length > 0)
+                previousRenderTarget = bindings[0].RenderTarget as RenderTarget2D;
 
             // Set shadow mapping targets
-            GraphicsDevice.SetRenderTarget(0, renderTarget);
-            GraphicsDevice.DepthStencilBuffer = depthStencil;
-
-            GraphicsDevice.RenderState.DepthBufferEnable = true;
+            GraphicsDevice.SetRenderTarget(renderTarget);
 
             return true;
         }
@@ -100,26 +89,15 @@ namespace Isles.Graphics
         /// </returns>
         public Texture2D End()
         {
-            // Begin must be called first
-            if (storedDepthStencil != null)
-            {
-                // Restore everything
-                GraphicsDevice.SetRenderTarget(0, previousRenderTarget);
-                GraphicsDevice.DepthStencilBuffer = storedDepthStencil;
-                storedDepthStencil = null;
+            // Restore everything
+            GraphicsDevice.SetRenderTarget(previousRenderTarget);
 
-                // Resolve render target, retrieve our shadow map
-                return Texture = renderTarget.GetTexture();
-            }
-
-            return null;
+            // Resolve render target, retrieve our shadow map
+            return Texture = renderTarget;
         }
 
         public void Dispose()
         {
-            if (depthStencil != null)
-                depthStencil.Dispose();
-
             if (renderTarget != null)
                 renderTarget.Dispose();
 

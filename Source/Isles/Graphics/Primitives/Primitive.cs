@@ -39,7 +39,6 @@ namespace Isles.Graphics.Primitives
         // Once all the geometry has been specified, the InitializePrimitive
         // method copies the vertex and index data into these buffers, which
         // store it on the GPU ready for efficient rendering.
-        public VertexDeclaration VertexDeclaration { get; private set; }
         public VertexBuffer VertexBuffer { get; private set; }
         public IndexBuffer IndexBuffer { get; private set; }
         public BasicEffect BasicEffect { get; private set; }
@@ -129,11 +128,7 @@ namespace Isles.Graphics.Primitives
         protected void InitializePrimitive(GraphicsDevice graphicsDevice)
         {
             GraphicsDevice = graphicsDevice;
-
-            // Create a vertex declaration, describing the format of our vertex data.
-            VertexDeclaration = new VertexDeclaration(graphicsDevice,
-                                                VertexPositionNormalTexture.VertexElements);
-
+            
             // Create a vertex buffer, and copy our vertex data into it.
             VertexBuffer = new VertexBuffer(graphicsDevice,
                                             typeof(VertexPositionNormalTexture),
@@ -151,7 +146,7 @@ namespace Isles.Graphics.Primitives
             }
 
             // Create a BasicEffect, which will be used to render the primitive.
-            BasicEffect = new BasicEffect(graphicsDevice, null);
+            BasicEffect = new BasicEffect(graphicsDevice);
             
             BasicEffect.EnableDefaultLighting();
             BasicEffect.PreferPerPixelLighting = false;
@@ -184,9 +179,6 @@ namespace Isles.Graphics.Primitives
         {
             if (disposing)
             {
-                if (VertexDeclaration != null)
-                    VertexDeclaration.Dispose();
-
                 if (VertexBuffer != null)
                     VertexBuffer.Dispose();
 
@@ -215,19 +207,14 @@ namespace Isles.Graphics.Primitives
             GraphicsDevice graphicsDevice = effect.GraphicsDevice;
 
             // Set our vertex declaration, vertex buffer, and index buffer.
-            graphicsDevice.VertexDeclaration = VertexDeclaration;
-
-            graphicsDevice.Vertices[0].SetSource(VertexBuffer, 0,
-                                                 VertexPositionNormalTexture.SizeInBytes);
+            graphicsDevice.SetVertexBuffer(VertexBuffer);
 
             graphicsDevice.Indices = IndexBuffer;
 
             // Draw the model, using the specified effect.
-            effect.Begin();
-
             foreach (EffectPass effectPass in effect.CurrentTechnique.Passes)
             {
-                effectPass.Begin();
+                effectPass.Apply();
 
                 if (Indices.Count > 0)
                 {
@@ -239,11 +226,7 @@ namespace Isles.Graphics.Primitives
                     graphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, Vertices.Count / 3);
                 
                 }
-
-                effectPass.End();
             }
-
-            effect.End();
         }
 
 
@@ -264,6 +247,7 @@ namespace Isles.Graphics.Primitives
             BasicEffect.Alpha = color.A / 255.0f;
 
             // Set important renderstates.
+            /* TODO:
             RenderState renderState = BasicEffect.GraphicsDevice.RenderState;
 
             renderState.AlphaTestEnable = false;
@@ -286,6 +270,7 @@ namespace Isles.Graphics.Primitives
                 renderState.AlphaBlendEnable = false;
                 renderState.DepthBufferWriteEnable = true;
             }
+             */
 
             // Draw the model, using BasicEffect.
             Draw(BasicEffect);
