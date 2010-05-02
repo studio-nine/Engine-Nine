@@ -1,11 +1,10 @@
-#region Copyright 2009 (c) Nightin Games
+#region Copyright 2009 - 2010 (c) Nightin Games
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
 //
 //=============================================================================
 #endregion
-
 
 #region Using Directives
 using System;
@@ -16,240 +15,206 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Isles.Transitions.Curves;
 #endregion
-
 
 namespace Isles.Transitions
 {
-    public sealed class TransitionManager
+    public sealed class TransitionManager : IUpdateObject
     {
-        sealed class Entry
-        {
-            public IAnimation Animation;
-            public ITransition Transition;
-            public TimeSpan Delay;
-            public MemberInfo Info;
-            public object Target;
-            public string Member;
-            public Action<object> Action;
-            public bool Smooth;
-        }
-
-        List<Entry> delayedTransitions = new List<Entry>();
-        EnumerationCollection<Entry, List<Entry>> transitions = new EnumerationCollection<Entry, List<Entry>>();
-
-        
-        // TODO: Is there a way to use Action<T> rather than Action<object> ???
-        public void Start<T>(ITransition<T> transition, Action<object> action)
-        {
-            Start(transition, action, TimeSpan.Zero, false);
-        }
-
-
-        public void Start<T>(ITransition<T> transition, Action<object> action, TimeSpan delay, bool smooth)
-        {
-            if (transition == null || action == null)
-                throw new ArgumentNullException();
-
-            // Remove existing transitions
-            if (delay > TimeSpan.Zero)
-            {
-                for (int i = 0; i < delayedTransitions.Count; i++)
-                {
-                    if (delayedTransitions[i].Action == action)
-                    {
-                        delayedTransitions.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < transitions.Count; i++)
-                {
-                    if (transitions.Elements[i].Action == action)
-                    {
-                        transitions.Elements.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-
-
-            // Add new transition
-            Entry e = new Entry();
-
-            e.Transition = transition;
-            e.Animation = transition as IAnimation;
-            e.Delay = delay;
-            e.Action = action;
-            e.Smooth = smooth;
-
-            if (e.Animation != null)
-                e.Animation.Complete += new EventHandler(Animation_Complete);
-
-            if (delay >= TimeSpan.Zero)
-                delayedTransitions.Add(e);
-            else
-                transitions.Add(e);
-        }
-
-
-        public void Start(ITransition transition, object target, string member)
-        {
-            Start(transition, target, member, TimeSpan.Zero, false);
-        }
+        Dictionary<Type, IUpdateObject> transitions = new Dictionary<Type, IUpdateObject>();
         
 
-        /// <summary>
-        /// Starts a new transition on the specified member of the target.
-        /// </summary>
-        /// <param name="transition">The transition to be played.</param>
-        /// <param name="target">The target object.</param>
-        /// <param name="member">Name of the target field or property. Must be both gettable and settable.</param>
-        /// <param name="delay">Delay the transition for the specifed amount of time.</param>
-        /// <param name="smooth">
-        /// Whether the transition will use the current value of the target field when the transition starts.
-        /// </param>
-        public void Start(ITransition transition, object target, string member, TimeSpan delay, bool smooth)
+        #region Start Reflection
+        public void Start<TValue>(ITweener<TValue> tweener, object target, string member)
+            where TValue : struct
         {
-            if (transition == null || target == null || string.IsNullOrEmpty(member))
-                throw new ArgumentNullException();
-
-            // Remove existing transitions
-            if (delay > TimeSpan.Zero)
-            {
-                for (int i = 0; i < delayedTransitions.Count; i++)
-                {
-                    if (delayedTransitions[i].Target == target &&
-                        delayedTransitions[i].Member == member)
-                    {
-                        delayedTransitions.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < transitions.Count; i++)
-                {
-                    if (transitions.Elements[i].Target == target &&
-                        transitions.Elements[i].Member == member)
-                    {
-                        transitions.Elements.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-                        
-
-            // Add new transition
-            MemberInfo info;
-
-            info = target.GetType().GetProperty(member);
-
-            if (info == null)
-                info = target.GetType().GetField(member);
-
-            if (info != null)
-            {
-                Entry e = new Entry();
-
-                e.Transition = transition;
-                e.Animation = transition as IAnimation;
-                e.Delay = delay;
-                e.Info = info;
-                e.Target = target;
-                e.Member = member;
-                e.Smooth = smooth;
-
-                if (e.Animation != null)
-                    e.Animation.Complete += new EventHandler(Animation_Complete);
-
-                if (delay >= TimeSpan.Zero)
-                    delayedTransitions.Add(e);
-                else
-                    transitions.Add(e);
-            }
+            GetTransition<TValue>().Start(tweener, TimeSpan.Zero, false, new TransitionCallback<TValue>(target, member));
         }
 
-        public void Clear()
+        public Tweener<TValue> Start<TValue, TCurve>(float duration, TValue? from, TValue to, object target, string member)
+            where TValue : struct
+            where TCurve : ICurve, new()
         {
-            transitions.Clear();
+            return Start<TValue, TCurve>(TimeSpan.Zero, TimeSpan.FromSeconds(duration), from, to, LoopStyle.None, Easing.In, target, member);
         }
 
-        void Animation_Complete(object sender, EventArgs e)
+        public Tweener<TValue> Start<TValue, TCurve>(TimeSpan duration, TValue? from, TValue to, object target, string member)
+            where TValue : struct
+            where TCurve : ICurve, new()
         {
-            for (int i = 0; i < transitions.Count; i++)
-            {
-                if (transitions.Elements[i].Animation == sender)
-                {
-                    transitions.Elements.RemoveAt(i);
-                    break;
-                }
-            }
+            return Start<TValue, TCurve>(TimeSpan.Zero, duration, from, to, LoopStyle.None, Easing.In, target, member);
         }
 
-        public void Update(GameTime gameTime)
+        public Tweener<TValue> Start<TValue, TCurve>(TimeSpan delay, TimeSpan duration, TValue? from, TValue to,
+                                                LoopStyle style, Easing easing, object target, string member)
+            where TValue : struct
+            where TCurve : ICurve, new()
         {
-            // Process delayed transitions
-            for (int i = 0; i < delayedTransitions.Count; i++)
+            Transition<TValue> transition = GetTransition<TValue>();
+
+            Tweener<TValue> tweener = new Tweener<TValue>();
+
+            tweener.Curve = new TCurve();
+            tweener.Duration = duration;
+            tweener.Style = style;
+            tweener.Easing = easing;
+            tweener.From = from.HasValue ? from.Value : default(TValue);
+            tweener.To = to;
+
+            transition.Start(tweener, delay, !from.HasValue, new TransitionCallback<TValue>(target, member));
+
+            return tweener;
+        }
+        #endregion
+        
+        #region Start Delegate
+        public void Start<TValue>(ITweener<TValue> tweener, Action<TValue> action)
+            where TValue : struct
+        {
+            GetTransition<TValue>().Start(tweener, TimeSpan.Zero, false, new TransitionCallback<TValue>(action));
+        }
+
+        public Tweener<TValue> Start<TValue, TCurve>(float duration, TValue from, TValue to, Action<TValue> action)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            return Start<TValue, TCurve>(TimeSpan.Zero, TimeSpan.FromSeconds(duration), from, to, LoopStyle.None, Easing.In, action);
+        }
+
+        public Tweener<TValue> Start<TValue, TCurve>(TimeSpan duration, TValue from, TValue to, Action<TValue> action)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            return Start<TValue, TCurve>(TimeSpan.Zero, duration, from, to, LoopStyle.None, Easing.In, action);
+        }
+
+        public Tweener<TValue> Start<TValue, TCurve>(TimeSpan delay, TimeSpan duration, TValue from, TValue to,
+                                                     LoopStyle style, Easing easing, Action<TValue> action)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            Transition<TValue> transition = GetTransition<TValue>();
+
+            Tweener<TValue> tweener = new Tweener<TValue>();
+
+            tweener.Curve = new TCurve();
+            tweener.Duration = duration;
+            tweener.Style = style;
+            tweener.Easing = easing;
+            tweener.From = from;
+            tweener.To = to;
+
+            transition.Start(tweener, delay, false, new TransitionCallback<TValue>(action));
+
+            return tweener;
+        }
+        #endregion
+
+        #region Queue Reflection
+        public void Queue<TValue>(ITweener<TValue> tweener, object target, string member)
+            where TValue : struct
+        {
+            GetTransition<TValue>().Queue(tweener, TimeSpan.Zero, false, new TransitionCallback<TValue>(target, member));
+        }
+
+        public Tweener<TValue> Queue<TValue, TCurve>(float duration, TValue? from, TValue to, object target, string member)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            return Queue<TValue, TCurve>(TimeSpan.Zero, TimeSpan.FromSeconds(duration), from, to, LoopStyle.None, Easing.In, target, member);
+        }
+
+        public Tweener<TValue> Queue<TValue, TCurve>(TimeSpan duration, TValue? from, TValue to, object target, string member)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            return Queue<TValue, TCurve>(TimeSpan.Zero, duration, from, to, LoopStyle.None, Easing.In, target, member);
+        }
+
+        public Tweener<TValue> Queue<TValue, TCurve>(TimeSpan delay, TimeSpan duration, TValue? from, TValue to,
+                                                LoopStyle style, Easing easing, object target, string member)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            Transition<TValue> transition = GetTransition<TValue>();
+
+            Tweener<TValue> tweener = new Tweener<TValue>();
+
+            tweener.Curve = new TCurve();
+            tweener.Duration = duration;
+            tweener.Style = style;
+            tweener.Easing = easing;
+            tweener.From = from.HasValue ? from.Value : default(TValue);
+            tweener.To = to;
+
+            transition.Queue(tweener, delay, !from.HasValue, new TransitionCallback<TValue>(target, member));
+
+            return tweener;
+        }
+        #endregion
+
+        #region Queue Delegate
+        public void Queue<TValue>(ITweener<TValue> tweener, Action<TValue> action)
+            where TValue : struct
+        {
+            GetTransition<TValue>().Queue(tweener, TimeSpan.Zero, false, new TransitionCallback<TValue>(action));
+        }
+
+        public Tweener<TValue> Queue<TValue, TCurve>(float duration, TValue from, TValue to, Action<TValue> action)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            return Queue<TValue, TCurve>(TimeSpan.Zero, TimeSpan.FromSeconds(duration), from, to, LoopStyle.None, Easing.In, action);
+        }
+
+        public Tweener<TValue> Queue<TValue, TCurve>(TimeSpan duration, TValue from, TValue to, Action<TValue> action)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            return Queue<TValue, TCurve>(TimeSpan.Zero, duration, from, to, LoopStyle.None, Easing.In, action);
+        }
+
+        public Tweener<TValue> Queue<TValue, TCurve>(TimeSpan delay, TimeSpan duration, TValue from, TValue to,
+                                                     LoopStyle style, Easing easing, Action<TValue> action)
+            where TValue : struct
+            where TCurve : ICurve, new()
+        {
+            Transition<TValue> transition = GetTransition<TValue>();
+
+            Tweener<TValue> tweener = new Tweener<TValue>();
+
+            tweener.Curve = new TCurve();
+            tweener.Duration = duration;
+            tweener.Style = style;
+            tweener.Easing = easing;
+            tweener.From = from;
+            tweener.To = to;
+
+            transition.Queue(tweener, delay, false, new TransitionCallback<TValue>(action));
+
+            return tweener;
+        }
+        #endregion
+
+
+        private Transition<TValue> GetTransition<TValue>() where TValue : struct
+        {
+            IUpdateObject updateObject;
+
+            if (!transitions.TryGetValue(typeof(TValue), out updateObject))
             {
-                Entry e = delayedTransitions[i];
-
-                e.Delay -= gameTime.ElapsedGameTime;
-
-                if (e.Delay <= TimeSpan.Zero)
-                {
-                    delayedTransitions.RemoveAt(i);
-                    transitions.Add(e);
-                    i--;
-
-                    if (e.Smooth && e.Transition.GetType().GetGenericTypeDefinition() == typeof(Transition<>)) 
-                    {
-                        object value = null;
-
-                        if (e.Info is FieldInfo)
-                        {
-                            value = (e.Info as FieldInfo).GetValue(e.Target);
-                        }
-                        else if (e.Info is PropertyInfo)
-                        {
-                            value = (e.Info as PropertyInfo).GetValue(e.Target, null);
-                        }
-
-                        PropertyInfo property = e.Transition.GetType().GetProperty("Start");
-                        
-                        if (property != null)
-                            property.SetValue(e.Transition, value, null);
-                    }
-                }
+                transitions.Add(typeof(TValue), updateObject = new Transition<TValue>());
             }
 
+            return updateObject as Transition<TValue>;
+        }
 
-            // Process transitions
-            foreach (Entry e in transitions)
+        public void Update(GameTime time)
+        {
+            foreach (IUpdateObject update in transitions.Values)
             {
-                e.Transition.Update(gameTime);
-
-                // Delegates
-                if (e.Action != null)
-                {
-                    e.Action(e.Transition.Value);
-                }
-
-                // Reflections
-                else
-                {
-                    if (e.Info is FieldInfo)
-                    {
-                        (e.Info as FieldInfo).SetValue(e.Target, e.Transition.Value);
-                    }
-                    else if (e.Info is PropertyInfo)
-                    {
-                        (e.Info as PropertyInfo).SetValue(e.Target, e.Transition.Value, null);
-                    }
-                }
+                update.Update(time);
             }
         }
     }

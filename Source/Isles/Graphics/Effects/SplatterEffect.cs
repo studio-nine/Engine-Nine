@@ -47,7 +47,7 @@ namespace Isles.Graphics.Effects
     }
 
 
-    public partial class SplatterEffect
+    public partial class SplatterEffect : IEffectMatrices
     {
         public const int MaxLayers = 4;
 

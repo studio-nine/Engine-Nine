@@ -18,7 +18,7 @@ using Isles.Graphics.Vertices;
 
 namespace Isles.Graphics.Effects
 {
-    public partial class ScrollEffect
+    public partial class ScrollEffect : IEffectMatrices
     {
         public float Speed { get; set; }
         public float Direction { get; set; }

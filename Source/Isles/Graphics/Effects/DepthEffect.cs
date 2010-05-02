@@ -18,7 +18,7 @@ using Isles.Graphics.Vertices;
 
 namespace Isles.Graphics.Effects
 {
-    public partial class DepthEffect
+    public partial class DepthEffect : IEffectMatrices
     {
         public bool SkinningEnabled
         {

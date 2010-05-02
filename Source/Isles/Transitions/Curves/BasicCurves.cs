@@ -16,59 +16,82 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Transitions
+namespace Isles.Transitions.Curves
 {
-    public sealed class LinearTransition<T> : Transition<T>
+    public interface ICurve
     {
-        public LinearTransition() { }
-        public LinearTransition(T start, T end) : base(start, end) { }
-        public LinearTransition(T start, T end, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { }
+        float Evaluate(float position);
+    }
 
-        protected override float Evaluate(float position)
+    public sealed class Linear : ICurve
+    {
+        public float Evaluate(float position)
         {
             return position;
         }
     }
 
-    public sealed class ExponentialTransition<T> : Transition<T>
+    public sealed class Exponential : ICurve
     {
         public float Power { get; set; }
         
-        public ExponentialTransition() { Power = MathHelper.E; }
-        public ExponentialTransition(T start, T end, float power) : base(start, end) { Power = power; }
-        public ExponentialTransition(T start, T end, float power, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { Power = power; }
-        
-        protected override float Evaluate(float position)
+        public Exponential() { Power = 1.0f / 32; }
+
+        public float Evaluate(float position)
         {
             return (float)((Math.Pow(Power, position) - 1) / (Power - 1));
         }
     }
 
-    public sealed class SinTransition<T> : Transition<T>
+    public sealed class Sin : ICurve
     {
-        public SinTransition() { }
-        public SinTransition(T start, T end) : base(start, end) { }
-        public SinTransition(T start, T end, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { }
-
-        protected override float Evaluate(float position)
+        public float Evaluate(float position)
         {
             return (float)Math.Sin((position * 2 - 1) * MathHelper.PiOver2) * 0.5f + 0.5f;
         }
     }
 
-    public sealed class SmoothTransition<T> : Transition<T>
+    public sealed class Smooth : ICurve
     {
-        public SmoothTransition() { }
-        public SmoothTransition(T start, T end) : base(start, end) { }
-        public SmoothTransition(T start, T end, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { }
-
-        protected override float Evaluate(float position)
+        public float Evaluate(float position)
         {
             return MathHelper.SmoothStep(0, 1, position);
         }
     }
 
-    public sealed class CurveTransition<T> : Transition<T>
+    public sealed class Elastic : ICurve
+    {
+        public float Strength { get; set; }
+
+        public Elastic() { Strength = 0.2f; }
+
+        public float Evaluate(float position)
+        {
+            float a = 1.0f + Strength;
+            float w = MathHelper.Pi - (float)Math.Asin(1.0f / a);
+
+            return a * (float)Math.Sin(position * w);
+        }
+    }
+
+    public sealed class Bounce : ICurve
+    {
+        public float Strength { get; set; }
+
+        public Bounce() { Strength = 0.2f; }
+
+        public float Evaluate(float position)
+        {
+            float a = 1.0f + Strength;
+            float w = MathHelper.Pi - (float)Math.Asin(1.0f / a);
+
+            float y = a * (float)Math.Sin(position * w);
+
+            return y < 1.0f ? y : y = 2.0f - y;
+        }
+    }
+
+    public sealed class Custom : ICurve
     {
         private float minPosition;
         private float maxPosition;
@@ -102,11 +125,12 @@ namespace Isles.Transitions
             }
         }
 
-        public CurveTransition() { }
-        public CurveTransition(T start, T end, Curve curve) : base(start, end) { Curve = curve; }
-        public CurveTransition(T start, T end, Curve curve, TimeSpan duration, TransitionEffect effect) : base(start, end, duration, effect) { Curve = curve; }
-                
-        protected override float Evaluate(float position)
+        public Custom(Curve curve)
+        {
+            Curve = curve;
+        }
+
+        public float Evaluate(float position)
         {
             return Curve != null ? 
                 (Curve.Evaluate(minPosition + position * (maxPosition - minPosition)) - minValue) / (maxValue - minValue) : 0;

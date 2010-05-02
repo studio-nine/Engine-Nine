@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics.Effects
 {
-    public partial class DecalEffect
+    public partial class DecalEffect : IEffectMatrices
     {
         public Vector3 Position { get; set; }
 

@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -18,12 +17,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-
 namespace Isles.Graphics
 {
-    #region GraphicsExtensions
     public static class GraphicsExtensions
     {
+        #region DrawSprite
         static SpriteBatch spriteBatch;
 
         public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Rectangle? destination, Rectangle? source, Color color, Effect effect)
@@ -31,14 +29,19 @@ namespace Isles.Graphics
             if (spriteBatch == null)
                 spriteBatch = new SpriteBatch(graphics);
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-                        
-            if (effect != null)
+            // Setup matrix parameters for effects with a vertex shader
+            if (effect != null && effect is IEffectMatrices)
             {
-                effect.CurrentTechnique.Passes[0].Apply();     
+                IEffectMatrices matrices = effect as IEffectMatrices;
+
+                Matrix projection = Matrix.CreateOrthographicOffCenter(0, graphics.Viewport.Width, graphics.Viewport.Height, 0, 0, 1);
+                Matrix halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+
+                matrices.World = Matrix.Identity;
+                matrices.View = Matrix.Identity;
+                matrices.Projection = halfPixelOffset * projection;
             }
-
-
+                        
             if (destination == null)
             {
                 destination = new Rectangle(graphics.Viewport.X,
@@ -47,11 +50,49 @@ namespace Isles.Graphics
                                             graphics.Viewport.Height);
             }
 
-
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effect);
+            
             spriteBatch.Draw(texture, destination.Value, source, color);
 
             spriteBatch.End();
         }
+        #endregion
+        
+        #region RenderTargetStack
+        static Stack<RenderTarget2D> renderTargetStack;
+
+        public static bool Begin(this RenderTarget2D renderTarget)
+        {
+            if (renderTarget == null)
+                throw new ArgumentNullException();
+
+            if (renderTargetStack == null)
+                renderTargetStack = new Stack<RenderTarget2D>();
+                        
+            // Get old render target
+            RenderTarget2D previous = null;
+
+            RenderTargetBinding[] bindings = renderTarget.GraphicsDevice.GetRenderTargets();
+
+            if (bindings.Length > 0)
+                previous = bindings[0].RenderTarget as RenderTarget2D;
+
+            renderTargetStack.Push(previous);
+
+            renderTarget.GraphicsDevice.SetRenderTarget(renderTarget);
+
+            return true;
+        }
+
+        public static Texture2D End(this RenderTarget2D renderTarget)
+        {
+            if (renderTarget == null)
+                throw new ArgumentNullException();
+
+            renderTarget.GraphicsDevice.SetRenderTarget(renderTargetStack.Pop());
+
+            return renderTarget;
+        }
+        #endregion
     }
-    #endregion
 }

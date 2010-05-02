@@ -195,7 +195,6 @@
     <Compile Include="Graphics\Cameras\FreeCamera.cs" />
     <Compile Include="Graphics\Cameras\ModelViewerCamera.cs" />
     <Compile Include="Graphics\Cameras\TopDownEditorCamera.cs" />
-    <Compile Include="Graphics\RenderToTextureEffect.cs" />
     <Compile Include="Graphics\SpriteAnimation.cs" />
     <Compile Include="Graphics\Geometry.cs" />
     <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
@@ -225,10 +224,10 @@
     <Compile Include="NamedObjectManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="PickEngine.cs" />
-    <Compile Include="Transitions\BasicTransitions.cs" />
-    <Compile Include="Transitions\SpinnerTransition.cs" />
     <Compile Include="Transitions\TransitionManager.cs" />
     <Compile Include="Transitions\Transition.cs" />
+    <Compile Include="Transitions\Tweener.cs" />
+    <Compile Include="Transitions\Curves\BasicCurves.cs" />
     <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,31 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Phone Developer Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebuggerPrimitives", "DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitives.csproj", "{6EF51561-559B-437D-97E6-394F1F5051E5}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "DebuggerPrimitivesContent", "DebuggerPrimitives\DebuggerPrimitivesContent\DebuggerPrimitivesContent.contentproj", "{3A6DA88F-FA82-4D78-9AE7-861D277A26A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebuggerPrimitivesContent", "DebuggerPrimitives\DebuggerPrimitivesContent\DebuggerPrimitivesContent.contentproj", "{3A6DA88F-FA82-4D78-9AE7-861D277A26A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlockingBehaviors", "FlockingBehaviors\FlockingBehaviors\FlockingBehaviors.csproj", "{53643C81-93D4-47A1-96E3-F80544E1D9C2}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "FlockingBehaviorsContent", "FlockingBehaviors\FlockingBehaviorsContent\FlockingBehaviorsContent.contentproj", "{DEFF9F75-6F41-426D-AEB9-DA53D0A8543C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlockingBehaviorsContent", "FlockingBehaviors\FlockingBehaviorsContent\FlockingBehaviorsContent.contentproj", "{DEFF9F75-6F41-426D-AEB9-DA53D0A8543C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFinding", "PathFinding\PathFinding\PathFinding.csproj", "{E18C5145-CFAE-432A-B555-64AB967C005A}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "PathFindingContent", "PathFinding\PathFindingContent\PathFindingContent.contentproj", "{B00DD841-21D5-4488-9540-0F8836AE31A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathFindingContent", "PathFinding\PathFindingContent\PathFindingContent.contentproj", "{B00DD841-21D5-4488-9540-0F8836AE31A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenEffects", "ScreenEffects\ScreenEffects\ScreenEffects.csproj", "{D528BE6C-0925-4F53-98F8-61171B1A3B40}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ScreenEffectsContent", "ScreenEffects\ScreenEffectsContent\ScreenEffectsContent.contentproj", "{21E53400-3F27-4646-8BF7-A956E82B4762}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenEffectsContent", "ScreenEffects\ScreenEffectsContent\ScreenEffectsContent.contentproj", "{21E53400-3F27-4646-8BF7-A956E82B4762}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terrain", "Terrain\Terrain\Terrain.csproj", "{2849C423-C03C-4B00-8F5E-7DED7CDA5A07}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TerrainContent", "Terrain\TerrainContent\TerrainContent.contentproj", "{984E8527-106D-4602-ACBB-25C6E5723CB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerrainContent", "Terrain\TerrainContent\TerrainContent.contentproj", "{984E8527-106D-4602-ACBB-25C6E5723CB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModel", "SkinnedModel\SkinnedModel\SkinnedModel.csproj", "{E7DE2B36-C261-4D77-97E6-DE1FE09A4779}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SkinnedModelContent", "SkinnedModel\SkinnedModelContent\SkinnedModelContent.contentproj", "{49BF7063-E113-4F6A-B09F-23FB632017E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModelContent", "SkinnedModel\SkinnedModelContent\SkinnedModelContent.contentproj", "{49BF7063-E113-4F6A-B09F-23FB632017E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadowMapping", "ShadowMapping\ShadowMapping\ShadowMapping.csproj", "{189FC711-FF6B-4C08-9EEC-BD5F2C08F24F}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ShadowMappingContent", "ShadowMapping\ShadowMappingContent\ShadowMappingContent.contentproj", "{96F2E250-3DC0-4113-9610-0C9DB8168CF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadowMappingContent", "ShadowMapping\ShadowMappingContent\ShadowMappingContent.contentproj", "{96F2E250-3DC0-4113-9610-0C9DB8168CF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transitions", "Transitions\Transitions\Transitions.csproj", "{646E7178-D967-412A-82C1-593F9CF5915C}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TransitionsContent", "Transitions\TransitionsContent\TransitionsContent.contentproj", "{174E92C2-0344-4C85-A204-B905124E4FAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +111,16 @@ Global
 		{96F2E250-3DC0-4113-9610-0C9DB8168CF2}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{96F2E250-3DC0-4113-9610-0C9DB8168CF2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{96F2E250-3DC0-4113-9610-0C9DB8168CF2}.Release|x86.ActiveCfg = Debug|Any CPU
+		{646E7178-D967-412A-82C1-593F9CF5915C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{646E7178-D967-412A-82C1-593F9CF5915C}.Debug|x86.ActiveCfg = Debug|x86
+		{646E7178-D967-412A-82C1-593F9CF5915C}.Debug|x86.Build.0 = Debug|x86
+		{646E7178-D967-412A-82C1-593F9CF5915C}.Release|Any CPU.ActiveCfg = Release|x86
+		{646E7178-D967-412A-82C1-593F9CF5915C}.Release|x86.ActiveCfg = Release|x86
+		{646E7178-D967-412A-82C1-593F9CF5915C}.Release|x86.Build.0 = Release|x86
+		{174E92C2-0344-4C85-A204-B905124E4FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{174E92C2-0344-4C85-A204-B905124E4FAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{174E92C2-0344-4C85-A204-B905124E4FAA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{174E92C2-0344-4C85-A204-B905124E4FAA}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

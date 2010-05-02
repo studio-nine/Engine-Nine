@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics.Effects
 {
-    public partial class ShadowEffect
+    public partial class ShadowEffect : IEffectMatrices
     {
         public bool FogEnabled
         {

@@ -103,12 +103,32 @@ namespace Isles
     /// <summary>
     /// Interface for playable animation
     /// </summary>
-    public interface IAnimation : IUpdateObject
+    public interface IAnimation
     {
         /// <summary>
-        /// Play the animation from start.
+        /// Gets whether the animation is being played.
+        /// </summary>
+        bool IsPlaying { get; }
+
+        /// <summary>
+        /// Plays the animation from start.
         /// </summary>
         void Play();
+
+        /// <summary>
+        /// Stops the animation.
+        /// </summary>
+        void Stop();
+
+        /// <summary>
+        /// Pauses the animation.
+        /// </summary>
+        void Pause();
+
+        /// <summary>
+        /// Resumes the animation.
+        /// </summary>
+        void Resume();
         
         /// <summary>
         /// Fired when the animation has completed.

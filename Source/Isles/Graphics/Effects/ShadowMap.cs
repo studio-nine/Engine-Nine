@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -19,20 +18,19 @@ using Microsoft.Xna.Framework.Content;
 using Isles.Graphics.ScreenEffects;
 #endregion
 
-
 namespace Isles.Graphics.Effects
 {
     public sealed class ShadowMap : IDisposable
     {
         BlurEffect blur;
-        RenderToTextureEffect renderTarget;
-        RenderToTextureEffect depthBlur;
+        RenderTarget2D renderTarget;
+        RenderTarget2D depthBlur;
 
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         public int Width { get { return renderTarget.Width; } }
         public int Height { get { return renderTarget.Height; } }
-        public SurfaceFormat SurfaceFormat { get { return renderTarget.SurfaceFormat; } }
+        public SurfaceFormat SurfaceFormat { get { return renderTarget.Format; } }
         public bool BlurEnabled { get; set; }
 
         public BlurEffect Blur
@@ -62,11 +60,13 @@ namespace Isles.Graphics.Effects
 
             try
             {
-                renderTarget = new RenderToTextureEffect(graphics, width, height, SurfaceFormat.Single);
+                renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Single,
+                                                  graphics.PresentationParameters.DepthStencilFormat);
             }
             catch (Exception ex)
             {
-                renderTarget = new RenderToTextureEffect(graphics, width, height, SurfaceFormat.Color);
+                renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Color,
+                                                  graphics.PresentationParameters.DepthStencilFormat);
             }
         }
 
@@ -79,10 +79,11 @@ namespace Isles.Graphics.Effects
         {
             Texture2D map = renderTarget.End();
 
-            if (BlurEnabled && map != null)
+            if (BlurEnabled)
             {
                 if (depthBlur == null)
-                    depthBlur = new RenderToTextureEffect(GraphicsDevice, Width, Height, SurfaceFormat);
+                    depthBlur = new RenderTarget2D(GraphicsDevice, Width, Height, false, SurfaceFormat,
+                                                   GraphicsDevice.PresentationParameters.DepthStencilFormat);
 
                 // Blur H
                 if (depthBlur.Begin())

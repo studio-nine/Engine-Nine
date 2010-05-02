@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections;
@@ -20,8 +19,6 @@ using Isles.Graphics;
 using Isles.Graphics.Cameras;
 using Isles.Navigation.Graphing;
 #endregion
-
-
 
 namespace PathFinding
 {

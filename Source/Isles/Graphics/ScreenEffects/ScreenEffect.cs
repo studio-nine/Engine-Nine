@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.IO;
@@ -16,7 +15,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
-
 
 namespace Isles.Graphics.ScreenEffects
 {
@@ -86,7 +84,7 @@ namespace Isles.Graphics.ScreenEffects
 
 
         int current = 0;
-        List<RenderToTextureEffect> renderTargets = new List<RenderToTextureEffect>(2);
+        List<RenderTarget2D> renderTargets = new List<RenderTarget2D>(2);
 
 
         /// <summary>
@@ -97,11 +95,12 @@ namespace Isles.Graphics.ScreenEffects
         {
             GraphicsDevice = graphics;
 
-            renderTargets.Add(new RenderToTextureEffect(
+            renderTargets.Add(new RenderTarget2D(
                                               GraphicsDevice,
                                               GraphicsDevice.PresentationParameters.BackBufferWidth,
-                                              GraphicsDevice.PresentationParameters.BackBufferHeight,
-                                              GraphicsDevice.PresentationParameters.BackBufferFormat));
+                                              GraphicsDevice.PresentationParameters.BackBufferHeight, false,
+                                              GraphicsDevice.PresentationParameters.BackBufferFormat,
+                                              GraphicsDevice.PresentationParameters.DepthStencilFormat));
 
             Effects = new ScreenEffectCollection();
         }
@@ -118,11 +117,12 @@ namespace Isles.Graphics.ScreenEffects
             // We need 2 render target if we have more then 2 effects
             if (Effects.Count > 1 && renderTargets.Count == 1)
             {
-                renderTargets.Add(new RenderToTextureEffect(
+                renderTargets.Add(new RenderTarget2D(
                                               GraphicsDevice,
                                               GraphicsDevice.PresentationParameters.BackBufferWidth,
-                                              GraphicsDevice.PresentationParameters.BackBufferHeight,
-                                              GraphicsDevice.PresentationParameters.BackBufferFormat));
+                                              GraphicsDevice.PresentationParameters.BackBufferHeight, false,
+                                              GraphicsDevice.PresentationParameters.BackBufferFormat,
+                                              GraphicsDevice.PresentationParameters.DepthStencilFormat));
             }
 
             return renderTargets[current].Begin();
@@ -178,7 +178,7 @@ namespace Isles.Graphics.ScreenEffects
         /// </summary>
         public void Dispose()
         {
-            foreach (RenderToTextureEffect renderTarget in renderTargets)
+            foreach (RenderTarget2D renderTarget in renderTargets)
             {
                 if (renderTarget != null)
                     renderTarget.Dispose();

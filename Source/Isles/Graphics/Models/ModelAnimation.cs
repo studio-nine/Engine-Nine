@@ -85,6 +85,14 @@ namespace Isles.Graphics.Models
 
         public void Stop()
         {
+            CurrentTime = TimeSpan.Zero;
+            CurrentFrame = 0;
+
+            IsPlaying = false;
+        }
+
+        public void Pause()
+        {
             IsPlaying = false;
         }
 

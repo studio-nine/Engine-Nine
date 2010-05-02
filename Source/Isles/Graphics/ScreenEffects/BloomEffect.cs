@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Statements
 using System;
 using System.IO;
@@ -15,7 +14,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
-
 
 namespace Isles.Graphics.ScreenEffects
 {
@@ -27,8 +25,8 @@ namespace Isles.Graphics.ScreenEffects
         private Threshold extract;
         private BlurEffect blur;
         private BloomCombine combine;
-        private RenderToTextureEffect renderTarget1;
-        private RenderToTextureEffect renderTarget2;
+        private RenderTarget2D renderTarget1;
+        private RenderTarget2D renderTarget2;
 
         /// <summary>
         /// Gets the GraphicsDevice associated with this instance.
@@ -92,17 +90,15 @@ namespace Isles.Graphics.ScreenEffects
             blur.BlurAmount = 2.0f;
 
             // Scale down render target
-            renderTarget1 = new RenderToTextureEffect(
+            renderTarget1 = new RenderTarget2D(
                                     GraphicsDevice,
                                     GraphicsDevice.Viewport.Width / 2,
-                                    GraphicsDevice.Viewport.Height / 2,
-                                    GraphicsDevice.PresentationParameters.BackBufferFormat);
+                                    GraphicsDevice.Viewport.Height / 2);
 
-            renderTarget2 = new RenderToTextureEffect(
+            renderTarget2 = new RenderTarget2D(
                                     GraphicsDevice,
                                     GraphicsDevice.Viewport.Width / 2,
-                                    GraphicsDevice.Viewport.Height / 2,
-                                    GraphicsDevice.PresentationParameters.BackBufferFormat);
+                                    GraphicsDevice.Viewport.Height / 2);
         }
 
         /// <summary>

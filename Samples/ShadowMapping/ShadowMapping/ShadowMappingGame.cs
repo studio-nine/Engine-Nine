@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections;
@@ -22,7 +21,6 @@ using Isles.Graphics.ScreenEffects;
 using Isles.Graphics.Cameras;
 using Isles.Graphics.Models;
 #endregion
-
 
 namespace ShadowMapping
 {

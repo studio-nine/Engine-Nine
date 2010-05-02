@@ -23,30 +23,24 @@ namespace Isles
     /// <summary>
     /// A collection that can be manipulated during enumeration.
     /// </summary>
-    internal class EnumerationCollection<TValue, TList>
-        : IEnumerable<TValue>, ICollection<TValue> where TList : ICollection<TValue>, new()
+    internal class EnumerationCollection<T> : IList<T>
     {
         private bool isDirty = true;
-        private TList elements = new TList();
-        private List<TValue> copy = new List<TValue>();
+        private List<T> elements = new List<T>();
+        private List<T> copy = new List<T>();
 
 
         public event EventHandler Added;
         public event EventHandler Removed;
+        
 
-
-        public TList Elements
-        {
-            get { return elements; }
-        }
-
-        public IEnumerator<TValue> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             // Copy a new list whiling iterating it
             if (isDirty)
             {
                 copy.Clear();
-                foreach (TValue e in elements)
+                foreach (T e in elements)
                     copy.Add(e);
                 isDirty = false;
             }
@@ -59,7 +53,7 @@ namespace Isles
             return GetEnumerator();
         }
 
-        public void Add(TValue e)
+        public void Add(T e)
         {
             isDirty = true;
             elements.Add(e);
@@ -68,7 +62,7 @@ namespace Isles
                 Added(this, EventArgs.Empty);
         }
 
-        public bool Remove(TValue e)
+        public bool Remove(T e)
         {
             isDirty = true;
             bool result = elements.Remove(e);
@@ -87,7 +81,7 @@ namespace Isles
 
         public bool IsReadOnly
         {
-            get { return true; }
+            get { return false; }
         }
 
         public int Count
@@ -95,14 +89,43 @@ namespace Isles
             get { return elements.Count; }
         }
 
-        public bool Contains(TValue item)
+        public bool Contains(T item)
         {
             return elements.Contains(item);
         }
 
-        public void CopyTo(TValue[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
             elements.CopyTo(array, arrayIndex);
+        }
+
+        public int IndexOf(T item)
+        {
+            return elements.IndexOf(item);
+        }
+
+        public void Insert(int index, T item)
+        {
+            isDirty = true;
+            elements.Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            isDirty = true;
+            elements.RemoveAt(index);
+        }
+
+        public int RemoveAll(Predicate<T> match)
+        {
+            isDirty = true;
+            return elements.RemoveAll(match);
+        }
+
+        public T this[int index]
+        {
+            get { return elements[index]; }
+            set { elements[index] = value; isDirty = true; }
         }
     }
 }

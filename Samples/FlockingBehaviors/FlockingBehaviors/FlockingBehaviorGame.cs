@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections;
@@ -20,7 +19,6 @@ using Isles.Graphics;
 using Isles.Graphics.Cameras;
 using Isles.Navigation.SteeringBehaviors;
 #endregion
-
 
 namespace FlockingBehaviors
 {

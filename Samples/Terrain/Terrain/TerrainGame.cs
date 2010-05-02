@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections;
@@ -21,7 +20,6 @@ using Isles.Graphics.Cameras;
 using Isles.Graphics.Effects;
 using Isles.Graphics.Landscape;
 #endregion
-
 
 namespace TerrainSample
 {

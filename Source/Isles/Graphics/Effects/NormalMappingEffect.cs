@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics.Effects
 {
-    public partial class NormalMappingEffect
+    public partial class NormalMappingEffect : IEffectMatrices
     {
         public NormalMappingEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {

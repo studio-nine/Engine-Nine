@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections;
@@ -18,7 +17,6 @@ using Isles;
 using Isles.Graphics;
 using Isles.Graphics.ScreenEffects;
 #endregion
-
 
 namespace ScreenEffects
 {
