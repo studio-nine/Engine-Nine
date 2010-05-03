@@ -58,7 +58,7 @@ namespace Isles.Graphics.Models
         /// </summary>
         private ModelSkinning() { }
 
-
+        
         /// <summary>
         /// Skin the target model based on the current state of model bone transforms.
         /// </summary>
@@ -68,24 +68,41 @@ namespace Isles.Graphics.Models
         /// <remarks>
         /// Whenever the bone or skeleton changes, you should re-skin the model.
         /// </remarks>
-        public Matrix[] GetBoneTransform(Model model, Matrix world)
+        public Matrix[] GetBoneTransforms(Model model)
+        {
+            return GetBoneTransforms(model, Matrix.Identity);
+        }
+
+        /// <summary>
+        /// Skin the target model based on the current state of model bone transforms.
+        /// </summary>
+        /// <param name="world">
+        /// A world matrix that will be applied to the result bone transforms.
+        /// </param>
+        /// <returns>
+        /// A matrix array used to draw skinned meshes.
+        /// </returns>
+        /// <remarks>
+        /// Whenever the bone or skeleton changes, you should re-skin the model.
+        /// </remarks>
+        public Matrix[] GetBoneTransforms(Model model, Matrix world)
         {
             Matrix[] skin = new Matrix[InverseBindPose.Count];
-            Matrix[] bones = new Matrix[model.Bones.Count];
 
-            Matrix prev = model.Bones[0].Transform;
+            if (bones == null || bones.Length < model.Bones.Count)
+                bones = new Matrix[model.Bones.Count];
 
-            model.Bones[0].Transform = world;
             model.CopyAbsoluteBoneTransformsTo(bones);
-            model.Bones[0].Transform = prev;
 
             for (int i = 0; i < InverseBindPose.Count; i++)
             {
                 // Apply inverse bind pose
-                skin[i] = InverseBindPose[i] * bones[SkeletonIndex + i];
+                skin[i] = InverseBindPose[i] * bones[SkeletonIndex + i] * world;
             }
 
             return skin;
         }
+
+        static Matrix[] bones = null;
     }
 }

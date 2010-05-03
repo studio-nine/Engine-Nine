@@ -94,11 +94,11 @@ namespace SkinnedModel
                            Matrix.CreateScale(0.3f);
 
             // To draw skinned models, first compute bone transforms using model skinning
-            Matrix[] bones = skinning.GetBoneTransform(model, Matrix.Identity);
+            Matrix[] bones = skinning.GetBoneTransforms(model);
 
             // Pass bone transforms to model batch to draw skinned models
-            modelBatch.Begin();
-            modelBatch.Draw(model, bones, world, camera.View, camera.Projection);
+            modelBatch.Begin(SpriteSortMode.Immediate, camera.View, camera.Projection);
+            modelBatch.Draw(model, world, bones, null);
             modelBatch.End();
 
             base.Draw(gameTime);

@@ -15,13 +15,9 @@ float Alpha = 1.0f;
 
 texture Texture;
 
-sampler Sampler = sampler_state
+sampler Sampler : register(s7) = sampler_state
 {
     Texture = (Texture);
-
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Linear;
     
     AddressU = Border;
     AddressV = Border;

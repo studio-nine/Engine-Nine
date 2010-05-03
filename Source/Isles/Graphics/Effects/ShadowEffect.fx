@@ -14,20 +14,18 @@ uniform const texture ShadowMap;
 uniform const sampler TextureSampler : register(s0) = sampler_state
 {
 	Texture = (Texture);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
 };
 
-uniform const sampler ShadowMapSampler : register(s1) = sampler_state
+uniform const sampler ShadowMapSampler : register(s7) = sampler_state
 {
 	Texture = (ShadowMap);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
+
 	AddressU = Border;
 	AddressV = Border;
-	BorderColor = 1;
+
+#ifdef WINDOWS
+	BorderColor = float4(1, 1, 1, 1);
+#endif
 };
 
 
@@ -47,7 +45,7 @@ uniform const float3	eyePosition		: register(c4);		// in world space
 // Material settings
 //-----------------------------------------------------------------------------
 
-uniform const float4	DiffuseColor	: register(c5) = 1;
+uniform const float3	DiffuseColor	: register(c5) = 1;
 
 uniform const float		Alpha			: register(c6) = 1;
 uniform const float3	EmissiveColor	: register(c7) = 0;
@@ -62,9 +60,9 @@ uniform const float		SpecularPower	: register(c9) = 16;
 
 uniform const float3	AmbientLightColor	: register(c10) = 0.2f;
 
-uniform const float3	LightDirection		: register(c11) = float3(0, 0, -1);
-uniform const float3	LightDiffuseColor	: register(c12) = 1;
-uniform const float3	LightSpecularColor	: register(c13) = 0;
+uniform const float3	lightDirection		: register(c11) = float3(0, 0, -1);
+uniform const float3	lightDiffuseColor	: register(c12) = 1;
+uniform const float3	lightSpecularColor	: register(c13) = 0;
 
 
 //-----------------------------------------------------------------------------
@@ -150,12 +148,12 @@ ColorPair ComputePerPixelLights(float3 E, float3 N)
 	result.Specular = 0;
 	
 	// Light0
-	float3 L = -LightDirection;
+	float3 L = -lightDirection;
 	float3 H = normalize(E + L);
 	float dt = max(0,dot(L,N));
-    result.Diffuse += LightDiffuseColor * dt;
+    result.Diffuse += lightDiffuseColor * dt;
     if (dt != 0)
-		result.Specular += LightSpecularColor * pow(max(0.00001f,dot(H,N)), SpecularPower);
+		result.Specular += lightSpecularColor * pow(max(0.00001f,dot(H,N)), SpecularPower);
     
     result.Diffuse *= DiffuseColor;
     result.Diffuse += EmissiveColor;
@@ -225,11 +223,11 @@ float4 PSBasicPixelLightingTx(PixelLightingPSInputTx pin) : COLOR
 	float4 diffuse = tex2D(TextureSampler, pin.TexCoord);
 		
 	diffuse *= float4(lightResult.Diffuse * pin.Diffuse.rgb, pin.Diffuse.a);
-	diffuse *= ComputeShadow(pin.Shadow);
 		
 	float4 color = diffuse + float4(lightResult.Specular, 0);
 	color.rgb = lerp(color.rgb, FogColor, pin.PositionWS.w);
-	
+	color.rgb *= ComputeShadow(pin.Shadow);
+
 	return color;
 }
 

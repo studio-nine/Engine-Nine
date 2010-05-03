@@ -18,37 +18,22 @@ uniform const texture SplatterTexture;
 uniform const sampler TextureSamplerX : register(s1) = sampler_state
 {
 	Texture = (textureX);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
 };
 uniform const sampler TextureSamplerY : register(s2) = sampler_state
 {
 	Texture = (textureY);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
 };
 uniform const sampler TextureSamplerZ : register(s3) = sampler_state
 {
 	Texture = (textureZ);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
 };
 uniform const sampler TextureSamplerW : register(s4) = sampler_state
 {
 	Texture = (textureW);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
 };
 uniform const sampler SplatterTextureSampler : register(s0) = sampler_state
 {
 	Texture = (SplatterTexture);
-	MipFilter = Linear;
-	MinFilter = Linear;
-	MagFilter = Linear;
 };
 
 
@@ -69,7 +54,7 @@ uniform const float3	eyePosition		: register(c4);		// in world space
 //-----------------------------------------------------------------------------
 
 uniform const float4	mask						   = 1;
-uniform const float4	DiffuseColor	: register(c5) = 1;
+uniform const float3	DiffuseColor	: register(c5) = 1;
 
 uniform const float		Alpha			: register(c6) = 1;
 uniform const float3	EmissiveColor	: register(c7) = 0;
@@ -84,9 +69,9 @@ uniform const float		SpecularPower	: register(c9) = 16;
 
 uniform const float3	AmbientLightColor	: register(c10) = 0.2f;
 
-uniform const float3	LightDirection		: register(c11) = float3(0, 0, -1);
-uniform const float3	LightDiffuseColor	: register(c12) = 1;
-uniform const float3	LightSpecularColor	: register(c13) = 0;
+uniform const float3	lightDirection		: register(c11) = float3(0, 0, -1);
+uniform const float3	lightDiffuseColor	: register(c12) = 1;
+uniform const float3	lightSpecularColor	: register(c13) = 0;
 
 
 //-----------------------------------------------------------------------------
@@ -166,12 +151,12 @@ ColorPair ComputePerPixelLights(float3 E, float3 N)
 	result.Specular = 0;
 	
 	// Light0
-	float3 L = -LightDirection;
+	float3 L = -lightDirection;
 	float3 H = normalize(E + L);
 	float dt = max(0,dot(L,N));
-    result.Diffuse += LightDiffuseColor * dt;
+    result.Diffuse += lightDiffuseColor * dt;
     if (dt != 0)
-		result.Specular += LightSpecularColor * pow(max(0.00001f,dot(H,N)), SpecularPower);
+		result.Specular += lightSpecularColor * pow(max(0.00001f,dot(H,N)), SpecularPower);
     
     result.Diffuse *= DiffuseColor;
     result.Diffuse += EmissiveColor;

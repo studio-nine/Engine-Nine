@@ -80,6 +80,11 @@
     <Compile Include="Graphics\Effects\DecalEffect.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\DepthEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -111,6 +116,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Interface.cs" />
     <Compile Include="Graphics\Landscape\SkyBoxEffect.cs">
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
@@ -268,11 +274,6 @@
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\ShadowMap.cs" />
-    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
-      <DependentUpon>DecalEffect.fx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Graphics\Effects\ScrollEffect.cs">
       <DependentUpon>ScrollEffect.fx</DependentUpon>
     </Compile>

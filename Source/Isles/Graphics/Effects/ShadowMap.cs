@@ -104,6 +104,9 @@ namespace Isles.Graphics.Effects
                         map = renderTarget.End();
                     }
                 }
+
+                // Restore states
+                GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             }
 
             return map;

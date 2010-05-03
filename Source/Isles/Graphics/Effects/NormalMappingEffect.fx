@@ -29,18 +29,12 @@ texture2D NormalTexture;
 sampler2D NormalMapSampler = sampler_state
 {
     Texture = <NormalTexture>;
-    MinFilter = linear;
-    MagFilter = linear;
-    MipFilter = linear;
 };
 
 texture2D Texture;
 sampler2D DiffuseTextureSampler = sampler_state
 {
     Texture = <Texture>;
-    MinFilter = linear;
-    MagFilter = linear;
-    MipFilter = linear;
 };
 
 struct VS_INPUT

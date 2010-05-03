@@ -4,7 +4,7 @@
 
 // Input parameters.
 float4x4 World;
-float4x4 Bones[MaxBones];
+float4x4 bones[MaxBones];
 float4x4 View;
 float4x4 Projection;
 float    farClip;
@@ -45,10 +45,10 @@ void VertShadowSkinned( float4 Pos : POSITION,
     // Blend between the weighted bone matrices.
     float4x4 skinTransform = 0;
     
-    skinTransform += Bones[BoneIndices.x] * BoneWeights.x;
-    skinTransform += Bones[BoneIndices.y] * BoneWeights.y;
-    skinTransform += Bones[BoneIndices.z] * BoneWeights.z;
-    skinTransform += Bones[BoneIndices.w] * BoneWeights.w;
+    skinTransform += bones[BoneIndices.x] * BoneWeights.x;
+    skinTransform += bones[BoneIndices.y] * BoneWeights.y;
+    skinTransform += bones[BoneIndices.z] * BoneWeights.z;
+    skinTransform += bones[BoneIndices.w] * BoneWeights.w;
     
     //
     // Compute the projected coordinates
@@ -75,7 +75,8 @@ void PixShadow( float Depth : TEXCOORD0,
     //
     // Depth is z / w
     //
-    Color.rgba = Depth;
+    Color.rgb = Depth;
+	Color.a = 1.0f;
 }
 
 int ShaderIndex = 0;

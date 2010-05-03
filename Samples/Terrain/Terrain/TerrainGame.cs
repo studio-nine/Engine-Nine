@@ -175,9 +175,6 @@ namespace TerrainSample
                     if (patch.BoundingBox.Intersects(decalEffect.BoundingBox))
                     {
                         patch.Draw(decalEffect);
-
-                        // Need to restore sampler states
-                        GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
                     }
                 }
             }

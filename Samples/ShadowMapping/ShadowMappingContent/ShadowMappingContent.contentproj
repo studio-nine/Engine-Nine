@@ -16,6 +16,9 @@
     <RootNamespace>ShadowMappingContent</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Isles.Pipeline">
+      <HintPath>..\..\..\Bin\Isles.Pipeline.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -40,7 +43,7 @@
       <Link>dude.fbx</Link>
       <Name>dude</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>ExtendedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

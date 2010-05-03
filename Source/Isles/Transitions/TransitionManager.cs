@@ -197,6 +197,28 @@ namespace Isles.Transitions
         }
         #endregion
 
+        #region Remove
+        public void Remove<TValue>(object target, string member) where TValue : struct            
+        {
+            IUpdateObject updateObject;
+
+            if (transitions.TryGetValue(typeof(TValue), out updateObject))
+            {
+                (updateObject as Transition<TValue>).Remove(new TransitionCallback<TValue>(target, member));
+            }
+        }
+
+        public void Remove<TValue>(Action<TValue> action) where TValue : struct
+        {
+            IUpdateObject updateObject;
+
+            if (transitions.TryGetValue(typeof(TValue), out updateObject))
+            {
+                (updateObject as Transition<TValue>).Remove(new TransitionCallback<TValue>(action));
+            }
+        }
+        #endregion
+
 
         private Transition<TValue> GetTransition<TValue>() where TValue : struct
         {

@@ -18,7 +18,7 @@ using Isles.Graphics.Vertices;
 
 namespace Isles.Graphics.Effects
 {
-    public partial class DepthEffect : IEffectMatrices
+    public partial class DepthEffect : IEffectMatrices, IEffectSkinned
     {
         public bool SkinningEnabled
         {
@@ -29,6 +29,16 @@ namespace Isles.Graphics.Effects
         public DepthEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
+        }
+
+        public Matrix[] GetBoneTransforms(int count)
+        {
+            return _bones.GetValueMatrixArray(count);
+        }
+        
+        public void SetBoneTransforms(Matrix[] boneTransforms)
+        {
+            bones = boneTransforms;
         }
 
         protected override void OnApply()
