@@ -15,7 +15,6 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Isles.Transitions.Curves;
 #endregion
 
 namespace Isles.Transitions
@@ -219,6 +218,11 @@ namespace Isles.Transitions
         }
         #endregion
 
+
+        public void Clear()
+        {
+            transitions.Clear();
+        }
 
         private Transition<TValue> GetTransition<TValue>() where TValue : struct
         {

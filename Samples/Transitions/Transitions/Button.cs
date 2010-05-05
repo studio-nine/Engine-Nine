@@ -16,10 +16,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Isles;
 using Isles.Graphics;
-using Isles.Graphics.Cameras;
 using Isles.Graphics.Effects;
 using Isles.Transitions;
-using Isles.Transitions.Curves;
 #endregion
 
 namespace Transitions

@@ -16,8 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Isles;
 using Isles.Graphics;
-using Isles.Graphics.Cameras;
-using Isles.Navigation.Graphing;
+using Isles.Navigation;
 #endregion
 
 namespace PathFinding
@@ -31,16 +30,16 @@ namespace PathFinding
         TopDownEditorCamera camera;
 
         // The path graph to be searched
-        PathGraph pathGraph;
+        PathGrid pathGraph;
 
         // An A* seach algorithm.
-        GraphSearch<PathGraphNode> graphSearch = new GraphSearch<PathGraphNode>();
+        GraphSearch<PathGridNode> graphSearch = new GraphSearch<PathGridNode>();
 
         // A list of nodes containing the result path.
-        List<PathGraphNode> path = new List<PathGraphNode>();
+        List<PathGridNode> path = new List<PathGridNode>();
 
         // Start node of the path.
-        PathGraphNode? start;
+        PathGridNode? start;
 
 
         public PathFindingGame()
@@ -72,7 +71,7 @@ namespace PathFinding
 
 
             // Create a path graph
-            pathGraph = new PathGraph(128, 128, 0, 0, 64, 64);
+            pathGraph = new PathGrid(128, 128, 0, 0, 64, 64);
 
 
             // Create some random obstacles
@@ -100,7 +99,7 @@ namespace PathFinding
                 }
                 else
                 {
-                    PathGraphNode? end = GetPickedNode(e.X, e.Y);
+                    PathGridNode? end = GetPickedNode(e.X, e.Y);
 
                     if (end.HasValue)
                     {
@@ -119,7 +118,7 @@ namespace PathFinding
         /// <summary>
         /// Helper method to get picked path graph node from screen coordinates.
         /// </summary>
-        private PathGraphNode? GetPickedNode(int x, int y)
+        private PathGridNode? GetPickedNode(int x, int y)
         {
             // Gets the pick ray from current mouse cursor
             Ray ray = PickEngine.RayFromScreen(GraphicsDevice, x, y, camera.View, camera.Projection);

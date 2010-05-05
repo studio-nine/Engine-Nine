@@ -15,8 +15,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Isles;
 using Isles.Graphics;
-using Isles.Graphics.Cameras;
-using Isles.Graphics.Models;
 #endregion
 
 namespace SkinnedModel
@@ -53,6 +51,13 @@ namespace SkinnedModel
         /// </summary>
         protected override void LoadContent()
         {
+            // This screenshot component can be used to capture screenshot by pressing PrtSrc.
+            Components.Add(new Isles.Components.ScreenshotCapturer(this));
+
+            Input input = new Input(this);
+            input.MouseDown += new EventHandler<MouseEventArgs>(input_MouseDown);
+            Components.Add(input);
+
             // Create a model viewer camera to help us visualize the scene
             camera = new ModelViewerCamera(this);
 
@@ -62,12 +67,18 @@ namespace SkinnedModel
             // Load our model assert.
             // If the model is processed by our ExtendedModelProcesser,
             // we will try to add model animation and skinning data.
-            model = Content.Load<Model>("dude");
+            model = Content.Load<Model>("peon");
 
             // Now load our model animation and skinning using extension method.
-            animation = new ModelAnimation(model, model.GetAnimation(0));
+            animation = new ModelAnimation(model, model.GetAnimation(3));
+            animation.Speed = 0.25f;
 
             skinning = model.GetSkinning();
+        }
+
+        void input_MouseDown(object sender, MouseEventArgs e)
+        {
+            Random random = new Random();
         }
 
         /// <summary>
@@ -90,8 +101,8 @@ namespace SkinnedModel
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
 
-            Matrix world = Matrix.CreateTranslation(0, -40, 0) *
-                           Matrix.CreateScale(0.3f);
+            Matrix world = Matrix.CreateTranslation(0, -4000, 0) *
+                           Matrix.CreateScale(0.001f);
 
             // To draw skinned models, first compute bone transforms using model skinning
             Matrix[] bones = skinning.GetBoneTransforms(model);

@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -24,7 +23,6 @@ using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Isles.Graphics.Landscape;
 #endregion
-
 
 namespace Isles.Pipeline.Processors
 {

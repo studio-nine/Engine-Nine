@@ -39,10 +39,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Models\Dude\dude.fbx">
-      <Link>dude.fbx</Link>
-      <Name>dude</Name>
-      <Importer>FbxImporter</Importer>
+    <Compile Include="..\..\Content\Models\Peon\Peon.X">
+      <Link>Peon.X</Link>
+      <Name>Peon</Name>
+      <Importer>XImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
     </Compile>
   </ItemGroup>

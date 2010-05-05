@@ -15,7 +15,6 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Isles.Transitions.Curves;
 #endregion
 
 namespace Isles.Transitions
@@ -98,6 +97,19 @@ namespace Isles.Transitions
         {
             return !((x.Callback != null && x.Callback == y.Callback) ||
                      (x.Object != null && x.Object == y.Object && x.Member == y.Member));
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is TransitionCallback<T>)
+                return this == (TransitionCallback<T>)obj;
+
+            return base.Equals(obj);
         }
     }
     #endregion

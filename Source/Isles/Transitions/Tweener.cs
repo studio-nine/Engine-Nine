@@ -15,7 +15,6 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Isles.Transitions.Curves;
 #endregion
 
 namespace Isles.Transitions
@@ -80,14 +79,7 @@ namespace Isles.Transitions
         InOut,
     }
     #endregion
-
-    #region Interpolate
-    /// <summary>
-    /// A method used to interpolate the specified type.
-    /// </summary>
-    public delegate T Interpolate<T>(T x, T y, float amount);
-    #endregion
-
+    
     #region Tweener<T>
     public sealed class Tweener<T> : ITweener<T>, IAnimation
     {
@@ -162,9 +154,9 @@ namespace Isles.Transitions
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Interpolate<float>)MathHelper.Lerp);
             else if (typeof(T) == typeof(double))
-                field.SetValue(this, (Interpolate<double>)Lerp);
+                field.SetValue(this, (Interpolate<double>)LerpHelper.Lerp);
             else if (typeof(T) == typeof(int))
-                field.SetValue(this, (Interpolate<int>)Lerp);
+                field.SetValue(this, (Interpolate<int>)LerpHelper.Lerp);
             else if (typeof(T) == typeof(Vector2))
                 field.SetValue(this, (Interpolate<Vector2>)Vector2.Lerp);
             else if (typeof(T) == typeof(Vector3))
@@ -178,41 +170,11 @@ namespace Isles.Transitions
             else if (typeof(T) == typeof(Color))
                 field.SetValue(this, (Interpolate<Color>)Color.Lerp);
             else if (typeof(T) == typeof(Rectangle))
-                field.SetValue(this, (Interpolate<Rectangle>)Lerp);
+                field.SetValue(this, (Interpolate<Rectangle>)LerpHelper.Lerp);
             else if (typeof(T) == typeof(Point))
-                field.SetValue(this, (Interpolate<Point>)Lerp);
-        }
-
-        public int Lerp(int x, int y, float amount)
-        {
-            return (int)(x * (1 - amount) + y * amount);
-        }
-
-        public double Lerp(double x, double y, float amount)
-        {
-            return x * (1 - amount) + y * amount;
-        }
-
-        public Rectangle Lerp(Rectangle x, Rectangle y, float amount)
-        {
-            Rectangle rc;
-
-            rc.X = Lerp(x.X, y.X, amount);
-            rc.Y = Lerp(x.Y, y.Y, amount);
-            rc.Width = Lerp(x.Width, y.Width, amount);
-            rc.Height = Lerp(x.Height, y.Height, amount);
-
-            return rc;
-        }
-
-        public Point Lerp(Point x, Point y, float amount)
-        {
-            Point rc;
-
-            rc.X = Lerp(x.X, y.X, amount);
-            rc.Y = Lerp(x.Y, y.Y, amount);
-
-            return rc;
+                field.SetValue(this, (Interpolate<Point>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(Ray))
+                field.SetValue(this, (Interpolate<Ray>)LerpHelper.Lerp);
         }
         
         public T Update(GameTime time)

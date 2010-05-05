@@ -34,17 +34,6 @@ namespace Isles
 
 
     /// <summary>
-    /// Object that can be displayed on the screen.
-    /// </summary>
-    public interface IDisplayObject : IUpdateObject
-    {
-        Matrix Transform { get; set; }
-
-        void Draw(GameTime gameTime, Matrix view, Matrix projection);
-    }
-
-
-    /// <summary>
     /// Interface for a 3D geometry made up of triangles
     /// </summary>
     public interface IGeometry

@@ -6,16 +6,15 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
-
 
 namespace Isles
 {
@@ -27,6 +26,7 @@ namespace Isles
     #endregion
     
     #region GridPartition
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class GridPartition
     {
         public int TessellationX { get; protected set; }

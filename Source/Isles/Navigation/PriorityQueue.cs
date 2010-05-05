@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Navigation.Graphing
+namespace Isles.Navigation
 {        
     /// <summary>
     /// Use min heap to implement a priority queue.

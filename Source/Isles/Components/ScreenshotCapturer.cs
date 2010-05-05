@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
-
 
 namespace Isles.Components
 {
@@ -46,11 +44,10 @@ namespace Isles.Components
             }
         }
 
-        public ImageFileFormat FileFormat { get; set; }
         public Keys CaptureKey { get; set; }
         public event EventHandler Captured;
         public string LastScreenshotFile { get; private set; }
-        public ResolveTexture2D LastScreenshot { get; private set; }
+        public Texture2D LastScreenshot { get; private set; }
 
         #endregion
 
@@ -63,7 +60,6 @@ namespace Isles.Components
             ScreenshotsDirectory = "Screenshots";
             screenshotNum = GetCurrentScreenshotNum();
             CaptureKey = Keys.PrintScreen;
-            FileFormat = ImageFileFormat.Bmp;
         }
         #endregion
 
@@ -78,7 +74,7 @@ namespace Isles.Components
         {
             return ScreenshotsDirectory + "/" +
                 Game.Window.Title + " Screenshot " +
-                num.ToString("0000") + "." + FileFormat.ToString().ToLower();
+                num.ToString("0000") + ".png";
         }
         #endregion
 
@@ -148,7 +144,7 @@ namespace Isles.Components
             "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
             Justification = "App should not crash from making a screenshot, " +
             "but exceptions are often thrown by this code, see inside.")]
-        public Texture2D TakeScreenshot(bool shouldSave, bool returnResult)
+        public Texture2D Capture(bool shouldSave)
         {
             try
             {
@@ -161,25 +157,30 @@ namespace Isles.Components
                 if (Directory.Exists(ScreenshotsDirectory) == false)
                     Directory.CreateDirectory(ScreenshotsDirectory);
 
-                LastScreenshot = new ResolveTexture2D(
-                    Game.GraphicsDevice,
-                    Game.GraphicsDevice.PresentationParameters.BackBufferWidth,
-                    Game.GraphicsDevice.PresentationParameters.BackBufferHeight, 1,
-                    SurfaceFormat.Color);
+
+                int width = Game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+                int height = Game.GraphicsDevice.PresentationParameters.BackBufferHeight;
+
 
                 // Get data with help of the resolve method
-                Game.GraphicsDevice.ResolveBackBuffer(LastScreenshot);
+                Color[] backbuffer = new Color[width * height];
+                Game.GraphicsDevice.GetBackBufferData<Color>(backbuffer);
+
+                LastScreenshot = new Texture2D(Game.GraphicsDevice, width, height);
+
+                LastScreenshot.SetData<Color>(backbuffer);
 
                 if (shouldSave)
                 {
-                    LastScreenshot.Save(
-                        LastScreenshotFile = ScreenshotNameBuilder(screenshotNum), FileFormat);
+                    LastScreenshot.SaveAsPng(
+                        new FileStream(LastScreenshotFile = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate),
+                        width, height);
 
                     if (Captured != null)
                         Captured(this, null);
                 }
 
-                return returnResult ? LastScreenshot : null;
+                return LastScreenshot;
             }
             catch (Exception ex)
             {
@@ -198,7 +199,7 @@ namespace Isles.Components
             if (pressedLastFrame && !pressed)
             {
                 pressedLastFrame = false;
-                TakeScreenshot(true, false);
+                Capture(true);
             }
 
             pressedLastFrame = pressed;

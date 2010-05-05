@@ -16,13 +16,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Navigation.Graphing
+namespace Isles.Navigation
 {
-    #region PathGraphNode
+    #region PathGridNode
     /// <summary>
     /// Node used by PathGraph.
     /// </summary>
-    public struct PathGraphNode : IGraphNode
+    public struct PathGridNode : IGraphNode
     {
         /// <summary>
         /// Identifier of this node.
@@ -51,11 +51,11 @@ namespace Isles.Navigation.Graphing
     }
     #endregion
 
-    #region PathGraph
+    #region PathGrid
     /// <summary>
     /// A grid based path graph.
     /// </summary>
-    public sealed class PathGraph : GridPartition, IGraph<PathGraphNode>
+    public sealed class PathGrid : GridPartition, IGraph<PathGridNode>
     {
         private byte[,] data;
 
@@ -69,7 +69,7 @@ namespace Isles.Navigation.Graphing
         /// <summary>
         /// Creates a new PathGraph.
         /// </summary>
-        public PathGraph(float width, float height, float x, float y, int tessellationX, int tessellationY)
+        public PathGrid(float width, float height, float x, float y, int tessellationX, int tessellationY)
             : base(width, height, x, y, tessellationX, tessellationY)
         {
             data = new byte[tessellationX, tessellationY];
@@ -152,13 +152,13 @@ namespace Isles.Navigation.Graphing
         /// <summary>
         /// Gets the path graph node under the specifed grid.
         /// </summary>
-        public PathGraphNode this[float x, float y]
+        public PathGridNode this[float x, float y]
         {
             get
             {
                 Point pt = PositionToGrid(x, y, true);
 
-                PathGraphNode node;
+                PathGridNode node;
 
                 node.X = pt.X;
                 node.Y = pt.Y;
@@ -172,11 +172,11 @@ namespace Isles.Navigation.Graphing
         /// Gets the path graph node under the specifed location.
         /// Input location is turncated.
         /// </summary>
-        public PathGraphNode this[int x, int y]
+        public PathGridNode this[int x, int y]
         {
             get
             {
-                PathGraphNode node;
+                PathGridNode node;
 
                 node.X = x;
                 node.Y = y;
@@ -189,12 +189,12 @@ namespace Isles.Navigation.Graphing
         /// <summary>
         /// Gets all the adjacent edges of the specified node.
         /// </summary>
-        public IEnumerable<GraphEdge<PathGraphNode>> GetEdges(PathGraphNode node)
+        public IEnumerable<GraphEdge<PathGridNode>> GetEdges(PathGridNode node)
         {
             int x = node.X;
             int y = node.Y;
 
-            GraphEdge<PathGraphNode> edge;
+            GraphEdge<PathGridNode> edge;
 
             edge.From = node;
 
@@ -275,7 +275,7 @@ namespace Isles.Navigation.Graphing
         /// <summary>
         /// Gets the heuristic value used by A star search.
         /// </summary>
-        public float GetHeuristicValue(PathGraphNode current, PathGraphNode end)
+        public float GetHeuristicValue(PathGridNode current, PathGridNode end)
         {
             int xx = current.X - end.X;
             int yy = current.Y - end.Y;

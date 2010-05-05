@@ -15,7 +15,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Isles;
 using Isles.Graphics;
-using Isles.Graphics.Cameras;
 #endregion
 
 namespace DebuggerPrimitives

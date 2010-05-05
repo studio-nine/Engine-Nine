@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Navigation.Graphing
+namespace Isles.Navigation
 {
     #region IGraphNode
     /// <summary>

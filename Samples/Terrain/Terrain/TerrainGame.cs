@@ -16,7 +16,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Isles;
 using Isles.Graphics;
-using Isles.Graphics.Cameras;
 using Isles.Graphics.Effects;
 using Isles.Graphics.Landscape;
 #endregion

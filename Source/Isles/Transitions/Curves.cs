@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Transitions.Curves
+namespace Isles.Transitions
 {
     public interface ICurve
     {

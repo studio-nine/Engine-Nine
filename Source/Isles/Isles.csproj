@@ -73,9 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Timer.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Graphics\Batch.cs" />
     <Compile Include="Graphics\Effects\DecalEffect.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
@@ -117,10 +117,10 @@
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Interface.cs" />
-    <Compile Include="Graphics\Landscape\SkyBoxEffect.cs">
+    <Compile Include="Graphics\Effects\SkyBoxEffect.cs">
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Landscape\SkyBoxEffect.Designer.cs">
+    <Compile Include="Graphics\Effects\SkyBoxEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
@@ -198,19 +198,17 @@
     <Compile Include="Navigation\SteeringBehaviors\AvoidanceBehaviors.cs" />
     <Compile Include="Navigation\SteeringBehaviors\FlockingBehaviors.cs" />
     <Compile Include="SpacialObjectManager.cs" />
-    <Compile Include="Graphics\Cameras\FreeCamera.cs" />
-    <Compile Include="Graphics\Cameras\ModelViewerCamera.cs" />
-    <Compile Include="Graphics\Cameras\TopDownEditorCamera.cs" />
+    <Compile Include="Graphics\FreeCamera.cs" />
+    <Compile Include="Graphics\ModelViewerCamera.cs" />
+    <Compile Include="Graphics\TopDownEditorCamera.cs" />
     <Compile Include="Graphics\SpriteAnimation.cs" />
     <Compile Include="Graphics\Geometry.cs" />
     <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
     <Compile Include="Graphics\Landscape\TerrainGeometry.cs" />
-    <Compile Include="Graphics\Models\AnimationClip.cs" />
-    <Compile Include="Graphics\Models\Keyframe.cs" />
-    <Compile Include="Graphics\Models\ModelAnimation.cs" />
-    <Compile Include="Graphics\Models\ModelBatch.cs" />
-    <Compile Include="Graphics\Models\ModelExtensions.cs" />
-    <Compile Include="Graphics\Models\ModelSkinning.cs" />
+    <Compile Include="Graphics\ModelAnimation.cs" />
+    <Compile Include="Graphics\ModelBatch.cs" />
+    <Compile Include="Graphics\ModelExtensions.cs" />
+    <Compile Include="Graphics\ModelSkinning.cs" />
     <Compile Include="Graphics\ParticleEffects\SpacialEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
@@ -225,15 +223,16 @@
     <Compile Include="Graphics\Primitives\Skeleton.cs" />
     <Compile Include="Graphics\Primitives\Teapot.cs" />
     <Compile Include="Graphics\Primitives\Torus.cs" />
-    <Compile Include="Graphics\Vertices\VertexPositionNormalDueTexture.cs" />
-    <Compile Include="Graphics\Vertices\VertexPositionNormalTangentTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalDueTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="NamedObjectManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="PickEngine.cs" />
+    <Compile Include="Transitions\LerpHelper.cs" />
     <Compile Include="Transitions\TransitionManager.cs" />
     <Compile Include="Transitions\Transition.cs" />
     <Compile Include="Transitions\Tweener.cs" />
-    <Compile Include="Transitions\Curves\BasicCurves.cs" />
+    <Compile Include="Transitions\Curves.cs" />
     <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -313,7 +312,7 @@
     <Compile Include="Graphics\Landscape\Terrain.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\Vertices\VertexPositionColorNormalTangentTexture.cs" />
+    <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
     <Compile Include="Graphics\Landscape\TerrainPatch.cs" />
     <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -321,9 +320,9 @@
       <DependentUpon>BlurEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
-    <Compile Include="Navigation\Graphing\PathGraph.cs" />
-    <Compile Include="Navigation\Graphing\PriorityQueue.cs" />
-    <Compile Include="Navigation\Graphing\GraphSearch.cs" />
+    <Compile Include="Navigation\PathGrid.cs" />
+    <Compile Include="Navigation\PriorityQueue.cs" />
+    <Compile Include="Navigation\GraphSearch.cs" />
     <Compile Include="Navigation\Movable.cs" />
     <None Include="Graphics\Effects\DepthEffect.fx">
       <Generator>EffectCustomTool</Generator>
@@ -349,7 +348,7 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ScrollEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Landscape\SkyBoxEffect.fx">
+    <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
     </None>

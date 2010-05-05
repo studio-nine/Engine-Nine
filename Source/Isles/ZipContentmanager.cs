@@ -27,7 +27,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.IO;
@@ -38,7 +37,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 #endregion
-
 
 namespace Isles
 {

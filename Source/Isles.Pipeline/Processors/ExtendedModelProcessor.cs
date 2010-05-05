@@ -1,25 +1,27 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// SkinnedModelProcessor.cs
+#region Copyright 2009 (c) Nightin Games
+//=============================================================================
 //
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
+//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
 #endregion
 
-#region Using Statements
+#region Using Directives
 using System;
-using System.IO;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Xml;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Isles.Graphics.Models;
+using Isles.Graphics;
 #endregion
 
 namespace Isles.Pipeline.Processors
@@ -84,7 +86,9 @@ namespace Isles.Pipeline.Processors
             // Read the bind pose and skeleton hierarchy data.
             IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
 
-            int skeletonIndex = FindSkeletonIndex(input, skeleton, 0);
+            int skeletonIndex = 0;
+
+            FindSkeletonIndex(input, skeleton, ref skeletonIndex);
 
             if (bones.Count > MaxBones)
             {
@@ -118,18 +122,21 @@ namespace Isles.Pipeline.Processors
             return model;
         }
 
-        private int FindSkeletonIndex(NodeContent input, BoneContent skeleton, int n)
+        private bool FindSkeletonIndex(NodeContent input, BoneContent skeleton, ref int n)
         {
             if (input == skeleton)
-                return n;
-
-            int result;
+                return true;
 
             foreach (NodeContent child in input.Children)
-                if ((result = FindSkeletonIndex(child, skeleton, ++n)) > 0)
-                    return result;
+            {
+                n++;
+                if (FindSkeletonIndex(child, skeleton, ref n))
+                {
+                    return true;
+                }
+            }
 
-            return -1;
+            return false;
         }
 
         private Dictionary<string, AnimationClip> ProcessAnimations(NodeContent input)
