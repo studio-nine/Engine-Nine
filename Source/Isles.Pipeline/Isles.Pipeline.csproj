@@ -65,6 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageListContent.cs" />
+    <Compile Include="Importers\ImageListImporter.cs" />
+    <Compile Include="Processors\SequentialImageListProcessor.cs" />
+    <Compile Include="Processors\GridImageListProcessor.cs" />
     <Compile Include="Importers\ObjModelImporter.cs" />
     <Compile Include="Importers\RawTextureImporter.cs" />
     <Compile Include="Processors\GrayScaleTextureProcessor.cs" />

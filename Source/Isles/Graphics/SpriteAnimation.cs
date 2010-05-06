@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,6 @@ using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
-
 
 namespace Isles.Graphics
 {
@@ -159,15 +157,34 @@ namespace Isles.Graphics
     {
         public override int Count
         {
-            get { return Textures.Count; }
+            get { return ImageList.Count; }
         }
 
-        public List<Texture2D> Textures { get; private set; }
-        public Texture2D CurrentTexture { get { return Textures[CurrentFrame]; } }
+        public ImageList ImageList { get; private set; }
+        public Texture2D Texture { get { return ImageList[CurrentFrame].Texture; } }
+        public Rectangle SourceRectangle { get { return ImageList[CurrentFrame].SourceRectangle; } }
 
         public SpriteAnimation()
         {
-            Textures = new List<Texture2D>();
+            ImageList = new ImageList();
+        }
+
+        public SpriteAnimation(IEnumerable<Texture2D> textures)
+        {
+            ImageList = new ImageList();
+
+            foreach (Texture2D texture in textures)
+            {
+                ImageList.Add(texture, texture.Bounds);
+            }
+        }
+
+        public SpriteAnimation(ImageList imageList)
+        {
+            if (imageList == null)
+                throw new ArgumentNullException();
+
+            ImageList = imageList;
         }
     }
     #endregion

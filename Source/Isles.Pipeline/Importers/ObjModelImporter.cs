@@ -79,8 +79,7 @@ namespace Isles.Pipeline.Importers
         /// Contains information for importing a game asset, such as a logger interface.
         /// </param>
         /// <returns>Resulting game asset.</returns>
-        public override NodeContent Import(string filename,
-            ContentImporterContext context)
+        public override NodeContent Import(string filename, ContentImporterContext context)
         {
             // Uncomment the following line to debug:
             //System.Diagnostics.Debugger.Launch();

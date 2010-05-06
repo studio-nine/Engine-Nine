@@ -34,7 +34,6 @@ namespace ScreenEffects
 
         public ScreenEffectsGame()
         {
-
             bool supported = GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef);
 
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);

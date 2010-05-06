@@ -26,6 +26,18 @@ namespace Isles.Graphics
         #region DrawSprite
         static SpriteBatch spriteBatch;
 
+        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Vector2 position, Rectangle? source, Color color, Effect effect)
+        {
+            Rectangle rc = source.HasValue ? source.Value : texture.Bounds;
+
+            rc.X = rc.Y = 0;
+
+            rc.X += (int)position.X;
+            rc.Y += (int)position.Y;
+
+            DrawSprite(graphics, texture, rc, source, color, effect);
+        }
+
         public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Rectangle? destination, Rectangle? source, Color color, Effect effect)
         {
             if (spriteBatch == null)

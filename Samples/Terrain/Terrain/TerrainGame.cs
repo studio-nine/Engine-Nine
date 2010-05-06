@@ -57,7 +57,6 @@ namespace TerrainSample
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(this);
 
-
             // Create a terrain based on the terrain geometry loaded from file
             terrain = new Terrain(GraphicsDevice, Content.Load<TerrainGeometry>("RF1"), 8);
 
