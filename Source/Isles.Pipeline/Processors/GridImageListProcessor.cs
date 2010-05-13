@@ -37,15 +37,48 @@ namespace Isles.Pipeline.Processors
         [DefaultValue(1)]
         public int ColumnCount { get; set; }
 
+        [DefaultValue(typeof(Color), "255, 0, 255, 255")]
+        public Color ColorKey { get; set; }
+        
+        [DefaultValue(true)]
+        public bool ColorKeyEnabled { get; set; }
+
+        [DefaultValue(false)]
+        public bool GenerateMipmaps { get; set; }
+
+        [DefaultValue(true)]
+        public bool PremultiplyAlpha { get; set; }
+
+        [DefaultValue(false)]
+        public bool ResizeToPowerOfTwo { get; set; }
+
+        [DefaultValue(TextureProcessorOutputFormat.Color)]
+        public TextureProcessorOutputFormat TextureFormat { get; set; }
+
+
         public GridImageListProcessor()
         {
             RowCount = 1;
             ColumnCount = 1;
+
+            ColorKey = new Color(255, 0, 255, 255);
+            ColorKeyEnabled = true;
+            GenerateMipmaps = false;
+            PremultiplyAlpha = true;
+            ResizeToPowerOfTwo = false;
+            TextureFormat = TextureProcessorOutputFormat.Color;
         }
 
         public override ImageListContent Process(Texture2DContent input, ContentProcessorContext context)
         {
             TextureProcessor processor = new TextureProcessor();
+
+            processor.ColorKeyColor = ColorKey;
+            processor.ColorKeyEnabled = ColorKeyEnabled;
+            processor.GenerateMipmaps = GenerateMipmaps;
+            processor.PremultiplyAlpha = PremultiplyAlpha;
+            processor.ResizeToPowerOfTwo = ResizeToPowerOfTwo;
+            processor.TextureFormat = TextureFormat;
 
             Texture2DContent texture = (Texture2DContent)processor.Process(input, context);
 

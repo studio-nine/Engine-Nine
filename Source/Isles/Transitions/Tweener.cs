@@ -81,7 +81,7 @@ namespace Isles.Transitions
     #endregion
     
     #region Tweener<T>
-    public sealed class Tweener<T> : ITweener<T>, IAnimation
+    public class Tweener<T> : ITweener<T>, IAnimation
     {
         private float percentage;
         private double elapsedTime;

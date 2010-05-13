@@ -155,14 +155,17 @@ namespace Isles.Graphics
     #region SpriteAnimation
     public class SpriteAnimation : FrameAnimation
     {
+        int count;
+        int startFrame = 0;
+
         public override int Count
         {
-            get { return ImageList.Count; }
+            get { return count; }
         }
 
         public ImageList ImageList { get; private set; }
-        public Texture2D Texture { get { return ImageList[CurrentFrame].Texture; } }
-        public Rectangle SourceRectangle { get { return ImageList[CurrentFrame].SourceRectangle; } }
+        public Texture2D Texture { get { return ImageList[CurrentFrame + startFrame].Texture; } }
+        public Rectangle SourceRectangle { get { return ImageList[CurrentFrame + startFrame].SourceRectangle; } }
 
         public SpriteAnimation()
         {
@@ -177,6 +180,8 @@ namespace Isles.Graphics
             {
                 ImageList.Add(texture, texture.Bounds);
             }
+
+            count = ImageList.Count;
         }
 
         public SpriteAnimation(ImageList imageList)
@@ -185,6 +190,19 @@ namespace Isles.Graphics
                 throw new ArgumentNullException();
 
             ImageList = imageList;
+
+            count = imageList.Count;
+        }
+
+        public SpriteAnimation(ImageList imageList, int startFrame, int count)
+        {
+            if (imageList == null)
+                throw new ArgumentNullException();
+
+            ImageList = imageList;
+
+            this.startFrame = startFrame;
+            this.count = count;
         }
     }
     #endregion

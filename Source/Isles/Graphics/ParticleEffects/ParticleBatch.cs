@@ -20,10 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    /// <summary>
-    /// Aggregates the functionality of PointSpriteBatch, LineSpriteBatch
-    /// and ParticleEffectBatch into a single class.
-    /// </summary>
     public sealed class ParticleBatch : IDisposable
     {
         PointSpriteBatch pointSprite;
@@ -35,19 +31,19 @@ namespace Isles.Graphics.ParticleEffects
         public bool IsDisposed { get; private set; }
 
 
-        public ParticleBatch(GraphicsDevice graphics, int pointSpriteCapacity, int lineSpriteCapacity, int particleCapacity)
+        public ParticleBatch(GraphicsDevice graphics, int capacity)
         {
             GraphicsDevice = graphics;
 
-            pointSprite = new PointSpriteBatch(graphics, pointSpriteCapacity);
-            lineSprite = new LineSpriteBatch(graphics, lineSpriteCapacity);
-            particleEffect = new ParticleEffectBatch(graphics, particleCapacity);
+            pointSprite = new PointSpriteBatch(graphics, capacity);
+            lineSprite = new LineSpriteBatch(graphics, capacity);
+            particleEffect = new ParticleEffectBatch(graphics, capacity);
         }
 
         public void Begin(Matrix view, Matrix projection)
         {
             if (IsDisposed)
-                throw new ObjectDisposedException("LineSpriteBatch");
+                throw new ObjectDisposedException("Particle Batch");
 
             pointSprite.Begin(view, projection);
             lineSprite.Begin(view, projection);
@@ -59,22 +55,22 @@ namespace Isles.Graphics.ParticleEffects
             pointSprite.Draw(texture, position, size, rotation, color);
         }
 
-        public void Draw(Texture2D texture, Vector3 start, Vector3 end, float width, Color color)
+        public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Color color)
         {
-            Draw(texture, start, end, width, Vector2.One, Vector2.Zero, color);
+            DrawLine(texture, start, end, width, Vector2.One, Vector2.Zero, color);
         }
-        
-        public void Draw(Texture2D texture, Vector3 start, Vector3 end, float width, Vector2 textureScale, Vector2 textureOffset, Color color)
+
+        public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Vector2 textureScale, Vector2 textureOffset, Color color)
         {
             lineSprite.Draw(texture, start, end, width, textureScale, textureOffset, color);
         }
 
-        public void Draw(Texture2D texture, Vector3[] lineStrip, float width, Color color)
+        public void DrawLine(Texture2D texture, Vector3[] lineStrip, float width, Color color)
         {
-            Draw(texture, lineStrip, width, Vector2.One, Vector2.Zero, color);
+            DrawLine(texture, lineStrip, width, Vector2.One, Vector2.Zero, color);
         }
 
-        public void Draw(Texture2D texture, Vector3[] lineStrip, float width, Vector2 textureScale, Vector2 textureOffset, Color color)
+        public void DrawLine(Texture2D texture, Vector3[] lineStrip, float width, Vector2 textureScale, Vector2 textureOffset, Color color)
         {
             lineSprite.Draw(texture, lineStrip, width, textureScale, textureOffset, color);
         }

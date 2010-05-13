@@ -18,23 +18,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public sealed class PointSpriteBatch : IDisposable
+    internal sealed class PointSpriteBatch : IDisposable
     {
         #region Vertex
         internal struct Vertex : IVertexType
         {
             public Vector3 Position;
             public Color Color;
-            public float Size;
+            public Vector2 Size;
             public float Rotation;
+            public Vector2 TextureCoordinates;
 
-            public static int SizeInBytes = 4 * (3 + 1 + 1 + 1);
+            public static int SizeInBytes = 4 * (3 + 1 + 2 + 1 + 2);
             public static VertexElement[] VertexElements = new VertexElement[]
             {
                 new VertexElement(0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0),
                 new VertexElement(12, VertexElementFormat.Color, VertexElementUsage.Color, 0),
-                new VertexElement(16, VertexElementFormat.Single, VertexElementUsage.TextureCoordinate, 0),
-                new VertexElement(20, VertexElementFormat.Single, VertexElementUsage.TextureCoordinate, 1),
+                new VertexElement(16, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 1),
+                new VertexElement(24, VertexElementFormat.Single, VertexElementUsage.TextureCoordinate, 2),
+                new VertexElement(28, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0),
             };
 
             public VertexDeclaration VertexDeclaration
@@ -44,7 +46,6 @@ namespace Isles.Graphics.ParticleEffects
         }
         #endregion
 
-
         #region Key
         internal struct Key
         {
@@ -53,13 +54,16 @@ namespace Isles.Graphics.ParticleEffects
         }
         #endregion
 
-
+        private int capacity;
         private Matrix view;
         private Matrix projection;
         private bool hasBegin = false;
         private DynamicVertexBuffer vertices;
-        private Batch<Key, Vertex> batch;
-        private Effect effect;
+        private DynamicIndexBuffer indices;
+        private Batch<Key, ushort> batch;
+        private PointSpriteEffect effect;
+        private Vertex[] vertexArray;
+        private int vertexCount = 0;
 
 
         public GraphicsDevice GraphicsDevice { get; private set; }
@@ -68,16 +72,8 @@ namespace Isles.Graphics.ParticleEffects
 
         public PointSpriteBatch(GraphicsDevice graphics, int capacity)
         {
-            if (capacity < 32)
-                throw new ArgumentException("Capacity should be at least 32");
-
             GraphicsDevice = graphics;
-
-            effect = new PointSpriteEffect(graphics);
-
-            batch = new Batch<Key, Vertex>(capacity);
-
-            //vertices = new DynamicVertexBuffer(graphics, typeof(Vertex), capacity, BufferUsage.Points | BufferUsage.WriteOnly);
+            this.capacity = capacity;
         }
 
 
@@ -86,12 +82,27 @@ namespace Isles.Graphics.ParticleEffects
             if (IsDisposed)
                 throw new ObjectDisposedException("PointSpriteBatch");
 
+            if (batch == null)
+            {
+                effect = new PointSpriteEffect(GraphicsDevice);
+
+                vertexArray = new Vertex[capacity * 4];
+
+                batch = new Batch<Key, ushort>(capacity);
+
+                vertices = new DynamicVertexBuffer(GraphicsDevice, typeof(Vertex), capacity * 4, BufferUsage.WriteOnly);
+
+                indices = new DynamicIndexBuffer(GraphicsDevice, typeof(ushort), capacity * 6, BufferUsage.WriteOnly);  
+            }
+
             hasBegin = true;
 
             this.view = view;
             this.projection = projection;
 
             batch.Clear();
+        
+            vertexCount = 0;
         }
 
 
@@ -108,7 +119,6 @@ namespace Isles.Graphics.ParticleEffects
 
 
             Key key;
-            Vertex vertex;
 
             key.Texture = texture;
 
@@ -118,14 +128,31 @@ namespace Isles.Graphics.ParticleEffects
                 key.Technique = effect.Techniques["RotatingParticles"];
 
 
+            batch.Add(key, (ushort)(vertexCount + 0));
+            batch.Add(key, (ushort)(vertexCount + 1));
+            batch.Add(key, (ushort)(vertexCount + 2));
+            batch.Add(key, (ushort)(vertexCount + 1));
+            batch.Add(key, (ushort)(vertexCount + 3));
+            batch.Add(key, (ushort)(vertexCount + 2));
+
+            Vertex vertex;
+
             vertex.Position = position;
             vertex.Color = color;
-            
-            // Note that we scale texture coordinates in our shader
-            vertex.Size = (float)(size * Math.Sqrt(2));
+            vertex.Size = new Vector2(size, size * texture.Height / texture.Width);
             vertex.Rotation = rotation;
+            
+            vertex.TextureCoordinates = Vector2.UnitY;
+            vertexArray[vertexCount++] = vertex;
 
-            batch.Add(key, vertex);
+            vertex.TextureCoordinates = Vector2.One;
+            vertexArray[vertexCount++] = vertex;
+
+            vertex.TextureCoordinates = Vector2.Zero;
+            vertexArray[vertexCount++] = vertex;
+
+            vertex.TextureCoordinates = Vector2.UnitX;
+            vertexArray[vertexCount++] = vertex;
         }
 
 
@@ -141,56 +168,31 @@ namespace Isles.Graphics.ParticleEffects
 
             if (batch.Count <= 0)
                 return;
-            /*
-            RasterizerState renderState = GraphicsDevice.RenderState;
-
-            // Enable point sprites.
-            renderState.PointSpriteEnable = true;
-            renderState.PointSizeMax = 256;
-            
-            // Set the alpha test mode.
-            renderState.AlphaTestEnable = true;
-            renderState.AlphaFunction = CompareFunction.Greater;
-            renderState.ReferenceAlpha = 0;
-
-            // Enable the depth buffer (so particles will not be visible through
-            // solid objects like the ground plane), but disable depth writes
-            // (so particles will not obscure other particles).
-            renderState.DepthBufferEnable = true;
-            renderState.DepthBufferWriteEnable = false;
-            */
-
-            effect.Parameters["View"].SetValue(view);
-            effect.Parameters["Projection"].SetValue(projection);
-            effect.Parameters["ViewportHeight"].SetValue(GraphicsDevice.Viewport.Height);
 
 
-            foreach (BatchItem<Key> batchItem in batch.Batches)
+            effect.View = view;
+            effect.Projection = projection;
+
+            vertices.SetData<Vertex>(vertexArray, 0, vertexCount, SetDataOptions.NoOverwrite);
+
+            GraphicsDevice.SetVertexBuffer(vertices);
+
+            foreach (BatchItem<Key, ushort> batchItem in batch.Batches)
             {
-                vertices.SetData<Vertex>(
-                    batch.Values, batchItem.StartIndex, batchItem.Count, SetDataOptions.None);
+                indices.SetData<ushort>(batchItem.Values, 0, batchItem.Count, SetDataOptions.NoOverwrite);
+                
+                GraphicsDevice.Indices = indices;
 
-                GraphicsDevice.SetVertexBuffer(vertices);
+                effect.Texture = batchItem.Key.Texture;
 
-                effect.Parameters["Texture"].SetValue(batchItem.Key.Texture);
-                                
-                batchItem.Key.Technique.Passes[0].Apply();
-
-                // TODO:
-                //GraphicsDevice.DrawPrimitives(PrimitiveType.PointList, 0, batchItem.Count);
-
-                GraphicsDevice.SetVertexBuffer(null);
+                effect.CurrentTechnique = batchItem.Key.Technique;
+                effect.CurrentTechnique.Passes[0].Apply();
+                
+                GraphicsDevice.DrawIndexedPrimitives(
+                    PrimitiveType.TriangleList, 0, 0, vertexCount, 0, batchItem.Count / 3);
+                
+                GraphicsDevice.Indices = null;
             }
-
-            // Reset render states to default value
-            /*
-            renderState.PointSpriteEnable = false;
-            renderState.AlphaBlendEnable = false;
-            renderState.SourceBlend = Blend.SourceAlpha;
-            renderState.DestinationBlend = Blend.InverseSourceAlpha;
-            renderState.AlphaTestEnable = false;
-            renderState.DepthBufferWriteEnable = true;
-             */
         }
 
 

@@ -26,8 +26,8 @@ using Isles.Graphics;
 
 namespace Isles.Pipeline.Importers
 {
-    [ContentImporter(".unknown", DisplayName = "Image List Importer - Isles")]
-    public class ImageListImporter : ContentImporter<string[]>
+    [ContentImporter(".unknown", DisplayName = "Sequential Image List Importer - Isles")]
+    public class SequentialImageListImporter : ContentImporter<string[]>
     {
         public override string[] Import(string filename, ContentImporterContext context)
         {

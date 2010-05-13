@@ -40,7 +40,7 @@ namespace Isles.Graphics.ParticleEffects
             SpacialEmitter = emitter;
         }
 
-        public IEnumerable<ParticleVertex> Update(GameTime time)
+        public IEnumerable<Vector3> Update(GameTime time)
         {
             if (SpacialEmitter != null)
             {

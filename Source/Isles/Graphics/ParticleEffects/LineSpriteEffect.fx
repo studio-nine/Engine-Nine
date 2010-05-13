@@ -10,16 +10,9 @@ float4x4 Projection;
 
 texture Texture;
 
-sampler Sampler = sampler_state
+sampler Sampler : register(s0) = sampler_state
 {
     Texture = (Texture);
-    
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Point;
-    
-    AddressU = Wrap;
-    AddressV = Wrap;
 };
 
 

@@ -67,10 +67,10 @@ namespace SkinnedModel
             // Load our model assert.
             // If the model is processed by our ExtendedModelProcesser,
             // we will try to add model animation and skinning data.
-            model = Content.Load<Model>("peon");
+            model = Content.Load<Model>("electroalg");
 
             // Now load our model animation and skinning using extension method.
-            animation = new ModelAnimation(model, model.GetAnimation(3));
+            animation = new ModelAnimation(model, model.GetAnimation(0));
             animation.Speed = 0.25f;
 
             skinning = model.GetSkinning();
@@ -100,15 +100,17 @@ namespace SkinnedModel
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
-
+            Matrix[] bones = null;
+            
             Matrix world = Matrix.CreateTranslation(0, -4000, 0) *
                            Matrix.CreateScale(0.001f);
 
             // To draw skinned models, first compute bone transforms using model skinning
-            Matrix[] bones = skinning.GetBoneTransforms(model);
+            if (skinning != null)
+                bones = skinning.GetBoneTransforms(model);
 
             // Pass bone transforms to model batch to draw skinned models
-            modelBatch.Begin(SpriteSortMode.Immediate, camera.View, camera.Projection);
+            modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
             modelBatch.Draw(model, world, bones, null);
             modelBatch.End();
 

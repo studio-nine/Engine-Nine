@@ -112,7 +112,7 @@ namespace ShadowMapping
                 GraphicsDevice.Clear(Color.White);
 
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
-                modelBatch.Begin(SpriteSortMode.Immediate, shadow.LightView, shadow.LightProjection);
+                modelBatch.Begin(shadow.LightView, shadow.LightProjection);
                 modelBatch.Draw(model, worldModel, depth);
                 modelBatch.End();
 
@@ -127,7 +127,7 @@ namespace ShadowMapping
             shadow.DepthBias = 0.005f;
 
             // Draw all shadow receivers with the shadow effect
-            modelBatch.Begin(SpriteSortMode.Immediate, camera.View, camera.Projection);
+            modelBatch.Begin(camera.View, camera.Projection);
             modelBatch.Draw(model, worldModel, shadow);
             modelBatch.Draw(terrain, worldTerrain, shadow);
             modelBatch.End();

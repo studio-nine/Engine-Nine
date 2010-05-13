@@ -1,30 +1,22 @@
-//-----------------------------------------------------------------------------
-// ParticleEffect.fx
+//=============================================================================
 //
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
+//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//
+//=============================================================================
+
 
 
 // Camera parameters.
 float4x4 View;
 float4x4 Projection;
-float ViewportHeight;
 
 
 // Particle texture and sampler.
 texture Texture;
 
-sampler Sampler = sampler_state
+sampler Sampler : register(s0) = sampler_state
 {
     Texture = (Texture);
-    
-    MinFilter = Linear;
-    MagFilter = Linear;
-    MipFilter = Point;
-    
-    AddressU = Clamp;
-    AddressV = Clamp;
 };
 
 
@@ -35,21 +27,18 @@ struct VertexShaderInput
 {
     float3 Position : POSITION0;
     float4 Color : COLOR0;
-    float  Size : TEXCOORD0;
-    float  Rotation : TEXCOORD1;
+    float2 TextureCoordinate : TEXCOORD0;
+    float2 Size : TEXCOORD1;
+    float  Rotation : TEXCOORD2;
 };
 
 
-// Vertex shader output structure specifies the position, size, and
-// color of the particle, plus a 2x2 rotation matrix (packed into
-// a float4 value because we don't have enough color interpolators
-// to send this directly as a float2x2).
-struct VertexShaderOutput
+// Pixel shader input structure for particles that do not rotate.
+struct PixelShaderInput
 {
     float4 Position : POSITION0;
-    float Size : PSIZE0;
     float4 Color : COLOR0;
-    float4 Rotation : COLOR1;
+    float2 TextureCoordinate : TEXCOORD0;
 };
 
 
@@ -62,105 +51,54 @@ float4 ComputeParticleRotation(float rotation)
     
     float4 rotationMatrix = float4(c, -s, s, c);
     
-    // Normally we would output this matrix using a texture coordinate interpolator,
-    // but texture coordinates are generated directly by the hardware when drawing
-    // point sprites. So we have to use a color interpolator instead. Only trouble
-    // is, color interpolators are clamped to the range 0 to 1. Our rotation values
-    // range from -1 to 1, so we have to scale them to avoid unwanted clamping.
-    
-    rotationMatrix *= 0.5;
-    rotationMatrix += 0.5;
-    
     return rotationMatrix;
 }
 
 
 // Custom vertex shader animates particles entirely on the GPU.
-VertexShaderOutput VS(VertexShaderInput input)
+PixelShaderInput VSNoRotation(VertexShaderInput input)
 {
-    VertexShaderOutput output;
+    PixelShaderInput output;
     
-    // Compute the particle position, size, color, and rotation.
-    output.Position = mul(mul(float4(input.Position, 1), View), Projection);
-    output.Size = input.Size * Projection._m11 / output.Position.w * ViewportHeight / 2;
     output.Color = input.Color;
-    output.Rotation = ComputeParticleRotation(input.Rotation);
+	output.TextureCoordinate = input.TextureCoordinate;
+	output.TextureCoordinate.y = -output.TextureCoordinate.y;
+
+    // Compute the particle position, size, color, and rotation.
+	float4 viewPos = mul(float4(input.Position, 1), View);
+
+	viewPos.xy += -input.Size / 2 + input.Size * input.TextureCoordinate;
+
+    output.Position = mul(viewPos, Projection);
     
     return output;
 }
 
-
-// Pixel shader input structure for particles that do not rotate.
-struct NonRotatingPixelShaderInput
+// Custom vertex shader animates particles entirely on the GPU.
+PixelShaderInput VSRotation(VertexShaderInput input)
 {
-    float4 Color : COLOR0;
+    PixelShaderInput output;
     
-#ifdef XBOX
-    float2 TextureCoordinate : SPRITETEXCOORD;
-#else
-    float2 TextureCoordinate : TEXCOORD0;
-#endif
-};
+    output.Color = input.Color;
+	output.TextureCoordinate = input.TextureCoordinate;
+	output.TextureCoordinate.y = -output.TextureCoordinate.y;
 
+    // Compute the particle position, size, color, and rotation.
+	float4 viewPos = mul(float4(input.Position, 1), View);
 
-// Pixel shader for drawing particles that do not rotate.
-float4 NonRotatingPixelShader(NonRotatingPixelShaderInput input) : COLOR0
-{
-    float2 textureCoordinate = input.TextureCoordinate;
+	float2 offset = -input.Size / 2 + input.Size * input.TextureCoordinate;
 
-	// To make sure two techniques produce the same output size
-    textureCoordinate -= 0.5;
-    textureCoordinate *= sqrt(2);
-    textureCoordinate += 0.5;
+	viewPos.xy += mul(offset, (float2x2)ComputeParticleRotation(input.Rotation));
 
-    return tex2D(Sampler, textureCoordinate) * input.Color;
+    output.Position = mul(viewPos, Projection);
+    
+    return output;
 }
 
-
-// Pixel shader input structure for particles that can rotate.
-struct RotatingPixelShaderInput
+// Pixel shader for drawing particles that do not rotate.
+float4 PS(PixelShaderInput input) : COLOR0
 {
-    float4 Color : COLOR0;
-    float4 Rotation : COLOR1;
-    
-#ifdef XBOX
-    float2 TextureCoordinate : SPRITETEXCOORD;
-#else
-    float2 TextureCoordinate : TEXCOORD0;
-#endif
-};
-
-
-// Pixel shader for drawing particles that can rotate. It is not actually
-// possible to rotate a point sprite, so instead we rotate our texture
-// coordinates. Leaving the sprite the regular way up but rotating the
-// texture has the exact same effect as if we were able to rotate the
-// point sprite itself.
-float4 RotatingPixelShader(RotatingPixelShaderInput input) : COLOR0
-{
-    float2 textureCoordinate = input.TextureCoordinate;
-
-    // We want to rotate around the middle of the particle, not the origin,
-    // so we offset the texture coordinate accordingly.
-    textureCoordinate -= 0.5;
-    
-    // Apply the rotation matrix, after rescaling it back from the packed
-    // color interpolator format into a full -1 to 1 range.
-    float4 rotation = input.Rotation * 2 - 1;
-    
-    textureCoordinate = mul(textureCoordinate, float2x2(rotation));
-    
-    // Point sprites are squares. So are textures. When we rotate one square
-    // inside another square, the corners of the texture will go past the
-    // edge of the point sprite and get clipped. To avoid this, we scale
-    // our texture coordinates to make sure the entire square can be rotated
-    // inside the point sprite without any clipping.
-    textureCoordinate *= sqrt(2);
-    
-    // Undo the offset used to control the rotation origin.
-    textureCoordinate += 0.5;
-
-    return tex2D(Sampler, textureCoordinate) * input.Color;
+    return tex2D(Sampler, input.TextureCoordinate) * input.Color;
 }
 
 
@@ -169,8 +107,8 @@ technique NonRotatingParticles
 {
     pass P0
     {
-        VertexShader = compile vs_2_0 VS();
-        PixelShader = compile ps_2_0 NonRotatingPixelShader();
+        VertexShader = compile vs_2_0 VSNoRotation();
+        PixelShader = compile ps_2_0 PS();
     }
 }
 
@@ -180,7 +118,7 @@ technique RotatingParticles
 {
     pass P0
     {
-        VertexShader = compile vs_2_0 VS();
-        PixelShader = compile ps_2_0 RotatingPixelShader();
+        VertexShader = compile vs_2_0 VSRotation();
+        PixelShader = compile ps_2_0 PS();
     }
 }

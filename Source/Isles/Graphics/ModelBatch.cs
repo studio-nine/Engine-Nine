@@ -20,6 +20,12 @@ using Isles.Graphics.Effects;
 
 namespace Isles.Graphics
 {
+    public enum ModelSortMode
+    {
+        Deferred = 0,
+        Immediate = 1,
+    }
+
     public class ModelBatch : IEffectFog
     {
         #region Batch Key & Value
@@ -43,13 +49,13 @@ namespace Isles.Graphics
         static BasicEffect basicEffect;
 
 
-        private SpriteSortMode sort;
+        private ModelSortMode sort;
         private bool hasBegin = false;
         private Model lastModel = null;
         private Matrix[] bones;
 
         // TODO: Use dynamic capacity rather then fixed capacity
-        private Batch<Key, Value> batches = new Batch<Key, Value>(2048);
+        private Batch<Key, Value> batches;
         
 
         public Matrix View { get; private set; }
@@ -67,14 +73,23 @@ namespace Isles.Graphics
         public ModelBatch(GraphicsDevice graphics)
         {
             GraphicsDevice = graphics;
+
+            batches = new Batch<Key, Value>(32);
+        }
+
+        public ModelBatch(GraphicsDevice graphics, int capacity)
+        {
+            GraphicsDevice = graphics;
+
+            batches = new Batch<Key, Value>(capacity);
         }
 
         public void Begin(Matrix view, Matrix projection)
         {
-            Begin(SpriteSortMode.Deferred, view, projection);
+            Begin(ModelSortMode.Deferred, view, projection);
         }
 
-        public void Begin(SpriteSortMode sortMode, Matrix view, Matrix projection) 
+        public void Begin(ModelSortMode sortMode, Matrix view, Matrix projection) 
         {
             View = view;
             Projection = projection;
@@ -83,12 +98,7 @@ namespace Isles.Graphics
             batches.Clear();
             hasBegin = true;
 
-            if (sortMode == SpriteSortMode.BackToFront ||
-                sortMode == SpriteSortMode.FrontToBack ||
-                sortMode == SpriteSortMode.Texture)
-            {
-                throw new NotImplementedException();
-            }
+            lastModel = null;
         }
 
         public void Draw(Model model, Matrix world, Effect effect)
@@ -183,9 +193,9 @@ namespace Isles.Graphics
             value.World = bones[mesh.ParentBone.Index] * world;
 
 
-            if (sort == SpriteSortMode.Deferred)
+            if (sort == ModelSortMode.Deferred)
                 batches.Add(key, value);
-            else if (sort == SpriteSortMode.Immediate)
+            else if (sort == ModelSortMode.Immediate)
                 Draw(part, effect, value.World, boneTransforms);
         }
 
@@ -201,12 +211,12 @@ namespace Isles.Graphics
             if (!hasBegin)
                 throw new InvalidOperationException("Begin must be called first.");
 
-
-            foreach (BatchItem<Key> batch in batches.Batches)
+            
+            foreach (BatchItem<Key, Value> batch in batches.Batches)
             {
                 for (int i = 0; i < batch.Count; i++)
                 {
-                    Value value = batches.Values[batch.StartIndex + i];
+                    Value value = batch.Values[i];
 
                     Draw(value.Part, batch.Key.Effect, value.World, value.Bones);
                 }

@@ -16,9 +16,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public partial class ParticleShaderEffect
+    internal partial class ParticleSystemEffect
     {
-        public ParticleShaderEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        public ParticleSystemEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
         }

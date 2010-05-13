@@ -35,7 +35,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransitionsContent", "Trans
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteAnimation", "SpriteAnimation\SpriteAnimation\SpriteAnimation.csproj", "{74F4281D-C58A-4F45-B790-B1818BA1ECB7}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SpriteAnimationContent", "SpriteAnimation\SpriteAnimationContent\SpriteAnimationContent.contentproj", "{988B67DE-11FF-4A32-89AB-AA95C6AFA171}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteAnimationContent", "SpriteAnimation\SpriteAnimationContent\SpriteAnimationContent.contentproj", "{988B67DE-11FF-4A32-89AB-AA95C6AFA171}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSystem", "ParticleSystem\ParticleSystem\ParticleSystem.csproj", "{4B4425E8-F1E4-4195-BAC7-01733EC81C21}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ParticleSystemContent", "ParticleSystem\ParticleSystemContent\ParticleSystemContent.contentproj", "{390298D6-9C3A-4DBB-B291-4DCD40850381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +139,16 @@ Global
 		{988B67DE-11FF-4A32-89AB-AA95C6AFA171}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{988B67DE-11FF-4A32-89AB-AA95C6AFA171}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{988B67DE-11FF-4A32-89AB-AA95C6AFA171}.Release|x86.ActiveCfg = Debug|Any CPU
+		{4B4425E8-F1E4-4195-BAC7-01733EC81C21}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4B4425E8-F1E4-4195-BAC7-01733EC81C21}.Debug|x86.ActiveCfg = Debug|x86
+		{4B4425E8-F1E4-4195-BAC7-01733EC81C21}.Debug|x86.Build.0 = Debug|x86
+		{4B4425E8-F1E4-4195-BAC7-01733EC81C21}.Release|Any CPU.ActiveCfg = Release|x86
+		{4B4425E8-F1E4-4195-BAC7-01733EC81C21}.Release|x86.ActiveCfg = Release|x86
+		{4B4425E8-F1E4-4195-BAC7-01733EC81C21}.Release|x86.Build.0 = Release|x86
+		{390298D6-9C3A-4DBB-B291-4DCD40850381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{390298D6-9C3A-4DBB-B291-4DCD40850381}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{390298D6-9C3A-4DBB-B291-4DCD40850381}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{390298D6-9C3A-4DBB-B291-4DCD40850381}.Release|x86.ActiveCfg = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

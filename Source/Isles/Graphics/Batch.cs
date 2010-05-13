@@ -18,10 +18,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics
 {
-    internal struct BatchItem<TKey>
+    internal sealed class BatchItem<TKey, TValue>
     {
         public TKey Key;
-        public int StartIndex;
+        public TValue[] Values;
         public int Count;
     }
 
@@ -31,118 +31,78 @@ namespace Isles.Graphics
     /// </summary>
     internal sealed class Batch<TKey, TValue>
     {
-        private int previousBatchCount = 8;
+        int capacity;
+        int batchCount;
 
-        public int Count { get; private set; }
-        public TValue[] Values { get; private set; }
-        public List<BatchItem<TKey>> Batches { get; private set; }
+        Dictionary<TKey, int> index = new Dictionary<TKey, int>();
 
+        List<BatchItem<TKey, TValue>> batches = new List<BatchItem<TKey, TValue>>();
+        
 
         public Batch(int capacity)
         {
-            Values = new TValue[capacity];
-            Batches = new List<BatchItem<TKey>>();
+            if (capacity <= 0)
+                throw new ArgumentOutOfRangeException();
+
+            this.capacity = capacity;
         }
 
+        public int Count { get { return batchCount; } }
+
+        public IEnumerable<BatchItem<TKey, TValue>> Batches
+        {
+            get
+            {
+                for (int i = 0; i < batchCount; i++)
+                    yield return batches[i];
+            }
+        }
 
         public void Clear()
         {
-            previousBatchCount = Math.Max(Batches.Count, 1);
-            Batches.Clear();
-            Count = 0;
-        }
+            index.Clear();
 
+            batchCount = 0;
+
+            for (int i = 0; i < batches.Count; i++)
+            {
+                batches[i].Count = 0;
+            }
+        }
 
         public void Add(TKey key, TValue value)
         {
-            // Check if there is already a batch with the same key
-            for (int i = 0; i < Batches.Count; i++)
+            int i;
+
+            if (index.TryGetValue(key, out i))
             {
-                if (Batches[i].Key.Equals(key))
+                TValue[] array = batches[i].Values;
+
+                if (array.Length <= batches[i].Count)
                 {
-                    int index = Batches[i].StartIndex + Batches[i].Count;
+                    TValue[] newArray = new TValue[array.Length * 2];
 
-                    Append(i, value, index);
-
-                    Count++;
-
-                    return;
+                    Array.Copy(array, newArray, array.Length);
                 }
-            }
-
-            
-            // Create a new batch
-            BatchItem<TKey> newBatch;
-
-            newBatch.Key = key;
-            newBatch.Count = 0;
-            newBatch.StartIndex = 0;
-
-            if (Batches.Count > 0)
-            {
-                BatchItem<TKey> lastBatch = Batches[Batches.Count - 1];
-
-                if (lastBatch.StartIndex + lastBatch.Count >= Values.Length)
-                    throw new OutOfMemoryException("Not enough space for new batches");
-
-                // Leave space for last batch
-                newBatch.StartIndex = lastBatch.StartIndex;
-                newBatch.StartIndex += Math.Max(lastBatch.Count * 2, Values.Length / previousBatchCount / 2);
-
-                if (newBatch.StartIndex >= Values.Length)
-                    newBatch.StartIndex = Values.Length - 1;
-            }
-
-            Batches.Add(newBatch);
-
-            Count++;
-            Append(Batches.Count - 1, value, newBatch.StartIndex);
-        }
-
-
-        private void Append(int batch, TValue value, int index)
-        {
-            BatchItem<TKey> item;
-
-            // Find the ending index of this batch
-            int ending = Values.Length;
-
-            if (batch + 1 < Batches.Count)
-                ending = Batches[batch + 1].StartIndex;
-
-
-            // Add the new value if this batch is not full
-            if (index < ending)
-            {
-                Values[index] = value;
-                item = Batches[batch];
-                item.Count++;
-                Batches[batch] = item;
+                
+                batches[i].Values = array;
+                batches[i].Values[batches[i].Count] = value;
+                batches[i].Count++;
+                
                 return;
             }
 
+            if (batches.Count <= batchCount)
+                batches.Add(new BatchItem<TKey, TValue>());
 
-            // Prepend the new value if we reach the end of the buffer
-            if (index >= Values.Length)
-            {
-                throw new OutOfMemoryException("Not enough space for new values");
-            }
+            if (batches[batchCount].Values == null)
+                batches[batchCount].Values = new TValue[capacity];
 
+            batches[batchCount].Count = 1;
+            batches[batchCount].Key = key;
+            batches[batchCount].Values[0] = value;
 
-            // Shrink next batch
-            BatchItem<TKey> nextBatch = Batches[batch + 1];
-
-            TValue nextValue = Values[nextBatch.StartIndex];
-
-            Values[index] = value;
-            item = Batches[batch];
-            item.Count++;
-            Batches[batch] = item;
-
-            Append(batch + 1, nextValue, nextBatch.StartIndex + nextBatch.Count);
-
-            nextBatch.StartIndex++;
-            Batches[batch + 1] = nextBatch;
+            index.Add(key, batchCount++);
         }
     }
 }

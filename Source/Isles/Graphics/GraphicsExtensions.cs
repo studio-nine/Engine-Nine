@@ -26,20 +26,51 @@ namespace Isles.Graphics
         #region DrawSprite
         static SpriteBatch spriteBatch;
 
-        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Vector2 position, Rectangle? source, Color color, Effect effect)
+        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Effect effect)
         {
-            Rectangle rc = source.HasValue ? source.Value : texture.Bounds;
+            PrepareSprite(graphics, effect);
 
-            rc.X = rc.Y = 0;
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effect);
 
-            rc.X += (int)position.X;
-            rc.Y += (int)position.Y;
+            spriteBatch.Draw(texture, position, sourceRectangle, color);
 
-            DrawSprite(graphics, texture, rc, source, color, effect);
+            spriteBatch.End();
         }
 
-        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Rectangle? destination, Rectangle? source, Color color, Effect effect)
+        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Rectangle? destination, Rectangle? sourceRectangle, Color color, Effect effect)
         {
+            PrepareSprite(graphics, effect);
+                        
+            if (destination == null)
+            {
+                destination = new Rectangle(graphics.Viewport.X,
+                                            graphics.Viewport.Y,
+                                            graphics.Viewport.Width,
+                                            graphics.Viewport.Height);
+            }
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effect);
+
+            spriteBatch.Draw(texture, destination.Value, sourceRectangle, color);
+
+            spriteBatch.End();
+        }
+
+        public static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects spriteEffect, Effect effect)
+        {
+            PrepareSprite(graphics, effect);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effect);
+
+            spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, spriteEffect, 0);
+
+            spriteBatch.End();
+        }
+        
+
+        private static void PrepareSprite(GraphicsDevice graphics, Effect effect)
+        {
+
             if (spriteBatch == null)
                 spriteBatch = new SpriteBatch(graphics);
 
@@ -55,20 +86,6 @@ namespace Isles.Graphics
                 matrices.View = Matrix.Identity;
                 matrices.Projection = halfPixelOffset * projection;
             }
-                        
-            if (destination == null)
-            {
-                destination = new Rectangle(graphics.Viewport.X,
-                                            graphics.Viewport.Y,
-                                            graphics.Viewport.Width,
-                                            graphics.Viewport.Height);
-            }
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, effect);
-            
-            spriteBatch.Draw(texture, destination.Value, source, color);
-
-            spriteBatch.End();
         }
         #endregion
         

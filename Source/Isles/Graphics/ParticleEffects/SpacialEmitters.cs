@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -17,12 +16,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-
 namespace Isles.Graphics.ParticleEffects
 {
     public interface ISpacialEmitter
     {
-        ParticleVertex Emit(GameTime time, float lerpAmount);
+        Vector3 Emit(GameTime time, float lerpAmount);
     }
 
 
@@ -46,27 +44,21 @@ namespace Isles.Graphics.ParticleEffects
         }
 
 
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public Vector3 Emit(GameTime time, float lerpAmount)
         {
-            ParticleVertex result;
-
-            result.Random = Color.White;
-            result.Time = 0;
-
             // Work out how much time has passed since the previous update.
             float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
 
+            Vector3 result;
             Vector3 increment = Position - previousPosition;
 
             if (increment.LengthSquared() < MaxLerpDistance * MaxLerpDistance)
             {
-                result.Velocity = (Position - previousPosition) / elapsedTime;
-                result.Position = Vector3.Lerp(previousPosition, Position, lerpAmount);
+                result = Vector3.Lerp(previousPosition, Position, lerpAmount);
             }
             else
             {
-                result.Velocity = Vector3.Zero;
-                result.Position = Position;
+                result = Position;
             }
 
             previousPosition = Position;
@@ -89,17 +81,13 @@ namespace Isles.Graphics.ParticleEffects
         }
 
 
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public Vector3 Emit(GameTime time, float lerpAmount)
         {
-            ParticleVertex result;
+            Vector3 result;
 
-            result.Time = 0;
-            result.Random = Color.White;
-            result.Velocity = Vector3.Zero;
-
-            result.Position.X = Box.Min.X + (float)(random.NextDouble() * (Box.Max.X - Box.Min.X));
-            result.Position.Y = Box.Min.Y + (float)(random.NextDouble() * (Box.Max.Y - Box.Min.Y));
-            result.Position.Z = Box.Min.Z + (float)(random.NextDouble() * (Box.Max.Z - Box.Min.Z));
+            result.X = Box.Min.X + (float)(random.NextDouble() * (Box.Max.X - Box.Min.X));
+            result.Y = Box.Min.Y + (float)(random.NextDouble() * (Box.Max.Y - Box.Min.Y));
+            result.Z = Box.Min.Z + (float)(random.NextDouble() * (Box.Max.Z - Box.Min.Z));
 
             return result;
         }
@@ -119,22 +107,18 @@ namespace Isles.Graphics.ParticleEffects
         }
 
 
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public Vector3 Emit(GameTime time, float lerpAmount)
         {
-            ParticleVertex result;
-
-            result.Time = 0;
-            result.Random = Color.White;
-            result.Velocity = Vector3.Zero;
-
+            Vector3 result;
+            
             double r = random.NextDouble() * Sphere.Radius;
             double a = random.NextDouble() * Math.PI * 2;
             double b = random.NextDouble() * Math.PI - MathHelper.PiOver2;
             double rr = Math.Cos(b) * r;
 
-            result.Position.X = (float)(rr * Math.Cos(a));
-            result.Position.Y = (float)(rr * Math.Sin(a));
-            result.Position.Z = (float)(r * Math.Sin(b));
+            result.X = (float)(rr * Math.Cos(a));
+            result.Y = (float)(rr * Math.Sin(a));
+            result.Z = (float)(r * Math.Sin(b));
 
             return result;
         }
@@ -159,7 +143,7 @@ namespace Isles.Graphics.ParticleEffects
         }
 
 
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public Vector3 Emit(GameTime time, float lerpAmount)
         {
             throw new NotImplementedException();
         }
@@ -182,27 +166,27 @@ namespace Isles.Graphics.ParticleEffects
         }
 
 
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public Vector3 Emit(GameTime time, float lerpAmount)
         {
-            ParticleVertex result;
+            Vector3 result;
 
             double angle = random.NextDouble() * Math.PI * 2;
 
-            result.Position.Z = 0;
-            result.Position.X = Radius * (float)Math.Cos(angle);
-            result.Position.Y = Radius * (float)Math.Sin(angle);
+            result.Z = 0;
+            result.X = Radius * (float)Math.Cos(angle);
+            result.Y = Radius * (float)Math.Sin(angle);
 
-            float dot = Vector3.Dot(Vector3.UnitZ, Up);
+            if (Up != Vector3.UnitZ)
+            {
+                float dot = Vector3.Dot(Vector3.UnitZ, Up);
 
-            Matrix transform = Matrix.CreateFromAxisAngle(
-                Vector3.Cross(Vector3.UnitZ, Up), (float)Math.Cos(dot));
+                Matrix transform = Matrix.CreateFromAxisAngle(
+                    Vector3.Cross(Vector3.UnitZ, Up), (float)Math.Cos(dot));
 
-            result.Position = Vector3.Transform(result.Position, transform);
+                result = Vector3.Transform(result, transform);
+            }
 
-            result.Position += Center;
-            result.Time = 0;
-            result.Random = Color.White;
-            result.Velocity = Vector3.Zero;
+            result += Center;
 
             return result;
         }
@@ -215,16 +199,9 @@ namespace Isles.Graphics.ParticleEffects
 
         public Matrix[] Bones { get; set; }
 
-        public ParticleVertex Emit(GameTime time, float lerpAmount)
+        public Vector3 Emit(GameTime time, float lerpAmount)
         {
-            ParticleVertex result;
-
-            result.Time = 0;
-            result.Random = Color.White;
-            result.Velocity = Vector3.Zero;
-            result.Position = Vector3.Zero;
-            
-            return result;
+            throw new NotImplementedException();
         }
     }
 }

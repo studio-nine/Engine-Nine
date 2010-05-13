@@ -76,6 +76,15 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleSystemEffect.cs">
+      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleSystemEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Range.cs" />
     <Compile Include="Graphics\Batch.cs" />
     <Compile Include="Graphics\ImageList.cs" />
     <Compile Include="Graphics\Effects\DecalEffect.cs">
@@ -126,23 +135,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
       <DependentUpon>LineSpriteEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffectBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
-    <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs" />
-    <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
-    <Compile Include="Graphics\ParticleEffects\ParticleShaderEffect.cs">
-      <DependentUpon>ParticleShaderEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ParticleEffects\ParticleShaderEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParticleShaderEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\ParticleEffects\PointSpriteBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.cs">
+      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>PointSpriteEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
@@ -229,7 +237,7 @@
     <Compile Include="NamedObjectManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="PickEngine.cs" />
-    <Compile Include="Transitions\LerpHelper.cs" />
+    <Compile Include="LerpHelper.cs" />
     <Compile Include="Transitions\TransitionManager.cs" />
     <Compile Include="Transitions\Transition.cs" />
     <Compile Include="Transitions\Tweener.cs" />
@@ -286,11 +294,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LineSpriteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Primitives\Primitive.cs" />
     <Compile Include="Graphics\Primitives\Cube.cs" />
@@ -357,9 +360,9 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>LineSpriteEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\ParticleEffects\ParticleShaderEffect.fx">
+    <None Include="Graphics\ParticleEffects\ParticleSystemEffect.fx">
       <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ParticleShaderEffect.Designer.cs</LastGenOutput>
+      <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ParticleEffects\PointSpriteEffect.fx">
       <Generator>EffectCustomTool</Generator>

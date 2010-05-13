@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Isles.Transitions
+namespace Isles
 {
     #region Interpolate
     /// <summary>

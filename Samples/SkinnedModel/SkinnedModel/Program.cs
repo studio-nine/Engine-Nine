@@ -10,6 +10,8 @@ namespace SkinnedModel
         /// </summary>
         static void Main(string[] args)
         {
+            ContentBuilder.Run();
+
             using (SkinnedModelGame game = new SkinnedModelGame())
             {
                 game.Run();

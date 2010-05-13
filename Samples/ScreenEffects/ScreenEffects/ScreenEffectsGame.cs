@@ -34,8 +34,6 @@ namespace ScreenEffects
 
         public ScreenEffectsGame()
         {
-            bool supported = GraphicsAdapter.DefaultAdapter.IsProfileSupported(GraphicsProfile.HiDef);
-
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
             graphics.PreferredBackBufferWidth = 900;
@@ -59,7 +57,7 @@ namespace ScreenEffects
 
 
             // Create a screen effect instance, 
-            // add several fullscreen effects from Isles.Graphics.Filters namespace.
+            // add several fullscreen effects from Isles.Graphics.ScreenEffects namespace.
             screenEffect = new ScreenEffect(GraphicsDevice);
 
 

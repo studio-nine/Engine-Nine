@@ -66,7 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageListContent.cs" />
-    <Compile Include="Importers\ImageListImporter.cs" />
+    <Compile Include="Importers\SequentialImageListImporter.cs" />
+    <Compile Include="Processors\ModelAnimationProcessor.cs" />
+    <Compile Include="Processors\ModelSkinningProcessor.cs" />
     <Compile Include="Processors\SequentialImageListProcessor.cs" />
     <Compile Include="Processors\GridImageListProcessor.cs" />
     <Compile Include="Importers\ObjModelImporter.cs" />

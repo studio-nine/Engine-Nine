@@ -29,7 +29,9 @@ namespace SpriteAnimationGame
     {
         SpriteBatch spriteBatch;
         SpriteAnimation run;
-        SpriteAnimation ghost;
+        SpriteAnimation fireball;
+
+
         ColorMatrixEffect gray;
         ColorMatrixEffect highlight;
         BlurEffect blur;
@@ -67,9 +69,9 @@ namespace SpriteAnimationGame
             run.FramesPerSecond = 10;
 
             // This animation is a sequense of image files.
-            // It's been imported by ImageListImporter and processed by SequentialImageListProcessor.
+            // It's been imported by SequentialmageListImporter and processed by SequentialImageListProcessor.
             // You can choose if the images will be packed into a single large texture.
-            ghost = new SpriteAnimation(Content.Load<ImageList>("GhostGate"));
+            fireball = new SpriteAnimation(Content.Load<ImageList>("fireball"));
 
 
             // Create effects
@@ -97,14 +99,14 @@ namespace SpriteAnimationGame
 
             // Update animations
             run.Update(gameTime);
-            ghost.Update(gameTime);
+            fireball.Update(gameTime);
 
             Vector2 position = new Vector2(100, 300);
 
             // Normal
             spriteBatch.Begin();
             
-            spriteBatch.Draw(ghost.Texture, position, ghost.SourceRectangle, Color.White);
+            spriteBatch.Draw(fireball.Texture, position, fireball.SourceRectangle, Color.White);
             position.X += 100;
 
             spriteBatch.Draw(run.Texture, position, run.SourceRectangle, Color.White);

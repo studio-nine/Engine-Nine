@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public sealed class ParticleEffectBatch
+    internal sealed class ParticleEffectBatch
     {
         #region Key
         internal struct Key
@@ -33,7 +33,7 @@ namespace Isles.Graphics.ParticleEffects
         private Matrix projection;
         private bool hasBegin = false;
         private Batch<Key, ParticleEffect> batch;
-        private Effect effect;
+        private ParticleSystemEffect effect;
         private GameTime time;
 
 
@@ -48,7 +48,7 @@ namespace Isles.Graphics.ParticleEffects
 
             GraphicsDevice = graphics;
 
-            effect = new ParticleShaderEffect(graphics);
+            effect = new ParticleSystemEffect(graphics);
 
             batch = new Batch<Key, ParticleEffect>(capacity);
         }
@@ -92,7 +92,7 @@ namespace Isles.Graphics.ParticleEffects
 
             // Choose the appropriate effect technique. If these particles will never
             // rotate, we can use a simpler pixel shader that requires less GPU power.
-            if ((particleEffect.MinRotateSpeed == 0) && (particleEffect.MaxRotateSpeed == 0))
+            if ((particleEffect.RotateSpeed.Min == 0) && (particleEffect.RotateSpeed.Max == 0))
                 key.Technique = effect.Techniques["NonRotatingParticles"];
             else
                 key.Technique = effect.Techniques["RotatingParticles"];
@@ -116,83 +116,40 @@ namespace Isles.Graphics.ParticleEffects
                 return;
 
 
-            EffectParameterCollection parameters = effect.Parameters;
-
             // Look up shortcuts for parameters that change every frame.
-            parameters["View"].SetValue(view);
-            parameters["Projection"].SetValue(projection);
-            parameters["ViewportHeight"].SetValue(GraphicsDevice.Viewport.Height);
-            parameters["CurrentTime"].SetValue((float)time.TotalGameTime.TotalSeconds);
+            effect.View = view;
+            effect.Projection = projection;
+            effect.CurrentTime = (float)time.TotalGameTime.TotalSeconds;
 
-
-            //BeginParticleRenderStates(GraphicsDevice.RenderState);
+            foreach (BatchItem<Key, ParticleEffect> batchItem in batch.Batches)
             {
-                foreach (BatchItem<Key> batchItem in batch.Batches)
+                effect.Texture = batchItem.Key.Texture;
+
+                for (int i = 0; i < batchItem.Count; i++)
                 {
-                    parameters["Texture"].SetValue(batchItem.Key.Texture);
+                    ParticleEffect particleEffect = batchItem.Values[i];
 
-                    for (int i = 0; i < batchItem.Count; i++)
-                    {
-                        ParticleEffect particleEffect = batch.Values[batchItem.StartIndex + i];
+                    effect.Duration = new Vector2((float)particleEffect.Duration.Max.TotalSeconds,
+                                                  (float)particleEffect.Duration.Min.TotalSeconds);
+                    effect.Gravity = particleEffect.Gravity;
+                    effect.EndVelocity = particleEffect.EndVelocity;
+                    effect.MinStartColor = particleEffect.StartColor.Min.ToVector4();
+                    effect.MaxStartColor = particleEffect.StartColor.Max.ToVector4();
+                    effect.MinEndColor = particleEffect.EndColor.Min.ToVector4();
+                    effect.MaxEndColor = particleEffect.EndColor.Max.ToVector4();
+                    effect.RotateSpeed = new Vector2(particleEffect.RotateSpeed.Min,
+                                                     particleEffect.RotateSpeed.Max);
+                    effect.StartSize = new Vector2(particleEffect.StartSize.Min,
+                                                   particleEffect.StartSize.Max);
+                    effect.EndSize = new Vector2(particleEffect.EndSize.Min,
+                                                 particleEffect.EndSize.Max);
 
-                        parameters["Duration"].SetValue((float)particleEffect.Duration.TotalSeconds);
-                        parameters["DurationRandomness"].SetValue(particleEffect.DurationRandomness);
-                        parameters["Gravity"].SetValue(particleEffect.Gravity);
-                        parameters["EndVelocity"].SetValue(particleEffect.EndVelocity);
-                        parameters["MinColor"].SetValue(particleEffect.MinColor.ToVector4());
-                        parameters["MaxColor"].SetValue(particleEffect.MaxColor.ToVector4());
-                        parameters["RotateSpeed"].SetValue(new Vector2(particleEffect.MinRotateSpeed, particleEffect.MaxRotateSpeed));
-                        parameters["StartSize"].SetValue(new Vector2(particleEffect.MinStartSize, particleEffect.MaxStartSize));
-                        parameters["EndSize"].SetValue(new Vector2(particleEffect.MinEndSize, particleEffect.MaxEndSize));
+                    effect.CurrentTechnique = batchItem.Key.Technique;
+                    batchItem.Key.Technique.Passes[0].Apply();
 
-                        batchItem.Key.Technique.Passes[0].Apply();
-
-                        particleEffect.Draw(GraphicsDevice, time);
-                    }
+                    particleEffect.Draw(GraphicsDevice, time);
                 }
             }
-            //EndParticleRenderStates(GraphicsDevice.RenderState);
         }
-
-
-        /*
-        /// <summary>
-        /// Helper for setting the renderstates used to draw particles.
-        /// </summary>
-        void BeginParticleRenderStates(BlendState renderState)
-        {
-            // Enable point sprites.
-            renderState.PointSpriteEnable = true;
-            renderState.PointSizeMax = 256;
-
-            // Set the alpha blend mode.
-            renderState.SetSpriteBlendMode(blendMode);
-
-            // Set the alpha test mode.
-            renderState.AlphaTestEnable = true;
-            renderState.AlphaFunction = CompareFunction.Greater;
-            renderState.ReferenceAlpha = 0;
-
-            // Enable the depth buffer (so particles will not be visible through
-            // solid objects like the ground plane), but disable depth writes
-            // (so particles will not obscure other particles).
-            renderState.DepthBufferEnable = true;
-            renderState.DepthBufferWriteEnable = false;
-        }
-
-
-        /// <summary>
-        /// Helper for setting the renderstates used to draw particles.
-        /// </summary>
-        void EndParticleRenderStates(RenderState renderState)
-        {
-            renderState.PointSpriteEnable = false;
-            renderState.AlphaBlendEnable = false;
-            renderState.SourceBlend = Blend.SourceAlpha;
-            renderState.DestinationBlend = Blend.InverseSourceAlpha;
-            renderState.AlphaTestEnable = false;
-            renderState.DepthBufferWriteEnable = true;
-        }
-         */
     }
 }

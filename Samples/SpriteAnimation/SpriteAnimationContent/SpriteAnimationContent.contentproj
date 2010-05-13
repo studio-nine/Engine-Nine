@@ -48,12 +48,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Textures\Ghost\ghostgate001.DDS">
-      <Link>ghostgate001.DDS</Link>
-      <Name>ghostgate</Name>
-      <Importer>ImageListImporter</Importer>
+    <Compile Include="..\..\Content\Textures\fireball\fireball002.DDS">
+      <Link>fireball002.DDS</Link>
+      <Name>fireball</Name>
+      <Importer>SequentialImageListImporter</Importer>
       <Processor>SequentialImageListProcessor</Processor>
-      <ProcessorParameters_Pack>False</ProcessorParameters_Pack>
+      <ProcessorParameters_TextureFormat>Color</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

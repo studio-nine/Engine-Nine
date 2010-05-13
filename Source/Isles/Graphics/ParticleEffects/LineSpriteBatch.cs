@@ -18,8 +18,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public sealed class LineSpriteBatch : IDisposable
+    internal sealed class LineSpriteBatch : IDisposable
     {
+        private int capacity;
         private Matrix view;
         private Matrix projection;
         private bool hasBegin = false;
@@ -39,20 +40,7 @@ namespace Isles.Graphics.ParticleEffects
         {
             GraphicsDevice = graphics;
 
-            if (capacity < 32)
-                throw new ArgumentException("Capacity should be at least 32");
-
-            GraphicsDevice = graphics;
-
-            effect = new LineSpriteEffect(graphics);
-
-            vertexArray = new VertexPositionColorTexture[capacity * 4];
-
-            batch = new Batch<Texture2D, ushort>(capacity * 6);
-
-            vertices = new DynamicVertexBuffer(graphics, typeof(VertexPositionColorTexture), capacity * 4, BufferUsage.WriteOnly);
-
-            indices = new DynamicIndexBuffer(graphics, typeof(ushort), capacity * 6, BufferUsage.WriteOnly);
+            this.capacity = capacity;
         }
 
 
@@ -60,6 +48,19 @@ namespace Isles.Graphics.ParticleEffects
         {
             if (IsDisposed)
                 throw new ObjectDisposedException("LineSpriteBatch");
+
+            if (batch == null)
+            {
+                effect = new LineSpriteEffect(GraphicsDevice);
+
+                vertexArray = new VertexPositionColorTexture[capacity * 4];
+
+                batch = new Batch<Texture2D, ushort>(capacity * 6);
+
+                vertices = new DynamicVertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), capacity * 4, BufferUsage.WriteOnly);
+
+                indices = new DynamicIndexBuffer(GraphicsDevice, typeof(ushort), capacity * 6, BufferUsage.WriteOnly);        
+            }
 
             hasBegin = true;
 
@@ -276,36 +277,20 @@ namespace Isles.Graphics.ParticleEffects
 
             if (batch.Count <= 0)
                 return;
-            /* TODO
-            RenderState renderState = GraphicsDevice.RenderState;
-
-            // Set the alpha blend mode.
-            renderState.SetSpriteBlendMode(blendMode);
-
-            // Set the alpha test mode.
-            renderState.AlphaTestEnable = true;
-            renderState.AlphaFunction = CompareFunction.Greater;
-            renderState.ReferenceAlpha = 0;
-
-            // Enable the depth buffer (so particles will not be visible through
-            // solid objects like the ground plane), but disable depth writes
-            // (so particles will not obscure other particles).
-            renderState.DepthBufferEnable = true;
-            renderState.DepthBufferWriteEnable = false;
-            */
+            
 
             effect.View = view;
             effect.Projection = projection;
 
 
-            vertices.SetData<VertexPositionColorTexture>(vertexArray, 0, vertexCount, SetDataOptions.None);
+            vertices.SetData<VertexPositionColorTexture>(vertexArray, 0, vertexCount, SetDataOptions.NoOverwrite);
 
             GraphicsDevice.SetVertexBuffer(vertices);
 
 
-            foreach (BatchItem<Texture2D> batchItem in batch.Batches)
+            foreach (BatchItem<Texture2D, ushort> batchItem in batch.Batches)
             {
-                indices.SetData<ushort>(batch.Values, batchItem.StartIndex, batchItem.Count);
+                indices.SetData<ushort>(batchItem.Values, 0, batchItem.Count, SetDataOptions.NoOverwrite);
                 
                 GraphicsDevice.Indices = indices;
 
@@ -318,16 +303,6 @@ namespace Isles.Graphics.ParticleEffects
 
                 GraphicsDevice.Indices = null;
             }
-
-            // Reset render states to default value
-            /* TODO
-            renderState.PointSpriteEnable = false;
-            renderState.AlphaBlendEnable = false;
-            renderState.SourceBlend = Blend.SourceAlpha;
-            renderState.DestinationBlend = Blend.InverseSourceAlpha;
-            renderState.AlphaTestEnable = false;
-            renderState.DepthBufferWriteEnable = true;
-             */
         }
 
 

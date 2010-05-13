@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Isles.Graphics.ParticleEffects
 {
-    public partial class LineSpriteEffect
+    internal partial class LineSpriteEffect
     {
         public LineSpriteEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {

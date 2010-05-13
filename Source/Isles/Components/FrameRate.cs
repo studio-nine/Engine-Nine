@@ -6,7 +6,6 @@
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
-
 
 namespace Isles.Components
 {
@@ -29,7 +27,6 @@ namespace Isles.Components
         private int counter = 0;
         private double storedTime = 0;
         private float fps = 0;
-        private float fpsInterpolated = 60.0f;
         private float overallFps = 0;
         private string fontFile = null;
 
@@ -48,7 +45,7 @@ namespace Isles.Components
         /// Gets or sets the sprite batch used to draw FPS string
         /// </summary>
         public SpriteBatch SpriteBatch { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the sprite font used to draw FPS string
         /// </summary>
@@ -80,7 +77,7 @@ namespace Isles.Components
         /// </summary>
         public float FramesPerSecond
         {
-            get { return fpsInterpolated; }
+            get { return fps; }
         }
 
         /// <summary>
@@ -88,7 +85,8 @@ namespace Isles.Components
         /// </summary>
         /// <param name="game">The <see cref="Microsoft.Xna.Framework.Game" /> instance for this <see cref="DrawableGameComponent"/> to use.</param>
         /// <remarks>Sets the <see cref="_gameWindowTitle"/> data member to the value of <see cref="Microsoft.Xna.Framework.GameWindow.Title"/>.</remarks>
-        public FrameRate(Game game) : base(game)
+        public FrameRate(Game game)
+            : base(game)
         {
             if (game == null)
                 throw new ArgumentNullException();
@@ -96,12 +94,13 @@ namespace Isles.Components
             UpdateFrequency = 1000;
             Color = Color.Yellow;
         }
-        
+
         /// <param name="fontFile">
         /// If specified, framerate automatically loads the font file.
         /// otherwise you have to set Font property manually to see the result.
         /// </param>
-        public FrameRate(Game game, string fontFile) : base(game)
+        public FrameRate(Game game, string fontFile)
+            : base(game)
         {
             if (game == null)
                 throw new ArgumentNullException();
@@ -138,7 +137,7 @@ namespace Isles.Components
             if (SpriteBatch != null && Font != null)
             {
                 SpriteBatch.Begin();
-                SpriteBatch.DrawString(Font, "FPS: " + fpsInterpolated, Position, Color);
+                SpriteBatch.DrawString(Font, "FPS: " + fps, Position, Color);
                 SpriteBatch.End();
             }
         }
@@ -159,9 +158,6 @@ namespace Isles.Components
                 fps = 1000 * counter / elapsed;
                 counter = 0;
                 storedTime = gameTime.TotalGameTime.TotalMilliseconds;
-
-                fpsInterpolated =
-                    MathHelper.Lerp(fpsInterpolated, fps, 0.5f);
 
                 overallFps = (overallFps * updateCount + fps) / (updateCount + 1);
                 updateCount++;

@@ -36,13 +36,48 @@ namespace Isles.Pipeline.Processors
         [Description("Wether the images will be packed into a single large texture.")]
         public bool Pack { get; set; }
 
+        [DefaultValue(typeof(Color), "255, 0, 255, 255")]
+        public Color ColorKey { get; set; }
+        
+        [DefaultValue(true)]
+        public bool ColorKeyEnabled { get; set; }
+
+        [DefaultValue(false)]
+        public bool GenerateMipmaps { get; set; }
+
+        [DefaultValue(true)]
+        public bool PremultiplyAlpha { get; set; }
+
+        [DefaultValue(false)]
+        public bool ResizeToPowerOfTwo { get; set; }
+
+        [DefaultValue(TextureProcessorOutputFormat.Color)]
+        public TextureProcessorOutputFormat TextureFormat { get; set; }
+
         public SequentialImageListProcessor()
         {
             Pack = true;
+
+            ColorKey = new Color(255, 0, 255, 255);
+            ColorKeyEnabled = true;
+            GenerateMipmaps = false;
+            PremultiplyAlpha = true;
+            ResizeToPowerOfTwo = false;
+            TextureFormat = TextureProcessorOutputFormat.Color;
         }
 
         public override ImageListContent Process(string[] input, ContentProcessorContext context)
         {
+            TextureProcessor processor = new TextureProcessor();
+
+            processor.ColorKeyColor = ColorKey;
+            processor.ColorKeyEnabled = ColorKeyEnabled;
+            processor.GenerateMipmaps = GenerateMipmaps;
+            processor.PremultiplyAlpha = PremultiplyAlpha;
+            processor.ResizeToPowerOfTwo = ResizeToPowerOfTwo;
+            processor.TextureFormat = TextureFormat;
+
+
             ImageListContent result = new ImageListContent();        
             List<BitmapContent> sourceSprites = new List<BitmapContent>();
 
@@ -62,6 +97,7 @@ namespace Isles.Pipeline.Processors
                     context.BuildAndLoadAsset<Texture2DContent,
                                               Texture2DContent>(textureReference, null);
 
+
                 if (Pack)
                 {
                     result.SpriteTextures.Add(0);
@@ -69,6 +105,8 @@ namespace Isles.Pipeline.Processors
                 }
                 else
                 {
+                    texture = (Texture2DContent)processor.Process(texture, context);
+
                     result.SpriteTextures.Add(result.Textures.Count);
                     result.Textures.Add(texture);
                     result.SpriteRectangles.Add(new Rectangle(0, 0, texture.Mipmaps[0].Width, 
@@ -85,6 +123,8 @@ namespace Isles.Pipeline.Processors
                 Texture2DContent content = new Texture2DContent();
 
                 content.Mipmaps.Add(packedSprites);
+
+                content = (Texture2DContent)processor.Process(content, context);
 
                 result.Textures.Add(content);
             }
