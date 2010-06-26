@@ -71,7 +71,6 @@
     <Compile Include="Processors\ModelSkinningProcessor.cs" />
     <Compile Include="Processors\SequentialImageListProcessor.cs" />
     <Compile Include="Processors\GridImageListProcessor.cs" />
-    <Compile Include="Importers\ObjModelImporter.cs" />
     <Compile Include="Importers\RawTextureImporter.cs" />
     <Compile Include="Processors\GrayScaleTextureProcessor.cs" />
     <Compile Include="Processors\SplatterTextureProcessor.cs" />

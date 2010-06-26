@@ -45,10 +45,10 @@ namespace Nine
     public class GameComponent : IGameComponent, Microsoft.Xna.Framework.IUpdateable, IUpdateObject
     {
         /// <summary>Triggered when the value of the enabled property is changed.</summary>
-        public event EventHandler EnabledChanged;
+        public event EventHandler<EventArgs> EnabledChanged;
 
         /// <summary>Triggered when the value of the update order property is changed.</summary>
-        public event EventHandler UpdateOrderChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
 
         /// <summary>Initializes a new drawable component.</summary>
         /// <param name="services">
@@ -170,10 +170,10 @@ namespace Nine
     public class DrawableGameComponent : GameComponent, Microsoft.Xna.Framework.IDrawable, IDisplayObject, IDisposable
     {
         /// <summary>Triggered when the value of the draw order property is changed.</summary>
-        public event EventHandler DrawOrderChanged;
+        public event EventHandler<EventArgs> DrawOrderChanged;
 
         /// <summary>Triggered when the value of the visible property is changed.</summary>
-        public event EventHandler VisibleChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
 
         /// <summary>Initializes a new drawable component.</summary>
         /// <param name="services">
@@ -299,7 +299,7 @@ namespace Nine
         {
             // Register to the events of the graphics device service so we know when
             // the graphics device is set up, shut down or reset.
-            this.graphicsDeviceService.DeviceCreated += new EventHandler(deviceCreated);
+            this.graphicsDeviceService.DeviceCreated += new EventHandler<EventArgs>(deviceCreated);
 
             // If a graphics device has already been created, we need to simulate the
             // DeviceCreated event that we did miss because we weren't born yet :)
@@ -315,7 +315,7 @@ namespace Nine
         private void unsubscribeFromGraphicsDeviceService()
         {
             // Unsubscribe from the events again
-            this.graphicsDeviceService.DeviceCreated -= new EventHandler(deviceCreated);
+            this.graphicsDeviceService.DeviceCreated -= new EventHandler<EventArgs>(deviceCreated);
 
             // If the graphics device is still active, we give the component a chance
             // to clean up its data
