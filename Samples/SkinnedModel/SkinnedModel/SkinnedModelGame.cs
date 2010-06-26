@@ -64,11 +64,11 @@ namespace SkinnedModel
             // Load our model assert.
             // If the model is processed by our ExtendedModelProcesser,
             // we will try to add model animation and skinning data.
-            model = Content.Load<Model>("electroalg");
+            model = Content.Load<Model>("peon");
 
             // Now load our model animation and skinning using extension method.
             animation = new ModelAnimation(model, model.GetAnimation(0));
-            animation.Speed = 0.25f;
+            animation.Speed = 1;
 
             skinning = model.GetSkinning();
         }
