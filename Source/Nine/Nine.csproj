@@ -240,6 +240,9 @@
     <Compile Include="Graphics\VertexPositionNormalDueTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="NamedObjectManager.cs" />
+    <Compile Include="StateMachines\IState.cs" />
+    <Compile Include="StateMachines\State.cs" />
+    <Compile Include="StateMachines\StateMachine.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="PickEngine.cs" />
     <Compile Include="LerpHelper.cs" />
@@ -405,6 +408,9 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameObjects\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
