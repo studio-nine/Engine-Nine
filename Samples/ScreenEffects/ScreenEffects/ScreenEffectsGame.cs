@@ -65,7 +65,7 @@ namespace ScreenEffects
             screenEffect.Effects.Add(new RadialBlurEffect(GraphicsDevice));
             screenEffect.Effects.Add(new BloomEffect(GraphicsDevice));
             screenEffect.Effects.Add(new BlurEffect(GraphicsDevice));
-            screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrixEffect.CreateHue(0.9f) });
+            screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateHue(0.9f) });
             //screenEffect.Effects.Add(new SilouetteEffect(GraphicsDevice));                
         }
 
@@ -79,15 +79,20 @@ namespace ScreenEffects
             if (screenEffect.Begin())
             {
                 // Draw the scene between screen effect Begin/End
-                GraphicsDevice.DrawSprite(background, GraphicsDevice.Viewport.TitleSafeArea, null, Color.White, null);
+                spriteBatch.Begin();
+                spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, null, Color.White);
+                spriteBatch.End();
 
                 // Draw screen effect
                 screenEffect.End();
             }
 
             if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Space))
-                GraphicsDevice.DrawSprite(background, GraphicsDevice.Viewport.TitleSafeArea, null, Color.White, null);
-
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, null, Color.White);
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }

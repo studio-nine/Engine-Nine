@@ -16,8 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
-using Nine.Graphics.Effects;
-using Nine.Transitions;
+using Nine.Animations;
 #endregion
 
 namespace Transitions

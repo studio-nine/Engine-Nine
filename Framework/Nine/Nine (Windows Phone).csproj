@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>{66DCFC51-B9B1-4FDA-BEDD-A46EBA6D506F}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Windows Phone</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine</RootNamespace>
+    <AssemblyName>Nine</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows Phone</XnaPlatform>
+    <XnaProfile>Reach</XnaProfile>
+    <XnaCrossPlatformGroupID>fda05565-7f68-43ba-ac3f-237399d8ab31</XnaCrossPlatformGroupID>
+    <XnaOutputType>Library</XnaOutputType>
+    <XapFilename Condition="$(XnaOutputType)=='Game'">$(AssemblyName).xap</XapFilename>
+    <SilverlightManifestTemplate Condition="$(XnaOutputType)=='Game'">Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <XnaWindowsPhoneManifestTemplate Condition="$(XnaOutputType)=='Game'">Properties\WMAppManifest.xml</XnaWindowsPhoneManifestTemplate>
+    <TileImage Condition="$(XnaOutputType)=='Game'">Background.png</TileImage>
+    <TileTitle Condition="$(XnaOutputType)=='Game'">$(AssemblyName)</TileTitle>
+    <SupportedCultures />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Windows Phone' ">
+    <OutputPath>..\..\References\Windows Phone\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;WINDOWS_PHONE</DefineConstants>
+    <XnaCompressContent>false</XnaCompressContent>
+    <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Windows Phone' ">
+    <OutputPath>..\..\References\Windows Phone\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;WINDOWS_PHONE</DefineConstants>
+    <XnaCompressContent>false</XnaCompressContent>
+    <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Animations\AddHelper.cs" />
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\DelayAnimation.cs" />
+    <Compile Include="Animations\IAnimation.cs" />
+    <Compile Include="Animations\KeyframeAnimation.cs" />
+    <Compile Include="Animations\LayeredAnimation.cs" />
+    <Compile Include="Animations\SequentialAnimation.cs" />
+    <Compile Include="Animations\TimelineAnimation.cs" />
+    <Compile Include="Animations\TweenAnimation.cs" />
+    <Compile Include="Component.cs">
+    </Compile>
+    <Compile Include="Curves.cs" />
+    <Compile Include="EnumerableCollection.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FrameRate.cs" />
+    <Compile Include="GameConsole.cs" />
+    <Compile Include="Graphics\BoneAnimation.cs" />
+    <Compile Include="Graphics\ColorMatrix.cs" />
+    <Compile Include="Graphics\Terrain.cs" />
+    <Compile Include="Graphics\TerrainEffectCollection.cs" />
+    <Compile Include="Graphics\TerrainGeometry.cs" />
+    <Compile Include="Graphics\TerrainPatch.cs" />
+    <Compile Include="Graphics\TerrainPatchPart.cs" />
+    <Compile Include="Graphics\TextureTransform.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="Graphics\Batch.cs" />
+    <Compile Include="Graphics\ImageList.cs" />
+    <Compile Include="Graphics\Interface.cs" />
+    <Compile Include="Input.cs">
+    </Compile>
+    <Compile Include="Navigation\SteeringBehaviors\SteeringMovement.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\BasicSteeringBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\AvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\FlockingBehaviors.cs" />
+    <Compile Include="Graphics\FreeCamera.cs" />
+    <Compile Include="Graphics\ModelViewerCamera.cs" />
+    <Compile Include="Graphics\TopDownEditorCamera.cs" />
+    <Compile Include="Graphics\SpriteAnimation.cs" />
+    <Compile Include="Graphics\Geometry.cs" />
+    <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
+    <Compile Include="Graphics\ModelBatch.cs" />
+    <Compile Include="Graphics\ModelExtensions.cs" />
+    <Compile Include="Graphics\ModelSkinning.cs" />
+    <Compile Include="Graphics\Primitives\Arrow.cs" />
+    <Compile Include="Graphics\Primitives\Axis.cs" />
+    <Compile Include="Graphics\Primitives\Bezier.cs" />
+    <Compile Include="Graphics\Primitives\Centrum.cs" />
+    <Compile Include="Graphics\Primitives\Cylinder.cs" />
+    <Compile Include="Graphics\Primitives\Dome.cs" />
+    <Compile Include="Graphics\Primitives\Grid.cs" />
+    <Compile Include="Graphics\Primitives\Plane.cs" />
+    <Compile Include="Graphics\Primitives\Skeleton.cs" />
+    <Compile Include="Graphics\Primitives\Teapot.cs" />
+    <Compile Include="Graphics\Primitives\Torus.cs" />
+    <Compile Include="Graphics\VertexPositionNormalDueTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
+    <Compile Include="NamedObjectManager.cs" />
+    <Compile Include="ScreenshotCapturer.cs" />
+    <Compile Include="SpatialObjectManager.cs" />
+    <Compile Include="Surface.cs" />
+    <Compile Include="PickEngine.cs" />
+    <Compile Include="LerpHelper.cs" />
+    <Compile Include="ZipContentmanager.cs" />
+    <Compile Include="Interface.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Graphics\DebugVisual.cs" />
+    <Compile Include="Graphics\GraphicsExtensions.cs" />
+    <Compile Include="Graphics\Primitives\Primitive.cs" />
+    <Compile Include="Graphics\Primitives\Cube.cs" />
+    <Compile Include="Graphics\Primitives\Sphere.cs" />
+    <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
+    <Compile Include="Navigation\PathGrid.cs" />
+    <Compile Include="Navigation\PriorityQueue.cs" />
+    <Compile Include="Navigation\GraphSearch.cs" />
+    <Compile Include="Navigation\Movable.cs" />
+    <None Include="Background.png">
+      <XnaPlatformSpecific>true</XnaPlatformSpecific>
+    </None>
+    <None Include="Diagrams\Animations.cd" />
+    <None Include="Diagrams\Cameras.cd" />
+    <None Include="Diagrams\Curves.cd" />
+    <None Include="Diagrams\Effects.cd" />
+    <None Include="Diagrams\GameComponents.cd" />
+    <None Include="Diagrams\Input.cd" />
+    <None Include="Diagrams\Misc.cd" />
+    <None Include="Diagrams\ScreenEffects.cd" />
+    <None Include="Diagrams\Surfaces.cd" />
+    <None Include="Diagrams\Vertices.cd" />
+    <None Include="Properties\AppManifest.xml">
+      <XnaPlatformSpecific>true</XnaPlatformSpecific>
+    </None>
+    <None Include="Properties\WMAppManifest.xml">
+      <XnaPlatformSpecific>true</XnaPlatformSpecific>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

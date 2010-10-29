@@ -24,8 +24,22 @@ namespace SkinnedModel
     /// </summary>
     public class SkinnedModelGame : Microsoft.Xna.Framework.Game
     {
+#if WINDOWS_PHONE
+        private const int TargetFrameRate = 30;
+        private const int BackBufferWidth = 800;
+        private const int BackBufferHeight = 480;
+#elif XBOX
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 720;
+#else
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 900;
+        private const int BackBufferHeight = 600;
+#endif
+
         Model model;
-        ModelAnimation animation;
+        BoneAnimation animation;
         ModelSkinning skinning;
         ModelBatch modelBatch;
 
@@ -36,12 +50,16 @@ namespace SkinnedModel
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = 900;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = BackBufferWidth;
+            graphics.PreferredBackBufferHeight = BackBufferHeight;
 
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
+            
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -51,10 +69,6 @@ namespace SkinnedModel
         /// </summary>
         protected override void LoadContent()
         {
-            // This screenshot component can be used to capture screenshot by pressing PrtSrc.
-            Components.Add(new Nine.Components.ScreenshotCapturer(this));
-
-
             // Create a model viewer camera to help us visualize the scene
             camera = new ModelViewerCamera(Services);
 
@@ -67,8 +81,8 @@ namespace SkinnedModel
             model = Content.Load<Model>("peon");
 
             // Now load our model animation and skinning using extension method.
-            animation = new ModelAnimation(model, model.GetAnimation(0));
-            animation.Speed = 1;
+            animation = new BoneAnimation(model, model.GetAnimation(0));
+            animation.Speed = 1.0f;
 
             skinning = model.GetSkinning();
         }
@@ -90,9 +104,6 @@ namespace SkinnedModel
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            // Update camera
-            camera.Update(gameTime);
-
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             Matrix[] bones = null;

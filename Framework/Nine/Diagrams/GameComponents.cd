@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Nine.GameComponent" Collapsed="true">
+    <Position X="4.5" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gwQAAAAAAAAAAYAAAACAAAAACAABAAAAAAAIAYAAAAA=</HashCode>
+      <FileName>Component.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.DrawableGameComponent" Collapsed="true">
+    <Position X="2.25" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAkAAAACSAAwJAAAAAAAAAAAAAACAoAAAEKAAAACQ=</HashCode>
+      <FileName>Component.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.FrameRate" Collapsed="true">
+    <Position X="1.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAQAgAAAAgAkAgAwAAAAAAAAQAEAQBAAgAACAAQ=</HashCode>
+      <FileName>FrameRate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.InputComponent" Collapsed="true">
+    <Position X="5.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BASAQAIAAQgDjEEAAEiAhAKAAJAAEBAQAAEAKACAAgA=</HashCode>
+      <FileName>Input.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.ScreenshotCapturer" Collapsed="true">
+    <Position X="7" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAAAAAAAAAAQAAIBBAgwgAAAICABIAAAAAAAA=</HashCode>
+      <FileName>ScreenshotCapturer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.GameConsole" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAgABAAAgAwAIAACgggAAGAkAEAABQAaCCAFCAAU=</HashCode>
+      <FileName>GameConsole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.GameConsoleEventArgs" Collapsed="true">
+    <Position X="3.75" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>GameConsole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Nine.IUpdateObject">
+    <Position X="2.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Nine.IDisplayObject">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

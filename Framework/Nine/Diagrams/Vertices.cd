@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Struct Name="Nine.Graphics.VertexPositionNormalTangentTexture" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABIAgAAAAoAAAAAAIAAADAAAAAAAAAAA=</HashCode>
+      <FileName>Graphics\VertexPositionNormalTangentTexture.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Struct Name="Nine.Graphics.VertexPositionNormalDuoTexture" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABIAgAAAAoAAAAAAIAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Graphics\VertexPositionNormalDueTexture.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Struct Name="Nine.Graphics.VertexPositionColorNormalTangentTexture" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAgAAAAoAAAAAAIAAADAAAAgAAAAAA=</HashCode>
+      <FileName>Graphics\VertexPositionColorNormalTangentTexture.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

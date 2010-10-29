@@ -45,6 +45,8 @@ namespace TerrainSample
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -103,9 +105,6 @@ namespace TerrainSample
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
-            // Update camera
-            camera.Update(gameTime);
-
             // Update scroll
             scrollEffect.Update(gameTime);
 

@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>{E4F84943-5258-4F67-9C6C-739C18A47120}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nine</RootNamespace>
+    <AssemblyName>Nine</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Windows</XnaPlatform>
+    <XnaProfile>Reach</XnaProfile>
+    <XnaCrossPlatformGroupID>fda05565-7f68-43ba-ac3f-237399d8ab31</XnaCrossPlatformGroupID>
+    <XnaOutputType>Library</XnaOutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\References\x86</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>..\..\References\x86\Nine.XML</DocumentationFile>
+    <PlatformTarget>x86</PlatformTarget>
+    <XnaCompressContent>false</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\References\x86</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>..\..\References\x86\Nine.XML</DocumentationFile>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\DelayAnimation.cs" />
+    <Compile Include="Animations\IAnimation.cs" />
+    <Compile Include="Animations\KeyframeAnimation.cs" />
+    <Compile Include="Animations\TimelineAnimation.cs" />
+    <Compile Include="Animations\SequentialAnimation.cs" />
+    <Compile Include="Animations\LayeredAnimation.cs" />
+    <Compile Include="Animations\AddHelper.cs" />
+    <Compile Include="FrameRate.cs" />
+    <Compile Include="GameConsole.cs" />
+    <Compile Include="ScreenshotCapturer.cs" />
+    <Compile Include="Component.cs">
+    </Compile>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Graphics\ColorMatrix.cs" />
+    <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\TextureTransform.cs" />
+    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DepthEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DepthEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SkyBoxEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SkyBoxEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleSystemEffect.cs">
+      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleSystemEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BloomCombine.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BloomCombine.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Range.cs" />
+    <Compile Include="Graphics\Batch.cs" />
+    <Compile Include="Graphics\ImageList.cs" />
+    <Compile Include="Graphics\Effects\DecalEffect.cs">
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\NormalMappingEffect.cs">
+      <DependentUpon>NormalMappingEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\NormalMappingEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NormalMappingEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\ScrollEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScrollEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\ShadowEffect.cs">
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SplatterEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SplatterEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Interface.cs" />
+    <Compile Include="Graphics\Effects\SkyBoxEffect.cs">
+      <DependentUpon>SkyBoxEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
+      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffectBatch.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEffects\PointSpriteBatch.cs" />
+    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.cs">
+      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
+      <DependentUpon>BloomCombine.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Luminance.cs">
+      <DependentUpon>Luminance.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.cs">
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.cs">
+      <DependentUpon>SilouetteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Threshold.cs">
+      <DependentUpon>Threshold.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Threshold.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Threshold.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Input.cs">
+    </Compile>
+    <Compile Include="Navigation\SteeringBehaviors\SteeringMovement.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\BasicSteeringBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\AvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\SteeringBehaviors\FlockingBehaviors.cs" />
+    <Compile Include="SpatialObjectManager.cs" />
+    <Compile Include="Graphics\FreeCamera.cs" />
+    <Compile Include="Graphics\ModelViewerCamera.cs" />
+    <Compile Include="Graphics\TopDownEditorCamera.cs" />
+    <Compile Include="Graphics\SpriteAnimation.cs" />
+    <Compile Include="Graphics\Geometry.cs" />
+    <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
+    <Compile Include="Graphics\TerrainGeometry.cs" />
+    <Compile Include="Graphics\BoneAnimation.cs" />
+    <Compile Include="Graphics\ModelBatch.cs" />
+    <Compile Include="Graphics\ModelExtensions.cs" />
+    <Compile Include="Graphics\ModelSkinning.cs" />
+    <Compile Include="Graphics\ParticleEffects\SpacialEmitters.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
+    <Compile Include="Graphics\Primitives\Arrow.cs" />
+    <Compile Include="Graphics\Primitives\Axis.cs" />
+    <Compile Include="Graphics\Primitives\Bezier.cs" />
+    <Compile Include="Graphics\Primitives\Centrum.cs" />
+    <Compile Include="Graphics\Primitives\Cylinder.cs" />
+    <Compile Include="Graphics\Primitives\Dome.cs" />
+    <Compile Include="Graphics\Primitives\Grid.cs" />
+    <Compile Include="Graphics\Primitives\Plane.cs" />
+    <Compile Include="Graphics\Primitives\Skeleton.cs" />
+    <Compile Include="Graphics\Primitives\Teapot.cs" />
+    <Compile Include="Graphics\Primitives\Torus.cs" />
+    <Compile Include="Graphics\VertexPositionNormalDueTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
+    <Compile Include="NamedObjectManager.cs" />
+    <Compile Include="Surface.cs" />
+    <Compile Include="PickEngine.cs" />
+    <Compile Include="LerpHelper.cs" />
+    <Compile Include="Animations\TweenAnimation.cs" />
+    <Compile Include="Curves.cs" />
+    <Compile Include="ZipContentmanager.cs" />
+    <Compile Include="Interface.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EnumerableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\DebugVisual.cs" />
+    <Compile Include="Graphics\Effects\DepthEffect.cs">
+      <DependentUpon>DepthEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\ShadowMap.cs" />
+    <Compile Include="Graphics\Effects\ScrollEffect.cs">
+      <DependentUpon>ScrollEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SplatterEffect.cs">
+      <DependentUpon>SplatterEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\GraphicsExtensions.cs" />
+    <Compile Include="Graphics\TerrainPatchPart.cs" />
+    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Primitives\Primitive.cs" />
+    <Compile Include="Graphics\Primitives\Cube.cs" />
+    <Compile Include="Graphics\Primitives\Sphere.cs" />
+    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SilouetteEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.cs">
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BloomEffect.cs" />
+    <Compile Include="Graphics\ScreenEffects\Luminance.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Luminance.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\TerrainEffectCollection.cs" />
+    <Compile Include="Graphics\Terrain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
+    <Compile Include="Graphics\TerrainPatch.cs" />
+    <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
+    <Compile Include="Navigation\PathGrid.cs" />
+    <Compile Include="Navigation\PriorityQueue.cs" />
+    <Compile Include="Navigation\GraphSearch.cs" />
+    <Compile Include="Navigation\Movable.cs" />
+    <None Include="Diagrams\Animations.cd" />
+    <None Include="Diagrams\Cameras.cd" />
+    <None Include="Diagrams\Effects.cd" />
+    <None Include="Diagrams\GameComponents.cd" />
+    <None Include="Diagrams\Input.cd" />
+    <None Include="Diagrams\Curves.cd" />
+    <None Include="Diagrams\Misc.cd" />
+    <None Include="Diagrams\ScreenEffects.cd" />
+    <None Include="Diagrams\Surfaces.cd" />
+    <None Include="Diagrams\Vertices.cd" />
+    <None Include="Graphics\Effects\DepthEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DepthEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\DecalEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\ShadowEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ShadowEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\SplatterEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SplatterEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\NormalMappingEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>NormalMappingEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\ScrollEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ScrollEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\SkyBoxEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ParticleEffects\LineSpriteEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>LineSpriteEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ParticleEffects\ParticleSystemEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ParticleEffects\PointSpriteEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>PointSpriteEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\BloomCombine.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>BloomCombine.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\PixelateEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>PixelateEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\RadialBlurEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>RadialBlurEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\SilouetteEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SilouetteEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\Threshold.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>Threshold.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\ColorMatrixEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\Luminance.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>Luminance.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\BlurEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

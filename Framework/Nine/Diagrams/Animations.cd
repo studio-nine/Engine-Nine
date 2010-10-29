@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Nine.Animations.Animation" Collapsed="true">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQhAAAAAAIAAAoAAAAAAAAAAAIAACAAoAAABAgAAAA=</HashCode>
+      <FileName>Animations\Animation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Animations.DelayAnimation" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Animations\DelayAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Animations.KeyframeAnimation" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCCgEAAgAAAACAIICAAAAAgAAAAAQCAAAAwAAAAAAAg=</HashCode>
+      <FileName>Animations\KeyframeAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Animations.LayeredAnimation" Collapsed="true">
+    <Position X="3.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACQBAAAAAAAAABoAAAAAAAAAAAAAACAEAAAABAAAAAA=</HashCode>
+      <FileName>Animations\LayeredAnimation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Animations.SequentialAnimation" Collapsed="true">
+    <Position X="5.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACQBAAAAAAAAABoACACAAAAQAAAAECAAgAAAAAAAACA=</HashCode>
+      <FileName>Animations\SequentialAnimation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Animations.TimelineAnimation" Collapsed="true">
+    <Position X="8" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQhAAAgAgACAAIACCAAIAABAAAAAyEAAAIAAAAIAAE=</HashCode>
+      <FileName>Animations\TimelineAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Animations.TweenAnimation&lt;T&gt;" Collapsed="true">
+    <Position X="8" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgAiAAIgIAACIgABAAAAACgAAADIACAAiAAgACACCAA=</HashCode>
+      <FileName>Animations\TweenAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.SpriteAnimation" Collapsed="true">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAYAAAAAABAAAAAoAAAAAAAA=</HashCode>
+      <FileName>Graphics\SpriteAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Nine.Animations.IAnimation">
+    <Position X="1.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAIAAAAAAAAAAAAAAAAAoAAABAgAAAA=</HashCode>
+      <FileName>Animations\IAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Nine.Animations.AnimationState">
+    <Position X="1.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Animations\IAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

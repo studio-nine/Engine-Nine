@@ -18,7 +18,7 @@ using Nine;
 using Nine.Graphics;
 using Nine.Graphics.ScreenEffects;
 using Nine.Graphics.ParticleEffects;
-using Nine.Transitions;
+using Nine.Animations;
 #endregion
 
 namespace ParticleSystem
@@ -33,7 +33,7 @@ namespace ParticleSystem
 
         SpriteAnimation fireball;
         Texture2D lightning;
-        Tweener<Vector2> lightningOffset;
+        TweenAimation<Vector2> lightningOffset;
 
         ParticleEffect snow;
 
@@ -47,6 +47,8 @@ namespace ParticleSystem
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -84,7 +86,7 @@ namespace ParticleSystem
             snow.HorizontalVelocity = 0;
             snow.VerticalVelocity = -40.0f;
             
-            snow.SpacialEmitter = new BoxEmitter()
+            snow.SpatialEmitter = new BoxEmitter()
             {
                 Box = new BoundingBox(new Vector3(-30, -30, 30), new Vector3(30, 30, 30))
             };
@@ -95,9 +97,6 @@ namespace ParticleSystem
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            // Update camera
-            camera.Update(gameTime);
-
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             // Prepare render states used to draw particles.

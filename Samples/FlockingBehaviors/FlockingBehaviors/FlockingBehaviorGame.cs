@@ -26,6 +26,20 @@ namespace FlockingBehaviors
     /// </summary>
     public class FlockingBehaviorGame : Microsoft.Xna.Framework.Game
     {
+#if WINDOWS_PHONE
+        private const int TargetFrameRate = 30;
+        private const int BackBufferWidth = 800;
+        private const int BackBufferHeight = 480;
+#elif XBOX
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 720;
+#else
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 900;
+        private const int BackBufferHeight = 600;
+#endif
+
         SpriteFont font;
         SpriteBatch spriteBatch;
 
@@ -44,12 +58,16 @@ namespace FlockingBehaviors
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = 900;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = BackBufferWidth;
+            graphics.PreferredBackBufferHeight = BackBufferHeight;
 
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
+            
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -120,7 +138,7 @@ namespace FlockingBehaviors
                 movement.Position = NextPosition();
                 movement.Resistance = 6.0f;
                 movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-                movement.Behaviors.Add(new SeparationBehavior() { SpacialObjectManager = objects, SeparationRadius = 2.35f });
+                movement.Behaviors.Add(new SeparationBehavior() { SpatialObjectManager = objects, SeparationRadius = 2.35f });
                 movingEntities.Add(movement);
             }
         }
@@ -128,7 +146,7 @@ namespace FlockingBehaviors
         private Vector3 NextPosition()
         {
             // Randomize positions
-            Vector3 position;
+            Vector3 position = new Vector3();
 
             position.X = (float)random.NextDouble() * (bounds.Max.X - bounds.Min.X) + bounds.Min.X;
             position.Y = (float)random.NextDouble() * (bounds.Max.Y - bounds.Min.Y) + bounds.Min.Y;
@@ -142,9 +160,6 @@ namespace FlockingBehaviors
         /// </summary>
         protected override void Update(GameTime gameTime)
         {            
-            // Update camera
-            camera.Update(gameTime);
-
             // Gets the pick ray from current mouse cursor
             Ray ray = PickEngine.RayFromScreen(GraphicsDevice, Mouse.GetState().X, 
                                                                Mouse.GetState().Y, 

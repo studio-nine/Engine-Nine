@@ -52,6 +52,8 @@ namespace ShadowMapping
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -97,9 +99,6 @@ namespace ShadowMapping
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            // Update camera
-            camera.Update(gameTime);
-
             // Light view and light projection defines a light frustum.
             // Shadows will be projected based on this frustom.
             shadow.LightView = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ);
@@ -121,6 +120,8 @@ namespace ShadowMapping
                 // Clear everything to white. This is required.
                 GraphicsDevice.Clear(Color.White);
 
+                GraphicsDevice.BlendState = BlendState.Opaque;
+
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
                 modelBatch.Begin(shadow.LightView, shadow.LightProjection);
                 modelBatch.Draw(model, worldModel, depth);
@@ -134,7 +135,6 @@ namespace ShadowMapping
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
 
             // This value needs to be tweaked

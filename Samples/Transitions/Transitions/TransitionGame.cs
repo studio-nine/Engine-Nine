@@ -16,8 +16,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
+#if !WINDOWS_PHONE
 using Nine.Graphics.Effects;
-using Nine.Transitions;
+#endif
+using Nine.Animations;
 #endregion
 
 namespace Transitions
@@ -27,15 +29,32 @@ namespace Transitions
     /// </summary>
     public class TransitionGame : Microsoft.Xna.Framework.Game
     {
+#if WINDOWS_PHONE
+        private const int TargetFrameRate = 30;
+        private const int BackBufferWidth = 800;
+        private const int BackBufferHeight = 480;
+#elif XBOX
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 720;
+#else
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 900;
+        private const int BackBufferHeight = 600;
+#endif
+
         SpriteBatch spriteBatch;
         SpriteFont font;
-
-        ScrollEffect background;
-        List<Button> buttons;
         
-        TransitionManager transitions;
+#if !WINDOWS_PHONE
+        ScrollEffect background;
+#endif
 
-        Tweener<Color> colorTweener;
+        List<Button> buttons;        
+
+        Animation startAnimation;
+        Animation menuAnimation;
+        Animation imageAnimation;
         
         Texture2D image;
 
@@ -50,12 +69,16 @@ namespace Transitions
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = 900;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = BackBufferWidth;
+            graphics.PreferredBackBufferHeight = BackBufferHeight;
 
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
+            
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -66,9 +89,7 @@ namespace Transitions
         protected override void LoadContent()
         {
             // Create a input component to be used by buttons
-            Input input;
-            Components.Add(input = new Input());
-
+            Input input = new Input();
 
             // Load sprite font
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -81,7 +102,8 @@ namespace Transitions
             ImageRoation = 0;
             ImageScale = 1;
 
-
+            
+#if !WINDOWS_PHONE
             // Create a scrolling background.
             //
             // Most effects from Nine.Graphics can be used with GraphicsExtensions.DrawSprite
@@ -90,31 +112,34 @@ namespace Transitions
             background.Texture = Content.Load<Texture2D>("checker");
             background.TextureScale = Vector2.One * 0.2f;
             background.Direction = -MathHelper.PiOver4;
-
+#endif
             
             // Create a color tweener to adjust the color of "Press any key to continue...".
             //
-            // There are two ways to use transitions. This one demenstrates how to use Tweener<T>
+            // There are two ways to use transitions. This one demenstrates how to use TweenAnimation<T>
             // class directly by creating an instance and call its Update method every frame.
             //
-            // Tweener<T> supports most Xna data structures right out of the box, like
+            // TweenAnimation<T> supports most Xna data structures right out of the box, like
             // Vector2/3/4, Matrix, Quaternion, Rectangle, Point, Color, int, float, double.
             // For custom type, you need to provide your own lerp function through the constructor.
-            colorTweener = new Tweener<Color>()
+            startAnimation = new TweenAnimation<Color>()
             {
                 Duration = TimeSpan.FromSeconds(0.5f),
                 From = Color.White,     // Tween from white
-                To = Color.White * 0,   // to transparent.
+                To = Color.Black,       // to black
                 Curve = new Sin(),      // Use sin wave
-                Style = LoopStyle.Yoyo  // and Yoyo to loop back and forth.
+                Repeat = float.MaxValue,// Loop forever
+                AutoReverse = true,     // Create a back and forth yoyo effect
             };
+            startAnimation.Play();
 
+            
             
             // Another way to use transitions is through the managed TransitionManager.
             // TranisitonManager are more powerful then Tweener<T> in that you can set a delay
             // to a transition, or queue a transition.
             // TransitionManager can be worked either through reflection or callback delegation.
-            transitions = new TransitionManager();
+            //transitions = new TransitionManager();
             
             
             // Create some buttons
@@ -132,17 +157,17 @@ namespace Transitions
                     X = 900, Text = type.Name, Tag = type, 
                     Bounds = MeasureBounds(type.Name, font) 
                 };
-
+                /*
                 button.MouseOver += new EventHandler<MouseEventArgs>(button_MouseOver);
                 button.MouseOut += new EventHandler<MouseEventArgs>(button_MouseOut);
                 button.Click += new EventHandler<MouseEventArgs>(button_Click);
-
+                */
                 buttons.Add(button);
             }
 
 
             // Transite in our menus
-            TransiteIn(TimeSpan.Zero);
+            //TransiteIn(TimeSpan.Zero);
         }
 
         /// <summary>
@@ -155,7 +180,7 @@ namespace Transitions
             return new Rectangle(0, 0, (int)size.X, (int)size.Y);
         }
 
-
+        /*
         void button_MouseOver(object sender, MouseEventArgs e)
         {
             // Turn button color to yellow
@@ -216,7 +241,7 @@ namespace Transitions
             else if ((Type)buttons[index].Tag == typeof(Smooth))
             {
                 transitions.Queue<float, Smooth>(duration, null, 1.0f, this, "ImageScale");
-            }           
+            }
         }
 
         /// <summary>
@@ -250,7 +275,7 @@ namespace Transitions
                                                       buttons[i], "X");
             }
         }
-
+        */
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -263,26 +288,29 @@ namespace Transitions
             // Initialize render state
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            
+
+            // Update transitions
+            //transitions.Update(gameTime);
 
 
+#if !WINDOWS_PHONE
             // Update background scroll
             background.Update(gameTime);
 
-
-            // Update transitions
-            transitions.Update(gameTime);
-
-
             // Draw background
-            GraphicsDevice.DrawSprite(background.Texture, null, null, Color.White, background);
+            background.SetViewport(GraphicsDevice.Viewport.Bounds);
 
-
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, background);
+            spriteBatch.Draw(background.Texture, GraphicsDevice.Viewport.Bounds, null, Color.White);
+            spriteBatch.End();
+#endif
             spriteBatch.Begin();
+            
+            spriteBatch.DrawString(font, "Press any key to continue..." , Vector2.Zero, startAnimation.Value);
 
             spriteBatch.Draw(image, new Vector2(450, 300), null, ImageColor, ImageRoation, new Vector2(400, 300), ImageScale * 0.6f, SpriteEffects.None, 0);
             
-            spriteBatch.DrawString(font, "Press any key to continue...", new Vector2(300, 580), colorTweener.Update(gameTime));
-
             // Draw buttons
             foreach (Button button in buttons)
             {

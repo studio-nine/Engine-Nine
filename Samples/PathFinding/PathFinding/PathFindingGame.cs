@@ -26,6 +26,20 @@ namespace PathFinding
     /// </summary>
     public class PathFindingGame : Microsoft.Xna.Framework.Game
     {
+#if WINDOWS_PHONE
+        private const int TargetFrameRate = 30;
+        private const int BackBufferWidth = 800;
+        private const int BackBufferHeight = 480;
+#elif XBOX
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 720;
+#else
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 900;
+        private const int BackBufferHeight = 600;
+#endif
+
         Input input;
         TopDownEditorCamera camera;
 
@@ -46,12 +60,16 @@ namespace PathFinding
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferredBackBufferWidth = 900;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = BackBufferWidth;
+            graphics.PreferredBackBufferHeight = BackBufferHeight;
 
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
+            
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
+
+            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -65,8 +83,7 @@ namespace PathFinding
             camera = new TopDownEditorCamera(Services);
 
             // Handle input events
-            Components.Add(input = new Input());
-
+            input = new Input();
             input.MouseDown += new EventHandler<MouseEventArgs>(OnMouseDown);
 
 
@@ -143,10 +160,6 @@ namespace PathFinding
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            // Update camera
-            camera.Update(gameTime);
-
-
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
 
