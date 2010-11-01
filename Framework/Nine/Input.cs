@@ -1,7 +1,7 @@
-#region Copyright 2009 (c) Nightin Games
+#region Copyright 2009 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -387,7 +387,7 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of InputComponent.
         /// </summary>
-        public InputComponent() : base((IServiceProvider)null) 
+        public InputComponent() : base(null) 
         {
             Current = this;
         }
@@ -396,7 +396,7 @@ namespace Nine
         /// Creates a new instance of InputComponent using the input system of windows forms.
         /// </summary>
         /// <param name="handle">Handle of the game window</param>
-        public InputComponent(IntPtr handle) : base((IServiceProvider)null)
+        public InputComponent(IntPtr handle) : base(null)
         {
             Current = this;
 #if WINDOWS

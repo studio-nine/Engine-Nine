@@ -80,9 +80,9 @@
     <Compile Include="Animations\AddHelper.cs" />
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
+    <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
+    <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="ScreenshotCapturer.cs" />
-    <Compile Include="Component.cs">
-    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
@@ -222,7 +222,7 @@
     <Compile Include="Graphics\SpriteAnimation.cs" />
     <Compile Include="Graphics\Geometry.cs" />
     <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
-    <Compile Include="Graphics\TerrainGeometry.cs" />
+    <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\BoneAnimation.cs" />
     <Compile Include="Graphics\ModelBatch.cs" />
     <Compile Include="Graphics\ModelExtensions.cs" />
@@ -269,7 +269,7 @@
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
-    <Compile Include="Graphics\TerrainPatchPart.cs" />
+    <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
     <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -292,12 +292,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Luminance.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\TerrainEffectCollection.cs" />
-    <Compile Include="Graphics\Terrain.cs">
+    <Compile Include="Graphics\DrawableSurfaceCollections.cs" />
+    <Compile Include="Graphics\DrawableSurface.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
-    <Compile Include="Graphics\TerrainPatch.cs" />
+    <Compile Include="Graphics\DrawableSurfacePatch.cs" />
     <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

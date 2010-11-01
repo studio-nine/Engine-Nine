@@ -1,7 +1,7 @@
-#region Copyright 2009 (c) Nightin Games
+#region Copyright 2009 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -83,20 +83,14 @@ namespace Nine
         /// The main constructor for the class.
         /// </summary>
         /// <remarks>Sets the <see cref="_gameWindowTitle"/> data member to the value of <see cref="Microsoft.Xna.Framework.GameWindow.Title"/>.</remarks>
-        public FrameRate(IServiceProvider services) : base(services)
+        public FrameRate(Game game) : base(game)
         {
-            if (services == null)
-                throw new ArgumentNullException();
-
             UpdateFrequency = 1000;
             Color = Color.Yellow;
         }
 
         protected override void LoadContent()
         {
-            if (SpriteBatch == null)
-                SpriteBatch = new SpriteBatch(GraphicsDevice);
-
             base.LoadContent();
         }
 
@@ -106,7 +100,7 @@ namespace Nine
         }
 
         public override void Draw(GameTime gameTime)
-        {            
+        {
             // Draw FPS text
             if (SpriteBatch != null && Font != null)
             {

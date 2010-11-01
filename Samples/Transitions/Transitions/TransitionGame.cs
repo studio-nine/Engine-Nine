@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Nightin Games
+#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -52,7 +52,7 @@ namespace Transitions
 
         List<Button> buttons;        
 
-        Animation startAnimation;
+        TweenAnimation<Color> startAnimation;
         Animation menuAnimation;
         Animation imageAnimation;
         
@@ -127,7 +127,7 @@ namespace Transitions
                 Duration = TimeSpan.FromSeconds(0.5f),
                 From = Color.White,     // Tween from white
                 To = Color.Black,       // to black
-                Curve = new Sin(),      // Use sin wave
+                Curve = new SinCurve(), // Use sin wave
                 Repeat = float.MaxValue,// Loop forever
                 AutoReverse = true,     // Create a back and forth yoyo effect
             };
@@ -147,7 +147,7 @@ namespace Transitions
 
             Type[] types = new Type[]
             {
-                typeof(Linear), typeof(Exponential), typeof(Elastic), typeof(Bounce), typeof(Sin), typeof(Smooth)
+                typeof(LinearCurve), typeof(ExponentialCurve), typeof(ElasticCurve), typeof(BounceCurve), typeof(SinCurve), typeof(SmoothCurve)
             };
 
             foreach (Type type in types)
@@ -292,7 +292,7 @@ namespace Transitions
 
             // Update transitions
             //transitions.Update(gameTime);
-
+            startAnimation.Update(gameTime);
 
 #if !WINDOWS_PHONE
             // Update background scroll

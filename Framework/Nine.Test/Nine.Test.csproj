@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Graphics\BoneAnimationTest.cs" />
+    <Compile Include="Graphics\TestGame.cs" />
+    <Compile Include="Graphics\DrawableSurfaceTest.cs" />
     <Compile Include="InputTest.cs" />
     <Compile Include="EnumerableCollectionTest.cs" />
     <Compile Include="Animations\KeyframeAnimationTest.cs" />

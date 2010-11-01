@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Nightin Games
+﻿#region Copyright 2009 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -21,7 +21,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Graphics.Landscape;
+using Nine.Graphics;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -30,7 +30,7 @@ namespace Nine.Content.Pipeline.Processors
     /// Turns a heightmap into a terrain geometry.
     /// </summary>
     [ContentProcessor(DisplayName = "Heightmap Processor - Nine")]
-    public class HeightmapProcessor : ContentProcessor<Texture2DContent, TerrainGeometry>
+    public class HeightmapProcessor : ContentProcessor<Texture2DContent, Heightmap>
     {
         /// <summary>
         /// Controls the scale of the terrain. This will be the distance between
@@ -63,7 +63,7 @@ namespace Nine.Content.Pipeline.Processors
         /// <summary>
         /// Generates a terrain mesh from an input heightfield texture.
         /// </summary>
-        public override TerrainGeometry Process(Texture2DContent input, ContentProcessorContext context)
+        public override Heightmap Process(Texture2DContent input, ContentProcessorContext context)
         {
             PixelBitmapContent<Alpha8> heightfield;
 
@@ -79,18 +79,28 @@ namespace Nine.Content.Pipeline.Processors
             
             // Create the terrain vertices.
             int i = 0;
+            int width = heightfield.Width;
+            int height = heightfield.Height;
 
-            float[] heightmap = new float[heightfield.Width * heightfield.Height];
+            if (width % 2 == 0)
+                width++;
+            if (height % 2 == 0)
+                height++;
 
-            for (int y = 0; y < heightfield.Height; y++)
+            float[] heightmap = new float[width * height];
+
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < heightfield.Width; x++)
+                for (int x = 0; x < width; x++)
                 {
-                    heightmap[i++] = heightfield.GetPixel(x, y).ToAlpha() * Height;
+                    if (x < heightfield.Width && y < heightfield.Height)
+                        heightmap[i++] = heightfield.GetPixel(x, y).ToAlpha() * Height;
+                    else
+                        heightmap[i++] = 0;
                 }
             }
 
-            return new TerrainGeometry(heightmap, Step, heightfield.Width - 1, heightfield.Height - 1);
+            return new Heightmap(heightmap, Step, width - 1, height - 1);
         }
     }
 }

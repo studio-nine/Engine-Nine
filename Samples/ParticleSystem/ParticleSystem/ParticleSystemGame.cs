@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Nightin Games
+#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -30,10 +30,10 @@ namespace ParticleSystem
     {
         TopDownEditorCamera camera;
         ParticleBatch particles;
-
+        
         SpriteAnimation fireball;
         Texture2D lightning;
-        TweenAimation<Vector2> lightningOffset;
+        TweenAnimation<Vector2> lightningOffset;
 
         ParticleEffect snow;
 
@@ -58,21 +58,23 @@ namespace ParticleSystem
         /// </summary>
         protected override void LoadContent()
         {
-            camera = new TopDownEditorCamera(Services);
+            camera = new TopDownEditorCamera(GraphicsDevice);
 
             particles = new ParticleBatch(GraphicsDevice, 1024);
 
             fireball = new SpriteAnimation(Content.Load<ImageList>("fireball"));
+            fireball.Play();
 
             lightning = Content.Load<Texture2D>("lightning");
 
             // This tweener is used to animate the lightning texture.
-            lightningOffset = new Tweener<Vector2>
+            lightningOffset = new TweenAnimation<Vector2>()
             {
-                Curve = new Linear(),
-                Style = LoopStyle.Loop,
+                Curve = new LinearCurve(),
+                From = Vector2.Zero,
                 To = Vector2.UnitY,
             };
+            lightningOffset.Play();
 
 
             snow = new ParticleEffect(600);
@@ -115,7 +117,8 @@ namespace ParticleSystem
             particles.Begin(camera.View, camera.Projection);
 
             // Draw lightning
-            particles.DrawLine(lightning, Vector3.Zero, Vector3.UnitX * 20, 10, Vector2.One, lightningOffset.Update(gameTime), Color.White);
+            lightningOffset.Update(gameTime);
+            particles.DrawLine(lightning, Vector3.Zero, Vector3.UnitX * 20, 10, Vector2.One, lightningOffset.Value, Color.White);
 
             // Draw fireball
             particles.Draw(fireball.Texture, Vector3.Zero, 10, 0, Color.White);

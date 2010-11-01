@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Nightin Games
+﻿#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -16,20 +16,20 @@ using Microsoft.Xna.Framework.Content;
 #endregion
 
 
-namespace Nine.Graphics.Landscape
+namespace Nine.Graphics
 {
     /// <summary>
     /// The geometric representation of heightmap. 
     /// The up axis of the terrain is Vector.UnitZ.
     /// </summary>
-    public class TerrainGeometry : ISurface, IPickable
+    public class Heightmap : ISurface, IPickable
     {
         #region Fields
         /// <summary>
         /// Gets the size of the terrain geometry in 3 axis.
         /// </summary>
         [ContentSerializer]
-        public Vector3 Dimension { get; private set; }
+        public Vector3 Size { get; private set; }
 
         /// <summary>
         /// Gets the size of the smallest square block that made up the terrain.
@@ -88,7 +88,7 @@ namespace Nine.Graphics.Landscape
         
         #region Methods
 
-        private TerrainGeometry() { }
+        private Heightmap() { }
 
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Nine.Graphics.Landscape
         /// <param name="step">Size of the smallest square block that made up the terrain.</param>
         /// <param name="tessellationU">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
         /// <param name="tessellationV">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
-        public TerrainGeometry(float step, int tessellationU, int tessellationV)
+        public Heightmap(float step, int tessellationU, int tessellationV)
         {
             LoadHeightmap(new float[(tessellationU + 1) * (tessellationV + 1)], step, tessellationU, tessellationV);
         }
@@ -109,7 +109,7 @@ namespace Nine.Graphics.Landscape
         /// <param name="step">Size of the smallest square block that made up the terrain.</param>
         /// <param name="tessellationU">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
         /// <param name="tessellationV">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
-        public TerrainGeometry(float[] heightmap, float step, int tessellationU, int tessellationV)
+        public Heightmap(float[] heightmap, float step, int tessellationU, int tessellationV)
         {
             LoadHeightmap(heightmap, step, tessellationU, tessellationV);
         }
@@ -123,8 +123,8 @@ namespace Nine.Graphics.Landscape
         {
             Vector3 result = new Vector3();
 
-            result.X = Step * u - Dimension.X / 2;
-            result.Y = Step * v - Dimension.Y / 2;
+            result.X = Step * u - Size.X / 2;
+            result.Y = Step * v - Size.Y / 2;
             result.Z = Heights[GetIndex(u, v)];
 
             return result;
@@ -170,7 +170,7 @@ namespace Nine.Graphics.Landscape
                 if (height > maxheight)
                     maxheight = height;
                         
-            Dimension = new Vector3(step * tessellationU, step * tessellationV, maxheight);
+            Size = new Vector3(step * tessellationU, step * tessellationV, maxheight);
 
             BoundingBox = BoundingBox.CreateFromPoints(EnumeratePositions());
 
@@ -191,7 +191,7 @@ namespace Nine.Graphics.Landscape
             // Compute normals and tangents
             CalculateNormalsAndTangents(
                 tessellationU + 1, tessellationV + 1, heightmap, 
-                Dimension.X, Dimension.Y, ref normals, ref tangents);
+                Size.X, Size.Y, ref normals, ref tangents);
 
             Normals = normals;
             Tangents = tangents;
@@ -337,33 +337,33 @@ namespace Nine.Graphics.Landscape
             float k = ray.Direction.Y / ray.Direction.X;
             float invK = ray.Direction.X / ray.Direction.Y;
             float r = ray.Position.Y - ray.Position.X * k;
-            if (r >= 0 && r <= Dimension.Y)
+            if (r >= 0 && r <= Size.Y)
             {
                 points[i++] = new Vector3(0, r,
                     ray.Position.Z - ray.Position.X *
                     ray.Direction.Z / ray.Direction.X);
             }
-            r = ray.Position.Y + (Dimension.X - ray.Position.X) * k;
-            if (r >= 0 && r <= Dimension.Y)
+            r = ray.Position.Y + (Size.X - ray.Position.X) * k;
+            if (r >= 0 && r <= Size.Y)
             {
-                points[i++] = new Vector3(Dimension.X, r,
-                    ray.Position.Z + (Dimension.X - ray.Position.X) *
+                points[i++] = new Vector3(Size.X, r,
+                    ray.Position.Z + (Size.X - ray.Position.X) *
                     ray.Direction.Z / ray.Direction.X);
             }
             if (i < 2)
             {
                 r = ray.Position.X - ray.Position.Y * invK;
-                if (r >= 0 && r <= Dimension.X)
+                if (r >= 0 && r <= Size.X)
                     points[i++] = new Vector3(r, 0,
                         ray.Position.Z - ray.Position.Y *
                         ray.Direction.Z / ray.Direction.Y);
             }
             if (i < 2)
             {
-                r = ray.Position.X + (Dimension.Y - ray.Position.Y) * invK;
-                if (r >= 0 && r <= Dimension.X)
-                    points[i++] = new Vector3(r, Dimension.Y,
-                        ray.Position.Z + (Dimension.Y - ray.Position.Y) *
+                r = ray.Position.X + (Size.Y - ray.Position.Y) * invK;
+                if (r >= 0 && r <= Size.X)
+                    points[i++] = new Vector3(r, Size.Y,
+                        ray.Position.Z + (Size.Y - ray.Position.Y) *
                         ray.Direction.Z / ray.Direction.Y);
             }
             if (i < 2)
@@ -371,8 +371,8 @@ namespace Nine.Graphics.Landscape
 
             // When ray position is inside the box, it should be one
             // of the starting point
-            bool inside = ray.Position.X > 0 && ray.Position.X < Dimension.X &&
-                          ray.Position.Y > 0 && ray.Position.Y < Dimension.Y;
+            bool inside = ray.Position.X > 0 && ray.Position.X < Size.X &&
+                          ray.Position.Y > 0 && ray.Position.Y < Size.Y;
 
             Vector3 v1 = Vector3.Zero, v2 = Vector3.Zero;
             // Sort the 2 points to make the line follow the direction
@@ -480,16 +480,21 @@ namespace Nine.Graphics.Landscape
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
             // first we'll figure out where on the heightmap "position" is...
-            position.X = position.X + Dimension.X / 2;
-            position.Y = position.Y + Dimension.Y / 2;
+            position.X = position.X + Size.X / 2;
+            position.Y = position.Y + Size.Y / 2;
+
+            if (position.X == Size.X)
+                position.X -= float.Epsilon;
+            if (position.Y == Size.Y)
+                position.Y -= float.Epsilon;
 
             // ... and then check to see if that value goes outside the bounds of the
             // heightmap.
-            if (!(position.X > 0 && position.X < Dimension.X &&
-                  position.Y > 0 && position.Y < Dimension.Y))
+            if (!(position.X >= 0 && position.X < Size.X &&
+                  position.Y >= 0 && position.Y < Size.Y))
             {
-                height = 0;
-                normal = Vector3.Zero;
+                height = float.MinValue;
+                normal = Vector3.UnitZ;
 
                 return false;
             }
@@ -498,14 +503,14 @@ namespace Nine.Graphics.Landscape
             // positionOnHeightmap is. Remember that integer division always rounds
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
-            int left = (int)position.X / (int)(Dimension.X / TessellationU);
-            int top = (int)position.Y / (int)(Dimension.Y / TessellationV);
+            int left = (int)position.X / (int)(Size.X / TessellationU);
+            int top = (int)position.Y / (int)(Size.Y / TessellationV);
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,
             // which we then divide by terrainScale to normalize 0 to 1.
-            float xNormalized = position.X - left * Dimension.X / TessellationU;
-            float yNormalized = position.Y - top * Dimension.Y / TessellationV;
+            float xNormalized = position.X - left * Size.X / TessellationU;
+            float yNormalized = position.Y - top * Size.Y / TessellationV;
 
             // Now that we've calculated the indices of the corners of our cell, and
             // where we are in that cell, we'll use bilinear interpolation to calculuate

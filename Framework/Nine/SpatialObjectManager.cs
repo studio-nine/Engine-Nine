@@ -1,7 +1,7 @@
-#region Copyright 2010 (c) Nightin Games
+#region Copyright 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -25,10 +25,24 @@ namespace Nine
     public interface ISpatialQuery
     {
         /// <summary>
+        /// Gets all the objects intersects with the specfied point.
+        /// </summary>
+        //IEnumerable<object> Find(Vector3 position);
+
+        /// <summary>
         /// Gets all the objects resides within the specified bounding sphere.
         /// </summary>
-        /// <param name="radius">Radius of the Spatial query.</param>
-        IEnumerable<object> FindBoundingSphere(Vector3 position, float radius);
+        IEnumerable<object> Find(Vector3 position, float radius);
+
+        /// <summary>
+        /// Gets all the objects that intersects with the specified ray from
+        /// </summary>
+        //IEnumerable<object> Find(Ray ray);
+
+        /// <summary>
+        /// Gets all the objects resides within the specified bounding fustum.
+        /// </summary>
+        //IEnumerable<object> Find(BoundingFrustum frustum);
     }
     #endregion
     
@@ -199,7 +213,7 @@ namespace Nine
         /// Gets all the objects near the specified position.
         /// </summary>
         /// <param name="radius">Radius of the Spatial query.</param>
-        public IEnumerable<object> FindBoundingSphere(Vector3 position, float radius)
+        public IEnumerable<object> Find(Vector3 position, float radius)
         {
             List<Entry> list;
             float rr = radius * radius;

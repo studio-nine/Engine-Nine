@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Nightin Games
+#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -70,7 +70,7 @@ namespace SkinnedModel
         protected override void LoadContent()
         {
             // Create a model viewer camera to help us visualize the scene
-            camera = new ModelViewerCamera(Services);
+            camera = new ModelViewerCamera(GraphicsDevice);
 
             // Model batch makes drawing models easier
             modelBatch = new ModelBatch(GraphicsDevice);

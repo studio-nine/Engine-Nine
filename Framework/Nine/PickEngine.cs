@@ -1,7 +1,7 @@
-#region Copyright 2009 (c) Nightin Games
+#region Copyright 2009 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -19,6 +19,27 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
+    /// <summary>
+    /// Interface for an object that can be picked by a given ray.
+    /// </summary>
+    public interface IPickable
+    {
+        /// <summary>
+        /// Gets the object that contains the given point.
+        /// </summary>
+        /// <param name="distance">Distance to the start of the ray.</param>
+        /// <returns>Picked object</returns>
+        object Pick(Vector3 point);
+
+
+        /// <summary>
+        /// Gets the nearest intersection point from the specifed picking ray.
+        /// </summary>
+        /// <param name="distance">Distance to the start of the ray.</param>
+        /// <returns>Picked object</returns>
+        object Pick(Ray ray, out float? distance);
+    }
+
     #region PickEngine
     /// <summary>
     /// Generic pick engine.

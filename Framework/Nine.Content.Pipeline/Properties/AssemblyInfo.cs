@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Nine.Content.Pipeline")]
-[assembly: AssemblyCopyright("Copyright © 2009 - 2010 Nightin Games")]
+[assembly: AssemblyCopyright("Copyright © 2009 - 2010 Engine Nine")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

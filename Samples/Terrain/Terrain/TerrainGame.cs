@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Nightin Games
+#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -17,7 +17,6 @@ using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
-using Nine.Graphics.Landscape;
 #endregion
 
 namespace TerrainSample
@@ -29,7 +28,7 @@ namespace TerrainSample
     {
         TopDownEditorCamera camera;
 
-        Terrain terrain;
+        DrawableSurface terrain;
         BasicEffect basicEffect;
         ScrollEffect scrollEffect;
         SplatterEffect splatterEffect;
@@ -56,14 +55,20 @@ namespace TerrainSample
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(this) 
+            {
+                SpriteBatch = new SpriteBatch(GraphicsDevice),
+                Font = Content.Load<SpriteFont>("Consolas"),
+            });
+
             // Create a topdown perspective editor camera to help us visualize the scene
-            camera = new TopDownEditorCamera(Services);
+            camera = new TopDownEditorCamera(GraphicsDevice);
 
             // Create a terrain based on the terrain geometry loaded from file
-            terrain = new Terrain(GraphicsDevice, Content.Load<TerrainGeometry>("RF1"), 8);
+            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("RF1"), 8);
 
             // Uncomment next line to create a flat terrain
-            //terrain = new Terrain(GraphicsDevice, 1, 128, 128, 8);
+            //terrain = new DrawableSurface(GraphicsDevice, 1, 128, 128, 8);
 
 
             // Initialize terrain effects
@@ -89,8 +94,8 @@ namespace TerrainSample
             splatterEffect.SplatterTexture = Content.Load<Texture2D>("splat");
             splatterEffect.Textures[0] = Content.Load<Texture2D>("grass");
             splatterEffect.SplatterTextureScale = new Vector2(
-                1.0f * terrain.Geometry.TessellationU / terrain.PatchTessellation,
-                1.0f * terrain.Geometry.TessellationV / terrain.PatchTessellation);
+                1.0f * terrain.Heightmap.TessellationU / terrain.PatchTessellation,
+                1.0f * terrain.Heightmap.TessellationV / terrain.PatchTessellation);
 
 
             decalEffect = new DecalEffect(GraphicsDevice);
@@ -140,7 +145,7 @@ namespace TerrainSample
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
 
-            foreach (TerrainPatch patch in terrain.Patches)
+            foreach (DrawableSurfacePatch patch in terrain.Patches)
             {
                 // Cull patches that are outside the view frustum
                 if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)

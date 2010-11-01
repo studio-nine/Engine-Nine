@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Nightin Games
+﻿#region Copyright 2009 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -57,11 +57,14 @@ namespace Nine.Graphics
         }
 
 
-        public ModelViewerCamera(IServiceProvider services) : this(services, 20, 1, 100, Vector3.Up) { }
+        public ModelViewerCamera(GraphicsDevice graphics) : this(graphics, 20, 1, 100, Vector3.Up) { }
 
-        public ModelViewerCamera(IServiceProvider services, float radius, float minRadius, float maxRadius, Vector3 up)
+        public ModelViewerCamera(GraphicsDevice graphics, float radius, float minRadius, float maxRadius, Vector3 up)
         {
-            GraphicsDevice = services.GetService<IGraphicsDeviceService>().GraphicsDevice;
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            GraphicsDevice = graphics;
             
             Radius = radius;
             MinRadius = minRadius;

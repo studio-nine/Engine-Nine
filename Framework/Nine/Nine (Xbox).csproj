@@ -53,8 +53,6 @@
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
-    <Compile Include="Component.cs">
-    </Compile>
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
     <Compile Include="Extensions.cs" />
@@ -62,6 +60,11 @@
     <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\BoneAnimation.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
+    <Compile Include="Graphics\DrawableSurfaceCollections.cs" />
+    <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
+    <Compile Include="Graphics\DrawableSurface.cs" />
+    <Compile Include="Graphics\DrawableSurfacePatch.cs" />
+    <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
     <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,6 +85,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleSystemEffect.cs">
       <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
     </Compile>
@@ -95,12 +99,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BloomCombine.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Terrain.cs" />
-    <Compile Include="Graphics\TerrainEffectCollection.cs" />
-    <Compile Include="Graphics\TerrainGeometry.cs" />
-    <Compile Include="Graphics\TerrainPatch.cs" />
-    <Compile Include="Graphics\TerrainPatchPart.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
+    <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Graphics\Batch.cs" />
     <Compile Include="Graphics\ImageList.cs" />

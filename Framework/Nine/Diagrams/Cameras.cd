@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Nine.Graphics.ModelViewerCamera" Collapsed="true">
-    <Position X="2.75" Y="1" Width="1.5" />
+    <Position X="2.75" Y="1" Width="2" />
     <TypeIdentifier>
       <HashCode>CAAIEAAKBAAABAAgAAAQAAAAkAABAgAAAAAEAAAYAAI=</HashCode>
       <FileName>Graphics\ModelViewerCamera.cs</FileName>
@@ -9,7 +9,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Nine.Graphics.TopDownEditorCamera" Collapsed="true">
-    <Position X="2.75" Y="2" Width="1.5" />
+    <Position X="2.75" Y="2" Width="2" />
     <TypeIdentifier>
       <HashCode>CEAICAAIBAAABAEAIAAAAAAAEAABAgAAAABEAAAQAAA=</HashCode>
       <FileName>Graphics\TopDownEditorCamera.cs</FileName>
@@ -17,7 +17,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Nine.Graphics.FreeCamera" Collapsed="true">
-    <Position X="2.75" Y="3" Width="1.5" />
+    <Position X="2.75" Y="3" Width="2" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAAAgAAAAIAABAAABAAAAAEAAAABRAAA=</HashCode>
       <FileName>Graphics\FreeCamera.cs</FileName>

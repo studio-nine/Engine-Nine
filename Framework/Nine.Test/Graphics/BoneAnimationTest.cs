@@ -1,4 +1,12 @@
-﻿using Nine.Graphics;
+﻿#region Copyright 2009 (c) Engine Nine
+//=============================================================================
+//
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+#endregion
+
+using Nine.Graphics;
 using Nine.Animations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

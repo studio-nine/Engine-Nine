@@ -1,7 +1,7 @@
-#region Copyright 2010 (c) Nightin Games
+#region Copyright 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -44,7 +44,7 @@ namespace Nine.Navigation.SteeringBehaviors
             int count = 0;
             Vector3 center = Vector3.Zero;
 
-            foreach (object o in SpatialObjectManager.FindBoundingSphere(movingEntity.Position, GroupRadius))
+            foreach (object o in SpatialObjectManager.Find(movingEntity.Position, GroupRadius))
             {
                 IMovable partner = o as IMovable;
 
@@ -92,7 +92,7 @@ namespace Nine.Navigation.SteeringBehaviors
         {
             Vector3 totalForce = Vector3.Zero;
 
-            foreach (object o in SpatialObjectManager.FindBoundingSphere(movingEntity.Position, SeparationRadius))
+            foreach (object o in SpatialObjectManager.Find(movingEntity.Position, SeparationRadius))
             {
                 IMovable partner = o as IMovable;
 
@@ -146,7 +146,7 @@ namespace Nine.Navigation.SteeringBehaviors
             int count = 0;
             Vector3 totalForce = Vector3.Zero;
 
-            foreach (object o in SpatialObjectManager.FindBoundingSphere(movingEntity.Position, GroupRadius))
+            foreach (object o in SpatialObjectManager.Find(movingEntity.Position, GroupRadius))
             {
                 IMovable partner = o as IMovable;
 

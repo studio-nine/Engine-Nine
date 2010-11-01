@@ -1,7 +1,7 @@
-#region Copyright 2010 (c) Nightin Games
+#region Copyright 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion

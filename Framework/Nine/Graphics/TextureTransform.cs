@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Nightin Games
+﻿#region Copyright 2009 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -38,6 +38,15 @@ namespace Nine.Graphics
         public static Matrix CreateRotation(float radius)
         {
             return Matrix.CreateRotationZ(radius);
+        }
+
+        public static Vector2 Transform(Matrix matrix, Vector2 uv)
+        {
+            Vector3 v3 = new Vector3(uv, 0);
+
+            v3 = Vector3.Transform(v3, matrix);
+
+            return new Vector2(v3.X, v3.Y);
         }
 
         public static float[] ToArray(Matrix matrix)

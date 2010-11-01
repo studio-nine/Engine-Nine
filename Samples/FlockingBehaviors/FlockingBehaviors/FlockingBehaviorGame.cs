@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Nightin Games
+#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -83,7 +83,7 @@ namespace FlockingBehaviors
 
 
             // Create a topdown perspective editor camera to help us visualize the scene
-            camera = new TopDownEditorCamera(Services);
+            camera = new TopDownEditorCamera(GraphicsDevice);
 
             
             // Create a bounds for the world.
