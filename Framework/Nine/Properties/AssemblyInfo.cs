@@ -36,3 +36,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.*")]
 
 [assembly: CLSCompliant(true)]
+
+// Make this visible to content pipeline so we can hide content reader.
+[assembly: InternalsVisibleTo("Nine.Content.Pipeline")]
+
+// Make this visible to test so we can check internal state.
+[assembly: InternalsVisibleTo("Nine.Test")]

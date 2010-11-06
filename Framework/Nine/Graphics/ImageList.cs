@@ -84,8 +84,7 @@ namespace Nine.Graphics
     /// <summary>
     /// Reader for ImageList.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ImageListReader : ContentTypeReader<ImageList>
+    internal class ImageListReader : ContentTypeReader<ImageList>
     {
         protected override ImageList Read(ContentReader input, ImageList existingInstance)
         {

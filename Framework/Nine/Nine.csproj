@@ -78,6 +78,12 @@
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\AddHelper.cs" />
+    <Compile Include="BoundingRectangle.cs" />
+    <Compile Include="InternalReadOnlyCollection.cs" />
+    <Compile Include="Graphics\ModelCollision.cs" />
+    <Compile Include="Math2D.cs" />
+    <Compile Include="Octree.cs" />
+    <Compile Include="QuadTree.cs" />
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />

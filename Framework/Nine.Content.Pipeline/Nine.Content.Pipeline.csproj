@@ -64,6 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Processors\ModelCollisionProcessor.cs" />
+    <Compile Include="TreeWriter.cs" />
     <Compile Include="ImageListContent.cs" />
     <Compile Include="Importers\SequentialImageListImporter.cs" />
     <Compile Include="Processors\ModelAnimationProcessor.cs" />

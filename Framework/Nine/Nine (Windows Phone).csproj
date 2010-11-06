@@ -59,6 +59,7 @@
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
+    <Compile Include="BoundingRectangle.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
     <Compile Include="Extensions.cs" />
@@ -72,8 +73,13 @@
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
+    <Compile Include="Graphics\ModelCollision.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
+    <Compile Include="InternalReadOnlyCollection.cs" />
+    <Compile Include="Math2D.cs" />
+    <Compile Include="OcTree.cs" />
+    <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Graphics\Batch.cs" />
     <Compile Include="Graphics\ImageList.cs" />

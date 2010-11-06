@@ -248,7 +248,7 @@ namespace Nine
         /// This method will always throw an InvalidOperationException().
         /// Use the other overload instead.
         /// </summary>
-        public void Add(object item)
+        void ICollection<object>.Add(object item)
         {
             throw new InvalidOperationException();
         }
@@ -276,7 +276,7 @@ namespace Nine
 
         public bool IsReadOnly
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
         public bool Remove(object item)
