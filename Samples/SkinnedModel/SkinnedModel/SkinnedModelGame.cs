@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
@@ -83,6 +84,7 @@ namespace SkinnedModel
             // Now load our model animation and skinning using extension method.
             animation = new BoneAnimation(model, model.GetAnimation(0));
             animation.Speed = 1.0f;
+            animation.Play();
 
             skinning = model.GetSkinning();
         }
@@ -107,9 +109,20 @@ namespace SkinnedModel
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             Matrix[] bones = null;
-            
+
             Matrix world = Matrix.CreateTranslation(0, -4000, 0) *
-                           Matrix.CreateScale(0.001f);
+                           Matrix.CreateScale(0.001f);           
+            
+
+            // Gets the pick ray from current mouse cursor
+            Ray ray = GraphicsDevice.Viewport.CreatePickRay(Mouse.GetState().X,
+                                                            Mouse.GetState().Y,
+                                                            camera.View,
+                                                            camera.Projection);
+            // Do ray model intersection test
+            float? distance = model.Intersects(world, ray);
+
+            Window.Title = distance.HasValue ? "Picked" : "Nothing";
 
             // To draw skinned models, first compute bone transforms using model skinning
             if (skinning != null)
@@ -120,7 +133,31 @@ namespace SkinnedModel
             modelBatch.Draw(model, world, bones, null);
             modelBatch.End();
 
+            // Draw collision tree
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                DrawCollisionTree(model, world);
+
             base.Draw(gameTime);
+        }
+
+        private void DrawCollisionTree(Model model, Matrix transform)
+        {
+            Matrix[] bones = new Matrix[model.Bones.Count];
+
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
+            transform = bones[model.Meshes[0].ParentBone.Index] * transform;
+
+            Octree<bool> tree = (model.Tag as ModelTag).Collision.CollisionTree;
+
+            DebugVisual.View = camera.View;
+            DebugVisual.Projection = camera.Projection;
+
+            foreach (OctreeNode<bool> node in tree.Traverse((o) => { return true; }))
+            {
+                if (!node.HasChildren && node.Value)
+                    DebugVisual.DrawBox(GraphicsDevice, node.Bounds, transform, Color.Yellow);
+            }
         }
     }
 }

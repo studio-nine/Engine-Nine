@@ -2834,7 +2834,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Yufei Huang</td><td>0</td><td/><td>-2061573172</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061573172</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL</td><td>1033</td><td>Microsoft .NET Framework 4.0 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-2061572051</td></row>
@@ -3927,7 +3927,7 @@
 		<row><td>IDS__IsVerifyRemoveAllDlg_Remove</td><td>1033</td><td>&amp;Remove</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__IsVerifyRemoveAllDlg_RemoveProgram</td><td>1033</td><td>{&amp;MSSansBold8}Remove the Program</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__IsWelcomeDlg_InstallProductName</td><td>1033</td><td>The InstallShield(R) Wizard will install [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-2061613205</td></row>
-		<row><td>IDS__IsWelcomeDlg_WarningCopyright</td><td>1033</td><td>Copyright 2009 - 2010 (c) Yufei Huang.</td><td>0</td><td/><td>-2061615057</td></row>
+		<row><td>IDS__IsWelcomeDlg_WarningCopyright</td><td>1033</td><td>Copyright 2009 - 2010 (c) Engine Nine.</td><td>0</td><td/><td>-2061615057</td></row>
 		<row><td>IDS__IsWelcomeDlg_WelcomeProductName</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__TargetReq_DESC_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__TargetReq_DESC_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-2061613205</td></row>
@@ -3939,7 +3939,7 @@
 		<row><td>ID_STRING11</td><td>1033</td><td>ENGINE~1|Engine Nine Documentation</td><td>0</td><td/><td>-585203980</td></row>
 		<row><td>ID_STRING12</td><td>1033</td><td>ENGINE~1|Engine Nine Online</td><td>0</td><td/><td>-451005168</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061603956</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>Yufei Huang</td><td>0</td><td/><td>-2061595764</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061595764</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>This installer database contains the logic and data required to install Engine Nine</td><td>0</td><td/><td>-2061603892</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>http://nine.codeplex.com</td><td>0</td><td/><td>-2061610004</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>ENGINE~1.0|Engine Nine 1.0</td><td>0</td><td/><td>-2061593076</td></row>

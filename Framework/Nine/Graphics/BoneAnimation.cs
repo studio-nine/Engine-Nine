@@ -193,7 +193,7 @@ namespace Nine.Graphics
 
         public void Update(GameTime gameTime)
         {
-            if (State == AnimationState.Playing|| model == null || AnimationClip == null)
+            if (State != AnimationState.Playing|| model == null || AnimationClip == null)
                 return;
 
             CurrentTime += TimeSpan.FromMilliseconds(gameTime.ElapsedGameTime.TotalMilliseconds * Speed);

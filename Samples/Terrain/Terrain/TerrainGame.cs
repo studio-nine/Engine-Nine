@@ -70,7 +70,6 @@ namespace TerrainSample
             // Uncomment next line to create a flat terrain
             //terrain = new DrawableSurface(GraphicsDevice, 1, 128, 128, 8);
 
-
             // Initialize terrain effects
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.DirectionalLight0.Enabled = true;
@@ -94,8 +93,8 @@ namespace TerrainSample
             splatterEffect.SplatterTexture = Content.Load<Texture2D>("splat");
             splatterEffect.Textures[0] = Content.Load<Texture2D>("grass");
             splatterEffect.SplatterTextureScale = new Vector2(
-                1.0f * terrain.Heightmap.TessellationU / terrain.PatchTessellation,
-                1.0f * terrain.Heightmap.TessellationV / terrain.PatchTessellation);
+                1.0f * terrain.TessellationX / terrain.PatchTessellation,
+                1.0f * terrain.TessellationY / terrain.PatchTessellation);
 
 
             decalEffect = new DecalEffect(GraphicsDevice);
@@ -131,12 +130,10 @@ namespace TerrainSample
 
 
             // Terrain picking    
-            float? distance;
-
-            Ray ray = PickEngine.RayFromScreen(GraphicsDevice,
+            Ray ray = GraphicsDevice.Viewport.CreatePickRay(
                             Mouse.GetState().X, Mouse.GetState().Y, camera.View, camera.Projection);
 
-            terrain.Pick(ray, out distance);
+            float? distance = !terrain.IsFreezed ? terrain.Intersects(ray) : null;
 
             if (distance.HasValue)
                 decalEffect.Position = ray.Position + ray.Direction * distance.Value;

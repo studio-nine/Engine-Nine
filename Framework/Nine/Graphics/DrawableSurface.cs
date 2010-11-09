@@ -60,6 +60,16 @@ namespace Nine.Graphics
         public int PatchCountY { get; private set; }
 
         /// <summary>
+        /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
+        /// </summary>
+        public int TessellationX { get; private set; }
+
+        /// <summary>
+        /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
+        /// </summary>
+        public int TessellationY { get; private set; }
+
+        /// <summary>
         /// Gets or sets any user data.
         /// </summary>
         public object Tag { get; set; }
@@ -77,7 +87,12 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the size of the surface geometry in 3 axis.
         /// </summary>
-        public Vector3 Size { get { return Heightmap.Size; } }
+        public Vector3 Size { get; private set; }
+
+        /// <summary>
+        /// Gets whether this DrawableSurface is freezed.
+        /// </summary>
+        public bool IsFreezed { get; private set; }
 
         /// <summary>
         /// Gets or sets the center position of the surface.
@@ -99,12 +114,14 @@ namespace Nine.Graphics
             {
                 BoundingBox box;
 
-                box.Min = Heightmap.BoundingBox.Min + position;
-                box.Max = Heightmap.BoundingBox.Max + position;
+                box.Min = boundingBox.Min + position;
+                box.Max = boundingBox.Max + position;
 
                 return box;
             }
         }
+
+        private BoundingBox boundingBox;
 
         /// <summary>
         /// Gets or sets the transform matrix for vertex uv coordinates.
@@ -158,6 +175,8 @@ namespace Nine.Graphics
             PatchTessellation = patchTessellation;
             GraphicsDevice = graphics;
             Heightmap = heightmap;
+            Size = heightmap.Size;
+            boundingBox = heightmap.BoundingBox;
 
             Heightmap.Invalidate += (a, b) => Invalidate();
 
@@ -166,8 +185,8 @@ namespace Nine.Graphics
             PatchCountY = heightmap.TessellationV / patchTessellation;
 
             // Store these values in case they change
-            tu = Heightmap.TessellationU;
-            tv = Heightmap.TessellationV;
+            TessellationX = Heightmap.TessellationU;
+            TessellationY = Heightmap.TessellationV;
 
             Triangles = new DrawableSurfaceTriangleCollection();
             Triangles.Surface = this;
@@ -181,6 +200,10 @@ namespace Nine.Graphics
         /// </summary>
         public void ConvertVertexType<T>(DrawSurfaceFillVertex<T> fillVertex) where T : struct, IVertexType
         {
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
             if (fillVertex == null)
                 throw new ArgumentNullException("fillVertex");
 
@@ -204,7 +227,7 @@ namespace Nine.Graphics
                     {
                         DrawableSurfacePatchImpl<T> patch;
 
-                        patch = new DrawableSurfacePatchImpl<T>(GraphicsDevice, Heightmap, x, y, PatchTessellation);
+                        patch = new DrawableSurfacePatchImpl<T>(this, GraphicsDevice, Heightmap, x, y, PatchTessellation);
 
                         patches[i] = patch;
 
@@ -234,8 +257,6 @@ namespace Nine.Graphics
             vertex.TextureCoordinate = Nine.Graphics.TextureTransform.Transform(TextureTransform, uv);
         }
 
-        private int tu, tv;
-
         /// <summary>
         /// Update internal vertex buffer, index buffer of this surface.
         /// Call this when you changed the visiblity of a triangle.
@@ -243,9 +264,16 @@ namespace Nine.Graphics
         /// </summary>
         public void Invalidate()
         {
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
+            Size = Heightmap.Size;
+            boundingBox = Heightmap.BoundingBox;
+
             // Make sure we don't change geometry tessellation
-            if (Heightmap.TessellationU != tu ||
-                Heightmap.TessellationV != tv)
+            if (Heightmap.TessellationU != TessellationX ||
+                Heightmap.TessellationV != TessellationY)
             {
                 throw new InvalidOperationException(
                     "Cannot change the heightmap to a different size after it has been bind to a surface.");
@@ -257,8 +285,30 @@ namespace Nine.Graphics
             }
         }
 
+        /// <summary>
+        /// Freezes this DrawableSurface to release resources other then rendering.
+        /// Freezed DrawableSurface cannot be altered or queried.
+        /// This process is not invertable.
+        /// </summary>
+        public void Freeze()
+        {
+            if (!IsFreezed)
+            {
+                IsFreezed = true;
+                Heightmap = null;
+                foreach (DrawableSurfacePatch patch in Patches)
+                {
+                    patch.Freeze();
+                }
+            }
+        }
+
         internal DrawableSurfaceTriangle GetTriangle(float x, float y)
         {
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
             // first we'll figure out where on the heightmap "position" is...
             x -= Position.X;
             y -= Position.Y;
@@ -304,6 +354,10 @@ namespace Nine.Graphics
         
         private void UpdatePatchPositions()
         {
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
             foreach (DrawableSurfacePatch patch in Patches)
             {
                 patch.Position = position;
@@ -330,6 +384,10 @@ namespace Nine.Graphics
         /// <returns>False if the location is outside the boundary of the surface.</returns>
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
             return Heightmap.TryGetHeightAndNormal(position - Position, out height, out normal);
         }
         #endregion
@@ -338,20 +396,26 @@ namespace Nine.Graphics
         /// <summary>
         /// Points under the heightmap and are within the boundary are picked.
         /// </summary>
-        /// <returns>This TerrainGeometry instance</returns>
-        public object Pick(Vector3 point)
+        public bool Contains(Vector3 point)
         {
-            return Heightmap.Pick(point - position) != null ? this : null;
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
+            return Heightmap.Pick(point - position);
         }
         
         /// <summary>
         /// Checks whether a ray intersects the surface mesh.
         /// </summary>
-        /// <returns>This TerrainGeometry instance</returns>
-        public object Pick(Ray ray, out float? distance)
+        public float? Intersects(Ray ray)
         {
+            if (IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
             float minDistance = float.MaxValue;
-            distance = null;
+            float? distance = null;
             int i = 0;
             Vector3[] vertices = new Vector3[3];                            
 
@@ -390,10 +454,9 @@ namespace Nine.Graphics
             if (minDistance < float.MaxValue)
             {
                 distance = minDistance;
-                return this;
             }
 
-            return null;
+            return distance;
         }
         #endregion
     }

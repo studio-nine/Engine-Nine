@@ -22,7 +22,7 @@ namespace Nine.Graphics
     /// The geometric representation of heightmap. 
     /// The up axis of the terrain is Vector.UnitZ.
     /// </summary>
-    public class Heightmap : ISurface, IPickable
+    public class Heightmap : ISurface
     {
         #region Fields
         /// <summary>
@@ -301,27 +301,22 @@ namespace Nine.Graphics
         /// <summary>
         /// Points under the heightmap and are within the boundary are picked.
         /// </summary>
-        /// <returns>This TerrainGeometry instance</returns>
-        public object Pick(Vector3 point)
+        public bool Pick(Vector3 point)
         {
             float? height = GetHeight(point.X, point.Y);
 
-            if (height.HasValue && height.Value >= point.Z)
-                return this;
-
-            return null;
+            return height.HasValue && height.Value >= point.Z;
         }
 
         /// <summary>
         /// Checks whether a ray intersects the terrain mesh.
         /// </summary>
-        /// <returns>This TerrainGeometry instance</returns>
-        public object Pick(Ray ray, out float? distance)
+        public float? Pick(Ray ray)
         {
             // This method doesn't work correctly for now
             throw new NotImplementedException();
 
-            distance = null;
+            float? distance = null;
 
             // Get two vertices to draw a line through the
             // heightfield.
@@ -445,10 +440,9 @@ namespace Nine.Graphics
                 }
 
                 distance = Vector3.Subtract(ray.Position, p).Length();
-                return this;
             }
 
-            return null;
+            return distance;
         }
         #endregion
 

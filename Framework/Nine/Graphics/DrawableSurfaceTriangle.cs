@@ -44,7 +44,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the positions of three vertices of this triangle.
         /// </summary>
-        public Vector3[] Positions
+        public Triangle Triangle
         {
             get
             {
@@ -56,7 +56,7 @@ namespace Nine.Graphics
                     result[i++] = Part.Patch.GetPosition(Part, pt);
                 }
 
-                return result;
+                return new Triangle(result[0], result[1], result[2]);
             }
         }
 

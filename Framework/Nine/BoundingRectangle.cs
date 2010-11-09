@@ -53,17 +53,19 @@ namespace Nine
         /// <summary>
         /// Tests whether the BoundingRectangle contains a point.
         /// </summary>
-        public bool Contains(float x, float y)
+        public ContainmentType Contains(float x, float y)
         {
-            return Math2D.PointInRectangle(new Vector2(x, y), Min, Max);
+            return Math2D.PointInRectangle(new Vector2(x, y), Min, Max)
+                ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
 
         /// <summary>
         /// Tests whether the BoundingRectangle contains a point.
         /// </summary>
-        public bool Contains(Vector2 point)
+        public ContainmentType Contains(Vector2 point)
         {
-            return Math2D.PointInRectangle(point, Min, Max);
+            return Math2D.PointInRectangle(point, Min, Max)
+                ? ContainmentType.Contains : ContainmentType.Disjoint;
         }
 
         /// <summary>

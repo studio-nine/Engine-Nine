@@ -1,7 +1,7 @@
-#region Copyright 2009 (c) Engine Nine
+#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -25,184 +25,27 @@ namespace Nine
     public interface IPickable
     {
         /// <summary>
-        /// Gets the object that contains the given point.
+        /// Gets wether the object contains the given point.
         /// </summary>
-        /// <param name="distance">Distance to the start of the ray.</param>
-        /// <returns>Picked object</returns>
-        object Pick(Vector3 point);
-
-
+        bool Contains(Vector3 point);
+        
         /// <summary>
         /// Gets the nearest intersection point from the specifed picking ray.
         /// </summary>
-        /// <param name="distance">Distance to the start of the ray.</param>
-        /// <returns>Picked object</returns>
-        object Pick(Ray ray, out float? distance);
+        /// <returns>Distance to the start of the ray.</returns>
+        float? Intersects(Ray ray);
     }
-
-    #region PickEngine
+    
     /// <summary>
-    /// Generic pick engine.
-    public class PickEngine : IPickable
+    /// Contains extension method for Viewport.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public static class ViewportExtensions
     {
-        struct Entry 
-        {
-            public object Object; 
-            public Matrix InverseTransform;
-            public BoundingSphere? Sphere;
-        }
-
-        List<Entry> objects = new List<Entry>();
-
-        /// <summary>
-        /// Creates a new instance of PickEngine.
-        /// </summary>
-        public PickEngine() { }
-        
-
-        /// <summary>
-        /// Add a new object to be picked. 
-        /// 
-        /// When you are adding an IGeometry instance to the pick engine, you can specify
-        /// a BoundingSphere so that the geometry is tested against the sphere before
-        /// per triangle intersection test is performed, thus improves performance.
-        /// 
-        /// However, for objects other than IGeometry, the sphere parameter is ignored and
-        /// you can safely pass null.
-        /// </summary>
-        public void Add(object item, Matrix transform, BoundingSphere? sphere)
-        {
-            if (!((item.GetType() == typeof(BoundingBox)) || (item is BoundingFrustum) ||
-                  (item.GetType() == typeof(BoundingSphere)) || (item is IPickable) || (item is IGeometry)))
-            {
-                throw new ArgumentException("Pick engine only support BoundingBox, BoundingSphere, BoundingFrustum, IPickable and IGeometry");
-            }
-
-            Entry e = new PickEngine.Entry();
-
-            e.Object = item;
-            e.InverseTransform = Matrix.Invert(transform);
-            e.Sphere = sphere;
-
-            objects.Add(e);
-        }
-        
-        /// <summary>
-        /// Clear all objects managed by this instance.
-        /// </summary>
-        public void Clear()
-        {
-            objects.Clear();
-        }
-
-        public int Count
-        {
-            get { return objects.Count; }
-        }
-
-        /// <summary>
-        /// Pick an object from the specfied position.
-        /// </summary>
-        public object Pick(Vector3 point)
-        {
-            foreach (Entry e in objects)
-            {
-                object picked = e.Object;
-                Vector3 pickPoint = Vector3.Transform(point, e.InverseTransform);
-
-
-                if (e.Object.GetType() == typeof(BoundingBox) &&
-                    (((BoundingBox)e.Object).Contains(pickPoint) == ContainmentType.Contains))
-                {
-                    return e.Object;
-                }
-
-                if (e.Object.GetType() == typeof(BoundingSphere) &&
-                    (((BoundingSphere)e.Object).Contains(pickPoint) == ContainmentType.Contains))
-                {
-                    return e.Object;
-                }
-
-                if (e.Object is BoundingFrustum &&
-                    ((e.Object as BoundingFrustum).Contains(pickPoint) == ContainmentType.Contains))
-                {
-                    return e.Object;
-                }
-
-                if (e.Object is IPickable && (picked = (e.Object as IPickable).Pick(pickPoint)) != null)
-                {
-                    return picked;
-                }
-
-                if (e.Object is IGeometry &&
-                    Intersects(e.Object as IGeometry, pickPoint, e.Sphere))
-                {
-                    return e.Object;
-                }
-            }
-
-            return null;
-        }
-
-
-        /// <summary>
-        /// Pick an object from the specfied ray.
-        /// </summary>
-        public object Pick(Ray ray, out float? distance)
-        {
-            object result = null;
-            float? point = null;
-            distance = null;
-
-
-            foreach (Entry e in objects)
-            {
-                object picked = e.Object;
-                Ray pickRay = RayExtensions.Transform(ray, e.InverseTransform);
-
-
-                if (e.Object.GetType() == typeof(BoundingBox))
-                    point = ((BoundingBox)e.Object).Intersects(pickRay);
-                else if (e.Object.GetType() == typeof(BoundingSphere))
-                    point = ((BoundingSphere)e.Object).Intersects(pickRay);
-                else if (e.Object is BoundingFrustum)
-                    point = (e.Object as BoundingFrustum).Intersects(pickRay);
-                else if (e.Object is IGeometry)
-                    point = RayExtensions.Intersects(pickRay, e.Object as IGeometry, e.Sphere);
-                else if (e.Object is IPickable)
-                    picked = (e.Object as IPickable).Pick(pickRay, out point);
-
-
-                if (point.HasValue)
-                {
-                    if (distance == null || point.Value < distance.Value)
-                    {
-                        result = picked;
-                        distance = point.Value;
-                    }
-                }
-            }
-
-            return result;
-        }
-
-
-        public static bool Intersects(IGeometry geometry, Vector3 point, BoundingSphere? sphere)
-        {
-            // Currently we only perform bounding sphere test
-            if (sphere.HasValue && sphere.Value.Contains(point) == ContainmentType.Contains)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-
         /// <summary>
         /// Creates a picking ray from screen position.
         /// </summary>
-        public static Ray RayFromScreen(GraphicsDevice graphics, int x, int y, Matrix view, Matrix projection)
+        public static Ray CreatePickRay(this Viewport viewport, int x, int y, Matrix view, Matrix projection)
         {
             // create 2 positions in screenspace using the cursor position. 0 is as
             // close as possible to the camera, 1 is as far away as possible.
@@ -213,10 +56,10 @@ namespace Nine
             // would be in world space. we'll need the projection matrix and view
             // matrix, which we have saved as member variables. We also need a world
             // matrix, which can just be identity.
-            Vector3 nearPoint = graphics.Viewport.Unproject(nearSource,
+            Vector3 nearPoint = viewport.Unproject(nearSource,
                 projection, view, Matrix.Identity);
 
-            Vector3 farPoint = graphics.Viewport.Unproject(farSource,
+            Vector3 farPoint = viewport.Unproject(farSource,
                 projection, view, Matrix.Identity);
 
             // find the direction vector that goes from the nearPoint to the farPoint
@@ -228,11 +71,9 @@ namespace Nine
             return new Ray(nearPoint, direction);
         }
     }
-    #endregion
 
-    #region RayExtensions
     /// <summary>
-    /// Contains extension method for rays.
+    /// Contains extension method for Ray.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class RayExtensions
@@ -282,7 +123,10 @@ namespace Nine
 
 
         /// <summary>
-        /// Checks whether a ray intersects a triangle. This uses the algorithm
+        /// Checks whether a ray intersects a triangle.
+        /// </summary>
+        /// <remarks> 
+        /// This uses the algorithm
         /// developed by Tomas Moller and Ben Trumbore, which was published in the
         /// Journal of Graphics Tools, volume 2, "Fast, Minimum Storage Ray-Triangle
         /// Intersection".
@@ -293,7 +137,7 @@ namespace Nine
         /// versions. This method can be called very frequently in a tight inner loop,
         /// however, so in this particular case the performance benefits from passing
         /// everything by reference outweigh the loss of readability.
-        /// </summary>
+        /// </remarks>
         public static void Intersects(this Ray ray,
                                           ref Vector3 vertex1,
                                           ref Vector3 vertex2,
@@ -373,10 +217,9 @@ namespace Nine
         public static Ray Transform(this Ray input, Matrix transform)
         {
             Vector3 pt1 = Vector3.Transform(input.Position, transform);
-            Vector3 pt2 = Vector3.Transform(input.Position + Vector3.Normalize(input.Direction), transform);
+            Vector3 pt2 = Vector3.Transform(input.Position + input.Direction, transform);
 
-            return new Ray(pt1, Vector3.Subtract(pt2, pt1));
+            return new Ray(pt1, Vector3.Normalize(Vector3.Subtract(pt2, pt1)));
         }
     }
-    #endregion
 }

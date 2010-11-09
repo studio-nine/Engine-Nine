@@ -17,13 +17,12 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 namespace Nine.Content
 {
     #region QuadTree<T>
-    public class QuadTreeWriter<T> : ContentTypeWriter<QuadTree<T>>
+    [ContentTypeWriter()]
+    internal class QuadTreeWriter<T> : ContentTypeWriter<QuadTree<T>>
     {
         protected override void Write(ContentWriter output, QuadTree<T> value)
         {
-            output.Write(value.Count);     
-            output.Write(value.Depth);
-            output.Write(value.MaxDepth);       
+            output.Write(value.MaxDepth);
             output.WriteObject<BoundingRectangle>(value.Bounds);
             output.WriteRawObject<QuadTreeNode<T>>(value.Root, new QuadTreeNodeWriter<T>());
         }
@@ -39,15 +38,15 @@ namespace Nine.Content
         }
     }
 
-    public class QuadTreeNodeWriter<T> : ContentTypeWriter<QuadTreeNode<T>>
+    [ContentTypeWriter()]
+    internal class QuadTreeNodeWriter<T> : ContentTypeWriter<QuadTreeNode<T>>
     {
         protected override void Write(ContentWriter output, QuadTreeNode<T> value)
         {
             output.Write(value.HasChildren);
             output.Write(value.Depth);
             output.WriteObject<BoundingRectangle>(value.Bounds);
-            output.WriteObject(value.Values);
-            output.WriteObject(value.Tag);
+            output.WriteObject<T>(value.Value);
 
             if (value.HasChildren)
                 output.WriteObject(value.ChildNodes);
@@ -60,18 +59,17 @@ namespace Nine.Content
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return typeof(QuadTreeReader<T>).AssemblyQualifiedName;
+            return typeof(QuadTreeNodeReader<T>).AssemblyQualifiedName;
         }
     }
     #endregion
 
     #region Octree<T>
-    public class OctreeWriter<T> : ContentTypeWriter<Octree<T>>
+    [ContentTypeWriter()]
+    internal class OctreeWriter<T> : ContentTypeWriter<Octree<T>>
     {
         protected override void Write(ContentWriter output, Octree<T> value)
         {
-            output.Write(value.Count);
-            output.Write(value.Depth);
             output.Write(value.MaxDepth);
             output.WriteObject<BoundingBox>(value.Bounds);
             output.WriteRawObject<OctreeNode<T>>(value.Root, new OctreeNodeWriter<T>());
@@ -88,15 +86,15 @@ namespace Nine.Content
         }
     }
 
-    public class OctreeNodeWriter<T> : ContentTypeWriter<OctreeNode<T>>
+    [ContentTypeWriter()]
+    internal class OctreeNodeWriter<T> : ContentTypeWriter<OctreeNode<T>>
     {
         protected override void Write(ContentWriter output, OctreeNode<T> value)
         {
             output.Write(value.HasChildren);
             output.Write(value.Depth);
             output.WriteObject<BoundingBox>(value.Bounds);
-            output.WriteObject(value.Values);
-            output.WriteObject(value.Tag);
+            output.WriteObject<T>(value.Value);
 
             if (value.HasChildren)
                 output.WriteObject(value.ChildNodes);
@@ -109,7 +107,7 @@ namespace Nine.Content
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return typeof(OctreeReader<T>).AssemblyQualifiedName;
+            return typeof(OctreeNodeReader<T>).AssemblyQualifiedName;
         }
     }
     #endregion

@@ -161,10 +161,10 @@ namespace FlockingBehaviors
         protected override void Update(GameTime gameTime)
         {            
             // Gets the pick ray from current mouse cursor
-            Ray ray = PickEngine.RayFromScreen(GraphicsDevice, Mouse.GetState().X, 
-                                                               Mouse.GetState().Y, 
-                                                               camera.View, 
-                                                               camera.Projection);
+            Ray ray = GraphicsDevice.Viewport.CreatePickRay(Mouse.GetState().X, 
+                                                            Mouse.GetState().Y, 
+                                                            camera.View, 
+                                                            camera.Projection);
 
             // Test ray against ground plane
             float? distance = ray.Intersects(new Plane(Vector3.UnitZ, 0));

@@ -104,39 +104,29 @@ namespace Nine.Graphics
         /// </summary>
         public Vector3 Position
         {
-            get 
-            {
-                Vector3 v = new Vector3();
-                
-                int xPatchCount = heightmap.TessellationU / Tessellation;
-                int yPatchCount = heightmap.TessellationV / Tessellation;
-                
-                v.X = (X + 0.5f - xPatchCount * 0.5f) * heightmap.Step * Tessellation + position.X;
-                v.Y = (Y + 0.5f - yPatchCount * 0.5f) * heightmap.Step * Tessellation + position.Y;
-                v.Z = position.Z;
-
-                return v;
-            }
-
+            get { return position + offset; }
             internal set { position = value; UpdatePartPositions(); }
         }
 
         private Heightmap heightmap;
         private BoundingBox boundingBox;
         private Vector3 position;
+        private Vector3 offset;
+        private DrawableSurface surface;
         #endregion
 
         /// <summary>
         /// Constructor is for internal use only.
         /// </summary>
-        internal DrawableSurfacePatch(GraphicsDevice graphics, Heightmap geometry, int xPatch, int yPatch, int tessellation)
+        internal DrawableSurfacePatch(DrawableSurface surface, GraphicsDevice graphics, Heightmap geometry, int xPatch, int yPatch, int tessellation)
         {
             if (6 * tessellation * tessellation > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException();
 
             if (tessellation < 2 || tessellation % 2 == 1)
                 throw new ArgumentOutOfRangeException("Patch tessellation must be even.");
-            
+
+            this.surface = surface;
             this.GraphicsDevice = graphics;
             this.heightmap = geometry;
             this.Tessellation = tessellation;
@@ -176,10 +166,32 @@ namespace Nine.Graphics
             UpdatePartPositions();
         }
 
-        internal virtual void Invalidate() { }
+        internal virtual void Invalidate() 
+        {
+            offset = new Vector3();
+
+            int xPatchCount = surface.TessellationX / Tessellation;
+            int yPatchCount = surface.TessellationY / Tessellation;
+
+            float step = surface.Size.X / surface.TessellationX;
+
+            offset.X = (X + 0.5f - xPatchCount * 0.5f) * step * Tessellation;
+            offset.Y = (Y + 0.5f - yPatchCount * 0.5f) * step * Tessellation;
+            offset.Z = 0;
+        }
+
+        internal void Freeze()
+        {
+            heightmap = null;
+            PatchParts = null;
+        }
 
         internal Vector3 GetPosition(DrawableSurfacePatchPart part, Point pt)
         {
+            if (surface.IsFreezed)
+                throw new InvalidOperationException(
+                    "Cannot perform this operation when DrawableSurface is freezed");
+
             return position + heightmap.GetPosition(
                 pt.X + part.X * 2 + X * Tessellation, 
                 pt.Y + part.Y * 2 + Y * Tessellation);
@@ -283,8 +295,8 @@ namespace Nine.Graphics
     {
         public DrawSurfaceFillVertex<T> FillVertex;
 
-        internal DrawableSurfacePatchImpl(GraphicsDevice graphics, Heightmap geometry, int xPatch, int yPatch, int tessellation)
-            : base(graphics, geometry, xPatch, yPatch, tessellation)
+        internal DrawableSurfacePatchImpl(DrawableSurface surface, GraphicsDevice graphics, Heightmap geometry, int xPatch, int yPatch, int tessellation)
+            : base(surface, graphics, geometry, xPatch, yPatch, tessellation)
         {
             // Initialize vertices and indices
             VertexBuffer = new VertexBuffer(GraphicsDevice,
@@ -300,6 +312,8 @@ namespace Nine.Graphics
 
         internal override void Invalidate()
         {
+            base.Invalidate();
+
             // Reuse the array to avoid creating large chunk of data.
             int indexCount = 6 * Tessellation * Tessellation;
 

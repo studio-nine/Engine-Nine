@@ -34,6 +34,37 @@ namespace Nine.Content.Pipeline.Processors
     public class ExtendedModelProcessor : ModelProcessor
     {
         /// <summary>
+        /// Gets or sets a value indicating whether animation data will be generated.
+        /// </summary>
+        [DefaultValue(true)]
+        [DisplayName("Generate Animation Data")]
+        public bool GenerateAnimationData { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether collision data will be generated.
+        /// </summary>
+        [DefaultValue(true)]
+        [DisplayName("Generate Collision Data")]
+        public bool GenerateCollisionData { get; set; }
+
+        /// <summary>
+        /// Gets or sets the depth of the collision tree.
+        /// </summary>
+        [DefaultValue(3)]
+        [DisplayName("Collision Tree Depth")]
+        public int CollisionTreeDepth { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of ExtendedModelProcessor.
+        /// </summary>
+        public ExtendedModelProcessor()
+        {
+            GenerateCollisionData = true;
+            GenerateAnimationData = true;
+            CollisionTreeDepth = 3;
+        }
+
+        /// <summary>
         /// The main Process method converts an intermediate format content pipeline
         /// NodeContent tree to a ModelContent object with embedded animation data.
         /// </summary>
@@ -41,16 +72,29 @@ namespace Nine.Content.Pipeline.Processors
         {
             ValidateMesh(input, context, null);
 
-
-            ModelAnimationProcessor animationProcessor = new ModelAnimationProcessor();
-            ModelSkinningProcessor skinningProcessor = new ModelSkinningProcessor();
-
             ModelTag tag = new ModelTag();
 
-            // Store our custom animation data in the Tag property of the model.
-            tag.Skinning = skinningProcessor.Process(input, context);
-            tag.Animations = animationProcessor.Process(input, context);
+            if (GenerateAnimationData)
+            {
+                ModelAnimationProcessor animationProcessor = new ModelAnimationProcessor();
+                ModelSkinningProcessor skinningProcessor = new ModelSkinningProcessor();
 
+                tag.Skinning = skinningProcessor.Process(input, context);
+                tag.Animations = animationProcessor.Process(input, context);
+            }
+
+            if (GenerateCollisionData)
+            {
+                ModelCollisionProcessor collisionProcessor = new ModelCollisionProcessor();
+
+                collisionProcessor.RotationX = RotationX;
+                collisionProcessor.RotationY = RotationY;
+                collisionProcessor.RotationZ = RotationZ;
+                collisionProcessor.Scale = Scale;
+                collisionProcessor.CollisionTreeDepth = CollisionTreeDepth;
+
+                tag.Collision = collisionProcessor.Process(input, context);
+            }
 
             // Only skinned models need to be baked ???
             if (tag.Skinning != null)
@@ -58,7 +102,8 @@ namespace Nine.Content.Pipeline.Processors
 
             ModelContent model = base.Process(input, context);
 
-            model.Tag = tag;
+            if (GenerateAnimationData || GenerateCollisionData)
+                model.Tag = tag;
 
             return model;
         }
@@ -76,7 +121,7 @@ namespace Nine.Content.Pipeline.Processors
                 if (parentBoneName != null)
                 {
                     context.Logger.LogWarning(null, null,
-                        "Mesh {0} is a child of bone {1}. SkinnedModelProcessor " +
+                        "Mesh {0} is a child of bone {1}. ExtendedModelProcessor " +
                         "does not correctly handle meshes that are children of bones.",
                         mesh.Name, parentBoneName);
                 }

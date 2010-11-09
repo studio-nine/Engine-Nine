@@ -79,7 +79,7 @@
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\AddHelper.cs" />
     <Compile Include="BoundingRectangle.cs" />
-    <Compile Include="InternalReadOnlyCollection.cs" />
+    <Compile Include="Triangle.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
     <Compile Include="Math2D.cs" />
     <Compile Include="Octree.cs" />
@@ -251,7 +251,7 @@
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="NamedObjectManager.cs" />
     <Compile Include="Surface.cs" />
-    <Compile Include="PickEngine.cs" />
+    <Compile Include="Pickable.cs" />
     <Compile Include="LerpHelper.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="Curves.cs" />

@@ -42,7 +42,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Constructs a new skinning data object.
         /// </summary>
-        public ModelSkinning(List<Matrix> inverseBindPose, int skeleton)
+        internal ModelSkinning(List<Matrix> inverseBindPose, int skeleton)
         {
             if (skeleton < 0 || inverseBindPose == null || inverseBindPose.Count <= 0)
                 throw new ArgumentException("Error creating skinner.");
@@ -91,7 +91,7 @@ namespace Nine.Graphics
                 bones = new Matrix[model.Bones.Count];
 
             model.CopyAbsoluteBoneTransformsTo(bones);
-
+            
             for (int i = 0; i < InverseBindPose.Count; i++)
             {
                 // Apply inverse bind pose
@@ -99,6 +99,27 @@ namespace Nine.Graphics
             }
 
             return skin;
+        }
+
+        /// <summary>
+        /// Skin the target model based on the current state of model bone transforms.
+        /// </summary>
+        /// <param name="skin">
+        /// A matrix array to hold the result transformations.
+        /// The length must be at least InverseBindPose.Count.
+        /// </param>
+        public void GetBoneTransforms(Model model, Matrix world, Matrix[] skin)
+        {
+            if (bones == null || bones.Length < model.Bones.Count)
+                bones = new Matrix[model.Bones.Count];
+
+            model.CopyAbsoluteBoneTransformsTo(bones);
+            
+            for (int i = 0; i < InverseBindPose.Count; i++)
+            {
+                // Apply inverse bind pose
+                skin[i] = InverseBindPose[i] * bones[SkeletonIndex + i] * world;
+            }
         }
 
         static Matrix[] bones = null;

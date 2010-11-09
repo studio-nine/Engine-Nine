@@ -31,6 +31,7 @@
       <Name>dude</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
+      <ProcessorParameters_CollisionTreeDepth>5</ProcessorParameters_CollisionTreeDepth>
     </Compile>
   </ItemGroup>
   <ItemGroup>

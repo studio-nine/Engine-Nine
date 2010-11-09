@@ -138,8 +138,7 @@ namespace PathFinding
         private PathGridNode? GetPickedNode(int x, int y)
         {
             // Gets the pick ray from current mouse cursor
-            Ray ray = PickEngine.RayFromScreen(GraphicsDevice, x, y, camera.View, camera.Projection);
-            
+            Ray ray = GraphicsDevice.Viewport.CreatePickRay(x, y, camera.View, camera.Projection);
             // Test ray against ground plane
             float? distance = ray.Intersects(new Plane(Vector3.UnitZ, 0));
 

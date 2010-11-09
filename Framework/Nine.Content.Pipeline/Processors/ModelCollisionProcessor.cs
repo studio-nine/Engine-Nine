@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2008 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -53,6 +53,8 @@ namespace Nine.Content.Pipeline.Processors
 
         public override ModelCollision Process(NodeContent input, ContentProcessorContext context)
         {
+            //System.Diagnostics.Debugger.Launch();
+
             List<Vector3> positions = new List<Vector3>();
             List<ushort> indices = new List<ushort>();
 
@@ -65,17 +67,21 @@ namespace Nine.Content.Pipeline.Processors
 
             ModelCollision collision = new ModelCollision();
 
-            collision.BoundingSphere = BoundingSphere.CreateFromPoints(positions);
-            collision.CollisionTree = new Octree<object>(CollisionTreeDepth, BoundingBox.CreateFromPoints(positions));
+            collision.CollisionTree = new Octree<bool>(CollisionTreeDepth, BoundingBox.CreateFromPoints(positions));
 
             for (int i = 0; i < indices.Count; i += 3)
             {
-                collision.CollisionTree.Add(null, (o) =>
+                collision.CollisionTree.ExpandAll((o) =>
                 {
-                    return BoxContainsTriangle(o,
+                    bool contains = o.Bounds.Contains(new Triangle(
                                 positions[indices[i]],
                                 positions[indices[i + 1]],
-                                positions[indices[i + 2]]);
+                                positions[indices[i + 2]])) != ContainmentType.Disjoint;
+                    
+                    if (contains)
+                        o.Value = true;
+
+                    return contains;
                 });
             }
 
@@ -106,13 +112,6 @@ namespace Nine.Content.Pipeline.Processors
                 foreach (NodeContent child in input.Children)
                     ProcessNode(transform, child, positions, indices);
             }
-        }
-
-        private bool BoxContainsTriangle(BoundingBox boundingBox, Vector3 a, Vector3 b, Vector3 c)
-        {
-            BoundingBox box = BoundingBox.CreateFromPoints(new Vector3[] { a, b, c });
-
-            return boundingBox.Contains(box) != ContainmentType.Disjoint;
         }
     }
 }

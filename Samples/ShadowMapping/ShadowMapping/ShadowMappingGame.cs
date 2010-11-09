@@ -136,7 +136,6 @@ namespace ShadowMapping
 
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-
             // This value needs to be tweaked
             shadow.DepthBias = 0.005f;
 

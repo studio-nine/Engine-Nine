@@ -1,7 +1,7 @@
-﻿#region Copyright 2010 (c) Engine Nine
+﻿#region Copyright 2008 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -31,21 +31,48 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the collision tree.
         /// </summary>
-        public Octree<object> CollisionTree { get; internal set; }
+        [ContentSerializer]
+        public Octree<bool> CollisionTree { get; internal set; }
 
         /// <summary>
-        /// Gets the bounding sphere
+        /// Gets wether the object contains the given point.
         /// </summary>
-        public BoundingSphere BoundingSphere { get; internal set; }
-
-        public object Pick(Vector3 point)
+        public bool Contains(Vector3 point)
         {
-            throw new NotImplementedException();
+            IEnumerable<OctreeNode<bool>> nodes = CollisionTree.Traverse((o) =>
+            {
+                return o.Value && o.Bounds.Contains(point) == ContainmentType.Contains;
+            });
+
+            foreach (OctreeNode<bool> node in nodes)
+            {
+                if (!node.HasChildren)
+                    return true;
+            }
+
+            return false;
         }
 
-        public object Pick(Ray ray, out float? distance)
+        /// <summary>
+        /// Gets the nearest intersection point from the specifed picking ray.
+        /// </summary>
+        /// <returns>Distance to the start of the ray.</returns>
+        public float? Intersects(Ray ray)
         {
-            throw new NotImplementedException();
+            float? currentDistance = null;
+
+            IEnumerable<OctreeNode<bool>> nodes = CollisionTree.Traverse((o) =>
+            {
+                return o.Value && (currentDistance = o.Bounds.Intersects(ray)) != null;
+            });
+
+            foreach (OctreeNode<bool> node in nodes)
+            {
+                if (!node.HasChildren)
+                    return currentDistance;
+            }
+
+            return null;
         }
     }
 }

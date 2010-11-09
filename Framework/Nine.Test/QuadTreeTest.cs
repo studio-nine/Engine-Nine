@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2008 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -21,13 +21,16 @@ namespace Nine.Test
         [TestMethod()]
         public void AddRemoveTest()
         {
+            Octree<bool> oct = new Octree<bool>(2, new BoundingBox(Vector3.Zero, Vector3.One * 4));
+
+            oct.ExpandAll((o) => { return o.Bounds.Contains(Vector3.One * 0.1f) == ContainmentType.Contains; });
+
             object a = new object();
             object b = new object();
 
             QuadTree<object> tree = new QuadTree<object>(2,
                             new BoundingRectangle(
                             new Vector2(0, 0), new Vector2(4, 4)));
-
         }
 
         [TestMethod()]
@@ -44,23 +47,6 @@ namespace Nine.Test
             Assert.AreEqual<BoundingRectangle>(bounds, tree.Bounds);
             Assert.AreEqual<BoundingRectangle>(bounds, tree.Root.Bounds);
             Assert.AreEqual<int>(0, tree.Root.Depth);
-            Assert.AreEqual<int>(0, tree.Count);
-
-            tree.Add(null, (o) => 
-            {
-                return o.Contains(0.5f, 0.5f);
-            });
-
-            Assert.AreEqual<int>(2, tree.Depth);
-            Assert.AreEqual<int>(1, tree.Count);
-
-            QuadTreeNode<object> leaf = tree.FindFirst(TreeNodeType.Bottom, (o) => 
-            {
-                return o.Bounds.Contains(0.1f, 0.1f);
-            });
-
-            Assert.IsNotNull(leaf);
-            Assert.AreEqual<int>(2, leaf.Depth);
         }
     }
 }

@@ -103,9 +103,9 @@
     </Compile>
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
-    <Compile Include="InternalReadOnlyCollection.cs" />
     <Compile Include="Math2D.cs" />
     <Compile Include="OcTree.cs" />
+    <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Graphics\Batch.cs" />
@@ -232,8 +232,8 @@
     <Compile Include="ScreenshotCapturer.cs" />
     <Compile Include="SpatialObjectManager.cs" />
     <Compile Include="Surface.cs" />
-    <Compile Include="PickEngine.cs" />
     <Compile Include="LerpHelper.cs" />
+    <Compile Include="Triangle.cs" />
     <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
