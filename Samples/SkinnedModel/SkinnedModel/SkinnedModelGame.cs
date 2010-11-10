@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
+using Nine.Animations;
 #endregion
 
 namespace SkinnedModel
@@ -41,9 +42,8 @@ namespace SkinnedModel
 
         Model model;
         BoneAnimation animation;
-        ModelSkinning skinning;
         ModelBatch modelBatch;
-
+        Input input;
         ModelViewerCamera camera;
 
 
@@ -81,12 +81,37 @@ namespace SkinnedModel
             // we will try to add model animation and skinning data.
             model = Content.Load<Model>("peon");
 
-            // Now load our model animation and skinning using extension method.
-            animation = new BoneAnimation(model, model.GetAnimation(0));
-            animation.Speed = 1.0f;
-            animation.Play();
+            PlayAnimation(0);
+            //animation.Seek(animation.Duration);
 
-            skinning = model.GetSkinning();
+            input = new Input();
+            input.MouseDown += (o, e) => 
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    Random random = new Random();
+                    PlayAnimation(random.Next(model.GetAnimations().Count));
+                }
+            };
+        }
+
+        private void PlayAnimation(int i)
+        {
+            if (animation != model.GetAnimation(i))
+            {
+                // Now load our model animation and skinning using extension method.
+                animation = model.GetAnimation(i);
+                //animation.Speed = 0.04f;
+                //animation.Ending = KeyframeEnding.Clamp;
+                //animation.BlendEnabled = false;
+                //animation.BlendDuration = TimeSpan.FromSeconds(1);
+                //animation.InterpolationEnabled = false;
+                //animation.Repeat = 1.5f;
+                animation.AutoReverse = true;
+                //animation.StartupDirection = AnimationDirection.Backward;
+                animation.Disable(1, false);
+                animation.Play();
+            }
         }
 
         /// <summary>
@@ -96,7 +121,8 @@ namespace SkinnedModel
         {
             // Update model animation.
             // Note how animations and skinning are seperated.
-            animation.Update(gameTime);
+            if (animation != null)
+                animation.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -107,11 +133,10 @@ namespace SkinnedModel
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
+            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
-            Matrix[] bones = null;
-
-            Matrix world = Matrix.CreateTranslation(0, -4000, 0) *
-                           Matrix.CreateScale(0.001f);           
+            Matrix world = Matrix.CreateTranslation(0, -60, 0) *
+                           Matrix.CreateScale(0.1f);           
             
 
             // Gets the pick ray from current mouse cursor
@@ -122,11 +147,10 @@ namespace SkinnedModel
             // Do ray model intersection test
             float? distance = model.Intersects(world, ray);
 
-            Window.Title = distance.HasValue ? "Picked" : "Nothing";
+            //Window.Title = distance.HasValue ? "Picked" : "Nothing";
 
-            // To draw skinned models, first compute bone transforms using model skinning
-            if (skinning != null)
-                bones = skinning.GetBoneTransforms(model);
+            // To draw skinned models, first compute bone transforms
+            Matrix[] bones = model.GetBoneTransforms();
 
             // Pass bone transforms to model batch to draw skinned models
             modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);

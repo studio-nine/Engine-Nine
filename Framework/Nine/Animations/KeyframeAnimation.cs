@@ -21,6 +21,39 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Animations
 {
     /// <summary>
+    /// Defines the behavior of the last ending keyframe.
+    /// </summary>
+    /// <remarks>
+    /// The difference between these behaviors won't be noticeable
+    /// unless the KeyframeAnimation is really slow.
+    /// </remarks>
+    public enum KeyframeEnding
+    {
+        /// <summary>
+        /// The animation will wait for the last frame to finish
+        /// but won't blend the last frame with the first frame.
+        /// Specify this when your animation isn't looped.
+        /// </summary>
+        Clamp,
+
+        /// <summary>
+        /// The animation will blend between the last keyframe
+        /// and the first keyframe. 
+        /// Specify this when the animation is looped and the first
+        /// frame doesn't equal to the last frame.
+        /// </summary>
+        Wrap,
+
+        /// <summary>
+        /// The animation will stop immediately when it reaches
+        /// the last frame, so the ending frame has no duration.
+        /// Specify this when the animation is looped and the first
+        /// frame is identical to the last frame.
+        /// </summary>
+        Discard,
+    }
+
+    /// <summary>
     /// Event args used by KeyframeAnimation events.
     /// </summary>
     public class KeyframeEventArges : EventArgs
@@ -64,6 +97,12 @@ namespace Nine.Animations
         public int TotalFrames { get { return GetTotalFrames(); } }
 
         /// <summary>
+        /// Gets or sets the behavior of the ending keyframe.
+        /// The default value is KeyframeEnding.Clamp.
+        /// </summary>
+        public KeyframeEnding Ending { get; set; }
+
+        /// <summary>
         /// Occurs when this animation has just entered the current frame.
         /// </summary>
         public event EventHandler<KeyframeEventArges> EnterFrame;
@@ -82,7 +121,7 @@ namespace Nine.Animations
                 throw new ArgumentOutOfRangeException("position");
 
             if (position == Duration)
-                return TotalFrames - 1;
+                return Ending == KeyframeEnding.Discard ? TotalFrames - 2 : TotalFrames - 1;
 
             return (int)(position.TotalSeconds * FramesPerSecond);
         }
@@ -95,7 +134,7 @@ namespace Nine.Animations
             if (frame < 0 || frame >= TotalFrames)
                 throw new ArgumentOutOfRangeException("frame");
 
-            Seek(TimeSpan.FromSeconds(frame * FramesPerSecond));
+            Seek(TimeSpan.FromSeconds(1.0 * frame / FramesPerSecond));
         }
 
         // Use to prevent from alway calling exit frame before enter frame
@@ -128,9 +167,12 @@ namespace Nine.Animations
             int current = GetFrame(position);
             int previous = GetFrame(previousPosition);
 
-            float percentage = (float)((ElapsedTime.TotalSeconds * FramesPerSecond - current) );
+            float percentage = (float)((Position.TotalSeconds * FramesPerSecond - current) );
 
-            OnSeek(current, (current + 1) % TotalFrames, percentage);
+            if (Ending == KeyframeEnding.Wrap)
+                OnSeek(current, (current + 1) % TotalFrames, percentage);
+            else if (Ending == KeyframeEnding.Clamp || Ending == KeyframeEnding.Discard)
+                OnSeek(current, Math.Min(current + 1, TotalFrames - 1), percentage);
 
             if (current != previous || !hasPlayed)
             {
@@ -148,7 +190,8 @@ namespace Nine.Animations
 
         protected sealed override TimeSpan GetDuration()
         {
-            return TimeSpan.FromSeconds(TotalFrames / FramesPerSecond);
+            int realFrames = Ending == KeyframeEnding.Discard ? (TotalFrames - 1) : TotalFrames;
+            return TimeSpan.FromSeconds( realFrames / FramesPerSecond);
         }
 
         /// <summary>

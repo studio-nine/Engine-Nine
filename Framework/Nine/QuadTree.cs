@@ -195,7 +195,7 @@ namespace Nine
                 {
                     yield return node;
 
-                    foreach (QuadTreeNode<T> child in node.ChildNodes)
+                    foreach (QuadTreeNode<T> child in node.Children)
                     {
                         stack.Push(child);
                     }
@@ -244,7 +244,7 @@ namespace Nine
         /// <summary>
         /// Gets a read-only collection of the 4 child nodes.
         /// </summary>
-        public ICollection<QuadTreeNode<T>> ChildNodes
+        public ICollection<QuadTreeNode<T>> Children
         {
             get { return HasChildren ? childNodes : Empty; }
         }
@@ -280,7 +280,7 @@ namespace Nine
 
                 if (node.HasChildren)
                 {
-                    foreach (QuadTreeNode<T> child in node.ChildNodes)
+                    foreach (QuadTreeNode<T> child in node.Children)
                     {
                         child.Parent = node;
                         stack.Push(child);

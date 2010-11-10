@@ -51,9 +51,31 @@ namespace Nine.Animations
         }
 
         /// <summary>
-        /// Gets the elapsed time of this animation.
+        /// Gets the elapsed time since the playing of this animation.
         /// </summary>
         public TimeSpan ElapsedTime { get; private set; }
+
+        /// <summary>
+        /// Gets the elapsed time since the beginning of this animation.
+        /// </summary>
+        public TimeSpan Position
+        {
+            get
+            {
+                TimeSpan result = unfixedPosition;
+                if (Direction == AnimationDirection.Backward)
+                {
+                    result = Duration - unfixedPosition;
+
+                    if (result == Duration)
+                        result = result - Epsilon;
+                }
+                return result;
+            }
+        }
+
+        TimeSpan unfixedPosition;
+        static TimeSpan Epsilon = TimeSpan.FromTicks(1);
 
         /// <summary>
         /// Gets the total length of the animation without been affected
@@ -113,13 +135,13 @@ namespace Nine.Animations
             {
                 if (value <= 0)
                     throw new InvalidOperationException("Speed must be greater then zero.");
-                
+
                 repeat = value;
             }
         }
 
         private float repeat = float.MaxValue;
-        private float repeatCounter = float.MaxValue;
+        private TimeSpan targetElapsedTime = TimeSpan.Zero;
 
         /// <summary>
         /// Occurs when this animation has completely finished playing.
@@ -139,31 +161,30 @@ namespace Nine.Animations
             if (position < TimeSpan.Zero || position > Duration)
                 throw new ArgumentOutOfRangeException("position");
 
-            if (position == Duration)
-                position = TimeSpan.Zero;
-
-            if (position == ElapsedTime)
+            if (position == unfixedPosition)
                 return;
 
+            TimeSpan previousPosition = Position;
+
+            unfixedPosition = position;
+            if (Direction == AnimationDirection.Backward)
+            {
+                unfixedPosition = Duration - unfixedPosition;
+            }
+
+            TimeSpan increment = Position - previousPosition;
+
             if (Direction == AnimationDirection.Forward)
-            {
-                repeatCounter -= (float)((position - ElapsedTime).TotalSeconds / Duration.TotalSeconds);
-            }
-            else if (StartupDirection == AnimationDirection.Backward)
-            {
-                if (ElapsedTime == TimeSpan.Zero)
-                    repeatCounter += (float)((position - Duration).TotalSeconds / Duration.TotalSeconds);
-                else
-                    repeatCounter += (float)((position - ElapsedTime).TotalSeconds / Duration.TotalSeconds);
-            }
+                targetElapsedTime -= increment;
+            else
+                targetElapsedTime += increment;
 
-            TimeSpan previousPosition = ElapsedTime;
-
-            ElapsedTime = position;
-
-            OnSeek(position, previousPosition);
+            OnSeek(Position, previousPosition);
         }
 
+        /// <summary>
+        /// When overridden, position the animation at the specified location.
+        /// </summary>
         protected abstract void OnSeek(TimeSpan position, TimeSpan previousPosition);
 
         protected virtual void OnRepeated()
@@ -181,7 +202,11 @@ namespace Nine.Animations
         protected override void OnStarted()
         {
             Direction = StartupDirection;
-            repeatCounter = repeat;
+            ElapsedTime = TimeSpan.Zero;
+            unfixedPosition = TimeSpan.Zero;
+
+            targetElapsedTime = TimeSpan.FromSeconds(
+                Math.Min(repeat * Duration.TotalSeconds, TimeSpan.MaxValue.TotalSeconds * 0.9));
 
             Seek(TimeSpan.Zero);
 
@@ -190,11 +215,6 @@ namespace Nine.Animations
 
         protected override void OnStopped()
         {
-            Direction = StartupDirection;
-            repeatCounter = repeat;
-
-            Seek(TimeSpan.Zero);
-
             base.OnStopped();
         }
 
@@ -206,66 +226,36 @@ namespace Nine.Animations
             if (Duration == TimeSpan.Zero || State != AnimationState.Playing)
                 return;
 
-            TimeSpan previousPosition = ElapsedTime;
+            TimeSpan previousPosition = Position;
+            TimeSpan increment = TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * Speed);
 
-            double increment = gameTime.ElapsedGameTime.TotalSeconds * Speed;
+            if (increment == TimeSpan.Zero)
+                return;
 
-            if (Direction == AnimationDirection.Forward)
-            {
-                ElapsedTime += TimeSpan.FromSeconds(increment);
-            }
-            else
-            {
-                ElapsedTime -= TimeSpan.FromSeconds(increment);
-            }
+            ElapsedTime += increment;
+            unfixedPosition += increment;
 
-            while (ElapsedTime >= Duration || ElapsedTime < TimeSpan.Zero)
+            while (unfixedPosition >= Duration)
             {
-                if (Direction == AnimationDirection.Forward)
+                unfixedPosition -= Duration;
+                if (AutoReverse)
                 {
-                    if (AutoReverse)
-                    {
-                        Direction = AnimationDirection.Backward;
-                        ElapsedTime = Duration - (ElapsedTime - Duration);
-                        
-                        while (ElapsedTime >= Duration)
-                            ElapsedTime -= Duration;
-
-                        OnRepeated();
-                    }
-                    else
-                    {
-                        ElapsedTime -= Duration;
-                    }
-                }
-                else
-                {
-                    if (AutoReverse)
-                    {
+                    if (Direction == AnimationDirection.Backward)
                         Direction = AnimationDirection.Forward;
-                        ElapsedTime = -ElapsedTime;
-
-                        while (ElapsedTime < TimeSpan.Zero)
-                            ElapsedTime += Duration;
-
-                        OnRepeated();
-                    }
                     else
-                    {
-                        ElapsedTime = Duration + ElapsedTime;
-                    }
+                        Direction = AnimationDirection.Backward;
                 }
+                OnRepeated();
             }
 
-            OnSeek(ElapsedTime, previousPosition);
-
-            repeatCounter -= (float)(increment / Duration.TotalSeconds);
-
-            if (repeatCounter <= 0)
+            if (ElapsedTime >= targetElapsedTime)
             {
-                OnCompleted();
                 Stop();
+                OnCompleted();
+                return;
             }
+
+            OnSeek(Position, previousPosition);
         }
     }
 }

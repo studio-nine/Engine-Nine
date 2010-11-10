@@ -26,15 +26,119 @@ using Nine.Graphics;
 
 namespace Nine.Content.Pipeline.Processors
 {
+
+    #region Keyframe
+    /// <summary>
+    /// Describes the position of a single bone at a single point in time.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class Keyframe
+    {
+        /// <summary>
+        /// Gets the index of the target bone that is animated by this keyframe.
+        /// </summary>
+        [ContentSerializer]
+        public int Bone { get; private set; }
+
+
+        /// <summary>
+        /// Gets the time offset from the start of the animation to this keyframe.
+        /// </summary>
+        [ContentSerializer]
+        public TimeSpan Time { get; private set; }
+
+
+        /// <summary>
+        /// Gets the bone transform for this keyframe.
+        /// </summary>
+        [ContentSerializer]
+        public Matrix Transform { get; private set; }
+
+
+        /// <summary>
+        /// Constructs a new keyframe object.
+        /// </summary>
+        public Keyframe(int bone, TimeSpan time, Matrix transform)
+        {
+            Bone = bone;
+            Time = time;
+            Transform = transform;
+        }
+
+        /// <summary>
+        /// Private constructor for use by the XNB deserializer.
+        /// </summary>
+        private Keyframe() { }
+    }
+    #endregion
+
+    #region AnimationClip
+    /// <summary>
+    /// It holds all the keyframes needed to describe a single animation.
+    /// </summary>
+    public class AnimationClip
+    {
+        /// <summary>
+        /// Gets the total length of the animation.
+        /// </summary>
+        [ContentSerializer]
+        public TimeSpan Duration { get; set; }
+
+
+        /// <summary>
+        /// Gets a combined list containing all the keyframes for all bones,
+        /// sorted by time.
+        /// </summary>
+        [ContentSerializer]
+        public List<Keyframe> Keyframes { get; private set; }
+
+
+        /// <summary>
+        /// Constructs a new animation clip object.
+        /// </summary>
+        public AnimationClip(TimeSpan duration, List<Keyframe> keyframes)
+        {
+            Duration = duration;
+            Keyframes = keyframes;
+        }
+
+        /// <summary>
+        /// Private constructor for use by the XNB deserializer.
+        /// </summary>
+        private AnimationClip() { }
+    }
+    #endregion
+
+    #region ModelAnimationProcessor
     /// <summary>
     /// Custom processor extends the builtin framework ModelProcessor class,
     /// adding animation support.
     /// </summary>
     [ContentProcessor(DisplayName="Model Animation Processor - Nine")]
-    public class ModelAnimationProcessor : ContentProcessor<NodeContent, Dictionary<string, AnimationClip>>
+    public class ModelAnimationProcessor : ContentProcessor<NodeContent, Dictionary<string, BoneAnimationClip>>
     {
-        public override Dictionary<string, AnimationClip> Process(NodeContent input, ContentProcessorContext context)
+        [DefaultValue(60)]
+        [DisplayName("Animation Frame Rate")]
+        public int FramesPerSecond { get; set; }
+
+        ContentProcessorContext context;
+
+        /// <summary>
+        /// Creates a new instance of ModelAnimationProcessor.
+        /// </summary>
+        public ModelAnimationProcessor()
         {
+            FramesPerSecond = 60;
+        }
+
+        public override Dictionary<string, BoneAnimationClip> Process(NodeContent input, ContentProcessorContext context)
+        {
+            //System.Diagnostics.Debugger.Launch();
+            this.context = context;
+
+            if (FramesPerSecond <= 0)
+                throw new ArgumentOutOfRangeException("FramesPerSecond");
+
             // Flattern input node content
             List<NodeContent> nodes = new List<NodeContent>();
             
@@ -46,6 +150,9 @@ namespace Nine.Content.Pipeline.Processors
 
             ProcessAnimation(input, animations, nodes);
 
+            if (animations.Count <= 0)
+                return null;
+
 
             // Sort keyframes
             foreach (AnimationClip clip in animations.Values)
@@ -53,7 +160,16 @@ namespace Nine.Content.Pipeline.Processors
                 clip.Keyframes.Sort(CompareKeyframeTimes);
             }
 
-            return animations;
+
+            // Convert to BoneAnimationClip format
+            Dictionary<string, BoneAnimationClip> boneAnimations = new Dictionary<string, BoneAnimationClip>();
+
+            foreach (string key in animations.Keys)
+            {
+                boneAnimations.Add(key, ConvertAnimationClip(animations[key]));
+            }
+
+            return boneAnimations;
         }
         
         /// <summary>
@@ -145,12 +261,10 @@ namespace Nine.Content.Pipeline.Processors
         /// </summary>
         static AnimationClip ProcessAnimation(AnimationContent animation, Dictionary<string, int> boneMap)
         {
-            //System.Diagnostics.Debugger.Launch();
             List<Keyframe> keyframes = new List<Keyframe>();
 
             // For each input animation channel.
-            foreach (KeyValuePair<string, AnimationChannel> channel in
-                animation.Channels)
+            foreach (KeyValuePair<string, AnimationChannel> channel in animation.Channels)
             {
                 // Look up what bone this channel is controlling.
                 int boneIndex;
@@ -187,5 +301,131 @@ namespace Nine.Content.Pipeline.Processors
         {
             return a.Time.CompareTo(b.Time);
         }
+
+
+        private BoneAnimationClip ConvertAnimationClip(AnimationClip animation)
+        {            
+            BoneAnimationClip boneAnimation = new BoneAnimationClip();
+            boneAnimation.FramesPerSecond = FramesPerSecond;
+            boneAnimation.TotalFrames = (int)Math.Round(animation.Duration.TotalSeconds * FramesPerSecond);
+
+
+            int maxBones = 0;
+            Dictionary<int, List<Keyframe>> keyframes = new Dictionary<int, List<Keyframe>>();
+            foreach (Keyframe keyframe in animation.Keyframes)
+            {
+                if (keyframe.Bone > maxBones)
+                    maxBones = keyframe.Bone;
+
+                if (!keyframes.ContainsKey(keyframe.Bone))
+                    keyframes.Add(keyframe.Bone, new List<Keyframe>());
+
+                keyframes[keyframe.Bone].Add(keyframe);
+            }
+
+
+            boneAnimation.Transforms = new Matrix[maxBones + 1][];
+            for (int i = 0; i <= maxBones; i++)
+            {
+                if (keyframes.ContainsKey(i))
+                    boneAnimation.Transforms[i] = new Matrix[boneAnimation.TotalFrames];
+            }
+
+
+            TimeSpan time = TimeSpan.Zero;
+            TimeSpan step = TimeSpan.FromSeconds(1.0 / FramesPerSecond);
+
+            for (int frame = 0; frame < boneAnimation.TotalFrames; frame++)
+            {
+                foreach (int bone in keyframes.Keys)
+                {
+                    List<Keyframe> channel = keyframes[bone];
+                    Matrix transform = Matrix.Identity;
+
+                    if (time <= channel[0].Time)
+                    {
+                        transform = channel[0].Transform;
+                    }
+                    else if (time >= channel[channel.Count - 1].Time)
+                    {
+                        transform = channel[channel.Count - 1].Transform;
+                    }
+                    else
+                    {
+                        int k = 0;
+                        while (channel[k].Time < time) k++;
+
+                        double lerp = (channel[k].Time - time).TotalSeconds /
+                                      (channel[k].Time - channel[k - 1].Time).TotalSeconds;
+
+                        transform = LerpHelper.Slerp(
+                            channel[k].Transform, 
+                            channel[k - 1].Transform, (float)lerp);
+                    }
+
+                    boneAnimation.Transforms[bone][frame] = transform;
+                }
+
+                time += step;
+            }
+
+            FigureOutPreferredEnding(boneAnimation);
+
+            return boneAnimation;
+        }
+
+        private void FigureOutPreferredEnding(BoneAnimationClip clip)
+        {
+            float maxDifference = 0;
+
+            for (int bone = 0; bone < clip.Transforms.Length; bone++)
+            {
+                if (clip.Transforms[bone] == null)
+                    continue;
+
+                if (clip.TotalFrames <= 1)
+                    continue;
+
+
+                float a = (MatrixDifference(
+                                    clip.Transforms[bone][0],
+                                    clip.Transforms[bone][clip.TotalFrames - 1]) * 1000);
+                float b = (MatrixDifference(
+                                    clip.Transforms[bone][clip.TotalFrames - 1],
+                                    clip.Transforms[bone][clip.TotalFrames - 2]) * 1000 + 1);
+
+                float difference = a / b;
+
+                if (difference > maxDifference)
+                    maxDifference = difference;
+            }
+
+            //context.Logger.LogImportantMessage(maxDifference.ToString());
+
+            float thresoldIdentical = 1000;
+            float thresoldApproximate = 10000;
+
+            if (maxDifference <= thresoldIdentical)
+                clip.PreferredEnding = Animations.KeyframeEnding.Discard;
+            else if (maxDifference <= thresoldApproximate)
+                clip.PreferredEnding = Animations.KeyframeEnding.Wrap;
+            else
+                clip.PreferredEnding = Animations.KeyframeEnding.Clamp;
+        }
+
+        private float MatrixDifference(Matrix a, Matrix b)
+        {
+            Vector3 v1 = Vector3.Zero;
+            Vector3 v2 = Vector3.One;
+
+            Vector3 a1 = Vector3.Transform(v1, a);
+            Vector3 a2 = Vector3.Transform(v2, a);
+
+            Vector3 b1 = Vector3.Transform(v1, b);
+            Vector3 b2 = Vector3.Transform(v2, b);
+
+            return Math.Abs((b1 - a1).Length() + (b2 - a2).Length());
+        }
     }
+    #endregion
 }

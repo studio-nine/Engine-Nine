@@ -26,26 +26,7 @@ namespace Nine.Graphics.Test
         [TestMethod()]
         public void PlayTest()
         {
-            BoneAnimation target = new BoneAnimation();
 
-            Assert.AreEqual<AnimationState>(AnimationState.Playing, target.State);
-            Assert.AreEqual<TimeSpan>(TimeSpan.Zero, target.Duration);
-
-            target.Stop();
-
-            Assert.AreEqual<AnimationState>(AnimationState.Stopped, target.State);
-
-            target.Play();
-
-            Assert.AreEqual<AnimationState>(AnimationState.Playing, target.State);
-
-            target.Pause();
-
-            Assert.AreEqual<AnimationState>(AnimationState.Paused, target.State);
-
-            target.Resume();
-
-            Assert.AreEqual<AnimationState>(AnimationState.Playing, target.State);
         }
     }
 }

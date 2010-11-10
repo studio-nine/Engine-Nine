@@ -53,10 +53,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Graphics.SpriteAnimation" Collapsed="true">
-    <Position X="5.75" Y="5" Width="1.5" />
+    <Position X="4.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAABAAAAYAAAAAABAAAAAoAAAAAAAA=</HashCode>
       <FileName>Graphics\SpriteAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Nine.Graphics.BoneAnimation" Collapsed="true">
+    <Position X="7" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQwAAAAAAAAIIQAAAEIABAAAAAEACAgAEggAAAIEIA=</HashCode>
+      <FileName>Graphics\BoneAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Nine.Animations.IAnimation">

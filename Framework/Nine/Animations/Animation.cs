@@ -40,7 +40,7 @@ namespace Nine.Animations
         }
 
         /// <summary>
-        /// Stops the animation and goto start position.
+        /// Stops the animation.
         /// </summary>
         public void Stop()
         {

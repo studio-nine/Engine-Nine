@@ -49,7 +49,7 @@ namespace Nine.Content
             output.WriteObject<T>(value.Value);
 
             if (value.HasChildren)
-                output.WriteObject(value.ChildNodes);
+                output.WriteObject(value.Children);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
@@ -97,7 +97,7 @@ namespace Nine.Content
             output.WriteObject<T>(value.Value);
 
             if (value.HasChildren)
-                output.WriteObject(value.ChildNodes);
+                output.WriteObject(value.Children);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

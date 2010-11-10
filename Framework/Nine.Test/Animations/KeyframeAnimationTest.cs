@@ -71,7 +71,7 @@ namespace Nine.Animations.Test
             animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2)));
 
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
-            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(3), animation.ElapsedTime);
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(3), animation.Position);
         }
 
         [TestMethod()]
@@ -100,10 +100,10 @@ namespace Nine.Animations.Test
 
             animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(6)));
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
-            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4), animation.ElapsedTime);
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4), animation.Position);
 
             animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(5)));
-            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(1), animation.ElapsedTime);
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(1), animation.Position);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
             animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.5)));
@@ -119,11 +119,11 @@ namespace Nine.Animations.Test
 
             animation.Seek(TimeSpan.FromSeconds(4.5f));
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
-            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4.5), animation.ElapsedTime);
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4.5), animation.Position);
 
             animation.Seek(2);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
-            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(2), animation.ElapsedTime);
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(2), animation.Position);
 
             animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(3)));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -133,7 +133,7 @@ namespace Nine.Animations.Test
             animation.Seek(1);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1)));
+            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.001)));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -156,7 +156,7 @@ namespace Nine.Animations.Test
                 animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.25)));
 
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
-            Assert.AreEqual(6, index);
+            Assert.AreEqual(5, index);
         }
     }
 }

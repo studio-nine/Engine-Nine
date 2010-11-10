@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -10,9 +10,6 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -22,85 +19,36 @@ namespace Nine.Graphics
 {
     using Nine.Animations;
 
-    #region Keyframe
+    #region BoneAnimationClip
     /// <summary>
-    /// Describes the position of a single bone at a single point in time.
+    /// Defines a bone animation clip.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class Keyframe
+    public class BoneAnimationClip
     {
         /// <summary>
-        /// Gets the index of the target bone that is animated by this keyframe.
+        /// Gets animation frame rate.
         /// </summary>
         [ContentSerializer]
-        public int Bone { get; private set; }
-
+        public int FramesPerSecond { get; internal set; }
 
         /// <summary>
-        /// Gets the time offset from the start of the animation to this keyframe.
+        /// Gets total number of frames.
         /// </summary>
         [ContentSerializer]
-        public TimeSpan Time { get; private set; }
-
+        public int TotalFrames { get; internal set; }
 
         /// <summary>
-        /// Gets the bone transform for this keyframe.
+        /// Gets the preferred ending style.
         /// </summary>
         [ContentSerializer]
-        public Matrix Transform { get; private set; }
-
-
-        /// <summary>
-        /// Constructs a new keyframe object.
-        /// </summary>
-        public Keyframe(int bone, TimeSpan time, Matrix transform)
-        {
-            Bone = bone;
-            Time = time;
-            Transform = transform;
-        }
+        public KeyframeEnding PreferredEnding { get; internal set; }
 
         /// <summary>
-        /// Private constructor for use by the XNB deserializer.
-        /// </summary>
-        private Keyframe() { }
-    }
-    #endregion
-
-    #region AnimationClip
-    /// <summary>
-    /// It holds all the keyframes needed to describe a single animation.
-    /// </summary>
-    public class AnimationClip
-    {
-        /// <summary>
-        /// Gets the total length of the animation.
+        /// Gets all the channels in this animation clip.
         /// </summary>
         [ContentSerializer]
-        public TimeSpan Duration { get; set; }
-
-
-        /// <summary>
-        /// Gets a combined list containing all the keyframes for all bones,
-        /// sorted by time.
-        /// </summary>
-        [ContentSerializer]
-        public List<Keyframe> Keyframes { get; private set; }
-
-
-        /// <summary>
-        /// Constructs a new animation clip object.
-        /// </summary>
-        public AnimationClip(TimeSpan duration, List<Keyframe> keyframes)
-        {
-            Duration = duration;
-            Keyframes = keyframes;
-        }
-
-        /// <summary>
-        /// Private constructor for use by the XNB deserializer.
-        /// </summary>
-        private AnimationClip() { }
+        public Matrix[][] Transforms { get; internal set; }
     }
     #endregion
 
@@ -108,191 +56,179 @@ namespace Nine.Graphics
     /// <summary>
     /// An animation player used to play bone animations.
     /// </summary>
-    public class BoneAnimation : IAnimation
+    public class BoneAnimation : KeyframeAnimation
     {
         /// <summary>
-        /// Gets the current state of the animation.
+        /// Gets or sets whether this BoneAnimation should automatically
+        /// perform matrix interpolation when the playing speed is less then 1.
         /// </summary>
-        public AnimationState State { get; private set; }
+        public bool InterpolationEnabled { get; set; }
 
-        public float Speed { get; set; }
-        public AnimationClip AnimationClip { get; set; }
-        public int CurrentFrame { get; private set; }
-        public TimeSpan CurrentTime { get; private set; }
+        /// <summary>
+        /// Gets or sets whether this BoneAnimation should blend with the
+        /// previous bone poses when started playing the animation.
+        /// </summary>
+        public bool BlendEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets blend time.
+        /// </summary>
+        public TimeSpan BlendDuration { get; set; }
 
 
-        public event EventHandler Completed;
+        private Model model;
+        private BoneAnimationClip clip;
+        private double blendTimer = 0;
+        private Matrix[] blendTarget;
+        private bool[] disabled;
+        private bool shouldLerp;
+        static ICurve blendCurve = new SinCurve();
 
 
-        Matrix[] boneTransforms;
-        Model model;
-
-
-        public BoneAnimation() 
+        internal BoneAnimation(Model model, BoneAnimationClip clip)
         {
-            Speed = 1.0f;
-            State = AnimationState.Playing;
+            if (clip == null || model == null)
+                throw new ArgumentNullException();
+
+            this.clip = clip;
+            this.model = model;
+            this.BlendEnabled = true;
+            this.Ending = clip.PreferredEnding;
+            this.BlendDuration = TimeSpan.FromSeconds(0.5);
+            this.disabled = new bool[model.Bones.Count];
+
+            InterpolationEnabled = true;
+            FramesPerSecond = clip.FramesPerSecond;
         }
 
-        public BoneAnimation(Model model, AnimationClip clip)
+        /// <summary>
+        /// Gets wether the animation on target bone is enabled.
+        /// </summary>
+        public bool IsEnabled(int bone)
         {
-            Speed = 1.0f;
-            State = AnimationState.Playing;
-
-            Model = model;
-            AnimationClip = clip;
+            return !disabled[bone];
         }
 
-
-        public Model Model 
+        /// <summary>
+        /// Gets wether the animation on target bone is enabled.
+        /// </summary>
+        public bool IsEnabled(string bone)
         {
-            get { return model; }
+            return !disabled[model.Bones[bone].Index];
+        }
 
-            set
+        /// <summary>
+        /// Enables the animation on the target and its child bones.
+        /// </summary>
+        public void Enabled(int bone, bool enableChildBones)
+        {
+            SetEnabled(bone, true, enableChildBones);
+        }
+
+        /// <summary>
+        /// Enables the animation on the target and its child bones.
+        /// </summary>
+        public void Enabled(string bone, bool enableChildBones)
+        {
+            SetEnabled(model.Bones[bone].Index, true, enableChildBones);
+        }
+
+        /// <summary>
+        /// Disables the animation on the target and its child bones.
+        /// </summary>
+        public void Disable(int bone, bool disableChildBones)
+        {
+            SetEnabled(bone, false, disableChildBones);
+        }
+
+        /// <summary>
+        /// Disables the animation on the target and its child bones.
+        /// </summary>
+        public void Disable(string bone, bool disableChildBones)
+        {
+            SetEnabled(model.Bones[bone].Index, false, disableChildBones);
+        }
+
+        private void SetEnabled(int bone, bool enabled, bool recursive)
+        {
+            disabled[bone] = !enabled;
+
+            if (recursive)
             {
-                model = value;
-                boneTransforms = new Matrix[model.Bones.Count];
-                model.CopyBoneTransformsTo(boneTransforms);
+                foreach (ModelBone child in model.Bones[bone].Children)
+                {
+                    SetEnabled(child.Index, enabled, true);
+                }
             }
         }
-        
-        public TimeSpan Duration 
+
+        protected override int GetTotalFrames()
         {
-            get 
+            return clip.TotalFrames;
+        }
+
+        protected override void OnStarted()
+        {
+            if (BlendEnabled)
             {
-                return AnimationClip != null ? AnimationClip.Duration : TimeSpan.Zero; 
-            }
-        }
-        
-        public void Play()
-        {
-            CurrentTime = TimeSpan.Zero;
-            CurrentFrame = 0;
+                if (blendTarget == null)
+                    blendTarget = new Matrix[model.Bones.Count];
 
-            State = AnimationState.Playing;
-        }
-
-        public void Stop()
-        {
-            CurrentTime = TimeSpan.Zero;
-            CurrentFrame = 0;
-
-            State = AnimationState.Stopped;
-        }
-
-        public void Pause()
-        {
-            State = AnimationState.Paused;
-        }
-
-        public void Resume()
-        {
-            State = AnimationState.Playing;
-        }
-
-
-        public void Update(GameTime gameTime)
-        {
-            if (State != AnimationState.Playing|| model == null || AnimationClip == null)
-                return;
-
-            CurrentTime += TimeSpan.FromMilliseconds(gameTime.ElapsedGameTime.TotalMilliseconds * Speed);
-
-            if (CurrentTime > AnimationClip.Duration)
-            {
-                CurrentTime = TimeSpan.Zero;
-                CurrentFrame = 0;
-
-                // Trigger complete event
-                if (Completed != null)
-                    Completed(this, EventArgs.Empty);
+                blendTimer = 0;
+                model.CopyBoneTransformsTo(blendTarget);
             }
 
-
-            // Read keyframe matrices.
-            IList<Keyframe> keyframes = AnimationClip.Keyframes;
-
-            while (CurrentFrame < keyframes.Count)
-            {
-                Keyframe keyframe = keyframes[CurrentFrame];
-
-                // Stop when we've read up to the current time position.
-                if (keyframe.Time > CurrentTime)
-                    break;
-
-                // Use this keyframe.      
-                boneTransforms[keyframe.Bone] = keyframe.Transform;
-
-                CurrentFrame++;
-            }
-
-            Model.CopyBoneTransformsFrom(boneTransforms);
+            base.OnStarted();
         }
 
-        public void Seek(TimeSpan time)
+        public override void Update(GameTime gameTime)
         {
-            if (model == null || AnimationClip == null)
-                return;
-
-            CurrentTime = time;
-
-            if (CurrentTime < TimeSpan.Zero)
-                CurrentTime = TimeSpan.Zero;
-
-            if (CurrentTime > AnimationClip.Duration)
-                CurrentTime = AnimationClip.Duration;
-
-            CurrentFrame = 0;
-
-            IList<Keyframe> keyframes = AnimationClip.Keyframes;
-
-            while (CurrentFrame < keyframes.Count)
+            if (State == Animations.AnimationState.Playing)
             {
-                Keyframe keyframe = keyframes[CurrentFrame];
-
-                // Stop when we've read up to the current time position.
-                if (keyframe.Time > CurrentTime)
-                    break;
-
-                // Use this keyframe.
-                boneTransforms[keyframe.Bone] = keyframe.Transform;
-
-                CurrentFrame++;
+                blendTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                shouldLerp = (gameTime.ElapsedGameTime.TotalSeconds * Speed) < (1.0 / FramesPerSecond);
             }
 
-            Model.CopyBoneTransformsFrom(boneTransforms);
+            base.Update(gameTime);
         }
 
-        public void Seek(int frame)
+        protected override void OnSeek(int startFrame, int endFrame, float percentage)
         {
-            if (model == null || AnimationClip == null)
-                return;
-            
-            IList<Keyframe> keyframes = AnimationClip.Keyframes;
+            float blendLerp = -1;
 
-            CurrentFrame = frame;
-
-            if (CurrentFrame < 0)
-                CurrentFrame = 0;
-            if (CurrentFrame > keyframes.Count)
-                CurrentFrame = keyframes.Count;
-
-            int counter = 0;
-
-            while (counter < CurrentFrame)
+            if (BlendEnabled && blendTimer < BlendDuration.TotalSeconds)
             {
-                Keyframe keyframe = keyframes[counter];
-
-                // Stop when we've read up to the current time position.
-                CurrentTime = keyframe.Time;
-
-                // Use this keyframe.
-                boneTransforms[keyframe.Bone] = keyframe.Transform;
-
-                counter++;
+                blendLerp = (float)(blendTimer / BlendDuration.TotalSeconds);
             }
 
-            Model.CopyBoneTransformsFrom(boneTransforms);
+            for (int bone = 0; bone < clip.Transforms.Length; bone++)
+            {
+                if (disabled[bone] || clip.Transforms[bone] == null)
+                    continue;
+
+                Matrix transform;
+
+                if (InterpolationEnabled && shouldLerp)
+                {
+                    transform = LerpHelper.Slerp(
+                                 clip.Transforms[bone][startFrame],
+                                 clip.Transforms[bone][endFrame], percentage);
+                }
+                else
+                {
+                   transform = clip.Transforms[bone][startFrame];
+                }
+
+                if (blendLerp >= 0 && blendLerp < 1)
+                {
+                    model.Bones[bone].Transform = LerpHelper.Slerp(
+                                blendTarget[bone], transform, blendCurve.Evaluate(blendLerp));
+                }
+                else
+                {
+                    model.Bones[bone].Transform = transform;
+                }
+            }
         }
     }
     #endregion

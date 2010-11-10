@@ -57,7 +57,7 @@ namespace Nine.Animations
         void Play();
 
         /// <summary>
-        /// Stops the animation and goto start position.
+        /// Stops the animation.
         /// </summary>
         void Stop();
 

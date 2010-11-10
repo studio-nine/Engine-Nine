@@ -199,7 +199,7 @@ namespace Nine
                 {
                     yield return node;
 
-                    foreach (OctreeNode<T> child in node.ChildNodes)
+                    foreach (OctreeNode<T> child in node.Children)
                     {
                         stack.Push(child);
                     }
@@ -248,7 +248,7 @@ namespace Nine
         /// <summary>
         /// Gets a read-only collection of the 8 child nodes.
         /// </summary>
-        public ICollection<OctreeNode<T>> ChildNodes
+        public ICollection<OctreeNode<T>> Children
         {
             get { return HasChildren ? childNodes : Empty; }
         }
@@ -284,7 +284,7 @@ namespace Nine
 
                 if (node.HasChildren)
                 {
-                    foreach (OctreeNode<T> child in node.ChildNodes)
+                    foreach (OctreeNode<T> child in node.Children)
                     {
                         child.Parent = node;
                         stack.Push(child);

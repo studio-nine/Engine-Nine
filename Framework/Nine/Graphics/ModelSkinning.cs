@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2009 - 2010 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -23,6 +24,7 @@ namespace Nine.Graphics
     /// Combines all the data needed to render and animate a skinned object.
     /// This is typically stored in the Tag property of the Model being animated.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ModelSkinning
     {
         /// <summary>

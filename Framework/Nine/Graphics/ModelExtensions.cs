@@ -44,7 +44,13 @@ namespace Nine.Graphics
         /// Gets the animation data attached to the model.
         /// </summary>
         [ContentSerializer()]
-        public Dictionary<string, AnimationClip> Animations { get; internal set; }
+        public Dictionary<string, BoneAnimationClip> Animations { get; internal set; }
+
+        /// <summary>
+        /// Used to cache BoneAnimation instances.
+        /// </summary>
+        [ContentSerializerIgnore()]
+        internal Dictionary<string, BoneAnimation> BoneAnimations;
     }
 
     /// <summary>
@@ -54,66 +60,119 @@ namespace Nine.Graphics
     public static class ModelExtensions
     {
         /// <summary>
-        /// Gets the skinning data associated with the specified model.
+        /// Gets the bone transformation matrices used to draw skinned models
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static ModelSkinning GetSkinning(this Model model)
+        public static Matrix[] GetBoneTransforms(this Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
-            return extensions != null ? extensions.Skinning : null;
+            if (extensions != null && extensions.Skinning != null)
+                return extensions.Skinning.GetBoneTransforms(model);
+
+            return null;
         }
 
         /// <summary>
-        /// Gets the animation data associated with the specified model.
+        /// Gets the bone transformation matrices used to draw skinned models
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static Dictionary<string, AnimationClip> GetAnimations(this Model model)
+        public static Matrix[] GetBoneTransforms(this Model model, Matrix world)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
-            return extensions != null ? extensions.Animations : null;
+            if (extensions != null && extensions.Skinning != null)
+                return extensions.Skinning.GetBoneTransforms(model, world);
+
+            return null;
         }
 
         /// <summary>
-        /// Gets the animation data associated with the specified model.
+        /// Gets the bone transformation matrices used to draw skinned models
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static AnimationClip GetAnimation(this Model model, string name)
+        public static bool GetBoneTransforms(this Model model, Matrix world, Matrix[] boneTransforms)
         {
-            AnimationClip result = null;
+            ModelTag extensions = model.Tag as ModelTag;
 
-            Dictionary<string, AnimationClip> dictionary = GetAnimations(model);
-
-            if (dictionary != null)
-                dictionary.TryGetValue(name, out result);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the animation data associated with the specified model.
-        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
-        /// </summary>
-        public static AnimationClip GetAnimation(this Model model, int index)
-        {
-            AnimationClip result = null;
-
-            Dictionary<string, AnimationClip> dictionary = GetAnimations(model);
-
-            if (dictionary != null && dictionary.Count > 0)
+            if (extensions != null && extensions.Skinning != null)
             {
-                foreach (string key in dictionary.Keys)
+                extensions.Skinning.GetBoneTransforms(model, world, boneTransforms);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the animation data associated with the specified model.
+        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
+        /// </summary>
+        public static ICollection<string> GetAnimations(this Model model)
+        {
+            ModelTag extensions = model.Tag as ModelTag;
+
+            if (extensions != null && extensions.Animations != null)
+                return extensions.Animations.Keys;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the animation data associated with the specified model.
+        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
+        /// </summary>
+        public static BoneAnimation GetAnimation(this Model model, string name)
+        {
+            ModelTag extensions = model.Tag as ModelTag;
+
+            if (extensions != null && extensions.Animations != null)
+            {
+                BoneAnimation clip = null;
+                CreateBoneAnimations(model, extensions);
+                extensions.BoneAnimations.TryGetValue(name, out clip);
+                return clip;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the animation data associated with the specified model.
+        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
+        /// </summary>
+        public static BoneAnimation GetAnimation(this Model model, int index)
+        {
+            BoneAnimation clip = null;
+
+            ModelTag extensions = model.Tag as ModelTag;
+
+            if (extensions != null && extensions.Animations != null &&
+                extensions.Animations.Count > 0)
+            {
+                CreateBoneAnimations(model, extensions);
+
+                foreach (string key in extensions.Animations.Keys)
                 {
                     if (index-- == 0)
                     {
-                        dictionary.TryGetValue(key, out result);
+                        extensions.BoneAnimations.TryGetValue(key, out clip);
                         break;
                     }
                 }
             }
 
-            return result;
+            return clip;
+        }
+
+        private static void CreateBoneAnimations(Model model, ModelTag tag)
+        {
+            if (tag.BoneAnimations == null)
+            {
+                tag.BoneAnimations = new Dictionary<string, BoneAnimation>();
+                foreach (var pair in tag.Animations)
+                    tag.BoneAnimations.Add(pair.Key, new BoneAnimation(model, pair.Value));
+            }
         }
 
         /// <summary>
