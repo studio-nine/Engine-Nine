@@ -174,6 +174,16 @@ namespace Nine.Animations
             base.OnStarted();
         }
 
+        protected override void OnCompleted()
+        {
+            if (Position >= Duration - TimeSpanEpsilon)
+            {
+                OnSeek(Duration, Position);
+            }
+
+            base.OnCompleted();
+        }
+
         protected override void OnSeek(TimeSpan elapsedTime, TimeSpan previousPosition)
         {
             if (Curve == null)

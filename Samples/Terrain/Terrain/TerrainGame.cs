@@ -38,13 +38,15 @@ namespace TerrainSample
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 900;
             graphics.PreferredBackBufferHeight = 600;
 
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-
+            IsFixedTimeStep = false;
+            Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
 
@@ -55,12 +57,6 @@ namespace TerrainSample
         /// </summary>
         protected override void LoadContent()
         {
-            Components.Add(new FrameRate(this) 
-            {
-                SpriteBatch = new SpriteBatch(GraphicsDevice),
-                Font = Content.Load<SpriteFont>("Consolas"),
-            });
-
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
 
@@ -69,6 +65,7 @@ namespace TerrainSample
 
             // Uncomment next line to create a flat terrain
             //terrain = new DrawableSurface(GraphicsDevice, 1, 128, 128, 8);
+            //terrain.Freeze();
 
             // Initialize terrain effects
             basicEffect = new BasicEffect(GraphicsDevice);
@@ -99,8 +96,8 @@ namespace TerrainSample
 
             decalEffect = new DecalEffect(GraphicsDevice);
             decalEffect.Texture = Content.Load<Texture2D>("checker");
-            //decalEffect.Position = Vector3.One * 10;
-            //decalEffect.Rotation = MathHelper.ToRadians(10);
+            decalEffect.Position = Vector3.One * 10;
+            decalEffect.Rotation = MathHelper.ToRadians(10);
             decalEffect.Scale = Vector2.One * 10;
         }
 

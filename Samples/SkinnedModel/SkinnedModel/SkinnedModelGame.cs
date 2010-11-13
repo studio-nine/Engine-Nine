@@ -51,6 +51,7 @@ namespace SkinnedModel
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
 
@@ -59,10 +60,10 @@ namespace SkinnedModel
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-
+            IsFixedTimeStep = false;
+            Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
-
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -97,10 +98,10 @@ namespace SkinnedModel
 
         private void PlayAnimation(int i)
         {
-            if (animation != model.GetAnimation(i))
+            if (animation == null || animation.Clip != model.GetAnimation(i))
             {
                 // Now load our model animation and skinning using extension method.
-                animation = model.GetAnimation(i);
+                animation = new BoneAnimation(model, model.GetAnimation(i));
                 //animation.Speed = 0.04f;
                 //animation.Ending = KeyframeEnding.Clamp;
                 //animation.BlendEnabled = false;
@@ -133,6 +134,7 @@ namespace SkinnedModel
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
+
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             Matrix world = Matrix.CreateTranslation(0, -60, 0) *
@@ -151,7 +153,7 @@ namespace SkinnedModel
 
             // To draw skinned models, first compute bone transforms
             Matrix[] bones = model.GetBoneTransforms();
-
+            
             // Pass bone transforms to model batch to draw skinned models
             modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
             modelBatch.Draw(model, world, bones, null);

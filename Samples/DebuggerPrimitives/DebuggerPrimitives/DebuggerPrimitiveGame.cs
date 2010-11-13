@@ -44,6 +44,7 @@ namespace DebuggerPrimitives
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
 
@@ -52,7 +53,8 @@ namespace DebuggerPrimitives
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-
+            IsFixedTimeStep = false;
+            Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
 

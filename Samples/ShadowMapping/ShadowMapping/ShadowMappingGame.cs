@@ -46,16 +46,17 @@ namespace ShadowMapping
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 900;
             graphics.PreferredBackBufferHeight = 600;
 
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-
+            IsFixedTimeStep = false;
+            Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
-
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
@@ -93,7 +94,7 @@ namespace ShadowMapping
             //shadowMap.Blur.SampleCount = BlurEffect.MaxSampleCount;
             shadowMap.BlurEnabled = true;
         }
-
+        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>

@@ -36,11 +36,13 @@ namespace ScreenEffects
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 900;
             graphics.PreferredBackBufferHeight = 600;
 
             Content.RootDirectory = "Content";
-
+            IsFixedTimeStep = false;
+            Components.Add(new FrameRate(this, "Consolas"));
             IsMouseVisible = true;
         }
 

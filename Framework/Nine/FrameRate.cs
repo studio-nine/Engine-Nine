@@ -50,6 +50,8 @@ namespace Nine
         /// </summary>
         public SpriteFont Font { get; set; }
 
+        private string font;
+
         /// <summary>
         /// Gets or sets the color used to draw FPS string
         /// </summary>
@@ -83,14 +85,18 @@ namespace Nine
         /// The main constructor for the class.
         /// </summary>
         /// <remarks>Sets the <see cref="_gameWindowTitle"/> data member to the value of <see cref="Microsoft.Xna.Framework.GameWindow.Title"/>.</remarks>
-        public FrameRate(Game game) : base(game)
+        public FrameRate(Game game, string font) : base(game)
         {
-            UpdateFrequency = 1000;
-            Color = Color.Yellow;
+            this.font = font;
+            this.UpdateFrequency = 1000;
+            this.Color = Color.Yellow;
         }
 
         protected override void LoadContent()
         {
+            if (!string.IsNullOrEmpty(font))
+                Font = Game.Content.Load<SpriteFont>(font);
+
             base.LoadContent();
         }
 
@@ -102,14 +108,18 @@ namespace Nine
         public override void Draw(GameTime gameTime)
         {
             // Draw FPS text
-            if (SpriteBatch != null && Font != null)
+            if (Font != null)
             {
+                if (SpriteBatch == null)
+                    SpriteBatch = Graphics.GraphicsExtensions.GetSpriteBatch(GraphicsDevice);
+
                 SpriteBatch.Begin();
                 SpriteBatch.DrawString(Font, "FPS: " + fps, Position, Color);
                 SpriteBatch.End();
+
+                GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             }
         }
-
 
         private void UpdateFPS(GameTime gameTime)
         {

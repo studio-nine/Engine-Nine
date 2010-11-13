@@ -68,14 +68,18 @@ namespace Nine.Animations
                     result = Duration - unfixedPosition;
 
                     if (result == Duration)
-                        result = result - Epsilon;
+                        result = result - TimeSpanEpsilon;
                 }
                 return result;
             }
         }
 
         TimeSpan unfixedPosition;
-        static TimeSpan Epsilon = TimeSpan.FromTicks(1);
+
+        /// <summary>
+        /// Gets the smallest TimeSpan greater then TimeSpan.Zero.
+        /// </summary>
+        public static TimeSpan TimeSpanEpsilon = TimeSpan.FromTicks(1);
 
         /// <summary>
         /// Gets the total length of the animation without been affected
@@ -250,6 +254,9 @@ namespace Nine.Animations
 
             if (ElapsedTime >= targetElapsedTime)
             {
+                unfixedPosition -= (ElapsedTime - targetElapsedTime);
+                ElapsedTime = targetElapsedTime;
+                
                 Stop();
                 OnCompleted();
                 return;

@@ -75,23 +75,32 @@ namespace Nine.Graphics
         /// </summary>
         public TimeSpan BlendDuration { get; set; }
 
+        /// <summary>
+        /// Gets the animation clip used by this bone animation.
+        /// </summary>
+        public BoneAnimationClip Clip { get; private set; }
 
-        private Model model;
-        private BoneAnimationClip clip;
+        /// <summary>
+        /// Gets the model affected by this bone animation.
+        /// </summary>
+        public Model Model { get; private set; }
+
         private double blendTimer = 0;
         private Matrix[] blendTarget;
         private bool[] disabled;
         private bool shouldLerp;
         static ICurve blendCurve = new SinCurve();
 
-
-        internal BoneAnimation(Model model, BoneAnimationClip clip)
+        /// <summary>
+        /// Creates a new instance of BoneAnimation.
+        /// </summary>
+        public BoneAnimation(Model model, BoneAnimationClip clip)
         {
             if (clip == null || model == null)
                 throw new ArgumentNullException();
 
-            this.clip = clip;
-            this.model = model;
+            this.Clip = clip;
+            this.Model = model;
             this.BlendEnabled = true;
             this.Ending = clip.PreferredEnding;
             this.BlendDuration = TimeSpan.FromSeconds(0.5);
@@ -114,7 +123,7 @@ namespace Nine.Graphics
         /// </summary>
         public bool IsEnabled(string bone)
         {
-            return !disabled[model.Bones[bone].Index];
+            return !disabled[Model.Bones[bone].Index];
         }
 
         /// <summary>
@@ -130,7 +139,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Enabled(string bone, bool enableChildBones)
         {
-            SetEnabled(model.Bones[bone].Index, true, enableChildBones);
+            SetEnabled(Model.Bones[bone].Index, true, enableChildBones);
         }
 
         /// <summary>
@@ -146,7 +155,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Disable(string bone, bool disableChildBones)
         {
-            SetEnabled(model.Bones[bone].Index, false, disableChildBones);
+            SetEnabled(Model.Bones[bone].Index, false, disableChildBones);
         }
 
         private void SetEnabled(int bone, bool enabled, bool recursive)
@@ -155,7 +164,7 @@ namespace Nine.Graphics
 
             if (recursive)
             {
-                foreach (ModelBone child in model.Bones[bone].Children)
+                foreach (ModelBone child in Model.Bones[bone].Children)
                 {
                     SetEnabled(child.Index, enabled, true);
                 }
@@ -164,7 +173,7 @@ namespace Nine.Graphics
 
         protected override int GetTotalFrames()
         {
-            return clip.TotalFrames;
+            return Clip.TotalFrames;
         }
 
         protected override void OnStarted()
@@ -172,10 +181,10 @@ namespace Nine.Graphics
             if (BlendEnabled)
             {
                 if (blendTarget == null)
-                    blendTarget = new Matrix[model.Bones.Count];
+                    blendTarget = new Matrix[Model.Bones.Count];
 
                 blendTimer = 0;
-                model.CopyBoneTransformsTo(blendTarget);
+                Model.CopyBoneTransformsTo(blendTarget);
             }
 
             base.OnStarted();
@@ -201,9 +210,9 @@ namespace Nine.Graphics
                 blendLerp = (float)(blendTimer / BlendDuration.TotalSeconds);
             }
 
-            for (int bone = 0; bone < clip.Transforms.Length; bone++)
+            for (int bone = 0; bone < Clip.Transforms.Length; bone++)
             {
-                if (disabled[bone] || clip.Transforms[bone] == null)
+                if (disabled[bone] || Clip.Transforms[bone] == null)
                     continue;
 
                 Matrix transform;
@@ -211,22 +220,22 @@ namespace Nine.Graphics
                 if (InterpolationEnabled && shouldLerp)
                 {
                     transform = LerpHelper.Slerp(
-                                 clip.Transforms[bone][startFrame],
-                                 clip.Transforms[bone][endFrame], percentage);
+                                 Clip.Transforms[bone][startFrame],
+                                 Clip.Transforms[bone][endFrame], percentage);
                 }
                 else
                 {
-                   transform = clip.Transforms[bone][startFrame];
+                   transform = Clip.Transforms[bone][startFrame];
                 }
 
                 if (blendLerp >= 0 && blendLerp < 1)
                 {
-                    model.Bones[bone].Transform = LerpHelper.Slerp(
+                    Model.Bones[bone].Transform = LerpHelper.Slerp(
                                 blendTarget[bone], transform, blendCurve.Evaluate(blendLerp));
                 }
                 else
                 {
-                    model.Bones[bone].Transform = transform;
+                    Model.Bones[bone].Transform = transform;
                 }
             }
         }

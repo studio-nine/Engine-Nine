@@ -98,8 +98,8 @@ namespace Nine.Graphics
         /// <param name="tessellationU">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
         /// <param name="tessellationV">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
         public Heightmap(float step, int tessellationU, int tessellationV)
+            : this(new float[(tessellationU + 1) * (tessellationV + 1)], step, tessellationU, tessellationV)
         {
-            LoadHeightmap(new float[(tessellationU + 1) * (tessellationV + 1)], step, tessellationU, tessellationV);
         }
 
         /// <summary>
@@ -111,7 +111,14 @@ namespace Nine.Graphics
         /// <param name="tessellationV">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
         public Heightmap(float[] heightmap, float step, int tessellationU, int tessellationV)
         {
-            LoadHeightmap(heightmap, step, tessellationU, tessellationV);
+            if (step <= 0 || tessellationU <= 0 || tessellationV <= 0)
+                throw new ArgumentOutOfRangeException();
+
+            Step = step;
+            TessellationU = tessellationU;
+            TessellationV = tessellationV;
+
+            LoadHeightmap(heightmap);
         }
 
         /// <summary>
@@ -148,20 +155,9 @@ namespace Nine.Graphics
         /// Loads this terrain geometry with the specified heightmap data.
         /// </summary>
         /// <param name="heightmap">Heights of each points. The dimension of the array should be (tessellationU + 1) * (tessellationV + 1).</param>
-        /// <param name="step">Size of the smallest square block that made up the terrain.</param>
-        /// <param name="tessellationU">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
-        /// <param name="tessellationV">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
-        public void LoadHeightmap(float[] heightmap, float step, int tessellationU, int tessellationV)
+        public void LoadHeightmap(float[] heightmap)
         {
-            if (step < 0 || tessellationU < 0 || tessellationV < 0)
-                throw new ArgumentOutOfRangeException();
-
-
-            Step = step;
             Heights = heightmap;
-            TessellationU = tessellationU;
-            TessellationV = tessellationV;
-
 
             // Find maximun height value
             float maxheight = float.MinValue;
@@ -170,13 +166,13 @@ namespace Nine.Graphics
                 if (height > maxheight)
                     maxheight = height;
                         
-            Size = new Vector3(step * tessellationU, step * tessellationV, maxheight);
+            Size = new Vector3(Step * TessellationU, Step * TessellationV, maxheight);
 
             BoundingBox = BoundingBox.CreateFromPoints(EnumeratePositions());
 
 
             // Allocation space for normals and tangents
-            int count = (tessellationU + 1) * (tessellationV + 1);
+            int count = (TessellationU + 1) * (TessellationV + 1);
 
             Vector3[] normals = Normals;
             Vector3[] tangents = Tangents;
@@ -190,7 +186,7 @@ namespace Nine.Graphics
 
             // Compute normals and tangents
             CalculateNormalsAndTangents(
-                tessellationU + 1, tessellationV + 1, heightmap, 
+                TessellationU + 1, TessellationV + 1, heightmap, 
                 Size.X, Size.Y, ref normals, ref tangents);
 
             Normals = normals;

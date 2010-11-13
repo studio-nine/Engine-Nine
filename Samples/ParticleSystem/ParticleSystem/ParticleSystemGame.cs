@@ -41,13 +41,15 @@ namespace ParticleSystem
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 900;
             graphics.PreferredBackBufferHeight = 600;
 
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-
+            IsFixedTimeStep = false;
+            //Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
 
@@ -104,8 +106,7 @@ namespace ParticleSystem
             // Prepare render states used to draw particles.
             GraphicsDevice.BlendState = BlendState.Additive;
             GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
-
-
+            
             GraphicsDevice.SetVertexBuffer(null);
 
             // Update effects

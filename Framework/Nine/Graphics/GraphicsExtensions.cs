@@ -56,12 +56,18 @@ namespace Nine.Graphics
 
             spriteBatch.End();
         }
-        
 
-        private static void PrepareSprite(GraphicsDevice graphics, Effect effect)
+        internal static SpriteBatch GetSpriteBatch(GraphicsDevice graphics)
         {
             if (spriteBatch == null)
                 spriteBatch = new SpriteBatch(graphics);
+
+            return spriteBatch;
+        }
+
+        private static void PrepareSprite(GraphicsDevice graphics, Effect effect)
+        {
+            GetSpriteBatch(graphics);
 
             SetViewport(effect as IEffectMatrices, graphics.Viewport.Bounds);
         }

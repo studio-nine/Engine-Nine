@@ -45,12 +45,6 @@ namespace Nine.Graphics
         /// </summary>
         [ContentSerializer()]
         public Dictionary<string, BoneAnimationClip> Animations { get; internal set; }
-
-        /// <summary>
-        /// Used to cache BoneAnimation instances.
-        /// </summary>
-        [ContentSerializerIgnore()]
-        internal Dictionary<string, BoneAnimation> BoneAnimations;
     }
 
     /// <summary>
@@ -122,15 +116,14 @@ namespace Nine.Graphics
         /// Gets the animation data associated with the specified model.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static BoneAnimation GetAnimation(this Model model, string name)
+        public static BoneAnimationClip GetAnimation(this Model model, string name)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
             if (extensions != null && extensions.Animations != null)
             {
-                BoneAnimation clip = null;
-                CreateBoneAnimations(model, extensions);
-                extensions.BoneAnimations.TryGetValue(name, out clip);
+                BoneAnimationClip clip = null;
+                extensions.Animations.TryGetValue(name, out clip);
                 return clip;
             }
 
@@ -141,38 +134,26 @@ namespace Nine.Graphics
         /// Gets the animation data associated with the specified model.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static BoneAnimation GetAnimation(this Model model, int index)
+        public static BoneAnimationClip GetAnimation(this Model model, int index)
         {
-            BoneAnimation clip = null;
+            BoneAnimationClip clip = null;
 
             ModelTag extensions = model.Tag as ModelTag;
 
             if (extensions != null && extensions.Animations != null &&
                 extensions.Animations.Count > 0)
             {
-                CreateBoneAnimations(model, extensions);
-
                 foreach (string key in extensions.Animations.Keys)
                 {
                     if (index-- == 0)
                     {
-                        extensions.BoneAnimations.TryGetValue(key, out clip);
+                        extensions.Animations.TryGetValue(key, out clip);
                         break;
                     }
                 }
             }
 
             return clip;
-        }
-
-        private static void CreateBoneAnimations(Model model, ModelTag tag)
-        {
-            if (tag.BoneAnimations == null)
-            {
-                tag.BoneAnimations = new Dictionary<string, BoneAnimation>();
-                foreach (var pair in tag.Animations)
-                    tag.BoneAnimations.Add(pair.Key, new BoneAnimation(model, pair.Value));
-            }
         }
 
         /// <summary>

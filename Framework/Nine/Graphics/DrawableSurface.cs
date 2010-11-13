@@ -271,14 +271,6 @@ namespace Nine.Graphics
             Size = Heightmap.Size;
             boundingBox = Heightmap.BoundingBox;
 
-            // Make sure we don't change geometry tessellation
-            if (Heightmap.TessellationU != TessellationX ||
-                Heightmap.TessellationV != TessellationY)
-            {
-                throw new InvalidOperationException(
-                    "Cannot change the heightmap to a different size after it has been bind to a surface.");
-            }
-
             foreach (DrawableSurfacePatch patch in Patches)
             {
                 patch.Invalidate();

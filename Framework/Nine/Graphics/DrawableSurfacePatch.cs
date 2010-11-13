@@ -134,6 +134,16 @@ namespace Nine.Graphics
             this.Y = yPatch;
             this.Effects = new Collection<Effect>();
 
+            offset = new Vector3();
+
+            int xPatchCount = surface.TessellationX / Tessellation;
+            int yPatchCount = surface.TessellationY / Tessellation;
+
+            float step = surface.Size.X / surface.TessellationX;
+
+            offset.X = (X + 0.5f - xPatchCount * 0.5f) * step * Tessellation;
+            offset.Y = (Y + 0.5f - yPatchCount * 0.5f) * step * Tessellation;
+            offset.Z = 0;
             
             // Initialize patch parts
             DrawableSurfacePatchPart[] parts = new DrawableSurfacePatchPart[tessellation * tessellation / 4];
@@ -166,19 +176,7 @@ namespace Nine.Graphics
             UpdatePartPositions();
         }
 
-        internal virtual void Invalidate() 
-        {
-            offset = new Vector3();
-
-            int xPatchCount = surface.TessellationX / Tessellation;
-            int yPatchCount = surface.TessellationY / Tessellation;
-
-            float step = surface.Size.X / surface.TessellationX;
-
-            offset.X = (X + 0.5f - xPatchCount * 0.5f) * step * Tessellation;
-            offset.Y = (Y + 0.5f - yPatchCount * 0.5f) * step * Tessellation;
-            offset.Z = 0;
-        }
+        internal virtual void Invalidate() { }
 
         internal void Freeze()
         {

@@ -253,7 +253,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<row><td>ISExpHlp.dll</td><td/><td>&lt;ISProductFolder&gt;\redist\language independent\i386\ISExpHlp.dll</td></row>
 		<row><td>ISSELFREG.DLL</td><td/><td>&lt;ISProductFolder&gt;\redist\language independent\i386\isregsvr.dll</td></row>
-		<row><td>NewBinary1</td><td/><td>D:\Nine\Images\InstallerBanner.bmp</td></row>
+		<row><td>NewBinary1</td><td/><td>D:\Nine\Installer\Gui\InstallerBanner.bmp</td></row>
 		<row><td>NewBinary10</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CompleteSetupIco.ibd</td></row>
 		<row><td>NewBinary11</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CustomSetupIco.ibd</td></row>
 		<row><td>NewBinary12</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\DestIcon.ibd</td></row>
@@ -263,15 +263,17 @@
 		<row><td>NewBinary16</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\InstallFirstUse.ico</td></row>
 		<row><td>NewBinary17</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\InstallPartial.ico</td></row>
 		<row><td>NewBinary18</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\InstallStateMenu.ico</td></row>
-		<row><td>NewBinary19</td><td/><td>D:\Nine\Images\InstallerWelcome.bmp</td></row>
+		<row><td>NewBinary19</td><td/><td>D:\Nine\Installer\Gui\InstallerWelcome.bmp</td></row>
 		<row><td>NewBinary2</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\New.ibd</td></row>
-		<row><td>NewBinary20</td><td/><td>D:\Nine\Images\InstallerBanner.bmp</td></row>
-		<row><td>NewBinary21</td><td/><td>D:\Nine\Images\InstallerWelcome.bmp</td></row>
-		<row><td>NewBinary22</td><td/><td>D:\Nine\Images\InstallerBanner.bmp</td></row>
-		<row><td>NewBinary23</td><td/><td>D:\Nine\Images\InstallerBanner.bmp</td></row>
+		<row><td>NewBinary20</td><td/><td>D:\Nine\Installer\Gui\InstallerBanner.bmp</td></row>
+		<row><td>NewBinary21</td><td/><td>D:\Nine\Installer\Gui\InstallerWelcome.bmp</td></row>
+		<row><td>NewBinary22</td><td/><td>D:\Nine\Installer\Gui\InstallerBanner.bmp</td></row>
+		<row><td>NewBinary23</td><td/><td>D:\Nine\Installer\Gui\InstallerBanner.bmp</td></row>
+		<row><td>NewBinary24</td><td/><td>D:\Nine\Installer\Gui\InstallerWelcome.bmp</td></row>
+		<row><td>NewBinary25</td><td/><td>D:\Nine\Installer\Gui\InstallerBanner.bmp</td></row>
 		<row><td>NewBinary3</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\Up.ibd</td></row>
 		<row><td>NewBinary4</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\WarningIcon.ibd</td></row>
-		<row><td>NewBinary5</td><td/><td>D:\Nine\Images\InstallerWelcome.bmp</td></row>
+		<row><td>NewBinary5</td><td/><td>D:\Nine\Installer\Gui\InstallerWelcome.bmp</td></row>
 		<row><td>NewBinary6</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CustomSetupIco.ibd</td></row>
 		<row><td>NewBinary7</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\ReinstIco.ibd</td></row>
 		<row><td>NewBinary8</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\RemoveIco.ibd</td></row>
@@ -348,6 +350,7 @@
 		<row><td>Engine_Nine_Documentation.chm</td><td>{82AF45D0-8DE6-4BEF-B689-3CC1474BA215}</td><td>_033</td><td>2</td><td/><td>engine_nine_documentation.ch</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{85663E71-7622-427F-B316-829104E9FDB2}</td><td>V1.0</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{BB125010-AA09-4436-813A-1C7C2D1419EA}</td><td>REFERENCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{B446AB45-0B36-4570-B375-2E4C8858D1F0}</td><td>ENGINE_NINE_1.0</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{302C7E8C-B38C-43E8-8C48-935255A1D8B3}</td><td>WINDOWS_PHONE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{EFA286F0-1117-4BDC-875F-780FA02EB976}</td><td>X86</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{3282705C-7B36-46BF-86F8-1EA97A1ABDF4}</td><td>XBOX_360</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -356,6 +359,8 @@
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{4CEB0C74-752F-463F-B598-2B50D54AC7C8}</td><td>IMAGES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{36402639-303A-4731-BD59-637DD53B7554}</td><td>_033</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{00BCC22B-869D-4B24-8830-91BA09CFAA5F}</td><td>BIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{CB6C60DC-BC27-4241-ADF0-E49339FD6373}</td><td>SAMPLES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{B15A023B-05ED-4FBF-9EB9-BF5D0DDE9A0F}</td><td>ProgramMenuFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td>{0CEA02AB-4DBD-4E5C-81DB-18CC0DEA35A7}</td><td>BIN</td><td>2</td><td/><td>microsoft.visualstudio.shell</td><td>33</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Nine.Content.Pipeline.dll</td><td>{58B6EF53-1076-47C3-86FA-6302B7A5CEC3}</td><td>X86</td><td>2</td><td/><td>nine.content.pipeline.dll</td><td>1</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Nine.dll</td><td>{A31067F1-1D33-417B-B609-4C13CC697F82}</td><td>WINDOWS_PHONE</td><td>2</td><td/><td>nine.dll</td><td>1</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -469,7 +474,7 @@
 		<row><td>CustomSetupTips</td><td>OK</td><td>PushButton</td><td>301</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_SetupTips_OK##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>CustomSetupTips</td><td>PartialText</td><td>Text</td><td>60</td><td>130</td><td>300</td><td>20</td><td>3</td><td/><td>##IDS_SetupTips_SubFeaturesInstalledLocal##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>CustomerInformation</td><td>Back</td><td>PushButton</td><td>164</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_BACK##</td><td>Next</td><td/><td>0</td><td/><td/><td/></row>
-		<row><td>CustomerInformation</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary22</td></row>
+		<row><td>CustomerInformation</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary25</td></row>
 		<row><td>CustomerInformation</td><td>BannerLine</td><td>Line</td><td>0</td><td>44</td><td>374</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>CustomerInformation</td><td>Branding1</td><td>Text</td><td>4</td><td>229</td><td>50</td><td>13</td><td>3</td><td/><td>##IDS_INSTALLSHIELD_FORMATTED##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>CustomerInformation</td><td>Branding2</td><td>Text</td><td>3</td><td>228</td><td>50</td><td>13</td><td>65537</td><td/><td>##IDS_INSTALLSHIELD##</td><td/><td/><td>0</td><td/><td/><td/></row>
@@ -487,7 +492,7 @@
 		<row><td>CustomerInformation</td><td>SerialLabel</td><td>Text</td><td>21</td><td>127</td><td>109</td><td>10</td><td>2</td><td/><td>##IDS__IsRegisterUserDlg_SerialNumber##</td><td>SerialNumber</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>CustomerInformation</td><td>SerialNumber</td><td>MaskedEdit</td><td>21</td><td>138</td><td>237</td><td>17</td><td>2</td><td>ISX_SERIALNUM</td><td/><td>RadioGroup</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>DatabaseFolder</td><td>Back</td><td>PushButton</td><td>164</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_BACK##</td><td>Next</td><td/><td>0</td><td/><td/><td/></row>
-		<row><td>DatabaseFolder</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary22</td></row>
+		<row><td>DatabaseFolder</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary23</td></row>
 		<row><td>DatabaseFolder</td><td>BannerLine</td><td>Line</td><td>0</td><td>44</td><td>374</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>DatabaseFolder</td><td>Branding1</td><td>Text</td><td>4</td><td>229</td><td>50</td><td>13</td><td>3</td><td/><td>##IDS_INSTALLSHIELD_FORMATTED##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>DatabaseFolder</td><td>Branding2</td><td>Text</td><td>3</td><td>228</td><td>50</td><td>13</td><td>65537</td><td/><td>##IDS_INSTALLSHIELD##</td><td/><td/><td>0</td><td/><td/><td/></row>
@@ -556,13 +561,13 @@
 		<row><td>InstallWelcome</td><td>Cancel</td><td>PushButton</td><td>301</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_CANCEL##</td><td>Back</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>InstallWelcome</td><td>Copyright</td><td>Text</td><td>135</td><td>144</td><td>228</td><td>73</td><td>65539</td><td/><td>##IDS__IsWelcomeDlg_WarningCopyright##</td><td>Next</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>InstallWelcome</td><td>DlgLine</td><td>Line</td><td>0</td><td>234</td><td>374</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>InstallWelcome</td><td>Image</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>234</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary21</td></row>
+		<row><td>InstallWelcome</td><td>Image</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>234</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary24</td></row>
 		<row><td>InstallWelcome</td><td>Next</td><td>PushButton</td><td>230</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_NEXT##</td><td>Cancel</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>InstallWelcome</td><td>TextLine1</td><td>Text</td><td>135</td><td>8</td><td>225</td><td>45</td><td>196611</td><td/><td>##IDS__IsWelcomeDlg_WelcomeProductName##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>InstallWelcome</td><td>TextLine2</td><td>Text</td><td>135</td><td>55</td><td>228</td><td>45</td><td>196611</td><td/><td>##IDS__IsWelcomeDlg_InstallProductName##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>LicenseAgreement</td><td>Agree</td><td>RadioButtonGroup</td><td>8</td><td>190</td><td>291</td><td>40</td><td>3</td><td>AgreeToLicense</td><td/><td>Back</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>LicenseAgreement</td><td>Back</td><td>PushButton</td><td>164</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_BACK##</td><td>Next</td><td/><td>0</td><td/><td/><td/></row>
-		<row><td>LicenseAgreement</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary22</td></row>
+		<row><td>LicenseAgreement</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td>NewBinary25</td></row>
 		<row><td>LicenseAgreement</td><td>BannerLine</td><td>Line</td><td>0</td><td>44</td><td>374</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>LicenseAgreement</td><td>Branding1</td><td>Text</td><td>4</td><td>229</td><td>50</td><td>13</td><td>3</td><td/><td>##IDS_INSTALLSHIELD_FORMATTED##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>LicenseAgreement</td><td>Branding2</td><td>Text</td><td>3</td><td>228</td><td>50</td><td>13</td><td>65537</td><td/><td>##IDS_INSTALLSHIELD##</td><td/><td/><td>0</td><td/><td/><td/></row>
@@ -627,7 +632,7 @@
 		<row><td>PatchWelcome</td><td>TextLine1</td><td>Text</td><td>135</td><td>8</td><td>225</td><td>45</td><td>196611</td><td/><td>##IDS__IsPatchDlg_WelcomePatchWizard##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>PatchWelcome</td><td>TextLine2</td><td>Text</td><td>135</td><td>54</td><td>228</td><td>45</td><td>196611</td><td/><td>##IDS__IsPatchDlg_PatchClickUpdate##</td><td/><td/><td>0</td><td/><td/><td/></row>
 		<row><td>ReadmeInformation</td><td>Back</td><td>PushButton</td><td>164</td><td>243</td><td>66</td><td>17</td><td>1048579</td><td/><td>##IDS_BACK##</td><td>Next</td><td/><td>0</td><td/><td/><td/></row>
-		<row><td>ReadmeInformation</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td>DlgTitle</td><td/><td/><td/><td/><td>NewBinary22</td></row>
+		<row><td>ReadmeInformation</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td>DlgTitle</td><td/><td/><td/><td/><td>NewBinary25</td></row>
 		<row><td>ReadmeInformation</td><td>BannerLine</td><td>Line</td><td>0</td><td>44</td><td>374</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>ReadmeInformation</td><td>Branding1</td><td>Text</td><td>4</td><td>229</td><td>50</td><td>13</td><td>3</td><td/><td>##IDS_INSTALLSHIELD_FORMATTED##</td><td/><td/><td>0</td><td>0</td><td/><td/></row>
 		<row><td>ReadmeInformation</td><td>Branding2</td><td>Text</td><td>3</td><td>228</td><td>50</td><td>13</td><td>65537</td><td/><td>##IDS_INSTALLSHIELD##</td><td/><td/><td>0</td><td>0</td><td/><td/></row>
@@ -1073,7 +1078,9 @@
 		<row><td>BIN</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>DOCUMENTATION</td><td>ISX_DEFAULTCOMPONENT424</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT425</td></row>
+		<row><td>ProgramMenuFolder</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>REFERENCES</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>SAMPLES</td><td>ISX_DEFAULTCOMPONENT8</td></row>
 		<row><td>_033</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 	</table>
 
@@ -1163,6 +1170,7 @@
 		<row><td>DOCUMENTATION</td><td>V1.0</td><td>DOCUME~1|Documentation</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>ENGINE_NINE</td><td>ProgramFilesFolder</td><td>ENGINE~1|Engine Nine</td><td/><td>0</td><td/></row>
+		<row><td>ENGINE_NINE_1.0</td><td>ProgramMenuFolder</td><td>ENGINE~1|Engine Nine 1.0</td><td/><td>0</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
@@ -1183,6 +1191,7 @@
 		<row><td>ProgramMenuFolder</td><td>TARGETDIR</td><td>.:Programs</td><td/><td>3</td><td/></row>
 		<row><td>REFERENCES</td><td>V1.0</td><td>REFERE~1|References</td><td/><td>0</td><td/></row>
 		<row><td>RecentFolder</td><td>TARGETDIR</td><td>.:Recent</td><td/><td>0</td><td/></row>
+		<row><td>SAMPLES</td><td>V1.0</td><td>Samples</td><td/><td>0</td><td/></row>
 		<row><td>SendToFolder</td><td>TARGETDIR</td><td>.:SendTo</td><td/><td>3</td><td/></row>
 		<row><td>StartMenuFolder</td><td>TARGETDIR</td><td>.:STARTM~1|Start Menu</td><td/><td>3</td><td/></row>
 		<row><td>StartupFolder</td><td>TARGETDIR</td><td>.:StartUp</td><td/><td>3</td><td/></row>
@@ -1894,6 +1903,7 @@
 		<row><td>AlwaysInstall</td><td>Engine_Nine_Documentation.chm</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT10</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
@@ -1902,6 +1912,8 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>AlwaysInstall</td><td>Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Nine.Content.Pipeline.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Nine.dll</td></row>
@@ -1923,6 +1935,7 @@
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>background.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\Background.png</td><td>1</td><td/></row>
 		<row><td>engine_nine_documentation.ch</td><td>Engine_Nine_Documentation.chm</td><td>ENGINE~1.CHM|Engine Nine Documentation.chm</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Documentation\Help\Engine Nine Documentation.chm</td><td>1</td><td/></row>
+		<row><td>engine_nine_online.url</td><td>ISX_DEFAULTCOMPONENT10</td><td>ENGINE~1.URL|Engine Nine Online.url</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Installer\Engine Nine Online.url</td><td>1</td><td/></row>
 		<row><td>enginenine.200.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNine.200.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNine.200.png</td><td>1</td><td/></row>
 		<row><td>enginenine.300.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNine.300.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNine.300.png</td><td>1</td><td/></row>
 		<row><td>enginenine.400.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNine.400.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNine.400.png</td><td>1</td><td/></row>
@@ -1943,7 +1956,6 @@
 		<row><td>nine.xml</td><td>ISX_DEFAULTCOMPONENT2</td><td>Nine.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\Windows Phone\Nine.XML</td><td>1</td><td/></row>
 		<row><td>nine.xml1</td><td>ISX_DEFAULTCOMPONENT3</td><td>Nine.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\x86\Nine.XML</td><td>1</td><td/></row>
 		<row><td>nine.xml2</td><td>ISX_DEFAULTCOMPONENT4</td><td>Nine.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\Xbox 360\Nine.XML</td><td>1</td><td/></row>
-		<row><td>website.url</td><td>ISX_DEFAULTCOMPONENT</td><td>Website.url</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Website.url</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2201,6 +2213,7 @@
 		<row><td>Engine_Nine_Documentation.chm</td><td/><td/><td>_00EF8E49_81D0_42D1_980A_E56F9BA64BB9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_B730393C_533C_4464_9D01_2BE5D5F7B4DF_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_2AC2D0B4_68A2_42F1_9FFB_D44977660D79_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_A51747A7_B6E1_47FB_9C4C_0309205767B8_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_5B3E50AD_072C_4737_8269_862E8FBD31F5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_9393F3AC_4517_46F2_AEDD_DC7423E77E2A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_C80E4D65_0174_434E_8093_BEB5A44B47B7_FILTER</td><td/><td/><td/><td/></row>
@@ -2209,6 +2222,8 @@
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_B0841551_DB59_4019_A4BC_FF057E15F218_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_5919A84F_32D2_4B7F_AA78_659A5D0E02E1_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_BBA556F5_9D04_4EAC_B9A5_0082AF681EED_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_BBA3F347_43AA_4435_9849_48A50BFFB98F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_F2CC287B_90E2_4C7A_A18B_93375F1E10F3_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td/><td/><td>_F9A6F0FF_0274_461B_830B_3EC4C9FE2F4F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Nine.Content.Pipeline.dll</td><td/><td/><td>_F7979F3B_4E84_4AD2_A929_261142BC6117_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Nine.dll</td><td/><td/><td>_107B32EB_D89B_4045_85E3_0F91F0DB6BFD_FILTER</td><td/><td/><td/><td/></row>
@@ -3937,7 +3952,7 @@
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-2061609109</td></row>
 		<row><td>ID_STRING10</td><td>1033</td><td>Samples</td><td>0</td><td/><td>-2061603311</td></row>
 		<row><td>ID_STRING11</td><td>1033</td><td>ENGINE~1|Engine Nine Documentation</td><td>0</td><td/><td>-585203980</td></row>
-		<row><td>ID_STRING12</td><td>1033</td><td>ENGINE~1|Engine Nine Online</td><td>0</td><td/><td>-451005168</td></row>
+		<row><td>ID_STRING12</td><td>1033</td><td>ENGINE~1|Engine Nine Samples</td><td>0</td><td/><td>1570668969</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061603956</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061595764</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>This installer database contains the logic and data required to install Engine Nine</td><td>0</td><td/><td>-2061603892</td></row>
@@ -4049,10 +4064,10 @@
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
 		<row><td>NewShortcut1_0EB197074511441BB21457ACE95B41E8.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
-		<row><td>NewShortcut1_3678FC3DE83D4446ADDC9CA4EC4EF7D2.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
+		<row><td>NewShortcut1_8326C16804624EB3910F69A40B251BC1.exe</td><td/><td>&lt;ISProjectFolder&gt;\gui\VSDocs.ico</td><td>0</td></row>
 		<row><td>NewShortcut1_F64EDC3CDCE14E4CA88BA492464A6202.exe</td><td/><td>D:\Nine\Engine Nine\Build\Help\Engine Nine Documentation.chm</td><td>0</td></row>
 		<row><td>NewShortcut2_5DFEAEDF551B458480CE81C24ADFE5EC.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
-		<row><td>NewShortcut2_B50A479FDF2F4931BD6B6CBA879A4D82.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
+		<row><td>NewShortcut2_A3356F8002124F18B5CD7BFD02C1C22F.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
 		<row><td>NewShortcut3_DCF2840318CA4244ADC8725208A87EBE.exe</td><td/><td>D:\Nine\Images\Game.ico</td><td>0</td></row>
 	</table>
 
@@ -4185,7 +4200,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{946589CC-C16B-4870-8FE7-C2EB628C4AC3}</td></row>
 		<row><td>ISUSSignature</td><td>{DA202455-4E41-494C-88E1-AFB78AD212F2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewProject,viewRealSetupDesign,viewSetupDesign,viewSetupTypes,viewUpgradePaths,viewUpdateService,viewAppFiles,viewDependencies,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewRelease</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewProject,viewRealSetupDesign,viewSetupDesign,viewSetupTypes,viewUpgradePaths,viewUpdateService,viewAppFiles,viewDependencies,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewRelease,viewFeatureFiles,viewCustomActions</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4653,7 +4668,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
 		<row><td>NewShortcut1</td><td>Engine_Nine_Documentation.chm</td><td/><td>newfolder1</td><td>2</td></row>
-		<row><td>NewShortcut2</td><td>ISX_DEFAULTCOMPONENT</td><td/><td>newfolder1</td><td>2</td></row>
+		<row><td>NewShortcut2</td><td>Engine_Nine_Documentation.chm</td><td/><td>newfolder1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4739,8 +4754,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut1</td><td>newfolder1</td><td>##ID_STRING11##</td><td>Engine_Nine_Documentation.chm</td><td>[INSTALLDIR]v1.0\Documentation\1033\Engine Nine Documentation.chm</td><td/><td/><td/><td>NewShortcut1_3678FC3DE83D4446ADDC9CA4EC4EF7D2.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>NewShortcut2</td><td>newfolder1</td><td>##ID_STRING12##</td><td>ISX_DEFAULTCOMPONENT</td><td>[INSTALLDIR]v1.0\Website.url</td><td/><td/><td/><td>NewShortcut2_B50A479FDF2F4931BD6B6CBA879A4D82.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut1</td><td>newfolder1</td><td>##ID_STRING11##</td><td>Engine_Nine_Documentation.chm</td><td>[INSTALLDIR]v1.0\Documentation\1033\Engine Nine Documentation.chm</td><td/><td/><td/><td>NewShortcut1_8326C16804624EB3910F69A40B251BC1.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut2</td><td>newfolder1</td><td>##ID_STRING12##</td><td>Engine_Nine_Documentation.chm</td><td>[INSTALLDIR]\v1.0\Samples\</td><td/><td/><td/><td>NewShortcut2_A3356F8002124F18B5CD7BFD02C1C22F.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
