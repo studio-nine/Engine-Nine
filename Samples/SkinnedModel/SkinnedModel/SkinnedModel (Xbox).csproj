@@ -78,7 +78,9 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Nine" />
+    <Reference Include="Nine">
+      <HintPath>..\..\..\References\Xbox 360\Nine.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>

@@ -88,6 +88,15 @@
     </Compile>
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
+    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
+      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
+      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Graphics\ParticleEffects\ParticleSystemEffect.cs">
       <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
     </Compile>
@@ -96,10 +105,80 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomCombine.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
       <DependentUpon>BloomCombine.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BloomCombine.Designer.cs">
+      <DependentUpon>BloomCombine.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.cs">
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.Designer.cs">
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Luminance.cs">
+      <DependentUpon>Luminance.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Luminance.Designer.cs">
+      <DependentUpon>Luminance.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.cs">
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.Designer.cs">
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.cs">
+      <DependentUpon>SilouetteEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.Designer.cs">
+      <DependentUpon>SilouetteEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ThresholdEffect.cs">
+      <DependentUpon>ThresholdEffect.fx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ThresholdEffect.Designer.cs">
+      <DependentUpon>ThresholdEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
@@ -141,9 +220,6 @@
     <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
-      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffectBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
@@ -155,47 +231,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PointSpriteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
-      <DependentUpon>BloomCombine.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\Luminance.cs">
-      <DependentUpon>Luminance.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.cs">
-      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.cs">
-      <DependentUpon>SilouetteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\Threshold.cs">
-      <DependentUpon>Threshold.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\Threshold.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Threshold.fx</DependentUpon>
     </Compile>
     <Compile Include="Input.cs">
     </Compile>
@@ -251,35 +286,10 @@
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
-    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Primitives\Primitive.cs" />
     <Compile Include="Graphics\Primitives\Cube.cs" />
     <Compile Include="Graphics\Primitives\Sphere.cs" />
-    <Compile Include="Graphics\ScreenEffects\SilouetteEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SilouetteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.cs">
-      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomEffect.cs" />
-    <Compile Include="Graphics\ScreenEffects\Luminance.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Luminance.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
-    <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
     <Compile Include="Navigation\PathGrid.cs" />
     <Compile Include="Navigation\PriorityQueue.cs" />
     <Compile Include="Navigation\GraphSearch.cs" />
@@ -338,6 +348,18 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>BloomCombine.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\ScreenEffects\BlurEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\ColorMatrixEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\Luminance.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>Luminance.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\ScreenEffects\PixelateEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>PixelateEffect.Designer.cs</LastGenOutput>
@@ -350,21 +372,9 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>SilouetteEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\ScreenEffects\Threshold.fx">
+    <None Include="Graphics\ScreenEffects\ThresholdEffect.fx">
       <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>Threshold.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ScreenEffects\ColorMatrixEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ScreenEffects\Luminance.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>Luminance.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ScreenEffects\BlurEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
+      <LastGenOutput>ThresholdEffect.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

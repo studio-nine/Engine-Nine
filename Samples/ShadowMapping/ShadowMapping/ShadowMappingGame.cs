@@ -114,23 +114,23 @@ namespace ShadowMapping
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
-            
+
             // We need to draw the shadow casters on to a render target.
-            if (shadowMap.Begin())
-            {
-                // Clear everything to white. This is required.
-                GraphicsDevice.Clear(Color.White);
+            shadowMap.Begin();
 
-                GraphicsDevice.BlendState = BlendState.Opaque;
+            // Clear everything to white. This is required.
+            GraphicsDevice.Clear(Color.White);
 
-                // Draw shadow casters using depth effect with the matrices set to light view and projection.
-                modelBatch.Begin(shadow.LightView, shadow.LightProjection);
-                modelBatch.Draw(model, worldModel, depth);
-                modelBatch.End();
+            GraphicsDevice.BlendState = BlendState.Opaque;
 
-                // We got a shadow map rendered.
-                shadow.ShadowMap = shadowMap.End();
-            }
+            // Draw shadow casters using depth effect with the matrices set to light view and projection.
+            modelBatch.Begin(shadow.LightView, shadow.LightProjection);
+            modelBatch.Draw(model, worldModel, depth);
+            modelBatch.End();
+
+            // We got a shadow map rendered.
+            shadow.ShadowMap = shadowMap.End();
+
 
             // Now we begin drawing real scene.
             GraphicsDevice.Clear(Color.DarkSlateGray);
@@ -143,7 +143,7 @@ namespace ShadowMapping
             modelBatch.Begin(camera.View, camera.Projection);
 
             // Draw skybox
-            modelBatch.Draw(skyBox, Matrix.Identity, skyBoxEffect);
+            //modelBatch.Draw(skyBox, Matrix.Identity, skyBoxEffect);
 
             // Draw all shadow receivers with the shadow effect
             modelBatch.Draw(model, worldModel, shadow);

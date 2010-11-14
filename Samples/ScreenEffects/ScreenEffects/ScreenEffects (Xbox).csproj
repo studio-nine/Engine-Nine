@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{82dad23e-aa92-4597-b75c-1dfad6df341e}</ProjectGuid>
+    <ProjectGuid>{82DAD23E-AA92-4597-B75C-1DFAD6DF341E}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">Xbox 360</Platform>
@@ -53,6 +53,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ScreenEffectsGame.cs" />
+    <Compile Include="TestEffect.cs">
+      <DependentUpon>TestEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="TestEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestEffect.fx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -63,6 +71,10 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="TestEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>TestEffect.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
@@ -77,7 +89,9 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Nine" />
+    <Reference Include="Nine">
+      <HintPath>..\..\..\References\Xbox 360\Nine.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>

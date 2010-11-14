@@ -5,17 +5,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-namespace Nine.Graphics.ParticleEffects
+namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    public partial class LineSpriteEffect
+    public partial class ThresholdEffect
     {
-        public LineSpriteEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        public ThresholdEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
         {
             InitializeComponent();
         }
-    }	
+    }
 
 #endif
 }

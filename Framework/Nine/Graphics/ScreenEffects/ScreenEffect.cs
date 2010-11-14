@@ -19,115 +19,158 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics.ScreenEffects
 {
-    #region IScreenEffect
     /// <summary>
-    /// Interface for implementing a custom post processing screen effect.
+    /// Defines a pass in a post processing effect.
+    /// A ScreenEffect pass is a collection of effects that are processed
+    /// indepedent of other passes. The result of each pass is merged
+    /// to produce the final result.
     /// </summary>
-    public interface IScreenEffect
+    public class ScreenEffectPass
     {
-        /// <summary>
-        /// Draw the input texture onto the screen with a custom effect.
-        /// </summary>
-        /// <param name="texture">Input texture to be processed.</param>        
-        void Draw(Texture2D texture);
-    }
-    #endregion
-
-    #region ScreenEffectCollection
-    /// <summary>
-    /// A collection of Effect and IScreenEffect instances.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class ScreenEffectCollection : Collection<object>
-    {
-        /// <summary>
-        /// Adds a new Effect instance.
-        /// </summary>
-        /// <param name="effect">The effect to be added.</param>
-        public void Add(Effect effect)
-        {
-            Add((object)effect);
-        }
-
-        /// <summary>
-        /// Adds an IScreenEffect instance.
-        /// </summary>
-        /// <param name="effect">The effect to be added.</param>
-        public void Add(IScreenEffect effect)
-        {
-            Add((object)effect);
-        }
-
-        protected override void InsertItem(int index, object item)
-        {
-            if (!(item is Effect) && !(item is IScreenEffect))
-                throw new ArgumentException();
-
-            base.InsertItem(index, item);
-        }
-    }
-    #endregion
-
-    #region ScreenEffect
-    /// <summary>
-    /// Performs post processing effects.
-    /// </summary>
-    public sealed class ScreenEffect : IDisposable
-    {
-        /// <summary>
-        /// Gets the effects used during post processing.
-        /// </summary>
-        public ScreenEffectCollection Effects { get; private set; }
-
         /// <summary>
         /// Gets the GraphicsDevice associated with this instance.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
+        /// <summary>
+        /// Gets or sets whether the size of the render target used by this 
+        /// ScreenEffectPass will be scaled down to 1/4.
+        /// </summary>
+        public bool DownScaleEnabled { get; set; }
 
-        int current = 0;
-        List<RenderTarget2D> renderTargets = new List<RenderTarget2D>(2);
+        /// <summary>
+        /// Gets or sets the BlendState of this ScreenEffectPass to blend with other passes.
+        /// The default value is BlendState.Additive.
+        /// </summary>
+        public BlendState BlendState { get; set; }
 
+        /// <summary>
+        /// Gets or sets a Color value that is multiplied to this ScreenEffectPass.
+        /// </summary>
+        public Color Color { get; set; }
+
+        /// <summary>
+        /// Gets the effects used by this ScreenEffectPass.
+        /// </summary>
+        public IList<Effect> Effects { get; private set; }
+
+        /// <summary>
+        /// Gets the child passes contained by this ScreenEffectPass.
+        /// </summary>
+        public IList<ScreenEffectPass> Passes { get; private set; }
+
+        /// <summary>
+        /// Creates a new instance of ScreenEffectPass.
+        /// </summary>
+        public ScreenEffectPass(GraphicsDevice graphics) : this(graphics, false, BlendState.Additive)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new instance of ScreenEffectPass.
+        /// </summary>
+        public ScreenEffectPass(GraphicsDevice graphics, bool downScaleEnabled, BlendState blend)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            if (Pool == null)
+            {
+                Pool = new ScreenEffectRenderTargetPool(graphics, 1);
+                DownScalePool = new ScreenEffectRenderTargetPool(graphics, 0.5f);
+            }
+
+            this.GraphicsDevice = graphics;
+            this.DownScaleEnabled = downScaleEnabled;
+            this.BlendState = blend;
+            this.Color = Color.White;
+            this.Passes = new List<ScreenEffectPass>();
+            this.Effects = new List<Effect>();
+        }
+                
+        /// <summary>
+        /// Draw each effect and each pass in this pass with the input texture.
+        /// </summary>
+        internal void Draw(Texture2D input)
+        {
+            ScreenEffectRenderTargetPool pool = DownScaleEnabled ? DownScalePool : Pool;
+
+            int current = -1;
+            int previous = -1;
+            int count = Passes.Count <= 0 ? Effects.Count - 1 : Effects.Count;
+
+            // Draw first n - 1 effects to render target
+            for (int i = 0; i < count; i++)
+            {
+                current = pool.MoveNext();
+                pool.Begin(current);
+
+                // TODO: Add linear sampling.
+                GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState.Opaque, Color, Effects[i]);
+
+                input = pool.End(current);
+                if (previous >= 0)
+                    pool.Unlock(previous);
+                pool.Lock(current);
+                previous = current;
+            }
+
+            if (previous >= 0)
+                pool.Unlock(previous);
+
+            if (Passes.Count <= 0)
+            {
+                if (Effects.Count <= 0)
+                    GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState, Color);
+                else
+                    GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState, Color, Effects[Effects.Count - 1]);
+                return;
+            }
+
+            // Draw each passes
+            if (current >= 0)
+                pool.Lock(current);  
+            foreach (ScreenEffectPass pass in Passes)
+            {
+                pass.Draw(input);
+            }
+            if (current >= 0)
+                pool.Unlock(current);
+        }
+
+        internal static ScreenEffectRenderTargetPool Pool;
+        internal static ScreenEffectRenderTargetPool DownScalePool;
+    }
+
+
+    /// <summary>
+    /// Represents post processing effects.
+    /// </summary>
+    public class ScreenEffect : ScreenEffectPass
+    {
+        int renderTarget = 0;
 
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
         /// <param name="graphics">A GraphicsDevice instance.</param>
-        public ScreenEffect(GraphicsDevice graphics)
+        public ScreenEffect(GraphicsDevice graphics) : base(graphics, false, BlendState.Opaque) 
         {
-            GraphicsDevice = graphics;
-
-            renderTargets.Add(new RenderTarget2D(
-                                              GraphicsDevice,
-                                              GraphicsDevice.PresentationParameters.BackBufferWidth,
-                                              GraphicsDevice.PresentationParameters.BackBufferHeight, false,
-                                              GraphicsDevice.PresentationParameters.BackBufferFormat,
-                                              GraphicsDevice.PresentationParameters.DepthStencilFormat));
-
-            Effects = new ScreenEffectCollection();
+            if (graphics.PresentationParameters.RenderTargetUsage != RenderTargetUsage.PreserveContents)
+                throw new NotSupportedException("ScreenEffect requires RenderTargetUsage to be RenderTargetUsage.PreserveContents.");
         }
 
         /// <summary>
         /// Begins the rendering of the scene to be post processed.
         /// </summary>
-        /// <returns></returns>
-        public bool Begin()
+        public void Begin()
         {
-            if (Effects.Count < 1)
-                throw new InvalidOperationException("Must contain at least one effect");
+            if (Effects.Count <= 0 && Passes.Count <= 0)
+                return;
 
-            // We need 2 render target if we have more then 2 effects
-            if (Effects.Count > 1 && renderTargets.Count == 1)
-            {
-                renderTargets.Add(new RenderTarget2D(
-                                              GraphicsDevice,
-                                              GraphicsDevice.PresentationParameters.BackBufferWidth,
-                                              GraphicsDevice.PresentationParameters.BackBufferHeight, false,
-                                              GraphicsDevice.PresentationParameters.BackBufferFormat,
-                                              GraphicsDevice.PresentationParameters.DepthStencilFormat));
-            }
-
-            return renderTargets[current].Begin();
+            renderTarget = Pool.MoveNext();
+            Pool.Begin(renderTarget);
         }
 
         /// <summary>
@@ -135,49 +178,68 @@ namespace Nine.Graphics.ScreenEffects
         /// </summary>
         public void End()
         {
-            Rectangle screen = new Rectangle();
+            if (Effects.Count <= 0 && Passes.Count <= 0)
+                return;
 
-            screen.X = 0;
-            screen.Y = 0;
-            screen.Width = GraphicsDevice.PresentationParameters.BackBufferWidth;
-            screen.Height = GraphicsDevice.PresentationParameters.BackBufferHeight;
-
-
-            Texture2D backbuffer = renderTargets[current].End();
-
-
-            // Draw first n - 1 effects to render target
-            for (int i = 0; i < Effects.Count - 1; i++)
-            {
-                // Switch to next render target
-                current = (current + 1) % renderTargets.Count;
-
-                renderTargets[current].Begin();
-
-                Draw(screen, backbuffer, Effects[i]);
-
-                backbuffer = renderTargets[current].End();
-            }
-
-            // Draw last effect to the backbuffer
-            Draw(screen, backbuffer, Effects[Effects.Count - 1]);
+            Texture2D backbuffer = Pool.End(renderTarget);
+            
+            Pool.Lock(renderTarget);
+            Draw(backbuffer);
+            Pool.Unlock(renderTarget);
         }
+    }
 
-        private void Draw(Rectangle screen, Texture2D backbuffer, object item)
+    internal class ScreenEffectRenderTargetPool : IDisposable
+    {
+        int current = 0;
+        List<int> locked = new List<int>();
+        List<RenderTarget2D> renderTargets = new List<RenderTarget2D>();
+        GraphicsDevice graphics;
+        float renderTargetScale;
+
+        public ScreenEffectRenderTargetPool(GraphicsDevice graphics, float renderTargetScale)
         {
-            if (item is Effect)
-            {
-                GraphicsDevice.DrawSprite(backbuffer, SamplerState.LinearClamp, Color.White, item as Effect);
-            }
-            else if (item is IScreenEffect)
-            {
-                (item as IScreenEffect).Draw(backbuffer);
-            }
+            this.graphics = graphics;
+            this.renderTargetScale = renderTargetScale;
         }
 
-        /// <summary>
-        /// Disposes any resources associated with this instance.
-        /// </summary>
+        public int MoveNext()
+        {
+            for (int i = 0; i < renderTargets.Count; i++)
+            {
+                current = (current + 1) % renderTargets.Count;
+                if (IsLock(current))
+                    continue;
+                return current;
+            }
+
+            renderTargets.Add(CreateRenderTarget());
+            locked.Add(0);
+            return current = renderTargets.Count - 1;
+        }
+
+        private RenderTarget2D CreateRenderTarget()
+        {
+            int width = (int)(graphics.PresentationParameters.BackBufferWidth * renderTargetScale);
+            int height = (int)(graphics.PresentationParameters.BackBufferHeight * renderTargetScale);
+
+            return new RenderTarget2D(graphics, width, height, false,
+                                      graphics.PresentationParameters.BackBufferFormat,
+                                      graphics.PresentationParameters.DepthStencilFormat,
+                                      0, RenderTargetUsage.DiscardContents);
+        }
+
+        public RenderTarget2D this[int index]
+        {
+            get { return renderTargets[index]; }
+        }
+
+        public bool IsLock(int i) { return locked[i] > 0; }
+        public void Lock(int i) { locked[i]++; }
+        public void Unlock(int i) { locked[i]--; }
+        public void Begin(int i) { renderTargets[i].Begin(); }
+        public Texture2D End(int i) { return renderTargets[i].End(); }
+
         public void Dispose()
         {
             foreach (RenderTarget2D renderTarget in renderTargets)
@@ -187,6 +249,5 @@ namespace Nine.Graphics.ScreenEffects
             }
         }
     }
-    #endregion
 }
 

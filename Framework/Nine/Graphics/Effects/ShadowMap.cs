@@ -58,16 +58,16 @@ namespace Nine.Graphics.Effects
         {
             GraphicsDevice = graphics;
 
-            renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Single,
-                                              graphics.PresentationParameters.DepthStencilFormat);
-
-            //renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Color,
+            //renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Single,
             //                                  graphics.PresentationParameters.DepthStencilFormat);
+
+            renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Color,
+                                              graphics.PresentationParameters.DepthStencilFormat);
         }
 
-        public bool Begin()
+        public void Begin()
         {
-            return renderTarget.Begin();
+            renderTarget.Begin();
         }
 
         public Texture2D End()
@@ -81,24 +81,20 @@ namespace Nine.Graphics.Effects
                                                    GraphicsDevice.PresentationParameters.DepthStencilFormat);
 
                 // Blur H
-                if (depthBlur.Begin())
-                {
-                    Blur.Direction = MathHelper.PiOver4;
+                depthBlur.Begin();
+                Blur.Direction = MathHelper.PiOver4;
 
-                    GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
+                GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
 
-                    map = depthBlur.End();
+                map = depthBlur.End();
 
-                    // Blur V
-                    if (renderTarget.Begin())
-                    {
-                        Blur.Direction = -MathHelper.PiOver4;
+                // Blur V
+                renderTarget.Begin();
+                Blur.Direction = -MathHelper.PiOver4;
 
-                        GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
+                GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
 
-                        map = renderTarget.End();
-                    }
-                }
+                map = renderTarget.End();
 
                 // Restore states
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;

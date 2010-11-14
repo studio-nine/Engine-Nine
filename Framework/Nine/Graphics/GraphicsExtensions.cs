@@ -57,6 +57,40 @@ namespace Nine.Graphics
             spriteBatch.End();
         }
 
+        internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color)
+        {
+            PrepareSprite(graphics, null);
+
+
+            Rectangle destination = new Rectangle(graphics.Viewport.X,
+                                                  graphics.Viewport.Y,
+                                                  graphics.Viewport.Width,
+                                                  graphics.Viewport.Height);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, null, null);
+
+            spriteBatch.Draw(texture, destination, null, color);
+
+            spriteBatch.End();
+        }
+
+        internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color, Effect effect)
+        {
+            PrepareSprite(graphics, effect);
+
+
+            Rectangle destination = new Rectangle(graphics.Viewport.X,
+                                                  graphics.Viewport.Y,
+                                                  graphics.Viewport.Width,
+                                                  graphics.Viewport.Height);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, null, null, effect);
+
+            spriteBatch.Draw(texture, destination, null, color);
+
+            spriteBatch.End();
+        }
+
         internal static SpriteBatch GetSpriteBatch(GraphicsDevice graphics)
         {
             if (spriteBatch == null)
@@ -89,7 +123,7 @@ namespace Nine.Graphics
         #region RenderTargetStack
         static Stack<RenderTarget2D> renderTargetStack;
 
-        public static bool Begin(this RenderTarget2D renderTarget)
+        public static void Begin(this RenderTarget2D renderTarget)
         {
             if (renderTarget == null)
                 throw new ArgumentNullException();
@@ -108,8 +142,6 @@ namespace Nine.Graphics
             renderTargetStack.Push(previous);
 
             renderTarget.GraphicsDevice.SetRenderTarget(renderTarget);
-
-            return true;
         }
 
         public static Texture2D End(this RenderTarget2D renderTarget)
