@@ -66,15 +66,15 @@
     <Compile Include="Graphics\DrawableSurface.cs" />
     <Compile Include="Graphics\DrawableSurfacePatch.cs" />
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
+    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DecalEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\DepthEffect.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -85,6 +85,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SplatterEffect.Designer.cs">
+      <DependentUpon>SplatterEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
@@ -104,15 +109,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
-      <DependentUpon>BloomCombine.fx</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomCombine.Designer.cs">
-      <DependentUpon>BloomCombine.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
       <DependentUpon>BlurEffect.fx</DependentUpon>
@@ -143,7 +139,7 @@
     </Compile>
     <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
       <DependentUpon>PixelateEffect.fx</DependentUpon>
-      <SubType>Code</SubType>
+      <SubType>Code</SubType>      
     </Compile>
     <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
       <DependentUpon>PixelateEffect.fx</DependentUpon>
@@ -207,11 +203,6 @@
     </Compile>
     <Compile Include="Graphics\Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\SplatterEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Interface.cs" />
     <Compile Include="Graphics\Effects\SkyBoxEffect.cs">
@@ -343,10 +334,6 @@
     <None Include="Graphics\ParticleEffects\PointSpriteEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>PointSpriteEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ScreenEffects\BloomCombine.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>BloomCombine.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\BlurEffect.fx">
       <Generator>EffectCustomTool</Generator>

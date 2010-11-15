@@ -22,16 +22,19 @@ namespace Nine.Graphics.Effects
     {
         Matrix IEffectMatrices.World { get; set; }
 
-        public SkyBoxEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        private void OnCreated() 
         {
-            InitializeComponent();
+
         }
 
-        protected override void OnApply()
+        private void OnClone(SkyBoxEffect cloneSource) 
+        {
+
+        }
+        
+		private void OnApplyChanges()
         {
             farClip = Math.Abs(Projection.M43 / (Math.Abs(Projection.M33) - 1));
-
-            base.OnApply();
         }
     }
 

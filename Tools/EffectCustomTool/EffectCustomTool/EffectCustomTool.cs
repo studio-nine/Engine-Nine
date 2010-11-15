@@ -34,6 +34,8 @@ namespace Microsoft.VisualStudio.Shell.Interop
     [Microsoft.VisualStudio.Shell.ProvideObject(typeof(EffectCustomTool), RegisterUsing = Microsoft.VisualStudio.Shell.RegistrationMethod.CodeBase)]
     public class EffectCustomTool : CustomToolBase
     {
+        string name;
+
         public EffectCustomTool()
         {
             OnGenerateCode += new GenerationHandler(GenerateCode);
@@ -42,13 +44,13 @@ namespace Microsoft.VisualStudio.Shell.Interop
         public void GenerateCode(object sender, GenerationEventArgs e)
         {
             e.FailOnError = true;
-            string name = Path.GetFileNameWithoutExtension(e.InputFilePath);
+            name = Path.GetFileNameWithoutExtension(e.InputFilePath);
 
             EffectCompiler compiler = null;
 
             try
             {
-                compiler = new EffectCompiler(e.InputFilePath, e.InputText);
+                compiler = new EffectCompiler(name, e.Namespace, e.InputFilePath);
             }
             catch (Exception ex)
             {
@@ -58,18 +60,9 @@ namespace Microsoft.VisualStudio.Shell.Interop
 
 
             // .Designer.cs
-            e.OutputFileExtension = "Designer.cs";
+            e.OutputFileExtension = ".Designer.cs";
 
-            string content = Strings.Designer;
-
-            content = content.Replace(@"{$NAMESPACE}", e.Namespace);
-            content = content.Replace(@"{$CLASS}", name);
-            content = content.Replace(@"{$XBOXBYTECODE}", compiler.XBoxEffectCode);
-            content = content.Replace(@"{$WINDOWSBYTECODE}", compiler.WindowsEffectCode);
-            content = content.Replace(@"{$PROPERTIES}", compiler.Properties.ToString());
-            content = content.Replace(@"{$INITIALIZE}", compiler.Initialize.ToString());
-            content = content.Replace(@"{$VERSION}", GetType().Assembly.GetName().Version.ToString(4));
-            content = content.Replace(@"{$RUNTIMEVERSION}", GetType().Assembly.ImageRuntimeVersion);
+            string content = compiler.Designer;
 
             e.OutputCode.Append(content);
 
@@ -122,6 +115,7 @@ namespace Microsoft.VisualStudio.Shell.Interop
                         {
                             content = existingContent.Replace(" class " + existingName, " class " + name);
                             content = content.Replace(" " + existingName + "(", " " + name + "(");
+                            content = content.Replace("(" + existingName + " ", "(" + name + " ");
                         }
 
 

@@ -20,10 +20,9 @@ namespace Nine.Graphics.ParticleEffects
 
     internal partial class PointSpriteEffect
     {
-        public PointSpriteEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(PointSpriteEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

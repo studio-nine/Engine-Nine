@@ -11,11 +11,10 @@ namespace {$NAMESPACE}
 
     public partial class {$CLASS}
     {
-        public {$CLASS}(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
-    }
+		private void OnCreated() { }
+		private void OnClone({$CLASS} cloneSource) { }
+		private void OnApplyChanges() { }
+    }	
 
 #endif
 }

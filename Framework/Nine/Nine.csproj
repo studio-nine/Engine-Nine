@@ -79,6 +79,16 @@
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\AddHelper.cs" />
     <Compile Include="BoundingRectangle.cs" />
+    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DecalEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SplatterEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SplatterEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
       <DependentUpon>LineSpriteEffect.fx</DependentUpon>
     </Compile>
@@ -86,15 +96,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LineSpriteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomCombine.cs">
-      <DependentUpon>BloomCombine.fx</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\ScreenEffects\BloomCombine.Designer.cs">
-      <DependentUpon>BloomCombine.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
       <DependentUpon>BlurEffect.fx</DependentUpon>
@@ -125,12 +126,11 @@
     </Compile>
     <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
       <DependentUpon>PixelateEffect.fx</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.cs">
       <DependentUpon>RadialBlurEffect.fx</DependentUpon>
@@ -179,11 +179,6 @@
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\TextureTransform.cs" />
-    <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DecalEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\DepthEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -223,11 +218,6 @@
     </Compile>
     <Compile Include="Graphics\Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\SplatterEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Interface.cs" />
     <Compile Include="Graphics\Effects\SkyBoxEffect.cs">
@@ -371,10 +361,6 @@
     <None Include="Graphics\ParticleEffects\PointSpriteEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>PointSpriteEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ScreenEffects\BloomCombine.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>BloomCombine.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\BlurEffect.fx">
       <Generator>EffectCustomTool</Generator>

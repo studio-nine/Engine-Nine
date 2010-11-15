@@ -18,29 +18,62 @@ namespace {$NAMESPACE}
 	using Microsoft.Xna.Framework.Graphics;
 
     partial class {$CLASS} : Effect
-    {
-        private void InitializeComponent()
+    {		
+        public {$CLASS}(GraphicsDevice graphics) : base(graphics, effectCode)
         {
+            CacheEffectParameters(this);
 
+			OnCreated();
+        }
+
+        /// <summary>
+        /// Creates a new {$CLASS} by cloning parameter settings from an existing instance.
+        /// </summary>
+		protected {$CLASS}({$CLASS} cloneSource) : base(cloneSource)
+		{
+            CacheEffectParameters(cloneSource);
+
+			OnCreated();
+
+{$CLONE}
+			
+			OnClone(cloneSource);
+		}
+
+        /// <summary>
+        /// Creates a clone of the current {$CLASS} instance.
+        /// </summary>
+        public override Effect Clone()
+        {
+            return new {$CLASS}(this);
+        }
+
+        private void CacheEffectParameters(Effect cloneSource)
+        {
 {$INITIALIZE}
         }
+
+		#region Dirty Flags
+
+		uint dirtyFlag = 0;
+
+{$DIRTYFLAGS}
+		#endregion
 
 		#region Properties
 
 {$PROPERTIES}
 		#endregion
-
-        #region SharedEffect
-        static Effect sharedEffect = null;
-
-        static Effect GetSharedEffect(GraphicsDevice graphics)
+		
+		#region Apply
+        protected override void OnApply()
         {
-            if (sharedEffect == null)
-                sharedEffect = new Effect(graphics, effectCode);
-            
-            return sharedEffect;
+			OnApplyChanges();
+
+{$APPLY}
+            base.OnApply();
         }
-        #endregion
+		#endregion
 
         #region ByteCode
         static byte[] effectCode = null;

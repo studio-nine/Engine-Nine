@@ -20,10 +20,9 @@ namespace Nine.Graphics.ScreenEffects
 
     internal partial class Luminance
     {
-        public Luminance(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(Luminance cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

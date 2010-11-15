@@ -40,22 +40,24 @@ namespace Nine.Graphics.Effects
             DirectionalLight0.DiffuseColor = Color.Yellow.ToVector3();
             DirectionalLight0.SpecularColor = Color.White.ToVector3();
         }
-
-        public ShadowEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        
+        private void OnCreated() 
         {
-            InitializeComponent();
-
-            DirectionalLight0 = new DirectionalLight(_lightDirection, _lightDiffuseColor, _lightSpecularColor, null);
-            DirectionalLight1 = new DirectionalLight(_lightDirection, _lightDiffuseColor, _lightSpecularColor, null);
-            DirectionalLight2 = new DirectionalLight(_lightDirection, _lightDiffuseColor, _lightSpecularColor, null);
+            DirectionalLight0 = new DirectionalLight(_lightDirectionParameter, _lightDiffuseColorParameter, _lightSpecularColorParameter, null);
+            DirectionalLight1 = new DirectionalLight(_lightDirectionParameter, _lightDiffuseColorParameter, _lightSpecularColorParameter, null);
+            DirectionalLight2 = new DirectionalLight(_lightDirectionParameter, _lightDiffuseColorParameter, _lightSpecularColorParameter, null);
         }
-
-        protected override void OnApply()
+        
+        private void OnApplyChanges()
         {
             farClip = Math.Abs(LightProjection.M43 / (Math.Abs(LightProjection.M33) - 1));
             eyePosition = Matrix.Invert(View).Translation;
+        }
 
-            base.OnApply();
+        private void OnClone(ShadowEffect cloneSource) 
+        {
+            FogEnabled = cloneSource.FogEnabled;
+            LightingEnabled = cloneSource.LightingEnabled;
         }
 
         bool IEffectTexture.TextureEnabled

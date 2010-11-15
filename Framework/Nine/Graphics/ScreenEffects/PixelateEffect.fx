@@ -8,13 +8,13 @@
 sampler TextureSampler : register(s0);
 
 
-uniform float PixelCount = 80;
+uniform float pixelCount = 80;
 uniform float Threshhold = 0.15;
 uniform float3 EdgeColor = {0.7, 0.7, 0.7};
 
 float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 {
-    float size = 1.0f / PixelCount;
+    float size = 1.0f / pixelCount;
     half2 Pbase = texCoord - fmod(texCoord, size.xx);
     half2 PCenter = Pbase + (size/2.0).xx;
     half2 st = (texCoord - Pbase)/size;

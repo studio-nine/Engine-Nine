@@ -23,13 +23,9 @@ namespace Nine.Graphics.ScreenEffects
     /// </summary>
     public partial class RadialBlurEffect
     {
-        /// <summary>
-        /// Creates a new instance of radial blur post processing.
-        /// </summary>
-        public RadialBlurEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(RadialBlurEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

@@ -20,10 +20,9 @@ namespace Nine.Graphics.ParticleEffects
 
     internal partial class ParticleSystemEffect
     {
-        public ParticleSystemEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(ParticleSystemEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

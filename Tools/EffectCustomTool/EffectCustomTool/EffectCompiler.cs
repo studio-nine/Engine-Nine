@@ -22,89 +22,29 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using CustomToolTemplate;
 #endregion
 
 namespace Microsoft.VisualStudio.Shell.Interop
 {
-    internal class ProcessorContext : ContentProcessorContext
-    {
-        public override void AddDependency(string filename) { }
-        public override void AddOutputFile(string filename) { }
-
-        public override TOutput BuildAndLoadAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName)
-        {
-            return default(TOutput);
-        }
-
-        public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
-        {
-            return null;
-        }
-
-        public override string BuildConfiguration
-        {
-            get { return ""; }
-        }
-
-        public override TOutput Convert<TInput, TOutput>(TInput input, string processorName, OpaqueDataDictionary processorParameters)
-        {
-            return default(TOutput);
-        }
-
-        public override string IntermediateDirectory
-        {
-            get { return Path.GetTempPath(); }
-        }
-
-        public override ContentBuildLogger Logger
-        {
-            get { return null; }
-        }
-
-        public override string OutputDirectory
-        {
-            get { return Path.GetTempPath(); }
-        }
-
-        public override string OutputFilename
-        {
-            get { return "CompiledEffect.xnb"; }
-        }
-
-        public override OpaqueDataDictionary Parameters
-        {
-            get { return new OpaqueDataDictionary(); }
-        }
-
-        internal TargetPlatform platform = TargetPlatform.Windows;
-
-        public override TargetPlatform TargetPlatform
-        {
-            get { return platform; }
-        }
-
-        public override GraphicsProfile TargetProfile
-        {
-            get { return GraphicsProfile.Reach; }
-        }
-    }
-
-
     public class EffectCompiler
     {
-        public string WindowsEffectCode { get; private set; }
-        public string XBoxEffectCode { get; private set; }
-        public StringBuilder Properties { get; private set; }
-        public StringBuilder Initialize { get; private set; }
-        
+        public string Designer;
+        public string Default;
 
-        public EffectCompiler(string sourceFile, string shaderContent)
+        StringBuilder Apply = new StringBuilder();
+        StringBuilder Clone = new StringBuilder();
+        StringBuilder DirtyFlags = new StringBuilder();
+        StringBuilder Initialize = new StringBuilder();
+        StringBuilder Properties = new StringBuilder();
+        string WindowsEffectCode;
+        string XboxEffectCode;
+        bool hiDef = false;
+
+        public EffectCompiler(string className, string nameSpace, string sourceFile)
         {
-            Properties = new StringBuilder();
-            Initialize = new StringBuilder();
-
             // Create graphics device
             Form dummy = new Form();
 
@@ -114,37 +54,47 @@ namespace Microsoft.VisualStudio.Shell.Interop
             parameters.DeviceWindowHandle = dummy.Handle;
 
             GraphicsAdapter.UseNullDevice = true;
-            GraphicsDevice device = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.Reach, parameters);
-            
+            GraphicsDevice device = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, parameters);
 
-            // Compile effect
-            EffectContent content = new EffectContent() { EffectCode = shaderContent };
+            CompiledEffectContent windowsCompiledEffect;
+            CompiledEffectContent xbox360CompiledEffect;
 
-            content.Name = Path.GetFileNameWithoutExtension(sourceFile);
-            content.Identity = new ContentIdentity(sourceFile);
-            
+            byte[] windowsEffectCode = null;
+            byte[] xbox360EffectCode = null;
 
-            EffectProcessor compiler = new EffectProcessor();
-            ProcessorContext context = new ProcessorContext();
+            try
+            {
+                windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.Reach);
+                xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.Reach);
+            }
+            catch (Exception ex) 
+            {
+                hiDef = true;
 
-            compiler.Defines = "WINDOWS";
-            compiler.DebugMode = EffectProcessorDebugMode.Optimize;            
-            context.platform = TargetPlatform.Windows;
-            CompiledEffectContent windowsCompiledEffect = compiler.Process(content, context);
+                windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
+                xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
+            }
 
-            compiler.Defines = "XBOX;XBOX360";
-            context.platform = TargetPlatform.Xbox360;
-            CompiledEffectContent xbox360CompiledEffect = compiler.Process(content, context);
+            string indent = "        ";
 
-            byte[] windowsEffectCode = windowsCompiledEffect.GetEffectCode();
-            byte[] xbox360EffectCode = xbox360CompiledEffect.GetEffectCode();
+            if (hiDef)
+            {
+                Initialize.AppendLine(indent + "    if (GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)");
+                Initialize.AppendFormat(indent + "        throw new InvalidOperationException(\"{{$CLASS}} requires GraphicsProfile.HiDef.\");");
+                Initialize.AppendLine();
+                Initialize.AppendLine();
+            }
+
+            windowsEffectCode = windowsCompiledEffect.GetEffectCode();
+            xbox360EffectCode = xbox360CompiledEffect.GetEffectCode();
 
             WindowsEffectCode = ByteArrayToString(windowsEffectCode);
-            XBoxEffectCode = ByteArrayToString(xbox360EffectCode);
-
+            XboxEffectCode = ByteArrayToString(xbox360EffectCode);
 
             // Initialize parameters
             Effect effect = new Effect(device, windowsEffectCode);
+
+            uint dirtyFlag = 0;
 
             // Create a field and property for each effect parameter
             for (int i = 0; i < effect.Parameters.Count; i++)
@@ -161,31 +111,46 @@ namespace Microsoft.VisualStudio.Shell.Interop
                     continue;
                 }
 
-
                 bool isArray = IsArray(parameter);
                 bool isPublic = parameter.Name[0] >= 'A' && parameter.Name[0] <= 'Z';
 
-                string indent = "        ";
                 string fieldName = "_" + parameter.Name;
+                string parameterFieldName = "_" + parameter.Name + "Parameter";
                 string propertyName = parameter.Name;
                 string propertyTypeReference = isArray ? GetCSharpTypeName(parameterType) + "[]" : 
                                                          GetCSharpTypeName(parameterType);
-                
+                string fieldDirtyFlagName = parameter.Name + "DirtyFlag";
 
                 // Initialize
                 Initialize.Append(indent);
-                Initialize.Append("    ");
-                Initialize.Append("this.");
-                Initialize.Append(fieldName);
-                Initialize.Append(" = Parameters[\"");
-                Initialize.Append(parameter.Name);
-                Initialize.AppendLine("\"];");
+                Initialize.AppendFormat("    this.{0} = cloneSource.Parameters[\"{1}\"];", parameterFieldName, parameter.Name);
+                Initialize.AppendLine();
+
+
+                DirtyFlags.AppendFormat(indent + "const uint {0} = 1 << {1};", fieldDirtyFlagName, dirtyFlag);
+                DirtyFlags.AppendLine();
+
+                Clone.AppendFormat(indent + "    this.{0} = cloneSource.{0};", fieldName);
+                Clone.AppendLine();
+
+                Apply.AppendFormat(indent + "    if ((this.dirtyFlag & {0}) != 0)", fieldDirtyFlagName);
+                Apply.AppendLine();
+                Apply.AppendLine(indent + "    {");
+                Apply.AppendFormat(indent + "        this.{0}.SetValue({1});", parameterFieldName, fieldName);
+                Apply.AppendLine();
+                Apply.AppendFormat(indent + "        this.dirtyFlag &= ~{0};", fieldDirtyFlagName);
+                Apply.AppendLine();
+                Apply.AppendLine(indent + "    }");
 
 
                 // Field
                 Properties.Append(indent);
+                Properties.AppendFormat("private {0} {1};", propertyTypeReference, fieldName);
+                Properties.AppendLine();
+
+                Properties.Append(indent);
                 Properties.Append("private EffectParameter ");
-                Properties.Append(fieldName);
+                Properties.Append(parameterFieldName);
                 Properties.AppendLine(";");
                 Properties.AppendLine();
 
@@ -210,30 +175,60 @@ namespace Microsoft.VisualStudio.Shell.Interop
                 Properties.AppendLine(propertyName);
                 Properties.Append(indent);
                 Properties.AppendLine("{");
-                
+
                 // Get method
-                if (!isArray)
-                {
-                    Properties.Append(indent);
-                    Properties.Append("    ");
-                    Properties.Append("get { return ");
-                    Properties.Append(fieldName);
-                    Properties.Append(".GetValue");
-                    Properties.Append(parameterType.Name);
-                    Properties.AppendLine("(); }");
-                }
+                Properties.Append(indent);
+                Properties.AppendFormat("    get {{ return {0}; }}", fieldName);
+                Properties.AppendLine();
 
                 // Set method
                 Properties.Append(indent);
-                Properties.Append("    ");
-                Properties.Append("set { ");
-                Properties.Append(fieldName);
-                Properties.AppendLine(".SetValue(value); }");
-
-                Properties.Append(indent);
-                Properties.AppendLine("}");
+                Properties.AppendFormat(@"    set {{ {0} = value; dirtyFlag |= {1}; }}", fieldName, fieldDirtyFlagName);
                 Properties.AppendLine();
-            }            
+                Properties.Append(indent + "}");
+                Properties.AppendLine();
+                Properties.AppendLine();
+
+                dirtyFlag++;
+            }
+
+
+            string content = Strings.Designer;
+
+            content = content.Replace(@"{$PROPERTIES}", Properties.ToString());
+            content = content.Replace(@"{$INITIALIZE}", Initialize.ToString());
+            content = content.Replace(@"{$APPLY}", Apply.ToString());
+            content = content.Replace(@"{$CLONE}", Clone.ToString());
+            content = content.Replace(@"{$DIRTYFLAGS}", DirtyFlags.ToString());
+            content = content.Replace(@"{$CLASS}", className);
+            content = content.Replace(@"{$NAMESPACE}", nameSpace);
+            content = content.Replace(@"{$XBOXBYTECODE}", XboxEffectCode);
+            content = content.Replace(@"{$WINDOWSBYTECODE}", WindowsEffectCode);
+            content = content.Replace(@"{$VERSION}", GetType().Assembly.GetName().Version.ToString(4));
+            content = content.Replace(@"{$RUNTIMEVERSION}", GetType().Assembly.ImageRuntimeVersion);
+
+            Designer = content;
+        }
+
+        private static CompiledEffectContent BuildEffect(string sourceFile, TargetPlatform targetPlatform, GraphicsProfile targetProfile)
+        {
+            // Compile effect
+            ContentBuildLogger logger = new CustomLogger();
+
+            // Import the effect source code.
+            EffectImporter importer = new EffectImporter();
+            ContentImporterContext importerContext = new CustomImporterContext(logger);
+            EffectContent sourceEffect = importer.Import(sourceFile, importerContext);
+
+            // Compile the effect.
+            EffectProcessor processor = new EffectProcessor();
+            ContentProcessorContext processorContext = new CustomProcessorContext(targetPlatform, targetProfile, logger);
+            return processor.Process(sourceEffect, processorContext);
+        }
+
+        public string Process(string content, string className, string namespaceName)
+        {
+            return null;
         }
 
         private static bool IsArray(EffectParameter parameter)
@@ -357,12 +352,11 @@ namespace Microsoft.VisualStudio.Shell.Interop
             return builder.ToString();
         }
 
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            using (StreamReader reader = new StreamReader(new FileStream(@"D:/BasicEffect.fx", FileMode.Open)))
-            {
-                EffectCompiler compiler = new EffectCompiler(@"D:/BasicEffect.fx", reader.ReadToEnd());
-            }
+            EffectCompiler compiler = new EffectCompiler("Hi", "NS", @"D:\BasicEffect.fx");
+
+            File.WriteAllText(@"D:\BasicEffect.Designer.cs", compiler.Designer);
         }
     }
 }

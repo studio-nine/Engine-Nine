@@ -20,10 +20,9 @@ namespace Nine.Graphics.ScreenEffects
 
     public partial class SilouetteEffect
     {
-        public SilouetteEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(SilouetteEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

@@ -20,10 +20,9 @@ namespace Nine.Graphics.Effects
 
     public partial class NormalMappingEffect : IEffectMatrices
     {
-        public NormalMappingEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(NormalMappingEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

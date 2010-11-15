@@ -26,13 +26,9 @@ namespace Nine.Graphics.ScreenEffects
     /// </summary>
     public partial class ColorMatrixEffect
     {
-        /// <summary>
-        /// Creates a new instance of color matrix post processing.
-        /// </summary>
-        public ColorMatrixEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics)) 
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(ColorMatrixEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif

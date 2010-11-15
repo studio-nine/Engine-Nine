@@ -24,29 +24,54 @@ namespace Nine.Graphics.Effects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class SplatterTextureCollection : IEnumerable<Texture2D>
     {
-        Texture2D[] textures;
         SplatterEffect effect;
 
         internal SplatterTextureCollection(SplatterEffect effect)
         {
             this.effect = effect;
-            this.textures = new Texture2D[SplatterEffect.MaxLayers];
         }
 
         public Texture2D this[int index]
         {
-            get { return textures[index]; }
-            set { textures[index] = value; }
+            get 
+            {
+                if (index == 0)
+                    return effect.textureX;
+                if (index == 1)
+                    return effect.textureY;
+                if (index == 2)
+                    return effect.textureZ;
+                if (index == 3)
+                    return effect.textureW;
+
+                throw new IndexOutOfRangeException();
+            }
+            set
+            {
+                if (index == 0)
+                    effect.textureX = value;
+                else if (index == 1)
+                    effect.textureY = value;
+                else if (index == 2)
+                    effect.textureZ = value;
+                else if (index == 3)
+                    effect.textureW = value;
+                else
+                    throw new IndexOutOfRangeException();
+            }
         }
 
         public IEnumerator<Texture2D> GetEnumerator()
         {
-            return (textures as IEnumerable<Texture2D>).GetEnumerator();
+            yield return effect.textureX;
+            yield return effect.textureY;
+            yield return effect.textureZ;
+            yield return effect.textureW;
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return textures.GetEnumerator();
+            return GetEnumerator();
         }
     }
     #endregion
@@ -78,19 +103,23 @@ namespace Nine.Graphics.Effects
             DirectionalLight0.DiffuseColor = Color.Yellow.ToVector3();
             DirectionalLight0.SpecularColor = Color.White.ToVector3();
         }
-
-        public SplatterEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        
+		private void OnCreated() 
         {
-            InitializeComponent();
-
-            DirectionalLight0 = new DirectionalLight(_lightDirection, _lightDiffuseColor, _lightSpecularColor, null);
-            DirectionalLight1 = new DirectionalLight(_lightDirection, _lightDiffuseColor, _lightSpecularColor, null);
-            DirectionalLight2 = new DirectionalLight(_lightDirection, _lightDiffuseColor, _lightSpecularColor, null);
+            DirectionalLight0 = new DirectionalLight(_lightDirectionParameter, _lightDiffuseColorParameter, _lightSpecularColorParameter, null);
+            DirectionalLight1 = new DirectionalLight(_lightDirectionParameter, _lightDiffuseColorParameter, _lightSpecularColorParameter, null);
+            DirectionalLight2 = new DirectionalLight(_lightDirectionParameter, _lightDiffuseColorParameter, _lightSpecularColorParameter, null);
 
             Textures = new SplatterTextureCollection(this);
         }
 
-        protected override void  OnApply()
+        private void OnClone(SplatterEffect cloneSource) 
+        {
+            FogEnabled = cloneSource.FogEnabled;
+            LightingEnabled = cloneSource.LightingEnabled;
+        }
+        
+		private void OnApplyChanges()
         {
             textureX = Textures[0];
             textureY = Textures[1];
@@ -107,8 +136,6 @@ namespace Nine.Graphics.Effects
             mask = m;
 
             eyePosition = Matrix.Invert(View).Translation;
-
- 	        base.OnApply();
         }
     }
     #endregion

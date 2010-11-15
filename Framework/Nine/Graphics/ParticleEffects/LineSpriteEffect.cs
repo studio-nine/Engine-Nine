@@ -11,10 +11,9 @@ namespace Nine.Graphics.ParticleEffects
 
     public partial class LineSpriteEffect
     {
-        public LineSpriteEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(LineSpriteEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }	
 
 #endif

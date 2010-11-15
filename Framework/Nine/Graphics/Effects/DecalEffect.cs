@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
-
+    
     public partial class DecalEffect : IEffectMatrices
     {
         public Vector3 Position { get; set; }
@@ -38,20 +38,25 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        public DecalEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        private void OnCreated() 
         {
-            InitializeComponent();
+
         }
 
-        protected override void OnApply()
+        private void OnClone(DecalEffect cloneSource) 
+        {
+            Position = cloneSource.Position;
+            Rotation = cloneSource.Rotation;
+            Scale = cloneSource.Scale;
+        }
+
+        private void OnApplyChanges()
         {
             Matrix matrix = Matrix.CreateTranslation(-Position + new Vector3(Scale.X / 2, Scale.Y / 2, 0));
             matrix *= Matrix.CreateRotationZ(-Rotation);
             matrix *= Matrix.CreateScale(1.0f / Scale.X, 1.0f / Scale.Y, 1);
 
             textureTransform = matrix;
-
-            base.OnApply();
         }
     }
 

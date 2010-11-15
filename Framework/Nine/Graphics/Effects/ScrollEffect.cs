@@ -27,12 +27,22 @@ namespace Nine.Graphics.Effects
 
         private TimeSpan startTime = TimeSpan.Zero;
                         
-        public ScrollEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        private void OnCreated() 
         {
-            InitializeComponent();
-
             Speed = 1.0f;
             TextureScale = Vector2.One;
+        }
+
+        private void OnClone(ScrollEffect cloneSource) 
+        {
+            Speed = cloneSource.Speed;
+            Direction = cloneSource.Direction;
+            TextureEnabled = cloneSource.TextureEnabled;
+        }
+
+        private void OnApplyChanges() 
+        {
+
         }
 
         public void Update(GameTime time)

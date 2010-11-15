@@ -49,22 +49,25 @@ namespace Nine.Graphics.ScreenEffects
         /// <summary>
         /// Creates a new instance of Gaussian blur post processing.
         /// </summary>
-        public BlurEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
+        private void OnCreated() 
         {
             Step = 1.0f;
             BlurAmount = 1.0f;
             SampleCount = 15;
-
-            InitializeComponent();
         }
 
-        protected override void OnApply()
+        private void OnClone(BlurEffect cloneSource) 
+        {
+            BlurAmount = cloneSource.BlurAmount;
+            SampleCount = cloneSource.SampleCount;
+            Step = cloneSource.Step;
+        }
+
+        private void OnApplyChanges()
         {
             SetBlurEffectParameters(
                 (float)Math.Cos(-Direction) / GraphicsDevice.Viewport.Width,
                 (float)Math.Sin(-Direction) / GraphicsDevice.Viewport.Height);
-
-            base.OnApply();
         }
 
 

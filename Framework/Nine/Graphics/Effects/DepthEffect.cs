@@ -26,15 +26,10 @@ namespace Nine.Graphics.Effects
             get { return Parameters["ShaderIndex"].GetValueInt32() == 0; }
             set { Parameters["ShaderIndex"].SetValue(value ? 1 : 0); }
         }
-
-        public DepthEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
-
+        
         public Matrix[] GetBoneTransforms(int count)
         {
-            return _bones.GetValueMatrixArray(count);
+            return bones;
         }
         
         public void SetBoneTransforms(Matrix[] boneTransforms)
@@ -42,11 +37,18 @@ namespace Nine.Graphics.Effects
             bones = boneTransforms;
         }
 
-        protected override void OnApply()
+        private void OnCreated() 
+        {
+        }
+
+        private void OnClone(DepthEffect cloneSource) 
+        {
+            SkinningEnabled = cloneSource.SkinningEnabled;
+        }
+
+        private void OnApplyChanges()
         {
             farClip = Math.Abs(Projection.M43 / (Math.Abs(Projection.M33) - 1));
-
-            base.OnApply();
         }
     }
 

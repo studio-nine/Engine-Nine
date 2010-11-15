@@ -52,7 +52,7 @@
         "Entry"
         {
         "MsmKey" = "8:_2B2E58C195F41E8FDCC491E1C1CF17F9"
-        "OwnerKey" = "8:_C75403E59CFD238D7D556BBC69D2F250"
+        "OwnerKey" = "8:_47E583302CEBF7741892AD9DBC7A766B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -64,7 +64,7 @@
         "Entry"
         {
         "MsmKey" = "8:_2B2E58C195F41E8FDCC491E1C1CF17F9"
-        "OwnerKey" = "8:_47E583302CEBF7741892AD9DBC7A766B"
+        "OwnerKey" = "8:_C75403E59CFD238D7D556BBC69D2F250"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -76,19 +76,7 @@
         "Entry"
         {
         "MsmKey" = "8:_2E2752143A27C678A1939E41E2C76412"
-        "OwnerKey" = "8:_C75403E59CFD238D7D556BBC69D2F250"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2E2752143A27C678A1939E41E2C76412"
-        "OwnerKey" = "8:_47E583302CEBF7741892AD9DBC7A766B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2E2752143A27C678A1939E41E2C76412"
-        "OwnerKey" = "8:_549265CC0FB45A2B4776B4D460FF6799"
+        "OwnerKey" = "8:_173C4DB4C81EE40F6D9BFDFA5C070B0D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -100,7 +88,19 @@
         "Entry"
         {
         "MsmKey" = "8:_2E2752143A27C678A1939E41E2C76412"
-        "OwnerKey" = "8:_173C4DB4C81EE40F6D9BFDFA5C070B0D"
+        "OwnerKey" = "8:_549265CC0FB45A2B4776B4D460FF6799"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2E2752143A27C678A1939E41E2C76412"
+        "OwnerKey" = "8:_47E583302CEBF7741892AD9DBC7A766B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2E2752143A27C678A1939E41E2C76412"
+        "OwnerKey" = "8:_C75403E59CFD238D7D556BBC69D2F250"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -130,13 +130,7 @@
         "Entry"
         {
         "MsmKey" = "8:_549265CC0FB45A2B4776B4D460FF6799"
-        "OwnerKey" = "8:_C75403E59CFD238D7D556BBC69D2F250"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_549265CC0FB45A2B4776B4D460FF6799"
-        "OwnerKey" = "8:_F0F1127127384A7DA4F29A0810C09BE2"
+        "OwnerKey" = "8:_47E583302CEBF7741892AD9DBC7A766B"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -148,7 +142,19 @@
         "Entry"
         {
         "MsmKey" = "8:_549265CC0FB45A2B4776B4D460FF6799"
-        "OwnerKey" = "8:_47E583302CEBF7741892AD9DBC7A766B"
+        "OwnerKey" = "8:_F0F1127127384A7DA4F29A0810C09BE2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_549265CC0FB45A2B4776B4D460FF6799"
+        "OwnerKey" = "8:_C75403E59CFD238D7D556BBC69D2F250"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5A0AC59340561D548340F9B094C99BF5"
+        "OwnerKey" = "8:_F0F1127127384A7DA4F29A0810C09BE2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -195,8 +201,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C2CFB25456DBF3EB6B474C2107A47058"
+        "OwnerKey" = "8:_F0F1127127384A7DA4F29A0810C09BE2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C50FF02E835753050FE421028C5484F4"
         "OwnerKey" = "8:_F0F1127127384A7DA4F29A0810C09BE2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C50FF02E835753050FE421028C5484F4"
+        "OwnerKey" = "8:_5A0AC59340561D548340F9B094C99BF5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -261,6 +279,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F96BBD2791D8BA3C8895C2A52A8472B5"
+        "OwnerKey" = "8:_C2CFB25456DBF3EB6B474C2107A47058"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F96BBD2791D8BA3C8895C2A52A8472B5"
+        "OwnerKey" = "8:_F0F1127127384A7DA4F29A0810C09BE2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2E2752143A27C678A1939E41E2C76412"
         "MsmSig" = "8:_UNDEFINED"
@@ -310,6 +340,18 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C2CFB25456DBF3EB6B474C2107A47058"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F96BBD2791D8BA3C8895C2A52A8472B5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_410971384762C70EDD8F53E04A28AB27"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -346,6 +388,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5A0AC59340561D548340F9B094C99BF5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C50FF02E835753050FE421028C5484F4"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -363,7 +411,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\Installer.msi"
+        "OutputFilename" = "8:bin\\Debug\\Installer.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -400,7 +448,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\EffectCustomTool.1.2.0.msi"
+        "OutputFilename" = "8:bin\\Release\\EffectCustomTool.1.2.0.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -452,7 +500,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.21022   "
+                "FrameworkVersion" = "8:3.5.21022     "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -697,6 +745,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5A0AC59340561D548340F9B094C99BF5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5A0AC59340561D548340F9B094C99BF5"
+                    {
+                    "Name" = "8:Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B43DFD66260A49218D180672FE58690F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_673D82E2E95179338EB2D0EB2A403916"
             {
             "SourcePath" = "8:vslangproj80.olb"
@@ -782,6 +861,37 @@
                     }
                 }
             "SourcePath" = "8:VSLangProj.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B43DFD66260A49218D180672FE58690F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C2CFB25456DBF3EB6B474C2107A47058"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.TextTemplating.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C2CFB25456DBF3EB6B474C2107A47058"
+                    {
+                    "Name" = "8:Microsoft.VisualStudio.TextTemplating.10.0.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.VisualStudio.TextTemplating.10.0.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B43DFD66260A49218D180672FE58690F"
@@ -985,6 +1095,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F96BBD2791D8BA3C8895C2A52A8472B5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F96BBD2791D8BA3C8895C2A52A8472B5"
+                    {
+                    "Name" = "8:Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B43DFD66260A49218D180672FE58690F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1053,20 +1194,20 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Effect Custom Tool for Visual Studio 2010"
         "ProductCode" = "8:{0FFBF737-8948-422E-A370-A4779BAC70E2}"
-        "PackageCode" = "8:{40984D81-06CF-4951-8CF9-2D4A0DF0F593}"
+        "PackageCode" = "8:{18270654-C647-46D9-8F28-B0B41DF03BB3}"
         "UpgradeCode" = "8:{440F7A2A-1F50-4DDF-AEE9-743B881E10A3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.1"
-        "Manufacturer" = "8:Yufei Huang"
+        "ProductVersion" = "8:1.3.0"
+        "Manufacturer" = "8:Engine Nine"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://effectcustomtool.codeplex.com"
         "Title" = "8:Effect Custom Tool for Visual Studio 2010"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Yufei Huang"
+        "ARPCONTACT" = "8:Engine Nine"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Effect Custom Tool for Visual Studio 2010"
         "ARPURLINFOABOUT" = "8:"
@@ -1504,7 +1645,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F0F1127127384A7DA4F29A0810C09BE2"
             {
-            "SourcePath" = "8:..\\EffectCustomTool\\obj\\Release\\Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll"
+            "SourcePath" = "8:..\\EffectCustomTool\\obj\\Debug\\Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B43DFD66260A49218D180672FE58690F"

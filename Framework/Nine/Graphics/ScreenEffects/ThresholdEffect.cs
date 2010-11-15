@@ -11,10 +11,9 @@ namespace Nine.Graphics.ScreenEffects
 
     public partial class ThresholdEffect
     {
-        public ThresholdEffect(GraphicsDevice graphics) : base(GetSharedEffect(graphics))
-        {
-            InitializeComponent();
-        }
+        private void OnCreated() { }
+        private void OnClone(ThresholdEffect cloneSource) { }
+        private void OnApplyChanges() { }
     }
 
 #endif
