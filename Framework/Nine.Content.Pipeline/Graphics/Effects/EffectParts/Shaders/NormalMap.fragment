@@ -1,0 +1,56 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment NormalMap;
+
+[textures]
+texture2D Texture : NORMALMAP;
+
+[vertex]
+float3 Binormal	: BINORMAL0;
+float3 Tangent	: TANGENT0;
+
+[interpolators]
+float3 Tangent;
+float3 Binormal;
+
+[vs]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float3 tangent = input.Tangent;
+	float3 binormal = input.Binormal;
+
+	import(WorldTransform, tangent = mul(tangent, WorldTransform));
+	import(WorldTransform, binormal = mul(binormal, WorldTransform));
+
+	output(Tangent, tangent);
+	output(Binormal, binormal);
+}
+__hlsl__
+
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float3 normal;
+	import(Normal, normal = Normal);
+
+	float3x3 tangentTransform;
+	tangentTransform[0] = input.Tangent;
+	tangentTransform[1] = input.Binormal;
+	tangentTransform[2] = normal;
+	
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+    float3 normalFromMap = tex2D(Texture, uv);
+    normalFromMap = mul(normalFromMap, tangentTransform);
+    normalFromMap = normalize(normalFromMap);
+	
+	export(float3, Normal, normalFromMap);
+}
+__hlsl__

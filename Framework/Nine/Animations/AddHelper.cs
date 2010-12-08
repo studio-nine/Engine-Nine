@@ -22,7 +22,7 @@ namespace Nine.Animations
     /// <summary>
     /// Defines an operation on the specified type.
     /// </summary>
-    public delegate T Operation<T>(T x, T y);
+    public delegate T Operator<T>(T x, T y);
 
     /// <summary>
     /// Helper class to add common types.

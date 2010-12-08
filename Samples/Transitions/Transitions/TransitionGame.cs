@@ -47,7 +47,7 @@ namespace Transitions
         SpriteFont font;
         
 #if !WINDOWS_PHONE
-        ScrollEffect background;
+        //ScrollEffect background;
 #endif
 
         List<Button> buttons;        
@@ -110,10 +110,10 @@ namespace Transitions
             //
             // Most effects from Nine.Graphics can be used with GraphicsExtensions.DrawSprite
             // method to draw 2D textures with a custom shader.
-            background = new ScrollEffect(GraphicsDevice);
-            background.Texture = Content.Load<Texture2D>("checker");
-            background.TextureScale = Vector2.One * 0.2f;
-            background.Direction = -MathHelper.PiOver4;
+            //background = new ScrollEffect(GraphicsDevice);
+            //background.Texture = Content.Load<Texture2D>("checker");
+            //background.TextureScale = Vector2.One * 0.2f;
+            //background.Direction = -MathHelper.PiOver4;
 #endif
             
             // Create a color tweener to adjust the color of "Press any key to continue...".
@@ -298,14 +298,14 @@ namespace Transitions
 
 #if !WINDOWS_PHONE
             // Update background scroll
-            background.Update(gameTime);
+            //background.Update(gameTime);
 
             // Draw background
-            background.SetViewport(GraphicsDevice.Viewport.Bounds);
+            //background.SetViewport(GraphicsDevice.Viewport.Bounds);
 
-            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, background);
-            spriteBatch.Draw(background.Texture, GraphicsDevice.Viewport.Bounds, null, Color.White);
-            spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, background);
+            //spriteBatch.Draw(background.Texture, GraphicsDevice.Viewport.Bounds, null, Color.White);
+            //spriteBatch.End();
 #endif
             spriteBatch.Begin();
             

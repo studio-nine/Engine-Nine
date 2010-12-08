@@ -66,20 +66,35 @@
     <Compile Include="Graphics\DrawableSurface.cs" />
     <Compile Include="Graphics\DrawableSurfacePatch.cs" />
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
+    <Compile Include="Graphics\EffectExtensions.cs" />
     <Compile Include="Graphics\Effects\DecalEffect.Designer.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\DepthEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>DepthEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\BasicTextureEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\DirectionalBlurEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\DirectionalLightEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\DualTextureEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\FogEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\LightEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\NormalMapEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\OverlayTextureEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\ShadowMapEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\SkinTransformEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\TextureTransformEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\VertexTransformEffectPart.cs" />
+    <Compile Include="Graphics\Effects\LinkedEffect.cs" />
+    <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\Effects\SkyBoxEffect.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -139,7 +154,7 @@
     </Compile>
     <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
       <DependentUpon>PixelateEffect.fx</DependentUpon>
-      <SubType>Code</SubType>      
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
       <DependentUpon>PixelateEffect.fx</DependentUpon>
@@ -178,6 +193,7 @@
     </Compile>
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
     <Compile Include="Math2D.cs" />
     <Compile Include="OcTree.cs" />
     <Compile Include="Pickable.cs" />
@@ -196,15 +212,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NormalMappingEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\ScrollEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ScrollEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Interface.cs" />
     <Compile Include="Graphics\Effects\SkyBoxEffect.cs">
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
@@ -252,7 +262,6 @@
     <Compile Include="Graphics\Primitives\Skeleton.cs" />
     <Compile Include="Graphics\Primitives\Teapot.cs" />
     <Compile Include="Graphics\Primitives\Torus.cs" />
-    <Compile Include="Graphics\VertexPositionNormalDueTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="NamedObjectManager.cs" />
     <Compile Include="ScreenshotCapturer.cs" />
@@ -270,9 +279,6 @@
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\ShadowMap.cs" />
-    <Compile Include="Graphics\Effects\ScrollEffect.cs">
-      <DependentUpon>ScrollEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\SplatterEffect.cs">
       <DependentUpon>SplatterEffect.fx</DependentUpon>
     </Compile>
@@ -314,10 +320,6 @@
     <None Include="Graphics\Effects\NormalMappingEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>NormalMappingEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\Effects\ScrollEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ScrollEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>

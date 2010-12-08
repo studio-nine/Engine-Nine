@@ -1,0 +1,21 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment AmbientLight;
+
+[parameters]
+float3 AmbientLightColor = { 0.2, 0.2, 0.2 };
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float3 diffuse;
+	import(LightDiffuse, diffuse = LightDiffuse);
+	
+	diffuse += AmbientLightColor;
+	export(float3, LightDiffuse, diffuse);
+}
+__hlsl__

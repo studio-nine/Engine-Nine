@@ -24,7 +24,7 @@ namespace Nine.Graphics
     /// Tag used by models.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class ModelTag
+    public class ModelTag
     {
         internal ModelTag() { }   
         
@@ -48,11 +48,39 @@ namespace Nine.Graphics
     }
 
     /// <summary>
+    /// Tag used by ModelMeshPart.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class ModelMeshPartTag
+    {
+        internal ModelMeshPartTag() { }
+
+        /// <summary>
+        /// Gets the additional textures (E.g. normalmap) attached to the ModelMeshPart.
+        /// </summary>
+        [ContentSerializer()]
+        public Dictionary<string, Texture> Textures { get; internal set; }
+    }
+
+    /// <summary>
     /// Contains extension methods to models.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ModelExtensions
     {
+        static List<string> EmptyStringCollection = new List<string>();
+
+        /// <summary>
+        /// Gets wether the specfied model has any skinning info attached to it.
+        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
+        /// </summary>
+        public static bool IsSkinned(this Model model)
+        {
+            ModelTag extensions = model.Tag as ModelTag;
+
+            return extensions != null && extensions.Skinning != null;
+        }
+
         /// <summary>
         /// Gets the bone transformation matrices used to draw skinned models
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
@@ -62,8 +90,9 @@ namespace Nine.Graphics
             ModelTag extensions = model.Tag as ModelTag;
 
             if (extensions != null && extensions.Skinning != null)
+            {
                 return extensions.Skinning.GetBoneTransforms(model);
-
+            }
             return null;
         }
 
@@ -76,8 +105,9 @@ namespace Nine.Graphics
             ModelTag extensions = model.Tag as ModelTag;
 
             if (extensions != null && extensions.Skinning != null)
+            {
                 return extensions.Skinning.GetBoneTransforms(model, world);
-
+            }
             return null;
         }
 
@@ -94,7 +124,6 @@ namespace Nine.Graphics
                 extensions.Skinning.GetBoneTransforms(model, world, boneTransforms);
                 return true;
             }
-
             return false;
         }
 
@@ -107,9 +136,10 @@ namespace Nine.Graphics
             ModelTag extensions = model.Tag as ModelTag;
 
             if (extensions != null && extensions.Animations != null)
+            {
                 return extensions.Animations.Keys;
-
-            return null;
+            }
+            return EmptyStringCollection;
         }
 
         /// <summary>
@@ -230,6 +260,117 @@ namespace Nine.Graphics
             }
             
             return ambsoluteTransform * world;
+        }
+
+        /// <summary>
+        /// Gets all the texture names attached to the model.
+        /// </summary>
+        public static ICollection<string> GetTextures(this ModelMeshPart part)
+        {
+            ModelMeshPartTag extensions = part.Tag as ModelMeshPartTag;
+
+            if (extensions != null && extensions.Textures != null)
+            {
+                return extensions.Textures.Keys;
+            }
+            return EmptyStringCollection;
+        }
+
+        /// <summary>
+        /// Gets the texture attached to the model with the specified name.
+        /// </summary>
+        public static Texture GetTexture(this ModelMeshPart part, string name)
+        {
+            Texture result;
+            ModelMeshPartTag extensions = part.Tag as ModelMeshPartTag;
+
+            if (extensions != null && extensions.Textures != null &&
+                extensions.Textures.TryGetValue(name, out result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all the effects in the model.
+        /// </summary>
+        public static IEnumerable<Effect> GetEffects(this Model model)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                    yield return part.Effect;
+        }
+
+        /// <summary>
+        /// Converts all the effects of the Model to a new effect.
+        /// Materials (Diffuse, Emissive, etc) and textures parameters are copied to the new effect.
+        /// </summary>
+        /// <remarks>
+        /// This function requires the effect to be either build in effect or effects 
+        /// that implements IEffectMaterial or IEffectTexture.
+        /// </remarks>
+        public static void ConvertEffectTo(this Model model, Effect effect)
+        {
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.ConvertEffectTo(effect.Clone());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Converts all the effects of the ModelMesh to a new effect.
+        /// Materials (Diffuse, Emissive, etc) and textures parameters are copied to the new effect.
+        /// </summary>
+        /// <remarks>
+        /// This function requires the effect to be either build in effect or effects 
+        /// that implements IEffectMaterial or IEffectTexture.
+        /// </remarks>
+        public static void ConvertEffectTo(this ModelMesh mesh, Effect effect)
+        {
+            foreach (ModelMeshPart part in mesh.MeshParts)
+            {
+                part.ConvertEffectTo(effect.Clone());
+            }
+        }
+
+        /// <summary>
+        /// Converts the current effect of the ModelMeshPart to a new effect.
+        /// Materials (Diffuse, Emissive, etc) and textures parameters are copied to the new effect.
+        /// </summary>
+        /// <remarks>
+        /// This function requires the effect to be either build in effect or effects 
+        /// that implements IEffectMaterial or IEffectTexture.
+        /// </remarks>
+        public static void ConvertEffectTo(this ModelMeshPart part, Effect effect)
+        {
+            if (effect == null)
+                throw new ArgumentNullException("effect");
+
+            effect.CopyMaterialsFrom(part.Effect);
+
+            if (effect.GetTexture() != null)
+            {
+                Texture2D texture = part.Effect.GetTexture();
+
+                if (texture != null)
+                    effect.SetTexture(texture);
+            }
+
+            IEffectTexture effectTexture = effect as IEffectTexture;
+            if (effectTexture != null)
+            {
+                foreach (string texture in part.GetTextures())
+                {
+                    effectTexture.SetTexture(texture, part.GetTexture(texture));
+                }
+            }
+
+            part.Effect = effect;
         }
     }
 }

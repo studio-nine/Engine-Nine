@@ -1,0 +1,29 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment EndLight;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float3 lightDiffuse;
+	float3 lightSpecular;
+	float3 specularColor;
+	float3 diffuseColor;
+	float3 emissiveColor;
+	float4 color;
+
+	import(LightSpecular, lightSpecular = LightSpecular);
+	import(LightDiffuse, lightDiffuse = LightDiffuse);
+	import(SpecularColor, specularColor = SpecularColor);
+	import(DiffuseColor, diffuseColor = DiffuseColor);
+	import(EmissiveColor, emissiveColor = EmissiveColor);
+	import(Color, color = Color);
+
+	color.xyz = color.xyz * diffuseColor * (lightDiffuse + emissiveColor)  + lightSpecular * specularColor;
+	export(float4, Color, color);
+}
+__hlsl__

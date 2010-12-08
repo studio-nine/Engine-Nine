@@ -1,0 +1,54 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment ShadowMap;
+
+[textures]
+texture2D ShadowMap;
+
+[parameters]
+matrix	LightViewProjection;
+float3	ShadowColor = { 0.5, 0.5, 0.5 };
+float	DepthBias = 0.0005f;
+float	FarClip;
+
+[interpolators]
+float3 Shadow;
+
+[vs]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 positionWorld;	
+	import(PositionWorld, positionWorld = PositionWorld);
+	
+	float4 positionShadow = mul(positionWorld, LightViewProjection);
+
+	float3 shadow;
+	shadow.x   	=  positionShadow.x / positionShadow.w / 2.0f + 0.5f;
+	shadow.y   	= -positionShadow.y / positionShadow.w / 2.0f + 0.5f;
+	shadow.z   	=  positionShadow.z / FarClip;
+
+	output(Shadow, shadow);
+}
+__hlsl__
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float3 shadow = input.Shadow;
+	float3 shadowColor = 1;
+	
+    if ((saturate(input.Shadow.x) == input.Shadow.x) && (saturate(input.Shadow.y) == input.Shadow.y))
+		 shadowColor = shadow.z - DepthBias > tex2D(ShadowMap, shadow.xy).x ? ShadowColor : 1;
+		
+	float4 color;
+	import(Color, color = Color);
+	
+	color.rgb *= shadowColor;
+	export(float4, Color, color);
+}
+__hlsl__

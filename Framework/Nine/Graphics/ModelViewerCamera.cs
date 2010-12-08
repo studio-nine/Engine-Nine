@@ -19,6 +19,22 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Graphics
 {
     /// <summary>
+    /// Interface for game camera
+    /// </summary>
+    public interface ICamera
+    {
+        /// <summary>
+        /// Gets the camera view matrix
+        /// </summary>
+        Matrix View { get; }
+
+        /// <summary>
+        /// Gets the camera projection matrix
+        /// </summary>
+        Matrix Projection { get; }
+    }
+
+    /// <summary>
     /// Defines a camera used to view models.
     /// </summary>
     public class ModelViewerCamera : ICamera

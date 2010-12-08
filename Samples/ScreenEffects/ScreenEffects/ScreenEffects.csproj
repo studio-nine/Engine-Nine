@@ -72,15 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ScreenEffectsGame.cs" />
-    <Compile Include="TestEffect.cs">
-      <DependentUpon>TestEffect.fx</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestEffect.Designer.cs">
-      <DependentUpon>TestEffect.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -97,10 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="TestEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>TestEffect.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

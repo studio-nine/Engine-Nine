@@ -1,0 +1,24 @@
+﻿//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment Position;
+
+[vertex]
+float4 Position	: POSITION;
+float3 Normal	: NORMAL0;
+float2 TexCoord	: TEXCOORD0;
+
+[vs]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 color = float4(1, 1, 1, 1);
+
+	export(float4, Position, input.Position);
+	export(float4, Color, color);
+	export(float3, Normal, input.Normal);
+	export(float2, TexCoord, input.TexCoord);
+}
+__hlsl__

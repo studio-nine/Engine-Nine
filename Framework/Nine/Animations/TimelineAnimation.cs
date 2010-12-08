@@ -209,8 +209,11 @@ namespace Nine.Animations
             ElapsedTime = TimeSpan.Zero;
             unfixedPosition = TimeSpan.Zero;
 
-            targetElapsedTime = TimeSpan.FromSeconds(
-                Math.Min(repeat * Duration.TotalSeconds, TimeSpan.MaxValue.TotalSeconds * 0.9));
+            targetElapsedTime = TimeSpan.FromSeconds(Math.Min
+            (
+                repeat * Duration.TotalSeconds,
+                TimeSpan.MaxValue.TotalSeconds * 0.9
+            ));
 
             Seek(TimeSpan.Zero);
 

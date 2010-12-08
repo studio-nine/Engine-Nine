@@ -26,7 +26,7 @@ using Nine.Graphics;
 
 namespace Nine.Content.Pipeline.Importers
 {
-    [ContentImporter(".unknown", DisplayName = "Sequential Image List Importer - Nine")]
+    [ContentImporter(".unknown", DisplayName = "Sequential Image List Importer - Engine Nine")]
     public class SequentialImageListImporter : ContentImporter<string[]>
     {
         public override string[] Import(string filename, ContentImporterContext context)

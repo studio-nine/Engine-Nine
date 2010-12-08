@@ -30,7 +30,6 @@ namespace TerrainSample
 
         DrawableSurface terrain;
         BasicEffect basicEffect;
-        ScrollEffect scrollEffect;
         SplatterEffect splatterEffect;
         DecalEffect decalEffect;
 
@@ -78,14 +77,6 @@ namespace TerrainSample
             basicEffect.PreferPerPixelLighting = true;
 
 
-            scrollEffect = new ScrollEffect(GraphicsDevice);
-            scrollEffect.Texture = Content.Load<Texture2D>("clouds");
-            scrollEffect.Alpha = 0.5f;
-            scrollEffect.Direction = MathHelper.ToRadians(45);
-            scrollEffect.TextureScale = Vector2.One * 10;
-            scrollEffect.Speed = 0.2f;
-
-
             splatterEffect = new SplatterEffect(GraphicsDevice);
             splatterEffect.SplatterTexture = Content.Load<Texture2D>("splat");
             splatterEffect.Textures[0] = Content.Load<Texture2D>("grass");
@@ -106,9 +97,6 @@ namespace TerrainSample
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
-            // Update scroll
-            scrollEffect.Update(gameTime);
-
             base.Update(gameTime);
         }
 
@@ -150,10 +138,6 @@ namespace TerrainSample
                     basicEffect.Projection = camera.Projection;
 
 
-                    scrollEffect.World = patch.Transform;
-                    scrollEffect.View = camera.View;
-                    scrollEffect.Projection = camera.Projection;
-
 
                     splatterEffect.World = patch.Transform;
                     splatterEffect.View = camera.View;
@@ -168,7 +152,6 @@ namespace TerrainSample
                     // Draw each path with the specified effect
                     patch.Draw(basicEffect);
                     patch.Draw(splatterEffect);
-                    patch.Draw(scrollEffect);
 
 
                     // Draw decal

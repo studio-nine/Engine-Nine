@@ -30,9 +30,12 @@ namespace Nine.Content.Pipeline.Processors
     /// Custom processor extends the builtin framework ModelProcessor class,
     /// adding animation support.
     /// </summary>
-    [ContentProcessor(DisplayName = "Model Processor - Nine")]
+    [ContentProcessor(DisplayName = "Model Processor - Engine Nine")]
     public class ExtendedModelProcessor : ModelProcessor
     {
+        const string DefaultTextures = "NormalMap|*_n.dds|BumpMap|*_b.dds|Diffuse|*_d.dds|Specular|*_s.dds";
+        const string DefaultProcessors = "NormalMap|NormalTextureProcessor";
+
         /// <summary>
         /// Gets or sets a value indicating whether animation data will be generated.
         /// </summary>
@@ -55,13 +58,41 @@ namespace Nine.Content.Pipeline.Processors
         public int CollisionTreeDepth { get; set; }
 
         /// <summary>
+        /// Gets or sets whether animations tracks outside the skeleton will be discarded.
+        /// </summary>
+        [DefaultValue(true)]
+        [DisplayName("Clamp Animation to Skeleton")]
+        public bool ClampAnimationToSkeleton { get; set; }
+
+        /// <summary>
+        /// Gets or sets the textures attached to the model.
+        /// </summary>
+        [DefaultValue(DefaultTextures)]
+        [DisplayName("Textures")]
+        public string Textures { get; set; }
+
+        /// <summary>
+        /// Gets or sets the processors for each texture attached to the model.
+        /// </summary>
+        [DefaultValue(DefaultProcessors)]
+        [DisplayName("Texture Processors")]
+        public string TextureProcessors { get; set; }
+
+        private Dictionary<string, string> attachedTextureNames = new Dictionary<string, string>();
+        private Dictionary<string, string> attachedTextureProcessors = new Dictionary<string, string>();
+        private List<Dictionary<string, ExternalReference<TextureContent>>> attachedTextures = new List<Dictionary<string, ExternalReference<TextureContent>>>();
+
+        /// <summary>
         /// Creates a new instance of ExtendedModelProcessor.
         /// </summary>
         public ExtendedModelProcessor()
         {
             GenerateCollisionData = true;
             GenerateAnimationData = true;
+            ClampAnimationToSkeleton = true;
             CollisionTreeDepth = 3;
+            Textures = DefaultTextures;
+            TextureProcessors = DefaultProcessors;
         }
 
         /// <summary>
@@ -70,6 +101,8 @@ namespace Nine.Content.Pipeline.Processors
         /// </summary>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
+            //System.Diagnostics.Debugger.Launch();
+
             ValidateMesh(input, context, null);
 
             ModelTag tag = new ModelTag();
@@ -81,6 +114,8 @@ namespace Nine.Content.Pipeline.Processors
 
                 tag.Skinning = skinningProcessor.Process(input, context);
                 tag.Animations = animationProcessor.Process(input, context);
+
+                ClampAnimation(tag);
             }
 
             if (GenerateCollisionData)
@@ -100,12 +135,31 @@ namespace Nine.Content.Pipeline.Processors
             if (tag.Skinning != null)
                 FlattenTransforms(input);
 
+            FormatAttachedTextures();
+
             ModelContent model = base.Process(input, context);
+
+            ProcessAttachedTextures(model);
 
             if (GenerateAnimationData || GenerateCollisionData)
                 model.Tag = tag;
 
             return model;
+        }
+        
+        private void ClampAnimation(ModelTag tag)
+        {
+            if (ClampAnimationToSkeleton && tag.Skinning != null)
+            {
+                foreach (var animation in tag.Animations.Values)
+                {
+                    for (int i = 0; i < tag.Skinning.SkeletonIndex; i++)
+                    {
+                        if (i < animation.Transforms.Length)
+                            animation.Transforms[i] = null;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -161,5 +215,73 @@ namespace Nine.Content.Pipeline.Processors
                 FlattenTransforms(child);
             }
         }
+
+        private void FormatAttachedTextures()
+        {
+            string[] formats = Textures.Split('|');
+
+            for (int i = 0; i < formats.Length; i += 2)
+            {
+                if (i + 1 < formats.Length && !string.IsNullOrEmpty(formats[i]) && !string.IsNullOrEmpty(formats[i + 1]))
+                    attachedTextureNames.Add(formats[i].Trim(), formats[i + 1].Trim());
+            }
+
+            formats = TextureProcessors.Split('|');
+
+            for (int i = 0; i < formats.Length; i += 2)
+            {
+                if (i + 1 < formats.Length && !string.IsNullOrEmpty(formats[i]) && !string.IsNullOrEmpty(formats[i + 1]))
+                    attachedTextureProcessors.Add(formats[i].Trim(), formats[i + 1].Trim());
+            }
+        }
+
+        protected override MaterialContent ConvertMaterial(MaterialContent material, ContentProcessorContext context)
+        {
+            string filename = material.Textures["Texture"].Filename;
+
+            Dictionary<string, ExternalReference<TextureContent>> textureDictionary = new Dictionary<string, ExternalReference<TextureContent>>();
+
+            foreach (string name in attachedTextureNames.Keys)
+            {
+                string path = filename.Substring(0, filename.LastIndexOf(Path.GetFileName(filename)));
+                string textureFilename = attachedTextureNames[name].Replace("*", Path.GetFileNameWithoutExtension(filename));
+                textureFilename = Path.Combine(path, textureFilename);
+
+                if (File.Exists(textureFilename))
+                {
+                    string processor = null;
+                    attachedTextureProcessors.TryGetValue(name, out processor);
+
+                    ExternalReference<TextureContent> texture = new ExternalReference<TextureContent>(textureFilename);
+                    texture = context.BuildAsset<TextureContent, TextureContent>(texture, processor);
+                    textureDictionary.Add(name, texture);
+                }
+            }
+
+            attachedTextures.Add(textureDictionary.Count > 0 ? textureDictionary : null);
+            return base.ConvertMaterial(material, context);
+        }
+
+        private void ProcessAttachedTextures(ModelContent model)
+        {
+            int i = 0;
+            foreach (ModelMeshContent mesh in model.Meshes)
+            {
+                foreach (ModelMeshPartContent part in mesh.MeshParts)
+                {
+                    part.Tag = new ModelMeshPartTagContent() { Textures = attachedTextures[i++] };
+                }
+            }
+        }
+    }
+
+    [ContentSerializerRuntimeType("Nine.Graphics.ModelMeshPartTag, Nine")]
+    public class ModelMeshPartTagContent
+    {
+        /// <summary>
+        /// Gets the additional textures (E.g. normalmap) attached to the ModelMeshPart.
+        /// </summary>
+        [ContentSerializer()]
+        public Dictionary<string, ExternalReference<TextureContent>> Textures { get; internal set; }
     }
 }

@@ -25,6 +25,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Nine.Content.Pipeline">
+      <HintPath>..\..\..\References\x86\Nine.Content.Pipeline.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Fonts\Consolas.spritefont">
@@ -32,6 +35,21 @@
       <Name>Consolas</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Effects\BasePass.xml">
+      <Link>BasePass.xml</Link>
+      <Name>BasePass</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>LinkedEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Content\Effects\BrightPass.xml">
+      <Link>BrightPass.xml</Link>
+      <Name>BrightPass</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>LinkedEffectProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

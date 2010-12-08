@@ -1,0 +1,24 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment BasicTexture;
+
+[textures]
+texture2D Texture : TEXTURE;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+	
+	color *= tex2D({$SAMPLER}, uv);
+	export(float4, Color, color);
+}
+__hlsl__

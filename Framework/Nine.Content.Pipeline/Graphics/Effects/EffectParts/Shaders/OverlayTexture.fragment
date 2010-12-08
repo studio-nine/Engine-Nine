@@ -1,0 +1,28 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment OverlayTexture;
+
+[parameters]
+float3x3 TextureTransform;
+
+[textures]
+texture2D Texture : OVERLAYTEXTURE;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+	
+	uv = mul(uv, TextureTransform);
+	color *= tex2D(Texture, uv);
+	export(float4, Color, color);
+}
+__hlsl__

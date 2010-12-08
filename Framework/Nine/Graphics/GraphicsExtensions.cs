@@ -78,6 +78,8 @@ namespace Nine.Graphics
         {
             PrepareSprite(graphics, effect);
 
+            if (effect != null)
+                effect.SetTexture(texture);
 
             Rectangle destination = new Rectangle(graphics.Viewport.X,
                                                   graphics.Viewport.Y,

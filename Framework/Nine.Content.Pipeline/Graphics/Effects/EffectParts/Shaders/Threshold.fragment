@@ -1,0 +1,21 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment Threshold;
+
+[parameters]
+float Threshold = 0.5f;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 color;
+	import(Color, color = Color);
+	
+	color = saturate((color - Threshold) / (1 - Threshold));
+	export(float4, Color, color);
+}
+__hlsl__

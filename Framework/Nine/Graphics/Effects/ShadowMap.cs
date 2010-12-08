@@ -32,6 +32,7 @@ namespace Nine.Graphics.Effects
         public int Height { get { return renderTarget.Height; } }
         public SurfaceFormat SurfaceFormat { get { return renderTarget.Format; } }
         public bool BlurEnabled { get; set; }
+        public Texture2D Texture { get; private set; }
 
         public BlurEffect Blur
         {
@@ -100,13 +101,15 @@ namespace Nine.Graphics.Effects
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             }
 
-            return map;
+            return Texture = map;
         }
 
         public void Dispose()
         {
             if (renderTarget != null)
                 renderTarget.Dispose();
+            if (Texture != null)
+                Texture.Dispose();
         }
     }
 }

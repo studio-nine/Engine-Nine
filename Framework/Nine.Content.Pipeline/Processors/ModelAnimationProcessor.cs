@@ -114,7 +114,7 @@ namespace Nine.Content.Pipeline.Processors
     /// Custom processor extends the builtin framework ModelProcessor class,
     /// adding animation support.
     /// </summary>
-    [ContentProcessor(DisplayName="Model Animation Processor - Nine")]
+    [ContentProcessor(DisplayName="Model Animation Processor - Engine Nine")]
     public class ModelAnimationProcessor : ContentProcessor<NodeContent, Dictionary<string, BoneAnimationClip>>
     {
         [DefaultValue(60)]
@@ -138,6 +138,8 @@ namespace Nine.Content.Pipeline.Processors
 
             if (FramesPerSecond <= 0)
                 throw new ArgumentOutOfRangeException("FramesPerSecond");
+
+            BoneContent skeleton = MeshHelper.FindSkeleton(input);
 
             // Flattern input node content
             List<NodeContent> nodes = new List<NodeContent>();

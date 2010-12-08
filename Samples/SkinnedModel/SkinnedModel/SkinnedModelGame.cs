@@ -16,6 +16,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
+#if !WINDOWS_PHONE
+using Nine.Graphics.Effects;
+#endif
 using Nine.Animations;
 #endregion
 
@@ -82,8 +85,22 @@ namespace SkinnedModel
             // we will try to add model animation and skinning data.
             model = Content.Load<Model>("peon");
 
+#if WINDOWS_PHONE
+            // Convert the effect used by the model to SkinnedEffect to
+            // support skeleton animation.
+            SkinnedEffect skinned = new SkinnedEffect(GraphicsDevice);
+            skinned.EnableDefaultLighting();
+
+            // ModelBatch will use this skinned effect to draw the model.
+            model.ConvertEffectTo(skinned);
+#else
+            LinkedEffect linkedEffect = Content.Load<LinkedEffect>("SkinnedEffect");
+            linkedEffect.EnableDefaultLighting();
+            model.ConvertEffectTo(linkedEffect);
+#endif       
+
+            // Handle animations.
             PlayAnimation(0);
-            //animation.Seek(animation.Duration);
 
             input = new Input();
             input.MouseDown += (o, e) => 
@@ -110,7 +127,7 @@ namespace SkinnedModel
                 //animation.Repeat = 1.5f;
                 animation.AutoReverse = true;
                 //animation.StartupDirection = AnimationDirection.Backward;
-                animation.Disable(1, false);
+                animation.Disable("Bip01_Neck", true);
                 animation.Play();
             }
         }
@@ -149,14 +166,14 @@ namespace SkinnedModel
             // Do ray model intersection test
             float? distance = model.Intersects(world, ray);
 
-            //Window.Title = distance.HasValue ? "Picked" : "Nothing";
+            Window.Title = distance.HasValue ? "Picked" : "Nothing";
 
             // To draw skinned models, first compute bone transforms
             Matrix[] bones = model.GetBoneTransforms();
-            
+
             // Pass bone transforms to model batch to draw skinned models
             modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
-            modelBatch.Draw(model, world, bones, null);
+            modelBatch.DrawSkinned(model, world, bones, null);
             modelBatch.End();
 
             // Draw collision tree

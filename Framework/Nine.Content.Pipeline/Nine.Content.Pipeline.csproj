@@ -65,9 +65,85 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentReference.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\LinkedEffectPartContents.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\LinkedEffectParts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LinkedEffectParts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\LinkedEffectContent.cs" />
+    <Compile Include="Processors\LinkedEffectProcessor.cs" />
     <Compile Include="Processors\ModelCollisionProcessor.cs" />
+    <Compile Include="StitchUp\FragmentImporter.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\CodeBlockNodeBase.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\EnumExtensionMethods.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FloatToken.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentBlockNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\HeaderCodeBlockNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\IdentifierToken.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\IntToken.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralToken.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralTokenType.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockType.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParseNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNodeCollection.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeToken.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderProfile.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderType.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\StitchedEffectNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\StringToken.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueBlockNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniquePassNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\Token.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TokenType.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\VariableDeclarationNode.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Compiler\StitchedEffectBuilder.cs" />
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedEffectSymbol.cs" />
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedFragmentSymbol.cs" />
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniquePassSymbol.cs" />
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniqueSymbol.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\EffectCodeGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\ExportedValueGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\GeneratorContext.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\HeaderCodeGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\ParameterGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\SamplerGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\ScriptTextWriter.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\SemanticGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\ShaderGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\StructGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Generator\TechniqueGenerator.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\BufferPosition.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventArgs.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventHandler.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\FragmentParser.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\Keywords.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\Lexer.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\Parser.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\ParserException.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\StitchedEffectParser.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\TextBuffer.cs" />
+    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportDictionary.cs" />
+    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportedValue.cs" />
+    <Compile Include="StitchUp\FragmentLinking\PreProcessor\StitchedEffectPreProcessor.cs" />
+    <Compile Include="StitchUp\Graphics\FragmentContent.cs" />
+    <Compile Include="StitchUp\Graphics\StitchedEffectContent.cs" />
+    <Compile Include="StitchUp\ParsingImporter.cs" />
+    <Compile Include="StitchUp\Processors\StitchedEffectModelProcessor.cs" />
+    <Compile Include="StitchUp\Processors\StitchedEffectProcessor.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="StitchUp\StitchedEffectImporter.cs" />
     <Compile Include="TreeWriter.cs" />
-    <Compile Include="ImageListContent.cs" />
+    <Compile Include="Graphics\ImageListContent.cs" />
     <Compile Include="Importers\SequentialImageListImporter.cs" />
     <Compile Include="Processors\ModelAnimationProcessor.cs" />
     <Compile Include="Processors\ModelSkinningProcessor.cs" />
@@ -109,6 +185,45 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Graphics\Effects\EffectParts\LinkedEffectParts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LinkedEffectParts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\ScreenEffect.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\NormalMap.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\Threshold.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\RadicalBlur.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DirectionalBlur.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\ShadowMap.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\EnvironmentMap.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DirectionalLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DualTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\EndLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\Fog.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\OverlayTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PixelShaderOutput.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PositionColor.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PositionColorNormalTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PositionColorTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PositionNormalTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PositionTexture.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\SkinTransform.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\ColorMatrix.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\TextureTransform.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\VertexShaderOutput.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\VertexTransform.fragment" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

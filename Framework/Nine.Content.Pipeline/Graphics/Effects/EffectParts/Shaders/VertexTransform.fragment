@@ -1,0 +1,32 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment VertexTransform;
+
+[parameters]
+float4x4 World : WORLD;
+float4x4 ViewProjection : VIEWPROJECTION;
+
+[vs]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 position;
+	import(Position, position = Position);
+	
+	position = mul(position, World);
+	export(float4, PositionWorld, position);
+	export(float4x3, WorldTransform, (float4x3)World);
+
+	position = mul(position, ViewProjection);
+	export(float4, Position, position);
+	
+	float3 normal;
+	import(Normal, normal = Normal);
+	
+	normal = mul(normal, World);
+	export(float3, Normal, normal);
+}
+__hlsl__

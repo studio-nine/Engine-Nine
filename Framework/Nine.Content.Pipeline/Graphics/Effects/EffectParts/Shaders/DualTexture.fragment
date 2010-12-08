@@ -1,0 +1,28 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment DualTexture;
+
+[textures]
+texture2D Texture : DUALTEXTURE;
+
+[vertex]
+float2 TexCoord2;
+
+[interpolators]
+float2 TexCoord2;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 color;
+	import(Color, color = Color);
+	
+	color.rgb *= 2;
+	color *= tex2D(Texture, input.TexCoord2);
+	export(float4, Color, color);
+}
+__hlsl__

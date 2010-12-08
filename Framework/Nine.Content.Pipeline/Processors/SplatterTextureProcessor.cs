@@ -25,7 +25,7 @@ using Nine.Graphics;
 
 namespace Nine.Content.Pipeline.Processors
 {
-    [ContentProcessor(DisplayName="Splatter Texture Processor - Nine")]
+    [ContentProcessor(DisplayName="Splatter Texture Processor - Engine Nine")]
     public class SplatterTextureProcessor : ContentProcessor<string[], TextureContent>
     {
         public override TextureContent Process(string[] input, ContentProcessorContext context)

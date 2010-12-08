@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Nine.Content.Pipeline.Graphics.Effects.LinkedEffectContent">
+    <EffectParts>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionNormalTexture"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SkinTransform">
+        <MaxBones>59</MaxBones>
+        <WeightsPerVertex>4</WeightsPerVertex>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransform"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutput"></Item> 
+      
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTexture"></Item>
+      
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLight"></Item>
+
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>
+    </EffectParts>
+  </Asset>
+</XnaContent>

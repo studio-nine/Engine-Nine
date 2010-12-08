@@ -53,14 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ScreenEffectsGame.cs" />
-    <Compile Include="TestEffect.cs">
-      <DependentUpon>TestEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="TestEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestEffect.fx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -71,10 +63,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="TestEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>TestEffect.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">

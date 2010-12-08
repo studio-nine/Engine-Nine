@@ -1,0 +1,11 @@
+﻿//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment ScreenEffect;
+
+[headercode]
+__hlsl__
+sampler BasicSampler : register(s0);
+__hlsl__

@@ -31,7 +31,7 @@ namespace ScreenEffects
         Texture2D background;
 
         ScreenEffect screenEffect;
-        ScreenEffect testScreenEffect;
+        ScreenEffect screenEffectTest;
 
 
         public ScreenEffectsGame()
@@ -65,40 +65,37 @@ namespace ScreenEffects
 
             background = Content.Load<Texture2D>("glacier");
 
-
-            // Create a screen effect instance, 
-            // add several fullscreen effects from Nine.Graphics.ScreenEffects namespace.
             screenEffect = new ScreenEffect(GraphicsDevice);
-            //screenEffect.Effects.Add(new PixelateEffect(GraphicsDevice));
-            //screenEffect.Effects.Add(new RadialBlurEffect(GraphicsDevice));
-            //screenEffect.Effects.Add(new BlurEffect(GraphicsDevice));
-            //screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateHue(0.9f) });
 
             // Create a bloom effect using two ScreenEffectPass.
             ScreenEffectPass basePass = new ScreenEffectPass(GraphicsDevice);
-            basePass.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateSaturation(0.9f) });
+            basePass.Effects.Add(Content.Load<Effect>("BasePass"));
+            //basePass.Color = Color.Yellow;
             basePass.BlendState = BlendState.Opaque;
 
             ScreenEffectPass brightPass = new ScreenEffectPass(GraphicsDevice);
-            brightPass.Effects.Add(new RadialBlurEffect(GraphicsDevice));
-            brightPass.Effects.Add(new ThresholdEffect(GraphicsDevice));
-            //brightPass.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(45) });
-            //brightPass.Effects.Add(new BlurEffect(GraphicsDevice) { Direction = MathHelper.ToRadians(-45) });
-            brightPass.BlendState = BlendState.Additive;            
-            brightPass.DownScaleEnabled = true;
+            brightPass.Effects.Add(Content.Load<Effect>("BrightPass"));
+            brightPass.BlendState = BlendState.Additive;
+            brightPass.DownScaleEnabled = false;
             
             screenEffect.Passes.Add(basePass);
             screenEffect.Passes.Add(brightPass);
 
-            // Setup a test effect to show that combining primitive effect into a single
-            // shader does not improve much performance, if this test effect doesn't
-            // require any intermediate render targets, but the above screen effect requires
-            // 3 render targets, so chaining primitive effect in the above way provides
-            // maximum flexiablity without impact performance.
-            // 
-            // Enable down scale really boost performance, try set brightPass.DownSaleEnabled to true.
-            testScreenEffect = new ScreenEffect(GraphicsDevice);
-            testScreenEffect.Effects.Add(new TestEffect(GraphicsDevice));
+
+            screenEffectTest = new ScreenEffect(GraphicsDevice);
+
+            ScreenEffectPass basePassTest = new ScreenEffectPass(GraphicsDevice);
+            basePassTest.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateSaturation(0.9f) });
+            basePassTest.BlendState = BlendState.Opaque;
+
+            ScreenEffectPass brightPassTest = new ScreenEffectPass(GraphicsDevice);
+            brightPassTest.Effects.Add(new RadialBlurEffect(GraphicsDevice));
+            brightPassTest.Effects.Add(new ThresholdEffect(GraphicsDevice));
+            brightPassTest.BlendState = BlendState.Additive;
+            brightPassTest.DownScaleEnabled = false;
+
+            screenEffectTest.Passes.Add(basePassTest);
+            screenEffectTest.Passes.Add(brightPassTest);
         }
 
         /// <summary>
@@ -108,8 +105,8 @@ namespace ScreenEffects
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
-            ScreenEffect currentScreenEffect = Keyboard.GetState().IsKeyDown(Keys.T) ? testScreenEffect : screenEffect;
-
+            ScreenEffect currentScreenEffect = Keyboard.GetState().IsKeyDown(Keys.T) ? screenEffectTest : screenEffect;
+            
             currentScreenEffect.Begin();
             {
                 // Draw the scene between screen effect Begin/End

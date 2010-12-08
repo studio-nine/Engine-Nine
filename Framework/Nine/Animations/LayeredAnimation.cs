@@ -73,6 +73,7 @@ namespace Nine.Animations
         {
             for (int i = 0; i < layers.Count; i++)
                 layers[i].Play();
+
             base.OnStarted();
         }
         

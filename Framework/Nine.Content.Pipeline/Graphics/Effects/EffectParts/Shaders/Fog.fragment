@@ -1,0 +1,37 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment Fog;
+
+[vertex]
+float4 Position	: POSITION;
+
+[parameters]
+float3 FogColor = { 1, 1, 1 };
+float4 FogVector = { 0, 0, 0, 1 };
+
+[interpolators]
+float FogFactor;
+
+[vs]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+    float fogFactor = saturate(dot(input.Position, FogVector));
+	output(FogFactor, fogFactor);
+}
+__hlsl__
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 color;
+	import(Color, color = Color);
+		
+    color.rgb = lerp(color.rgb, FogColor * color.a, input.FogFactor);
+	export(float4, Color, color);
+}
+__hlsl__

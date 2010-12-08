@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -19,7 +20,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
-#if WINDOWS
+    /// <summary>
+    /// EventArgs used by ScreenshotCapturer.
+    /// </summary>
+    public class ScreenshotCapturedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// The captured screenshot texture.
+        /// </summary>
+        public Texture2D Screenshot { get; internal set; }
+
+        /// <summary>
+        /// The filename of the saved screenshot.
+        /// </summary>
+        public string Filename { get; internal set; }
+    }
+
     /// <summary>
     /// Screenshot capturer component that captures screenshots.
     /// </summary>
@@ -35,6 +51,9 @@ namespace Nine
         private string screenshotsDirectory;
         private Game Game;
 
+        /// <summary>
+        /// Gets or sets the directory where the screenshot files will be stored.
+        /// </summary>
         public string ScreenshotsDirectory 
         {
             get { return screenshotsDirectory; }
@@ -46,14 +65,21 @@ namespace Nine
             }
         }
 
+        /// <summary>
+        /// Gets or sets the key used to capture a screenshot.
+        /// </summary>
         public Keys CaptureKey { get; set; }
-        public event EventHandler Captured;
-        public string LastScreenshotFile { get; private set; }
-        public Texture2D LastScreenshot { get; private set; }
 
+        /// <summary>
+        /// Occures when a new screenshot is captured.
+        /// </summary>
+        public event EventHandler<ScreenshotCapturedEventArgs> Captured;
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Creates a new instance of ScreenshotCapturer.
+        /// </summary>
         public ScreenshotCapturer(Game game) : base(game)
         {
             if (game == null)
@@ -138,64 +164,79 @@ namespace Nine
             return i * 1000 + j * 100 + k * 10 + l;
         }
         #endregion
-
+        
+        /// <summary>
+        /// Takes a new Screenshot of the current backbuffer.
+        /// </summary>
+        public Texture2D Capture()
+        {
+            string filename;
+            return Capture(false, out filename);
+        }
 
         /// <summary>
-        /// Make screenshot
+        /// Takes a new Screenshot of the current backbuffer and save it to local storage.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes",
-            Justification = "App should not crash from making a screenshot, " +
-            "but exceptions are often thrown by this code, see inside.")]
-        public Texture2D Capture(bool shouldSave)
+        public string CaptureAndSave()
         {
+            string filename = null;
+#if WINDOWS
+            Capture(true, out filename);
+#endif
+            return filename;
+        }
+
+        private Texture2D Capture(bool save, out string filename)
+        {
+            filename = null;
+            Texture2D screenshot = null;
+
             try
             {
+                int width = Game.GraphicsDevice.PresentationParameters.BackBufferWidth;
+                int height = Game.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
-                //NOTE: This doesn't always work on all cards, especially if
-                // desktop mode switches in fullscreen mode!
+                // Get data with help of the resolve method
+                Color[] backbuffer = new Color[width * height];
+                Game.GraphicsDevice.GetBackBufferData<Color>(backbuffer);
+
+                screenshot = new Texture2D(Game.GraphicsDevice, width, height);
+                screenshot.SetData<Color>(backbuffer);
+#if WINDOWS
                 screenshotNum++;
 
                 // Make sure screenshots directory exists
                 if (Directory.Exists(ScreenshotsDirectory) == false)
                     Directory.CreateDirectory(ScreenshotsDirectory);
 
-
-                int width = Game.GraphicsDevice.PresentationParameters.BackBufferWidth;
-                int height = Game.GraphicsDevice.PresentationParameters.BackBufferHeight;
-
-
-                // Get data with help of the resolve method
-                Color[] backbuffer = new Color[width * height];
-                Game.GraphicsDevice.GetBackBufferData<Color>(backbuffer);
-
-                LastScreenshot = new Texture2D(Game.GraphicsDevice, width, height);
-
-                LastScreenshot.SetData<Color>(backbuffer);
-
-                if (shouldSave)
+                if (save)
                 {
-                    LastScreenshot.SaveAsPng(
-                        new FileStream(LastScreenshotFile = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate),
+                    screenshot.SaveAsPng(
+                        new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate),
                         width, height);
-
-                    OnCaptured();
+                    screenshot.Dispose();
+                    screenshot = null;
+                    return null;
                 }
-
-                return LastScreenshot;
+#endif
+                OnCaptured(new ScreenshotCapturedEventArgs() { Filename = filename, Screenshot = screenshot });
+                return screenshot;
             }
             catch (Exception ex)
             {
-                if (LastScreenshot != null)
-                    LastScreenshot.Dispose();
+                if (screenshot != null)
+                    screenshot.Dispose();
                 return null;
             }
         }
 
-        protected virtual void OnCaptured()
+        /// <summary>
+        /// Raised when a new screenshot is taken.
+        /// </summary>
+        protected virtual void OnCaptured(ScreenshotCapturedEventArgs e)
         {
             if (Captured != null)
-                Captured(this, null);
+                Captured(this, e);
         }
 
         public override void Update(GameTime gameTime)
@@ -207,12 +248,11 @@ namespace Nine
             if (pressedLastFrame && !pressed)
             {
                 pressedLastFrame = false;
-                Capture(true);
+                CaptureAndSave();
             }
 
             pressedLastFrame = pressed;
         }
         #endregion
     }
-#endif
 }

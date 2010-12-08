@@ -29,7 +29,7 @@ namespace Nine.Content.Pipeline.Importers
     /// <summary>
     /// Imports grayscale raw texture.
     /// </summary>
-    [ContentImporter(".raw", DisplayName = "Raw Texture Importer - Nine")]
+    [ContentImporter(".raw", DisplayName = "Raw Texture Importer - Engine Nine")]
     public class RawTextureImporter : ContentImporter<TextureContent>
     {
         public int Width { get; set; }

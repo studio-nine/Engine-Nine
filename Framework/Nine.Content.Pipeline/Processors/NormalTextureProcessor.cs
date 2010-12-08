@@ -30,7 +30,7 @@ namespace Nine.Content.Pipeline.Processors
     /// a texture in the NormalizedByte4 format.  Every pixel in the source texture
     /// is remapped so that values ranging from 0 to 1 will range from -1 to 1.
     /// </summary>
-    [ContentProcessor(DisplayName="Normal Texture Processor - Nine")]
+    [ContentProcessor(DisplayName="Normal Texture Processor - Engine Nine")]
     public class NormalTextureProcessor : ContentProcessor<TextureContent, TextureContent>
     {
         /// <summary>

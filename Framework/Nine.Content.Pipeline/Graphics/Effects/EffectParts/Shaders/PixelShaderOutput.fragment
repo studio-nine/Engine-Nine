@@ -1,0 +1,17 @@
+﻿//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment PixelColorOutput;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	// Add light colours together.
+	float4 color;
+	import(Color, color = Color);
+	output.color = color;
+}
+__hlsl__

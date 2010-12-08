@@ -50,7 +50,7 @@ namespace Nine.Animations
         private T to;
         private MemberInfo member;
         private Interpolate<T> lerp;
-        private Operation<T> add;
+        private Operator<T> add;
 
         /// <summary>
         /// Gets or sets where the tween starts.
@@ -113,7 +113,7 @@ namespace Nine.Animations
         /// <summary>
         /// Create a new instance of tweener.
         /// </summary>
-        public TweenAnimation(Interpolate<T> lerp, Operation<T> add)
+        public TweenAnimation(Interpolate<T> lerp, Operator<T> add)
         {
             this.lerp = lerp;
 
@@ -261,29 +261,29 @@ namespace Nine.Animations
             FieldInfo field = GetType().GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))
-                field.SetValue(this, (Operation<float>)AddHelper.Add);
+                field.SetValue(this, (Operator<float>)AddHelper.Add);
             else if (typeof(T) == typeof(double))
-                field.SetValue(this, (Operation<double>)AddHelper.Add);
+                field.SetValue(this, (Operator<double>)AddHelper.Add);
             else if (typeof(T) == typeof(int))
-                field.SetValue(this, (Operation<int>)AddHelper.Add);
+                field.SetValue(this, (Operator<int>)AddHelper.Add);
             else if (typeof(T) == typeof(Vector2))
-                field.SetValue(this, (Operation<Vector2>)Vector2.Add);
+                field.SetValue(this, (Operator<Vector2>)Vector2.Add);
             else if (typeof(T) == typeof(Vector3))
-                field.SetValue(this, (Operation<Vector3>)Vector3.Add);
+                field.SetValue(this, (Operator<Vector3>)Vector3.Add);
             else if (typeof(T) == typeof(Vector4))
-                field.SetValue(this, (Operation<Vector4>)Vector4.Add);
+                field.SetValue(this, (Operator<Vector4>)Vector4.Add);
             else if (typeof(T) == typeof(Matrix))
-                field.SetValue(this, (Operation<Matrix>)Matrix.Multiply);
+                field.SetValue(this, (Operator<Matrix>)Matrix.Multiply);
             else if (typeof(T) == typeof(Quaternion))
-                field.SetValue(this, (Operation<Quaternion>)Quaternion.Multiply);
+                field.SetValue(this, (Operator<Quaternion>)Quaternion.Multiply);
             else if (typeof(T) == typeof(Color))
-                field.SetValue(this, (Operation<Color>)AddHelper.Add);
+                field.SetValue(this, (Operator<Color>)AddHelper.Add);
             else if (typeof(T) == typeof(Rectangle))
-                field.SetValue(this, (Operation<Rectangle>)AddHelper.Add);
+                field.SetValue(this, (Operator<Rectangle>)AddHelper.Add);
             else if (typeof(T) == typeof(Point))
-                field.SetValue(this, (Operation<Point>)AddHelper.Add);
+                field.SetValue(this, (Operator<Point>)AddHelper.Add);
             else if (typeof(T) == typeof(Ray))
-                field.SetValue(this, (Operation<Ray>)AddHelper.Add);
+                field.SetValue(this, (Operator<Ray>)AddHelper.Add);
         }
 
         private T GetValue()

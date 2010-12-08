@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Graphics;
+using Nine.Content.Pipeline.Graphics;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -29,7 +30,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Processes image sequential
     /// </summary>
-    [ContentProcessor(DisplayName = "Sequential Image List Processor - Nine")]
+    [ContentProcessor(DisplayName = "Sequential Image List Processor - Engine Nine")]
     public class SequentialImageListProcessor : ContentProcessor<string[], ImageListContent>
     {
         [DefaultValue(true)]

@@ -1,0 +1,21 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment ColorMatrix;
+
+[parameters]
+float4x4 Transform;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 color;
+	import(Color, color = Color);
+	
+	color = mul(color, Transform);
+	export(float4, Color, color);
+}
+__hlsl__

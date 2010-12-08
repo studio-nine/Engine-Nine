@@ -29,7 +29,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// A custom processor to convert a mesh into a geometry.
     /// </summary>
-    [ContentProcessor(DisplayName = "Geometry Processor - Nine")]
+    [ContentProcessor(DisplayName = "Geometry Processor - Engine Nine")]
     public class GeometryProcessor : ContentProcessor<NodeContent, Geometry>
     {
         [DefaultValue(false)]

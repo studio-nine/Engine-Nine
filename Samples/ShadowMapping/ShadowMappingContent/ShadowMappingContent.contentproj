@@ -31,7 +31,8 @@
       <Name>dude</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
-      <ProcessorParameters_CollisionTreeDepth>5</ProcessorParameters_CollisionTreeDepth>
+      <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
+      <ProcessorParameters_GenerateCollisionData>False</ProcessorParameters_GenerateCollisionData>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +40,9 @@
       <Link>Terrain.fbx</Link>
       <Name>Terrain</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>ExtendedModelProcessor</Processor>
+      <ProcessorParameters_GenerateCollisionData>False</ProcessorParameters_GenerateCollisionData>
+      <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +68,20 @@
       <Name>Consolas</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Effects\ShadowEffect.xml">
+      <Link>ShadowEffect.xml</Link>
+      <Name>ShadowEffect</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>LinkedEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Content\Effects\ShadowNormalSkinnedEffect.xml">
+      <Link>ShadowNormalSkinnedEffect.xml</Link>
+      <Name>ShadowNormalSkinnedEffect</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>LinkedEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

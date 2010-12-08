@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Graphics;
+using Nine.Content.Pipeline.Graphics;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -28,7 +29,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Imports grid based image list
     /// </summary>
-    [ContentProcessor(DisplayName = "Image List Processor - Nine")]
+    [ContentProcessor(DisplayName = "Image List Processor - Engine Nine")]
     public class GridImageListProcessor : ContentProcessor<Texture2DContent, ImageListContent>
     {
         [DefaultValue(1)]
