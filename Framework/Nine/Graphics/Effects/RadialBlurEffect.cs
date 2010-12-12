@@ -15,13 +15,16 @@ using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Graphics.Effects
-{    
+{
 #if !WINDOWS_PHONE
 
-    public partial class NormalMappingEffect : IEffectMatrices
+    /// <summary>
+    /// A post processing screen effect that blurs the whole screen radially.
+    /// </summary>
+    public partial class RadialBlurEffect
     {
         private void OnCreated() { }
-        private void OnClone(NormalMappingEffect cloneSource) { }
+        private void OnClone(RadialBlurEffect cloneSource) { }
         private void OnApplyChanges() { }
     }
 

@@ -47,8 +47,9 @@ namespace Nine.Graphics.Effects
         public EffectParameter GetParameter(string name)
         {
             Effect effect = Effect != null ? Effect : LinkedEffect.CurrentEffect;
+            string uniqueName = UniqueName != null ? UniqueName : LinkedEffect.CurrentUniqueName;
 
-            return effect.Parameters[UniqueName + name];
+            return effect.Parameters[uniqueName + name];
         }
 
         /// <summary>
@@ -57,10 +58,11 @@ namespace Nine.Graphics.Effects
         public EffectParameter GetParameterBySemantic(string semantic)
         {
             Effect effect = Effect != null ? Effect : LinkedEffect.CurrentEffect;
+            string uniqueName = UniqueName != null ? UniqueName : LinkedEffect.CurrentUniqueName;
 
             foreach (EffectParameter parameter in effect.Parameters)
             {
-                if (parameter.Semantic == semantic && parameter.Name.StartsWith(UniqueName))
+                if (parameter.Semantic == semantic && parameter.Name.StartsWith(uniqueName))
                     return parameter;
             }
             return null;
@@ -98,6 +100,7 @@ namespace Nine.Graphics.Effects
     public class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial
     {
         internal static LinkedEffect CurrentEffect;
+        internal static string CurrentUniqueName;
 
         internal LinkedEffect(GraphicsDevice graphics, byte[] code) : base(graphics, code) { }
 
@@ -150,6 +153,7 @@ namespace Nine.Graphics.Effects
             CurrentEffect = effect;
             foreach (LinkedEffectPart part in EffectParts)
             {
+                CurrentUniqueName = part.UniqueName;
                 LinkedEffectPart newPart = part.Clone();
                 newPart.Effect = effect;
                 newPart.UniqueName = part.UniqueName;
@@ -205,7 +209,7 @@ namespace Nine.Graphics.Effects
 
         #region Interfaces
         Matrix projection;
-        Matrix IEffectMatrices.Projection
+        public Matrix Projection
         {
             get { return projection; }
             set
@@ -217,7 +221,7 @@ namespace Nine.Graphics.Effects
         }
 
         Matrix view;
-        Matrix IEffectMatrices.View
+        public Matrix View
         {
             get { return view; }
             set
@@ -229,7 +233,7 @@ namespace Nine.Graphics.Effects
         }
 
         Matrix world;
-        Matrix IEffectMatrices.World
+        public Matrix World
         {
             get { return world; }
             set
@@ -361,6 +365,7 @@ namespace Nine.Graphics.Effects
             LinkedEffect.CurrentEffect = effect;
             for (int i = 0; i < count; i++)
             {
+                LinkedEffect.CurrentUniqueName = uniqueNames[i];
                 LinkedEffectPart part = input.ReadObject<LinkedEffectPart>();
                 part.Effect = effect;
                 part.UniqueName = uniqueNames[i];

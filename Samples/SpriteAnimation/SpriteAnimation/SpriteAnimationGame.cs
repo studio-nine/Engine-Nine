@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
-using Nine.Graphics.ScreenEffects;
+using Nine.Animations;
 #endregion
 
 namespace SpriteAnimationGame

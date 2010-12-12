@@ -20,6 +20,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Graphics
 {
+    using Nine.Animations;
+
     /// <summary>
     /// Tag used by models.
     /// </summary>

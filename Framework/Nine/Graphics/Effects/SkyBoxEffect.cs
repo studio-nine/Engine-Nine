@@ -20,7 +20,30 @@ namespace Nine.Graphics.Effects
 
     public partial class SkyBoxEffect : IEffectMatrices
     {
-        Matrix IEffectMatrices.World { get; set; }
+        private Matrix world;
+        private Matrix view;
+        private Matrix projection;
+
+        [ContentSerializerIgnore]
+        public Matrix World
+        {
+            get { return world; }
+            set { world = value; dirtyFlag |= worldViewProjectionDirtyFlag; }
+        }
+
+        [ContentSerializerIgnore]
+        public Matrix View
+        {
+            get { return view; }
+            set { view = value; dirtyFlag |= worldViewProjectionDirtyFlag; }
+        }
+
+        [ContentSerializerIgnore]
+        public Matrix Projection
+        {
+            get { return projection; }
+            set { projection = value; dirtyFlag |= worldViewProjectionDirtyFlag; }
+        }
 
         private void OnCreated() 
         {
@@ -34,7 +57,16 @@ namespace Nine.Graphics.Effects
         
 		private void OnApplyChanges()
         {
-            farClip = Math.Abs(Projection.M43 / (Math.Abs(Projection.M33) - 1));
+            if ((this.dirtyFlag & worldViewProjectionDirtyFlag) != 0)
+            {
+                Matrix positionIndependentView = view;
+                positionIndependentView.Translation = Vector3.Zero;
+
+                Matrix wvp;
+                Matrix.Multiply(ref world, ref positionIndependentView, out wvp);
+                Matrix.Multiply(ref wvp, ref projection, out wvp);
+                worldViewProjection = wvp;
+            }
         }
     }
 

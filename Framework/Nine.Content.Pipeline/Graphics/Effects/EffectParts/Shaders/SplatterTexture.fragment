@@ -1,0 +1,38 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment SplatterTexture;
+
+[textures]
+texture2D TextureX;
+texture2D TextureY;
+texture2D TextureZ;
+texture2D TextureW;
+texture2D SplatterTexture;
+
+[parameters]
+float2 SplatterTextureScale = 1;
+float4 Mask = 1;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+	
+	float4 splatter = Mask * tex2D(SplatterTexture, uv / SplatterTextureScale);
+		
+	color = lerp(color, tex2D(TextureX, uv), splatter.x);	
+	color = lerp(color, tex2D(TextureY, uv), splatter.y);
+	color = lerp(color, tex2D(TextureZ, uv), splatter.z);
+	color = lerp(color, tex2D(TextureW, uv), splatter.w);
+	
+	export(float4, Color, color);
+}
+__hlsl__

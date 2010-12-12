@@ -76,6 +76,7 @@ namespace Nine.Animations
         {
             CurrentFrame = 0;
             FramesPerSecond = 24;
+            Repeat = float.MaxValue;
         }
 
         /// <summary>

@@ -1,14 +1,9 @@
-
-
-float farClip = 100.0f;
-
-float4x4 View;
-float4x4 Projection;
+float4x4 worldViewProjection;
 
 textureCUBE Texture;
 
 // The ambient color for the sky, should be 1 for normal brightness.
-float3 AmbientColor : Ambient = {1.0f, 1.0f, 1.0f};
+float3 Color = {1.0f, 1.0f, 1.0f};
 
 samplerCUBE CubeSampler = sampler_state
 {
@@ -16,9 +11,6 @@ samplerCUBE CubeSampler = sampler_state
 	MinFilter = Linear;
 	MagFilter = Linear;
 	MipFilter = Linear;
-	AddressU = Wrap;
-	AddressV = Wrap;
-	AddressW = Wrap;
 };
 
 struct VS_OUTPUT
@@ -31,16 +23,9 @@ struct VS_OUTPUT
 VS_OUTPUT VS(float4 Position  : POSITION)
 {
 	VS_OUTPUT Out;
-	    
-    // Scale the box up so that we don't hit the near clip plane
-    float3 pos = Position * farClip;
-    
-    // In.pos is a float 3 for this calculation so that translation is ignored
-    pos = mul(pos, View);
-    
+
     // However, we need the translation for the projection
-    Out.Position = mul(float4(pos, 1.0f), Projection);
-    Out.Position.y = Out.Position.y - 10;
+    Out.Position = mul(Position, worldViewProjection).xyww;
     
     // Just use the positions to infer the texture coordinates
     // Swap y and z because we use +z as up
@@ -51,7 +36,7 @@ VS_OUTPUT VS(float4 Position  : POSITION)
 
 float4 PS( VS_OUTPUT In ) : COLOR
 {
-    return float4(AmbientColor, 1) * texCUBE(CubeSampler, In.TexCoord);
+    return float4(Color, 1) * texCUBE(CubeSampler, In.TexCoord);
 }
 
 

@@ -24,52 +24,53 @@ namespace Nine.Animations
     /// Contains several animation clips that are played one after another.
     /// The animation completes when the last animation has finished playing.
     /// </summary>
-    public class SequentialAnimation : Animation, IEnumerable<IAnimation>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class SequentialAnimationBase<T> : Animation, IEnumerable<T> where T : IAnimation
     {
-        List<IAnimation> animations = new List<IAnimation>();
+        List<T> animations = new List<T>();
 
         /// <summary>
         /// Gets all the animations.
         /// </summary>
-        public IList<IAnimation> Animations { get { return animations; } }
+        public IList<T> Animations { get { return animations; } }
 
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c>.
         /// </summary>
-        public SequentialAnimation() { }
+        public SequentialAnimationBase() { }
 
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c> with the specified animations.
         /// </summary>
-        public SequentialAnimation(IEnumerable<IAnimation> animations)
+        public SequentialAnimationBase(IEnumerable<T> animations)
         {
-            foreach (IAnimation animation in animations)
+            foreach (T animation in animations)
                 this.animations.Add(animation);
         }
         
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c> with the specified animations.
         /// </summary>
-        public SequentialAnimation(params IAnimation[] animations)
+        public SequentialAnimationBase(params T[] animations)
         {
-            foreach (IAnimation animation in animations)
+            foreach (T animation in animations)
                 this.animations.Add(animation);
         }
 
         /// <summary>
         /// Gets the index of the current animation clip been played.
         /// </summary>
-        public int Current { get; private set; }
+        public int CurrentIndex { get; private set; }
 
         /// <summary>
         /// Gets the current animation clip been played
         /// </summary>
-        public IAnimation CurrentAnimation 
+        public IAnimation Current 
         {
             get
             {
-                if (Current >= 0 && Current < animations.Count)
-                    return animations[Current];
+                if (CurrentIndex >= 0 && CurrentIndex < animations.Count)
+                    return animations[CurrentIndex];
 
                 return null;
             }
@@ -78,13 +79,13 @@ namespace Nine.Animations
         /// <summary>
         /// Plays the specified animation clip.
         /// </summary>
-        public void Play(IAnimation animation)
+        public void Play(T animation)
         {
             int index = animations.IndexOf(animation);
 
             if (index < 0)
                 throw new ArgumentOutOfRangeException(
-                    "Can not find the specified animation, make sure it has been added to the collection.");
+                    "The specified animation must be added to this animation.");
             
             Play(index);
         }
@@ -94,41 +95,50 @@ namespace Nine.Animations
         /// </summary>
         public void Play(int index)
         {
-            Play();
             Seek(index);
         }
 
         private void Seek(int index)
         {
-            if (Current != index)
-                CurrentAnimation.Stop();
-            Current = index;
-            CurrentAnimation.Play();
+            if (CurrentIndex != index && Current != null)
+                Current.Stop();
+
+            CurrentIndex = index;
+
+            if (Current != null)
+                Current.Play();
         }
 
         protected override void OnStarted()
         {
+            Seek(0);
+
             base.OnStarted();
         }
 
         protected override void OnStopped()
         {
-            CurrentAnimation.Stop();
-            Current = 0;
+            if (Current != null)
+            {
+                Current.Stop();
+                CurrentIndex = 0;
+            }
 
             base.OnStopped();
         }
 
         protected override void OnPaused()
         {
-            CurrentAnimation.Pause();
+            if (Current != null)
+                Current.Pause();
 
             base.OnPaused();
         }
 
         protected override void OnResumed()
         {
-            CurrentAnimation.Resume();
+            if (Current != null)
+                Current.Resume();
 
             base.OnResumed();
         }
@@ -139,17 +149,22 @@ namespace Nine.Animations
         {
             if (State == AnimationState.Playing)
             {
-                IUpdateObject update = CurrentAnimation as IUpdateObject;
+                IUpdateObject update = Current as IUpdateObject;
 
                 if (update != null)
                     update.Update(gameTime);
 
 
-                if (CurrentAnimation != null &&
-                    CurrentAnimation.State != AnimationState.Playing)
-                    Current++;
+                if (Current != null &&
+                    Current.State != AnimationState.Playing)
+                {
+                    CurrentIndex++;
+                    
+                    if (CurrentIndex < animations.Count)
+                        Current.Play();
+                }
 
-                if (Current == animations.Count)
+                if (CurrentIndex == animations.Count)
                 {
                     Stop();
                     OnCompleted();
@@ -163,7 +178,7 @@ namespace Nine.Animations
                 Completed(this, EventArgs.Empty);
         }
 
-        public IEnumerator<IAnimation> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return animations.GetEnumerator();
         }
@@ -172,5 +187,27 @@ namespace Nine.Animations
         {
             return animations.GetEnumerator();
         }
+    }
+
+    /// <summary>
+    /// Contains several animation clips that are played one after another.
+    /// The animation completes when the last animation has finished playing.
+    /// </summary>
+    public class SequentialAnimation : SequentialAnimationBase<IAnimation> 
+    {
+        /// <summary>
+        /// Creates a new <c>SequentialAnimation</c>.
+        /// </summary>
+        public SequentialAnimation() { }
+
+        /// <summary>
+        /// Creates a new <c>SequentialAnimation</c> with the specified animations.
+        /// </summary>
+        public SequentialAnimation(IEnumerable<IAnimation> animations) : base(animations) { }
+        
+        /// <summary>
+        /// Creates a new <c>SequentialAnimation</c> with the specified animations.
+        /// </summary>
+        public SequentialAnimation(params IAnimation[] animations) : base(animations) { }
     }
 }

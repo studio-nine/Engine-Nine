@@ -693,8 +693,9 @@ namespace Nine
         }
 
 #if WINDOWS
-        bool hasDown = false;
-
+        bool leftDown = false;
+        bool rightDown = false;
+        bool middleDown = false;
         Control control = null;
 
         void control_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -704,22 +705,35 @@ namespace Nine
 
         void control_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (!hasDown)
-                return;
+            MouseEventArgs args = new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta);
 
-            MouseMove(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
+            args.IsLeftButtonDown = leftDown;
+            args.IsRightButtonDown = rightDown;
+            args.IsMiddleButtonDown = middleDown;
+
+            MouseMove(this, args);
         }
 
         void control_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            hasDown = false;
+            if (e.Button == FormMouseButtons.Left)
+                leftDown = false;
+            else if (e.Button == FormMouseButtons.Right)
+                rightDown = false;
+            else if (e.Button == FormMouseButtons.Middle)
+                middleDown = false;
 
             MouseUp(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
         }
 
         void control_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            hasDown = true;
+            if (e.Button == FormMouseButtons.Left)
+                leftDown = true;
+            else if (e.Button == FormMouseButtons.Right)
+                rightDown = true;
+            else if (e.Button == FormMouseButtons.Middle)
+                middleDown = true;
 
             MouseDown(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
         }

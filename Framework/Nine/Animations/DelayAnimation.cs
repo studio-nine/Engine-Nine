@@ -31,10 +31,12 @@ namespace Nine.Animations
         /// Gets or sets the duration of this animation.
         /// </summary>
         public new TimeSpan Duration { get; set; }
-                
-        public DelayAnimation() { }
 
-        public DelayAnimation(TimeSpan duration) { Duration = duration; }
+        public DelayAnimation() { Repeat = 1; }
+
+        public DelayAnimation(float seconds) { Duration = TimeSpan.FromSeconds(seconds); Repeat = 1; }
+
+        public DelayAnimation(TimeSpan duration) { Duration = duration; Repeat = 1; }
 
         protected override TimeSpan GetDuration()
         {

@@ -48,15 +48,20 @@
     <XnaCompressContent>false</XnaCompressContent>
     <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Graphics\ScreenEffects\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Animations\AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\BoneAnimations.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\SequentialAnimation.cs" />
+    <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="BoundingRectangle.cs" />
@@ -65,7 +70,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
-    <Compile Include="Graphics\BoneAnimation.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\DrawableSurface.cs" />
     <Compile Include="Graphics\DrawableSurfaceCollections.cs" />
@@ -75,7 +79,6 @@
     <Compile Include="Graphics\EffectExtensions.cs" />
     <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\BasicTextureEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\DirectionalBlurEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\DirectionalLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\DualTextureEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\FogEffectPart.cs" />
@@ -84,6 +87,7 @@
     <Compile Include="Graphics\Effects\EffectParts\OverlayTextureEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ShadowMapEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\SkinTransformEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\SplatterTextureEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\TextureTransformEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\VertexTransformEffectPart.cs" />
     <Compile Include="Graphics\Effects\LinkedEffect.cs" />
@@ -112,7 +116,6 @@
     <Compile Include="Graphics\FreeCamera.cs" />
     <Compile Include="Graphics\ModelViewerCamera.cs" />
     <Compile Include="Graphics\TopDownEditorCamera.cs" />
-    <Compile Include="Graphics\SpriteAnimation.cs" />
     <Compile Include="Graphics\Geometry.cs" />
     <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
     <Compile Include="Graphics\ModelBatch.cs" />

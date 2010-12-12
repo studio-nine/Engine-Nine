@@ -18,12 +18,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine.Graphics
+namespace Nine.Animations
 {
+    using Nine.Graphics;
+
     /// <summary>
     /// An animation player that plays ImageList based sprite animations.
     /// </summary>
-    public class SpriteAnimation : Nine.Animations.KeyframeAnimation
+    public class SpriteAnimation : KeyframeAnimation
     {
         int count;
         int startFrame = 0;

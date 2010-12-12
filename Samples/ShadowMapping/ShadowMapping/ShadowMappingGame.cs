@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
+using Nine.Animations;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
 using Nine.Graphics.Effects.EffectParts;
@@ -71,6 +72,7 @@ namespace ShadowMapping
 
             // Create a model viewer camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);
+            camera.Center = Vector3.UnitZ * 15;
             camera.Radius = camera.MaxRadius;
 
             // Load our model assert.

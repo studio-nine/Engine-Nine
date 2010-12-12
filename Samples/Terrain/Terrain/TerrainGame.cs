@@ -29,8 +29,7 @@ namespace TerrainSample
         TopDownEditorCamera camera;
 
         DrawableSurface terrain;
-        BasicEffect basicEffect;
-        SplatterEffect splatterEffect;
+        LinkedEffect terrainEffect;
         DecalEffect decalEffect;
 
         public TerrainGame()
@@ -67,23 +66,7 @@ namespace TerrainSample
             //terrain.Freeze();
 
             // Initialize terrain effects
-            basicEffect = new BasicEffect(GraphicsDevice);
-            basicEffect.DirectionalLight0.Enabled = true;
-            basicEffect.DirectionalLight0.DiffuseColor = Color.Yellow.ToVector3();
-            basicEffect.DirectionalLight0.Direction = Vector3.Normalize(-Vector3.One);
-            basicEffect.Texture = Content.Load<Texture2D>("grass");
-            basicEffect.TextureEnabled = true;
-            basicEffect.LightingEnabled = true;
-            basicEffect.PreferPerPixelLighting = true;
-
-
-            splatterEffect = new SplatterEffect(GraphicsDevice);
-            splatterEffect.SplatterTexture = Content.Load<Texture2D>("splat");
-            splatterEffect.Textures[0] = Content.Load<Texture2D>("grass");
-            splatterEffect.SplatterTextureScale = new Vector2(
-                1.0f * terrain.TessellationX / terrain.PatchTessellation,
-                1.0f * terrain.TessellationY / terrain.PatchTessellation);
-
+            terrainEffect = Content.Load<LinkedEffect>("TerrainEffect");
 
             decalEffect = new DecalEffect(GraphicsDevice);
             decalEffect.Texture = Content.Load<Texture2D>("checker");
@@ -108,12 +91,11 @@ namespace TerrainSample
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
             
-
             // Initialize render state
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
-
-
+            GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+            
             // Terrain picking    
             Ray ray = GraphicsDevice.Viewport.CreatePickRay(
                             Mouse.GetState().X, Mouse.GetState().Y, camera.View, camera.Projection);
@@ -122,7 +104,6 @@ namespace TerrainSample
 
             if (distance.HasValue)
                 decalEffect.Position = ray.Position + ray.Direction * distance.Value;
-
 
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
@@ -133,27 +114,17 @@ namespace TerrainSample
                 if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
                 {
                     // Setup matrices
-                    basicEffect.World = patch.Transform;
-                    basicEffect.View = camera.View;
-                    basicEffect.Projection = camera.Projection;
-
-
-
-                    splatterEffect.World = patch.Transform;
-                    splatterEffect.View = camera.View;
-                    splatterEffect.Projection = camera.Projection;
-
-
+                    terrainEffect.World = patch.Transform;
+                    terrainEffect.View = camera.View;
+                    terrainEffect.Projection = camera.Projection;
+                    
                     decalEffect.World = patch.Transform;
                     decalEffect.View = camera.View;
                     decalEffect.Projection = camera.Projection;
-
-
+                    
                     // Draw each path with the specified effect
-                    patch.Draw(basicEffect);
-                    patch.Draw(splatterEffect);
-
-
+                    patch.Draw(terrainEffect);
+                    
                     // Draw decal
                     if (patch.BoundingBox.Intersects(decalEffect.BoundingBox))
                     {

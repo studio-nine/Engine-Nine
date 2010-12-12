@@ -6,22 +6,28 @@
 //=============================================================================
 #endregion
 
-#region Using Statements
+#region Using Directives
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 #endregion
 
-namespace Nine.Graphics.ScreenEffects
+namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
-    internal partial class Luminance
+    /// <summary>
+    /// A post processing screen effect that transforms the color of the whole screen.
+    /// </summary>
+    public partial class ColorMatrixEffect
     {
         private void OnCreated() { }
-        private void OnClone(Luminance cloneSource) { }
+        private void OnClone(ColorMatrixEffect cloneSource) { }
         private void OnApplyChanges() { }
     }
 

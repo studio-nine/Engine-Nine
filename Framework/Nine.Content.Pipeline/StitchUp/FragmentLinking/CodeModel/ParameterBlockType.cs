@@ -1,6 +1,6 @@
 namespace StitchUp.Content.Pipeline.FragmentLinking.CodeModel
 {
-	public enum ParameterBlockType
+	internal enum ParameterBlockType
 	{
 		// Fragment blocks.
 		Parameters,

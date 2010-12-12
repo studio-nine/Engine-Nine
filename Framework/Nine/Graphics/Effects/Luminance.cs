@@ -14,17 +14,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-namespace Nine.Graphics.ScreenEffects
+namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
-    /// <summary>
-    /// A post processing screen effect that blurs the whole screen radially.
-    /// </summary>
-    public partial class RadialBlurEffect
+    internal partial class Luminance
     {
         private void OnCreated() { }
-        private void OnClone(RadialBlurEffect cloneSource) { }
+        private void OnClone(Luminance cloneSource) { }
         private void OnApplyChanges() { }
     }
 

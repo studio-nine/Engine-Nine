@@ -129,6 +129,7 @@ namespace Nine.Animations
             this.Duration = TimeSpan.FromSeconds(1);
             this.Easing = Easing.In;
             this.Curve = new LinearCurve();
+            this.Repeat = 1;
         }
 
         protected sealed override TimeSpan GetDuration()
@@ -138,9 +139,9 @@ namespace Nine.Animations
 
         protected override void OnStarted()
         {
-            // Extract a valid property target
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
             {
+                // Extract a valid property target
                 member = Target.GetType().GetProperty(TargetProperty);
 
                 if (member == null)

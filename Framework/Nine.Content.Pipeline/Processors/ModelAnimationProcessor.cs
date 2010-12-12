@@ -22,11 +22,11 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Graphics;
+using Nine.Animations;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
 {
-
     #region Keyframe
     /// <summary>
     /// Describes the position of a single bone at a single point in time.

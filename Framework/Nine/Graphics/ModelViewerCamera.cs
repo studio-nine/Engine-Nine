@@ -58,9 +58,11 @@ namespace Nine.Graphics
 
         public Matrix View
         {
-            // TODO: Optimize this
-            //       Update view and projection matrix only when parameter changed
-            get { return Matrix.Multiply(world, Matrix.CreateLookAt(new Vector3(0, 0, Radius), Center, Up)); }
+            get 
+            {
+                return Matrix.CreateTranslation(-Center) * world * 
+                       Matrix.CreateLookAt(Vector3.UnitZ * Radius, Vector3.Zero, Up); 
+            }
         }
 
         public Matrix Projection 
@@ -115,13 +117,6 @@ namespace Nine.Graphics
 			{
                 end = ScreenToArcBall(e.X, e.Y);
 
-                // Coordinate system conversion:
-                // 
-                // Flash Vector3D uses the right handed coordinate system,
-                // meaning positive z axis points outside the screen, given
-                // that x points to the right and y points up. While our 
-                // Matrix44 uses the left handed system, a conversion has to
-                // be made here that negate the z value of cross product.
                 Vector3 v = Vector3.Cross(start, end);
                 v.Normalize();
 

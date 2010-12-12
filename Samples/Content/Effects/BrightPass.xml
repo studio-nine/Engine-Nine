@@ -6,7 +6,6 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionColorTexture"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransform"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutput"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTexture"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.RadicalBlur"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.Threshold"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>

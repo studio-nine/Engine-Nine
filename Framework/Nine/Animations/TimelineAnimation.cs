@@ -79,7 +79,7 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the smallest TimeSpan greater then TimeSpan.Zero.
         /// </summary>
-        public static TimeSpan TimeSpanEpsilon = TimeSpan.FromTicks(1);
+        protected static TimeSpan TimeSpanEpsilon = TimeSpan.FromTicks(1);
 
         /// <summary>
         /// Gets the total length of the animation without been affected
@@ -144,7 +144,7 @@ namespace Nine.Animations
             }
         }
 
-        private float repeat = float.MaxValue;
+        private float repeat = 1;
         private TimeSpan targetElapsedTime = TimeSpan.Zero;
 
         /// <summary>
@@ -230,11 +230,18 @@ namespace Nine.Animations
             if (Duration < TimeSpan.Zero)
                 throw new ArgumentOutOfRangeException("Duration cannot be negative");
 
-            if (Duration == TimeSpan.Zero || State != AnimationState.Playing)
+            if (State != AnimationState.Playing)
                 return;
 
+            if (Duration == TimeSpan.Zero)
+            {
+                Stop();
+                OnCompleted();
+                return;
+            }
+
             TimeSpan previousPosition = Position;
-            TimeSpan increment = TimeSpan.FromSeconds(gameTime.ElapsedGameTime.TotalSeconds * Speed);
+            TimeSpan increment = TimeSpan.FromTicks((long)(gameTime.ElapsedGameTime.Ticks * (double)Speed));
 
             if (increment == TimeSpan.Zero)
                 return;

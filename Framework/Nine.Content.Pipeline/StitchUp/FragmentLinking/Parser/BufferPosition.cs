@@ -1,6 +1,6 @@
 namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 {
-	public struct BufferPosition
+	internal struct BufferPosition
 	{
 		public int Line { get; set; }
 		public int Column { get; set; }

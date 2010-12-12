@@ -12,7 +12,6 @@ sampler TextureSampler : register(s0);
 float2 sampleOffsets[SAMPLE_COUNT];
 float sampleWeights[SAMPLE_COUNT];
 
-
 float4 PixelShader15(float2 texCoord : TEXCOORD0) : COLOR0
 {
     float4 c = 0;
@@ -62,9 +61,7 @@ float4 PixelShader3(float2 texCoord : TEXCOORD0) : COLOR0
     return c;
 }
 
-
 int ShaderIndex = 3;
-
 
 PixelShader PSArray[4] =
 {

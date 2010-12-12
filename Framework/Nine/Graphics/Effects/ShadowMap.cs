@@ -15,7 +15,7 @@ using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Nine.Graphics.ScreenEffects;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics.Effects
@@ -31,8 +31,9 @@ namespace Nine.Graphics.Effects
         public int Width { get { return renderTarget.Width; } }
         public int Height { get { return renderTarget.Height; } }
         public SurfaceFormat SurfaceFormat { get { return renderTarget.Format; } }
-        public bool BlurEnabled { get; set; }
         public Texture2D Texture { get; private set; }
+
+        public bool BlurEnabled { get; set; }
 
         public BlurEffect Blur
         {

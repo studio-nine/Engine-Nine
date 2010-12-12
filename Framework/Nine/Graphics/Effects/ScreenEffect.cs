@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine.Graphics.ScreenEffects
+namespace Nine.Graphics.Effects
 {
     /// <summary>
     /// Defines a pass in a post processing effect.

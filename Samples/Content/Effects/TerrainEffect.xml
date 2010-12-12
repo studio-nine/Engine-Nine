@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent xmlns:EffectParts="Nine.Content.Pipeline.Graphics.Effects.EffectParts">
+  <Asset Type="Nine.Content.Pipeline.Graphics.Effects.LinkedEffectContent">
+    <EffectParts>
+      <Item Type="EffectParts:PositionNormalTexture"></Item>
+      <Item Type="EffectParts:VertexTransform"></Item>
+      <Item Type="EffectParts:VertexShaderOutput"></Item>
+      <Item Type="EffectParts:BasicTexture">
+        <Texture>Grass</Texture>
+      </Item>
+      <Item Type="EffectParts:SplatterTexture">
+        <TextureX>Grass</TextureX>
+        <Splatter>Splat</Splatter>
+        <SplatterTextureScale>16 16</SplatterTextureScale>
+      </Item>
+      <Item Type="EffectParts:BeginLight"></Item>
+      <Item Type="EffectParts:AmbientLight"></Item>
+      <Item Type="EffectParts:DirectionalLight"></Item>
+      <Item Type="EffectParts:EndLight"></Item>
+      <Item Type="EffectParts:PixelShaderOutput"></Item>
+    </EffectParts>
+  </Asset>
+</XnaContent>

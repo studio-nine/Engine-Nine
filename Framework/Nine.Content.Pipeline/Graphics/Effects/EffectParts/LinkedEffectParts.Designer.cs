@@ -88,13 +88,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
-        internal static byte[] DirectionalBlur {
-            get {
-                object obj = ResourceManager.GetObject("DirectionalBlur", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
         internal static byte[] DirectionalLight {
             get {
                 object obj = ResourceManager.GetObject("DirectionalLight", resourceCulture);
@@ -210,6 +203,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
         internal static byte[] SkinTransform {
             get {
                 object obj = ResourceManager.GetObject("SkinTransform", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] SplatterTexture {
+            get {
+                object obj = ResourceManager.GetObject("SplatterTexture", resourceCulture);
                 return ((byte[])(obj));
             }
         }

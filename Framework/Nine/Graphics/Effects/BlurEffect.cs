@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-namespace Nine.Graphics.ScreenEffects
+namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
@@ -49,14 +49,14 @@ namespace Nine.Graphics.ScreenEffects
         /// <summary>
         /// Creates a new instance of Gaussian blur post processing.
         /// </summary>
-        private void OnCreated() 
+        private void OnCreated()
         {
             Step = 1.0f;
             BlurAmount = 1.0f;
             SampleCount = 15;
         }
 
-        private void OnClone(BlurEffect cloneSource) 
+        private void OnClone(BlurEffect cloneSource)
         {
             BlurAmount = cloneSource.BlurAmount;
             SampleCount = cloneSource.SampleCount;

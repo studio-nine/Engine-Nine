@@ -49,7 +49,7 @@ void main(INPUT input, inout OUTPUT output)
 
     float3 normalFromMap = tex2D(Texture, uv);
     normalFromMap = mul(normalFromMap, tangentTransform);
-    normalFromMap = normalize(normalFromMap);
+    //normalFromMap = normalize(normalFromMap);
 	
 	export(float3, Normal, normalFromMap);
 }

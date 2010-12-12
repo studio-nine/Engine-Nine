@@ -201,11 +201,11 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\SplatterTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\ScreenEffect.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\NormalMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\Threshold.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\RadicalBlur.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DirectionalBlur.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\ShadowMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\EnvironmentMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DirectionalLight.fragment" />

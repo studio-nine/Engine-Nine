@@ -90,11 +90,12 @@ namespace Nine
             this.font = font;
             this.UpdateFrequency = 1000;
             this.Color = Color.Yellow;
-
+#if DEBUG
             game.Exiting += (o, e) =>
             {
                 System.Diagnostics.Debug.WriteLine("Overall Frames Per Seconds: " + OverallFPS);
             };
+#endif
         }
 
         protected override void LoadContent()

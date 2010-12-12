@@ -1,6 +1,6 @@
 namespace StitchUp.Content.Pipeline.FragmentLinking.CodeModel
 {
-	public enum LiteralTokenType
+	internal enum LiteralTokenType
 	{
 		String,
 		Int,

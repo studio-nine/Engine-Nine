@@ -133,6 +133,38 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart, Nine")]
+    public class SplatterTexture : LinkedEffectPartContent
+    {
+        [ContentSerializer(Optional = true)]
+        public ContentReference<Texture2DContent> TextureX { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public ContentReference<Texture2DContent> TextureY { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public ContentReference<Texture2DContent> TextureZ { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public ContentReference<Texture2DContent> TextureW { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public ContentReference<Texture2DContent> Splatter { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public Vector2 SplatterTextureScale { get; set; }
+
+        public SplatterTexture()
+        {
+            SplatterTextureScale = Vector2.One;
+        }
+
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.SplatterTexture); }
+        }
+    }
+
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.FogEffectPart, Nine")]
     public class Fog : LinkedEffectPartContent
     {
@@ -347,56 +379,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ScreenEffect); }
         }
     }
-
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DirectionalBlurEffectPart, Nine")]
-    public class DirectionalBlur : LinkedEffectPartContent
-    {
-        /// <summary>
-        /// Gets or sets the amount of bluring.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public float BlurAmount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the step of sampled points.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public float Step { get; set; }
-
-        /// <summary>
-        /// Gets or sets the direction of bluring in radians.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public float Direction { get; set; }
-
-        /// <summary>
-        /// Gets or sets the blur sample count. Should be one of 3, 7, 11, 15.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public int SampleCount { get; set; }
-
-        public DirectionalBlur()
-        {
-            Step = 1.0f;
-            BlurAmount = 1.0f;
-            SampleCount = 7;
-            Direction = 0;
-        }
-
-        public override string Code
-        {
-            get
-            {
-                string code = Encoding.UTF8.GetString(LinkedEffectParts.DirectionalBlur);
-                if (Contains(typeof(ScreenEffect)))
-                {
-                    return code.Replace("{$SAMPLER}", "BasicSampler");
-                }
-                return code.Replace("{$SAMPLER}", "Texture");
-            }
-        }
-    }
-
+    
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
     public class RadicalBlur : LinkedEffectPartContent
     {

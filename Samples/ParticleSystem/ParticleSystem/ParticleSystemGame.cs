@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
-using Nine.Graphics.ScreenEffects;
+using Nine.Graphics.Effects;
 using Nine.Graphics.ParticleEffects;
 using Nine.Animations;
 #endregion
@@ -72,9 +72,9 @@ namespace ParticleSystem
             // This tweener is used to animate the lightning texture.
             lightningOffset = new TweenAnimation<Vector2>()
             {
-                Curve = new LinearCurve(),
                 From = Vector2.Zero,
                 To = Vector2.UnitY,
+                Repeat = float.MaxValue,
             };
             lightningOffset.Play();
 

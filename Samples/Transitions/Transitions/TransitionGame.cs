@@ -45,24 +45,21 @@ namespace Transitions
 
         SpriteBatch spriteBatch;
         SpriteFont font;
-        
-#if !WINDOWS_PHONE
-        //ScrollEffect background;
-#endif
+        Input input;
 
-        List<Button> buttons;        
+        List<Button> buttons;
 
-        TweenAnimation<Color> startAnimation;
-        Animation menuAnimation;
-        Animation imageAnimation;
+        AnimationPlayer animations = new AnimationPlayer();
         
         Texture2D image;
+        Texture2D background;
 
         // These properties need to be public since
         // TransitonManager works with only public properties and fields.
         public float ImageScale { get; set; }
         public float ImageRoation { get; set; }
         public Color ImageColor { get; set; }
+        public Color TextColor { get; set; }
 
 
         public TransitionGame()
@@ -91,85 +88,68 @@ namespace Transitions
         protected override void LoadContent()
         {
             // Create a input component to be used by buttons
-            Input input = new Input();
+            input = new Input();
 
             // Load sprite font
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("Consolas");
             image = Content.Load<Texture2D>("glacier");
+            background = Content.Load<Texture2D>("checker");
 
 
             // Set initial property for images
             ImageColor = Color.White * 0;
             ImageRoation = 0;
             ImageScale = 1;
-
-            
-#if !WINDOWS_PHONE
-            // Create a scrolling background.
-            //
-            // Most effects from Nine.Graphics can be used with GraphicsExtensions.DrawSprite
-            // method to draw 2D textures with a custom shader.
-            //background = new ScrollEffect(GraphicsDevice);
-            //background.Texture = Content.Load<Texture2D>("checker");
-            //background.TextureScale = Vector2.One * 0.2f;
-            //background.Direction = -MathHelper.PiOver4;
-#endif
             
             // Create a color tweener to adjust the color of "Press any key to continue...".
-            //
-            // There are two ways to use transitions. This one demenstrates how to use TweenAnimation<T>
-            // class directly by creating an instance and call its Update method every frame.
             //
             // TweenAnimation<T> supports most Xna data structures right out of the box, like
             // Vector2/3/4, Matrix, Quaternion, Rectangle, Point, Color, int, float, double.
             // For custom type, you need to provide your own lerp function through the constructor.
-            startAnimation = new TweenAnimation<Color>()
+            animations["Start"].Play(new TweenAnimation<Color>()
             {
+                Target = this,
+                TargetProperty = "TextColor",
                 Duration = TimeSpan.FromSeconds(0.5f),
                 From = Color.White,     // Tween from white
                 To = Color.Black,       // to black
-                Curve = new SinCurve(), // Use sin wave
+                Curve = Curves.Sin,     // Use sin wave
                 Repeat = float.MaxValue,// Loop forever
                 AutoReverse = true,     // Create a back and forth yoyo effect
-            };
-            startAnimation.Play();
+            });
 
-            
-            
-            // Another way to use transitions is through the managed TransitionManager.
-            // TranisitonManager are more powerful then Tweener<T> in that you can set a delay
-            // to a transition, or queue a transition.
-            // TransitionManager can be worked either through reflection or callback delegation.
-            //transitions = new TransitionManager();
-            
             
             // Create some buttons
             buttons = new List<Button>();
 
-            Type[] types = new Type[]
+            ICurve[] curves = new ICurve[]
             {
-                typeof(LinearCurve), typeof(ExponentialCurve), typeof(ElasticCurve), typeof(BounceCurve), typeof(SinCurve), typeof(SmoothCurve)
+                Curves.Linear,
+                Curves.Sin,
+                Curves.Exponential,
+                Curves.Elastic,
+                Curves.Bounce,
+                Curves.Smooth,
             };
 
-            foreach (Type type in types)
+            foreach (ICurve curve in curves)
             {
                 Button button = new Button(input) 
                 {
-                    X = 900, Text = type.Name, Tag = type, 
-                    Bounds = MeasureBounds(type.Name, font) 
+                    X = 900, Text = curve.GetType().Name, Tag = curve,
+                    Bounds = MeasureBounds(curve.GetType().Name, font) 
                 };
-                /*
+
                 button.MouseOver += new EventHandler<MouseEventArgs>(button_MouseOver);
                 button.MouseOut += new EventHandler<MouseEventArgs>(button_MouseOut);
                 button.Click += new EventHandler<MouseEventArgs>(button_Click);
-                */
                 buttons.Add(button);
             }
 
 
             // Transite in our menus
-            //TransiteIn(TimeSpan.Zero);
+            TransiteIn(TimeSpan.Zero);
         }
 
         /// <summary>
@@ -182,20 +162,28 @@ namespace Transitions
             return new Rectangle(0, 0, (int)size.X, (int)size.Y);
         }
 
-        /*
         void button_MouseOver(object sender, MouseEventArgs e)
         {
             // Turn button color to yellow
-            //
-            // The second null parameter indicates that TransitionManager will be using
-            // the current value of the specfied property as the begin value of the transition.
-            transitions.Start<Color, Linear>(0.4f, null, Color.Yellow, sender, "Color");
+            animations[sender].Play(new TweenAnimation<Color>()
+            {
+                Target = sender,
+                TargetProperty = "Color",
+                Duration = TimeSpan.FromSeconds(0.5f),
+                To = Color.Yellow,
+            });
         }
 
         void button_MouseOut(object sender, MouseEventArgs e)
         {
             // Turn button color to white.
-            transitions.Start<Color, Linear>(0.4f, null, Color.White, sender, "Color");
+            animations[sender].Play(new TweenAnimation<Color>()
+            {
+                Target = sender,
+                TargetProperty = "Color",
+                Duration = TimeSpan.FromSeconds(0.5f),
+                To = Color.White,
+            });
         }
 
         void button_Click(object sender, MouseEventArgs e)
@@ -209,58 +197,71 @@ namespace Transitions
 
             // Transite menus
             TransiteOut(index);
-            TransiteIn(TimeSpan.FromSeconds(1.2f));
 
-            float duration = 0.25f;
+            TimeSpan duration = TimeSpan.FromSeconds(0.25f);
 
             // Fade image
-            transitions.Start<Color, Linear>(duration, null, Color.White * 0, this, "ImageColor");
-            transitions.Queue<Color, Linear>(duration, null, Color.White, this, "ImageColor");
-            
-            // Scale image
-            transitions.Start<float, Exponential>(duration, null, 0.6f, this, "ImageScale");
+            animations["ImageColor"].Play(new SequentialAnimation(
+                new TweenAnimation<Color>()
+                {
+                    Duration = duration,
+                    To = Color.White * 0,
+                    Target = this,
+                    TargetProperty = "ImageColor",
+                },
+                new TweenAnimation<Color>()
+                {
+                    Duration = duration,
+                    To = Color.White,
+                    Target = this,
+                    TargetProperty = "ImageColor",
+                }));
 
-            if ((Type)buttons[index].Tag == typeof(Linear))
-            {
-                transitions.Queue<float, Linear>(duration, null, 1.0f, this, "ImageScale");
-            }
-            else if ((Type)buttons[index].Tag == typeof(Exponential))
-            {
-                transitions.Queue<float, Exponential>(duration, null, 1.0f, this, "ImageScale");
-            }
-            else if ((Type)buttons[index].Tag == typeof(Elastic))
-            {
-                transitions.Queue<float, Elastic>(duration, null, 1.0f, this, "ImageScale");
-            }
-            else if ((Type)buttons[index].Tag == typeof(Bounce))
-            {
-                transitions.Queue<float, Bounce>(duration, null, 1.0f, this, "ImageScale");
-            }
-            else if ((Type)buttons[index].Tag == typeof(Sin))
-            {
-                transitions.Queue<float, Sin>(duration, null, 1.0f, this, "ImageScale");
-            }
-            else if ((Type)buttons[index].Tag == typeof(Smooth))
-            {
-                transitions.Queue<float, Smooth>(duration, null, 1.0f, this, "ImageScale");
-            }
+            animations["ImageScale"].Play(new SequentialAnimation(
+                new TweenAnimation<float>()
+                {
+                    Curve = Curves.Exponential,
+                    Duration = duration,
+                    To = 0.6f,
+                    Target = this,
+                    TargetProperty = "ImageScale",
+                },
+                new TweenAnimation<float>()
+                {
+                    Curve = (ICurve)buttons[index].Tag,
+                    Duration = duration,
+                    To = 1f,
+                    Target = this,
+                    TargetProperty = "ImageScale",
+                }));
         }
 
         /// <summary>
         /// Shows all buttons like what they did with Red Alert 2.
         /// </summary>
-        private void TransiteIn(TimeSpan delay)
+        private IAnimation TransiteIn(TimeSpan delay)
         {
+            LayeredAnimation layeredAnimation = new LayeredAnimation();
+
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].Y = 220 + i * 24;
 
-                transitions.Start<float, Exponential>(TimeSpan.FromSeconds(i * 0.1f) + delay,
-                                                      TimeSpan.FromSeconds(0.4f),
-                                                      900, 780,
-                                                      LoopStyle.None, Easing.In,
-                                                      buttons[i], "X");
+                layeredAnimation.Animations.Add(new SequentialAnimation(
+                        new DelayAnimation(TimeSpan.FromSeconds(i * 0.1f) + delay),
+                        new TweenAnimation<float>()
+                        {
+                            Curve = Curves.Exponential,
+                            Duration = TimeSpan.FromSeconds(0.4f),
+                            To = 780,
+                            Target = buttons[i],
+                            TargetProperty = "X",
+                        }));
             }
+
+            animations["Menu"].Play(layeredAnimation);
+
+            return layeredAnimation;
         }
 
         /// <summary>
@@ -268,16 +269,26 @@ namespace Transitions
         /// </summary>
         private void TransiteOut(int triggerIndex)
         {
+            LayeredAnimation layeredAnimation = new LayeredAnimation();
+
             for (int i = 0; i < buttons.Count; i++)
             {
-                transitions.Start<float, Exponential>(TimeSpan.FromSeconds(Math.Abs(i - triggerIndex) * 0.1f),
-                                                      TimeSpan.FromSeconds(0.4f),
-                                                      null, 900,
-                                                      LoopStyle.None, Easing.In,
-                                                      buttons[i], "X");
+                buttons[i].Y = 220 + i * 24;
+
+                layeredAnimation.Animations.Add(new SequentialAnimation(
+                        new DelayAnimation(TimeSpan.FromSeconds(Math.Abs(i - triggerIndex) * 0.1f)),
+                        new TweenAnimation<float>()
+                        {
+                            Curve = Curves.Exponential,
+                            Duration = TimeSpan.FromSeconds(0.4f),
+                            To = 900,
+                            Target = buttons[i],
+                            TargetProperty = "X",
+                        }));
             }
+
+            animations["Menu"].Play(new SequentialAnimation(layeredAnimation, TransiteIn(TimeSpan.FromSeconds(1.2f))));
         }
-        */
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -293,24 +304,12 @@ namespace Transitions
             
 
             // Update transitions
-            //transitions.Update(gameTime);
-            startAnimation.Update(gameTime);
+            animations.Update(gameTime);
 
-#if !WINDOWS_PHONE
-            // Update background scroll
-            //background.Update(gameTime);
 
-            // Draw background
-            //background.SetViewport(GraphicsDevice.Viewport.Bounds);
-
-            //spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, background);
-            //spriteBatch.Draw(background.Texture, GraphicsDevice.Viewport.Bounds, null, Color.White);
-            //spriteBatch.End();
-#endif
             spriteBatch.Begin();
-            
-            spriteBatch.DrawString(font, "Press any key to continue..." , Vector2.Zero, startAnimation.Value);
-
+            spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, null, Color.White);            
+            spriteBatch.DrawString(font, "Press any key to continue..." , new Vector2(0, GraphicsDevice.Viewport.Height - 20), TextColor);
             spriteBatch.Draw(image, new Vector2(450, 300), null, ImageColor, ImageRoation, new Vector2(400, 300), ImageScale * 0.6f, SpriteEffects.None, 0);
             
             // Draw buttons

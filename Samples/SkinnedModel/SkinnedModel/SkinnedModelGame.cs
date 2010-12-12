@@ -44,12 +44,11 @@ namespace SkinnedModel
 #endif
 
         Model model;
-        BoneAnimation animation;
         ModelBatch modelBatch;
+        Animation currentAnimation;
         Input input;
         ModelViewerCamera camera;
-
-
+        
         public SkinnedModelGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -100,7 +99,8 @@ namespace SkinnedModel
 #endif       
 
             // Handle animations.
-            PlayAnimation(0);
+            //PlayAttackAndRun();
+            PlayRunAndCarryBlended();
 
             input = new Input();
             input.MouseDown += (o, e) => 
@@ -115,21 +115,58 @@ namespace SkinnedModel
 
         private void PlayAnimation(int i)
         {
-            if (animation == null || animation.Clip != model.GetAnimation(i))
-            {
-                // Now load our model animation and skinning using extension method.
-                animation = new BoneAnimation(model, model.GetAnimation(i));
-                //animation.Speed = 0.04f;
-                //animation.Ending = KeyframeEnding.Clamp;
-                //animation.BlendEnabled = false;
-                //animation.BlendDuration = TimeSpan.FromSeconds(1);
-                //animation.InterpolationEnabled = false;
-                //animation.Repeat = 1.5f;
-                animation.AutoReverse = true;
-                //animation.StartupDirection = AnimationDirection.Backward;
-                animation.Disable("Bip01_Neck", true);
-                animation.Play();
-            }
+            // Now load our model animation and skinning using extension method.
+            BoneAnimation animation = new BoneAnimation(model, model.GetAnimation(i));
+            //animation.Speed = 0.04f;
+            //animation.Ending = KeyframeEnding.Clamp;
+            //animation.BlendEnabled = false;
+            //animation.BlendDuration = TimeSpan.FromSeconds(1);
+            //animation.InterpolationEnabled = false;
+            //animation.Repeat = 1.5f;
+            //animation.AutoReverse = true;
+            //animation.StartupDirection = AnimationDirection.Backward;
+            //animation.Disable("Bip01_Neck", true);
+            animation.Play();
+
+            currentAnimation = animation;
+        }
+
+        private void PlayAttackAndRun()
+        {
+            WeightedBoneAnimation run = new WeightedBoneAnimation(model, model.GetAnimation("Run"));
+            run.Speed = 0.8f;
+            run.Disable("Bip01_Pelvis", false);
+            run.Disable("Bip01_Spine1", true);
+
+            WeightedBoneAnimation attack = new WeightedBoneAnimation(model, model.GetAnimation("Attack"));
+            attack.Disable("Bip01", false);
+            attack.Disable("Bip01_Spine", false);
+            attack.Disable("Bip01_L_Thigh", true);
+            attack.Disable("Bip01_R_Thigh", true);
+            
+            LayeredBoneAnimation blended = new LayeredBoneAnimation(run, attack);
+            blended.KeyAnimation = run;
+            blended.IsSychronized = true;
+            blended.Play();
+
+            currentAnimation = blended;
+        }
+
+        private void PlayRunAndCarryBlended()
+        {
+            WeightedBoneAnimation run = new WeightedBoneAnimation(model, model.GetAnimation("Run"));
+            run.Speed = 0.8f;
+            run.BlendWeight = 0.6f;
+
+            WeightedBoneAnimation carry = new WeightedBoneAnimation(model, model.GetAnimation("Carry"));
+            carry.BlendWeight = 0.4f;
+
+            LayeredBoneAnimation blended = new LayeredBoneAnimation(run, carry);
+            blended.KeyAnimation = run;
+            blended.IsSychronized = true;
+            blended.Play();
+
+            currentAnimation = blended;
         }
 
         /// <summary>
@@ -139,8 +176,8 @@ namespace SkinnedModel
         {
             // Update model animation.
             // Note how animations and skinning are seperated.
-            if (animation != null)
-                animation.Update(gameTime);
+            if (currentAnimation != null)
+                currentAnimation.Update(gameTime);
 
             base.Update(gameTime);
         }

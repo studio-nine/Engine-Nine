@@ -53,8 +53,11 @@ namespace Nine.Animations
         /// </summary>
         public void Pause()
         {
-            State = AnimationState.Paused;
-            OnPaused();
+            if (State == AnimationState.Playing)
+            {
+                State = AnimationState.Paused;
+                OnPaused();
+            }
         }
 
         /// <summary>
@@ -62,8 +65,11 @@ namespace Nine.Animations
         /// </summary>
         public void Resume()
         {
-            State = AnimationState.Playing;
-            OnResumed();
+            if (State == AnimationState.Paused)
+            {
+                State = AnimationState.Playing;
+                OnResumed();
+            }
         }
 
         /// <summary>

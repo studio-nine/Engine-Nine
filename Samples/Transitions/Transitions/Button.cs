@@ -60,7 +60,9 @@ namespace Transitions
                 rectange.Offset((int)X, (int)Y);
 
                 if (rectange.Contains(e.X, e.Y) && Click != null)
+                {
                     Click(this, e);
+                }
             }
         }
 
@@ -75,10 +77,14 @@ namespace Transitions
                 bool inside = rectange.Contains(e.X, e.Y);
 
                 if (inside && !insideLastFrame && MouseOver != null)
+                {
                     MouseOver(this, e);
+                }
 
                 if (insideLastFrame && !inside && MouseOut != null)
+                {
                     MouseOut(this, e);
+                }
 
                 insideLastFrame = inside;
             }

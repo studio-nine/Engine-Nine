@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
-using Nine.Graphics.ScreenEffects;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace ScreenEffects
@@ -30,8 +30,8 @@ namespace ScreenEffects
 
         Texture2D background;
 
-        ScreenEffect screenEffect;
-        ScreenEffect screenEffectTest;
+        ScreenEffect linkedScreenEffect;
+        ScreenEffect composedScreenEffect;
 
 
         public ScreenEffectsGame()
@@ -65,7 +65,7 @@ namespace ScreenEffects
 
             background = Content.Load<Texture2D>("glacier");
 
-            screenEffect = new ScreenEffect(GraphicsDevice);
+            linkedScreenEffect = new ScreenEffect(GraphicsDevice);
 
             // Create a bloom effect using two ScreenEffectPass.
             ScreenEffectPass basePass = new ScreenEffectPass(GraphicsDevice);
@@ -78,11 +78,11 @@ namespace ScreenEffects
             brightPass.BlendState = BlendState.Additive;
             brightPass.DownScaleEnabled = false;
             
-            screenEffect.Passes.Add(basePass);
-            screenEffect.Passes.Add(brightPass);
+            linkedScreenEffect.Passes.Add(basePass);
+            linkedScreenEffect.Passes.Add(brightPass);
 
 
-            screenEffectTest = new ScreenEffect(GraphicsDevice);
+            composedScreenEffect = new ScreenEffect(GraphicsDevice);
 
             ScreenEffectPass basePassTest = new ScreenEffectPass(GraphicsDevice);
             basePassTest.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateSaturation(0.9f) });
@@ -94,8 +94,8 @@ namespace ScreenEffects
             brightPassTest.BlendState = BlendState.Additive;
             brightPassTest.DownScaleEnabled = false;
 
-            screenEffectTest.Passes.Add(basePassTest);
-            screenEffectTest.Passes.Add(brightPassTest);
+            composedScreenEffect.Passes.Add(basePassTest);
+            composedScreenEffect.Passes.Add(brightPassTest);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace ScreenEffects
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
-            ScreenEffect currentScreenEffect = Keyboard.GetState().IsKeyDown(Keys.T) ? screenEffectTest : screenEffect;
+            ScreenEffect currentScreenEffect = Keyboard.GetState().IsKeyDown(Keys.T) ? composedScreenEffect : linkedScreenEffect;
             
             currentScreenEffect.Begin();
             {

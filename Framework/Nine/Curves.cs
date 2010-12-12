@@ -23,7 +23,48 @@ namespace Nine
         float Evaluate(float position);
     }
 
-    public class LinearCurve : ICurve
+    public static class Curves
+    {
+        public static ICurve Linear { get; private set; }
+        public static ICurve Sin { get; private set; }
+        public static ICurve Smooth { get; private set; }
+        public static ICurve Exponential { get; private set; }
+        public static ICurve Elastic { get; private set; }
+        public static ICurve Bounce { get; private set; }
+
+        static Curves()
+        {
+            Linear = new LinearCurve();
+            Sin = new SinCurve();
+            Smooth = new SmoothCurve();
+            Exponential = new ExponentialCurve();
+            Elastic = new ElasticCurve();
+            Bounce = new BounceCurve();
+        }
+
+        public static ICurve CreateExponential(float power)
+        {
+            return new ExponentialCurve() { Power = power };
+        }
+
+        public static ICurve CreateElastic(float strength)
+        {
+            return new ElasticCurve() { Strength = strength };
+        }
+
+        public static ICurve CreateBounce(float strength)
+        {
+            return new BounceCurve() { Strength = strength };
+        }
+
+        public static ICurve CreateCustom(Curve curve)
+        {
+            return new CustomCurve(curve);
+        }
+    }
+
+    #region Curve Implementations
+    internal class LinearCurve : ICurve
     {
         public float Evaluate(float position)
         {
@@ -31,7 +72,7 @@ namespace Nine
         }
     }
 
-    public class ExponentialCurve : ICurve
+    internal class ExponentialCurve : ICurve
     {
         public float Power { get; set; }
         
@@ -43,7 +84,7 @@ namespace Nine
         }
     }
 
-    public class SinCurve : ICurve
+    internal class SinCurve : ICurve
     {
         public float Evaluate(float position)
         {
@@ -51,7 +92,7 @@ namespace Nine
         }
     }
 
-    public class SmoothCurve : ICurve
+    internal class SmoothCurve : ICurve
     {
         public float Evaluate(float position)
         {
@@ -59,7 +100,7 @@ namespace Nine
         }
     }
 
-    public class ElasticCurve : ICurve
+    internal class ElasticCurve : ICurve
     {
         public float Strength { get; set; }
 
@@ -74,7 +115,7 @@ namespace Nine
         }
     }
 
-    public class BounceCurve : ICurve
+    internal class BounceCurve : ICurve
     {
         public float Strength { get; set; }
 
@@ -91,7 +132,7 @@ namespace Nine
         }
     }
 
-    public class CustomCurve : ICurve
+    internal class CustomCurve : ICurve
     {
         private float minPosition;
         private float maxPosition;
@@ -136,4 +177,5 @@ namespace Nine
                 (Curve.Evaluate(minPosition + position * (maxPosition - minPosition)) - minValue) / (maxValue - minValue) : 0;
         }
     }
+    #endregion
 }
