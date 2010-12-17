@@ -21,6 +21,7 @@ namespace Nine
     /// <summary>
     /// Event args used by GameConsole.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class GameConsoleEventArgs : EventArgs
     {
         public string Command { get; internal set; }

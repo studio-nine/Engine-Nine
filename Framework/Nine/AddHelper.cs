@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine.Animations
+namespace Nine
 {
     /// <summary>
     /// Defines an operation on the specified type.

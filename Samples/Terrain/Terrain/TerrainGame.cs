@@ -26,7 +26,7 @@ namespace TerrainSample
     /// </summary>
     public class TerrainGame : Microsoft.Xna.Framework.Game
     {
-        TopDownEditorCamera camera;
+        ScreenCamera camera;
 
         DrawableSurface terrain;
         LinkedEffect terrainEffect;
@@ -56,7 +56,8 @@ namespace TerrainSample
         protected override void LoadContent()
         {
             // Create a topdown perspective editor camera to help us visualize the scene
-            camera = new TopDownEditorCamera(GraphicsDevice);
+            camera = new ScreenCamera(GraphicsDevice);
+            camera.Z = 100;
 
             // Create a terrain based on the terrain geometry loaded from file
             terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("RF1"), 8);

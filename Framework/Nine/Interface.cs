@@ -60,4 +60,41 @@ namespace Nine
         /// </summary>
         IList<ushort> Indices { get; }
     }
+
+
+    /// <summary>
+    /// Defines Spatial relations between objects.
+    /// </summary>
+    public interface ISpatialQuery
+    {
+        /// <summary>
+        /// Finds the first object intersects with the specified point.
+        /// </summary>
+        T FindFirst<T>(Vector3 position);
+
+        /// <summary>
+        /// Finds the nearest object intersects with the specified ray.
+        /// </summary>
+        T FindFirst<T>(Ray ray);
+
+        /// <summary>
+        /// Finds the nearest object resides within the specified bounding sphere.
+        /// </summary>
+        T FindFirst<T>(Vector3 position, float radius);
+
+        /// <summary>
+        /// Finds all the objects resides within the specified bounding sphere.
+        /// </summary>
+        IEnumerable<T> Find<T>(Vector3 position, float radius);
+
+        /// <summary>
+        /// Finds all the objects that intersects with the specified ray.
+        /// </summary>
+        IEnumerable<T> Find<T>(Ray ray);
+
+        /// <summary>
+        /// Finds all the objects resides within the specified bounding fustum.
+        /// </summary>
+        IEnumerable<T> Find<T>(BoundingFrustum frustum);
+    }
 }

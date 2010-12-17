@@ -60,6 +60,7 @@ namespace Nine
     /// <summary>
     /// A collection of surfaces that can be queried together.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class SurfaceCollection : Collection<ISurface>, ISurface
     {
         /// <summary>

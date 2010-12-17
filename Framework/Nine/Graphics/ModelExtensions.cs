@@ -34,7 +34,7 @@ namespace Nine.Graphics
         /// Gets the skinning data attached to the model.
         /// </summary>
         [ContentSerializer()]
-        public ModelSkinning Skinning { get; internal set; }
+        internal ModelSkinning Skinning { get; set; }
 
         /// <summary>
         /// Gets the collision data attached to the model.
@@ -83,50 +83,11 @@ namespace Nine.Graphics
             return extensions != null && extensions.Skinning != null;
         }
 
-        /// <summary>
-        /// Gets the bone transformation matrices used to draw skinned models
-        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
-        /// </summary>
-        public static Matrix[] GetBoneTransforms(this Model model)
+        internal static ModelSkinning GetSkinning(this Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
-            if (extensions != null && extensions.Skinning != null)
-            {
-                return extensions.Skinning.GetBoneTransforms(model);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the bone transformation matrices used to draw skinned models
-        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
-        /// </summary>
-        public static Matrix[] GetBoneTransforms(this Model model, Matrix world)
-        {
-            ModelTag extensions = model.Tag as ModelTag;
-
-            if (extensions != null && extensions.Skinning != null)
-            {
-                return extensions.Skinning.GetBoneTransforms(model, world);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the bone transformation matrices used to draw skinned models
-        /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
-        /// </summary>
-        public static bool GetBoneTransforms(this Model model, Matrix world, Matrix[] boneTransforms)
-        {
-            ModelTag extensions = model.Tag as ModelTag;
-
-            if (extensions != null && extensions.Skinning != null)
-            {
-                extensions.Skinning.GetBoneTransforms(model, world, boneTransforms);
-                return true;
-            }
-            return false;
+            return extensions != null ? extensions.Skinning : null;
         }
 
         /// <summary>

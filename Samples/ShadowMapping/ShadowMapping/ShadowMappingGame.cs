@@ -148,7 +148,7 @@ namespace ShadowMapping
 
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
                 modelBatch.Begin(lightView, lightProjection);
-                modelBatch.DrawSkinned(model, worldModel, model.GetBoneTransforms(), depth);
+                modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), depth);
                 modelBatch.End();
             }
             // We got a shadow map rendered.
@@ -167,7 +167,7 @@ namespace ShadowMapping
             modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
             {
                 modelBatch.Draw(skyBox, Matrix.Identity, skyBoxEffect);
-                modelBatch.DrawSkinned(model, worldModel, model.GetBoneTransforms(), null);
+                modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), null);
                 modelBatch.Draw(terrain, worldTerrain, null);
             }
             modelBatch.End();

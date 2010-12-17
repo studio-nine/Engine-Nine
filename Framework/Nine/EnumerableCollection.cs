@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,6 +19,7 @@ namespace Nine
     /// <summary>
     /// Event args for changed an item.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ItemChangedEventArgs<T> : EventArgs
     {
         /// <summary>
@@ -40,6 +42,7 @@ namespace Nine
     /// <summary>
     /// A collection that can be manipulated during enumeration.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class EnumerableCollection<T> : IList<T>
     {
         private bool isDirty = true;

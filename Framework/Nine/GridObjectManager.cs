@@ -18,40 +18,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
-    #region ISpatialQuery
     /// <summary>
-    /// Defines Spatial relations between objects.
-    /// </summary>
-    public interface ISpatialQuery
-    {
-        /// <summary>
-        /// Gets all the objects intersects with the specfied point.
-        /// </summary>
-        //IEnumerable<object> Find(Vector3 position);
-
-        /// <summary>
-        /// Gets all the objects resides within the specified bounding sphere.
-        /// </summary>
-        IEnumerable<object> Find(Vector3 position, float radius);
-
-        /// <summary>
-        /// Gets all the objects that intersects with the specified ray from
-        /// </summary>
-        //IEnumerable<object> Find(Ray ray);
-
-        /// <summary>
-        /// Gets all the objects resides within the specified bounding fustum.
-        /// </summary>
-        //IEnumerable<object> Find(BoundingFrustum frustum);
-    }
-    #endregion
-    
-    #region GridPartition
-    /// <summary>
-    /// Basic 2D Space partition using grids.
+    /// Basic 2D Space partition using uniform grids.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public abstract class GridPartition
+    public abstract class UniformGrid
     {
         /// <summary>
         /// Gets or sets the number of columns (x) of the grid.
@@ -76,7 +47,7 @@ namespace Nine
         /// <summary>
         /// Creates a new grid.
         /// </summary>
-        public GridPartition(float width, float height, float x, float y, int tessellationX, int tessellationY)
+        public UniformGrid(float width, float height, float x, float y, int tessellationX, int tessellationY)
         {
             Position = new Vector2(x, y);
             Dimension = new Vector2(width, height);
@@ -132,13 +103,12 @@ namespace Nine
             return v;
         }
     }
-    #endregion
 
-    #region GridObjectManager
+
     /// <summary>
     /// Manages a collection of objects using grids.
     /// </summary>
-    public class GridObjectManager : GridPartition, ISpatialQuery, ICollection<object>
+    public class GridObjectManager : UniformGrid, ICollection<object>, ISpatialQuery
     {
         internal struct Entry
         {
@@ -153,6 +123,15 @@ namespace Nine
         /// </summary>
         public GridObjectManager(float width, float height, float x, float y, int tessellationX, int tessellationY)
             : base(width, height, x, y, tessellationX, tessellationY)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new instance of GridObjectManager.
+        /// </summary>
+        public GridObjectManager(BoundingRectangle bounds, int tessellationX, int tessellationY)
+            : base(bounds.Max.X - bounds.Min.X, bounds.Max.Y - bounds.Min.Y, bounds.Min.X, bounds.Min.Y, tessellationX, tessellationY)
         {
 
         }
@@ -199,6 +178,16 @@ namespace Nine
             Count++;
         }
 
+        public void Add(object obj, BoundingSphere bounds)
+        {
+            Add(obj, bounds.Center.X, bounds.Center.Y, bounds.Radius);
+        }
+
+        public void Add(object obj, float x, float y, float radius)
+        {
+            throw new NotImplementedException();
+        }
+        
         /// <summary>
         /// Clear all objects managed by this instance.
         /// </summary>
@@ -209,11 +198,57 @@ namespace Nine
             Count = 0;
         }
 
-        /// <summary>
-        /// Gets all the objects near the specified position.
-        /// </summary>
-        /// <param name="radius">Radius of the Spatial query.</param>
-        public IEnumerable<object> Find(Vector3 position, float radius)
+        #region ISpatialQuery Members
+        public T FindFirst<T>(Vector3 position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T FindFirst<T>(Ray ray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public T FindFirst<T>(Vector3 position, float radius)
+        {
+            float min = float.MaxValue;
+            T nearest = default(T);
+
+            List<Entry> list;
+            float rr = radius * radius;
+
+            Point ul = PositionToGrid(position.X - radius, position.Y - radius, true);
+            Point br = PositionToGrid(position.X + radius, position.Y + radius, true);
+
+            for (int y = ul.Y; y <= br.Y; y++)
+            {
+                for (int x = ul.X; x <= br.X; x++)
+                {
+                    if (dictionary.TryGetValue(y * TessellationX + x, out list))
+                    {
+                        foreach (Entry e in list)
+                        {
+                            if (!(e.Object is T))
+                                continue;
+
+                            float xx = e.Position.X - position.X;
+                            float yy = e.Position.Y - position.Y;
+                            float dd = xx * xx + yy * yy;
+
+                            if (dd <= rr && dd < min)
+                            {
+                                min = dd;
+                                nearest = (T)e.Object;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return nearest;
+        }
+
+        public IEnumerable<T> Find<T>(Vector3 position, float radius)
         {
             List<Entry> list;
             float rr = radius * radius;
@@ -229,18 +264,32 @@ namespace Nine
                     {
                         foreach (Entry e in list)
                         {
+                            if (!(e.Object is T))
+                                continue;
+
                             float xx = e.Position.X - position.X;
                             float yy = e.Position.Y - position.Y;
 
                             if (xx * xx + yy * yy <= rr)
                             {
-                                yield return e.Object;
+                                yield return (T)e.Object;
                             }
                         }
                     }
                 }
             }
         }
+
+        public IEnumerable<T> Find<T>(Ray ray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> Find<T>(BoundingFrustum frustum)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         #region ICollection<object> Members
 
@@ -344,5 +393,4 @@ namespace Nine
 
         #endregion
     }
-    #endregion
 }

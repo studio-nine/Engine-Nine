@@ -25,7 +25,7 @@ namespace Nine.Graphics
     /// This is typically stored in the Tag property of the Model being animated.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ModelSkinning
+    internal class ModelSkinning
     {
         /// <summary>
         /// Vertex to bonespace transforms for each bone in the skeleton.
@@ -121,6 +121,20 @@ namespace Nine.Graphics
             {
                 // Apply inverse bind pose
                 skin[i] = InverseBindPose[i] * bones[SkeletonIndex + i] * world;
+            }
+        }
+
+        public void GetBoneTransforms(Model model, Matrix[] skin)
+        {
+            if (bones == null || bones.Length < model.Bones.Count)
+                bones = new Matrix[model.Bones.Count];
+
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
+            for (int i = 0; i < InverseBindPose.Count; i++)
+            {
+                // Apply inverse bind pose
+                skin[i] = InverseBindPose[i] * bones[SkeletonIndex + i];
             }
         }
 

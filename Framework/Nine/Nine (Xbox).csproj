@@ -46,7 +46,7 @@
     <Folder Include="Graphics\ScreenEffects\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Animations\AddHelper.cs" />
+    <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
     <Compile Include="Animations\BoneAnimations.cs" />
@@ -65,6 +65,7 @@
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
+    <Compile Include="Graphics\ScreenCamera.cs" />
     <Compile Include="Graphics\DrawableSurfaceCollections.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\DrawableSurface.cs" />
@@ -179,7 +180,14 @@
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
+    <Compile Include="GridObjectManager.cs" />
     <Compile Include="Math2D.cs" />
+    <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="Navigation\Steering\AvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\Steering\BasicSteeringBehaviors.cs" />
+    <Compile Include="Navigation\Steering\FlockingBehaviors.cs" />
+    <Compile Include="Navigation\Steering\Steerer.cs" />
+    <Compile Include="Navigation\Steering\SteeringBehavior.cs" />
     <Compile Include="OcTree.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />
@@ -209,10 +217,6 @@
     </Compile>
     <Compile Include="Input.cs">
     </Compile>
-    <Compile Include="Navigation\SteeringBehaviors\SteeringMovement.cs" />
-    <Compile Include="Navigation\SteeringBehaviors\BasicSteeringBehaviors.cs" />
-    <Compile Include="Navigation\SteeringBehaviors\AvoidanceBehaviors.cs" />
-    <Compile Include="Navigation\SteeringBehaviors\FlockingBehaviors.cs" />
     <Compile Include="Graphics\FreeCamera.cs" />
     <Compile Include="Graphics\ModelViewerCamera.cs" />
     <Compile Include="Graphics\TopDownEditorCamera.cs" />
@@ -236,9 +240,7 @@
     <Compile Include="Graphics\Primitives\Teapot.cs" />
     <Compile Include="Graphics\Primitives\Torus.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
-    <Compile Include="NamedObjectManager.cs" />
     <Compile Include="ScreenshotCapturer.cs" />
-    <Compile Include="SpatialObjectManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="LerpHelper.cs" />
     <Compile Include="Triangle.cs" />
@@ -260,7 +262,6 @@
     <Compile Include="Navigation\PathGrid.cs" />
     <Compile Include="Navigation\PriorityQueue.cs" />
     <Compile Include="Navigation\GraphSearch.cs" />
-    <Compile Include="Navigation\Movable.cs" />
     <None Include="Diagrams\Animations.cd" />
     <None Include="Diagrams\Cameras.cd" />
     <None Include="Diagrams\Curves.cd" />

@@ -56,6 +56,7 @@ namespace Nine.Animations
     /// <summary>
     /// Event args used by KeyframeAnimation events.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class KeyframeEventArges : EventArgs
     {
         /// <summary>

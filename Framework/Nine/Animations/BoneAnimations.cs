@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Animations
 {
+    using Nine.Graphics;
+
     #region BoneAnimationClip
     /// <summary>
     /// Defines a bone animation clip.
@@ -51,11 +53,24 @@ namespace Nine.Animations
     }
     #endregion
 
-    #region BoneAnimation
+    #region IBoneAnimationController
+    /// <summary>
+    /// Represents a controller that manipulates the bone transforms of a model.
+    /// </summary>
+    public interface IBoneAnimationController
+    {
+        /// <summary>
+        /// Tries to get the local transform and blend weight of the specified bone.
+        /// </summary>
+        bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight);
+    }
+    #endregion
+
+    #region BoneAnimationController
     /// <summary>
     /// Represents skeleton animation for models.
     /// </summary>
-    public class BoneAnimation : KeyframeAnimation
+    public class BoneAnimationController : KeyframeAnimation, IBoneAnimationController
     {
         /// <summary>
         /// Gets or sets whether this BoneAnimation should automatically
@@ -64,147 +79,460 @@ namespace Nine.Animations
         public bool InterpolationEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this BoneAnimation should blend with the
-        /// previous bone poses when started playing the animation.
-        /// </summary>
-        public bool BlendEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets blend time.
-        /// </summary>
-        public TimeSpan BlendDuration { get; set; }
-
-        /// <summary>
         /// Gets the animation clip used by this bone animation.
         /// </summary>
-        public BoneAnimationClip Clip { get; private set; }
-
-        /// <summary>
-        /// Gets the model affected by this bone animation.
-        /// </summary>
-        public Model Model { get; private set; }
-
-        private double blendTimer = 0;
-        private Matrix[] blendTarget;
-        private bool shouldLerp;
+        public BoneAnimationClip AnimationClip { get; private set; }
 
         /// <summary>
         /// Creates a new instance of BoneAnimation.
         /// </summary>
-        public BoneAnimation(Model model, BoneAnimationClip clip)
+        public BoneAnimationController(BoneAnimationClip animationClip)
         {
-            if (clip == null || model == null)
-                throw new ArgumentNullException();
+            if (animationClip == null)
+                throw new ArgumentNullException("animationClip");
 
-            this.Clip = clip;
-            this.Model = model;
-            this.BlendEnabled = true;
-            this.Ending = clip.PreferredEnding;
-            this.BlendDuration = TimeSpan.FromSeconds(0.5);
+            this.AnimationClip = animationClip;
+            this.Ending = animationClip.PreferredEnding;
             this.InterpolationEnabled = true;
-            this.FramesPerSecond = clip.FramesPerSecond;
+            this.FramesPerSecond = animationClip.FramesPerSecond;
         }
 
         protected override int GetTotalFrames()
         {
-            return Clip.TotalFrames;
-        }
-
-        protected override void OnStarted()
-        {
-            if (BlendEnabled)
-            {
-                if (blendTarget == null)
-                    blendTarget = new Matrix[Model.Bones.Count];
-
-                blendTimer = 0;
-                Model.CopyBoneTransformsTo(blendTarget);
-            }
-
-            base.OnStarted();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            if (State == Animations.AnimationState.Playing)
-            {
-                blendTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                shouldLerp = (gameTime.ElapsedGameTime.TotalSeconds * Speed) < (1.0 / FramesPerSecond);
-            
-                if (BlendEnabled && blendTimer < BlendDuration.TotalSeconds)
-                {
-                    blendLerp = (float)(blendTimer / BlendDuration.TotalSeconds);
-                }
-            }
-
-            base.Update(gameTime);
+            return AnimationClip.TotalFrames;
         }
 
         private int startFrame;
         private int endFrame;
         private float percentage;
-        private float blendLerp = -1;
+        private bool shouldLerp;
+
+        public override void Update(GameTime gameTime)
+        {
+            if (State == Animations.AnimationState.Playing)
+            {
+                shouldLerp = (gameTime.ElapsedGameTime.TotalSeconds * Speed) < (1.0 / FramesPerSecond);
+            }
+
+            base.Update(gameTime);
+        }
 
         protected override void OnSeek(int startFrame, int endFrame, float percentage)
         {
             this.startFrame = startFrame;
             this.endFrame = endFrame;
             this.percentage = percentage;
-
-            Apply((bone, transform) => { Model.Bones[bone].Transform = transform; });
         }
 
-        /// <summary>
-        /// Applies the current local bone transforms of this BoneAnimation.
-        /// </summary>
-        public void Apply(Action<int, Matrix> setBoneLocalTransform)
+        public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
-            for (int bone = 0; bone < Clip.Transforms.Length; bone++)
+            blendWeight = 1;
+
+            if (AnimationClip.Transforms[bone] == null)
             {
-                Matrix? transform = OnApply(bone);
-
-                if (transform.HasValue)
-                {
-                    setBoneLocalTransform(bone, transform.Value);
-                }
+                transform = Matrix.Identity;
+                return false;
             }
-        }
-
-        protected virtual Matrix? OnApply(int bone)
-        {
-            if (Clip.Transforms[bone] == null)
-                return null;
-
-            Matrix transform;
 
             if (InterpolationEnabled && shouldLerp)
             {
                 transform = LerpHelper.Slerp(
-                             Clip.Transforms[bone][startFrame],
-                             Clip.Transforms[bone][endFrame], percentage);
+                             AnimationClip.Transforms[bone][startFrame],
+                             AnimationClip.Transforms[bone][endFrame], percentage);
             }
             else
             {
-                transform = Clip.Transforms[bone][startFrame];
+                transform = AnimationClip.Transforms[bone][startFrame];
             }
 
-            if (blendLerp >= 0 && blendLerp < 1)
-            {
-                transform = LerpHelper.Slerp(
-                            blendTarget[bone], transform, MathHelper.SmoothStep(0, 1, blendLerp));
-            }
-
-            return transform;
+            return true;
         }
     }
     #endregion
 
-    #region WeightedBoneAnimation
+    #region BoneAnimation
+    public class BoneAnimation : Animation, IBoneAnimationController
+    {
+        public BoneAnimation(Model model)
+        {
+            if (model == null)
+                throw new ArgumentNullException("model");
+
+            this.Model = model;
+            this.DefaultBlendEnabled = true;
+            this.DefaultBlendDuration = TimeSpan.FromSeconds(0.5);
+            this.Controllers = new BoneAnimationControllerCollection(model);
+        }
+
+        public BoneAnimation(Model model, params IBoneAnimationController[] controllers)
+        {
+            if (model == null)
+                throw new ArgumentNullException("model");
+
+            this.Model = model;
+            this.DefaultBlendEnabled = true;
+            this.DefaultBlendDuration = TimeSpan.FromSeconds(0.5);
+            this.Controllers = new BoneAnimationControllerCollection(model);
+
+            foreach (IBoneAnimationController controller in controllers)
+            {
+                Controllers.Add(controller);
+            }
+        }
+
+        public BoneAnimation(Model model, params BoneAnimationClip[] animations)
+        {
+            if (model == null)
+                throw new ArgumentNullException("model");
+
+            this.Model = model;
+            this.DefaultBlendEnabled = true;
+            this.DefaultBlendDuration = TimeSpan.FromSeconds(0.5);
+            this.Controllers = new BoneAnimationControllerCollection(model);
+
+            foreach (BoneAnimationClip controller in animations)
+            {
+                Controllers.Add(new BoneAnimationController(controller));
+            }
+        }
+        
+        /// <summary>
+        /// Gets the model affected by this bone animation.
+        /// </summary>
+        public Model Model { get; private set; }
+
+        /// <summary>
+        /// Gets all the controllers affecting this BoneAnimation.
+        /// </summary>
+        public BoneAnimationControllerCollection Controllers { get; private set; }
+
+        /// <summary>
+        /// Gets or sets whether this BoneAnimation should blend with the
+        /// previous bone poses when started playing the animation.
+        /// </summary>
+        public bool DefaultBlendEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets blend time.
+        /// </summary>
+        public TimeSpan DefaultBlendDuration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the blend target of default blend.
+        /// </summary>
+        public IBoneAnimationController DefaultBlendTarget { get; set; }
+
+        /// <summary>
+        /// Gets or sets the key animation of this LayeredAnimation.
+        /// A LayeredAnimation ends either when the last contained 
+        /// animation stops or when the specifed KeyAnimation ends.
+        /// </summary>
+        public BoneAnimationController KeyController
+        {
+            get { return keyController; }
+            set
+            {
+                if (State != AnimationState.Stopped)
+                    throw new InvalidOperationException(
+                        "Cannot modify the collection when the animation is been played.");
+
+                if (value != null && !Controllers.Contains(value))
+                    throw new ArgumentException(
+                        "The specified animation must be added to this animation.");
+
+                keyController = value;
+            }
+        }
+
+        private BoneAnimationController keyController;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether all other animations
+        /// should adjust the playing speed to sychronize the pace with 
+        /// the KeyAnimation if a valid one is specified.
+        /// </summary>
+        public bool IsSychronized
+        {
+            get { return isSychronized; }
+            set
+            {
+                if (State != AnimationState.Stopped)
+                    throw new InvalidOperationException(
+                        "Cannot modify the collection when the animation is been played.");
+
+                isSychronized = value;
+            }
+        }
+
+        private bool isSychronized;
+
+        /// <summary>
+        /// Occurs when this animation has completely finished playing.
+        /// </summary>
+        public override event EventHandler Completed;
+
+        private Matrix[] skinTransforms = null;
+        private Matrix[] boneTransforms = null;
+        private ModelSkinning skinning = null;
+        private double blendTimer = 0;
+
+        private static BoneAnimationItem[,] weightedBones = null;
+
+        /// <summary>
+        /// Starts this BoneAnimation with default blending enabled.
+        /// </summary>
+        public void Play(IBoneAnimationController blendTarget)
+        {
+            if (blendTarget != null)
+            {
+                DefaultBlendEnabled = true;
+                DefaultBlendTarget = blendTarget;
+                blendTimer = 0;
+            }
+            Play();
+        }
+        
+        protected override void OnStarted()
+        {
+            if (Controllers.Count > 2)
+            {
+                throw new NotImplementedException(
+                    "BoneAnimation only supports at most 2 animations by now.");
+            }
+
+            if (Controllers.Count > 0 && (weightedBones == null || weightedBones.Length < Controllers.Count))
+            {
+                weightedBones = new BoneAnimationItem[Controllers.Count, Model.Bones.Count];
+            }
+
+            if (skinTransforms == null && (skinning = Model.GetSkinning()) != null)
+                skinTransforms = new Matrix[skinning.InverseBindPose.Count];
+            if (boneTransforms == null)
+                boneTransforms = new Matrix[Model.Bones.Count];
+
+            if (isSychronized && keyController != null)
+            {
+                TimeSpan duration = keyController.Duration;
+                foreach (IBoneAnimationController controller in Controllers)
+                {
+                    if (controller == keyController || !(controller is TimelineAnimation))
+                        continue;
+                    
+                    TimelineAnimation animation = (TimelineAnimation)controller;
+                    animation.Speed = (float)(
+                        (double)animation.Duration.Ticks * keyController.Speed / duration.Ticks);
+                }
+            }
+
+            foreach (IBoneAnimationController controller in Controllers)
+            {
+                if (controller is IAnimation)
+                    ((IAnimation)controller).Play();
+            }
+
+            base.OnStarted();
+        }
+        
+        protected override void OnStopped()
+        {
+            foreach (IBoneAnimationController controller in Controllers)
+            {
+                if (controller is IAnimation)
+                    ((IAnimation)controller).Stop();
+            }
+
+            base.OnStopped();
+        }
+
+        protected override void OnPaused()
+        {
+            foreach (IBoneAnimationController controller in Controllers)
+            {
+                if (controller is IAnimation)
+                    ((IAnimation)controller).Pause();
+            }
+
+            base.OnPaused();
+        }
+
+        protected override void OnResumed()
+        {
+            foreach (IBoneAnimationController controller in Controllers)
+            {
+                if (controller is IAnimation)
+                    ((IAnimation)controller).Resume();
+            }
+
+            base.OnResumed();
+        }
+
+        protected virtual void OnCompleted()
+        {
+            if (Completed != null)
+                Completed(this, EventArgs.Empty);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (State == AnimationState.Playing && Model != null)
+            {
+                UpdateLayeredAnimation(gameTime);
+                UpdateBoneTransforms(gameTime);
+            }
+        }
+
+        private void UpdateLayeredAnimation(GameTime gameTime)
+        {
+            foreach (IBoneAnimationController controller in Controllers)
+            {
+                if (controller is IUpdateObject)
+                    ((IUpdateObject)controller).Update(gameTime);
+            }
+
+            bool allStopped = true;
+
+            if (KeyController != null)
+            {
+                allStopped = (KeyController.State == AnimationState.Stopped);
+            }
+            else
+            {
+                foreach (IBoneAnimationController controller in Controllers)
+                {
+                    if (controller is IAnimation && ((IAnimation)controller).State != AnimationState.Stopped)
+                    {
+                        allStopped = false;
+                    }
+                }
+            }
+
+            if (allStopped)
+            {
+                Stop();
+                OnCompleted();
+            }
+        }
+
+        private void UpdateBoneTransforms(GameTime gameTime)
+        {
+            // Update default blend
+            float blendLerp = 1;
+            if (DefaultBlendEnabled && DefaultBlendTarget != null)
+            {
+                blendTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (blendTimer < DefaultBlendDuration.TotalSeconds)
+                {
+                    blendLerp = (float)(blendTimer / DefaultBlendDuration.TotalSeconds);
+                }
+                else
+                {
+                    blendTimer = 0;
+                    DefaultBlendTarget = null;
+                }
+            }
+
+            // Update controller transforms
+            Array.Clear(weightedBones, 0, weightedBones.Length);
+
+            for (int animationIndex = 0; animationIndex < Controllers.Count; animationIndex++)
+            {
+                for (int bone = 0; bone < Model.Bones.Count; bone++)
+                {
+                    if (Controllers[animationIndex].Controller.TryGetBoneTransform(
+                                            bone, out weightedBones[animationIndex, bone].Transform,
+                                                  out weightedBones[animationIndex, bone].BlendWeight))
+                    {
+                        weightedBones[animationIndex, bone].BlendWeight *= Controllers[animationIndex].BlendWeight * (
+                            Controllers[animationIndex].BoneWeights[bone].Enabled ?
+                            Controllers[animationIndex].BoneWeights[bone].BlendWeight : 0);
+                    }
+                }
+            }
+            
+            // Normalize weights
+            for (int bone = 0; bone < Model.Bones.Count; bone++)
+            {
+                Matrix transform = new Matrix();
+                float totalWeight = 0;
+
+                for (int animationIndex = 0; animationIndex < Controllers.Count; animationIndex++)
+                {
+                    totalWeight += weightedBones[animationIndex, bone].BlendWeight;
+                }
+
+                if (totalWeight <= 0)
+                    continue;
+
+                for (int animationIndex = 0; animationIndex < Controllers.Count; animationIndex++)
+                {
+                    // TODO: Implement blending from multiple sources
+                    //
+                    //transform += bones[animationIndex, bone].Transform * (bones[animationIndex, bone].BlendWeight / totalWeight);
+                }
+
+                if (Controllers.Count == 1)
+                    transform = weightedBones[0, bone].Transform;
+                else if (Controllers.Count == 2)
+                    transform = LerpHelper.Slerp(weightedBones[0, bone].Transform, weightedBones[1, bone].Transform, weightedBones[1, bone].BlendWeight / totalWeight);
+
+                // Perform default blend
+                Matrix defaultBlendTransform;
+                float defaultBlendTargetBlendWeight;
+                if (DefaultBlendEnabled && DefaultBlendTarget != null &&
+                    DefaultBlendTarget.TryGetBoneTransform(bone, out defaultBlendTransform, out defaultBlendTargetBlendWeight))
+                {
+                    transform = LerpHelper.Slerp(defaultBlendTransform, transform, MathHelper.SmoothStep(0, 1, blendLerp));
+                }
+
+                boneTransforms[bone] = transform;
+                Model.Bones[bone].Transform = transform;
+            }
+
+            if (skinning != null && skinTransforms != null)
+                skinning.GetBoneTransforms(Model, skinTransforms);
+        }
+
+        public Matrix[] GetBoneTransforms()
+        {
+            return skinTransforms;
+        }
+
+        public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
+        {
+            blendWeight = 1;
+
+            if (bone >= 0 && bone < boneTransforms.Length)
+            {
+                transform = boneTransforms[bone];
+                return true;
+            }
+
+            transform = Matrix.Identity;
+            return false;
+        }
+    }
+
+    internal struct BoneAnimationItem
+    {
+        public float BlendWeight;
+        public Matrix Transform;
+    }
+
+    #region WeightedBoneAnimationController
     /// <summary>
     /// Represents a BoneAnimation that has a weight associated with each bone.
     /// </summary>
-    public class WeightedBoneAnimation : BoneAnimation, IBoneAnimationController
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class WeightedBoneAnimationController
     {
+        internal Model Model;
+
+        /// <summary>
+        /// Gets the inner controller used by this <c>WeightedBoneAnimationController</c>.
+        /// </summary>
+        public IBoneAnimationController Controller { get; private set; }
+
         /// <summary>
         /// Gets or sets the weight applied to the final bone transform.
         /// This parameter has nothing to do with BlendEnabled and BlendDuration.
@@ -214,25 +542,45 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the collection to manipulated the blend weights of each bone.
         /// </summary>
-        public WeightedBoneAnimationBoneCollection Bones { get; private set; }
+        public WeightedBoneAnimationControllerBoneCollection BoneWeights { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of WeightedBoneAnimation.
+        /// Creates a new instance of WeightedBoneAnimationController.
         /// </summary>
-        public WeightedBoneAnimation(Model model, BoneAnimationClip clip) : base(model, clip)
+        internal WeightedBoneAnimationController(Model model, IBoneAnimationController controller)
         {
-            List<WeightedBoneAnimationBone> bones = new List<WeightedBoneAnimationBone>(model.Bones.Count);
+            List<WeightedBoneAnimationControllerBone> bones = new List<WeightedBoneAnimationControllerBone>(model.Bones.Count);
             for (int i = 0; i < model.Bones.Count; i++)
-                bones.Add(new WeightedBoneAnimationBone());
+                bones.Add(new WeightedBoneAnimationControllerBone());
 
+            this.Model = model;
+            this.Controller = controller;
             this.BlendWeight = 1;
-            this.Bones = new WeightedBoneAnimationBoneCollection(this, bones);
+            this.BoneWeights = new WeightedBoneAnimationControllerBoneCollection(this, bones);
+        }
+
+        /// <summary>
+        /// Enables the animation on all bones.
+        /// </summary>
+        public void EnableAll()
+        {
+            for (int bone = 0; bone < BoneWeights.Count; bone++)
+                BoneWeights[bone].Enabled = true;
+        }
+
+        /// <summary>
+        /// Disables the animation on all bones.
+        /// </summary>
+        public void DisableAll()
+        {
+            for (int bone = 0; bone < BoneWeights.Count; bone++)
+                BoneWeights[bone].Enabled = false;
         }
 
         /// <summary>
         /// Enables the animation on the target and its child bones.
         /// </summary>
-        public void Enabled(int bone, bool enableChildBones)
+        public void Enable(int bone, bool enableChildBones)
         {
             SetEnabled(bone, true, enableChildBones);
         }
@@ -240,7 +588,7 @@ namespace Nine.Animations
         /// <summary>
         /// Enables the animation on the target and its child bones.
         /// </summary>
-        public void Enabled(string bone, bool enableChildBones)
+        public void Enable(string bone, bool enableChildBones)
         {
             SetEnabled(Model.Bones[bone].Index, true, enableChildBones);
         }
@@ -263,7 +611,7 @@ namespace Nine.Animations
 
         private void SetEnabled(int bone, bool enabled, bool recursive)
         {
-            Bones[bone].Enabled = enabled;
+            BoneWeights[bone].Enabled = enabled;
 
             if (recursive)
             {
@@ -273,29 +621,12 @@ namespace Nine.Animations
                 }
             }
         }
-
-        public void Apply(Action<int, Matrix, float> setWeightedBoneLocalTransform)
-        {
-            Apply((bone, transform) => 
-            {
-                setWeightedBoneLocalTransform(bone, transform, Bones[bone].BlendWeight * BlendWeight);
-            });
-        }
-
-        protected override Matrix? OnApply(int bone)
-        {
-            if (!Bones[bone].Enabled || Bones[bone].BlendWeight <= 0)
-                return null;
-
-            return base.OnApply(bone);
-        }
     }
 
-    #region WeightedBoneAnimationBone
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class WeightedBoneAnimationBone
+    public class WeightedBoneAnimationControllerBone
     {
-        internal WeightedBoneAnimationBone()
+        internal WeightedBoneAnimationControllerBone()
         {
             BlendWeight = 1;
             Enabled = true;
@@ -311,161 +642,114 @@ namespace Nine.Animations
         /// </summary>
         public bool Enabled { get; set; }
     }
-    #endregion
 
-    #region WeightedBoneAnimationBoneCollection
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class WeightedBoneAnimationBoneCollection : ReadOnlyCollection<WeightedBoneAnimationBone>
+    public class WeightedBoneAnimationControllerBoneCollection : ReadOnlyCollection<WeightedBoneAnimationControllerBone>
     {
-        WeightedBoneAnimation animation;
+        WeightedBoneAnimationController animation;
 
-        internal WeightedBoneAnimationBoneCollection(WeightedBoneAnimation animation, IList<WeightedBoneAnimationBone> bones)
+        internal WeightedBoneAnimationControllerBoneCollection(WeightedBoneAnimationController animation, IList<WeightedBoneAnimationControllerBone> bones)
             : base(bones)
         {
             this.animation = animation;
         }
 
-        public WeightedBoneAnimationBone this[string name]
+        public WeightedBoneAnimationControllerBone this[string name]
         {
             get { return this[animation.Model.Bones[name].Index]; }
         }
     }
-    #endregion
-    #endregion
-
-    #region IBoneAnimationController
-    public interface IBoneAnimationController
+    
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class BoneAnimationControllerCollection : ICollection<IBoneAnimationController>
     {
-        void Apply(Action<int, Matrix, float> setWeightedBoneLocalTransform);
-    }
-    #endregion
+        private Model Model;
+        private List<WeightedBoneAnimationController> controllers = new List<WeightedBoneAnimationController>();
 
-    #region LayeredBoneAnimation
-    public class LayeredBoneAnimation : LayeredAnimationBase<WeightedBoneAnimation>
-    {
-        public LayeredBoneAnimation() { }
-        public LayeredBoneAnimation(IEnumerable<WeightedBoneAnimation> animations) : base(animations) { }
-        public LayeredBoneAnimation(params WeightedBoneAnimation[] animations) : base(animations) { }
-        
-        public Model Model { get; private set; }
-
-        public IList<IBoneAnimationController> AnimationControllers
+        internal BoneAnimationControllerCollection(Model model)
         {
-            get { throw new NotImplementedException(); }
+            this.Model = model;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether all other animations
-        /// should adjust the playing speed to sychronize the pace with 
-        /// the KeyAnimation if a valid one is specified.
-        /// </summary>
-        public bool IsSychronized
+        public WeightedBoneAnimationController this[int index]
         {
-            get { return isSychronized; }
-            set
-            {
-                if (State != AnimationState.Stopped)
-                    throw new InvalidOperationException(
-                        "Cannot modify the collection when the animation is been played.");
+            get { return controllers[index]; }
+        }
 
-                isSychronized = value;
+        public WeightedBoneAnimationController this[IBoneAnimationController item]
+        {
+            get
+            {
+                foreach (WeightedBoneAnimationController controller in controllers)
+                    if (controller.Controller == item)
+                        return controller;
+                return null;
             }
         }
 
-        private bool isSychronized;
-
-        private static LayeredBoneAnimationItem[,] bones = null;
-        
-        protected override void OnStarted()
+        public void Add(IBoneAnimationController item)
         {
-            if (Animations.Count != 2)
-            {
-                throw new NotImplementedException(
-                    "LayeredBoneAnimation only supports 2 animations by now.");
-            }
+            Add(item, 1.0f);
+        }
 
-            Model = null;
+        public void Add(IBoneAnimationController item, float blendWeight)
+        {
+            controllers.Add(new WeightedBoneAnimationController(Model, item) { BlendWeight = blendWeight });
+        }
 
-            foreach (BoneAnimation animation in Animations)
-            {
-                if (Model == null)
-                    Model = animation.Model;
-                else if (Model != animation.Model)
-                    throw new InvalidOperationException(
-                        "All BoneAnimations must be applied to the same model when using LayeredBoneAnimation");
-            }
+        public void Clear()
+        {
+            controllers.Clear();
+        }
 
-            if (Model != null && (bones == null || bones.Length < Animations.Count))
-            {
-                bones = new LayeredBoneAnimationItem[Animations.Count, Model.Bones.Count];
-            }
+        public bool Contains(IBoneAnimationController item)
+        {
+            foreach (WeightedBoneAnimationController controller in controllers)
+                if (controller.Controller == item)
+                    return true;
+            return false;
+        }
 
-            if (isSychronized && KeyAnimation != null)
+        public void CopyTo(IBoneAnimationController[] array, int arrayIndex)
+        {
+            foreach (WeightedBoneAnimationController controller in controllers)
+                array[arrayIndex++] = controller.Controller;
+        }
+
+        public int Count
+        {
+            get { return controllers.Count; }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        public bool Remove(IBoneAnimationController item)
+        {
+            for (int i = 0; i < controllers.Count; i++)
             {
-                TimeSpan duration = KeyAnimation.Duration;
-                foreach (WeightedBoneAnimation animation in Animations)
+                if (controllers[i].Controller == item)
                 {
-                    if (animation == KeyAnimation)
-                        continue;
-
-                    animation.Speed = (float)(
-                        (double)animation.Duration.Ticks * KeyAnimation.Speed / duration.Ticks);
+                    controllers.RemoveAt(i);
+                    return true;
                 }
             }
-
-            base.OnStarted();
+            return false;
         }
 
-        public override void Update(GameTime gameTime)
+        public IEnumerator<IBoneAnimationController> GetEnumerator()
         {
-            base.Update(gameTime);
+            foreach (WeightedBoneAnimationController controller in controllers)
+                yield return controller.Controller;
+        }
 
-            if (State == AnimationState.Playing && Model != null)
-            {
-                Array.Clear(bones, 0, bones.Length);
-
-                for (int animationIndex = 0; animationIndex < Animations.Count; animationIndex++)
-                {
-                    Animations[animationIndex].Apply((bone, transform, weight) =>
-                    {
-                        bones[animationIndex, bone].BlendWeight = weight;
-                        bones[animationIndex, bone].Transform = transform;
-                    });
-                }
-
-                // Normalize weights
-                for (int bone = 0; bone < Model.Bones.Count; bone++)
-                {
-                    Matrix transform = new Matrix();
-                    float totalWeight = 0;
-
-                    for (int animationIndex = 0; animationIndex < Animations.Count; animationIndex++)
-                    {
-                        totalWeight += bones[animationIndex, bone].BlendWeight;
-                    }
-
-                    if (totalWeight <= 0)
-                        continue;
-
-                    for (int animationIndex = 0; animationIndex < Animations.Count; animationIndex++)
-                    {
-                        // TODO: Implement blending from multiple sources
-                        //
-                        //transform += bones[animationIndex, bone].Transform * (bones[animationIndex, bone].BlendWeight / totalWeight);
-                    }
-
-                    transform = LerpHelper.Slerp(bones[0, bone].Transform, bones[1, bone].Transform, bones[1, bone].BlendWeight / totalWeight);
-
-                    Model.Bones[bone].Transform = transform;
-                }
-            }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
-
-    internal struct LayeredBoneAnimationItem
-    {
-        public float BlendWeight;
-        public Matrix Transform;
-    }
+    #endregion
     #endregion
 }

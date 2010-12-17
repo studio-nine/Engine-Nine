@@ -55,7 +55,7 @@ namespace Nine.Navigation
     /// <summary>
     /// A grid based path graph.
     /// </summary>
-    public sealed class PathGrid : GridPartition, IGraph<PathGridNode>
+    public class PathGrid : UniformGrid, IGraph<PathGridNode>
     {
         private byte[,] data;
 

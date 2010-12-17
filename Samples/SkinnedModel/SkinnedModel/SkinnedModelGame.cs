@@ -45,9 +45,12 @@ namespace SkinnedModel
 
         Model model;
         ModelBatch modelBatch;
-        Animation currentAnimation;
         Input input;
         ModelViewerCamera camera;
+
+        BoneAnimation animation1;
+        BoneAnimation animation2;
+        BoneAnimation animation3;
         
         public SkinnedModelGame()
         {
@@ -99,87 +102,80 @@ namespace SkinnedModel
 #endif       
 
             // Handle animations.
-            //PlayAttackAndRun();
-            PlayRunAndCarryBlended();
+            animation1 = PlayAttackAndRun();
+            animation2 = PlayRunAndCarryBlended();
+            animation3 = PlayAnimation(0, null);
 
+            Random random = new Random();
             input = new Input();
             input.MouseDown += (o, e) => 
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    Random random = new Random();
-                    PlayAnimation(random.Next(model.GetAnimations().Count));
+                    animation3 = PlayAnimation(random.Next(model.GetAnimations().Count), animation3);
                 }
             };
         }
 
-        private void PlayAnimation(int i)
-        {
+        private BoneAnimation PlayAnimation(int i, BoneAnimation previousAnimation)
+        {   
             // Now load our model animation and skinning using extension method.
-            BoneAnimation animation = new BoneAnimation(model, model.GetAnimation(i));
+            BoneAnimationController animation = new BoneAnimationController(model.GetAnimation(i));
             //animation.Speed = 0.04f;
             //animation.Ending = KeyframeEnding.Clamp;
-            //animation.BlendEnabled = false;
-            //animation.BlendDuration = TimeSpan.FromSeconds(1);
             //animation.InterpolationEnabled = false;
             //animation.Repeat = 1.5f;
             //animation.AutoReverse = true;
             //animation.StartupDirection = AnimationDirection.Backward;
-            //animation.Disable("Bip01_Neck", true);
-            animation.Play();
 
-            currentAnimation = animation;
+            BoneAnimation result = new BoneAnimation(model);
+            result.Controllers.Add(animation);
+            result.Play(previousAnimation);
+            return result;
         }
 
-        private void PlayAttackAndRun()
+        private BoneAnimation PlayAttackAndRun()
         {
-            WeightedBoneAnimation run = new WeightedBoneAnimation(model, model.GetAnimation("Run"));
+            BoneAnimationController attack = new BoneAnimationController(model.GetAnimation("Attack"));
+            BoneAnimationController run = new BoneAnimationController(model.GetAnimation("Run"));
             run.Speed = 0.8f;
-            run.Disable("Bip01_Pelvis", false);
-            run.Disable("Bip01_Spine1", true);
 
-            WeightedBoneAnimation attack = new WeightedBoneAnimation(model, model.GetAnimation("Attack"));
-            attack.Disable("Bip01", false);
-            attack.Disable("Bip01_Spine", false);
-            attack.Disable("Bip01_L_Thigh", true);
-            attack.Disable("Bip01_R_Thigh", true);
+            BoneAnimation blended = new BoneAnimation(model, run, attack);
             
-            LayeredBoneAnimation blended = new LayeredBoneAnimation(run, attack);
-            blended.KeyAnimation = run;
+            blended.Controllers[run].Disable("Bip01_Pelvis", false);
+            blended.Controllers[run].Disable("Bip01_Spine1", true);
+
+            blended.Controllers[attack].Disable("Bip01", false);
+            blended.Controllers[attack].Disable("Bip01_Spine", false);
+            blended.Controllers[attack].Disable("Bip01_L_Thigh", true);
+            blended.Controllers[attack].Disable("Bip01_R_Thigh", true);
+
+            // Adjust per bone weight
+            //blended.Controllers[attack].BoneWeights["Bip01_R_Hand"].BlendWeight = 0f;
+
+            blended.KeyController = run;
             blended.IsSychronized = true;
             blended.Play();
 
-            currentAnimation = blended;
+            return blended;
         }
 
-        private void PlayRunAndCarryBlended()
+        private BoneAnimation PlayRunAndCarryBlended()
         {
-            WeightedBoneAnimation run = new WeightedBoneAnimation(model, model.GetAnimation("Run"));
+            BoneAnimationController carry = new BoneAnimationController(model.GetAnimation("Carry"));
+            BoneAnimationController run = new BoneAnimationController(model.GetAnimation("Run"));
             run.Speed = 0.8f;
-            run.BlendWeight = 0.6f;
 
-            WeightedBoneAnimation carry = new WeightedBoneAnimation(model, model.GetAnimation("Carry"));
-            carry.BlendWeight = 0.4f;
+            BoneAnimation blended = new BoneAnimation(model, run, carry);
 
-            LayeredBoneAnimation blended = new LayeredBoneAnimation(run, carry);
-            blended.KeyAnimation = run;
+            blended.Controllers[run].BlendWeight = 0.6f;
+            blended.Controllers[carry].BlendWeight = 0.4f;
+
+            blended.KeyController = run;
             blended.IsSychronized = true;
             blended.Play();
 
-            currentAnimation = blended;
-        }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// </summary>
-        protected override void Update(GameTime gameTime)
-        {
-            // Update model animation.
-            // Note how animations and skinning are seperated.
-            if (currentAnimation != null)
-                currentAnimation.Update(gameTime);
-
-            base.Update(gameTime);
+            return blended;
         }
 
         /// <summary>
@@ -187,57 +183,27 @@ namespace SkinnedModel
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
+            animation1.Update(gameTime);
+            animation2.Update(gameTime);
+            animation3.Update(gameTime);
+
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
-            Matrix world = Matrix.CreateTranslation(0, -60, 0) *
-                           Matrix.CreateScale(0.1f);           
-            
+            Matrix world1 = Matrix.CreateTranslation(-80, -60, 0) * Matrix.CreateScale(0.1f);
+            Matrix world2 = Matrix.CreateTranslation(80, -60, 0) * Matrix.CreateScale(0.1f);
+            Matrix world3 = Matrix.CreateTranslation(0, -60, 0) * Matrix.CreateScale(0.1f);
 
-            // Gets the pick ray from current mouse cursor
-            Ray ray = GraphicsDevice.Viewport.CreatePickRay(Mouse.GetState().X,
-                                                            Mouse.GetState().Y,
-                                                            camera.View,
-                                                            camera.Projection);
-            // Do ray model intersection test
-            float? distance = model.Intersects(world, ray);
-
-            Window.Title = distance.HasValue ? "Picked" : "Nothing";
-
-            // To draw skinned models, first compute bone transforms
-            Matrix[] bones = model.GetBoneTransforms();
-
-            // Pass bone transforms to model batch to draw skinned models
-            modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
-            modelBatch.DrawSkinned(model, world, bones, null);
+            modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection);
+            {
+                modelBatch.DrawSkinned(model, world1, animation1.GetBoneTransforms(), null);
+                modelBatch.DrawSkinned(model, world2, animation2.GetBoneTransforms(), null);
+                modelBatch.DrawSkinned(model, world3, animation3.GetBoneTransforms(), null);
+            }
             modelBatch.End();
 
-            // Draw collision tree
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                DrawCollisionTree(model, world);
-
             base.Draw(gameTime);
-        }
-
-        private void DrawCollisionTree(Model model, Matrix transform)
-        {
-            Matrix[] bones = new Matrix[model.Bones.Count];
-
-            model.CopyAbsoluteBoneTransformsTo(bones);
-
-            transform = bones[model.Meshes[0].ParentBone.Index] * transform;
-
-            Octree<bool> tree = (model.Tag as ModelTag).Collision.CollisionTree;
-
-            DebugVisual.View = camera.View;
-            DebugVisual.Projection = camera.Projection;
-
-            foreach (OctreeNode<bool> node in tree.Traverse((o) => { return true; }))
-            {
-                if (!node.HasChildren && node.Value)
-                    DebugVisual.DrawBox(GraphicsDevice, node.Bounds, transform, Color.Yellow);
-            }
         }
     }
 }

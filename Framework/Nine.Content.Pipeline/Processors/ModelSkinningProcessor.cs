@@ -34,7 +34,7 @@ namespace Nine.Content.Pipeline.Processors
     /// There is no need to expose it to the xna build.
     ///</remarks>
     // [ContentProcessor(DisplayName="Model Skinning Processor - Engine Nine")]
-    public class ModelSkinningProcessor : ContentProcessor<NodeContent, ModelSkinning>
+    internal class ModelSkinningProcessor : ContentProcessor<NodeContent, ModelSkinning>
     {
         // Maximum number of bone matrices we can render using shader 2.0
         // in a single pass. If you change this, update SkinnedModel.fx to match.

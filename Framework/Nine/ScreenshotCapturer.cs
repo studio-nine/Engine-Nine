@@ -23,6 +23,7 @@ namespace Nine
     /// <summary>
     /// EventArgs used by ScreenshotCapturer.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ScreenshotCapturedEventArgs : EventArgs
     {
         /// <summary>

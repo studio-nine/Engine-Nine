@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
-using Nine.Navigation.SteeringBehaviors;
+using Nine.Navigation.Steering;
 #endregion
 
 namespace FlockingBehaviors
@@ -42,16 +42,15 @@ namespace FlockingBehaviors
 
         SpriteFont font;
         SpriteBatch spriteBatch;
-
-        TopDownEditorCamera camera;
+        Texture2D butterfly;
 
         GridObjectManager objects;
 
-        BoundingBox bounds;
+        BoundingRectangle bounds;
 
         Random random = new Random();
 
-        List<SteeringMovement> movingEntities = new List<SteeringMovement>();
+        List<Steerer> movingEntities = new List<Steerer>();
         
 
         public FlockingBehaviorGame()
@@ -82,77 +81,43 @@ namespace FlockingBehaviors
             // Create a sprite batch to draw text on to the screen
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("Consolas");
-
-
-            // Create a topdown perspective editor camera to help us visualize the scene
-            camera = new TopDownEditorCamera(GraphicsDevice);
-
+            butterfly = Content.Load<Texture2D>("Butterfly");
             
             // Create a bounds for the world.
-            bounds = new BoundingBox(new Vector3(-32, -32, -10), new Vector3(32, 32, 10));
+            bounds = new BoundingRectangle(GraphicsDevice.Viewport.Bounds);
 
 
             // Create a grid object manager to keep track of object position.
             // This manager will be used by group flocking behaviors to detect neighbors.
-            objects = new GridObjectManager(64, 64, 0, 0, 16, 16);
+            objects = new GridObjectManager(bounds, 16, 16);
 
 
-            SteeringMovement movement;
-
-            // Arrive
-            movement = new SteeringMovement();
-            // By setting MaxForce to a large value, acceleration is removed.
-            // Try uncomment the next line to see the effect.
-            //movement.MaxForce = float.MaxValue;            
-            movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-            movement.Behaviors.Add(new ObstacleAvoidanceBehavior() { Obstacles = objects });
-            // By increasing Deceleration and decreasing DecelerateRange, deceleration is removed.
-            // Try uncomment the parameters in the next line to see the effect.
-            movement.Behaviors.Add(new ArriveBehavior() { /* Deceleration = 100, DecelerateRange = 0.25f */ });
-            movingEntities.Add(movement);
-
-            // Evade
-            movement = new SteeringMovement();
-            movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-            movement.Behaviors.Add(new ObstacleAvoidanceBehavior() { Obstacles = objects });
-            movement.Behaviors.Add(new EvadeBehavior() { Pursuer = movingEntities[0], ThreatRange = 16 });
-            movingEntities.Add(movement);
-
-            // Wander
-            movement = new SteeringMovement();
-            movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-            movement.Behaviors.Add(new ObstacleAvoidanceBehavior() { Obstacles = objects });
-            movement.Behaviors.Add(new WanderBehavior(), 0.8f);
-            movingEntities.Add(movement);
-
-            // Idle
-            movement = new SteeringMovement();
-            movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-            movement.Behaviors.Add(new ObstacleAvoidanceBehavior() { Obstacles = objects });
-            movement.Behaviors.Add(new IdleBehavior() { Range = 10 }, 0.8f);
-            movingEntities.Add(movement);
-            
+            Steerer movement;
 
             // Group behavior
             for (int i = 0; i < 200; i++)
             {
-                movement = new SteeringMovement();
+                movement = new Steerer();
+                movement.BoundingRadius = 5;
+                movement.MaxSpeed = 80;
+                movement.Acceleration = 200;
                 movement.Position = NextPosition();
-                movement.Resistance = 6.0f;
-                movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds });
-                movement.Behaviors.Add(new SeparationBehavior() { SpatialObjectManager = objects, SeparationRadius = 2.35f });
+                movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds, Skin = 20 });
+                movement.Behaviors.Add(new WanderBehavior(), 0.9f);
+                movement.Behaviors.Add(new SeparationBehavior() { Neighbors = objects, Range = 20f }, 0.9f);
+                movement.Behaviors.Add(new CohesionBehavior() { Neighbors = objects, Range = 100f }, 0.03f);
+                movement.Behaviors.Add(new AlignmentBehavior() { Neighbors = objects, Range = 100f });
                 movingEntities.Add(movement);
             }
         }
 
-        private Vector3 NextPosition()
+        private Vector2 NextPosition()
         {
             // Randomize positions
-            Vector3 position = new Vector3();
+            Vector2 position = new Vector2();
 
             position.X = (float)random.NextDouble() * (bounds.Max.X - bounds.Min.X) + bounds.Min.X;
             position.Y = (float)random.NextDouble() * (bounds.Max.Y - bounds.Min.Y) + bounds.Min.Y;
-            position.Z = 0;
 
             return position;
         }
@@ -162,47 +127,19 @@ namespace FlockingBehaviors
         /// </summary>
         protected override void Update(GameTime gameTime)
         {            
-            // Gets the pick ray from current mouse cursor
-            Ray ray = GraphicsDevice.Viewport.CreatePickRay(Mouse.GetState().X, 
-                                                            Mouse.GetState().Y, 
-                                                            camera.View, 
-                                                            camera.Projection);
-
-            // Test ray against ground plane
-            float? distance = ray.Intersects(new Plane(Vector3.UnitZ, 0));
-
-            if (distance.HasValue)
-            {
-                Vector3 target = ray.Position + ray.Direction * distance.Value;
-
-                // Let our moving entities steer towards the mouse
-                foreach (SteeringMovement movable in movingEntities)
-                {
-                    if (movable.Behaviors.Get<SeekBehavior>() != null)
-                        movable.Behaviors.Get<SeekBehavior>().Target = target;
-                    if (movable.Behaviors.Get<ArriveBehavior>() != null)
-                        movable.Behaviors.Get<ArriveBehavior>().Target = target;
-                }
-            }
-
-
             // Update object manager since the position of moving entities change every frame.            
             objects.Clear();
 
-            foreach (SteeringMovement movable in movingEntities)
+            foreach (Steerer movable in movingEntities)
             {
                 objects.Add(movable, movable.Position.X, movable.Position.Y);
             }
 
 
             // Update all moving entities
-            foreach (SteeringMovement movable in movingEntities)
+            foreach (Steerer movable in movingEntities)
             {
                 movable.Update(gameTime);
-
-                // Since our steering behavior is in 3D, but this sample only demonstrate
-                // 2D behaviors, we have to snap the moving entities to the ground.
-                movable.Position = new Vector3(movable.Position.X, movable.Position.Y, 0);
             }
 
             base.Update(gameTime);
@@ -214,54 +151,20 @@ namespace FlockingBehaviors
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
-            
-            GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
+            Rectangle viewport = GraphicsDevice.Viewport.Bounds;
 
-            DebugVisual.Alpha = 1.0f;
-            DebugVisual.View = camera.View;
-            DebugVisual.Projection = camera.Projection;
-
-
-            // Draw grid
-            DebugVisual.DrawGrid(GraphicsDevice, Vector3.Zero, 2, 32, 32, Color.Gray);
-
-
-            // Draw all moving entities
-            for (int i = 0; i < movingEntities.Count; i++)
-            {
-                Color color = (i == 0 ? Color.Gold :
-                              (i == 1 ? Color.GreenYellow :
-                              (i == 2 ? Color.Silver :
-                              (i == 3 ? Color.Pink : Color.CornflowerBlue))));
-
-                DebugVisual.DrawLine(GraphicsDevice,
-                                     movingEntities[i].Position,
-                                     movingEntities[i].Position + Vector3.UnitZ * 4, 
-                                     movingEntities[i].BoundingRadius, color);
-            }
-
-            // Draw world bounds
-            DebugVisual.DrawBox(GraphicsDevice, bounds, Matrix.Identity, Color.Gray * 0.4f);
-
-
-            // Draw states
             spriteBatch.Begin();
 
             for (int i = 0; i < movingEntities.Count; i++)
             {
-                if (movingEntities[i].Behaviors.Get<SeparationBehavior>() == null)
-                {
-                    Vector3 screenPosition = GraphicsDevice.Viewport.Project(movingEntities[i].Position, camera.Projection, camera.View, Matrix.Identity);
-
-                    spriteBatch.DrawString(font, movingEntities[i].Behaviors[2].GetType().Name,
-                                           new Vector2(screenPosition.X, screenPosition.Y - 20), Color.White);
-                }
+                spriteBatch.Draw(butterfly, movingEntities[i].Position, null, Color.Gold,
+                                 (float)Math.Atan2(movingEntities[i].Forward.Y, movingEntities[i].Forward.X) + MathHelper.PiOver2,
+                                 new Vector2(butterfly.Width / 2, butterfly.Height / 2), 2 * movingEntities[i].BoundingRadius / butterfly.Width,
+                                 SpriteEffects.None, 0);
             }
 
             spriteBatch.End();
-
 
             base.Draw(gameTime);
         }
