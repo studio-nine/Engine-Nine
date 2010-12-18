@@ -92,7 +92,7 @@ namespace Nine.Navigation
     /// <summary>
     /// Performs an A* graph search on a given graph.
     /// </summary>
-    public sealed class GraphSearch<TGraphNode> where TGraphNode : struct, IGraphNode
+    public class GraphSearch<TGraphNode> where TGraphNode : struct, IGraphNode
     {
         /// <summary>
         /// A list holding the path information.
