@@ -84,7 +84,6 @@ namespace Nine
         /// <summary>
         /// The main constructor for the class.
         /// </summary>
-        /// <remarks>Sets the <see cref="_gameWindowTitle"/> data member to the value of <see cref="Microsoft.Xna.Framework.GameWindow.Title"/>.</remarks>
         public FrameRate(Game game, string font) : base(game)
         {
             this.font = font;

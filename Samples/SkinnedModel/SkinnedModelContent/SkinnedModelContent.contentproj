@@ -31,6 +31,7 @@
       <Name>Peon</Name>
       <Importer>XImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
+      <ProcessorParameters_SwapWindingOrder>True</ProcessorParameters_SwapWindingOrder>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,14 @@
       <Name>SkinnedEffect</Name>
       <Importer>XmlImporter</Importer>
       <Processor>LinkedEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\Peon\hammer.X">
+      <Link>hammer.X</Link>
+      <Name>hammer</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

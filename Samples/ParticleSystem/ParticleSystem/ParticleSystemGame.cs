@@ -30,10 +30,9 @@ namespace ParticleSystem
     {
         TopDownEditorCamera camera;
         ParticleBatch particles;
+        PrimitiveBatch primitiveBatch;
         
-        SpriteAnimation fireball;
         Texture2D lightning;
-        TweenAnimation<Vector2> lightningOffset;
 
         ParticleEffect snow;
 
@@ -63,22 +62,8 @@ namespace ParticleSystem
             camera = new TopDownEditorCamera(GraphicsDevice);
 
             particles = new ParticleBatch(GraphicsDevice, 1024);
-
-            fireball = new SpriteAnimation(Content.Load<ImageList>("fireball"));
-            fireball.Play();
-
-            lightning = Content.Load<Texture2D>("lightning");
-
-            // This tweener is used to animate the lightning texture.
-            lightningOffset = new TweenAnimation<Vector2>()
-            {
-                From = Vector2.Zero,
-                To = Vector2.UnitY,
-                Repeat = float.MaxValue,
-            };
-            lightningOffset.Play();
-
-
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
+            
             snow = new ParticleEffect(600);
             snow.Texture = Content.Load<Texture2D>("flake");
             snow.Duration = TimeSpan.FromSeconds(1.5f);
@@ -110,34 +95,16 @@ namespace ParticleSystem
             GraphicsDevice.SetVertexBuffer(null);
 
             // Update effects
-            fireball.Update(gameTime);
-
             snow.Update(gameTime);
 
 
             particles.Begin(camera.View, camera.Projection);
-
-            // Draw lightning
-            lightningOffset.Update(gameTime);
-            particles.DrawLine(lightning, Vector3.Zero, Vector3.UnitX * 20, 10, Vector2.One, lightningOffset.Value, Color.White);
-
-            // Draw fireball
-            particles.Draw(fireball.Texture, Vector3.Zero, 10, 0, Color.White);
-
-            // Draw snow flake
             particles.Draw(snow, gameTime);
-
             particles.End();
 
-
-            // Draw particle system bounding box
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-            {
-                DebugVisual.View = camera.View;
-                DebugVisual.Projection = camera.Projection;
-
-                DebugVisual.DrawBox(GraphicsDevice, snow.BoundingBox, Matrix.Identity, Color.Azure);
-            }
+            primitiveBatch.Begin(camera.View, camera.Projection);
+            primitiveBatch.DrawBox(snow.BoundingBox, null, Color.Azure);
+            primitiveBatch.End();
 
             base.Draw(gameTime);
         }

@@ -75,7 +75,7 @@ namespace Transitions
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-            IsFixedTimeStep = false;
+            IsFixedTimeStep = true;
             Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
@@ -137,7 +137,7 @@ namespace Transitions
             {
                 Button button = new Button(input) 
                 {
-                    X = 900, Text = curve.GetType().Name, Tag = curve,
+                    X = GraphicsDevice.Viewport.Width, Text = curve.GetType().Name, Tag = curve,
                     Bounds = MeasureBounds(curve.GetType().Name, font) 
                 };
 
@@ -253,7 +253,7 @@ namespace Transitions
                         {
                             Curve = Curves.Exponential,
                             Duration = TimeSpan.FromSeconds(0.4f),
-                            To = 780,
+                            By = -120,
                             Target = buttons[i],
                             TargetProperty = "X",
                         }));
@@ -281,7 +281,7 @@ namespace Transitions
                         {
                             Curve = Curves.Exponential,
                             Duration = TimeSpan.FromSeconds(0.4f),
-                            To = 900,
+                            By = 120,
                             Target = buttons[i],
                             TargetProperty = "X",
                         }));
@@ -289,7 +289,7 @@ namespace Transitions
 
             animations["Menu"].Play(new SequentialAnimation(layeredAnimation, TransiteIn(TimeSpan.FromSeconds(1.2f))));
         }
-
+        Random r = new Random();
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -297,6 +297,8 @@ namespace Transitions
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
+            // Test for slow unstable frame rates.
+            //TargetElapsedTime = TimeSpan.FromSeconds(0.1395374587 + r.NextDouble() * 0.1);
 
             // Initialize render state
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -310,7 +312,7 @@ namespace Transitions
             spriteBatch.Begin();
             spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, null, Color.White);            
             spriteBatch.DrawString(font, "Press any key to continue..." , new Vector2(0, GraphicsDevice.Viewport.Height - 20), TextColor);
-            spriteBatch.Draw(image, new Vector2(450, 300), null, ImageColor, ImageRoation, new Vector2(400, 300), ImageScale * 0.6f, SpriteEffects.None, 0);
+            spriteBatch.Draw(image, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), null, ImageColor, ImageRoation, new Vector2(400, 300), ImageScale * 0.6f, SpriteEffects.None, 0);
             
             // Draw buttons
             foreach (Button button in buttons)

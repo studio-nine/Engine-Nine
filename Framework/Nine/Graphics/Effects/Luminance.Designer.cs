@@ -53,13 +53,6 @@ namespace Nine.Graphics.Effects
 
         }
 
-		#region Dirty Flags
-
-		uint dirtyFlag = 0;
-
-
-		#endregion
-
 		#region Properties
 
 

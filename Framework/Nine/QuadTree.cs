@@ -21,27 +21,27 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine
 {
     /// <summary>
-    /// Represents a space partition structure based on Quadtree.
+    /// Represents a space partition structure based on QuadTree.
     /// </summary>
     public class QuadTree<T>
     {
         /// <summary>
-        /// Specifies the total number of child nodes (4) in the QuadTree<T>.
+        /// Specifies the total number of child nodes (4) in the QuadTree.
         /// </summary>
         public const int ChildCount = 4;
 
         /// <summary>
-        /// Gets the root QuadTreeNode<T> of this QuadTree<T>.
+        /// Gets the root QuadTreeNode of this QuadTree.
         /// </summary>
         public QuadTreeNode<T> Root { get; internal set; }
 
         /// <summary>
-        /// Gets the bounds of the QuadTree<T> node.
+        /// Gets the bounds of the QuadTree node.
         /// </summary>
         public BoundingRectangle Bounds { get; internal set; }
 
         /// <summary>
-        /// Gets the max depth of this QuadTree<T>.
+        /// Gets the max depth of this QuadTree.
         /// </summary>
         public int MaxDepth { get; internal set; }
 
@@ -51,9 +51,9 @@ namespace Nine
         internal QuadTree() { }
 
         /// <summary>
-        /// Creates a new QuadTree<T> with the specified boundary.
+        /// Creates a new QuadTree with the specified boundary.
         /// </summary>
-        public QuadTree(int maxDepth, BoundingRectangle bounds)
+        public QuadTree(BoundingRectangle bounds, int maxDepth)
         {
             Root = new QuadTreeNode<T>();
             Root.Depth = 0;
@@ -127,7 +127,7 @@ namespace Nine
         /// Expand the root node and all its child nodes with the specified predication.
         /// </summary>
         /// <param name="contains">
-        /// Wether the bounds of the target QuadTreeNode<T> contains this value.
+        /// Whether the bounds of the target QuadTreeNode contains this value.
         /// </param>
         public void ExpandAll(Predicate<QuadTreeNode<T>> contains)
         {
@@ -137,8 +137,9 @@ namespace Nine
         /// <summary>
         /// Expand the target node and all its child nodes with the specified predication.
         /// </summary>
+        /// <param name="target"></param>
         /// <param name="contains">
-        /// Wether the bounds of the target QuadTreeNode<T> contains this value.
+        /// Whether the bounds of the target QuadTreeNode contains this value.
         /// </param>
         public void ExpandAll(QuadTreeNode<T> target, Predicate<QuadTreeNode<T>> contains)
         {
@@ -210,7 +211,7 @@ namespace Nine
     }
 
     /// <summary>
-    /// Represents a node in QuadTree<T>.
+    /// Represents a node in QuadTree.
     /// </summary>
     public sealed class QuadTreeNode<T>
     {
@@ -222,17 +223,17 @@ namespace Nine
         public bool HasChildren { get; internal set; }
 
         /// <summary>
-        /// Gets the parent node of the QuadTree<T> Node.
+        /// Gets the parent node of the QuadTree Node.
         /// </summary>
         public QuadTreeNode<T> Parent { get; internal set; }
 
         /// <summary>
-        /// Gets the bounds of the QuadTree<T> node.
+        /// Gets the bounds of the QuadTree node.
         /// </summary>
         public BoundingRectangle Bounds { get; internal set; }
 
         /// <summary>
-        /// Gets the depth of this QuadTree<T> node.
+        /// Gets the depth of this QuadTree node.
         /// </summary>
         public int Depth { get; internal set; }
 
@@ -307,6 +308,170 @@ namespace Nine
                 node.childNodes = input.ReadObject<QuadTreeNode<T>[]>();
 
             return node;
+        }
+    }
+
+    public class QuadTreeObjectManager<T> : ICollection<T>, ISpatialQuery<T>
+    {
+        QuadTree<QuadTreeObjectManagerEntry<T>> tree;
+
+        public QuadTreeObjectManager(BoundingRectangle bounds, float minLeafNodeSize)
+        {
+            float size = Math.Min(bounds.Max.X - bounds.Min.X, bounds.Max.Y - bounds.Min.Y);
+            int maxDepth = (int)Math.Log(size / minLeafNodeSize, 2);
+            tree = new QuadTree<QuadTreeObjectManagerEntry<T>>(bounds, maxDepth);
+        }
+
+        void ICollection<T>.Add(T item)
+        {
+            throw new InvalidOperationException();
+        }
+        
+        public void Add(T obj, Vector3 position, float radius)
+        {
+            Add(obj, new BoundingSphere(position, radius));
+        }
+
+        public void Add(T obj, BoundingSphere bounds)
+        {
+            Add(obj, BoundingBox.CreateFromSphere(bounds));
+        }
+
+        public void Add(T obj, BoundingBox box)
+        {
+            if (obj == null)
+                throw new ArgumentNullException("obj");
+
+            bool added = false;
+
+            tree.ExpandAll((o) => 
+            {
+                if (o.Bounds.Contains(new BoundingRectangle(box)) != ContainmentType.Disjoint)
+                {
+                    if (o.Depth == tree.MaxDepth)
+                    {
+                        if (o.Value == null)
+                            o.Value = new QuadTreeObjectManagerEntry<T>();
+                        if (o.Value.Objects == null)
+                        {
+                            o.Value.Objects = new List<T>();
+                            o.Value.ObjectBounds = new List<BoundingBox>();
+                        }
+                        o.Value.Objects.Add(obj);
+                        o.Value.ObjectBounds.Add(box);
+                        o.Value.Z.Min = Math.Min(o.Value.Z.Min, box.Min.Z);
+                        o.Value.Z.Max = Math.Max(o.Value.Z.Max, box.Max.Z);
+                        added = true;
+                    }
+                    return true;
+                }
+                return false;
+            });
+
+            if (added)
+                Count++;
+        }
+
+        public void Clear()
+        {
+            Count = 0;
+
+            foreach (var node in tree.Traverse(o => true))
+            {
+                if (node.Value != null)
+                {
+                    node.Value.Z.Min = float.MaxValue;
+                    node.Value.Z.Max = float.MinValue;
+
+                    if (node.Value.Objects != null)
+                    {
+                        node.Value.Objects.Clear();
+                        node.Value.ObjectBounds.Clear();
+                    }
+                }
+            }
+        }
+
+        public bool Contains(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count { get; private set; }
+
+        public bool IsReadOnly
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T FindFirst(Ray ray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> Find(Vector3 position, float radius)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> Find(Ray ray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> Find(BoundingFrustum frustum)
+        {
+            foreach (var node in tree.Traverse((o) => 
+                {
+                    BoundingBox box = new BoundingBox(new Vector3(o.Bounds.Min, o.Value != null ? o.Value.Z.Min : 0),
+                                                      new Vector3(o.Bounds.Max, o.Value != null ? o.Value.Z.Max : 0));
+                    return frustum.Contains(box) != ContainmentType.Disjoint;
+                }))
+            {
+                if (node.Value != null && node.Value.Objects != null)
+                {
+                    for (int i = 0; i < node.Value.Objects.Count; i++)
+                    {
+                        if (frustum.Contains(node.Value.ObjectBounds[i]) != ContainmentType.Disjoint)
+                        {
+                            yield return node.Value.Objects[i];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    internal class QuadTreeObjectManagerEntry<T>
+    {
+        public Range<float> Z;
+        public List<T> Objects;
+        public List<BoundingBox> ObjectBounds;
+
+        public QuadTreeObjectManagerEntry()
+        {
+            Z.Min = float.MaxValue;
+            Z.Max = float.MinValue;
         }
     }
 }

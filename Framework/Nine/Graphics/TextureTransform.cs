@@ -27,17 +27,17 @@ namespace Nine.Graphics
     {
         public static Matrix CreateTranslation(float x, float y)
         {
-            return Matrix.CreateTranslation(x, y, 0);
+            return Matrix.CreateTranslation(-x, -y, 0);
         }
 
         public static Matrix CreateScale(float x, float y)
         {
-            return Matrix.CreateScale(x, y, 1);
+            return Matrix.CreateScale(1 / x, 1 / y, 1);
         }
 
         public static Matrix CreateRotation(float radius)
         {
-            return Matrix.CreateRotationZ(radius);
+            return Matrix.CreateRotationZ(-radius);
         }
 
         public static Vector2 Transform(Matrix matrix, Vector2 uv)

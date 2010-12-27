@@ -81,8 +81,6 @@ namespace Nine.Navigation
         /// <summary>
         /// Gets the heuristic value between two nodes used in A* algorithm.
         /// </summary>
-        /// <param name="currentIndex">Index to the current node.</param>
-        /// <param name="endIndex">Index to the end/target node.</param>
         /// <returns>A heuristic value between the two nodes.</returns>
         float GetHeuristicValue(TGraphNode current, TGraphNode end);
     }

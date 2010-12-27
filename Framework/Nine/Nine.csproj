@@ -30,6 +30,7 @@
     <DocumentationFile>..\..\References\x86\Nine.XML</DocumentationFile>
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>false</XnaCompressContent>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -75,11 +76,17 @@
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
+    <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="AddHelper.cs" />
     <Compile Include="BoundingRectangle.cs" />
+    <Compile Include="BoundingBoxExtensions.cs" />
+    <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
+    <Compile Include="Graphics\GraphicsResources.cs" />
+    <Compile Include="Graphics\PrimitiveBatch.cs" />
+    <Compile Include="SpatialQuery.cs" />
     <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\BasicTextureEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\SplatterTextureEffectPart.cs" />
@@ -239,7 +246,6 @@
     <Compile Include="Graphics\TopDownEditorCamera.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Graphics\Geometry.cs" />
-    <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Animations\BoneAnimations.cs" />
     <Compile Include="Graphics\ModelBatch.cs" />
@@ -248,22 +254,11 @@
     <Compile Include="Graphics\ParticleEffects\SpacialEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
-    <Compile Include="Graphics\Primitives\Arrow.cs" />
-    <Compile Include="Graphics\Primitives\Axis.cs" />
-    <Compile Include="Graphics\Primitives\Bezier.cs" />
-    <Compile Include="Graphics\Primitives\Centrum.cs" />
-    <Compile Include="Graphics\Primitives\Cylinder.cs" />
-    <Compile Include="Graphics\Primitives\Dome.cs" />
-    <Compile Include="Graphics\Primitives\Grid.cs" />
-    <Compile Include="Graphics\Primitives\Plane.cs" />
-    <Compile Include="Graphics\Primitives\Skeleton.cs" />
-    <Compile Include="Graphics\Primitives\Teapot.cs" />
-    <Compile Include="Graphics\Primitives\Torus.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Pickable.cs" />
-    <Compile Include="LerpHelper.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="ZipContentmanager.cs" />
@@ -274,16 +269,12 @@
     <Compile Include="EnumerableCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\DebugVisual.cs" />
     <Compile Include="Graphics\Effects\DepthEffect.cs">
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\ShadowMap.cs" />
     <Compile Include="Graphics\GraphicsExtensions.cs" />
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
-    <Compile Include="Graphics\Primitives\Primitive.cs" />
-    <Compile Include="Graphics\Primitives\Cube.cs" />
-    <Compile Include="Graphics\Primitives\Sphere.cs" />
     <Compile Include="Graphics\DrawableSurfaceCollections.cs" />
     <Compile Include="Graphics\DrawableSurface.cs">
       <SubType>Code</SubType>
@@ -357,9 +348,7 @@
       <LastGenOutput>ThresholdEffect.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Graphics\ScreenEffects\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

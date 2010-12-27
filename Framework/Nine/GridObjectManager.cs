@@ -22,17 +22,17 @@ namespace Nine
     /// Basic 2D Space partition using uniform grids.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public abstract class UniformGrid
+    public class UniformGrid
     {
         /// <summary>
         /// Gets or sets the number of columns (x) of the grid.
         /// </summary>
-        public int TessellationX { get; protected set; }
+        public int GridCountX { get; protected set; }
 
         /// <summary>
         /// Gets or sets the number of rows (y) of the grid.
         /// </summary>
-        public int TessellationY { get; protected set; }
+        public int GridCountY { get; protected set; }
 
         /// <summary>
         /// Gets or sets the center position of the grid.
@@ -42,65 +42,393 @@ namespace Nine
         /// <summary>
         /// Gets the width and height of the grid.
         /// </summary>
-        public Vector2 Dimension { get; protected set; }
+        public Vector2 Size { get; protected set; }
 
         /// <summary>
         /// Creates a new grid.
         /// </summary>
-        public UniformGrid(float width, float height, float x, float y, int tessellationX, int tessellationY)
+        public UniformGrid(float width, float height, float x, float y, int countX, int countY)
         {
             Position = new Vector2(x, y);
-            Dimension = new Vector2(width, height);
-            TessellationX = tessellationX;
-            TessellationY = tessellationY;
+            Size = new Vector2(width, height);
+            GridCountX = countX;
+            GridCountY = countY;
         }
 
         /// <summary>
-        /// Gets whether the grid contains the specified point.
+        /// Creates a new grid.
+        /// </summary>
+        public UniformGrid(float x, float y, float step, int countX, int countY)
+        {
+            Position = new Vector2(x, y);
+            Size = new Vector2(step * countX, step * countY);
+            GridCountX = countX;
+            GridCountY = countY;
+        }
+
+        /// <summary>
+        /// Creates a new grid.
+        /// </summary>
+        public UniformGrid(BoundingRectangle bounds, int countX, int countY)
+        {
+            Position = bounds.GetCenter();
+            Size = bounds.Max - bounds.Min;
+            GridCountX = countX;
+            GridCountY = countY;
+        }
+
+        /// <summary>
+        /// Gets whether the grid contains the specified position.
         /// </summary>
         public bool Contains(float x, float y)
         {
-            return x >= -Dimension.X / 2 && y >= -Dimension.Y / 2 &&
-                   x < Dimension.X / 2 && y < Dimension.Y / 2;
+            return x >= Position.X - Size.X / 2 && y >= Position.Y - Size.Y / 2 &&
+                   x <= Position.X + Size.X / 2 && y <= Position.Y + Size.Y / 2;
+        }
+
+        /// <summary>
+        /// Gets whether the grid contains the specified position.
+        /// </summary>
+        public bool Contains(Vector2 point)
+        {
+            return Contains(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Gets whether the grid contains the specified index.
+        /// </summary>
+        public bool Contains(int x, int y)
+        {
+            return x >= 0 && y >= 0 && x < GridCountX && y < GridCountY;
+        }
+
+        /// <summary>
+        /// Clamps positions into the boundary.
+        /// </summary>
+        public Vector2 Clamp(float x, float y)
+        {
+            if (x < Position.X - Size.X / 2)
+                x = Position.X - Size.X / 2;
+            if (x > Position.X + Size.X / 2)
+                x = Position.X + Size.X / 2;
+
+            if (y < Position.Y - Size.Y / 2)
+                y = Position.Y - Size.Y / 2;
+            if (y > Position.Y + Size.Y / 2)
+                y = Position.Y + Size.Y / 2;
+
+            return new Vector2(x, y);
+        }
+
+        /// <summary>
+        /// Clamps positions into the boundary.
+        /// </summary>
+        public Vector2 Clamp(Vector2 point)
+        {
+            return Clamp(point.X, point.Y);
         }
 
         /// <summary>
         /// Converts from world space to integral grid space.
         /// </summary>
-        /// <param name="clamp">Whether points outside the grid are clamped to borders.</param>
-        public Point PositionToGrid(float x, float y, bool clamp)
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public Point PositionToGrid(float x, float y)
         {
             Point pt = new Point();
 
-            pt.X = (int)((x - Position.X + Dimension.X / 2) * TessellationX / Dimension.X);
-            pt.Y = (int)((y - Position.Y + Dimension.Y / 2) * TessellationY / Dimension.Y);
+            pt.X = (int)((x - Position.X + Size.X / 2) * GridCountX / Size.X);
+            pt.Y = (int)((y - Position.Y + Size.Y / 2) * GridCountY / Size.Y);
 
-            if (clamp)
-            {
-                if (pt.X < 0)
-                    pt.X = 0;
-                if (pt.X >= TessellationX)
-                    pt.X = TessellationX - 1;
-                if (pt.Y < 0)
-                    pt.Y = 0;
-                if (pt.Y >= TessellationY)
-                    pt.Y = TessellationY - 1;
-            }
+            if (x == Position.X + Size.X / 2)
+                pt.X--;
+            if (y == Position.Y + Size.Y / 2)
+                pt.Y--;
+
+            if (!Contains(pt.X, pt.Y))
+                throw new ArgumentOutOfRangeException();
 
             return pt;
         }
 
         /// <summary>
-        /// Gets the center position of the specified integral grid. Input boundary is not checked.
+        /// Converts from world space to integral grid space.
+        /// </summary>
+        public Point PositionToGrid(Vector2 point)
+        {
+            return PositionToGrid(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Gets the center position of the specified integral grid.
         /// </summary>
         public Vector2 GridToPosition(int x, int y)
         {
+            if (!Contains(x, y))
+                throw new ArgumentOutOfRangeException();
+
             Vector2 v = new Vector2();
 
-            v.X = -Dimension.X / 2 + (x + 0.5f) * Dimension.X / TessellationX;
-            v.Y = -Dimension.Y / 2 + (y + 0.5f) * Dimension.Y / TessellationY;
+            v.X = -Size.X / 2 + (x + 0.5f) * Size.X / GridCountX;
+            v.Y = -Size.Y / 2 + (y + 0.5f) * Size.Y / GridCountY;
 
             return v;
+        }
+
+        /// <summary>
+        /// Gets the center position of the specified integral grid.
+        /// </summary>
+        public Vector2 GridToPosition(Point pt)
+        {
+            return GridToPosition(pt.X, pt.Y);
+        }
+
+        /// <summary>
+        /// Gets the min position of the specified integral grid.
+        /// </summary>
+        public Vector2 GridToPositionMin(int x, int y)
+        {
+            if (!Contains(x, y))
+                throw new ArgumentOutOfRangeException();
+
+            Vector2 v = new Vector2();
+
+            v.X = -Size.X / 2 + (x) * Size.X / GridCountX;
+            v.Y = -Size.Y / 2 + (y) * Size.Y / GridCountY;
+
+            return v;
+        }
+
+        /// <summary>
+        /// Gets the max position of the specified integral grid.
+        /// </summary>
+        public Vector2 GridToPositionMax(int x, int y)
+        {
+            if (!Contains(x, y))
+                throw new ArgumentOutOfRangeException();
+
+            Vector2 v = new Vector2();
+
+            v.X = -Size.X / 2 + (x + 1) * Size.X / GridCountX;
+            v.Y = -Size.Y / 2 + (y + 1) * Size.Y / GridCountY;
+
+            return v;
+        }
+
+        /// <summary>
+        /// Returns an enumeration of grids overlapping the specified bounds.
+        /// </summary>
+        public IEnumerable<Point> ForEach(Vector3 position, Vector3 size)
+        {
+            Point min = PositionToGrid(Clamp(position.X - size.X / 2, position.Y - size.Y / 2));
+            Point max = PositionToGrid(Clamp(position.X + size.X / 2, position.Y + size.Y / 2));
+
+            for (int y = min.Y; y <= max.Y; y++)
+                for (int x = min.X; x <= max.X; x++)
+                    yield return new Point(x, y);
+        }
+
+        /// <summary>
+        /// Returns an enumeration of grids overlapping the specified bounds.
+        /// </summary>
+        public IEnumerable<Point> ForEach(BoundingBox boundingBox)
+        {
+            return ForEach(boundingBox.GetCenter(), boundingBox.Max - boundingBox.Min);
+        }
+
+        /// <summary>
+        /// Returns an enumeration of grids overlapping the specified line.
+        /// </summary>
+        public IEnumerable<Point> ForEach(Point begin, Point end)
+        {
+            foreach (Point pt in BresenhamLine(begin.X, begin.Y, end.X, end.Y))
+            {
+                if (Contains(pt.X, pt.Y))
+                    yield return pt;
+            }
+        }
+
+        /// <summary>
+        /// Returns an enumeration of grids overlapping the specified ray.
+        /// </summary>
+        /// <param name="precision">
+        /// The precision of line picking. A recommended value is half the radius of the
+        /// smallest object to be picked.
+        /// </param>
+        public IEnumerable<Point> ForEach(Ray ray, float precision)
+        {
+            Vector2 begin = new Vector2();
+            Vector2 end = new Vector2();
+
+            if (ProjectRay(ray, out begin, out end))
+            {
+                return ForEach(begin, end, precision);
+            }
+
+            return EmptyPoints;
+        }
+
+        static List<Point> EmptyPoints = new List<Point>(1);
+
+        /// <summary>
+        /// Returns an enumeration of grids overlapping the specified line.
+        /// </summary>
+        /// <param name="precision">
+        /// The precision of line picking. A recommended value is half the radius of the
+        /// smallest object to be picked.
+        /// </param>
+        public IEnumerable<Point> ForEach(Vector2 begin, Vector2 end, float precision)
+        {
+            if (precision <= 0)
+                precision = float.MaxValue;
+
+            float stepX = Size.X / GridCountX;
+            float stepY = Size.Y / GridCountY;
+            float step = Math.Min(stepX, stepY);
+
+            if (precision > step)
+                precision = step;
+
+            float scaleX = stepX / precision;
+            float scaleY = stepY / precision;
+
+            Point previousPoint = new Point(int.MinValue, int.MinValue);
+
+            foreach (Point pt in BresenhamLine((int)(begin.X * scaleX), (int)(begin.Y * scaleY),
+                                               (int)(end.X * scaleX), (int)(end.Y * scaleY)))
+            {
+                Point result = new Point((int)(pt.X / scaleX), (int)(pt.Y / scaleY));
+
+                if (result != previousPoint && Contains(result.X, result.Y))
+                {
+                    previousPoint = result;
+                    yield return result;
+                }
+            }
+        }
+
+        private static void Swap<T>(ref T a, ref T b)
+        {
+            T c = a;
+            a = b;
+            b = c;
+        }
+        
+        private static IEnumerable<Point> BresenhamLine(int x0, int y0, int x1, int y1)
+        {
+            bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
+            if (steep)
+            {
+                Swap(ref x0, ref y0);
+                Swap(ref x1, ref y1);
+            }
+            if (x0 > x1)
+            {
+                Swap(ref x0, ref x1);
+                Swap(ref y0, ref y1);
+            }
+
+            int deltax = x1 - x0;
+            int deltay = Math.Abs(y1 - y0);
+            int error = 0;
+            int ystep;
+            int y = y0;
+            if (y0 < y1) ystep = 1; else ystep = -1;
+            for (int x = x0; x <= x1; x++)
+            {
+                if (steep) 
+                    yield return new Point(y, x);
+                else 
+                    yield return new Point(x, y);
+                error += deltay;
+                if (2 * error >= deltax)
+                {
+                    y += ystep;
+                    error -= deltax;
+                }
+            }
+        }
+
+        private bool ProjectRay(Ray ray, out Vector2 v1, out Vector2 v2)
+        {
+            v1 = Vector2.Zero;
+            v2 = Vector2.Zero;
+
+            // Get two vertices to draw a line through the
+            // heightfield.
+            //
+            // 1. Project the ray to XY plane
+            // 2. Compute the 2 intersections of the ray and
+            //    terrain bounding box (Projected)
+            // 3. Find the 2 points to draw
+            int i = 0;
+            Vector2[] points = new Vector2[2];
+
+            // Line equation: y = k * (x - x0) + y0
+            float k = ray.Direction.Y / ray.Direction.X;
+            float invK = ray.Direction.X / ray.Direction.Y;
+            float r = ray.Position.Y - ray.Position.X * k;
+            if (r >= 0 && r <= Size.Y)
+            {
+                points[i++] = new Vector2(0, r);
+            }
+            r = ray.Position.Y + (Size.X - ray.Position.X) * k;
+            if (r >= 0 && r <= Size.Y)
+            {
+                points[i++] = new Vector2(Size.X, r);
+            }
+            if (i < 2)
+            {
+                r = ray.Position.X - ray.Position.Y * invK;
+                if (r >= 0 && r <= Size.X)
+                    points[i++] = new Vector2(r, 0);
+            }
+            if (i < 2)
+            {
+                r = ray.Position.X + (Size.Y - ray.Position.Y) * invK;
+                if (r >= 0 && r <= Size.X)
+                    points[i++] = new Vector2(r, Size.Y);
+            }
+
+            if (i < 2)
+                return false;
+
+            // When ray position is inside the box, it should be one
+            // of the starting point
+            bool inside = ray.Position.X > 0 && ray.Position.X < Size.X &&
+                          ray.Position.Y > 0 && ray.Position.Y < Size.Y;
+
+            Vector2 rayPosition = new Vector2(ray.Position.X, ray.Position.Y);
+
+            // Sort the 2 points to make the line follow the direction
+            if (ray.Direction.X > 0)
+            {
+                if (points[0].X < points[1].X)
+                {
+                    v2 = points[1];
+                    v1 = inside ? rayPosition : points[0];
+                }
+                else
+                {
+                    v2 = points[0];
+                    v1 = inside ? rayPosition : points[1];
+                }
+            }
+            else if (ray.Direction.X < 0)
+            {
+                if (points[0].X > points[1].X)
+                {
+                    v2 = points[1];
+                    v1 = inside ? rayPosition : points[0];
+                }
+                else
+                {
+                    v2 = points[0];
+                    v1 = inside ? rayPosition : points[1];
+                }
+            }
+
+            return true;
         }
     }
 
@@ -108,21 +436,17 @@ namespace Nine
     /// <summary>
     /// Manages a collection of objects using grids.
     /// </summary>
-    public class GridObjectManager : UniformGrid, ICollection<object>, ISpatialQuery
+    public class GridObjectManager<T> : UniformGrid, ICollection<T>, ISpatialQuery<T>
     {
-        internal struct Entry
-        {
-            public object Object;
-            public Vector2 Position;
-        }
+        private float rayPickPrecision = float.MaxValue;
 
-        private Dictionary<int, List<Entry>> dictionary = new Dictionary<int, List<Entry>>();
+        GridObjectManagerEntry<T>[,] Data;
 
         /// <summary>
         /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public GridObjectManager(float width, float height, float x, float y, int tessellationX, int tessellationY)
-            : base(width, height, x, y, tessellationX, tessellationY)
+        public GridObjectManager(float width, float height, float x, float y, int countX, int countY)
+            : base(width, height, x, y, countX, countY)
         {
 
         }
@@ -130,192 +454,264 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public GridObjectManager(BoundingRectangle bounds, int tessellationX, int tessellationY)
-            : base(bounds.Max.X - bounds.Min.X, bounds.Max.Y - bounds.Min.Y, bounds.Min.X, bounds.Min.Y, tessellationX, tessellationY)
+        public GridObjectManager(BoundingRectangle bounds, int countX, int countY)
+            : base(bounds, countX, countY)
         {
 
         }
-        
+
         /// <summary>
-        /// Adds an object with the specified position.
+        /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public void Add(object obj, float x, float y)
+        public GridObjectManager(BoundingBox bounds, int countX, int countY)
+            : base(new BoundingRectangle(bounds), countX, countY)
+        {
+
+        }
+
+        public void Add(T obj, Vector3 position, float radius)
+        {
+            Add(obj, new BoundingSphere(position, radius));
+        }
+
+        public void Add(T obj, BoundingSphere bounds)
+        {
+            Add(obj, BoundingBox.CreateFromSphere(bounds));
+        }
+
+        public void Add(T obj, BoundingBox box)
         {
             if (obj == null)
-                throw new ArgumentException();
+                throw new ArgumentNullException("obj");
 
-            Point pt = PositionToGrid(x, y, true);
-
-            int key = pt.Y * TessellationX + pt.X;
-
-            List<Entry> list;
-
-            if (dictionary.TryGetValue(key, out list))
+            foreach (Point grid in ForEach(box))
             {
-                Entry e = new Entry();
+                if (Data == null)
+                    Data = new GridObjectManagerEntry<T>[GridCountX, GridCountY];
 
-                e.Object = obj;
-                e.Position.X = x;
-                e.Position.Y = y;
+                if (Data[grid.X, grid.Y].Objects == null)
+                {
+                    Data[grid.X, grid.Y].Objects = new List<T>();
+                    Data[grid.X, grid.Y].ObjectBounds = new List<BoundingBox>();
 
-                list.Add(e);
-            }
-            else
-            {
-                list = new List<Entry>();
+                    Vector2 min = GridToPositionMin(grid.X, grid.Y);
+                    Vector2 max = GridToPositionMax(grid.X, grid.Y);
 
-                Entry e = new Entry();
+                    Data[grid.X, grid.Y].Bounds.Min.X = min.X;
+                    Data[grid.X, grid.Y].Bounds.Min.Y = min.Y;
+                    Data[grid.X, grid.Y].Bounds.Max.X = min.X;
+                    Data[grid.X, grid.Y].Bounds.Max.Y = min.Y;
+                }
 
-                e.Object = obj;
-                e.Position.X = x;
-                e.Position.Y = y;
+                Data[grid.X, grid.Y].Objects.Add(obj);
+                Data[grid.X, grid.Y].ObjectBounds.Add(box);
 
-                list.Add(e);
+                if (box.Min.Z < Data[grid.X, grid.Y].Bounds.Min.Z)
+                    Data[grid.X, grid.Y].Bounds.Min.Z = box.Min.Z;
+                if (box.Max.Z > Data[grid.X, grid.Y].Bounds.Max.Z)
+                    Data[grid.X, grid.Y].Bounds.Max.Z = box.Max.Z;
 
-                dictionary.Add(key, list);
+                BoundingRectangle rectangle = new BoundingRectangle(box);
+                float precision = Vector2.Subtract(rectangle.Max, rectangle.Min).Length() * 0.25f;
+                if (precision < rayPickPrecision)
+                    rayPickPrecision = precision;
             }
 
             Count++;
         }
 
-        public void Add(object obj, BoundingSphere bounds)
-        {
-            Add(obj, bounds.Center.X, bounds.Center.Y, bounds.Radius);
-        }
-
-        public void Add(object obj, float x, float y, float radius)
-        {
-            throw new NotImplementedException();
-        }
-        
         /// <summary>
         /// Clear all objects managed by this instance.
         /// </summary>
         public void Clear()
         {
-            dictionary.Clear();
-
             Count = 0;
+
+            for (int x = 0; x < GridCountX; x++)
+            {
+                for (int y = 0; y < GridCountY; y++)
+                {
+                    if (Data != null && Data[x, y].Objects != null)
+                    {
+                        Data[x, y].Objects.Clear();
+                        Data[x, y].ObjectBounds.Clear();
+                        Data[x, y].Bounds.Max.Z = Data[x, y].Bounds.Min.Z = 0;
+                    }
+                }
+            }
         }
 
         #region ISpatialQuery Members
-        public T FindFirst<T>(Vector3 position)
+        public IEnumerable<T> Find(Vector3 position, float radius)
         {
-            throw new NotImplementedException();
+            return Find(new BoundingSphere(position, radius));
         }
 
-        public T FindFirst<T>(Ray ray)
+        public IEnumerable<T> Find(BoundingBox box)
         {
-            throw new NotImplementedException();
+            return Unique(InternalFind(box));
         }
 
-        public T FindFirst<T>(Vector3 position, float radius)
+        private IEnumerable<T> InternalFind(BoundingBox box)
         {
-            float min = float.MaxValue;
-            T nearest = default(T);
-
-            List<Entry> list;
-            float rr = radius * radius;
-
-            Point ul = PositionToGrid(position.X - radius, position.Y - radius, true);
-            Point br = PositionToGrid(position.X + radius, position.Y + radius, true);
-
-            for (int y = ul.Y; y <= br.Y; y++)
+            foreach (Point grid in ForEach(box))
             {
-                for (int x = ul.X; x <= br.X; x++)
+                if (Data != null && Data[grid.X, grid.Y].Objects != null)
                 {
-                    if (dictionary.TryGetValue(y * TessellationX + x, out list))
+                    for (int i = 0; i < Data[grid.X, grid.Y].Objects.Count; i++)
                     {
-                        foreach (Entry e in list)
+                        if (Data[grid.X, grid.Y].ObjectBounds[i].Contains(box) != ContainmentType.Disjoint)
                         {
-                            if (!(e.Object is T))
-                                continue;
-
-                            float xx = e.Position.X - position.X;
-                            float yy = e.Position.Y - position.Y;
-                            float dd = xx * xx + yy * yy;
-
-                            if (dd <= rr && dd < min)
-                            {
-                                min = dd;
-                                nearest = (T)e.Object;
-                            }
+                            yield return Data[grid.X, grid.Y].Objects[i];
                         }
                     }
                 }
             }
-
-            return nearest;
+        }
+        public IEnumerable<T> Find(BoundingSphere sphere)
+        {
+            return Unique(InternalFind(sphere));
         }
 
-        public IEnumerable<T> Find<T>(Vector3 position, float radius)
+        private IEnumerable<T> InternalFind(BoundingSphere sphere)
         {
-            List<Entry> list;
-            float rr = radius * radius;
-
-            Point ul = PositionToGrid(position.X - radius, position.Y - radius, true);
-            Point br = PositionToGrid(position.X + radius, position.Y + radius, true);
-
-            for (int y = ul.Y; y <= br.Y; y++)
+            foreach (Point grid in ForEach(BoundingBox.CreateFromSphere(sphere)))
             {
-                for (int x = ul.X; x <= br.X; x++)
+                if (Data != null && Data[grid.X, grid.Y].Objects != null)
                 {
-                    if (dictionary.TryGetValue(y * TessellationX + x, out list))
+                    for (int i = 0; i < Data[grid.X, grid.Y].Objects.Count; i++)
                     {
-                        foreach (Entry e in list)
+                        if (Data[grid.X, grid.Y].ObjectBounds[i].Contains(sphere) != ContainmentType.Disjoint)
+                            yield return Data[grid.X, grid.Y].Objects[i];
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<T> Find(Ray ray)
+        {
+            foreach (Point grid in ForEach(ray, rayPickPrecision))
+            {
+                if (Data != null && Data[grid.X, grid.Y].Objects != null)
+                {
+                    for (int i = 0; i < Data[grid.X, grid.Y].Objects.Count; i++)
+                    {
+                        if (Data[grid.X, grid.Y].Objects[i] is IPickable)
                         {
-                            if (!(e.Object is T))
-                                continue;
-
-                            float xx = e.Position.X - position.X;
-                            float yy = e.Position.Y - position.Y;
-
-                            if (xx * xx + yy * yy <= rr)
-                            {
-                                yield return (T)e.Object;
-                            }
+                            if (((IPickable)(Data[grid.X, grid.Y].Objects[i])).Intersects(ray).HasValue)
+                                yield return Data[grid.X, grid.Y].Objects[i];                                
+                        }
+                        else if (Data[grid.X, grid.Y].ObjectBounds[i].Intersects(ray).HasValue)
+                        {
+                            yield return Data[grid.X, grid.Y].Objects[i];
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<T> Find<T>(Ray ray)
+        public T FindFirst(Ray ray)
         {
-            throw new NotImplementedException();
+            float? currentDistance;
+            float minDistance = float.MaxValue;
+            T result = default(T);
+
+            foreach (Point grid in ForEach(ray, rayPickPrecision))
+            {
+                if (Data != null && Data[grid.X, grid.Y].Objects != null)
+                {
+                    for (int i = 0; i < Data[grid.X, grid.Y].Objects.Count; i++)
+                    {
+                        if (Data[grid.X, grid.Y].Objects[i] is IPickable)
+                        {
+                            currentDistance = ((IPickable)(Data[grid.X, grid.Y].Objects[i])).Intersects(ray);
+                            if (currentDistance.HasValue && currentDistance < minDistance)
+                            {
+                                minDistance = currentDistance.Value;
+                                result = Data[grid.X, grid.Y].Objects[i];
+                            }
+                        }
+                        else
+                        {
+                            currentDistance = Data[grid.X, grid.Y].ObjectBounds[i].Intersects(ray);
+                            if (currentDistance.HasValue && currentDistance < minDistance)
+                            {
+                                minDistance = currentDistance.Value;
+                                result = Data[grid.X, grid.Y].Objects[i];
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
-        public IEnumerable<T> Find<T>(BoundingFrustum frustum)
+        public IEnumerable<T> Find(BoundingFrustum frustum)
         {
-            throw new NotImplementedException();
+            return Unique(InternalFind(frustum));
+        }
+
+        private IEnumerable<T> InternalFind(BoundingFrustum frustum)
+        {
+            for (int x = 0; x < GridCountX; x++)
+            {
+                for (int y = 0; y < GridCountY; y++)
+                {
+                    if (Data != null && Data[x, y].Objects != null)
+                    {
+                        for (int i = 0; i < Data[x, y].Objects.Count; i++)
+                        {
+                            if (frustum.Contains(Data[x, y].ObjectBounds[i]) != ContainmentType.Disjoint)
+                            {
+                                yield return Data[x, y].Objects[i];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        static Dictionary<T, object> enumerationSet = new Dictionary<T, object>();
+        static IEnumerable<T> Unique(IEnumerable<T> enumeration)
+        {
+            enumerationSet.Clear();
+
+            foreach (T item in enumeration)
+            {
+                if (!enumerationSet.ContainsKey(item))
+                    enumerationSet.Add(item, null);
+            }
+
+            return enumerationSet.Keys;
         }
         #endregion
 
-        #region ICollection<object> Members
+        #region ICollection<T> Members
 
         /// <summary>
         /// This method will always throw an InvalidOperationException().
         /// Use the other overload instead.
         /// </summary>
-        void ICollection<object>.Add(object item)
+        void ICollection<T>.Add(T item)
         {
             throw new InvalidOperationException();
         }
 
-        public bool Contains(object item)
+        public bool Contains(T item)
         {
-            foreach (object o in this)
+            foreach (T o in this)
             {
-                if (o == item)
+                if (o.Equals(item))
                     return true;
             }
 
             return false;
         }
 
-        public void CopyTo(object[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            foreach (object o in this)
+            foreach (T o in this)
             {
                 array[arrayIndex++] = o;
             }
@@ -328,58 +724,54 @@ namespace Nine
             get { return true; }
         }
 
-        public bool Remove(object item)
+        public bool Remove(T item)
         {
             if (item == null)
                 return false;
 
-            List<Entry> list = null;
-            int index = -1;
+            bool hasValue = false;
 
-            foreach (List<Entry> entry in dictionary.Values)
+            for (int x = 0; x < GridCountX; x++)
             {
-                if (entry != null)
+                for (int y = 0; y < GridCountY; y++)
                 {
-                    for (int i = 0; i < entry.Count; i++)
+                    if (Data != null && Data[x, y].Objects != null)
                     {
-                        if (entry[i].Object == item)
+                        for (int i = 0; i < Data[x, y].Objects.Count; i++)
                         {
-                            index = i;
-                            list = entry;
-                            break;
+                            if (Data[x, y].Objects[i].Equals(item))
+                            {
+                                hasValue = true;
+                                Data[x, y].Objects.RemoveAt(i);
+                                Data[x, y].ObjectBounds.RemoveAt(i);
+                                i--;
+                            }
                         }
                     }
                 }
-
-                if (index >= 0)
-                    break;
             }
 
-            if (index >= 0)
-            {
-                list.RemoveAt(index);
-                return true;
-            }
+            if (hasValue)
+                Count--;
 
-            return false;
+            return hasValue;
         }
 
         #endregion
 
-        #region IEnumerable<object> Members
-
-        public IEnumerator<object> GetEnumerator()
+        #region IEnumerable<T> Members
+        public IEnumerator<T> GetEnumerator()
         {
-            foreach (List<Entry> entry in dictionary.Values)
-            {
-                if (entry != null)
-                {
-                    foreach (Entry e in entry)
-                    {
-                        yield return e.Object;
-                    }
-                }
-            }
+            return Unique(InternalGetEnumerator()).GetEnumerator();
+        }
+
+        private IEnumerable<T> InternalGetEnumerator()
+        {
+            if (Data != null)
+                foreach (GridObjectManagerEntry<T> entry in Data)
+                    if (entry.Objects != null)
+                        foreach (T e in entry.Objects)
+                            yield return e;
         }
 
         #endregion
@@ -392,5 +784,12 @@ namespace Nine
         }
 
         #endregion
+    }
+
+    internal struct GridObjectManagerEntry<T>
+    {
+        public BoundingBox Bounds;
+        public List<T> Objects;
+        public List<BoundingBox> ObjectBounds;
     }
 }

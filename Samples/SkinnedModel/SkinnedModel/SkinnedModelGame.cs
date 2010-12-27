@@ -44,7 +44,9 @@ namespace SkinnedModel
 #endif
 
         Model model;
+        Model hammer;
         ModelBatch modelBatch;
+        PrimitiveBatch primitiveBatch;
         Input input;
         ModelViewerCamera camera;
 
@@ -81,11 +83,13 @@ namespace SkinnedModel
 
             // Model batch makes drawing models easier
             modelBatch = new ModelBatch(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
 
             // Load our model assert.
             // If the model is processed by our ExtendedModelProcesser,
             // we will try to add model animation and skinning data.
             model = Content.Load<Model>("peon");
+            hammer = Content.Load<Model>("hammer");
 
 #if WINDOWS_PHONE
             // Convert the effect used by the model to SkinnedEffect to
@@ -189,19 +193,35 @@ namespace SkinnedModel
 
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
-            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-
             Matrix world1 = Matrix.CreateTranslation(-80, -60, 0) * Matrix.CreateScale(0.1f);
             Matrix world2 = Matrix.CreateTranslation(80, -60, 0) * Matrix.CreateScale(0.1f);
             Matrix world3 = Matrix.CreateTranslation(0, -60, 0) * Matrix.CreateScale(0.1f);
 
-            modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection);
+            // Attach the hammer model to the character
+            Matrix hammerTransform = animation1.GetAbsoluteBoneTransform("Weapon") * world1;
+
+            if (!Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                modelBatch.DrawSkinned(model, world1, animation1.GetBoneTransforms(), null);
-                modelBatch.DrawSkinned(model, world2, animation2.GetBoneTransforms(), null);
-                modelBatch.DrawSkinned(model, world3, animation3.GetBoneTransforms(), null);
+                modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection);
+                {
+                    modelBatch.DrawSkinned(model, world1, animation1.GetBoneTransforms(), null);
+                    modelBatch.DrawSkinned(model, world2, animation2.GetBoneTransforms(), null);
+                    modelBatch.DrawSkinned(model, world3, animation3.GetBoneTransforms(), null);
+
+                    modelBatch.Draw(hammer, hammerTransform, null);
+                }
+                modelBatch.End();
             }
-            modelBatch.End();
+            else
+            {
+                primitiveBatch.Begin(camera.View, camera.Projection);
+                {
+                    primitiveBatch.DrawSkeleton(animation1, world1, Color.White);
+                    primitiveBatch.DrawSkeleton(animation2, world2, Color.White);
+                    primitiveBatch.DrawSkeleton(animation3, world3, Color.White);
+                }
+                primitiveBatch.End();
+            }
 
             base.Draw(gameTime);
         }

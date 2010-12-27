@@ -60,10 +60,6 @@ namespace Nine.Graphics
         /// <summary>
         /// Create tangent vertex
         /// </summary>
-        /// <param name="setPos">Set position</param>
-        /// <param name="setUv">Set uv texture coordinates</param>
-        /// <param name="setNormal">Set normal</param>
-        /// <param name="setTangent">Set tangent</param>
         public VertexPositionNormalDualTexture(
             Vector3 position,
             Vector3 normal,

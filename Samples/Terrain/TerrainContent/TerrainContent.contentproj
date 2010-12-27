@@ -77,6 +77,30 @@
       <Processor>LinkedEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Terrain\Mountain.png">
+      <Link>Mountain.png</Link>
+      <Name>Mountain</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Content\Terrain\MountainHeightmap.bmp">
+      <Link>MountainHeightmap.bmp</Link>
+      <Name>MountainHeightmap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>HeightmapProcessor</Processor>
+      <ProcessorParameters_Step>0.4</ProcessorParameters_Step>
+      <ProcessorParameters_Height>25</ProcessorParameters_Height>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Terrain\Mountain.Low.png">
+      <Link>Mountain.Low.png</Link>
+      <Name>Mountain.Low</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

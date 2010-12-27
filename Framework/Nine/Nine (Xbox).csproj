@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE;XBOX;XBOX360</DefineConstants>
     <XnaCompressContent>true</XnaCompressContent>
     <DocumentationFile>..\..\References\Xbox 360\Nine.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Xbox 360' ">
     <OutputPath>..\..\References\Xbox 360\</OutputPath>
@@ -42,9 +43,7 @@
     <XnaCompressContent>true</XnaCompressContent>
     <DocumentationFile>..\..\References\Xbox 360\Nine.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Graphics\ScreenEffects\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
@@ -54,10 +53,12 @@
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
+    <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
+    <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
@@ -65,6 +66,9 @@
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
+    <Compile Include="Graphics\GraphicsResources.cs" />
+    <Compile Include="Graphics\PrimitiveBatch.cs" />
+    <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
     <Compile Include="Graphics\ScreenCamera.cs" />
     <Compile Include="Graphics\DrawableSurfaceCollections.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
     <Compile Include="GridObjectManager.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Math2D.cs" />
     <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Navigation\Steering\AvoidanceBehaviors.cs" />
@@ -221,43 +226,27 @@
     <Compile Include="Graphics\ModelViewerCamera.cs" />
     <Compile Include="Graphics\TopDownEditorCamera.cs" />
     <Compile Include="Graphics\Geometry.cs" />
-    <Compile Include="Graphics\Primitives\GeometryVisualizer.cs" />
     <Compile Include="Graphics\ModelBatch.cs" />
     <Compile Include="Graphics\ModelExtensions.cs" />
     <Compile Include="Graphics\ModelSkinning.cs" />
     <Compile Include="Graphics\ParticleEffects\SpacialEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
-    <Compile Include="Graphics\Primitives\Arrow.cs" />
-    <Compile Include="Graphics\Primitives\Axis.cs" />
-    <Compile Include="Graphics\Primitives\Bezier.cs" />
-    <Compile Include="Graphics\Primitives\Centrum.cs" />
-    <Compile Include="Graphics\Primitives\Cylinder.cs" />
-    <Compile Include="Graphics\Primitives\Dome.cs" />
-    <Compile Include="Graphics\Primitives\Grid.cs" />
-    <Compile Include="Graphics\Primitives\Plane.cs" />
-    <Compile Include="Graphics\Primitives\Skeleton.cs" />
-    <Compile Include="Graphics\Primitives\Teapot.cs" />
-    <Compile Include="Graphics\Primitives\Torus.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="ScreenshotCapturer.cs" />
+    <Compile Include="SpatialQuery.cs" />
     <Compile Include="Surface.cs" />
-    <Compile Include="LerpHelper.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Graphics\DebugVisual.cs" />
     <Compile Include="Graphics\Effects\DepthEffect.cs">
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\ShadowMap.cs" />
     <Compile Include="Graphics\GraphicsExtensions.cs" />
-    <Compile Include="Graphics\Primitives\Primitive.cs" />
-    <Compile Include="Graphics\Primitives\Cube.cs" />
-    <Compile Include="Graphics\Primitives\Sphere.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
     <Compile Include="Navigation\PathGrid.cs" />
     <Compile Include="Navigation\PriorityQueue.cs" />

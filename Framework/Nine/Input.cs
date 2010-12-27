@@ -101,7 +101,7 @@ namespace Nine
     }
 
     /// <summary>
-    /// Event args use for mouse events.
+    /// EventArgs use for mouse events.
     /// </summary>
     public class MouseEventArgs : EventArgs
     {
@@ -119,6 +119,11 @@ namespace Nine
         /// Gets the Y position of the mouse in game window client space.
         /// </summary>
         public int Y { get; internal set; }
+
+        /// <summary>
+        /// Gets the position of the mouse in game window client space.
+        /// </summary>
+        public Point Position { get { return new Point(X, Y); } }
 
         /// <summary>
         /// Gets the delta amount of mouse wheel.
@@ -171,7 +176,7 @@ namespace Nine
     /// <c>InputComponent</c> object is created.
     /// 
     /// You can create as many <c>Input</c> instances any where
-    /// without worrying much about performance and memoy leak.
+    /// without worrying much about performance and memory leak.
     /// 
     /// However, <b>you need to explicitly keep an reference on Input instances</b>,
     /// otherwise the garbage collector may collect the instance and
@@ -342,7 +347,7 @@ namespace Nine
         /// Note: KeyboardState is a class and not a struct,
         /// we have to initialize it here, else we might run into trouble when
         /// accessing any keyboardState data before BaseGame.Update() is called.
-        /// We can also NOT use the last state because everytime we call
+        /// We can also NOT use the last state because every time we call
         /// Keyboard.GetState() the old state is useless (see XNA help for more
         /// information, section Input). We store our own array of keys from
         /// the last frame for comparing stuff.
@@ -373,7 +378,7 @@ namespace Nine
         public MouseState MouseState { get { return mouseState; } }
 
         /// <summary>
-        /// Gets the curren keyboard state.
+        /// Gets the current keyboard state.
         /// </summary>
         public KeyboardState KeyboardState { get { return keyboardState; } }
 
@@ -411,7 +416,7 @@ namespace Nine
         }
 
         /// <summary>
-        /// Gets whether the cursor is inside the specfied rectangle.
+        /// Gets whether the cursor is inside the specified rectangle.
         /// </summary>
         /// <param name="rect">Rectangle</param>
         /// <returns>Bool</returns>
@@ -461,8 +466,6 @@ namespace Nine
         /// will return the same for A-Z and 0-9, but the special keys
         /// might be different.
         /// </summary>
-        /// <param name="key">Key</param>
-        /// <returns>Char</returns>
         public static char KeyToChar(Keys key, bool shiftPressed)
         {
             // If key will not be found, just return space
@@ -531,7 +534,6 @@ namespace Nine
         /// Handle keyboard input helper method to catch keyboard input
         /// for an input text. Only used to enter the player name in the game.
         /// </summary>
-        /// <param name="inputText">Input text</param>
         public void CatchKeyboardInput(ref string inputText, int maxChars)
         {
             // Is a shift key pressed (we have to check both, left and right)

@@ -51,6 +51,15 @@ namespace Nine
         }
 
         /// <summary>
+        /// Create a new instance of BoundingRectangle object.
+        /// </summary>
+        public BoundingRectangle(BoundingBox box)
+        {
+            Min = new Vector2(box.Min.X, box.Min.Y);
+            Max = new Vector2(box.Max.X, box.Max.Y);
+        }
+
+        /// <summary>
         /// Tests whether the BoundingRectangle contains a point.
         /// </summary>
         public ContainmentType Contains(float x, float y)
@@ -73,13 +82,29 @@ namespace Nine
         /// </summary>
         public ContainmentType Contains(BoundingRectangle rectangle)
         {
-            return Math2D.RectangleIntersects(
-                Min, Max, Vector2.Zero, 0,
-                rectangle.Min, rectangle.Max, Vector2.Zero, 0);
+            if (this.Min.X > rectangle.Max.X ||
+                this.Min.Y > rectangle.Max.Y ||
+                this.Max.X < rectangle.Min.X ||
+                this.Max.Y < rectangle.Min.Y)
+            {
+                return ContainmentType.Disjoint;
+            }
+            else if (
+                this.Min.X <= rectangle.Min.X &&
+                this.Min.Y <= rectangle.Min.Y &&
+                this.Max.X >= rectangle.Max.X &&
+                this.Max.Y >= rectangle.Max.Y)
+            {
+                return ContainmentType.Contains;
+            }
+            else
+            {
+                return ContainmentType.Intersects;
+            }
         }
-        
+
         /// <summary>
-        /// Determines if a Range<T> object equals to another Range<T> object
+        /// Determines if a Range object equals to another Range object
         /// </summary>
         public bool Equals(BoundingRectangle other)
         {

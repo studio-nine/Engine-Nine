@@ -109,8 +109,8 @@ namespace Nine
 
 
         /// <summary>
-        /// given a plane and a ray this function determins how far along the ray 
-        /// an interestion occurs. Returns null if the ray is parallel
+        /// given a plane and a ray this function determines how far along the ray 
+        /// an intersection occurs. Returns null if the ray is parallel
         /// </summary>
         public static float? RayPlaneIntersects(
             Vector2 rayOrigin, Vector2 rayDirection, Vector2 planePoint, Vector2 planeNormal)

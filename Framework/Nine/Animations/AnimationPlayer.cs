@@ -43,7 +43,7 @@ namespace Nine.Animations
         /// </summary>
         public AnimationPlayer()
         {
-            base.Animations = this.Animations;
+            base.animations = this.Animations;
         }
 
         public bool Contains(string name)
@@ -63,7 +63,7 @@ namespace Nine.Animations
                 if (!channels.TryGetValue(channelIdentifier, out channel))
                 {
                     channel = new AnimationPlayerChannel();
-                    channel.Animations = Animations;
+                    channel.animations = Animations;
                     channels.Add(channelIdentifier, channel);
                 }
 
@@ -71,19 +71,22 @@ namespace Nine.Animations
             }
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            foreach (AnimationPlayerChannel channel in channels.Values)
-                channel.Update(gameTime);
+            if (channels != null)
+            {
+                foreach (AnimationPlayerChannel channel in channels.Values)
+                    channel.Update(gameTime);
+            }
         }
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class AnimationPlayerChannel : Animation
     {
-        internal IDictionary<string, IAnimation> Animations;
+        internal IDictionary<string, IAnimation> animations;
 
         public string CurrentName { get; private set; }
 
@@ -96,7 +99,7 @@ namespace Nine.Animations
         {
             IAnimation current;
 
-            if (!Animations.TryGetValue(animationName, out current))
+            if (!animations.TryGetValue(animationName, out current))
             {
                 throw new KeyNotFoundException("name");
             }
@@ -152,7 +155,7 @@ namespace Nine.Animations
         {
             IAnimation current = animation;
 
-            if (Animations.ContainsKey(animationName))
+            if (animations.ContainsKey(animationName))
                 throw new ArgumentException(
                     string.Format("An animation with the name {0} already exists.", animationName));
             

@@ -44,7 +44,6 @@ namespace Nine
         private float currentBlinkTime;
         private string lastLine = "";
         private List<string> messages = new List<string>();
-        private Game Game;
 
         public int MaxLines { get; set; }
         public int LineSpacing { get; set; }
@@ -86,20 +85,11 @@ namespace Nine
 
         public GameConsole(Game game) : base(game)
         {
-            if (game == null)
-                throw new ArgumentNullException();
-            
-            Game = game;
-
             Initialize();
         }
 
         public GameConsole(Game game, string fontFile) : base(game)
         {
-            if (game == null)
-                throw new ArgumentNullException();
-
-            Game = game;
             this.fontFile = fontFile;
 
             Initialize();

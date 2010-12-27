@@ -44,7 +44,7 @@ namespace FlockingBehaviors
         SpriteBatch spriteBatch;
         Texture2D butterfly;
 
-        GridObjectManager objects;
+        GridObjectManager<ISteerable> objects;
 
         BoundingRectangle bounds;
 
@@ -89,7 +89,7 @@ namespace FlockingBehaviors
 
             // Create a grid object manager to keep track of object position.
             // This manager will be used by group flocking behaviors to detect neighbors.
-            objects = new GridObjectManager(bounds, 16, 16);
+            objects = new GridObjectManager<ISteerable>(bounds, 16, 16);
 
 
             Steerer movement;
@@ -132,7 +132,7 @@ namespace FlockingBehaviors
 
             foreach (Steerer movable in movingEntities)
             {
-                objects.Add(movable, movable.Position.X, movable.Position.Y);
+                objects.Add(movable, new Vector3(movable.Position, 0), 0);
             }
 
 

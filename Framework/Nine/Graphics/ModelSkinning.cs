@@ -79,6 +79,7 @@ namespace Nine.Graphics
         /// <param name="world">
         /// A world matrix that will be applied to the result bone transforms.
         /// </param>
+        /// <param name="model"></param>
         /// <returns>
         /// A matrix array used to draw skinned meshes.
         /// </returns>
@@ -110,6 +111,8 @@ namespace Nine.Graphics
         /// A matrix array to hold the result transformations.
         /// The length must be at least InverseBindPose.Count.
         /// </param>
+        /// <param name="model"></param>
+        /// <param name="world"></param>
         public void GetBoneTransforms(Model model, Matrix world, Matrix[] skin)
         {
             if (bones == null || bones.Length < model.Bones.Count)

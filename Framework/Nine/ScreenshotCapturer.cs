@@ -50,7 +50,6 @@ namespace Nine
         private bool pressedLastFrame = false;
 
         private string screenshotsDirectory;
-        private Game Game;
 
         /// <summary>
         /// Gets or sets the directory where the screenshot files will be stored.
@@ -72,7 +71,7 @@ namespace Nine
         public Keys CaptureKey { get; set; }
 
         /// <summary>
-        /// Occures when a new screenshot is captured.
+        /// Occurs when a new screenshot is captured.
         /// </summary>
         public event EventHandler<ScreenshotCapturedEventArgs> Captured;
         #endregion
@@ -83,10 +82,6 @@ namespace Nine
         /// </summary>
         public ScreenshotCapturer(Game game) : base(game)
         {
-            if (game == null)
-                throw new ArgumentNullException();
-
-            Game = game;
             ScreenshotsDirectory = "Screenshots";
             screenshotNum = GetCurrentScreenshotNum();
             CaptureKey = Keys.PrintScreen;
@@ -225,6 +220,7 @@ namespace Nine
             }
             catch (Exception ex)
             {
+                ex.ToString();
                 if (screenshot != null)
                     screenshot.Dispose();
                 return null;

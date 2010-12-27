@@ -113,7 +113,11 @@ namespace Nine.Graphics
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
-			if (e.IsRightButtonDown)
+#if WINDOWS_PHONE
+			if (e.IsLeftButtonDown)
+#else
+            if (e.IsRightButtonDown)
+#endif
 			{
                 end = ScreenToArcBall(e.X, e.Y);
 

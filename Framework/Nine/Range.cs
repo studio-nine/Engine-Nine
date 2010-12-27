@@ -49,7 +49,7 @@ namespace Nine
         }
 
         /// <summary>
-        /// Determines if a Range<T> object equals to another Range<T> object
+        /// Determines if a Range object equals to another Range object
         /// </summary>
         public bool Equals(Range<T> other)
         {

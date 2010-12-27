@@ -32,7 +32,7 @@ namespace Nine.Navigation.Steering
         SeekBehavior seek = new SeekBehavior();
 
         public float Range { get; set; }
-        public ISpatialQuery Neighbors { get; set; }
+        public ISpatialQuery<ISteerable> Neighbors { get; set; }
 
         public CohesionBehavior()
         {
@@ -44,7 +44,7 @@ namespace Nine.Navigation.Steering
             int count = 0;
             Vector2 center = Vector2.Zero;
 
-            foreach (ISteerable partner in Neighbors.Find<ISteerable>(new Vector3(movingEntity.Position, 0), Range))
+            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range))
             {
                 if (partner != null && partner != movingEntity)
                 {
@@ -70,7 +70,7 @@ namespace Nine.Navigation.Steering
     public class SeparationBehavior : SteeringBehavior
     {
         public float Range { get; set; }
-        public ISpatialQuery Neighbors { get; set; }
+        public ISpatialQuery<ISteerable> Neighbors { get; set; }
 
         public SeparationBehavior()
         {
@@ -81,7 +81,7 @@ namespace Nine.Navigation.Steering
         {
             Vector2 totalForce = Vector2.Zero;
 
-            foreach (ISteerable partner in Neighbors.Find<ISteerable>(new Vector3(movingEntity.Position, 0), Range + movingEntity.BoundingRadius))
+            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range + movingEntity.BoundingRadius))
             {
                 if (partner != null && partner != movingEntity)
                 {
@@ -106,7 +106,7 @@ namespace Nine.Navigation.Steering
     public class AlignmentBehavior : SteeringBehavior
     {
         public float Range { get; set; }
-        public ISpatialQuery Neighbors { get; set; }
+        public ISpatialQuery<ISteerable> Neighbors { get; set; }
 
         public AlignmentBehavior()
         {
@@ -118,7 +118,7 @@ namespace Nine.Navigation.Steering
             int count = 0;
             Vector2 totalForce = Vector2.Zero;
 
-            foreach (ISteerable partner in Neighbors.Find<ISteerable>(new Vector3(movingEntity.Position, 0), Range))
+            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range))
             {
                 if (partner != null && partner != movingEntity)
                 {

@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 // Make this visible to content pipeline so we can hide content reader.
 [assembly: InternalsVisibleTo("Nine.Content.Pipeline")]

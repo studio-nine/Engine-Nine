@@ -51,6 +51,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GridObjectManagerTest.cs" />
     <Compile Include="Navigation\Steering\SteererTest.cs" />
     <Compile Include="QuadTreeTest.cs" />
     <Compile Include="Graphics\BoneAnimationTest.cs" />

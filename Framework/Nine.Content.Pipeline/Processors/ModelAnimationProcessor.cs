@@ -31,8 +31,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Describes the position of a single bone at a single point in time.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class Keyframe
+    internal class Keyframe
     {
         /// <summary>
         /// Gets the index of the target bone that is animated by this keyframe.
@@ -76,7 +75,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// It holds all the keyframes needed to describe a single animation.
     /// </summary>
-    public class AnimationClip
+    internal class AnimationClip
     {
         /// <summary>
         /// Gets the total length of the animation.

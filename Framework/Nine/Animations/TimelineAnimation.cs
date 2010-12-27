@@ -62,10 +62,10 @@ namespace Nine.Animations
         {
             get
             {
-                TimeSpan result = unfixedPosition;
+                TimeSpan result = undirectedPosition;
                 if (Direction == AnimationDirection.Backward)
                 {
-                    result = Duration - unfixedPosition;
+                    result = Duration - undirectedPosition;
 
                     if (result == Duration)
                         result = result - TimeSpanEpsilon;
@@ -74,12 +74,12 @@ namespace Nine.Animations
             }
         }
 
-        TimeSpan unfixedPosition;
+        TimeSpan undirectedPosition;
 
         /// <summary>
         /// Gets the smallest TimeSpan greater then TimeSpan.Zero.
         /// </summary>
-        protected static TimeSpan TimeSpanEpsilon = TimeSpan.FromTicks(1);
+        internal static TimeSpan TimeSpanEpsilon = TimeSpan.FromTicks(1);
 
         /// <summary>
         /// Gets the total length of the animation without been affected
@@ -165,15 +165,15 @@ namespace Nine.Animations
             if (position < TimeSpan.Zero || position > Duration)
                 throw new ArgumentOutOfRangeException("position");
 
-            if (position == unfixedPosition)
+            if (position == undirectedPosition)
                 return;
 
             TimeSpan previousPosition = Position;
 
-            unfixedPosition = position;
+            undirectedPosition = position;
             if (Direction == AnimationDirection.Backward)
             {
-                unfixedPosition = Duration - unfixedPosition;
+                undirectedPosition = Duration - undirectedPosition;
             }
 
             TimeSpan increment = Position - previousPosition;
@@ -187,7 +187,7 @@ namespace Nine.Animations
         }
 
         /// <summary>
-        /// When overridden, position the animation at the specified location.
+        /// When overridden, positions the animation at the specified location.
         /// </summary>
         protected abstract void OnSeek(TimeSpan position, TimeSpan previousPosition);
 
@@ -207,7 +207,7 @@ namespace Nine.Animations
         {
             Direction = StartupDirection;
             ElapsedTime = TimeSpan.Zero;
-            unfixedPosition = TimeSpan.Zero;
+            undirectedPosition = TimeSpan.Zero;
 
             targetElapsedTime = TimeSpan.FromSeconds(Math.Min
             (
@@ -247,11 +247,11 @@ namespace Nine.Animations
                 return;
 
             ElapsedTime += increment;
-            unfixedPosition += increment;
+            undirectedPosition += increment;
 
-            while (unfixedPosition >= Duration)
+            while (undirectedPosition >= Duration)
             {
-                unfixedPosition -= Duration;
+                undirectedPosition -= Duration;
                 if (AutoReverse)
                 {
                     if (Direction == AnimationDirection.Backward)
@@ -264,9 +264,11 @@ namespace Nine.Animations
 
             if (ElapsedTime >= targetElapsedTime)
             {
-                unfixedPosition -= (ElapsedTime - targetElapsedTime);
+                undirectedPosition -= (ElapsedTime - targetElapsedTime);
                 ElapsedTime = targetElapsedTime;
-                
+
+                OnSeek(Duration, previousPosition);
+                                
                 Stop();
                 OnCompleted();
                 return;

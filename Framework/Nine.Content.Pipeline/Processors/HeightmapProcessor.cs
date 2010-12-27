@@ -73,10 +73,6 @@ namespace Nine.Content.Pipeline.Processors
 
             heightfield = (PixelBitmapContent<Alpha8>)input.Mipmaps[0];
 
-            if (heightfield.Width * heightfield.Height > ushort.MaxValue)
-                throw new InvalidContentException("Input texture too large for a heightmap");
-
-            
             // Create the terrain vertices.
             int i = 0;
             int width = heightfield.Width;

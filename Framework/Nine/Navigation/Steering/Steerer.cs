@@ -33,6 +33,7 @@ namespace Nine.Navigation.Steering
         public float Acceleration { get; set; }  
         public float BoundingRadius { get; set; }
         public bool CollisionDetectionEnabled { get; set; }
+        public object Tag { get; set; }
 
         public SteeringBehaviorCollection Behaviors { get; private set; }
                 

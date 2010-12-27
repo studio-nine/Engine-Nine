@@ -19,7 +19,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class SkinTransformEffectPart : LinkedEffectPart, IEffectSkinned
+    internal class SkinTransformEffectPart : LinkedEffectPart, IEffectSkinned
     {
         EffectParameter bonesParameter;
 

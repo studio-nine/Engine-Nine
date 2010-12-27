@@ -62,12 +62,12 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
         /// </summary>
-        public int TessellationX { get; private set; }
+        public int GridCountX { get; private set; }
 
         /// <summary>
         /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
         /// </summary>
-        public int TessellationY { get; private set; }
+        public int GridCountY { get; private set; }
 
         /// <summary>
         /// Gets or sets any user data.
@@ -90,7 +90,7 @@ namespace Nine.Graphics
         public Vector3 Size { get; private set; }
 
         /// <summary>
-        /// Gets whether this DrawableSurface is freezed.
+        /// Gets whether this DrawableSurface is freeze.
         /// </summary>
         public bool IsFreezed { get; private set; }
 
@@ -185,8 +185,8 @@ namespace Nine.Graphics
             PatchCountY = heightmap.TessellationV / patchTessellation;
 
             // Store these values in case they change
-            TessellationX = Heightmap.TessellationU;
-            TessellationY = Heightmap.TessellationV;
+            GridCountX = Heightmap.TessellationU;
+            GridCountY = Heightmap.TessellationV;
 
             Triangles = new DrawableSurfaceTriangleCollection();
             Triangles.Surface = this;
@@ -202,7 +202,7 @@ namespace Nine.Graphics
         {
             if (IsFreezed)
                 throw new InvalidOperationException(
-                    "Cannot perform this operation when DrawableSurface is freezed");
+                    "Cannot perform this operation when DrawableSurface is freeze");
 
             if (fillVertex == null)
                 throw new ArgumentNullException("fillVertex");
@@ -259,7 +259,7 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Update internal vertex buffer, index buffer of this surface.
-        /// Call this when you changed the visiblity of a triangle.
+        /// Call this when you changed the visibility of a triangle.
         /// No need to call this when you reload heightmap using TerrainGeometry.LoadHeightmap.
         /// </summary>
         public void Invalidate()
@@ -280,7 +280,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Freezes this DrawableSurface to release resources other then rendering.
         /// Freezed DrawableSurface cannot be altered or queried.
-        /// This process is not invertable.
+        /// This process is not revertible.
         /// </summary>
         public void Freeze()
         {

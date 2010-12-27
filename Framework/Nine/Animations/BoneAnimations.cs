@@ -175,7 +175,7 @@ namespace Nine.Animations
             this.Controllers = new BoneAnimationControllerCollection(model);
 
             foreach (IBoneAnimationController controller in controllers)
-            {
+            {   
                 Controllers.Add(controller);
             }
         }
@@ -306,9 +306,15 @@ namespace Nine.Animations
             }
 
             if (skinTransforms == null && (skinning = Model.GetSkinning()) != null)
+            {
                 skinTransforms = new Matrix[skinning.InverseBindPose.Count];
+            }
+
             if (boneTransforms == null)
+            {
                 boneTransforms = new Matrix[Model.Bones.Count];
+                Model.CopyBoneTransformsTo(boneTransforms);
+            }
 
             if (isSychronized && keyController != null)
             {
@@ -498,6 +504,103 @@ namespace Nine.Animations
             return skinTransforms;
         }
 
+        /// <summary>
+        /// Gets the aboslute transform of the specified bone.
+        /// </summary>
+        public Matrix GetAbsoluteBoneTransform(int boneIndex)
+        {
+            if (boneTransforms == null)
+                return Model.GetAbsoluteBoneTransform(boneIndex);
+
+            ModelBone bone = Model.Bones[boneIndex];
+            Matrix absoluteTransform = boneTransforms[bone.Index];
+
+            while (bone.Parent != null)
+            {
+                bone = bone.Parent;
+                absoluteTransform = absoluteTransform * boneTransforms[bone.Index];
+            }
+
+            return absoluteTransform;
+        }
+
+        /// <summary>
+        /// Gets the aboslute transform of the specified bone.
+        /// </summary>
+        public Matrix GetAbsoluteBoneTransform(string boneName)
+        {
+            return GetAbsoluteBoneTransform(Model.Bones[boneName].Index);
+        }
+
+        public void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)
+        {
+            if (boneTransforms == null)
+            {
+                Model.CopyAbsoluteBoneTransformsTo(destinationBoneTransforms);
+                return;
+            }
+
+            if (destinationBoneTransforms == null)
+                throw new ArgumentNullException("destinationBoneTransforms");
+
+            if (destinationBoneTransforms.Length < boneTransforms.Length)
+                throw new ArgumentOutOfRangeException("destinationBoneTransforms");
+
+            for (int i = 0; i < boneTransforms.Length; i++)
+            {
+                ModelBone bone = Model.Bones[i];
+                if (bone.Parent == null)
+                {
+                    destinationBoneTransforms[i] = boneTransforms[i];
+                }
+                else
+                {
+                    destinationBoneTransforms[i] = boneTransforms[i] * destinationBoneTransforms[bone.Parent.Index];
+                }
+            }
+        }
+
+        public void CopyBoneTransformsTo(Matrix[] destinationBoneTransforms)
+        {
+            if (boneTransforms == null)
+            {
+                Model.CopyBoneTransformsTo(destinationBoneTransforms);
+                return;
+            }
+
+            if (destinationBoneTransforms == null)
+                throw new ArgumentNullException("destinationBoneTransforms");
+
+            if (destinationBoneTransforms.Length < boneTransforms.Length)
+                throw new ArgumentOutOfRangeException("destinationBoneTransforms");
+
+            for (int i = 0; i < boneTransforms.Length; i++)
+            {
+                destinationBoneTransforms[i] = boneTransforms[i];
+            }
+        }
+
+        /// <summary>
+        /// Gets the local transform of the specified bone.
+        /// </summary>
+        public Matrix GetBoneTransform(int bone)
+        {
+            if (bone >= 0 && bone < boneTransforms.Length)
+            {
+                return boneTransforms[bone];
+            }
+
+            throw new ArgumentOutOfRangeException("bone");
+        }
+        
+        /// <summary>
+        /// Gets the local transform of the specified bone.
+        /// </summary>
+        public Matrix GetBoneTransform(string boneName)
+        {
+            return GetBoneTransform(Model.Bones[boneName].Index);
+        }
+
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
             blendWeight = 1;
@@ -549,6 +652,9 @@ namespace Nine.Animations
         /// </summary>
         internal WeightedBoneAnimationController(Model model, IBoneAnimationController controller)
         {
+            if (controller == null)
+                throw new ArgumentNullException("controller");
+
             List<WeightedBoneAnimationControllerBone> bones = new List<WeightedBoneAnimationControllerBone>(model.Bones.Count);
             for (int i = 0; i < model.Bones.Count; i++)
                 bones.Add(new WeightedBoneAnimationControllerBone());

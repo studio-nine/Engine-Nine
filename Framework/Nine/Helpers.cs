@@ -19,14 +19,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
-    #region Interpolate
     /// <summary>
     /// A method used to interpolate the specified type.
     /// </summary>
     public delegate T Interpolate<T>(T x, T y, float amount);
-    #endregion
 
-    #region LerpHelper
     /// <summary>
     /// Helper class to interpolate common types.
     /// </summary>
@@ -148,7 +145,19 @@ namespace Nine
 
             return returnMatrix;
         }
-
     }
-    #endregion
+
+    internal static class MatrixHelper
+    {
+        public static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
+        {
+            Vector3 axis = Vector3.Cross(fromDirection, toDirection);
+
+            if (axis == Vector3.Zero)
+                return Matrix.Identity;
+            
+            axis.Normalize();
+            return Matrix.CreateFromAxisAngle(axis, (float)Math.Acos(Vector3.Dot(fromDirection, toDirection)));
+        }
+    }
 }

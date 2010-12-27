@@ -39,6 +39,10 @@ namespace DebuggerPrimitives
 #endif
 
         ModelViewerCamera camera;
+        Geometry model;
+        Texture2D butterfly;
+        Texture2D lightning;
+        PrimitiveBatch primitiveBatch;
 
         public DebuggerPrimitiveGame()
         {
@@ -66,6 +70,11 @@ namespace DebuggerPrimitives
         protected override void LoadContent()
         {
             camera = new ModelViewerCamera(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice, 4096);
+
+            model = Content.Load<Geometry>("peon");
+            butterfly = Content.Load<Texture2D>("butterfly");
+            lightning = Content.Load<Texture2D>("lightning");
 
             base.LoadContent();
         }
@@ -80,19 +89,34 @@ namespace DebuggerPrimitives
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
+            BoundingFrustum frustum = new BoundingFrustum(
+                Matrix.CreateLookAt(new Vector3(0, 15, 15), Vector3.Zero, Vector3.UnitZ) *
+                Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 1, 1, 10));
 
-            DebugVisual.View = camera.View;
-            DebugVisual.Projection = camera.Projection;
-            DebugVisual.Alpha = 0.4f;
-
-
-            DebugVisual.DrawBox(GraphicsDevice, new BoundingBox(-Vector3.One, Vector3.One), Matrix.Identity, Color.Yellow);
-            DebugVisual.DrawSphere(GraphicsDevice, new BoundingSphere(Vector3.Zero, 1), Color.Red);
-            DebugVisual.DrawAxis(GraphicsDevice, Matrix.Identity);
-            DebugVisual.DrawArrow(GraphicsDevice, Vector3.Zero, Vector3.One, 1.0f, Color.White);
-            DebugVisual.DrawPoint(GraphicsDevice, Vector3.One, Color.Black, 0.2f);
-            DebugVisual.DrawLine(GraphicsDevice, Vector3.Zero, Vector3.UnitZ, 1, Color.Cornsilk);
-
+            primitiveBatch.Begin(PrimitiveSortMode.Deferred, camera.View, camera.Projection);
+            {
+                primitiveBatch.DrawSprite(butterfly, Vector3.Zero, 2, Color.White);
+                primitiveBatch.DrawSphere(new BoundingSphere(Vector3.UnitX * 4, 1), 24, null, Color.White);
+                primitiveBatch.DrawGrid(1, 128, 128, null, Color.White * 0.25f);
+                primitiveBatch.DrawGrid(8, 16, 16, null, Color.Black);
+                primitiveBatch.DrawLine(new Vector3(5, 5, 0), new Vector3(5, 5, 5), Color.Blue);
+                primitiveBatch.DrawLine(null, new Vector3(5, -5, 0), new Vector3(5, -5, 5), 0.05f, null, null, Color.Yellow);
+                primitiveBatch.DrawLine(lightning, new Vector3[] { new Vector3(5, -5, 0), new Vector3(5, 0, 2), new Vector3(5, 5, 0) }, 1f, null, null, Color.White);
+                primitiveBatch.DrawArrow(Vector3.Zero, Vector3.UnitZ * 2, null, Color.White);
+                primitiveBatch.DrawBox(new BoundingBox(-Vector3.One, Vector3.One), null, Color.White);
+                primitiveBatch.DrawSolidBox(new BoundingBox(-Vector3.One, Vector3.One), null, Color.Yellow * 0.2f);
+                primitiveBatch.DrawCircle(Vector3.UnitX * 2, 1, 24, null, Color.Yellow);
+                primitiveBatch.DrawSolidSphere(new BoundingSphere(Vector3.UnitX * 4, 1), 24, null, Color.Red * 0.2f);
+                primitiveBatch.DrawGeometry(model, Matrix.CreateTranslation(-4, 0, 0), Color.Yellow * 0.5f);
+                primitiveBatch.DrawAxis(Matrix.CreateTranslation(-4, 0, 0));
+                primitiveBatch.DrawFrustum(frustum, null, Color.White);
+                primitiveBatch.DrawSolidFrustum(frustum, null, Color.Pink * 0.5f);
+                primitiveBatch.DrawCentrum(new Vector3(-5, -2, 0), 2, 1, 24, null, Color.WhiteSmoke * 0.5f);
+                primitiveBatch.DrawSolidCentrum(new Vector3(-5, -2, 0), 2, 1, 24, null, Color.LawnGreen * 0.3f);
+                primitiveBatch.DrawCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, Color.WhiteSmoke * 0.5f);
+                primitiveBatch.DrawSolidCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, Color.Lavender * 0.3f);
+            }
+            primitiveBatch.End();
 
             base.Draw(gameTime);
         }

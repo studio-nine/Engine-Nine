@@ -1,0 +1,711 @@
+﻿#region Copyright 2009 - 2010 (c) Engine Nine
+//=============================================================================
+//
+//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+#endregion
+
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Xml;
+using System.ComponentModel;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+#endregion
+
+namespace Nine.Graphics
+{
+    /// <summary>
+    /// Defines primitive sort-rendering options.
+    /// </summary>
+    public enum PrimitiveSortMode
+    {
+        /// <summary>
+        /// Primitives are not drawn until End is called. End will apply graphics device
+        /// settings and draw all the sprites in one batch, in the same order calls to
+        /// Draw were received. This mode allows Draw calls to two or more instances
+        /// of ModelBatch without introducing conflicting graphics device settings.
+        /// ModelBatch defaults to Deferred mode.
+        /// </summary>
+        Deferred = 0,
+
+        /// <summary>
+        /// Begin will apply new graphics device settings, and primitives will be drawn
+        /// within each Draw call. In Immediate mode there can only be one active 
+        /// ModelBatch instance without introducing conflicting device settings.
+        /// </summary>
+        Immediate = 1,
+    }
+    
+    /// <summary>
+    /// Enables a group of basic primitives to be drawn.
+    /// </summary>
+    public class PrimitiveBatch : IDisposable
+    {
+        private int VertexBufferSize;
+        private int IndexBufferSize;
+
+        private BasicEffect basicEffect;
+        private PrimitiveSortMode sort;
+        private bool hasBegin = false;
+        private bool hasPrimitiveBegin = false;
+        private Vector3? cameraPosition;
+
+        private BlendState blendState;
+        private SamplerState samplerState;
+        private DepthStencilState depthStencilState;
+        private RasterizerState rasterizerState;
+
+        private DynamicVertexBuffer vertexBuffer;
+        private DynamicIndexBuffer indexBuffer;
+        private VertexPositionColorTexture[] vertexData;
+        private ushort[] indexData;
+        
+        private List<PrimitiveBatchEntry> batches = new List<PrimitiveBatchEntry>();
+        private List<int> vertexSegments = new List<int>();
+        private List<int> indexSegments = new List<int>();
+
+        private PrimitiveBatchEntry currentPrimitive;
+        private int currentSegment;
+        private int currentVertex;
+        private int currentIndex;
+        private int currentBaseVertex;
+        private int currentBaseIndex;
+        private int baseSegmentVertex;
+        private int baseSegmentIndex;
+        private int beginSegment;
+        
+        /// <summary>
+        /// Gets the view matrix used by this PrimitiveBatch.
+        /// </summary>
+        public Matrix View { get; private set; }
+
+        /// <summary>
+        /// Gets the projection matrix used by this PrimitiveBatch.
+        /// </summary>
+        public Matrix Projection { get; private set; }
+
+        /// <summary>
+        /// Gets the underlying graphics device used by this PrimitiveBatch.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
+        /// Creates a new PrimitiveBatch instance.
+        /// </summary>
+#if WINDOWS_PHONE
+        public PrimitiveBatch(GraphicsDevice graphics) : this(graphics, 512)
+#else
+        public PrimitiveBatch(GraphicsDevice graphics) : this(graphics, 2048)
+#endif
+        {
+        }
+
+        /// <summary>
+        /// Creates a new PrimitiveBatch instance.
+        /// </summary>
+        public PrimitiveBatch(GraphicsDevice graphics, int maxVertexCountPerPrimitive)
+        {
+            VertexBufferSize = maxVertexCountPerPrimitive;
+            IndexBufferSize = maxVertexCountPerPrimitive * 2;
+
+            GraphicsDevice = graphics;
+            basicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
+            basicEffect.VertexColorEnabled = true;
+
+            vertexData = new VertexPositionColorTexture[VertexBufferSize];
+            indexData = new ushort[IndexBufferSize];
+            
+            vertexBuffer = new DynamicVertexBuffer(GraphicsDevice, typeof(VertexPositionColorTexture), VertexBufferSize, BufferUsage.WriteOnly);
+            indexBuffer = new DynamicIndexBuffer(GraphicsDevice, typeof(ushort), IndexBufferSize, BufferUsage.WriteOnly);
+        }
+
+        public void Begin(Matrix view, Matrix projection)
+        {
+            Begin(PrimitiveSortMode.Deferred, view, projection);
+        }
+
+        public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection)
+        {
+            Begin(sortMode, view, projection, null , null, null, null);
+        }
+
+        public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
+        {
+            this.View = view;
+            this.Projection = projection;
+            this.sort = sortMode;
+            this.hasBegin = true;
+            this.cameraPosition = null;
+            
+            this.blendState = blendState != null ? blendState : BlendState.AlphaBlend;
+            this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
+            this.depthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.DepthRead;
+            this.rasterizerState = rasterizerState != null ? rasterizerState : RasterizerState.CullCounterClockwise;
+            
+            Flush();
+
+            basicEffect.World = Matrix.Identity;
+            basicEffect.View = view;
+            basicEffect.Projection = projection;
+        }
+
+        public void DrawSprite(Texture2D texture, Vector3 position, float size, Color color)
+        {
+            DrawSprite(texture, position, size, size, 0, Vector3.UnitZ, null, null, color);
+        }
+
+        public void DrawSprite(Texture2D texture, Vector3 position, float width, float height, float rotation, Vector3 up, Matrix? textureTransform, Matrix? world, Color color)
+        {
+            //      aa --- ab
+            //       |     |
+            //       |     |
+            //      ba --- bb
+            VertexPositionColorTexture aa;
+            VertexPositionColorTexture ab;
+            VertexPositionColorTexture ba;
+            VertexPositionColorTexture bb;
+
+            Matrix transform = Matrix.CreateScale(-1, 1, 1) *
+                               Matrix.CreateRotationZ(rotation) *
+                               Matrix.CreateBillboard(position, GetCameraPosition(), up, null);
+
+            if (float.IsNaN(transform.M11))
+                transform = Matrix.Identity;
+
+            aa.Position = position + Vector3.TransformNormal(new Vector3(-width * 0.5f, +height * 0.5f, 0), transform);
+            ab.Position = position + Vector3.TransformNormal(new Vector3(+width * 0.5f, +height * 0.5f, 0), transform);
+            ba.Position = position + Vector3.TransformNormal(new Vector3(-width * 0.5f, -height * 0.5f, 0), transform);
+            bb.Position = position + Vector3.TransformNormal(new Vector3(+width * 0.5f, -height * 0.5f, 0), transform);
+
+            if (textureTransform != null)
+            {
+                aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.Zero);
+                ab.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitX);
+                ba.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitY);
+                bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.One);
+            }
+            else
+            {
+                aa.TextureCoordinate = Vector2.Zero;
+                ab.TextureCoordinate = Vector2.UnitX;
+                ba.TextureCoordinate = Vector2.UnitY;
+                bb.TextureCoordinate = Vector2.One;
+            }
+
+            aa.Color = ab.Color =
+            ba.Color = bb.Color = color;
+
+            BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            {
+                // Add new vertices and indices
+                AddIndex((ushort)(0));
+                AddIndex((ushort)(1));
+                AddIndex((ushort)(2));
+                AddIndex((ushort)(1));
+                AddIndex((ushort)(3));
+                AddIndex((ushort)(2));
+
+                AddVertex(aa);
+                AddVertex(ab);
+                AddVertex(ba);
+                AddVertex(bb);
+            }
+            EndPrimitive();
+        }
+
+        public void DrawLine(Vector3 v1, Vector3 v2, Color color)
+        {
+            DrawLine(v1, v2, null, color);
+        }
+
+        public void DrawLine(Vector3 v1, Vector3 v2, Matrix? world, Color color)
+        {
+            BeginPrimitive(PrimitiveType.LineList, null, world);
+            {
+                AddVertex(new VertexPositionColorTexture() { Position = v1, Color = color });
+                AddVertex(new VertexPositionColorTexture() { Position = v2, Color = color });
+            }
+            EndPrimitive();
+        }
+
+        public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Matrix? textureTransform, Matrix? world, Color color)
+        {
+            //      aa --- ab
+            //       |     |
+            //       |     |
+            //      ba --- bb
+            VertexPositionColorTexture aa;
+            VertexPositionColorTexture ab;
+            VertexPositionColorTexture ba;
+            VertexPositionColorTexture bb;
+
+            CreateBillboard(start, end, width, out aa.Position, out ab.Position,
+                                               out ba.Position, out bb.Position);
+
+            if (textureTransform != null)
+            {
+                aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.Zero);
+                ab.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitX);
+                ba.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitY);
+                bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.One);
+            }
+            else
+            {
+                aa.TextureCoordinate = Vector2.Zero;
+                ab.TextureCoordinate = Vector2.UnitX;
+                ba.TextureCoordinate = Vector2.UnitY;
+                bb.TextureCoordinate = Vector2.One;
+            }
+
+            aa.Color = ab.Color =
+            ba.Color = bb.Color = color;
+
+            BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            {
+                // Add new vertices and indices
+                AddIndex((ushort)(0));
+                AddIndex((ushort)(1));
+                AddIndex((ushort)(2));
+                AddIndex((ushort)(1));
+                AddIndex((ushort)(3));
+                AddIndex((ushort)(2));
+                
+                AddVertex(aa);
+                AddVertex(ab);
+                AddVertex(ba);
+                AddVertex(bb);
+            }
+            EndPrimitive();
+        }
+
+        public void DrawLine(Texture2D texture, Vector3[] lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color)
+        {
+            if (lineStrip == null || lineStrip.Length < 2)
+                throw new ArgumentException("lineStrip");
+
+
+            //      aa --- ab
+            //       |     |
+            //       |     |
+            //      ba --- bb
+            VertexPositionColorTexture aa;
+            VertexPositionColorTexture ab;
+            VertexPositionColorTexture ba;
+            VertexPositionColorTexture bb;
+
+            aa.Color = ab.Color =
+            ba.Color = bb.Color = color;
+
+            aa.Position = ab.Position =
+            ba.Position = bb.Position = Vector3.Zero;
+
+
+            // We want the texture to uniformly distribute on the line
+            // even if each line segment may have different length.
+            float totalLength = 0;
+            float percentage = 0;
+
+            for (int i = 1; i < lineStrip.Length; i++)
+                totalLength += Vector3.Subtract(lineStrip[i], lineStrip[i - 1]).Length();
+
+            
+            BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            {
+                int vertexCount = 0;
+                Vector3 start = lineStrip[0];
+                Vector3 lastSegment1 = Vector3.Zero;
+                Vector3 lastSegment2 = Vector3.Zero;
+
+                for (int i = 1; i < lineStrip.Length; i++)
+                {
+                    CreateBillboard(start, lineStrip[i], width, out aa.Position, out ab.Position,
+                                                                 out ba.Position, out bb.Position);
+
+                    if (textureTransform != null)
+                    {
+                        ba.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, new Vector2(0, 1 - percentage));
+                        bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, new Vector2(1, 1 - percentage));
+                    }
+                    else
+                    {
+                        ba.TextureCoordinate = new Vector2(0, 1 - percentage);
+                        bb.TextureCoordinate = new Vector2(1, 1 - percentage);
+                    }
+
+                    percentage += Vector3.Subtract(lineStrip[i], lineStrip[i - 1]).Length() / totalLength;
+
+                    if (i > 1)
+                    {
+                        // Connect adjacent segments
+                        ba.Position = (ba.Position + lastSegment1) / 2;
+                        bb.Position = (bb.Position + lastSegment2) / 2;
+
+                        // Adjust the connection points to the specified width
+                        Vector3 append = Vector3.Subtract(bb.Position, ba.Position);
+
+                        append.Normalize();
+                        append *= width / 2;
+
+                        ba.Position = start - append;
+                        bb.Position = start + append;
+                    }
+
+                    lastSegment1 = aa.Position;
+                    lastSegment2 = ab.Position;
+
+                    int startIndex = vertexCount;
+
+                    AddIndex((ushort)(startIndex + 0));
+                    AddIndex((ushort)(startIndex + 3));
+                    AddIndex((ushort)(startIndex + 1));
+                    AddIndex((ushort)(startIndex + 0));
+                    AddIndex((ushort)(startIndex + 2));
+                    AddIndex((ushort)(startIndex + 3));
+
+                    AddVertex(ba);
+                    AddVertex(bb);
+
+                    vertexCount += 2;
+
+                    start = lineStrip[i];
+                }
+
+                // Last segment
+                if (textureTransform != null)
+                {
+                    aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.Zero);
+                    ab.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitX);
+                }
+                else
+                {
+                    aa.TextureCoordinate = Vector2.Zero;
+                    ab.TextureCoordinate = Vector2.UnitX;
+                }
+
+                AddVertex(aa);
+                AddVertex(ab);
+            }
+            EndPrimitive();
+        }
+
+        public void Draw(IEnumerable<Vector3> vertices, IEnumerable<int> indices, Matrix? world, Color color)
+        {
+            BeginPrimitive(PrimitiveType.TriangleList, null, world);
+            {
+                foreach (Vector3 position in vertices)
+                    AddVertex(new VertexPositionColorTexture() { Position = position, Color = color });
+
+                foreach (ushort index in indices)
+                    AddIndex(index);
+            }
+            EndPrimitive();
+        }
+
+        public void Draw(PrimitiveType primitiveType, Texture2D texture, IEnumerable<VertexPositionColorTexture> vertices, IEnumerable<ushort> indices, Matrix? world)
+        {
+            if (vertices == null)
+                throw new ArgumentNullException("vertices");
+            
+            BeginPrimitive(primitiveType, texture, world);
+            {
+                foreach (var vertex in vertices)
+                    AddVertex(vertex);
+
+                if (indices != null)
+                {
+                    foreach (var index in indices)
+                        AddIndex(index);
+                }
+            }
+            EndPrimitive();
+        }
+
+        public void End()
+        {
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
+
+            vertexSegments.Add(baseSegmentVertex + currentVertex);
+            indexSegments.Add(baseSegmentIndex + currentIndex);
+
+            for (int i = 0; i < batches.Count; i++)
+                InternalDraw(batches[i]);
+
+            hasBegin = false;
+        }
+
+        public void Dispose()
+        {
+            if (vertexBuffer != null)
+                vertexBuffer.Dispose();
+            if (indexBuffer != null)
+                indexBuffer.Dispose();
+        }
+
+        internal void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world)
+        {
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called before end and draw calls");
+
+            currentPrimitive = new PrimitiveBatchEntry();
+            currentPrimitive.World = world;
+            currentPrimitive.PrimitiveType = primitiveType;
+            currentPrimitive.Texture = texture;
+            currentPrimitive.StartVertex = currentVertex;
+            currentPrimitive.StartIndex = currentIndex;
+
+            currentBaseVertex = currentVertex;
+            currentBaseIndex = currentIndex;
+
+            beginSegment = currentSegment;
+
+            hasPrimitiveBegin = true;
+        }
+
+        internal void AddVertex(Vector3 position, Color color)
+        {
+            AddVertex(new VertexPositionColorTexture() { Position = position, Color = color });
+        }
+
+        internal void AddVertex(VertexPositionColorTexture vertex)
+        {
+            if (!hasPrimitiveBegin)
+                throw new InvalidOperationException("Begin must be called before end and draw calls");
+
+            if (baseSegmentVertex + currentVertex >= vertexData.Length)
+                Array.Resize(ref vertexData, vertexData.Length * 2);
+
+            if (currentVertex >= VertexBufferSize)
+            {
+                currentSegment++;
+
+                if (currentSegment - beginSegment >= 2)
+                    throw new ArgumentOutOfRangeException("Input primitive too large for a single draw call.");
+
+                indexSegments.Add(baseSegmentIndex = baseSegmentIndex + currentBaseIndex);
+                vertexSegments.Add(baseSegmentVertex = baseSegmentVertex + currentBaseVertex);
+
+                currentVertex -= currentBaseVertex;
+                currentIndex -= currentBaseIndex;
+
+                currentBaseIndex = 0;
+                currentBaseVertex = 0;
+                currentPrimitive.StartVertex = 0;
+                currentPrimitive.StartIndex = 0;
+            }
+
+            vertexData[baseSegmentVertex + currentVertex++] = vertex;
+        }
+
+        internal void AddIndex(int index)
+        {
+            if (index > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException("index");
+
+            AddIndex((ushort)index);
+        }
+
+        internal void AddIndex(ushort index)
+        {
+            if (!hasPrimitiveBegin)
+                throw new InvalidOperationException("Begin must be called before end and draw calls");
+
+            if (baseSegmentIndex + currentIndex >= indexData.Length)
+                Array.Resize(ref indexData, indexData.Length * 2);
+
+            if (currentIndex >= IndexBufferSize)
+            {
+                for (int i = currentBaseIndex; i < currentIndex; i++)
+                {
+                    indexData[baseSegmentIndex + i] -= (ushort)currentBaseVertex;
+                }
+
+                currentSegment++;
+
+                if (currentSegment - beginSegment >= 2)
+                    throw new ArgumentOutOfRangeException("Input primitive too large for a single draw call.");
+
+                indexSegments.Add(baseSegmentIndex = baseSegmentIndex + currentBaseIndex);
+                vertexSegments.Add(baseSegmentVertex = baseSegmentVertex + currentBaseVertex);
+
+                currentVertex -= currentBaseVertex;
+                currentIndex -= currentBaseIndex;
+
+                currentBaseIndex = 0;
+                currentBaseVertex = 0;
+                currentPrimitive.StartVertex = 0;
+                currentPrimitive.StartIndex = 0;
+            }
+
+            indexData[baseSegmentIndex + currentIndex++] = (ushort)(currentBaseVertex + index);
+        }
+
+        internal void EndPrimitive()
+        {
+            currentPrimitive.Segment = currentSegment;
+            currentPrimitive.VertexCount = currentVertex - currentPrimitive.StartVertex;
+            currentPrimitive.IndexCount = currentIndex - currentPrimitive.StartIndex;
+
+            if (sort == PrimitiveSortMode.Deferred)
+            {
+                if (batches.Count > 0)
+                {
+                    var lastBatch = batches[batches.Count - 1];
+
+                    if ((lastBatch.PrimitiveType == PrimitiveType.LineList ||
+                         lastBatch.PrimitiveType == PrimitiveType.TriangleList) &&
+                        lastBatch.PrimitiveType == currentPrimitive.PrimitiveType &&
+                        lastBatch.Segment == currentPrimitive.Segment &&
+                        lastBatch.Texture == currentPrimitive.Texture &&
+                        lastBatch.World == currentPrimitive.World &&
+                        ((lastBatch.IndexCount <= 0 && currentPrimitive.IndexCount <= 0) ||
+                         (lastBatch.IndexCount > 0 && currentPrimitive.IndexCount > 0)))
+                    {
+                        lastBatch.IndexCount += currentPrimitive.IndexCount;
+                        lastBatch.VertexCount += currentPrimitive.VertexCount;
+                        batches[batches.Count - 1] = lastBatch;
+                        return;
+                    }
+                }
+
+                batches.Add(currentPrimitive);
+            }
+            else if (sort == PrimitiveSortMode.Immediate)
+            {
+                vertexSegments.Add(baseSegmentVertex + currentVertex);
+                indexSegments.Add(baseSegmentIndex + currentIndex);
+
+                InternalDraw(currentPrimitive);
+
+                Flush();
+            }
+
+            hasPrimitiveBegin = false;
+        }
+
+        private void Flush()
+        {
+            batches.Clear();
+            vertexSegments.Clear();
+            indexSegments.Clear();
+            vertexSegments.Add(0);
+            indexSegments.Add(0);
+
+            currentSegment = 0;
+            currentIndex = 0;
+            currentVertex = 0;
+            baseSegmentIndex = 0;
+            baseSegmentVertex = 0;
+        }
+
+        private void InternalDraw(PrimitiveBatchEntry entry)
+        {
+            if (entry.VertexCount <= 0 && entry.IndexCount <= 0)
+                return;
+
+            if (entry.Texture != null)
+            {
+                basicEffect.TextureEnabled = true;
+                basicEffect.Texture = entry.Texture;
+            }
+            else
+            {
+                basicEffect.TextureEnabled = false;
+            }
+
+            basicEffect.World = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+
+            // Setup state
+            GraphicsDevice.BlendState = blendState;
+            GraphicsDevice.DepthStencilState = depthStencilState;
+            GraphicsDevice.SamplerStates[0] = samplerState;
+            GraphicsDevice.RasterizerState = rasterizerState;
+
+            vertexBuffer.SetData(vertexData, vertexSegments[entry.Segment], vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment]);
+            GraphicsDevice.SetVertexBuffer(vertexBuffer);
+
+            if (entry.IndexCount > 0)
+            {
+                indexBuffer.SetData(indexData, indexSegments[entry.Segment], indexSegments[entry.Segment + 1] - indexSegments[entry.Segment]);
+                GraphicsDevice.Indices = indexBuffer;
+                GraphicsDevice.DrawIndexedPrimitives(entry.PrimitiveType, 0, entry.StartVertex, entry.VertexCount, entry.StartIndex, GetPrimitiveCount(entry.PrimitiveType, entry.IndexCount));
+                GraphicsDevice.Indices = null;
+            }
+            else
+            {
+                GraphicsDevice.DrawPrimitives(entry.PrimitiveType, entry.StartVertex, GetPrimitiveCount(entry.PrimitiveType, entry.VertexCount));
+            }
+
+            GraphicsDevice.SetVertexBuffer(null);
+        }
+
+        // NumVertsPerPrimitive is a boring helper function that tells how many vertices
+        // it will take to draw each kind of primitive.
+        static private int GetPrimitiveCount(PrimitiveType primitive, int indexCount)
+        {
+            switch (primitive)
+            {
+                case PrimitiveType.LineStrip:
+                    return indexCount - 1;
+                case PrimitiveType.LineList:
+                    return indexCount / 2;
+                case PrimitiveType.TriangleList:
+                    return indexCount / 3;
+                case PrimitiveType.TriangleStrip:
+                    return indexCount - 2;
+                default:
+                    throw new InvalidOperationException("primitive is not valid");
+            }
+        }
+
+        /// <summary>
+        /// Matrix.CreateConstraintBillboard has a sudden change effect that is not
+        /// desirable, so rolling out our own version.
+        /// </summary>
+        internal void CreateBillboard(Vector3 start, Vector3 end, float width,
+                                               out Vector3 aa, out Vector3 ab,
+                                               out Vector3 ba, out Vector3 bb)
+        {
+            // Compute billboard facing
+            Vector3 v1 = Vector3.Subtract(end, start);
+            Vector3 v2 = Vector3.Subtract(GetCameraPosition(), start);
+
+            Vector3 right = Vector3.Cross(v1, v2);
+
+            right.Normalize();
+            right *= width / 2;
+
+            // Compute destination vertices
+            aa = end - right;
+            ab = end + right;
+            ba = start - right;
+            bb = start + right;
+        }
+
+        private Vector3 GetCameraPosition()
+        {
+            if (!cameraPosition.HasValue)
+                cameraPosition = Matrix.Invert(View).Translation;
+            return cameraPosition.Value;
+        }
+    }
+
+    internal struct PrimitiveBatchEntry
+    {
+        public Matrix? World;
+        public Texture2D Texture;
+        public PrimitiveType PrimitiveType;
+        public int StartVertex;
+        public int VertexCount;
+        public int StartIndex;
+        public int IndexCount;
+        public int Segment;
+    }
+}

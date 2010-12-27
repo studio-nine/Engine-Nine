@@ -136,10 +136,10 @@ namespace Nine.Graphics
 
             offset = new Vector3();
 
-            int xPatchCount = surface.TessellationX / Tessellation;
-            int yPatchCount = surface.TessellationY / Tessellation;
+            int xPatchCount = surface.GridCountX / Tessellation;
+            int yPatchCount = surface.GridCountY / Tessellation;
 
-            float step = surface.Size.X / surface.TessellationX;
+            float step = surface.Size.X / surface.GridCountX;
 
             offset.X = (X + 0.5f - xPatchCount * 0.5f) * step * Tessellation;
             offset.Y = (Y + 0.5f - yPatchCount * 0.5f) * step * Tessellation;

@@ -21,7 +21,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
-    #region ServiceProviderExtensions
     /// <summary>
     /// Contains extension methods for IServiceProvider.
     /// </summary>
@@ -52,5 +51,4 @@ namespace Nine
             return provider.GetService(Type.GetType(type)) as K;
         }
     }
-    #endregion
 }

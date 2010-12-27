@@ -91,8 +91,8 @@ namespace Nine.Graphics
     /// </summary>
     public class ModelBatch
     {
-        static SkinnedEffect basicSkinnedEffect;
-        static BasicEffect basicEffect;
+        private SkinnedEffect basicSkinnedEffect;
+        private BasicEffect basicEffect;
 
         private ModelSortMode sort;
         private bool hasBegin = false;
@@ -102,7 +102,11 @@ namespace Nine.Graphics
         private int batchCount;
         private ModelBatchSortComparer comparer;
         private Vector3 eyePosition;
-
+        private BlendState blendState;
+        private SamplerState samplerState;
+        private DepthStencilState depthStencilState;
+        private RasterizerState rasterizerState;
+        
         /// <summary>
         /// Gets the view matrix used by this ModelBatch.
         /// </summary>
@@ -133,6 +137,16 @@ namespace Nine.Graphics
 
         public void Begin(ModelSortMode sortMode, Matrix view, Matrix projection)
         {
+            Begin(sort, view, projection, null , null, null, null);
+        }
+        
+        public void Begin(ModelSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
+        {
+            this.blendState = blendState != null ? blendState : BlendState.Opaque;
+            this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
+            this.depthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.Default;
+            this.rasterizerState = rasterizerState != null ? rasterizerState : RasterizerState.CullCounterClockwise;
+
             View = view;
             Projection = projection;
 
@@ -304,6 +318,12 @@ namespace Nine.Graphics
             if (texture != null)
                 effect.SetTexture(texture);
 
+            // Setup state
+            GraphicsDevice.BlendState = blendState;
+            GraphicsDevice.DepthStencilState = depthStencilState;
+            GraphicsDevice.SamplerStates[0] = samplerState;
+            GraphicsDevice.RasterizerState = rasterizerState;
+
             // Draw geometry
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
@@ -360,7 +380,7 @@ namespace Nine.Graphics
                 {
                     if (basicSkinnedEffect == null)
                     {
-                        basicSkinnedEffect = new SkinnedEffect(GraphicsDevice);
+                        basicSkinnedEffect = (SkinnedEffect)GraphicsResources<SkinnedEffect>.GetInstance(GraphicsDevice).Clone();
                         basicSkinnedEffect.WeightsPerVertex = 4;
                         basicSkinnedEffect.PreferPerPixelLighting = true;
                         basicSkinnedEffect.EnableDefaultLighting();
@@ -372,7 +392,7 @@ namespace Nine.Graphics
                 {
                     if (basicEffect == null)
                     {
-                        basicEffect = new BasicEffect(GraphicsDevice);
+                        basicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
                         basicEffect.TextureEnabled = true;
                         basicEffect.VertexColorEnabled = true;
                         basicEffect.PreferPerPixelLighting = true;

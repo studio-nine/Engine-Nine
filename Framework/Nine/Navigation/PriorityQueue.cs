@@ -212,7 +212,8 @@ namespace Nine.Navigation
         /// <summary>
         /// Fix the heap
         /// </summary>
-        /// <param name="elements">Array of elements to be fixed</param>
+        /// <param name="cost"></param>
+        /// <param name="value"></param>
         /// <param name="i">Root index of the subtree</param>
         /// <param name="n">Subtree size</param>
         /// <param name="k">Element to be add as the root</param>

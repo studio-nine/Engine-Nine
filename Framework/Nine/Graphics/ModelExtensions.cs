@@ -73,7 +73,7 @@ namespace Nine.Graphics
         static List<string> EmptyStringCollection = new List<string>();
 
         /// <summary>
-        /// Gets wether the specfied model has any skinning info attached to it.
+        /// Gets whether the specified model has any skinning info attached to it.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
         public static bool IsSkinned(this Model model)
@@ -147,6 +147,31 @@ namespace Nine.Graphics
             }
 
             return clip;
+        }
+
+        /// <summary>
+        /// Gets the aboslute transform of the specified bone.
+        /// </summary>
+        public static Matrix GetAbsoluteBoneTransform(this Model model, int boneIndex)
+        {
+            ModelBone bone = model.Bones[boneIndex];
+            Matrix absoluteTransform = bone.Transform;
+            
+            while (bone.Parent != null)
+            {
+                bone = bone.Parent;
+                absoluteTransform = absoluteTransform * bone.Transform;
+            }
+
+            return absoluteTransform;
+        }
+
+        /// <summary>
+        /// Gets the aboslute transform of the specified bone.
+        /// </summary>
+        public static Matrix GetAbsoluteBoneTransform(this Model model, string boneName)
+        {
+            return GetAbsoluteBoneTransform(model, model.Bones[boneName].Index);
         }
 
         /// <summary>

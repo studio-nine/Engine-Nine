@@ -16,7 +16,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
+#if !WINDOWS_PHONE
 using Nine.Graphics.Effects;
+#endif
 #endregion
 
 namespace TerrainSample
@@ -26,11 +28,14 @@ namespace TerrainSample
     /// </summary>
     public class TerrainGame : Microsoft.Xna.Framework.Game
     {
-        ScreenCamera camera;
+        TopDownEditorCamera camera;
 
         DrawableSurface terrain;
+        BasicEffect basicEffect;
+
+#if !WINDOWS_PHONE
         LinkedEffect terrainEffect;
-        DecalEffect decalEffect;
+#endif
 
         public TerrainGame()
         {
@@ -56,24 +61,28 @@ namespace TerrainSample
         protected override void LoadContent()
         {
             // Create a topdown perspective editor camera to help us visualize the scene
-            camera = new ScreenCamera(GraphicsDevice);
-            camera.Z = 100;
+            camera = new TopDownEditorCamera(GraphicsDevice);
 
             // Create a terrain based on the terrain geometry loaded from file
-            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("RF1"), 8);
+            //terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("RF1"), 64);
+            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 8);
+            terrain.TextureTransform = TextureTransform.CreateScale(32, 32);
+            terrain.Invalidate();
 
             // Uncomment next line to create a flat terrain
             //terrain = new DrawableSurface(GraphicsDevice, 1, 128, 128, 8);
-            //terrain.Freeze();
+            terrain.Freeze();
 
             // Initialize terrain effects
-            terrainEffect = Content.Load<LinkedEffect>("TerrainEffect");
+            basicEffect = new BasicEffect(GraphicsDevice);
+            basicEffect.TextureEnabled = true;
 
-            decalEffect = new DecalEffect(GraphicsDevice);
-            decalEffect.Texture = Content.Load<Texture2D>("checker");
-            decalEffect.Position = Vector3.One * 10;
-            decalEffect.Rotation = MathHelper.ToRadians(10);
-            decalEffect.Scale = Vector2.One * 10;
+#if !WINDOWS_PHONE
+            basicEffect.Texture = Content.Load<Texture2D>("Mountain");
+            terrainEffect = Content.Load<LinkedEffect>("TerrainEffect");
+#else
+            basicEffect.Texture = Content.Load<Texture2D>("Mountain.Low");
+#endif
         }
 
         /// <summary>
@@ -94,43 +103,24 @@ namespace TerrainSample
             
             // Initialize render state
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            
-            // Terrain picking    
-            Ray ray = GraphicsDevice.Viewport.CreatePickRay(
-                            Mouse.GetState().X, Mouse.GetState().Y, camera.View, camera.Projection);
-
-            float? distance = !terrain.IsFreezed ? terrain.Intersects(ray) : null;
-
-            if (distance.HasValue)
-                decalEffect.Position = ray.Position + ray.Direction * distance.Value;
 
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
-
+            
             foreach (DrawableSurfacePatch patch in terrain.Patches)
             {
                 // Cull patches that are outside the view frustum
                 if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
                 {
                     // Setup matrices
-                    terrainEffect.World = patch.Transform;
-                    terrainEffect.View = camera.View;
-                    terrainEffect.Projection = camera.Projection;
-                    
-                    decalEffect.World = patch.Transform;
-                    decalEffect.View = camera.View;
-                    decalEffect.Projection = camera.Projection;
-                    
+                    basicEffect.World = patch.Transform;
+                    basicEffect.View = camera.View;
+                    basicEffect.Projection = camera.Projection;
+
                     // Draw each path with the specified effect
-                    patch.Draw(terrainEffect);
-                    
-                    // Draw decal
-                    if (patch.BoundingBox.Intersects(decalEffect.BoundingBox))
-                    {
-                        patch.Draw(decalEffect);
-                    }
+                    patch.Draw(basicEffect);
                 }
             }
 

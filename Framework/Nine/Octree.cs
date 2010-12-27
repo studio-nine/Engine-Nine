@@ -26,22 +26,22 @@ namespace Nine
     public class Octree<T>
     {
         /// <summary>
-        /// Specifies the total number of child nodes (8) in the Octree<T>.
+        /// Specifies the total number of child nodes (8) in the Octree.
         /// </summary>
         public const int ChildCount = 8;
 
         /// <summary>
-        /// Gets the root OctreeNode<T> of this Octree<T>.
+        /// Gets the root OctreeNode of this Octree.
         /// </summary>
         public OctreeNode<T> Root { get; internal set; }
 
         /// <summary>
-        /// Gets the bounds of the Octree<T> node.
+        /// Gets the bounds of the Octree node.
         /// </summary>
         public BoundingBox Bounds { get; internal set; }
 
         /// <summary>
-        /// Gets the max depth of this Octree<T>.
+        /// Gets the max depth of this Octree.
         /// </summary>
         public int MaxDepth { get; internal set; }
 
@@ -51,9 +51,9 @@ namespace Nine
         internal Octree() { }
 
         /// <summary>
-        /// Creates a new Octree<T> with the specified boundary.
+        /// Creates a new Octree with the specified boundary.
         /// </summary>
-        public Octree(int maxDepth, BoundingBox bounds)
+        public Octree(BoundingBox bounds, int maxDepth)
         {
             Root = new OctreeNode<T>();
             Root.Depth = 0;
@@ -131,7 +131,7 @@ namespace Nine
         /// Expand the root node and all its child nodes with the specified predication.
         /// </summary>
         /// <param name="contains">
-        /// Wether the bounds of the target OctreeNode<T> contains this value.
+        /// Wether the bounds of the target OctreeNode contains this value.
         /// </param>
         public void ExpandAll(Predicate<OctreeNode<T>> contains)
         {
@@ -142,8 +142,9 @@ namespace Nine
         /// Expand the target node and all its child nodes with the specified predication.
         /// </summary>
         /// <param name="contains">
-        /// Wether the bounds of the target OctreeNode<T> contains this value.
+        /// Whether the bounds of the target OctreeNode contains this value.
         /// </param>
+        /// <param name="target"></param>
         public void ExpandAll(OctreeNode<T> target, Predicate<OctreeNode<T>> contains)
         {
             foreach (var node in Traverse(target, (o) => { return contains(o) && Expand(o); })) { }
@@ -214,7 +215,7 @@ namespace Nine
     }
 
     /// <summary>
-    /// Represents a node in Octree<T>.
+    /// Represents a node in Octree.
     /// </summary>
     public sealed class OctreeNode<T>
     {
@@ -226,17 +227,17 @@ namespace Nine
         public bool HasChildren { get; internal set; }
 
         /// <summary>
-        /// Gets the parent node of the Octree<T> Node.
+        /// Gets the parent node of the Octree Node.
         /// </summary>
         public OctreeNode<T> Parent { get; internal set; }
 
         /// <summary>
-        /// Gets the bounds of the Octree<T> node.
+        /// Gets the bounds of the Octree node.
         /// </summary>
         public BoundingBox Bounds { get; internal set; }
 
         /// <summary>
-        /// Gets the depth of this Octree<T> node.
+        /// Gets the depth of this Octree node.
         /// </summary>
         public int Depth { get; internal set; }
         

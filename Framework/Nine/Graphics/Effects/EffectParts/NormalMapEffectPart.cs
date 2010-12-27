@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class NormalMapEffectPart : LinkedEffectPart, IEffectTexture
+    internal class NormalMapEffectPart : LinkedEffectPart, IEffectTexture
     {
         private uint dirtyMask = 0;
         private Texture2D texture;

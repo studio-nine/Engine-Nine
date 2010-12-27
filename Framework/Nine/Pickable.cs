@@ -47,7 +47,7 @@ namespace Nine
         /// </summary>
         public static Ray CreatePickRay(this Viewport viewport, int x, int y, Matrix view, Matrix projection)
         {
-            // create 2 positions in screenspace using the cursor position. 0 is as
+            // create 2 positions in screen space using the cursor position. 0 is as
             // close as possible to the camera, 1 is as far away as possible.
             Vector3 nearSource = new Vector3(x, y, 0f);
             Vector3 farSource = new Vector3(x, y, 1f);
@@ -69,6 +69,51 @@ namespace Nine
 
             // and then create a new ray using nearPoint as the source.
             return new Ray(nearPoint, direction);
+        }
+
+        /// <summary>
+        /// Creates a picking frustum from screen rectangle.
+        /// </summary>
+        public static BoundingFrustum CreatePickFrustum(this Viewport viewport, Point point1, Point point2, Matrix view, Matrix projection)
+        {
+            Rectangle rectangle = new Rectangle();
+
+            rectangle.X = Math.Min(point1.X, point2.X);
+            rectangle.Y = Math.Min(point1.Y, point2.Y);
+            rectangle.Width = Math.Abs(point1.X - point2.X);
+            rectangle.Height = Math.Abs(point1.Y - point2.Y);
+
+            return CreatePickFrustum(viewport, rectangle, view, projection);
+        }
+
+        /// <summary>
+        /// Creates a picking frustum from screen rectangle.
+        /// </summary>
+        public static BoundingFrustum CreatePickFrustum(this Viewport viewport, Rectangle rectangle, Matrix view, Matrix projection)
+        {
+            rectangle.X -= viewport.X;
+            rectangle.Y -= viewport.Y;
+
+            // Select multiple objects
+            Matrix innerProject;
+
+            float left = (float)(2 * rectangle.Left - viewport.Width) / viewport.Width;
+            float right = (float)(2 * rectangle.Right - viewport.Width) / viewport.Width;
+            float bottom = (float)(2 * rectangle.Top - viewport.Height) / viewport.Height;
+            float top = (float)(2 * rectangle.Bottom - viewport.Height) / viewport.Height;
+
+            float farClip = Math.Abs(projection.M43 / (Math.Abs(projection.M33) - 1));
+            float nearClip = Math.Abs(projection.M43 / projection.M33);
+
+            Matrix projectionInverse = Matrix.Invert(projection);
+
+            Vector3 max = Vector3.Transform(new Vector3(1, 1, 0), projectionInverse) * nearClip;
+            Vector3 min = Vector3.Transform(new Vector3(-1, -1, 0), projectionInverse) * -nearClip;
+
+            Matrix.CreatePerspectiveOffCenter(
+                left * min.X, right * max.X, bottom * min.Y, top * max.Y, nearClip, farClip, out innerProject);
+
+            return new BoundingFrustum(view * innerProject);
         }
     }
 

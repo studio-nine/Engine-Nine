@@ -42,6 +42,7 @@ namespace PathFinding
 
         Input input;
         TopDownEditorCamera camera;
+        PrimitiveBatch primitiveBatch;
 
         // The path graph to be searched
         PathGrid pathGraph;
@@ -83,6 +84,7 @@ namespace PathFinding
         {
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
 
             // Handle input events
             input = new Input();
@@ -98,8 +100,8 @@ namespace PathFinding
 
             for (int i = 0; i < 800; i++)
             {
-                pathGraph.Mark(random.Next(pathGraph.TessellationX),
-                               random.Next(pathGraph.TessellationY));
+                pathGraph.Mark(random.Next(pathGraph.GridCountX),
+                               random.Next(pathGraph.GridCountY));
             }
         }
 
@@ -163,51 +165,41 @@ namespace PathFinding
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
-
-            DebugVisual.Alpha = 1.0f;
-            DebugVisual.View = camera.View;
-            DebugVisual.Projection = camera.Projection;
-
-
-            // Draw grid
-            DebugVisual.DrawGrid(GraphicsDevice, Vector3.Zero, 2, 64, 64, Color.Gray);
-
-
-            // Draw obstacles
-            for (int x = 0; x < pathGraph.TessellationX; x++)
+            primitiveBatch.Begin(camera.View, camera.Projection);
             {
-                for (int y = 0; y < pathGraph.TessellationY; y++)
-                {
-                    if (pathGraph.IsMarked(x, y))
-                    {
-                        Vector3 center = new Vector3(pathGraph.GridToPosition(x, y), 0);
+                // Draw grid
+                primitiveBatch.DrawGrid(2, 64, 64, null, Color.Gray);
 
-                        DebugVisual.DrawBox(GraphicsDevice,
-                                            center, Vector3.One * 2,
-                                            Matrix.Identity, Color.Gold);
+                // Draw obstacles
+                for (int x = 0; x < pathGraph.GridCountX; x++)
+                {
+                    for (int y = 0; y < pathGraph.GridCountY; y++)
+                    {
+                        if (pathGraph.IsMarked(x, y))
+                        {
+                            Vector3 center = new Vector3(pathGraph.GridToPosition(x, y), 0);
+
+                            primitiveBatch.DrawSolidBox(center, Vector3.One * 2, null, Color.Gold);
+                        }
                     }
                 }
+
+                // Draw start node
+                if (start.HasValue)
+                {
+                    primitiveBatch.DrawSolidSphere(new Vector3(pathGraph.GridToPosition(start.Value.X, start.Value.Y), 0), 0.5f, 12, null, Color.Honeydew);
+                }
+                
+                // Draw path
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    Vector3 point1 = new Vector3(pathGraph.GridToPosition(path[i].X, path[i].Y), 0);
+                    Vector3 point2 = new Vector3(pathGraph.GridToPosition(path[i + 1].X, path[i + 1].Y), 0);
+
+                    primitiveBatch.DrawLine(point1, point2, null, Color.GreenYellow);
+                }
             }
-
-
-            // Draw start node
-            if (start.HasValue)
-            {
-                DebugVisual.DrawPoint(GraphicsDevice,
-                                      new Vector3(pathGraph.GridToPosition(start.Value.X, start.Value.Y), 0),
-                                      Color.Honeydew, 2);
-            }
-
-
-            // Draw path
-            for (int i = 0; i < path.Count - 1; i++)
-            {
-                Vector3 point1 = new Vector3(pathGraph.GridToPosition(path[i].X, path[i].Y), 0);
-                Vector3 point2 = new Vector3(pathGraph.GridToPosition(path[i + 1].X, path[i + 1].Y), 0);
-
-                DebugVisual.DrawLine(GraphicsDevice, point1, point2, 0.4f, Color.GreenYellow);
-            }
-
+            primitiveBatch.End();
 
             base.Draw(gameTime);
         }

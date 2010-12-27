@@ -64,17 +64,17 @@ namespace Nine.Navigation
         /// This value must be contained by Rectangle(0, 0, TessellationX, TessellationY).
         /// When the path graph is searched, the search process will be restricted to the boundary.
         /// </summary>
-        public Rectangle Boundary { get; set; }
+        public Rectangle Bounds { get; set; }
 
         /// <summary>
         /// Creates a new PathGraph.
         /// </summary>
-        public PathGrid(float width, float height, float x, float y, int tessellationX, int tessellationY)
-            : base(width, height, x, y, tessellationX, tessellationY)
+        public PathGrid(float width, float height, float x, float y, int countX, int countY)
+            : base(width, height, x, y, countX, countY)
         {
-            data = new byte[tessellationX, tessellationY];
+            data = new byte[countX, countY];
 
-            Boundary = new Rectangle(0, 0, tessellationX, tessellationY);
+            Bounds = new Rectangle(0, 0, countX, countY);
         }
 
         /// <summary>
@@ -87,11 +87,11 @@ namespace Nine.Navigation
 
         /// <summary>
         /// Marks the grid under the specified location as obstacle. 
-        /// Input location is turncated.
+        /// Input location is truncated.
         /// </summary>
         public void Mark(float x, float y)
         {
-            Point pt = PositionToGrid(x, y, true);
+            Point pt = PositionToGrid(Clamp(x, y));
 
             data[pt.X, pt.Y]++;
         }
@@ -101,23 +101,20 @@ namespace Nine.Navigation
         /// </summary>
         public void Unmark(int x, int y)
         {
-#if DEBUG
             System.Diagnostics.Debug.Assert(data[x, y] > 0);
-#endif
+
             data[x, y]--;
         }
 
         /// <summary>
-        /// Unmarks the grid under the specified location as obstacle. 
-        /// Input location is turncated.
+        /// Unmark the grid under the specified location as obstacle. 
+        /// Input location is truncated.
         /// </summary>
         public void Unmark(float x, float y)
         {
-            Point pt = PositionToGrid(x, y, true);
+            Point pt = PositionToGrid(Clamp(x, y));
 
-#if DEBUG
             System.Diagnostics.Debug.Assert(data[pt.X, pt.Y] > 0);
-#endif
 
             data[pt.X, pt.Y]--;
         }
@@ -132,11 +129,11 @@ namespace Nine.Navigation
 
         /// <summary>
         /// Checks if the grid under the specified location is marked as obstacle. 
-        /// Input location is turncated.
+        /// Input location is truncated.
         /// </summary>
         public bool IsMarked(float x, float y)
         {
-            Point pt = PositionToGrid(x, y, true);
+            Point pt = PositionToGrid(Clamp(x, y));
 
             return data[pt.X, pt.Y] > 0;
         }
@@ -146,31 +143,31 @@ namespace Nine.Navigation
         /// </summary>
         public int Count
         {
-            get { return TessellationX * TessellationY; }
+            get { return GridCountX * GridCountY; }
         }
 
         /// <summary>
-        /// Gets the path graph node under the specifed grid.
+        /// Gets the path graph node under the specified grid.
         /// </summary>
         public PathGridNode this[float x, float y]
         {
             get
             {
-                Point pt = PositionToGrid(x, y, true);
+                Point pt = PositionToGrid(Clamp(x, y));
 
                 PathGridNode node;
 
                 node.X = pt.X;
                 node.Y = pt.Y;
-                node.ID = pt.X + pt.Y * TessellationX;
+                node.ID = pt.X + pt.Y * GridCountX;
 
                 return node;
             }
         }
 
         /// <summary>
-        /// Gets the path graph node under the specifed location.
-        /// Input location is turncated.
+        /// Gets the path graph node under the specified location.
+        /// Input location is truncated.
         /// </summary>
         public PathGridNode this[int x, int y]
         {
@@ -180,7 +177,7 @@ namespace Nine.Navigation
 
                 node.X = x;
                 node.Y = y;
-                node.ID = x + y * TessellationX;
+                node.ID = x + y * GridCountX;
 
                 return node;
             }
@@ -198,74 +195,74 @@ namespace Nine.Navigation
 
             edge.From = node;
 
-            if (x > Boundary.Left && data[x - 1, y] == 0)
+            if (x > Bounds.Left && data[x - 1, y] == 0)
             {
                 edge.To.X = x - 1;
                 edge.To.Y = y;
-                edge.To.ID = y * TessellationX + x - 1;
+                edge.To.ID = y * GridCountX + x - 1;
                 edge.Cost = 1.0f;
 
                 yield return edge;
             }
-            if (x < Boundary.Right - 1 && data[x + 1, y] == 0)
+            if (x < Bounds.Right - 1 && data[x + 1, y] == 0)
             {
                 edge.To.X = x + 1;
                 edge.To.Y = y;
-                edge.To.ID = y * TessellationX + x + 1;
+                edge.To.ID = y * GridCountX + x + 1;
                 edge.Cost = 1.0f;
 
                 yield return edge;
             }
-            if (y > Boundary.Top && data[x, y - 1] == 0)
+            if (y > Bounds.Top && data[x, y - 1] == 0)
             {
                 edge.To.X = x;
                 edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * TessellationX + x;
+                edge.To.ID = (y - 1) * GridCountX + x;
                 edge.Cost = 1.0f;
 
                 yield return edge;
             }
-            if (y < Boundary.Bottom - 1 && data[x, y + 1] == 0)
+            if (y < Bounds.Bottom - 1 && data[x, y + 1] == 0)
             {
                 edge.To.X = x;
                 edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * TessellationX + x;
+                edge.To.ID = (y + 1) * GridCountX + x;
                 edge.Cost = 1.0f;
 
                 yield return edge;
             }
-            if (x > Boundary.Left && y > Boundary.Top && data[x - 1, y - 1] == 0)
+            if (x > Bounds.Left && y > Bounds.Top && data[x - 1, y - 1] == 0)
             {
                 edge.To.X = x - 1;
                 edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * TessellationX + x - 1;
+                edge.To.ID = (y - 1) * GridCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;
             }
-            if (x > Boundary.Left && y < Boundary.Bottom - 1 && data[x - 1, y + 1] == 0)
+            if (x > Bounds.Left && y < Bounds.Bottom - 1 && data[x - 1, y + 1] == 0)
             {
                 edge.To.X = x - 1;
                 edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * TessellationX + x - 1;
+                edge.To.ID = (y + 1) * GridCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;
             }
-            if (x < Boundary.Right - 1 && y > Boundary.Top && data[x + 1, y - 1] == 0)
+            if (x < Bounds.Right - 1 && y > Bounds.Top && data[x + 1, y - 1] == 0)
             {
                 edge.To.X = x + 1;
                 edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * TessellationX + x + 1;
+                edge.To.ID = (y - 1) * GridCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;
             }
-            if (x < Boundary.Right - 1 && y < Boundary.Bottom - 1 && data[x + 1, y + 1] == 0)
+            if (x < Bounds.Right - 1 && y < Bounds.Bottom - 1 && data[x + 1, y + 1] == 0)
             {
                 edge.To.X = x + 1;
                 edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * TessellationX + x + 1;
+                edge.To.ID = (y + 1) * GridCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;

@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class VertexTransformEffectPart : LinkedEffectPart, IEffectMatrices
+    internal class VertexTransformEffectPart : LinkedEffectPart, IEffectMatrices
     {
         private uint dirtyMask = 0;
         

@@ -312,6 +312,7 @@ namespace Nine.Graphics
             // This method doesn't work correctly for now
             throw new NotImplementedException();
 
+#if FALSE
             float? distance = null;
 
             // Get two vertices to draw a line through the
@@ -439,6 +440,7 @@ namespace Nine.Graphics
             }
 
             return distance;
+#endif
         }
         #endregion
 
@@ -493,8 +495,8 @@ namespace Nine.Graphics
             // positionOnHeightmap is. Remember that integer division always rounds
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
-            int left = (int)position.X / (int)(Size.X / TessellationU);
-            int top = (int)position.Y / (int)(Size.Y / TessellationV);
+            int left = (int)Math.Floor(position.X * TessellationU / Size.X);
+            int top = (int)Math.Floor(position.Y * TessellationV / Size.Y);
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,
@@ -503,7 +505,7 @@ namespace Nine.Graphics
             float yNormalized = position.Y - top * Size.Y / TessellationV;
 
             // Now that we've calculated the indices of the corners of our cell, and
-            // where we are in that cell, we'll use bilinear interpolation to calculuate
+            // where we are in that cell, we'll use bilinear interpolation to calculate
             // our height. This process is best explained with a diagram, so please see
             // the accompanying doc for more information.
             // First, calculate the heights on the bottom and top edge of our cell by

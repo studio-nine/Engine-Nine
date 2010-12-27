@@ -30,7 +30,7 @@ namespace Nine.Navigation.Steering
     public class ObstacleAvoidanceBehavior : SteeringBehavior
     {
         public float DetectorLength { get; set; }
-        public ISpatialQuery Obstacles { get; set; }
+        public ISpatialQuery<ISteerable> Obstacles { get; set; }
         public BoundingSphere NearestObstacle { get; private set; }
 
         public ObstacleAvoidanceBehavior()
@@ -47,7 +47,7 @@ namespace Nine.Navigation.Steering
 
             float detector = movingEntity.BoundingRadius + (movingEntity.Speed / movingEntity.MaxSpeed) * DetectorLength;
 
-            foreach (ISteerable o in Obstacles.Find<ISteerable>(new Vector3(movingEntity.Position, 0), detector))
+            foreach (ISteerable o in Obstacles.Find(new Vector3(movingEntity.Position, 0), detector))
             {
                 BoundingSphere obstacle;
 
@@ -107,7 +107,7 @@ namespace Nine.Navigation.Steering
         {
             float detector = movingEntity.BoundingRadius + DetectorLength + (movingEntity.Speed / movingEntity.MaxSpeed) * DetectorLength;
 
-            foreach (ISteerable o in Obstacles.Find<ISteerable>(new Vector3(movingEntity.Position, 0), detector))
+            foreach (ISteerable o in Obstacles.Find(new Vector3(movingEntity.Position, 0), detector))
             {
                 BoundingSphere obstacle;
                 

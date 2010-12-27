@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class FogEffectPart : LinkedEffectPart, IEffectMatrices, IEffectFog
+    internal class FogEffectPart : LinkedEffectPart, IEffectMatrices, IEffectFog
     {
         private uint dirtyMask = 0;
         

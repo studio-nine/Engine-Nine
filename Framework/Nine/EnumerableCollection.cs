@@ -55,14 +55,6 @@ namespace Nine
         public EnumerableCollection() { }
 
         /// <summary>
-        /// Creates a new instance of EnumerableCollection.
-        /// </summary>
-        public EnumerableCollection(IEnumerable<T> elements)
-        {
-            AddRange(elements);
-        }
-
-        /// <summary>
         /// Raised when a new element is added to the collection.
         /// </summary>
         public event EventHandler<ItemChangedEventArgs<T>> Added;

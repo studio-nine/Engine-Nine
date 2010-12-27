@@ -27,7 +27,7 @@ namespace Nine.Graphics
     public interface IEffectSkinned
     {
         /// <summary>
-        /// Gets or sets if vertex skinning is enabled by th effect.
+        /// Gets or sets if vertex skinning is enabled by this effect.
         /// </summary>
         bool SkinningEnabled { get; set; }
 

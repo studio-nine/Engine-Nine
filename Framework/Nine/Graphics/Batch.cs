@@ -81,9 +81,7 @@ namespace Nine.Graphics
 
                 if (array.Length <= batches[i].Count)
                 {
-                    TValue[] newArray = new TValue[array.Length * 2];
-
-                    Array.Copy(array, newArray, array.Length);
+                    Array.Resize(ref array, array.Length * 2);
                 }
                 
                 batches[i].Values = array;

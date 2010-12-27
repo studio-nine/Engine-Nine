@@ -113,7 +113,11 @@ namespace Nine.Graphics
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
+#if WINDOWS_PHONE
+			if (e.IsLeftButtonDown)
+#else
             if (e.IsRightButtonDown)
+#endif
             {
                 float dx = e.X - startPoint.X;
                 float dy = e.Y - startPoint.Y;

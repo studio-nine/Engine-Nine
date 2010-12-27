@@ -67,7 +67,7 @@ namespace Nine.Content.Pipeline.Processors
 
             ModelCollision collision = new ModelCollision();
 
-            collision.CollisionTree = new Octree<bool>(CollisionTreeDepth, BoundingBox.CreateFromPoints(positions));
+            collision.CollisionTree = new Octree<bool>(BoundingBox.CreateFromPoints(positions), CollisionTreeDepth);
 
             for (int i = 0; i < indices.Count; i += 3)
             {

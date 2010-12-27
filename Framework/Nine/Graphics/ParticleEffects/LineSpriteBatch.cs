@@ -165,7 +165,7 @@ namespace Nine.Graphics.ParticleEffects
             ba.Position = bb.Position = Vector3.Zero;
 
 
-            // We want the texture to uniformly distrubute on the line
+            // We want the texture to uniformly distribute on the line
             // even if each line segment may have different length.
             float totalLength = 0;
             float percentage = 0;
