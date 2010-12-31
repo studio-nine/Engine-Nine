@@ -42,7 +42,51 @@ namespace Nine.Graphics
             }
             primitiveBatch.EndPrimitive();
         }
-        
+
+        public static void DrawRectangle(this PrimitiveBatch primitiveBatch, Vector2 min, Vector2 max, Matrix? world, Color color)
+        {
+            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
+            {
+                primitiveBatch.AddVertex(new Vector3(min.X, min.Y, 0), color);
+                primitiveBatch.AddVertex(new Vector3(min.X, max.Y, 0), color);
+                primitiveBatch.AddVertex(new Vector3(max.X, max.Y, 0), color);
+                primitiveBatch.AddVertex(new Vector3(max.X, min.Y, 0), color);
+
+                primitiveBatch.AddIndex(0);
+                primitiveBatch.AddIndex(1);
+                primitiveBatch.AddIndex(1);
+                primitiveBatch.AddIndex(2);
+                primitiveBatch.AddIndex(2);
+                primitiveBatch.AddIndex(3);
+                primitiveBatch.AddIndex(3);
+                primitiveBatch.AddIndex(0);
+            }
+            primitiveBatch.EndPrimitive();
+        }
+
+        public static void DrawRectangle(this PrimitiveBatch primitiveBatch, Vector2 min, Vector2 max, Vector3 up, Matrix? world, Color color)
+        {
+            Matrix transform = MatrixHelper.CreateRotation(Vector3.UnitZ, up);
+
+            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
+            {
+                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(min.X, min.Y, 0), transform), color);
+                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(min.X, max.Y, 0), transform), color);
+                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(max.X, max.Y, 0), transform), color);
+                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(max.X, min.Y, 0), transform), color);
+
+                primitiveBatch.AddIndex(0);
+                primitiveBatch.AddIndex(1);
+                primitiveBatch.AddIndex(1);
+                primitiveBatch.AddIndex(2);
+                primitiveBatch.AddIndex(2);
+                primitiveBatch.AddIndex(3);
+                primitiveBatch.AddIndex(3);
+                primitiveBatch.AddIndex(0);
+            }
+            primitiveBatch.EndPrimitive();
+        }
+
         public static void DrawBox(this PrimitiveBatch primitiveBatch, Vector3 center, Vector3 size, Matrix? world, Color color)
         {
             DrawBox(primitiveBatch, new BoundingBox(center - size / 2, center + size / 2), world, color);
@@ -183,7 +227,27 @@ namespace Nine.Graphics
 
         public static void DrawCircle(this PrimitiveBatch primitiveBatch, Vector3 center, float radius, int tessellation, Matrix? world, Color color)
         {
-            DrawCircle(primitiveBatch, center, radius, Vector3.UnitZ, tessellation, world, color);
+            primitiveBatch.BeginPrimitive(PrimitiveType.LineStrip, null, world);
+            {
+                if (tessellation < 3)
+                    throw new ArgumentOutOfRangeException("tessellation");
+
+                int horizontalSegments = tessellation;
+
+                // Create a single ring of vertices at this latitude.
+                for (int j = 0; j <= horizontalSegments; j++)
+                {
+                    float longitude = j * MathHelper.TwoPi / horizontalSegments;
+
+                    float dx = (float)Math.Cos(longitude);
+                    float dy = (float)Math.Sin(longitude);
+
+                    Vector3 normal = new Vector3(dx, dy, 0);
+
+                    primitiveBatch.AddVertex(normal * radius + center, color);
+                }
+            }
+            primitiveBatch.EndPrimitive();
         }
 
         public static void DrawCircle(this PrimitiveBatch primitiveBatch, Vector3 center, float radius, Vector3 up, int tessellation, Matrix? world, Color color)
@@ -580,6 +644,16 @@ namespace Nine.Graphics
             primitiveBatch.EndPrimitive();
         }
 
+        public static void DrawGrid(this PrimitiveBatch primitiveBatch, UniformGrid grid, Matrix? world, Color color)
+        {
+            if (grid.Position == Vector2.Zero)
+                DrawGrid(primitiveBatch, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, world, color);
+            else if (world.HasValue)
+                DrawGrid(primitiveBatch, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, Matrix.CreateTranslation(new Vector3(grid.Position, 0)) * world.Value, color);
+            else
+                DrawGrid(primitiveBatch, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, Matrix.CreateTranslation(new Vector3(grid.Position, 0)), color);
+        }
+
         public static void DrawRay(this PrimitiveBatch primitiveBatch, Ray ray, float length, Matrix? world, Color color)
         {
             DrawArrow(primitiveBatch, ray.Position, ray.Position + ray.Direction * length, world, color);
@@ -617,11 +691,34 @@ namespace Nine.Graphics
             DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ, world), null, Color.Blue);
         }
 
-        public static void DrawAxis(this PrimitiveBatch primitiveBatch, Matrix world, Color colorX, Color colorY, Color colorZ)
+        public static void DrawAxis(this PrimitiveBatch primitiveBatch, Matrix world, float length)
         {
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX, world), null, colorX);
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY, world), null, colorY);
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ, world), null, colorZ);
+            Vector3 scale;
+            Vector3 translation;
+            Quaternion rotation;
+
+            world.Decompose(out scale, out rotation, out translation);
+            world = Matrix.CreateFromQuaternion(rotation);
+            world.Translation = translation;
+
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), null, Color.Red);
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), null, Color.Green);
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), null, Color.Blue);
+        }
+
+        public static void DrawAxis(this PrimitiveBatch primitiveBatch, Matrix world, float length, Color colorX, Color colorY, Color colorZ)
+        {
+            Vector3 scale;
+            Vector3 translation;
+            Quaternion rotation;
+
+            world.Decompose(out scale, out rotation, out translation);
+            world = Matrix.CreateFromQuaternion(rotation);
+            world.Translation = translation;
+
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), null, colorX);
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), null, colorY);
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), null, colorZ);
         }
 
         public static void DrawSkeleton(this PrimitiveBatch primitiveBatch, Model model, Matrix? world, Color color)
@@ -650,6 +747,41 @@ namespace Nine.Graphics
             foreach (ModelBone child in node.Children)
             {
                 DrawSkeleton(primitiveBatch, child, end, world, color);
+            }
+        }
+        
+        static Matrix[] bones;
+
+        public static void DrawCollision(this PrimitiveBatch primitiveBatch, Model model, Matrix? world, Color color)
+        {
+            if (bones == null || bones.Length < model.Bones.Count)
+                bones = new Matrix[model.Bones.Count];
+
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
+            Matrix transform = world.HasValue ? world.Value : Matrix.Identity;
+
+            ModelTag tag = model.Tag as ModelTag;
+
+            // Draw collision tree
+            if (tag != null && tag.Collision != null)
+            {
+                transform = bones[model.Meshes[0].ParentBone.Index] * transform;
+                Octree<bool> tree = tag.Collision.CollisionTree;
+
+                foreach (OctreeNode<bool> node in tree.Traverse((o) => { return true; }))
+                {
+                    if (!node.HasChildren && node.Value)
+                        primitiveBatch.DrawSolidBox(node.Bounds, transform, color);
+                }
+            }
+            // Draw collision sphere
+            else
+            {
+                foreach (ModelMesh mesh in model.Meshes)
+                {
+                    primitiveBatch.DrawSolidSphere(mesh.BoundingSphere, 18, bones[mesh.ParentBone.Index] * transform, color);
+                }
             }
         }
     }

@@ -28,6 +28,7 @@ namespace Nine.Navigation.Steering
         public Vector2 Forward { get; set; }
         public float Speed { get; private set; }
         public float MaxSpeed { get; set; }
+        public Vector2 Force { get { return force; } }
         public float MaxForce { get; private set; }
         public Vector2 Velocity { get; private set; }
         public float Acceleration { get; set; }  
@@ -36,6 +37,8 @@ namespace Nine.Navigation.Steering
         public object Tag { get; set; }
 
         public SteeringBehaviorCollection Behaviors { get; private set; }
+
+        private Vector2 force;
                 
         public Steerer()
         {
@@ -60,7 +63,7 @@ namespace Nine.Navigation.Steering
             if (Acceleration >= MaxAcceleration)
                 Acceleration = MaxAcceleration;
 
-            Vector2 force = Vector2.Zero;
+            force = Vector2.Zero;
             MaxForce = Acceleration * elapsedTime;
 
             // Calculate force

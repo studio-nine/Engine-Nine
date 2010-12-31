@@ -12,6 +12,7 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -54,11 +55,14 @@ namespace Nine.Content.Pipeline.Processors
                 File.WriteAllText(filename, part.Code);
             }
 
-            string resultFile = Path.Combine(context.IntermediateDirectory, "LinkedEffect.stitchedeffect");
-            File.WriteAllText(resultFile, content.ToString());
+            string identity = Path.GetRandomFileName();
+            string resultStitchupFile = Path.Combine(context.IntermediateDirectory, identity + ".stitchedeffect");
+            string resultEffectFile = Path.Combine(Path.GetTempPath(), identity + ".fx");
+            string resultAsmFile = Path.Combine(context.IntermediateDirectory, identity + ".asm");
+            File.WriteAllText(resultStitchupFile, content.ToString());
 
             StitchedEffectImporter importer = new StitchedEffectImporter();
-            StitchedEffectContent stitchedContent = importer.Import(resultFile, new LinkedEffectContentImporterContext(context));
+            StitchedEffectContent stitchedContent = importer.Import(resultStitchupFile, new LinkedEffectContentImporterContext(context));
 
             StitchedEffectProcessor processor = new StitchedEffectProcessor();
             CompiledEffectContent compiledEffect = processor.Process(stitchedContent, context);
@@ -66,7 +70,29 @@ namespace Nine.Content.Pipeline.Processors
             List<string> uniqueNames = new List<string>();
             input.UniqueNames = processor.Symbols.StitchedFragments.Select<StitchedFragmentSymbol, string>(symbol => symbol.UniqueName + "_").ToArray<string>();
             input.EffectCode = compiledEffect.GetEffectCode();
+
+            Disassemble(resultEffectFile, resultAsmFile, context);
+
             return input;
+        }
+
+        private void Disassemble(string effectFile, string asmFile, ContentProcessorContext context)
+        {
+            string dxSdkDir = Environment.GetEnvironmentVariable("DXSDK_DIR");
+
+            if (!string.IsNullOrEmpty(dxSdkDir))
+            {
+                Process process = new System.Diagnostics.Process();
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.WorkingDirectory = context.IntermediateDirectory;
+                process.StartInfo.FileName = Path.Combine(dxSdkDir, @"Utilities\bin\x86\fxc.exe");
+                process.StartInfo.Arguments = "/nologo /Tfx_2_0 /O3 /Fc" + asmFile + " \"" + effectFile + "\"";
+                process.Start();
+                process.WaitForExit();
+
+                context.Logger.LogImportantMessage(string.Format("{0} : (double-click this message to view disassembly file).", asmFile));
+            }
         }
     }
 

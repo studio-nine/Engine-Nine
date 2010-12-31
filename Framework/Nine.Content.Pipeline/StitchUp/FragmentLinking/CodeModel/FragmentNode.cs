@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace StitchUp.Content.Pipeline.FragmentLinking.CodeModel
 {
 	internal class FragmentNode : ParseNode

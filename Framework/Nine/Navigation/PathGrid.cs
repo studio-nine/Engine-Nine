@@ -91,7 +91,7 @@ namespace Nine.Navigation
         /// </summary>
         public void Mark(float x, float y)
         {
-            Point pt = PositionToGrid(Clamp(x, y));
+            Point pt = PositionToSegment(Clamp(x, y));
 
             data[pt.X, pt.Y]++;
         }
@@ -112,7 +112,7 @@ namespace Nine.Navigation
         /// </summary>
         public void Unmark(float x, float y)
         {
-            Point pt = PositionToGrid(Clamp(x, y));
+            Point pt = PositionToSegment(Clamp(x, y));
 
             System.Diagnostics.Debug.Assert(data[pt.X, pt.Y] > 0);
 
@@ -133,7 +133,7 @@ namespace Nine.Navigation
         /// </summary>
         public bool IsMarked(float x, float y)
         {
-            Point pt = PositionToGrid(Clamp(x, y));
+            Point pt = PositionToSegment(Clamp(x, y));
 
             return data[pt.X, pt.Y] > 0;
         }
@@ -143,7 +143,7 @@ namespace Nine.Navigation
         /// </summary>
         public int Count
         {
-            get { return GridCountX * GridCountY; }
+            get { return SegmentCountX * SegmentCountY; }
         }
 
         /// <summary>
@@ -153,13 +153,13 @@ namespace Nine.Navigation
         {
             get
             {
-                Point pt = PositionToGrid(Clamp(x, y));
+                Point pt = PositionToSegment(Clamp(x, y));
 
                 PathGridNode node;
 
                 node.X = pt.X;
                 node.Y = pt.Y;
-                node.ID = pt.X + pt.Y * GridCountX;
+                node.ID = pt.X + pt.Y * SegmentCountX;
 
                 return node;
             }
@@ -177,7 +177,7 @@ namespace Nine.Navigation
 
                 node.X = x;
                 node.Y = y;
-                node.ID = x + y * GridCountX;
+                node.ID = x + y * SegmentCountX;
 
                 return node;
             }
@@ -199,7 +199,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x - 1;
                 edge.To.Y = y;
-                edge.To.ID = y * GridCountX + x - 1;
+                edge.To.ID = y * SegmentCountX + x - 1;
                 edge.Cost = 1.0f;
 
                 yield return edge;
@@ -208,7 +208,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x + 1;
                 edge.To.Y = y;
-                edge.To.ID = y * GridCountX + x + 1;
+                edge.To.ID = y * SegmentCountX + x + 1;
                 edge.Cost = 1.0f;
 
                 yield return edge;
@@ -217,7 +217,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x;
                 edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * GridCountX + x;
+                edge.To.ID = (y - 1) * SegmentCountX + x;
                 edge.Cost = 1.0f;
 
                 yield return edge;
@@ -226,7 +226,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x;
                 edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * GridCountX + x;
+                edge.To.ID = (y + 1) * SegmentCountX + x;
                 edge.Cost = 1.0f;
 
                 yield return edge;
@@ -235,7 +235,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x - 1;
                 edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * GridCountX + x - 1;
+                edge.To.ID = (y - 1) * SegmentCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;
@@ -244,7 +244,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x - 1;
                 edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * GridCountX + x - 1;
+                edge.To.ID = (y + 1) * SegmentCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;
@@ -253,7 +253,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x + 1;
                 edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * GridCountX + x + 1;
+                edge.To.ID = (y - 1) * SegmentCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;
@@ -262,7 +262,7 @@ namespace Nine.Navigation
             {
                 edge.To.X = x + 1;
                 edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * GridCountX + x + 1;
+                edge.To.ID = (y + 1) * SegmentCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
                 yield return edge;

@@ -145,6 +145,15 @@ namespace Nine
 
             return returnMatrix;
         }
+
+        /// <summary>
+        /// Implemements a weighted sum algorithm of quaternions.
+        /// See http://en.wikipedia.org/wiki/Generalized_quaternion_interpolation for detailed math formulars.
+        /// </summary>
+        public static Quaternion WeightedSum(IEnumerable<Quaternion> quaternions, IEnumerable<float> weights, int steps)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal static class MatrixHelper

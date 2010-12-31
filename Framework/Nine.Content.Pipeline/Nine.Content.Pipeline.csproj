@@ -76,73 +76,196 @@
     <Compile Include="Graphics\Effects\LinkedEffectContent.cs" />
     <Compile Include="Processors\LinkedEffectProcessor.cs" />
     <Compile Include="Processors\ModelCollisionProcessor.cs" />
-    <Compile Include="StitchUp\FragmentImporter.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\CodeBlockNodeBase.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\EnumExtensionMethods.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FloatToken.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentBlockNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\HeaderCodeBlockNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\IdentifierToken.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\IntToken.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralToken.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralTokenType.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockType.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParseNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNodeCollection.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeToken.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderProfile.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderType.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\StitchedEffectNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\StringToken.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueBlockNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniquePassNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\Token.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TokenType.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\VariableDeclarationNode.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Compiler\StitchedEffectBuilder.cs" />
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedEffectSymbol.cs" />
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedFragmentSymbol.cs" />
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniquePassSymbol.cs" />
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniqueSymbol.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\EffectCodeGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\ExportedValueGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\GeneratorContext.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\HeaderCodeGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\ParameterGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\SamplerGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\ScriptTextWriter.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\SemanticGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\ShaderGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\StructGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Generator\TechniqueGenerator.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\BufferPosition.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventArgs.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventHandler.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\FragmentParser.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\Keywords.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\Lexer.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\Parser.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\ParserException.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\StitchedEffectParser.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\TextBuffer.cs" />
-    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportDictionary.cs" />
-    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportedValue.cs" />
-    <Compile Include="StitchUp\FragmentLinking\PreProcessor\StitchedEffectPreProcessor.cs" />
-    <Compile Include="StitchUp\Graphics\FragmentContent.cs" />
-    <Compile Include="StitchUp\Graphics\StitchedEffectContent.cs" />
-    <Compile Include="StitchUp\ParsingImporter.cs" />
-    <Compile Include="StitchUp\Processors\StitchedEffectModelProcessor.cs" />
-    <Compile Include="StitchUp\Processors\StitchedEffectProcessor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="StitchUp\StitchedEffectImporter.cs" />
+    <Compile Include="StitchUp\FragmentImporter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\CodeBlockNodeBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\EnumExtensionMethods.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FloatToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentBlockNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentSource.cs" />
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\HeaderCodeBlockNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\IdentifierToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\IntToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralTokenType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParseNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderProfile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\StitchedEffectNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\StringToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueBlockNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniquePassNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\Token.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\TokenType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\CodeModel\VariableDeclarationNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Compiler\StitchedEffectBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedEffectSymbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedFragmentSymbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniquePassSymbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniqueSymbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\EffectCodeGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\ExportedValueGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\GeneratorContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\HeaderCodeGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\ParameterGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\SamplerGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\ScriptTextWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\SemanticGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\ShaderGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\StructGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Generator\TechniqueGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\BufferPosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventHandler.cs" />
+    <Compile Include="StitchUp\FragmentLinking\Parser\FragmentParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\Keywords.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\Lexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\Parser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\ParserException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\StitchedEffectParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\Parser\TextBuffer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportDictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportedValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\FragmentLinking\PreProcessor\StitchedEffectPreProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\Graphics\FragmentContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\Graphics\StitchedEffectContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\ParsingImporter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\Processors\StitchedEffectModelProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\Processors\StitchedEffectProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StitchUp\StitchedEffectImporter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TreeWriter.cs" />
     <Compile Include="Graphics\ImageListContent.cs" />
     <Compile Include="Importers\SequentialImageListImporter.cs" />

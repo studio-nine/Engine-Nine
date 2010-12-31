@@ -370,6 +370,28 @@ namespace Nine.Graphics
         #endregion
 
         #region ISurface Members
+        public float GetHeight(Vector3 position)
+        {
+            float height;
+            Vector3 normal;
+            
+            if (TryGetHeightAndNormal(position, out height, out normal))
+                return height;
+
+            throw new ArgumentOutOfRangeException("position");
+        }
+
+        public Vector3 GetNormal(Vector3 position)
+        {
+            float height;
+            Vector3 normal;
+
+            if (TryGetHeightAndNormal(position, out height, out normal))
+                return normal;
+
+            throw new ArgumentOutOfRangeException("position");
+        }
+
         /// <summary>
         /// Gets the height and normal of the surface at a given location.
         /// </summary>
@@ -379,8 +401,16 @@ namespace Nine.Graphics
             if (IsFreezed)
                 throw new InvalidOperationException(
                     "Cannot perform this operation when DrawableSurface is freezed");
+            
+            float baseHeight;
+            if (Heightmap.TryGetHeightAndNormal(position - Position, out baseHeight, out normal))
+            {
+                height = baseHeight + Position.Z;
+                return true;
+            }
 
-            return Heightmap.TryGetHeightAndNormal(position - Position, out height, out normal);
+            height = float.MinValue;
+            return false;
         }
         #endregion
 

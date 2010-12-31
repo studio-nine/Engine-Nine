@@ -94,13 +94,12 @@ namespace Nine
             rectangle.X -= viewport.X;
             rectangle.Y -= viewport.Y;
 
-            // Select multiple objects
             Matrix innerProject;
 
             float left = (float)(2 * rectangle.Left - viewport.Width) / viewport.Width;
             float right = (float)(2 * rectangle.Right - viewport.Width) / viewport.Width;
-            float bottom = (float)(2 * rectangle.Top - viewport.Height) / viewport.Height;
-            float top = (float)(2 * rectangle.Bottom - viewport.Height) / viewport.Height;
+            float bottom = -(float)(2 * rectangle.Top - viewport.Height) / viewport.Height;
+            float top = -(float)(2 * rectangle.Bottom - viewport.Height) / viewport.Height;
 
             float farClip = Math.Abs(projection.M43 / (Math.Abs(projection.M33) - 1));
             float nearClip = Math.Abs(projection.M43 / projection.M33);

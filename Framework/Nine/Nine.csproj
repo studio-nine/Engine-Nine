@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />

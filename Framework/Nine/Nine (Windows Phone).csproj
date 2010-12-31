@@ -54,6 +54,7 @@
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\BoneAnimations.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />

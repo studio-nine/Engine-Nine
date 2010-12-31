@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using StitchUp.Content.Pipeline.FragmentLinking.EffectModel;
 using StitchUp.Content.Pipeline.FragmentLinking.PreProcessor;
@@ -39,31 +41,56 @@ namespace StitchUp.Content.Pipeline.FragmentLinking.Generator
 
 		public void GenerateCode()
 		{
+			// If there are no vertex shaders in any of the fragments, disable vertex shader generation.
+			// This is useful, for example, in post processing shaders where SpriteBatch is used.
+			bool generateVertexShader = _stitchedEffect.StitchedFragments.Any(f => f.FragmentNode.VertexShaders.Any());
+
 			HeaderCodeGenerator.GenerateAllHeaderCode(this, _stitchedEffect);
 			ParameterGenerator.GenerateAllParameters(this, _stitchedEffect);
 			SamplerGenerator.GenerateAllSamplers(this, _stitchedEffect);
-			StructGenerator.WriteAllVertexInputStructures(this, _stitchedEffect);
+
+			if (generateVertexShader)
+				StructGenerator.WriteAllVertexInputStructures(this, _stitchedEffect);
 			StructGenerator.WriteAllPixelInputStructures(this, _stitchedEffect);
-			StructGenerator.WriteAllVertexOutputStructures(this, _stitchedEffect);
+
+			if (generateVertexShader)
+				StructGenerator.WriteAllVertexOutputStructures(this, _stitchedEffect);
+
 			StructGenerator.WriteAllPixelOutputStructs(this, _stitchedEffect);
 
 			List<ExportedValue> exportedValues = StitchedEffectPreProcessor.GetExportedValues(_stitchedEffect);
 			ExportedValueGenerator.GenerateExportDeclarations(this, exportedValues);
 
-			ShaderGenerator.WriteAllVertexShaders(this, _stitchedEffect);
+			if (generateVertexShader)
+				ShaderGenerator.WriteAllVertexShaders(this, _stitchedEffect);
 			ShaderGenerator.WriteAllPixelShaders(this, _stitchedEffect);
 
-			TechniqueGenerator.GenerateAllTechniques(this, _stitchedEffect);
+			TechniqueGenerator.GenerateAllTechniques(this, _stitchedEffect, generateVertexShader);
 		}
 
 		internal string GetVariableDeclaration(StitchedFragmentSymbol stitchedFragment, VariableDeclarationNode variable)
 		{
+			return GetVariableDeclaration(variable, stitchedFragment.UniqueName + "_");
+		}
+
+		public static string GetVariableDeclaration(VariableDeclarationNode variable, string prefix = "")
+		{
 			string arrayStuff = (variable.IsArray && variable.ArraySize != null) ? "[" + variable.ArraySize + "]" : string.Empty;
 			string semantic = (!string.IsNullOrEmpty(variable.Semantic)) ? " : " + variable.Semantic : string.Empty;
-			string initialValue = (!string.IsNullOrEmpty(variable.InitialValue)) ? " = " + variable.InitialValue : string.Empty;
 
-            return string.Format("{0} {1}_{2}{3}{4}{5};",
-				Token.GetString(variable.DataType), stitchedFragment.UniqueName,
+			string initialValue;
+			if (!string.IsNullOrEmpty(variable.InitialValue))
+			{
+				string variableInitialValue = variable.InitialValue;
+				if (variableInitialValue.StartsWith("sampler_state"))
+					variableInitialValue = Regex.Replace(variableInitialValue, @"(Texture=\()([\w]+)(\);)", "$1" + prefix + "$2$3");
+				initialValue = " = " + variableInitialValue;
+			}
+			else
+				initialValue = string.Empty;
+
+			return string.Format("{0} {1}{2}{3}{4}{5};",
+				Token.GetString(variable.DataType), prefix,
 				variable.Name, arrayStuff, semantic, initialValue);
 		}
 

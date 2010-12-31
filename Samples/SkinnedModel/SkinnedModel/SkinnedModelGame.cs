@@ -50,10 +50,16 @@ namespace SkinnedModel
         Input input;
         ModelViewerCamera camera;
 
+        LookAtController lookAtController;
+
         BoneAnimation animation1;
         BoneAnimation animation2;
         BoneAnimation animation3;
-        
+
+        Matrix world1 = Matrix.CreateTranslation(-80, -60, 0) * Matrix.CreateScale(0.1f);
+        Matrix world2 = Matrix.CreateTranslation(80, -60, 0) * Matrix.CreateScale(0.1f);
+        Matrix world3 = Matrix.CreateTranslation(0, -60, 0) * Matrix.CreateScale(0.1f);
+
         public SkinnedModelGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -107,8 +113,8 @@ namespace SkinnedModel
 
             // Handle animations.
             animation1 = PlayAttackAndRun();
-            animation2 = PlayRunAndCarryBlended();
-            animation3 = PlayAnimation(0, null);
+            animation2 = PlayIdleRunCarryBlended();
+            animation3 = PlayAnimation(0);
 
             Random random = new Random();
             input = new Input();
@@ -116,12 +122,12 @@ namespace SkinnedModel
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    animation3 = PlayAnimation(random.Next(model.GetAnimations().Count), animation3);
+                    animation3 = PlayAnimation(random.Next(model.GetAnimations().Count));
                 }
             };
         }
 
-        private BoneAnimation PlayAnimation(int i, BoneAnimation previousAnimation)
+        private BoneAnimation PlayAnimation(int i)
         {   
             // Now load our model animation and skinning using extension method.
             BoneAnimationController animation = new BoneAnimationController(model.GetAnimation(i));
@@ -132,9 +138,13 @@ namespace SkinnedModel
             //animation.AutoReverse = true;
             //animation.StartupDirection = AnimationDirection.Backward;
 
-            BoneAnimation result = new BoneAnimation(model);
+            // You must specify a unique value for each mesh instance to enabled default blending.
+            // Do it by pass the unique object into the second parameter of BoneAnimation constructor.
+            BoneAnimation result = new BoneAnimation(model, this);
+            
+            result.BlendDuration = TimeSpan.FromSeconds(1f);
             result.Controllers.Add(animation);
-            result.Play(previousAnimation);
+            result.Play();
             return result;
         }
 
@@ -144,7 +154,7 @@ namespace SkinnedModel
             BoneAnimationController run = new BoneAnimationController(model.GetAnimation("Run"));
             run.Speed = 0.8f;
 
-            BoneAnimation blended = new BoneAnimation(model, run, attack);
+            BoneAnimation blended = new BoneAnimation(model, null, run, attack);
             
             blended.Controllers[run].Disable("Bip01_Pelvis", false);
             blended.Controllers[run].Disable("Bip01_Spine1", true);
@@ -154,9 +164,6 @@ namespace SkinnedModel
             blended.Controllers[attack].Disable("Bip01_L_Thigh", true);
             blended.Controllers[attack].Disable("Bip01_R_Thigh", true);
 
-            // Adjust per bone weight
-            //blended.Controllers[attack].BoneWeights["Bip01_R_Hand"].BlendWeight = 0f;
-
             blended.KeyController = run;
             blended.IsSychronized = true;
             blended.Play();
@@ -164,16 +171,25 @@ namespace SkinnedModel
             return blended;
         }
 
-        private BoneAnimation PlayRunAndCarryBlended()
+        private BoneAnimation PlayIdleRunCarryBlended()
         {
+            // Blend between 3 animation channels
+            BoneAnimationController idle = new BoneAnimationController(model.GetAnimation("Idle"));
             BoneAnimationController carry = new BoneAnimationController(model.GetAnimation("Carry"));
             BoneAnimationController run = new BoneAnimationController(model.GetAnimation("Run"));
-            run.Speed = 0.8f;
 
-            BoneAnimation blended = new BoneAnimation(model, run, carry);
+            BoneAnimation blended = new BoneAnimation(model, null, idle, run, carry);
 
-            blended.Controllers[run].BlendWeight = 0.6f;
-            blended.Controllers[carry].BlendWeight = 0.4f;
+            lookAtController = new LookAtController(blended, world2, model.Bones["Bip01_Head"].Index);
+            lookAtController.Up = Vector3.UnitX;
+            lookAtController.Forward = -Vector3.UnitZ;
+            lookAtController.HorizontalRotation = new Range<float>(-MathHelper.PiOver2, MathHelper.PiOver2);
+            lookAtController.VerticalRotation = new Range<float>(-MathHelper.PiOver2, MathHelper.PiOver2);
+            blended.Controllers.Add(lookAtController);
+
+            // Give the look at controller a huge blend weight so it will dominate the other controllers.
+            // All the weights will be normalized during blending.
+            blended.Controllers[lookAtController].BlendWeight = 10;
 
             blended.KeyController = run;
             blended.IsSychronized = true;
@@ -187,15 +203,13 @@ namespace SkinnedModel
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
+            lookAtController.Target = Matrix.Invert(camera.View).Translation;
+
             animation1.Update(gameTime);
             animation2.Update(gameTime);
             animation3.Update(gameTime);
 
             GraphicsDevice.Clear(Color.DarkSlateGray);
-
-            Matrix world1 = Matrix.CreateTranslation(-80, -60, 0) * Matrix.CreateScale(0.1f);
-            Matrix world2 = Matrix.CreateTranslation(80, -60, 0) * Matrix.CreateScale(0.1f);
-            Matrix world3 = Matrix.CreateTranslation(0, -60, 0) * Matrix.CreateScale(0.1f);
 
             // Attach the hammer model to the character
             Matrix hammerTransform = animation1.GetAbsoluteBoneTransform("Weapon") * world1;
@@ -216,9 +230,13 @@ namespace SkinnedModel
             {
                 primitiveBatch.Begin(camera.View, camera.Projection);
                 {
+                    primitiveBatch.DrawSkeleton(model, world3, Color.Yellow);
+
                     primitiveBatch.DrawSkeleton(animation1, world1, Color.White);
                     primitiveBatch.DrawSkeleton(animation2, world2, Color.White);
                     primitiveBatch.DrawSkeleton(animation3, world3, Color.White);
+
+                    primitiveBatch.DrawAxis(animation2.GetAbsoluteBoneTransform("Bip01_Head") * world2, 1);
                 }
                 primitiveBatch.End();
             }

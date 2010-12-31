@@ -16,6 +16,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.ComponentModel;
 #if WINDOWS
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using FormKeys = System.Windows.Forms.Keys;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -408,6 +409,7 @@ namespace Nine
             control = Form.FromHandle(handle);
             control.MouseDown += new MouseEventHandler(control_MouseDown);
             control.MouseUp += new MouseEventHandler(control_MouseUp);
+            control.MouseCaptureChanged += new EventHandler(control_MouseCaptureChanged);
             control.MouseMove += new MouseEventHandler(control_MouseMove);
             control.KeyDown += new KeyEventHandler(control_KeyDown);
             control.KeyUp += new KeyEventHandler(control_KeyUp);
@@ -716,8 +718,24 @@ namespace Nine
             MouseMove(this, args);
         }
 
+        void control_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            control.Capture = true;
+
+            if (e.Button == FormMouseButtons.Left)
+                leftDown = true;
+            else if (e.Button == FormMouseButtons.Right)
+                rightDown = true;
+            else if (e.Button == FormMouseButtons.Middle)
+                middleDown = true;
+
+            MouseDown(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
+        }
+
         void control_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            control.Capture = false;
+
             if (e.Button == FormMouseButtons.Left)
                 leftDown = false;
             else if (e.Button == FormMouseButtons.Right)
@@ -728,16 +746,14 @@ namespace Nine
             MouseUp(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
         }
 
-        void control_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        void control_MouseCaptureChanged(object sender, EventArgs e)
         {
-            if (e.Button == FormMouseButtons.Left)
-                leftDown = true;
-            else if (e.Button == FormMouseButtons.Right)
-                rightDown = true;
-            else if (e.Button == FormMouseButtons.Middle)
-                middleDown = true;
-
-            MouseDown(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
+            if (!control.Capture)
+            {
+                leftDown = false;
+                rightDown = false;
+                middleDown = false;
+            }
         }
 
         void control_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using Nine.Content.Pipeline.Properties;
 
@@ -22,14 +21,20 @@ namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 			_tokens = tokens;
 		}
 
-		protected IdentifierToken ParseFileDeclaration(TokenType fileDeclarationType)
+		protected IdentifierToken ParseFileDeclaration(TokenType fileDeclarationType, out Token fileDeclarationToken)
 		{
-			Eat(fileDeclarationType);
+			fileDeclarationToken = Eat(fileDeclarationType);
 
 			IdentifierToken name = (IdentifierToken)Eat(TokenType.Identifier);
 			Eat(TokenType.Semicolon);
 
 			return name;
+		}
+
+		protected IdentifierToken ParseFileDeclaration(TokenType fileDeclarationType)
+		{
+			Token fileDeclarationToken;
+			return ParseFileDeclaration(fileDeclarationType, out fileDeclarationToken);
 		}
 
 		protected List<ParseNode> ParseBlocks()
@@ -203,8 +208,19 @@ namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 					ReportError(Resources.ParserInitialValueUnexpected);
 
 				Eat(TokenType.Equal);
-				while (PeekType() != TokenType.Semicolon)
-					initialValue += NextToken().ToString();
+				{
+					bool isSamplerState = (PeekType() == TokenType.Identifier
+						&& ((IdentifierToken) PeekToken()).Identifier == "sampler_state");
+					if (isSamplerState)
+					{
+						while (PeekType() != TokenType.CloseCurly)
+							initialValue += NextToken().ToString();
+						initialValue += NextToken().ToString();
+					}
+					else
+						while (PeekType() != TokenType.Semicolon)
+							initialValue += NextToken().ToString();
+				}
 			}
 
 			Eat(TokenType.Semicolon);

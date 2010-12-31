@@ -53,8 +53,8 @@
       <Name>MountainHeightmap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>HeightmapProcessor</Processor>
-      <ProcessorParameters_Height>25</ProcessorParameters_Height>
-      <ProcessorParameters_Step>0.4</ProcessorParameters_Step>
+      <ProcessorParameters_Step>0.25</ProcessorParameters_Step>
+      <ProcessorParameters_Height>5</ProcessorParameters_Height>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +73,7 @@
       <Processor>ExtendedModelProcessor</Processor>
       <ProcessorParameters_DefaultEffect>SkinnedEffect</ProcessorParameters_DefaultEffect>
       <ProcessorParameters_SwapWindingOrder>True</ProcessorParameters_SwapWindingOrder>
+      <ProcessorParameters_GenerateCollisionData>False</ProcessorParameters_GenerateCollisionData>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

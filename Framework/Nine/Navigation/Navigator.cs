@@ -27,8 +27,11 @@ namespace Nine.Navigation
     {
         #region Fields
         private NavigatorState state = NavigatorState.Stopped;
+
         private Steerer steerer;
         private ArriveBehavior arrive;
+        private SeparationBehavior separation;
+
         private ISpatialQuery<Navigator> myFriends;
         private ISpatialQuery<Navigator> myOpponents;
         private ISpatialQuery<ISteerable> friends;
@@ -45,7 +48,7 @@ namespace Nine.Navigation
         {
             get 
             {
-                return Matrix.CreateFromAxisAngle(Vector3.UnitZ, Rotation) *
+                return Matrix.CreateFromAxisAngle(Vector3.UnitZ, Rotation - MathHelper.PiOver2) *
                        Matrix.CreateTranslation(Position);
             }
         }
@@ -104,7 +107,11 @@ namespace Nine.Navigation
         public float BoundingRadius
         {
             get { return steerer.BoundingRadius; }
-            set { steerer.BoundingRadius = value; }
+            set
+            {
+                steerer.BoundingRadius = value;
+                separation.Range = value * 2;
+            }
         }
 
         /// <summary>
@@ -182,6 +189,9 @@ namespace Nine.Navigation
                 else
                     friendsAndOpponents = null;
             }
+
+            separation.Neighbors = friends;
+            separation.Enabled = friends != null;
         }
 
         /// <summary>
@@ -211,6 +221,7 @@ namespace Nine.Navigation
         {
             steerer = new Steerer();
             steerer.Behaviors.Add(arrive = new ArriveBehavior() { Enabled = false });
+            steerer.Behaviors.Add(separation = new SeparationBehavior() { Enabled = false });
         }
 
         /// <summary>
@@ -284,13 +295,19 @@ namespace Nine.Navigation
 
             // Adjust player animation speed to avoid sliding artifact
             float increment = Vector3.Dot(direction, facing);
-            steerer.Position = Vector2.Lerp(steerer.Position, nextPosition, increment);
+            steerer.Position = Vector2.Lerp(currentPosition, nextPosition, increment);
 
             realHeight = height;
 
             UpdateRotation(elapsedSeconds, facing);
 
-            if (steerer.Speed <= 0 && state != NavigatorState.Stopped)
+            //if (steerer.Speed > 0 && steerer.Force != Vector2.Zero && state == NavigatorState.Stopped)
+            //{
+            //    state = NavigatorState.Moving;
+            //    OnStarted();
+            //}
+            
+            if (steerer.Speed <= 0 && steerer.Force == Vector2.Zero && state != NavigatorState.Stopped)
             {
                 state = NavigatorState.Stopped;
                 OnStopped();

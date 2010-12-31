@@ -233,6 +233,18 @@ namespace Nine.Graphics
             }
             EndPrimitive();
         }
+        
+        public void DrawLine(IEnumerable<Vector3> lineStrip, Matrix? world, Color color)
+        {
+            BeginPrimitive(PrimitiveType.LineList, null, world);
+            {
+                foreach (Vector3 position in lineStrip)
+                {
+                    AddVertex(new VertexPositionColorTexture() { Position = position, Color = color });
+                }
+            }
+            EndPrimitive();
+        }
 
         public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Matrix? textureTransform, Matrix? world, Color color)
         {
@@ -284,10 +296,10 @@ namespace Nine.Graphics
             EndPrimitive();
         }
 
-        public void DrawLine(Texture2D texture, Vector3[] lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color)
+        public void DrawLine(Texture2D texture, IEnumerable<Vector3> lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color)
         {
-            if (lineStrip == null || lineStrip.Length < 2)
-                throw new ArgumentException("lineStrip");
+            if (lineStrip == null)
+                throw new ArgumentNullException("lineStrip");
 
 
             //      aa --- ab
@@ -308,24 +320,33 @@ namespace Nine.Graphics
 
             // We want the texture to uniformly distribute on the line
             // even if each line segment may have different length.
+            int i = 0;
             float totalLength = 0;
             float percentage = 0;
 
-            for (int i = 1; i < lineStrip.Length; i++)
-                totalLength += Vector3.Subtract(lineStrip[i], lineStrip[i - 1]).Length();
-
+            IEnumerator<Vector3> enumerator = lineStrip.GetEnumerator();
+            enumerator.Reset();
+            enumerator.MoveNext();
+            Vector3 previous = enumerator.Current;
+            while (enumerator.MoveNext())
+            {
+                totalLength += Vector3.Subtract(enumerator.Current, previous).Length();
+            }
             
             BeginPrimitive(PrimitiveType.TriangleList, texture, world);
             {
+                enumerator.Reset();
+                enumerator.MoveNext();
+
                 int vertexCount = 0;
-                Vector3 start = lineStrip[0];
+                Vector3 start = enumerator.Current;
                 Vector3 lastSegment1 = Vector3.Zero;
                 Vector3 lastSegment2 = Vector3.Zero;
-
-                for (int i = 1; i < lineStrip.Length; i++)
+                
+                while (enumerator.MoveNext())
                 {
-                    CreateBillboard(start, lineStrip[i], width, out aa.Position, out ab.Position,
-                                                                 out ba.Position, out bb.Position);
+                    CreateBillboard(start, enumerator.Current, width, out aa.Position, out ab.Position,
+                                                                      out ba.Position, out bb.Position);
 
                     if (textureTransform != null)
                     {
@@ -338,7 +359,7 @@ namespace Nine.Graphics
                         bb.TextureCoordinate = new Vector2(1, 1 - percentage);
                     }
 
-                    percentage += Vector3.Subtract(lineStrip[i], lineStrip[i - 1]).Length() / totalLength;
+                    percentage += Vector3.Subtract(enumerator.Current, start).Length() / totalLength;
 
                     if (i > 1)
                     {
@@ -373,7 +394,9 @@ namespace Nine.Graphics
 
                     vertexCount += 2;
 
-                    start = lineStrip[i];
+                    i++;
+
+                    start = enumerator.Current;
                 }
 
                 // Last segment
@@ -483,21 +506,7 @@ namespace Nine.Graphics
 
             if (currentVertex >= VertexBufferSize)
             {
-                currentSegment++;
-
-                if (currentSegment - beginSegment >= 2)
-                    throw new ArgumentOutOfRangeException("Input primitive too large for a single draw call.");
-
-                indexSegments.Add(baseSegmentIndex = baseSegmentIndex + currentBaseIndex);
-                vertexSegments.Add(baseSegmentVertex = baseSegmentVertex + currentBaseVertex);
-
-                currentVertex -= currentBaseVertex;
-                currentIndex -= currentBaseIndex;
-
-                currentBaseIndex = 0;
-                currentBaseVertex = 0;
-                currentPrimitive.StartVertex = 0;
-                currentPrimitive.StartIndex = 0;
+                AdvanceSegment();
             }
 
             vertexData[baseSegmentVertex + currentVertex++] = vertex;
@@ -521,29 +530,34 @@ namespace Nine.Graphics
 
             if (currentIndex >= IndexBufferSize)
             {
-                for (int i = currentBaseIndex; i < currentIndex; i++)
-                {
-                    indexData[baseSegmentIndex + i] -= (ushort)currentBaseVertex;
-                }
-
-                currentSegment++;
-
-                if (currentSegment - beginSegment >= 2)
-                    throw new ArgumentOutOfRangeException("Input primitive too large for a single draw call.");
-
-                indexSegments.Add(baseSegmentIndex = baseSegmentIndex + currentBaseIndex);
-                vertexSegments.Add(baseSegmentVertex = baseSegmentVertex + currentBaseVertex);
-
-                currentVertex -= currentBaseVertex;
-                currentIndex -= currentBaseIndex;
-
-                currentBaseIndex = 0;
-                currentBaseVertex = 0;
-                currentPrimitive.StartVertex = 0;
-                currentPrimitive.StartIndex = 0;
+                AdvanceSegment();
             }
 
             indexData[baseSegmentIndex + currentIndex++] = (ushort)(currentBaseVertex + index);
+        }
+
+        private void AdvanceSegment()
+        {
+            for (int i = currentBaseIndex; i < currentIndex; i++)
+            {
+                indexData[baseSegmentIndex + i] -= (ushort)currentBaseVertex;
+            }
+
+            currentSegment++;
+
+            if (currentSegment - beginSegment >= 2)
+                throw new ArgumentOutOfRangeException("Input primitive too large for a single draw call.");
+
+            indexSegments.Add(baseSegmentIndex = baseSegmentIndex + currentBaseIndex);
+            vertexSegments.Add(baseSegmentVertex = baseSegmentVertex + currentBaseVertex);
+
+            currentVertex -= currentBaseVertex;
+            currentIndex -= currentBaseIndex;
+
+            currentBaseIndex = 0;
+            currentBaseVertex = 0;
+            currentPrimitive.StartVertex = 0;
+            currentPrimitive.StartIndex = 0;
         }
 
         internal void EndPrimitive()
@@ -628,12 +642,13 @@ namespace Nine.Graphics
             GraphicsDevice.SamplerStates[0] = samplerState;
             GraphicsDevice.RasterizerState = rasterizerState;
 
-            vertexBuffer.SetData(vertexData, vertexSegments[entry.Segment], vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment]);
+            // Previous segments are not used, so use SetDataOption.Discard to boost performance.
+            vertexBuffer.SetData(vertexData, vertexSegments[entry.Segment], vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment], SetDataOptions.Discard);
             GraphicsDevice.SetVertexBuffer(vertexBuffer);
 
             if (entry.IndexCount > 0)
             {
-                indexBuffer.SetData(indexData, indexSegments[entry.Segment], indexSegments[entry.Segment + 1] - indexSegments[entry.Segment]);
+                indexBuffer.SetData(indexData, indexSegments[entry.Segment], indexSegments[entry.Segment + 1] - indexSegments[entry.Segment], SetDataOptions.Discard);
                 GraphicsDevice.Indices = indexBuffer;
                 GraphicsDevice.DrawIndexedPrimitives(entry.PrimitiveType, 0, entry.StartVertex, entry.VertexCount, entry.StartIndex, GetPrimitiveCount(entry.PrimitiveType, entry.IndexCount));
                 GraphicsDevice.Indices = null;

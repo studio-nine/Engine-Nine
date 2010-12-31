@@ -23,25 +23,31 @@ using Nine.Animations;
 namespace NavigationSample
 {
     /// <summary>
-    /// Demonstrates how to create a terrain based on a heightmap.
+    /// Demonstrates how to control unit movement.
     /// </summary>
     public class NavigationGame : Microsoft.Xna.Framework.Game
     {
         TopDownEditorCamera camera;
+        ScreenCamera screenCamera;
 
         Input input;
-        Model model;
         ModelBatch modelBatch;
         PrimitiveBatch primitiveBatch;
         DrawableSurface terrain;
         BasicEffect basicEffect;
 
-        GridObjectManager<Navigator> objectManager;
-        List<Navigator> movingEntities;
+        GridObjectManager<Unit> objectManager;
+        List<Unit> units;
+        List<Unit> selectedUnits = new List<Unit>();
 
         Point beginSelect;
+        Point endSelect;
         BoundingFrustum pickFrustum;
-        List<Navigator> selectedEntities = new List<Navigator>();
+
+        Random random = new Random();
+        BoundingRectangle bounds;
+
+        Vector3 destination;
 
         public NavigationGame()
         {
@@ -69,12 +75,18 @@ namespace NavigationSample
             // Create a top down perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
 
+            screenCamera = new ScreenCamera(GraphicsDevice, ScreenCameraCoordinate.TwoDimension);
+            screenCamera.Input.Enabled = false;
+
             // Create a terrain based on the terrain geometry loaded from file
-            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 8);
+            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 16);
+            terrain.TextureTransform = TextureTransform.CreateScale(0.5f, 0.5f);
+            //terrain.Position = new Vector3(12f, 20f, -10);
+            //terrain.Position = new Vector3(12f, 20f, 0);
+            terrain.Invalidate();
 
             primitiveBatch = new PrimitiveBatch(GraphicsDevice);
             modelBatch = new ModelBatch(GraphicsDevice);
-            model = Content.Load<Model>("Peon");
 
             // Initialize terrain effects
             basicEffect = new BasicEffect(GraphicsDevice);
@@ -84,35 +96,69 @@ namespace NavigationSample
             basicEffect.SpecularColor = Vector3.Zero;
 
             // Initialize navigators
-            BoundingRectangle bounds = new BoundingRectangle(terrain.BoundingBox);
+            bounds = new BoundingRectangle(terrain.BoundingBox);
             //objectManager = new QuadTreeObjectManager<Navigator>(bounds, 8);
-            objectManager = new GridObjectManager<Navigator>(bounds, 16, 16);
-            movingEntities = new List<Navigator>();
+            objectManager = new GridObjectManager<Unit>(bounds, 64, 64);
+            units = new List<Unit>();
 
-            for (int i = 0; i < 1; i++)
+            Model model = Content.Load<Model>("Peon");
+
+            ISpatialQuery<Navigator> friends = new SpatialQuery<Unit, Navigator>(objectManager) { Converter = o => o.Navigator };
+            for (int i = 0; i < 100; i++)
             {
-                Navigator navigator = new Navigator();
-                navigator.Ground = terrain;
-                navigator.Tag = new AnimationPlayer();
-                navigator.Started += (o, e) => { ((AnimationPlayer)navigator.Tag).Play(new BoneAnimation(model, model.GetAnimation("Idle"))); };
-                navigator.Stopped += (o, e) => { ((AnimationPlayer)navigator.Tag).Play(new BoneAnimation(model, model.GetAnimation("Run"))); };
-
-                ((AnimationPlayer)navigator.Tag).Play(new BoneAnimation(model, model.GetAnimation("Idle")));
-                movingEntities.Add(navigator);
+                Unit unit = new Unit(model, terrain, friends);
+                unit.Navigator.Position = NextPosition();
+                units.Add(unit);
             }
 
             // Initialize inputs
             input = new Input();
             input.MouseDown += new EventHandler<MouseEventArgs>(input_MouseDown);
+            input.MouseMove += new EventHandler<MouseEventArgs>(input_MouseMove);
             input.MouseUp += new EventHandler<MouseEventArgs>(input_MouseUp);
+        }
+
+        private Vector3 NextPosition()
+        {
+            // Randomize positions
+            Vector3 position = new Vector3();
+
+            position.X = (float)random.NextDouble() * (bounds.Max.X - bounds.Min.X) + bounds.Min.X;
+            position.Y = (float)random.NextDouble() * (bounds.Max.Y - bounds.Min.Y) + bounds.Min.Y;
+            position.Z = 0;
+
+            return position;
         }
 
         void input_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                beginSelect = e.Position;
-                selectedEntities.Clear();
+                selectedUnits.Clear();
+                beginSelect = endSelect = e.Position;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                Ray pickRay = GraphicsDevice.Viewport.CreatePickRay(e.X, e.Y, camera.View, camera.Projection);
+                float? distance = terrain.Intersects(pickRay);
+
+                if (distance.HasValue)
+                {
+                    destination = pickRay.Position + pickRay.Direction * distance.Value;
+
+                    foreach (Unit unit in selectedUnits)
+                    {
+                        unit.Navigator.MoveTo(destination);
+                    }
+                }
+            }
+        }
+
+        void input_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.IsLeftButtonDown)
+            {
+                endSelect = e.Position;
             }
         }
 
@@ -120,26 +166,31 @@ namespace NavigationSample
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (beginSelect == e.Position)
+                int x = e.Position.X - beginSelect.X;
+                int y = e.Position.Y - beginSelect.Y;
+
+                if (x * x + y * y < 10)
                 {
                     // Select single object from ray
                     Ray pickRay = GraphicsDevice.Viewport.CreatePickRay(e.X, e.Y, camera.View, camera.Projection);
 
-                    Navigator selected = objectManager.FindFirst(pickRay);
+                    Unit selected = objectManager.FindFirst(pickRay);
 
                     if (selected != null)
-                        selectedEntities.Add(selected);
+                        selectedUnits.Add(selected);
                 }
                 else
                 {
                     // Select multiple objects from frustum
                     pickFrustum = GraphicsDevice.Viewport.CreatePickFrustum(beginSelect, e.Position, camera.View, camera.Projection);
 
-                    foreach (Navigator selected in objectManager.Find(pickFrustum))
+                    foreach (Unit selected in objectManager.Find(pickFrustum))
                     {
-                        selectedEntities.Add(selected);
+                        selectedUnits.Add(selected);
                     }
                 }
+
+                beginSelect = endSelect = Point.Zero;
             }
         }
 
@@ -150,12 +201,10 @@ namespace NavigationSample
         {
             objectManager.Clear();
 
-            foreach (Navigator navigator in movingEntities)
+            foreach (Unit unit in units)
             {
-                navigator.Update(gameTime);
-                objectManager.Add(navigator, navigator.Position, navigator.BoundingRadius);
-
-                ((AnimationPlayer)navigator.Tag).Update(gameTime);
+                unit.Update(gameTime);
+                objectManager.Add(unit, unit.Navigator.Position, unit.Navigator.BoundingRadius);
             }
 
             base.Update(gameTime);
@@ -192,27 +241,44 @@ namespace NavigationSample
                 }
             }
 
-            Matrix world = Matrix.CreateScale(0.01f) * Matrix.CreateRotationX(MathHelper.PiOver2);
 
             // Draw models
             modelBatch.Begin(camera.View, camera.Projection);
             {
-                foreach (Navigator navigator in movingEntities)
+                foreach (Unit unit in units)
                 {
-                    BoneAnimation animation = (BoneAnimation)(((AnimationPlayer)navigator.Tag).Current);
-
-                    modelBatch.DrawSkinned(model, world * navigator.Transform, animation.GetBoneTransforms(), null);
+                    if (frustum.Contains(unit.Navigator.Position) == ContainmentType.Contains)
+                        unit.Draw(gameTime, modelBatch, primitiveBatch);
                 }
             }
             modelBatch.End();
 
+
+            // Draw selected units
             primitiveBatch.Begin(camera.View, camera.Projection);
             {
-                primitiveBatch.DrawBox(BoundingBox.CreateFromSphere(new BoundingSphere(movingEntities[0].Position, movingEntities[0].BoundingRadius)), null, Color.YellowGreen);
-                if (pickFrustum != null)
-                    primitiveBatch.DrawSolidFrustum(pickFrustum, null, Color.YellowGreen * 0.3f);
+                //primitiveBatch.DrawGrid(objectManager, null, Color.White);
+                //primitiveBatch.DrawCollision(units[0].Model, Unit.WorldTransform * units[0].Navigator.Transform, Color.Firebrick);
+                //if (pickFrustum != null)
+                //    primitiveBatch.DrawSolidFrustum(pickFrustum, null, Color.LightPink);
+                primitiveBatch.DrawArrow(destination + Vector3.UnitZ * 2, destination, null, Color.LightGreen * 0.4f);
+
+                foreach (Unit unit in selectedUnits)
+                {
+                    primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.BoundingRadius, 12, null, Color.YellowGreen);
+                }
             }
             primitiveBatch.End();
+
+
+            primitiveBatch.Begin(screenCamera.View, screenCamera.Projection);
+            {
+                primitiveBatch.DrawRectangle(new Vector2(beginSelect.X, beginSelect.Y),
+                                             new Vector2(endSelect.X, endSelect.Y), null, Color.LightGreen);
+            }
+            primitiveBatch.End();
+
+
             base.Draw(gameTime);
         }
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using StitchUp.Content.Pipeline.FragmentLinking.Parser;
@@ -10,7 +9,7 @@ using StitchUp.Content.Pipeline.Graphics;
 
 namespace StitchUp.Content.Pipeline
 {
-    [DesignTimeVisible(false)]
+    [System.ComponentModel.DesignTimeVisible(false)]
 	[ContentImporter(".stitchedeffect", DisplayName = "Stitched Effect - StitchUp", DefaultProcessor = "StitchedEffectProcessor")]
 	internal class StitchedEffectImporter : ParsingImporter<StitchedEffectContent, StitchedEffectParser>
 	{
@@ -22,7 +21,7 @@ namespace StitchUp.Content.Pipeline
 		protected override StitchedEffectContent BeginParse(string fileName, string text, ContentIdentity identity)
 		{
 			if (!text.StartsWith("stitchedeffect"))
-            {
+			{
 				string[] fragments = text.Split(new [] {Environment.NewLine, "\n"}, StringSplitOptions.RemoveEmptyEntries);
 
 				Dictionary<string, string> fragmentDeclarations = fragments
@@ -37,7 +36,7 @@ namespace StitchUp.Content.Pipeline
 						Fragments = new FragmentBlockNode
 						{
 							FragmentDeclarations = fragmentDeclarations.ToDictionary(kvp => kvp.Key,
-								kvp => new ExternalReference<FragmentContent>(kvp.Value, identity))
+								kvp => StitchedEffectParser.GetFragmentSource(kvp.Value, identity))
 						},
 						Techniques = new TechniqueBlockNode
 						{
@@ -72,7 +71,7 @@ namespace StitchUp.Content.Pipeline
 			return new StitchedEffectParser(fileName, tokens, identity);
 		}
 
-		protected override StitchedEffectContent CreateContent(StitchedEffectParser parser)
+		protected override StitchedEffectContent CreateContent(StitchedEffectParser parser, ContentIdentity identity)
 		{
 			StitchedEffectNode stitchedEffectNode = parser.Parse();
 			return new StitchedEffectContent

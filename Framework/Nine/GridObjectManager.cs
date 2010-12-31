@@ -27,12 +27,12 @@ namespace Nine
         /// <summary>
         /// Gets or sets the number of columns (x) of the grid.
         /// </summary>
-        public int GridCountX { get; protected set; }
+        public int SegmentCountX { get; protected set; }
 
         /// <summary>
         /// Gets or sets the number of rows (y) of the grid.
         /// </summary>
-        public int GridCountY { get; protected set; }
+        public int SegmentCountY { get; protected set; }
 
         /// <summary>
         /// Gets or sets the center position of the grid.
@@ -51,8 +51,8 @@ namespace Nine
         {
             Position = new Vector2(x, y);
             Size = new Vector2(width, height);
-            GridCountX = countX;
-            GridCountY = countY;
+            SegmentCountX = countX;
+            SegmentCountY = countY;
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace Nine
         {
             Position = new Vector2(x, y);
             Size = new Vector2(step * countX, step * countY);
-            GridCountX = countX;
-            GridCountY = countY;
+            SegmentCountX = countX;
+            SegmentCountY = countY;
         }
 
         /// <summary>
@@ -73,8 +73,8 @@ namespace Nine
         {
             Position = bounds.GetCenter();
             Size = bounds.Max - bounds.Min;
-            GridCountX = countX;
-            GridCountY = countY;
+            SegmentCountX = countX;
+            SegmentCountY = countY;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Nine
         /// </summary>
         public bool Contains(int x, int y)
         {
-            return x >= 0 && y >= 0 && x < GridCountX && y < GridCountY;
+            return x >= 0 && y >= 0 && x < SegmentCountX && y < SegmentCountY;
         }
 
         /// <summary>
@@ -133,12 +133,12 @@ namespace Nine
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public Point PositionToGrid(float x, float y)
+        public Point PositionToSegment(float x, float y)
         {
             Point pt = new Point();
 
-            pt.X = (int)((x - Position.X + Size.X / 2) * GridCountX / Size.X);
-            pt.Y = (int)((y - Position.Y + Size.Y / 2) * GridCountY / Size.Y);
+            pt.X = (int)((x - Position.X + Size.X / 2) * SegmentCountX / Size.X);
+            pt.Y = (int)((y - Position.Y + Size.Y / 2) * SegmentCountY / Size.Y);
 
             if (x == Position.X + Size.X / 2)
                 pt.X--;
@@ -154,33 +154,33 @@ namespace Nine
         /// <summary>
         /// Converts from world space to integral grid space.
         /// </summary>
-        public Point PositionToGrid(Vector2 point)
+        public Point PositionToSegment(Vector2 point)
         {
-            return PositionToGrid(point.X, point.Y);
+            return PositionToSegment(point.X, point.Y);
         }
 
         /// <summary>
         /// Gets the center position of the specified integral grid.
         /// </summary>
-        public Vector2 GridToPosition(int x, int y)
+        public Vector2 SegmentToPosition(int x, int y)
         {
             if (!Contains(x, y))
                 throw new ArgumentOutOfRangeException();
 
             Vector2 v = new Vector2();
 
-            v.X = -Size.X / 2 + (x + 0.5f) * Size.X / GridCountX;
-            v.Y = -Size.Y / 2 + (y + 0.5f) * Size.Y / GridCountY;
+            v.X = -Size.X / 2 + (x + 0.5f) * Size.X / SegmentCountX;
+            v.Y = -Size.Y / 2 + (y + 0.5f) * Size.Y / SegmentCountY;
 
-            return v;
+            return v + Position;
         }
 
         /// <summary>
         /// Gets the center position of the specified integral grid.
         /// </summary>
-        public Vector2 GridToPosition(Point pt)
+        public Vector2 SegmentToPosition(Point pt)
         {
-            return GridToPosition(pt.X, pt.Y);
+            return SegmentToPosition(pt.X, pt.Y);
         }
 
         /// <summary>
@@ -193,10 +193,10 @@ namespace Nine
 
             Vector2 v = new Vector2();
 
-            v.X = -Size.X / 2 + (x) * Size.X / GridCountX;
-            v.Y = -Size.Y / 2 + (y) * Size.Y / GridCountY;
+            v.X = -Size.X / 2 + (x) * Size.X / SegmentCountX;
+            v.Y = -Size.Y / 2 + (y) * Size.Y / SegmentCountY;
 
-            return v;
+            return v + Position;
         }
 
         /// <summary>
@@ -209,19 +209,19 @@ namespace Nine
 
             Vector2 v = new Vector2();
 
-            v.X = -Size.X / 2 + (x + 1) * Size.X / GridCountX;
-            v.Y = -Size.Y / 2 + (y + 1) * Size.Y / GridCountY;
+            v.X = -Size.X / 2 + (x + 1) * Size.X / SegmentCountX;
+            v.Y = -Size.Y / 2 + (y + 1) * Size.Y / SegmentCountY;
 
-            return v;
+            return v + Position;
         }
 
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified bounds.
         /// </summary>
-        public IEnumerable<Point> ForEach(Vector3 position, Vector3 size)
+        public IEnumerable<Point> Traverse(Vector3 position, Vector3 size)
         {
-            Point min = PositionToGrid(Clamp(position.X - size.X / 2, position.Y - size.Y / 2));
-            Point max = PositionToGrid(Clamp(position.X + size.X / 2, position.Y + size.Y / 2));
+            Point min = PositionToSegment(Clamp(position.X - size.X / 2, position.Y - size.Y / 2));
+            Point max = PositionToSegment(Clamp(position.X + size.X / 2, position.Y + size.Y / 2));
 
             for (int y = min.Y; y <= max.Y; y++)
                 for (int x = min.X; x <= max.X; x++)
@@ -231,15 +231,15 @@ namespace Nine
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified bounds.
         /// </summary>
-        public IEnumerable<Point> ForEach(BoundingBox boundingBox)
+        public IEnumerable<Point> Traverse(BoundingBox boundingBox)
         {
-            return ForEach(boundingBox.GetCenter(), boundingBox.Max - boundingBox.Min);
+            return Traverse(boundingBox.GetCenter(), boundingBox.Max - boundingBox.Min);
         }
 
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified line.
         /// </summary>
-        public IEnumerable<Point> ForEach(Point begin, Point end)
+        public IEnumerable<Point> Traverse(Point begin, Point end)
         {
             foreach (Point pt in BresenhamLine(begin.X, begin.Y, end.X, end.Y))
             {
@@ -255,14 +255,20 @@ namespace Nine
         /// The precision of line picking. A recommended value is half the radius of the
         /// smallest object to be picked.
         /// </param>
-        public IEnumerable<Point> ForEach(Ray ray, float precision)
+        public IEnumerable<Point> Traverse(Ray ray, float precision)
         {
             Vector2 begin = new Vector2();
             Vector2 end = new Vector2();
 
+            ray.Position.X += Size.X / 2 - Position.X;
+            ray.Position.Y += Size.Y / 2 - Position.Y;
+
             if (ProjectRay(ray, out begin, out end))
             {
-                return ForEach(begin, end, precision);
+                begin -= Size / 2 - Position;
+                end -= Size / 2 - Position;
+
+                return Traverse(begin, end, precision);
             }
 
             return EmptyPoints;
@@ -277,13 +283,16 @@ namespace Nine
         /// The precision of line picking. A recommended value is half the radius of the
         /// smallest object to be picked.
         /// </param>
-        public IEnumerable<Point> ForEach(Vector2 begin, Vector2 end, float precision)
+        public IEnumerable<Point> Traverse(Vector2 begin, Vector2 end, float precision)
         {
+            begin += Size / 2 - Position;
+            end += Size / 2 - Position;
+
             if (precision <= 0)
                 precision = float.MaxValue;
 
-            float stepX = Size.X / GridCountX;
-            float stepY = Size.Y / GridCountY;
+            float stepX = Size.X / SegmentCountX;
+            float stepY = Size.Y / SegmentCountY;
             float step = Math.Min(stepX, stepY);
 
             if (precision > step)
@@ -484,10 +493,10 @@ namespace Nine
             if (obj == null)
                 throw new ArgumentNullException("obj");
 
-            foreach (Point grid in ForEach(box))
+            foreach (Point grid in Traverse(box))
             {
                 if (Data == null)
-                    Data = new GridObjectManagerEntry<T>[GridCountX, GridCountY];
+                    Data = new GridObjectManagerEntry<T>[SegmentCountX, SegmentCountY];
 
                 if (Data[grid.X, grid.Y].Objects == null)
                 {
@@ -527,9 +536,9 @@ namespace Nine
         {
             Count = 0;
 
-            for (int x = 0; x < GridCountX; x++)
+            for (int x = 0; x < SegmentCountX; x++)
             {
-                for (int y = 0; y < GridCountY; y++)
+                for (int y = 0; y < SegmentCountY; y++)
                 {
                     if (Data != null && Data[x, y].Objects != null)
                     {
@@ -554,7 +563,7 @@ namespace Nine
 
         private IEnumerable<T> InternalFind(BoundingBox box)
         {
-            foreach (Point grid in ForEach(box))
+            foreach (Point grid in Traverse(box))
             {
                 if (Data != null && Data[grid.X, grid.Y].Objects != null)
                 {
@@ -575,7 +584,7 @@ namespace Nine
 
         private IEnumerable<T> InternalFind(BoundingSphere sphere)
         {
-            foreach (Point grid in ForEach(BoundingBox.CreateFromSphere(sphere)))
+            foreach (Point grid in Traverse(BoundingBox.CreateFromSphere(sphere)))
             {
                 if (Data != null && Data[grid.X, grid.Y].Objects != null)
                 {
@@ -590,7 +599,7 @@ namespace Nine
 
         public IEnumerable<T> Find(Ray ray)
         {
-            foreach (Point grid in ForEach(ray, rayPickPrecision))
+            foreach (Point grid in Traverse(ray, rayPickPrecision))
             {
                 if (Data != null && Data[grid.X, grid.Y].Objects != null)
                 {
@@ -616,7 +625,7 @@ namespace Nine
             float minDistance = float.MaxValue;
             T result = default(T);
 
-            foreach (Point grid in ForEach(ray, rayPickPrecision))
+            foreach (Point grid in Traverse(ray, rayPickPrecision))
             {
                 if (Data != null && Data[grid.X, grid.Y].Objects != null)
                 {
@@ -654,9 +663,9 @@ namespace Nine
 
         private IEnumerable<T> InternalFind(BoundingFrustum frustum)
         {
-            for (int x = 0; x < GridCountX; x++)
+            for (int x = 0; x < SegmentCountX; x++)
             {
-                for (int y = 0; y < GridCountY; y++)
+                for (int y = 0; y < SegmentCountY; y++)
                 {
                     if (Data != null && Data[x, y].Objects != null)
                     {
@@ -731,9 +740,9 @@ namespace Nine
 
             bool hasValue = false;
 
-            for (int x = 0; x < GridCountX; x++)
+            for (int x = 0; x < SegmentCountX; x++)
             {
-                for (int y = 0; y < GridCountY; y++)
+                for (int y = 0; y < SegmentCountY; y++)
                 {
                     if (Data != null && Data[x, y].Objects != null)
                     {

@@ -8,7 +8,7 @@ using StitchUp.Content.Pipeline.Graphics;
 
 namespace StitchUp.Content.Pipeline.Processors
 {
-    [DesignTimeVisible(false)]
+    [System.ComponentModel.DesignTimeVisible(false)]
 	[ContentProcessor(DisplayName = "Model - StitchUp")]
 	internal class StitchedEffectModelProcessor : ModelProcessor
 	{

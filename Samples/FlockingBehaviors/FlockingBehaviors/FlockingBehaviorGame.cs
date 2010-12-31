@@ -39,6 +39,8 @@ namespace FlockingBehaviors
         private const int BackBufferWidth = 900;
         private const int BackBufferHeight = 600;
 #endif
+        ScreenCamera camera;
+        BasicEffect basicEffect;
 
         SpriteFont font;
         SpriteBatch spriteBatch;
@@ -78,6 +80,11 @@ namespace FlockingBehaviors
         /// </summary>
         protected override void LoadContent()
         {
+            camera = new ScreenCamera(GraphicsDevice, ScreenCameraCoordinate.TwoDimension);
+            basicEffect = new BasicEffect(GraphicsDevice);
+            basicEffect.TextureEnabled = true;
+            basicEffect.VertexColorEnabled = true;
+
             // Create a sprite batch to draw text on to the screen
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("Consolas");
@@ -154,7 +161,10 @@ namespace FlockingBehaviors
 
             Rectangle viewport = GraphicsDevice.Viewport.Bounds;
 
-            spriteBatch.Begin();
+            basicEffect.View = camera.View;
+            basicEffect.Projection = camera.Projection;
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, basicEffect);
 
             for (int i = 0; i < movingEntities.Count; i++)
             {

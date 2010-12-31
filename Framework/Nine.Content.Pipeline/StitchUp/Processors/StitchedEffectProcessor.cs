@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text;
-using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
@@ -9,15 +8,14 @@ using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using StitchUp.Content.Pipeline.FragmentLinking.Compiler;
 using StitchUp.Content.Pipeline.FragmentLinking.EffectModel;
 using StitchUp.Content.Pipeline.FragmentLinking.Generator;
-using StitchUp.Content.Pipeline.FragmentLinking.PreProcessor;
 using StitchUp.Content.Pipeline.Graphics;
 
 namespace StitchUp.Content.Pipeline.Processors
 {
-    [DesignTimeVisible(false)]
+    [System.ComponentModel.DesignTimeVisible(false)]
 	[ContentProcessor(DisplayName = "Stitched Effect - StitchUp")]
 	internal class StitchedEffectProcessor : ContentProcessor<StitchedEffectContent, CompiledEffectContent>
-	{
+    {
         public StitchedEffectSymbol Symbols;
 
 		public override CompiledEffectContent Process(StitchedEffectContent input, ContentProcessorContext context)
