@@ -496,6 +496,11 @@ namespace Nine.Graphics
             AddVertex(new VertexPositionColorTexture() { Position = position, Color = color });
         }
 
+        internal void AddVertex(Vector3 position, Color color,Vector2 texCoord)
+        {
+            AddVertex(new VertexPositionColorTexture() { Position = position, Color = color, TextureCoordinate = texCoord });
+        }
+
         internal void AddVertex(VertexPositionColorTexture vertex)
         {
             if (!hasPrimitiveBegin)
