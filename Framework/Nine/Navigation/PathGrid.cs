@@ -46,7 +46,7 @@ namespace Nine.Navigation
         /// </summary>
         public override string ToString()
         {
-            return X + ", " + Y + ", " + ID;
+            return String.Format("{0}, {1}, {2}", X, Y, ID);
         }
     }
     #endregion
@@ -82,6 +82,9 @@ namespace Nine.Navigation
         /// </summary>
         public void Mark(int x, int y)
         {
+            //Assert x and y does not exceed limits
+            System.Diagnostics.Debug.Assert(Contains(x, y));
+
             data[x, y]++;
         }
 
@@ -93,6 +96,9 @@ namespace Nine.Navigation
         {
             Point pt = PositionToSegment(Clamp(x, y));
 
+            //Assert x and y does not exceed limits
+            System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y));
+
             data[pt.X, pt.Y]++;
         }
 
@@ -101,7 +107,7 @@ namespace Nine.Navigation
         /// </summary>
         public void Unmark(int x, int y)
         {
-            System.Diagnostics.Debug.Assert(data[x, y] > 0);
+            System.Diagnostics.Debug.Assert(Contains(x,y) && data[x, y] > 0);
 
             data[x, y]--;
         }
@@ -114,7 +120,7 @@ namespace Nine.Navigation
         {
             Point pt = PositionToSegment(Clamp(x, y));
 
-            System.Diagnostics.Debug.Assert(data[pt.X, pt.Y] > 0);
+            System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y) && data[pt.X, pt.Y] > 0);
 
             data[pt.X, pt.Y]--;
         }
@@ -124,6 +130,8 @@ namespace Nine.Navigation
         /// </summary>
         public bool IsMarked(int x, int y)
         {
+            System.Diagnostics.Debug.Assert(Contains(x, y));
+
             return data[x, y] > 0;
         }
 
@@ -135,16 +143,12 @@ namespace Nine.Navigation
         {
             Point pt = PositionToSegment(Clamp(x, y));
 
+            System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y));
+
             return data[pt.X, pt.Y] > 0;
         }
 
-        /// <summary>
-        /// Gets total node count.
-        /// </summary>
-        public int Count
-        {
-            get { return SegmentCountX * SegmentCountY; }
-        }
+        
 
         /// <summary>
         /// Gets the path graph node under the specified grid.

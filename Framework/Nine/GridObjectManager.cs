@@ -45,6 +45,14 @@ namespace Nine
         public Vector2 Size { get; protected set; }
 
         /// <summary>
+        /// Gets total node count.
+        /// </summary>
+        public int Count
+        {
+            get { return SegmentCountX * SegmentCountY; }
+        }
+
+        /// <summary>
         /// Creates a new grid.
         /// </summary>
         public UniformGrid(float width, float height, float x, float y, int countX, int countY)
