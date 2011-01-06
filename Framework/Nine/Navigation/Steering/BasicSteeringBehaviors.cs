@@ -33,14 +33,7 @@ namespace Nine.Navigation.Steering
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
         {
-            Vector2 toTarget = Target - movingEntity.Position;
-
-            float dist = toTarget.Length();
-
-            if (dist > 0)
-                return Vector2.Normalize(toTarget) * movingEntity.MaxSpeed - movingEntity.Velocity;
-
-            return Vector2.Zero;
+            return SteeringHelper.SeekToTarget(movingEntity, Target);
         }
     }
     #endregion
@@ -52,14 +45,7 @@ namespace Nine.Navigation.Steering
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
         {
-            Vector2 toTarget = Target - movingEntity.Position;
-
-            float dist = toTarget.Length();
-
-            if (dist > 0)
-                return Vector2.Normalize(toTarget) * -movingEntity.MaxSpeed - movingEntity.Velocity;
-
-            return Vector2.Zero;
+            return SteeringHelper.FleeFromTarget(movingEntity, Target);
         }
     }
     #endregion
@@ -67,69 +53,34 @@ namespace Nine.Navigation.Steering
     #region ArriveBehavior
     public class ArriveBehavior : SteeringBehavior
     {
-        public Vector2 Target
-        {
-            get { return target; }
-            set
-            {
-                if (Vector2.Subtract(target, value).LengthSquared() > float.Epsilon)
-                {
-                    lastMaxSpeed = 0;
-                    passedTarget = false;
-                }
-                target = value;
-            }
-        }
-
-        private Vector2 target;
-        private float lastMaxSpeed = 0;
-        private bool passedTarget = false;
-        private SeekBehavior seek = new SeekBehavior();
+        public Vector2? Target { get; set; }
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
         {
-            Vector2 toTarget = Target - movingEntity.Position;
-
-            float dot = Vector2.Dot(toTarget, movingEntity.Velocity);
-            if (dot < 0)
-                passedTarget = true;
-
-            // This max speed is the highest speed during a move.
-            float maxSpeed = (!passedTarget && movingEntity.Speed > lastMaxSpeed) ? movingEntity.Speed : lastMaxSpeed;
-            lastMaxSpeed = maxSpeed;
-
-            //calculate the distance to the target
-            float dist = toTarget.Length();
-
-            if (dist <= (float)(movingEntity.Speed * elapsedTime))
+            if (!Target.HasValue)
                 return Vector2.Zero;
-
-            float decelerateRange = maxSpeed * maxSpeed / movingEntity.Acceleration / 2;
             
-            if (dist <= decelerateRange)
+            Vector2 toTarget = Target.Value - movingEntity.Position;
+
+            // Stop when the moving entity has passed target.
+            if (toTarget.Length() < movingEntity.BoundingRadius + movingEntity.MaxSpeed * elapsedTime)
             {
-                if (movingEntity.Speed <= movingEntity.Acceleration * elapsedTime)
+                if (movingEntity.Velocity != Vector2.Zero && Vector2.Dot(toTarget, movingEntity.Velocity) <= 0)
                 {
+                    Target = null;
                     return Vector2.Zero;
                 }
-
-                Vector2 desiredVelocity = Vector2.Zero;
-
-                if (dot >= 0 && !passedTarget)
-                {
-                    desiredVelocity = Vector2.Normalize(toTarget) * (movingEntity.Speed - movingEntity.Acceleration * elapsedTime);
-                }
-                else
-                {
-                    passedTarget = true;
-                }
-
-                return desiredVelocity - movingEntity.Velocity;
             }
 
-            passedTarget = false;
-            seek.Target = Target;
-            return seek.UpdateSteeringForce(elapsedTime, movingEntity);
+            // Stop when the moving entity is close enough.
+            float distance = toTarget.Length();
+            if (distance <= SteeringHelper.GetDecelerateRange(movingEntity))
+            {
+                Target = null;
+                return Vector2.Zero;
+            }
+
+            return SteeringHelper.SeekToTarget(movingEntity, Target.Value);
         }
     }
     #endregion

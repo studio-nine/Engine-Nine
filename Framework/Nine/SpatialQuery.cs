@@ -58,10 +58,10 @@ namespace Nine
         /// <summary>
         /// Gets or sets a predicate that filters the result of the inner query.
         /// </summary>
-        public Predicate<object> Filter { get; set; }
+        public Predicate<TInput> Filter { get; set; }
 
         /// <summary>
-        /// Gets or sets a predicate that filters the result of the inner query.
+        /// Gets or sets a predicate that converts the result of the inner query.
         /// </summary>
         public Converter<TInput, TOutput> Converter { get; set; }
 

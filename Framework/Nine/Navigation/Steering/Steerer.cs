@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,12 +21,33 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Navigation.Steering
 {
     /// <summary>
+    /// Defines how the final force of steering behaviors are blended.
+    /// </summary>
+    public enum SteeringBehaviorBlendMode
+    {
+        /// <summary>
+        /// Sum up all each steering force with weight until the max force limit is reached.
+        /// </summary>
+        WeightedSum,
+
+        /// <summary>
+        /// Only use the first non-zero steering force.
+        /// </summary>
+        Solo,
+    }
+
+    /// <summary>
     /// Represents a steerer that can steer a moving entity with steering behaviors.
     /// </summary>
     public class Steerer : ISteerable
     {
         public Vector2 Position { get; set; }
-        public Vector2 Forward { get; set; }
+        public Vector2 Forward
+        {
+            get { return forward; }
+            set { forward = value; Velocity = value * Speed; }
+        }
+
         public float Speed { get; private set; }
         public float MaxSpeed { get; set; }
         public Vector2 Force { get { return force; } }
@@ -33,12 +55,14 @@ namespace Nine.Navigation.Steering
         public Vector2 Velocity { get; private set; }
         public float Acceleration { get; set; }  
         public float BoundingRadius { get; set; }
-        public bool CollisionDetectionEnabled { get; set; }
+        public bool AllowPenetration { get; set; }
         public object Tag { get; set; }
 
+        public SteeringBehaviorBlendMode BlendMode { get; set; }
         public SteeringBehaviorCollection Behaviors { get; private set; }
 
         private Vector2 force;
+        private Vector2 forward;
                 
         public Steerer()
         {
@@ -46,105 +70,162 @@ namespace Nine.Navigation.Steering
             Acceleration = 20.0f;
             BoundingRadius = 1.0f;
             Forward = Vector2.UnitX;
-            CollisionDetectionEnabled = true;
+            AllowPenetration = false;
             
             Behaviors = new SteeringBehaviorCollection();
         }
 
         public void Update(GameTime gameTime)
         {
-            float elapsedTime = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            float elapsedSeconds = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-            if (elapsedTime <= 0)
+            if (elapsedSeconds <= 0)
                 return;
 
-            float MaxAcceleration = MaxSpeed * 10;
+            // The max acceleration can stops the moving entity from top speed.
+            float MaxAcceleration = MaxSpeed / elapsedSeconds;
 
             if (Acceleration >= MaxAcceleration)
                 Acceleration = MaxAcceleration;
 
             force = Vector2.Zero;
-            MaxForce = Acceleration * elapsedTime;
+            MaxForce = Acceleration;
 
-            // Calculate force
+            // Accumulate force of each behavior
             for (int i = 0; i < Behaviors.Count; i++)
             {
-                if (!AccumulateForce(ref force, MaxForce,
-                                     Behaviors.GetWeightByIndex(i) *
-                                     Behaviors[i].UpdateSteeringForce(elapsedTime, this)))
+                Vector2 steeringForce = Behaviors.GetWeightByIndex(i) * Behaviors[i].UpdateSteeringForce(elapsedSeconds, this);
+                if (BlendMode == SteeringBehaviorBlendMode.WeightedSum)
                 {
-                    break;
+                    if (!AccumulateForceWeightedSum(ref force, MaxForce, steeringForce))
+                        break;
+                }
+                else if (BlendMode == SteeringBehaviorBlendMode.Solo)
+                {
+                    if (!AccumulateForceSolo(ref force, MaxForce, steeringForce))
+                        break;
                 }
             }
-            
-            // We don't multiply elapsedTime here because our force
-            // is calculated based on the subtracting desired speed and current speed.
-            Velocity += force;
-            Speed = Velocity.Length();
 
-            // Stop when speed is too small
-            if (Speed <= Acceleration * elapsedTime)
+            if (Speed >= 0 && force == Vector2.Zero)
             {
-                if (force.LengthSquared() <= Speed * Speed)
+                // The moving entity has fully stopped.
+                if (Speed == 0)
+                    return;
+
+                // Apply friction when there is no force but the entity is still moving.
+                Vector2 previousVelocity = Velocity;
+                Velocity -= forward * MaxForce * elapsedSeconds;
+
+                // When the velocity has changed its direction, that indicates the moving
+                // entity has fully stopped.
+                if (Vector2.Dot(previousVelocity, Velocity) <= 0)
                 {
                     Velocity = Vector2.Zero;
                     Speed = 0;
+                    return;
                 }
-            }
-            else if (force.LengthSquared() <= 0)
-            {
-                Velocity -= Forward * MaxForce;
+
                 Speed = Velocity.Length();
             }
-
-            // Turncate speed
-            if (Speed > MaxSpeed)
+            else
             {
-                Velocity *= (float)(MaxSpeed / Speed);
-                Speed = MaxSpeed;
-            }
+                // We don't multiply elapsedTime here because our force
+                // is calculated based on the subtracting desired speed and current speed.
+                Velocity += force * elapsedSeconds;
+                Speed = Velocity.Length();
 
-            if (Speed > 0)
-            {
-                Forward = Vector2.Normalize(Velocity);
+                if (Speed <= 0)
+                    return;
+
+                // Turncate speed
+                if (Speed > MaxSpeed)
+                {
+                    Velocity *= (float)(MaxSpeed / Speed);
+                    Speed = MaxSpeed;
+                }
             }
+            
+            Debug.Assert(Speed > 0);
+            forward = Vector2.Normalize(Velocity);
 
             // Update position
-            Vector2 newPosition = Position + Velocity * elapsedTime;
+            Vector2 newPosition = Position + Velocity * elapsedSeconds;
 
-            if (CollisionDetectionEnabled)
+            // Perform collision detection when penetration is not allowed.
+            if (!AllowPenetration)
             {
+                // Find the max penetration depth.
+                float? maxPenetration = null;
                 foreach (ISteeringBehavior behavior in Behaviors)
                 {
-                    if (behavior.Collides(Position, newPosition, this))
+                    float? penetration = behavior.Collides(Position, newPosition, this);
+                    if (penetration.HasValue && (!maxPenetration.HasValue || penetration.Value > maxPenetration.Value))
                     {
-                        // Maybe we should allow certain amount of penetration
-                        // and let this be a configurable property.
-                        //Position = (Position + newPosition) / 2;
-                        return;
+                        maxPenetration = penetration;
                     }
+                }
+
+                if (maxPenetration.HasValue)
+                {
+                    // Adjust target position based on penetration depth.
+                    newPosition = Position + forward * maxPenetration.Value;
                 }
             }
 
             Position = newPosition;
         }
 
-        private bool AccumulateForce(ref Vector2 force, float maxForce, Vector2 steeringForce)
+        private bool AccumulateForceWeightedSum(ref Vector2 force, float maxForce, Vector2 steeringForce)
         {
-            force += steeringForce;
+            //calculate how much steering force the vehicle has used so far
+            float MagnitudeSoFar = force.Length();
 
-            float lengthSq = force.LengthSquared();
-            
-            if (lengthSq > maxForce * maxForce)
+            //calculate how much steering force remains to be used by this vehicle
+            float MagnitudeRemaining = maxForce - MagnitudeSoFar;
+
+            //return false if there is no more force left to use
+            if (MagnitudeRemaining <= float.Epsilon) return false;
+
+            //calculate the magnitude of the force we want to add
+            float MagnitudeToAdd = steeringForce.Length();
+
+            //if the magnitude of the sum of ForceToAdd and the running total
+            //does not exceed the maximum force available to this vehicle, just
+            //add together. Otherwise add as much of the ForceToAdd vector is
+            //possible without going over the max.
+            if (MagnitudeToAdd < MagnitudeRemaining)
             {
-                float inv = (float)(maxForce / Math.Sqrt(lengthSq));
-
-                force.X *= inv;
-                force.Y *= inv;
-
-                return false;
+                force += steeringForce;
+            }
+            else
+            {
+                //add it to the steering force
+                force += (Vector2.Normalize(steeringForce) * MagnitudeRemaining);
             }
 
+            return true;
+        }
+
+        private bool AccumulateForceSolo(ref Vector2 force, float maxForce, Vector2 steeringForce)
+        {
+            //calculate the magnitude of the force we want to add
+            float MagnitudeToAdd = steeringForce.Length();
+            float MagnitudeRemaining = maxForce;
+
+            if (MagnitudeToAdd > 0)
+            {
+                if (MagnitudeToAdd < MagnitudeRemaining)
+                {
+                    force += steeringForce;
+                }
+                else
+                {
+                    //add it to the steering force
+                    force += (Vector2.Normalize(steeringForce) * MagnitudeRemaining);
+                }
+                return false;
+            }
             return true;
         }
     }

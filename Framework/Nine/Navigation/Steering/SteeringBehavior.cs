@@ -81,9 +81,10 @@ namespace Nine.Navigation.Steering
         Vector2 UpdateSteeringForce(float elapsedTime, ISteerable movingEntity);
 
         /// <summary>
-        /// Checks if the step collides with any obstacles.
+        /// Checks if the step collides with any obstacles. Return null if don't collide, 
+        /// otherwise, returns the max penertration depth allowed.
         /// </summary>
-        bool Collides(Vector2 from, Vector2 to, ISteerable movingEntity);
+        float? Collides(Vector2 from, Vector2 to, ISteerable movingEntity);
     }
 
     /// <summary>
@@ -113,15 +114,15 @@ namespace Nine.Navigation.Steering
             return OnUpdateSteeringForce(elapsedTime, movingEntity);
         }
 
-        public bool Collides(Vector2 from, Vector2 to, ISteerable movingEntity)
+        public float? Collides(Vector2 from, Vector2 to, ISteerable movingEntity)
         {
             if (!Enabled)
-                return false;
+                return null;
 
             return OnCollides(from, to, movingEntity);
         }
 
         protected abstract Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity);
-        protected virtual bool OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity) { return false; }
+        protected virtual float? OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity) { return null; }
     }
 }

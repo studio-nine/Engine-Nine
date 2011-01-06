@@ -198,7 +198,7 @@ namespace Nine.Graphics
         /// Converts and fills the surface vertex buffer to another vertex full.
         /// The default vertex format is VertexPositionColorNormalTexture.
         /// </summary>
-        public void ConvertVertexType<T>(DrawSurfaceFillVertex<T> fillVertex) where T : struct, IVertexType
+        public void ConvertVertexType<T>(DrawSurfaceConvertVertex<T> fillVertex) where T : struct, IVertexType
         {
             if (IsFreezed)
                 throw new InvalidOperationException(
@@ -244,7 +244,7 @@ namespace Nine.Graphics
             Invalidate();
         }
 
-        private void DefaultFillVertex(int x, int y, ref VertexPositionColorNormalTexture vertex)
+        internal void DefaultFillVertex(int x, int y, ref VertexPositionColorNormalTexture input,  ref VertexPositionColorNormalTexture vertex)
         {
             Vector2 uv = new Vector2();
 
@@ -362,9 +362,19 @@ namespace Nine.Graphics
         /// </summary>
         public void Dispose()
         {
-            foreach (DrawableSurfacePatch patch in Patches)
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                patch.Dispose();
+                foreach (DrawableSurfacePatch patch in Patches)
+                {
+                    patch.Dispose();
+                }
             }
         }
         #endregion
@@ -487,5 +497,5 @@ namespace Nine.Graphics
     /// Fills a vertex data in a drawable surface.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public delegate void DrawSurfaceFillVertex<T>(int x, int y, ref T vertex);
+    public delegate void DrawSurfaceConvertVertex<T>(int x, int y, ref VertexPositionColorNormalTexture input, ref T output);
 }

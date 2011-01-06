@@ -407,6 +407,7 @@ namespace Nine
             Current = this;
 #if WINDOWS
             control = Form.FromHandle(handle);
+            control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
             control.MouseDown += new MouseEventHandler(control_MouseDown);
             control.MouseUp += new MouseEventHandler(control_MouseUp);
             control.MouseCaptureChanged += new EventHandler(control_MouseCaptureChanged);
@@ -701,7 +702,7 @@ namespace Nine
         bool rightDown = false;
         bool middleDown = false;
         Control control = null;
-
+        
         void control_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Wheel(this, new MouseEventArgs(MouseButtons.Middle, e.X, e.Y, e.Delta));
@@ -754,6 +755,11 @@ namespace Nine
                 rightDown = false;
                 middleDown = false;
             }
+        }
+        
+        void control_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            e.IsInputKey = true;
         }
 
         void control_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)

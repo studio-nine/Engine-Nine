@@ -106,14 +106,14 @@ namespace FlockingBehaviors
             {
                 movement = new Steerer();
                 movement.BoundingRadius = 5;
-                movement.MaxSpeed = 80;
+                movement.MaxSpeed = 100;
                 movement.Acceleration = 200;
                 movement.Position = NextPosition();
                 movement.Behaviors.Add(new BoundAvoidanceBehavior() { Bounds = bounds, Skin = 20 });
-                movement.Behaviors.Add(new WanderBehavior(), 0.9f);
-                movement.Behaviors.Add(new SeparationBehavior() { Neighbors = objects, Range = 20f }, 0.9f);
-                movement.Behaviors.Add(new CohesionBehavior() { Neighbors = objects, Range = 100f }, 0.03f);
-                movement.Behaviors.Add(new AlignmentBehavior() { Neighbors = objects, Range = 100f });
+                movement.Behaviors.Add(new WanderBehavior(), 0.5f);
+                movement.Behaviors.Add(new SeparationBehavior() { Neighbors = objects, Range = 10f }, 0.5f);
+                movement.Behaviors.Add(new CohesionBehavior() { Neighbors = objects, Range = 100f }, 0.5f);
+                movement.Behaviors.Add(new AlignmentBehavior() { Neighbors = objects, Range = 100f }, 0.5f);
                 movingEntities.Add(movement);
             }
         }

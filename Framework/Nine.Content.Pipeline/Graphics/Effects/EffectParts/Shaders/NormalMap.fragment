@@ -47,9 +47,8 @@ void main(INPUT input, inout OUTPUT output)
 	float2 uv;
 	import(TexCoord, uv = TexCoord);
 
-    float3 normalFromMap = tex2D(Texture, uv);
+    float3 normalFromMap = normalize(tex2D(Texture, uv) - 0.5);
     normalFromMap = mul(normalFromMap, tangentTransform);
-    //normalFromMap = normalize(normalFromMap);
 	
 	export(float3, Normal, normalFromMap);
 }

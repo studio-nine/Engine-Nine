@@ -141,9 +141,8 @@ namespace SkinnedModel
             // You must specify a unique value for each mesh instance to enabled default blending.
             // Do it by pass the unique object into the second parameter of BoneAnimation constructor.
             BoneAnimation result = new BoneAnimation(model, this);
-            
-            result.BlendDuration = TimeSpan.FromSeconds(1f);
             result.Controllers.Add(animation);
+            result.BlendDuration = TimeSpan.FromSeconds(1f);
             result.Play();
             return result;
         }
@@ -154,7 +153,9 @@ namespace SkinnedModel
             BoneAnimationController run = new BoneAnimationController(model.GetAnimation("Run"));
             run.Speed = 0.8f;
 
-            BoneAnimation blended = new BoneAnimation(model, null, run, attack);
+            BoneAnimation blended = new BoneAnimation(model, null);
+            blended.Controllers.Add(run);
+            blended.Controllers.Add(attack);
             
             blended.Controllers[run].Disable("Bip01_Pelvis", false);
             blended.Controllers[run].Disable("Bip01_Spine1", true);
@@ -178,7 +179,10 @@ namespace SkinnedModel
             BoneAnimationController carry = new BoneAnimationController(model.GetAnimation("Carry"));
             BoneAnimationController run = new BoneAnimationController(model.GetAnimation("Run"));
 
-            BoneAnimation blended = new BoneAnimation(model, null, idle, run, carry);
+            BoneAnimation blended = new BoneAnimation(model, null);
+            blended.Controllers.Add(idle);
+            blended.Controllers.Add(run);
+            blended.Controllers.Add(carry);
 
             lookAtController = new LookAtController(blended, world2, model.Bones["Bip01_Head"].Index);
             lookAtController.Up = Vector3.UnitX;

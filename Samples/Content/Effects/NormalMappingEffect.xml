@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="Nine.Content.Pipeline.Graphics.Effects.LinkedEffectContent">
+    <EffectParts>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionNormalTexture"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransform"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutput"></Item> 
+      
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTexture">
+        <Texture>box</Texture>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMap">
+        <Texture>box_n</Texture>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLight">
+        <SpecularColor>1 1 1</SpecularColor>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PointLight">
+        <Position>10 10 1</Position>
+        <Range>20</Range>
+        <Attenuation>0.2</Attenuation>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SpotLight">
+        <Position>0 0 1</Position>
+        <Direction>-1 0 0</Direction>
+        <Range>20</Range>
+        <Attenuation>0.02</Attenuation>
+        <Falloff>2</Falloff>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>
+    </EffectParts>
+  </Asset>
+</XnaContent>

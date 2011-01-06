@@ -29,152 +29,91 @@ namespace Nine.Navigation.Steering
     #region ObstacleAvoidanceBehavior
     public class ObstacleAvoidanceBehavior : SteeringBehavior
     {
-        public float DetectorLength { get; set; }
-        public ISpatialQuery<ISteerable> Obstacles { get; set; }
-        public BoundingSphere NearestObstacle { get; private set; }
+        float DetectorLength = 4f;
+        float FieldOfView = MathHelper.ToRadians(60);
+        float HintRatio = 1f;
 
-        public ObstacleAvoidanceBehavior()
-        {
-            DetectorLength = 4.0f;
-        }
+        public BoundingCircle? CurrentObstacle;
+
+        public Vector2? TargetHint { get; set; }
+        public ISpatialQuery<BoundingCircle> Obstacles { get; set; }
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
         {
-            NearestObstacle = new BoundingSphere();
+            CurrentObstacle = null;
 
-            float nearestObstacle = float.MaxValue;
-            Vector2 nearestSteering = Vector2.Zero;
+            float detectorLength = movingEntity.BoundingRadius + movingEntity.MaxSpeed * elapsedTime;
 
-            float detector = movingEntity.BoundingRadius + (movingEntity.Speed / movingEntity.MaxSpeed) * DetectorLength;
-
-            foreach (ISteerable o in Obstacles.Find(new Vector3(movingEntity.Position, 0), detector))
+            foreach (BoundingCircle obstacle in Obstacles.Find(new Vector3(movingEntity.Position, 0), detectorLength + DetectorLength))
             {
-                BoundingSphere obstacle;
-
-                if (o == movingEntity)
-                    continue;
-
-                obstacle.Center = new Vector3((o as ISteerable).Position, 0);
-                obstacle.Radius = (o as ISteerable).BoundingRadius;
-
-                float minDistanceToCenter = DetectorLength + obstacle.Radius;
-                float totalRadius = obstacle.Radius + movingEntity.BoundingRadius;
-                Vector2 localOffset = new Vector2();
-
-                localOffset.X = obstacle.Center.X - movingEntity.Position.X;
-                localOffset.Y = obstacle.Center.Y - movingEntity.Position.Y;
-
-                Vector2 forward = new Vector2();
-
-                forward.X = movingEntity.Forward.X;
-                forward.Y = movingEntity.Forward.Y;
-                forward.Normalize();
-
-                float forwardComponent = Vector2.Dot(localOffset, forward);
-                Vector2 forwardOffset = forwardComponent * forward;
-
-                Vector2 offForwardOffset = localOffset - forwardOffset;
-
-                bool inCylinder = offForwardOffset.Length() < totalRadius;
-                bool nearby = forwardComponent < minDistanceToCenter;
-                bool inFront = forwardComponent > 0;
-
-                if (inCylinder && inFront && nearby)
+                Vector2 hintedForward = movingEntity.Forward;
+                if (TargetHint.HasValue)
                 {
-                    float length = offForwardOffset.Length();
-
-                    if (length < nearestObstacle)
-                    {
-                        NearestObstacle = obstacle;
-                        nearestObstacle = length;
-                        nearestSteering = offForwardOffset * -1;
-                    }
+                    hintedForward += Vector2.Normalize(TargetHint.Value - movingEntity.Position) * HintRatio;
+                    hintedForward.Normalize();
                 }
-            }
 
-            return nearestSteering;
-        }
-
-        protected override bool OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
-        {
-            if (Penetrates(from, movingEntity))
-                return false;
-
-            return from != to && Penetrates(to, movingEntity);
-        }
-
-        private bool Penetrates(Vector2 pt, ISteerable movingEntity)
-        {
-            float detector = movingEntity.BoundingRadius + DetectorLength + (movingEntity.Speed / movingEntity.MaxSpeed) * DetectorLength;
-
-            foreach (ISteerable o in Obstacles.Find(new Vector3(movingEntity.Position, 0), detector))
-            {
-                BoundingSphere obstacle;
-                
-                if (o == movingEntity)
+                Vector2 toTarget = obstacle.Center - movingEntity.Position;
+                float distance = toTarget.Length();
+                if (distance > detectorLength + obstacle.Radius)
                     continue;
-                
-                obstacle.Center = new Vector3((o as ISteerable).Position, 0);
-                obstacle.Radius = (o as ISteerable).BoundingRadius;
-                
-                Vector2 v = new Vector2();
 
-                v.X = obstacle.Center.X - pt.X;
-                v.Y = obstacle.Center.Y - pt.Y;
+                toTarget.Normalize();
 
-                if (v.Length() < movingEntity.BoundingRadius + obstacle.Radius)
-                    return true;
+                float theta = (float)Math.Acos(Vector2.Dot(toTarget, hintedForward));
+                if (theta > FieldOfView / 2)
+                {
+                    float distanceToCore = (float)Math.Sin(theta - FieldOfView / 2) * distance;
+                    if (distanceToCore >= movingEntity.BoundingRadius + obstacle.Radius)
+                        continue;
+                }
+
+                CurrentObstacle = obstacle;
+
+                Vector2 force = new Vector2();
+                float rotation = (float)Math.Atan2(hintedForward.Y, hintedForward.X);
+                Vector2 LocalPos = Math2D.WorldToLocal(obstacle.Center, movingEntity.Position, rotation);
+                int sign = LocalPos.Y >= 0 ? 1 : -1;
+                force.X = sign * toTarget.Y * movingEntity.MaxSpeed;
+                force.Y = -sign * toTarget.X * movingEntity.MaxSpeed;
+
+                return Vector2.Normalize(force - movingEntity.Velocity) * movingEntity.MaxForce;
             }
 
-            return false;
-        }
-    }
-    #endregion
-
-    #region WallAvoidanceBehavior
-    public class WallAvoidanceBehavior : SteeringBehavior
-    {
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
-        {
             return Vector2.Zero;
         }
 
-        protected override bool OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
+        protected override float? OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
         {
-            return false;
-        }
-    }
-    #endregion
+            float detector = movingEntity.BoundingRadius + DetectorLength;
 
-    #region SurfaceAvoidBehavior
-    public class SurfaceAvoidanceBehavior : SteeringBehavior
-    {
-        public ISurface Celling { get; set; }
-        public ISurface Floor { get; set; }
+            float closestPenetration = -1;
+            foreach (BoundingCircle obstacle in Obstacles.Find(new Vector3(movingEntity.Position, 0), detector))
+            {
+                if (obstacle.Contains(new BoundingCircle(to, movingEntity.BoundingRadius)) == ContainmentType.Disjoint)
+                    continue;
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
-        {
-            return Vector2.Zero;
-        }
+                if (obstacle.Contains(new BoundingCircle(from, movingEntity.BoundingRadius)) != ContainmentType.Disjoint)
+                    continue;
 
-        protected override bool OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
-        {
-            return false;
-        }
-    }
-    #endregion
+                float? closestIntersectionPoint = Math2D.RayCircleIntersectionTest(
+                            to, Vector2.Normalize(from - to), obstacle.Center, obstacle.Radius + movingEntity.BoundingRadius);
 
-    #region HideBehavior
-    public class HideBehavior : SteeringBehavior
-    {
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
-        {
-            return Vector2.Zero;
-        }
+                if (!closestIntersectionPoint.HasValue)
+                    continue;
 
-        protected override bool OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
-        {
-            return false;
+                float penetration = Vector2.Distance(from, to) - closestIntersectionPoint.Value;
+                if (penetration < 0)
+                    penetration = 0;                
+                if (penetration < closestPenetration || closestPenetration < 0)
+                    closestPenetration = penetration;
+            }
+
+            if (closestPenetration > 0)
+            {
+                return closestPenetration;
+            }
+            return null;
         }
     }
     #endregion
@@ -186,12 +125,12 @@ namespace Nine.Navigation.Steering
         public float Elasticity { get; set; }
         public BoundingRectangle Bounds { get; set; }
 
-        public BoundAvoidanceBehavior() 
+        public BoundAvoidanceBehavior()
         {
             Skin = 2;
             Elasticity = MathHelper.E;
-            Bounds = new BoundingRectangle(Vector2.One * float.MinValue, 
-                                           Vector2.One * float.MaxValue); 
+            Bounds = new BoundingRectangle(Vector2.One * float.MinValue,
+                                           Vector2.One * float.MaxValue);
         }
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
@@ -223,13 +162,77 @@ namespace Nine.Navigation.Steering
         }
 
         private float Evaluate(float value)
-        {            
+        {
             return (float)((Math.Pow(Elasticity, value) - 1) / (Elasticity - 1));
         }
+    }
+    #endregion
 
-        protected override bool OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
+    #region WallAvoidanceBehavior
+    public class WallAvoidanceBehavior : SteeringBehavior
+    {
+        public float DetectorLength { get; set; }
+        public Vector2? TargetHint { get; set; }
+        public ISpatialQuery<LineSegment> Walls { get; set; }
+
+        float HintRatio = 1 / (float)Math.Sin(MathHelper.ToRadians(45));
+        
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
         {
-            return false;
+            Vector2 hintedForward = movingEntity.Forward;
+            if (TargetHint.HasValue)
+            {
+                hintedForward += Vector2.Normalize(TargetHint.Value - movingEntity.Position) * HintRatio;
+                hintedForward.Normalize();
+            }
+
+            float detectorLength = movingEntity.BoundingRadius + movingEntity.MaxSpeed * elapsedTime * 8;
+
+            foreach (LineSegment line in Walls.Find(new Vector3(movingEntity.Position, 0), detectorLength))
+            {
+                return SteeringHelper.AvoidLineSegment(line, elapsedTime, movingEntity, TargetHint, hintedForward);
+            }
+
+            return Vector2.Zero;
+        }
+
+        protected override float? OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity)
+        {
+            float detectorLength = movingEntity.BoundingRadius;
+
+            float closestPenetration = -1;
+            foreach (LineSegment line in Walls.Find(new Vector3(movingEntity.Position, 0), detectorLength))
+            {
+                //if (Vector2.Dot(Vector2.Subtract(to, from), line.Normal) > 0)
+                //    continue;
+
+                LineSegment intersectionLine = line;
+                intersectionLine.Offset(movingEntity.BoundingRadius);
+
+                //if (Math2D.PointLineRelation(to - line.Normal * movingEntity.BoundingRadius, line.Start, line.Normal) == Math2D.SpanType.Front)
+                //    continue;
+
+                //if (Math2D.PointLineRelation(from + line.Normal * movingEntity.BoundingRadius, line.Start, line.Normal) == Math2D.SpanType.Back)
+                //    continue;
+
+                float? intersection = Math2D.LineSegmentIntersectionTest(from, to, intersectionLine.Start, intersectionLine.End);
+
+                if (!intersection.HasValue)
+                    continue;
+
+                float penetration = intersection.Value;
+                if (penetration < 0)
+                    penetration = 0;
+                if (penetration < closestPenetration || closestPenetration < 0)
+                    closestPenetration = penetration;
+            }
+
+            if (closestPenetration > 0)
+            {
+                
+                return closestPenetration;
+            }
+            return null;
         }
     }
     #endregion

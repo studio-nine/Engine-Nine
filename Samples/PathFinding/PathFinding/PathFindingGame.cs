@@ -92,7 +92,7 @@ namespace PathFinding
 
 
             // Create a path graph
-            pathGraph = new PathGrid(128, 128, 0, 0, 64, 64);
+            pathGraph = new PathGrid(0, 0, 128, 128, 64, 64);
 
 
             // Create some random obstacles
@@ -168,7 +168,7 @@ namespace PathFinding
             primitiveBatch.Begin(camera.View, camera.Projection);
             {
                 // Draw grid
-                primitiveBatch.DrawGrid(2, 64, 64, null, Color.Gray);
+                primitiveBatch.DrawGrid(pathGraph, null, Color.Gray);
 
                 // Draw obstacles
                 for (int x = 0; x < pathGraph.SegmentCountX; x++)

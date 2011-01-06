@@ -1,0 +1,49 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment PointLight;
+
+[parameters]
+float3 PointLightPosition = { 0, 0, 0 };
+float3 PointLightDiffuseColor = { 1, 1, 1 };
+float3 PointLightSpecularColor = { 1, 1, 1 };
+
+float Range = 100;
+float Attenuation = 1;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float specularPower;
+	float3 normal;
+	float3 positionToEye;
+	float3 diffuse;
+    float3 specular;
+	float4 positionWorld;
+
+	import(LightDiffuse, diffuse = LightDiffuse);
+	import(LightSpecular, specular = LightSpecular);
+	import(SpecularPower, specularPower = SpecularPower);	
+	import(Normal, normal = Normal);
+	import(PositionToEye, positionToEye = PositionToEye);
+	import(PositionWorld, positionWorld = PositionWorld);
+
+    float3 L = PointLightPosition - positionWorld.xyz;
+    float3 H = normalize(positionToEye + L);
+    float dt = max(0,dot(L, normal));
+
+	float distanceSq = dot(L, L);
+	float distance = sqrt(distanceSq);
+	float fade = distance > Range ? 0 : saturate(1 / (Attenuation * distanceSq));
+    
+	diffuse += PointLightDiffuseColor * dt * fade;
+    if (dt != 0)
+        specular += PointLightSpecularColor * pow(dot(H, normal), specularPower) * fade;
+
+	export(float3, LightDiffuse, diffuse);
+	export(float3, LightSpecular, specular);
+}
+__hlsl__

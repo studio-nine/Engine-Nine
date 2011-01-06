@@ -81,7 +81,9 @@ namespace Nine.Navigation.Steering
         {
             Vector2 totalForce = Vector2.Zero;
 
-            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range + movingEntity.BoundingRadius))
+            Vector2 position = movingEntity.Position + movingEntity.Velocity * elapsedTime;
+            float range = Range + movingEntity.BoundingRadius;
+            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), range))
             {
                 if (partner != null && partner != movingEntity)
                 {
@@ -89,7 +91,7 @@ namespace Nine.Navigation.Steering
 
                     float distance = toPartner.Length();
 
-                    if (distance > 0)
+                    if (distance > 0 && distance < range + partner.BoundingRadius)
                     {
                         //totalForce -= Vector2.Normalize(toPartner) / distance;
                         totalForce -= Vector2.Normalize(toPartner) * movingEntity.MaxForce;

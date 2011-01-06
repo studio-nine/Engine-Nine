@@ -1,0 +1,64 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment SpotLight;
+
+[parameters]
+float3 SpotLightPosition = { 0, 0, 0 };
+float3 SpotLightDirection = { 0, -0.707107, -0.707107 };
+float3 SpotLightDiffuseColor = { 1, 1, 1 };
+float3 SpotLightSpecularColor = { 1, 1, 1 };
+
+float Range = 100;
+float Attenuation = 1;
+float Falloff = 1;
+float InnerAngle;
+float OuterAngle;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float specularPower;
+	float3 normal;
+	float3 positionToEye;
+	float3 diffuse;
+    float3 specular;
+	float4 positionWorld;
+
+	import(LightDiffuse, diffuse = LightDiffuse);
+	import(LightSpecular, specular = LightSpecular);
+	import(SpecularPower, specularPower = SpecularPower);	
+	import(Normal, normal = Normal);
+	import(PositionToEye, positionToEye = PositionToEye);
+	import(PositionWorld, positionWorld = PositionWorld);
+
+    float3 L = SpotLightPosition - positionWorld.xyz;
+    float3 H = normalize(positionToEye + L);
+    float dt = max(0,dot(L, normal));
+	
+	float distanceSq = dot(L, L);
+	float distance = sqrt(distanceSq);
+    
+	float angle = dot(normalize(L), -SpotLightDirection);
+	float inner = InnerAngle;
+	float outer = OuterAngle;
+
+	float fade = 0;
+	if (distance <= Range && angle > outer)
+	{
+		fade = saturate(1 / (Attenuation * distanceSq));
+		if (angle < inner)
+			fade *= pow((angle - outer) / (inner - outer), Falloff);
+    }
+
+	diffuse += SpotLightDiffuseColor * dt * fade;
+    if (dt != 0)
+        specular += SpotLightSpecularColor * pow(dot(H, normal), specularPower) * fade;
+
+	export(float3, LightDiffuse, diffuse);
+	export(float3, LightSpecular, specular);
+}
+__hlsl__

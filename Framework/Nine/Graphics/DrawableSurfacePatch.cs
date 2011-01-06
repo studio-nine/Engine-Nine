@@ -108,11 +108,11 @@ namespace Nine.Graphics
             internal set { position = value; UpdatePartPositions(); }
         }
 
-        private Heightmap heightmap;
-        private BoundingBox boundingBox;
-        private Vector3 position;
-        private Vector3 offset;
-        private DrawableSurface surface;
+        internal Heightmap heightmap;
+        internal BoundingBox boundingBox;
+        internal Vector3 position;
+        internal Vector3 offset;
+        internal DrawableSurface surface;
         #endregion
 
         /// <summary>
@@ -281,17 +281,27 @@ namespace Nine.Graphics
         /// </summary>
         public void Dispose()
         {
-            if (VertexBuffer != null)
-                VertexBuffer.Dispose();
+            Dispose(true);
 
-            if (IndexBuffer != null)
-                IndexBuffer.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (VertexBuffer != null)
+                    VertexBuffer.Dispose();
+
+                if (IndexBuffer != null)
+                    IndexBuffer.Dispose();
+            }
         }
     }
 
     internal class DrawableSurfacePatchImpl<T> : DrawableSurfacePatch where T: struct, IVertexType
     {
-        public DrawSurfaceFillVertex<T> FillVertex;
+        public DrawSurfaceConvertVertex<T> FillVertex;
 
         internal DrawableSurfacePatchImpl(DrawableSurface surface, GraphicsDevice graphics, Heightmap geometry, int xPatch, int yPatch, int tessellation)
             : base(surface, graphics, geometry, xPatch, yPatch, tessellation)
@@ -327,8 +337,10 @@ namespace Nine.Graphics
             {
                 for (int y = Y * Tessellation; y <= (Y + 1) * Tessellation; y++)
                 {
-                    FillVertex(x, y, ref vertexPool[i]);
-
+                    VertexPositionColorNormalTexture vertex = new VertexPositionColorNormalTexture();
+                    surface.DefaultFillVertex(x, y, ref vertex, ref vertex);
+                    if (FillVertex != null)
+                        FillVertex(x, y, ref vertex, ref vertexPool[i]);
                     i++;
                 }
             }

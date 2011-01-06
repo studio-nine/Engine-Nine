@@ -154,6 +154,9 @@
   <data name="PixelShaderOutput" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\pixelshaderoutput.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="PointLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\pointlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="PositionColor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\positioncolor.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -183,6 +186,9 @@
   </data>
   <data name="SplatterTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\splattertexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SpotLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\spotlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TextureTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\texturetransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

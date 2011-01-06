@@ -89,11 +89,8 @@ namespace Nine.Graphics
     /// <summary>
     /// Enables a group of models to be drawn with different custom effects.
     /// </summary>
-    public class ModelBatch
+    public class ModelBatch : IDisposable
     {
-        private SkinnedEffect basicSkinnedEffect;
-        private BasicEffect basicEffect;
-
         private ModelSortMode sort;
         private bool hasBegin = false;
         private Model lastModel = null;
@@ -123,11 +120,32 @@ namespace Nine.Graphics
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
+        /// Gets the basic effect used by this ModelBatch.
+        /// </summary>
+        public BasicEffect BasicEffect { get; private set; }
+
+        /// <summary>
+        /// Gets the skinned effect used by this ModelBatch.
+        /// </summary>
+        public SkinnedEffect SkinnedEffect { get; private set; }
+
+        /// <summary>
         /// Creates a new ModelBatch instance.
         /// </summary>
         public ModelBatch(GraphicsDevice graphics)
         {
             GraphicsDevice = graphics;
+
+            BasicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
+            BasicEffect.TextureEnabled = true;
+            BasicEffect.VertexColorEnabled = true;
+            BasicEffect.PreferPerPixelLighting = true;
+            BasicEffect.EnableDefaultLighting();
+
+            SkinnedEffect = (SkinnedEffect)GraphicsResources<SkinnedEffect>.GetInstance(GraphicsDevice).Clone();
+            SkinnedEffect.WeightsPerVertex = 4;
+            SkinnedEffect.PreferPerPixelLighting = true;
+            SkinnedEffect.EnableDefaultLighting();
         }
 
         public void Begin(Matrix view, Matrix projection)
@@ -377,33 +395,29 @@ namespace Nine.Graphics
             if (effect == null)
             {
                 if (boneTransforms != null)
-                {
-                    if (basicSkinnedEffect == null)
-                    {
-                        basicSkinnedEffect = (SkinnedEffect)GraphicsResources<SkinnedEffect>.GetInstance(GraphicsDevice).Clone();
-                        basicSkinnedEffect.WeightsPerVertex = 4;
-                        basicSkinnedEffect.PreferPerPixelLighting = true;
-                        basicSkinnedEffect.EnableDefaultLighting();
-                    }
-
-                    effect = basicSkinnedEffect;
-                }
+                    effect = SkinnedEffect;
                 else
-                {
-                    if (basicEffect == null)
-                    {
-                        basicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
-                        basicEffect.TextureEnabled = true;
-                        basicEffect.VertexColorEnabled = true;
-                        basicEffect.PreferPerPixelLighting = true;
-                        basicEffect.EnableDefaultLighting();
-                    }
-
-                    effect = basicEffect;
-                }
+                    effect = BasicEffect;
             }
-
             return effect;
+        }
+        
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (BasicEffect != null)
+                    BasicEffect.Dispose();
+                if (SkinnedEffect != null)
+                    SkinnedEffect.Dispose();
+            }
         }
     }
 }

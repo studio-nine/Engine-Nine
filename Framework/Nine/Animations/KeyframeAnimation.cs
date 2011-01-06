@@ -139,7 +139,7 @@ namespace Nine.Animations
             Seek(TimeSpan.FromSeconds(1.0 * frame / FramesPerSecond));
         }
 
-        // Use to prevent from alway calling exit frame before enter frame
+        // Use to prevent from allways calling exit frame before enter frame
         // even for the first frame.
         bool hasPlayed = false;
 
@@ -169,7 +169,7 @@ namespace Nine.Animations
             int current = GetFrame(position);
             int previous = GetFrame(previousPosition);
 
-            float percentage = (float)((Position.TotalSeconds * FramesPerSecond - current) );
+            float percentage = (float)((Position.TotalSeconds * FramesPerSecond - current));
 
             if (Ending == KeyframeEnding.Wrap)
                 OnSeek(current, (current + 1) % TotalFrames, percentage);

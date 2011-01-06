@@ -33,10 +33,11 @@ namespace NavigationSample
         AnimationPlayer animations;
         BoneAnimation idleAnimation;
         BoneAnimation runAnimation;
-        
-        public static Matrix WorldTransform = Matrix.CreateScale(0.01f) * Matrix.CreateRotationX(MathHelper.PiOver2);
 
-        public Unit(Model model, ISurface ground, ISpatialQuery<Navigator> friends)
+        public static Random Random = new Random();
+        public static Matrix WorldTransform = Matrix.CreateScale(0.016f) * Matrix.CreateRotationX(MathHelper.PiOver2);
+
+        public Unit(Model model, ISurface ground, ISpatialQuery<Navigator> friends, ISpatialQuery<LineSegment> walls)
         {
             Model = model;
 
@@ -49,13 +50,18 @@ namespace NavigationSample
             animations = new AnimationPlayer();
             animations.Play(idleAnimation);
 
+            //float bound = 0.3f + (float)Random.NextDouble() * 1f;
+            float bound = 0.5f;
+
             Navigator = new Navigator();
-            Navigator.IsMachinery = true;
-            Navigator.MaxSpeed = 2.5f;
-            Navigator.BoundingRadius = 0.5f;
-            Navigator.Acceleration = float.MaxValue;
+            Navigator.IsMachinery = false;
+            Navigator.MaxSpeed = 6;
+            Navigator.SoftBoundingRadius = bound;
+            Navigator.HardBoundingRadius = bound;
+            Navigator.Acceleration = 20;
             Navigator.Ground = ground;
             Navigator.Friends = friends;
+            Navigator.Walls = walls;
             Navigator.Started += new EventHandler<EventArgs>(Navigator_Started);
             Navigator.Stopped += new EventHandler<EventArgs>(Navigator_Stopped);
         }

@@ -35,7 +35,7 @@ namespace Nine
         public int SegmentCountY { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the center position of the grid.
+        /// Gets or sets the bottom left position of the grid.
         /// </summary>
         public Vector2 Position { get; protected set; }
 
@@ -45,18 +45,19 @@ namespace Nine
         public Vector2 Size { get; protected set; }
 
         /// <summary>
-        /// Gets total node count.
-        /// </summary>
-        public int Count
-        {
-            get { return SegmentCountX * SegmentCountY; }
-        }
-
-        /// <summary>
         /// Creates a new grid.
         /// </summary>
-        public UniformGrid(float width, float height, float x, float y, int countX, int countY)
+        public UniformGrid(float x, float y, float width, float height, int countX, int countY)
         {
+            if (width <= 0)
+                throw new ArgumentOutOfRangeException("width");
+            if (height <= 0)
+                throw new ArgumentOutOfRangeException("height");
+            if (countX <= 0)
+                throw new ArgumentOutOfRangeException("countX");
+            if (countY <= 0)
+                throw new ArgumentOutOfRangeException("countY");
+
             Position = new Vector2(x, y);
             Size = new Vector2(width, height);
             SegmentCountX = countX;
@@ -68,6 +69,13 @@ namespace Nine
         /// </summary>
         public UniformGrid(float x, float y, float step, int countX, int countY)
         {
+            if (step <= 0)
+                throw new ArgumentOutOfRangeException("step");
+            if (countX <= 0)
+                throw new ArgumentOutOfRangeException("countX");
+            if (countY <= 0)
+                throw new ArgumentOutOfRangeException("countY");
+
             Position = new Vector2(x, y);
             Size = new Vector2(step * countX, step * countY);
             SegmentCountX = countX;
@@ -79,10 +87,22 @@ namespace Nine
         /// </summary>
         public UniformGrid(BoundingRectangle bounds, int countX, int countY)
         {
-            Position = bounds.GetCenter();
-            Size = bounds.Max - bounds.Min;
+            if (countX <= 0)
+                throw new ArgumentOutOfRangeException("countX");
+            if (countY <= 0)
+                throw new ArgumentOutOfRangeException("countY");
+
             SegmentCountX = countX;
             SegmentCountY = countY;
+
+            Position = new Vector2(Math.Min(bounds.Max.X, bounds.Min.X),
+                                   Math.Min(bounds.Max.Y, bounds.Min.Y));
+
+            Size = new Vector2(Math.Abs(bounds.Max.X - bounds.Min.X),
+                               Math.Abs(bounds.Max.Y - bounds.Min.Y));
+
+            if (Size.X <= 0 || Size.Y <= 0)
+                throw new ArgumentOutOfRangeException("bounds");
         }
 
         /// <summary>
@@ -90,8 +110,8 @@ namespace Nine
         /// </summary>
         public bool Contains(float x, float y)
         {
-            return x >= Position.X - Size.X / 2 && y >= Position.Y - Size.Y / 2 &&
-                   x <= Position.X + Size.X / 2 && y <= Position.Y + Size.Y / 2;
+            return x >= Position.X && y >= Position.Y &&
+                   x <= Position.X + Size.X && y <= Position.Y + Size.Y;
         }
 
         /// <summary>
@@ -115,15 +135,15 @@ namespace Nine
         /// </summary>
         public Vector2 Clamp(float x, float y)
         {
-            if (x < Position.X - Size.X / 2)
-                x = Position.X - Size.X / 2;
-            if (x > Position.X + Size.X / 2)
-                x = Position.X + Size.X / 2;
+            if (x < Position.X)
+                x = Position.X;
+            if (x > Position.X + Size.X)
+                x = Position.X + Size.X;
 
-            if (y < Position.Y - Size.Y / 2)
-                y = Position.Y - Size.Y / 2;
-            if (y > Position.Y + Size.Y / 2)
-                y = Position.Y + Size.Y / 2;
+            if (y < Position.Y)
+                y = Position.Y;
+            if (y > Position.Y + Size.Y)
+                y = Position.Y + Size.Y;
 
             return new Vector2(x, y);
         }
@@ -145,13 +165,15 @@ namespace Nine
         {
             Point pt = new Point();
 
-            pt.X = (int)((x - Position.X + Size.X / 2) * SegmentCountX / Size.X);
-            pt.Y = (int)((y - Position.Y + Size.Y / 2) * SegmentCountY / Size.Y);
+            if (x == Position.X + Size.X)
+                pt.X = SegmentCountX - 1;
+            else
+                pt.X = (int)((x - Position.X) * SegmentCountX / Size.X);
 
-            if (x == Position.X + Size.X / 2)
-                pt.X--;
-            if (y == Position.Y + Size.Y / 2)
-                pt.Y--;
+            if (y == Position.Y + Size.Y)
+                pt.Y = SegmentCountY - 1;
+            else
+                pt.Y = (int)((y - Position.Y) * SegmentCountY / Size.Y);
 
             if (!Contains(pt.X, pt.Y))
                 throw new ArgumentOutOfRangeException();
@@ -177,8 +199,8 @@ namespace Nine
 
             Vector2 v = new Vector2();
 
-            v.X = -Size.X / 2 + (x + 0.5f) * Size.X / SegmentCountX;
-            v.Y = -Size.Y / 2 + (y + 0.5f) * Size.Y / SegmentCountY;
+            v.X = (x + 0.5f) * Size.X / SegmentCountX;
+            v.Y = (y + 0.5f) * Size.Y / SegmentCountY;
 
             return v + Position;
         }
@@ -194,15 +216,15 @@ namespace Nine
         /// <summary>
         /// Gets the min position of the specified integral grid.
         /// </summary>
-        public Vector2 GridToPositionMin(int x, int y)
+        public Vector2 SegmentToPositionMin(int x, int y)
         {
             if (!Contains(x, y))
                 throw new ArgumentOutOfRangeException();
 
             Vector2 v = new Vector2();
 
-            v.X = -Size.X / 2 + (x) * Size.X / SegmentCountX;
-            v.Y = -Size.Y / 2 + (y) * Size.Y / SegmentCountY;
+            v.X = (x) * Size.X / SegmentCountX;
+            v.Y = (y) * Size.Y / SegmentCountY;
 
             return v + Position;
         }
@@ -210,15 +232,15 @@ namespace Nine
         /// <summary>
         /// Gets the max position of the specified integral grid.
         /// </summary>
-        public Vector2 GridToPositionMax(int x, int y)
+        public Vector2 SegmentToPositionMax(int x, int y)
         {
             if (!Contains(x, y))
                 throw new ArgumentOutOfRangeException();
 
             Vector2 v = new Vector2();
 
-            v.X = -Size.X / 2 + (x + 1) * Size.X / SegmentCountX;
-            v.Y = -Size.Y / 2 + (y + 1) * Size.Y / SegmentCountY;
+            v.X = (x + 1) * Size.X / SegmentCountX;
+            v.Y = (y + 1) * Size.Y / SegmentCountY;
 
             return v + Position;
         }
@@ -259,24 +281,25 @@ namespace Nine
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified ray.
         /// </summary>
-        /// <param name="precision">
+        /// <param name="ray"></param>
+        /// <param name="smallestPickableSize">
         /// The precision of line picking. A recommended value is half the radius of the
         /// smallest object to be picked.
         /// </param>
-        public IEnumerable<Point> Traverse(Ray ray, float precision)
+        public IEnumerable<Point> Traverse(Ray ray, float smallestPickableSize)
         {
             Vector2 begin = new Vector2();
             Vector2 end = new Vector2();
 
-            ray.Position.X += Size.X / 2 - Position.X;
-            ray.Position.Y += Size.Y / 2 - Position.Y;
+            ray.Position.X -= Position.X;
+            ray.Position.Y -= Position.Y;
 
             if (ProjectRay(ray, out begin, out end))
             {
-                begin -= Size / 2 - Position;
-                end -= Size / 2 - Position;
+                begin += Position;
+                end += Position;
 
-                return Traverse(begin, end, precision);
+                return Traverse(begin, end, smallestPickableSize);
             }
 
             return EmptyPoints;
@@ -287,32 +310,34 @@ namespace Nine
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified line.
         /// </summary>
-        /// <param name="precision">
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <param name="smallestPickableSize">
         /// The precision of line picking. A recommended value is half the radius of the
         /// smallest object to be picked.
         /// </param>
-        public IEnumerable<Point> Traverse(Vector2 begin, Vector2 end, float precision)
+        public IEnumerable<Point> Traverse(Vector2 begin, Vector2 end, float smallestPickableSize)
         {
-            begin += Size / 2 - Position;
-            end += Size / 2 - Position;
+            Point ptBegin = PositionToSegment(Clamp(begin));
+            Point ptEnd = PositionToSegment(Clamp(end));
 
-            if (precision <= 0)
-                precision = float.MaxValue;
+            if (smallestPickableSize <= 0)
+                smallestPickableSize = float.MaxValue;
 
             float stepX = Size.X / SegmentCountX;
             float stepY = Size.Y / SegmentCountY;
             float step = Math.Min(stepX, stepY);
 
-            if (precision > step)
-                precision = step;
+            if (smallestPickableSize > step)
+                smallestPickableSize = step;
 
-            float scaleX = stepX / precision;
-            float scaleY = stepY / precision;
+            int scaleX = (int)(stepX / smallestPickableSize);
+            int scaleY = (int)(stepY / smallestPickableSize);
 
             Point previousPoint = new Point(int.MinValue, int.MinValue);
 
-            foreach (Point pt in BresenhamLine((int)(begin.X * scaleX), (int)(begin.Y * scaleY),
-                                               (int)(end.X * scaleX), (int)(end.Y * scaleY)))
+            foreach (Point pt in BresenhamLine(ptBegin.X * scaleX, ptBegin.Y * scaleY,
+                                               ptEnd.X * scaleX, ptEnd.Y * scaleY))
             {
                 Point result = new Point((int)(pt.X / scaleX), (int)(pt.Y / scaleY));
 
@@ -462,10 +487,10 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public GridObjectManager(float width, float height, float x, float y, int countX, int countY)
-            : base(width, height, x, y, countX, countY)
+        public GridObjectManager(float x, float y, float width, float height, int countX, int countY)
+            : base(x, y, width, height, countX, countY)
         {
-
+            Position = new Vector2(x, y);
         }
 
         /// <summary>
@@ -511,8 +536,8 @@ namespace Nine
                     Data[grid.X, grid.Y].Objects = new List<T>();
                     Data[grid.X, grid.Y].ObjectBounds = new List<BoundingBox>();
 
-                    Vector2 min = GridToPositionMin(grid.X, grid.Y);
-                    Vector2 max = GridToPositionMax(grid.X, grid.Y);
+                    Vector2 min = SegmentToPositionMin(grid.X, grid.Y);
+                    Vector2 max = SegmentToPositionMax(grid.X, grid.Y);
 
                     Data[grid.X, grid.Y].Bounds.Min.X = min.X;
                     Data[grid.X, grid.Y].Bounds.Min.Y = min.Y;

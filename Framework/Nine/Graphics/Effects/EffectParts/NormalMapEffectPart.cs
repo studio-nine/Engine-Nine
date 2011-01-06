@@ -25,7 +25,7 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter textureParameter;
         private const uint textureDirtyMask = 1 << 0;
 
-        [ContentSerializerIgnore]
+        [ContentSerializer(Optional=true)]
         public Texture2D NormalMap
         {
             get { return texture; }

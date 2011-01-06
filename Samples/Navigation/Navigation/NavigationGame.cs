@@ -36,6 +36,7 @@ namespace NavigationSample
         DrawableSurface terrain;
         BasicEffect basicEffect;
 
+        GridObjectManager<LineSegment> walls;
         GridObjectManager<Unit> objectManager;
         List<Unit> units;
         List<Unit> selectedUnits = new List<Unit>();
@@ -49,6 +50,8 @@ namespace NavigationSample
 
         Vector3 destination;
 
+        List<Unit> nearbyUnits = new List<Unit>();
+
         public NavigationGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -60,7 +63,7 @@ namespace NavigationSample
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-            IsFixedTimeStep = false;
+            IsFixedTimeStep = true;
             Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
@@ -95,27 +98,46 @@ namespace NavigationSample
             basicEffect.EnableDefaultLighting();
             basicEffect.SpecularColor = Vector3.Zero;
 
-            // Initialize navigators
             bounds = new BoundingRectangle(terrain.BoundingBox);
+
+            walls = new GridObjectManager<LineSegment>(bounds, 1, 1);
+            for (int i = 0; i < 0; i++)
+            {
+                //Vector3 start = NextPosition();
+                //Vector3 end = NextPosition();
+
+                Vector3 start = new Vector3(10, -30, 0);
+                Vector3 end = new Vector3(10, 30, 0);
+
+                walls.Add(new LineSegment(new Vector2(start.X, start.Y),
+                                          new Vector2(end.X, end.Y)), terrain.BoundingBox);
+            }
+
+            // Initialize navigators
             //objectManager = new QuadTreeObjectManager<Navigator>(bounds, 8);
             objectManager = new GridObjectManager<Unit>(bounds, 64, 64);
             units = new List<Unit>();
 
             Model model = Content.Load<Model>("Peon");
 
+            int n = 100;
             ISpatialQuery<Navigator> friends = new SpatialQuery<Unit, Navigator>(objectManager) { Converter = o => o.Navigator };
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < n; i++)
             {
-                Unit unit = new Unit(model, terrain, friends);
+                Unit unit = new Unit(model, terrain, friends, walls);
                 unit.Navigator.Position = NextPosition();
+                //unit.Navigator.Position = Vector3.UnitX * (i - n / 2);
                 units.Add(unit);
             }
+
+            units[0].Navigator.MoveTo(new Vector3(20, 0, 0));
 
             // Initialize inputs
             input = new Input();
             input.MouseDown += new EventHandler<MouseEventArgs>(input_MouseDown);
             input.MouseMove += new EventHandler<MouseEventArgs>(input_MouseMove);
             input.MouseUp += new EventHandler<MouseEventArgs>(input_MouseUp);
+            input.KeyDown += new EventHandler<KeyboardEventArgs>(input_KeyDown);
         }
 
         private Vector3 NextPosition()
@@ -128,6 +150,23 @@ namespace NavigationSample
             position.Z = 0;
 
             return position;
+        }
+
+        void input_KeyDown(object sender, KeyboardEventArgs e)
+        {
+            foreach (Unit unit in selectedUnits)
+            {
+                if (e.Key == Keys.S)
+                {
+                    unit.Navigator.HoldPosition = false;
+                    unit.Navigator.Stop();
+                }
+                else if (e.Key == Keys.H)
+                {
+                    unit.Navigator.HoldPosition = true;
+                    unit.Navigator.Stop();
+                }
+            }
         }
 
         void input_MouseDown(object sender, MouseEventArgs e)
@@ -200,12 +239,31 @@ namespace NavigationSample
         protected override void Update(GameTime gameTime)
         {
             objectManager.Clear();
+            foreach (Unit unit in units)
+            {
+                objectManager.Add(unit, unit.Navigator.Position, unit.Navigator.SoftBoundingRadius);
+            }
 
             foreach (Unit unit in units)
             {
                 unit.Update(gameTime);
-                objectManager.Add(unit, unit.Navigator.Position, unit.Navigator.BoundingRadius);
             }
+            
+            nearbyUnits.Clear();
+            if (selectedUnits.Count > 0)
+            {
+                float range = (float)(selectedUnits[0].Navigator.SoftBoundingRadius + selectedUnits[0].Navigator.MaxSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+
+                foreach (Unit unit in objectManager.Find(selectedUnits[0].Navigator.Position,
+                                                         range))
+                {
+                    if (unit != selectedUnits[0])
+                        nearbyUnits.Add(unit);
+                }
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && selectedUnits.Count > 0)
+                System.Diagnostics.Debug.WriteLine(selectedUnits[0].Navigator.Speed + "\t" + selectedUnits[0].Navigator.steerer.Forward.ToString());
 
             base.Update(gameTime);
         }
@@ -265,7 +323,26 @@ namespace NavigationSample
 
                 foreach (Unit unit in selectedUnits)
                 {
-                    primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.BoundingRadius, 12, null, Color.YellowGreen);
+                    primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.SoftBoundingRadius, 12, null, Color.YellowGreen);
+                    primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.HardBoundingRadius, 12, null, Color.Pink);
+                }
+
+                foreach (Unit unit in nearbyUnits)
+                {
+                    //primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.BoundingRadius, 12, null, Color.Red);
+                }
+
+                foreach (LineSegment line in walls)
+                {
+                    primitiveBatch.DrawLineSegment(line, 0.2f, 2, null, Color.White);
+                }
+
+                if (selectedUnits.Count > 0)
+                {
+                    //BoundingCircle? circle = ((Nine.Navigation.Steering.ObstacleAvoidanceBehavior)selectedUnits[0].Navigator.steerer.Behaviors[1]).CurrentObstacle;
+
+                    //if (circle.HasValue)
+                    //    primitiveBatch.DrawCircle(new Vector3(circle.Value.Center, 1), circle.Value.Radius, 24, null, Color.AliceBlue);
                 }
             }
             primitiveBatch.End();

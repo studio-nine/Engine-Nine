@@ -36,6 +36,10 @@ namespace Nine
             return ((n1 - n2) < Epsilon) && ((n2 - n1) < Epsilon);
         }
 
+        public static Vector2 Perpendicular(Vector2 v)
+        {
+            return new Vector2(-v.Y, v.X);
+        }
 
 
         /// <summary>
@@ -172,6 +176,9 @@ namespace Nine
             // No intersection, return null
             if (d < 0)
                 return null;
+
+            if (v < 0)
+                return v + (float)Math.Sqrt(d);
 
             return v - (float)Math.Sqrt(d);
         }
@@ -613,7 +620,42 @@ namespace Nine
         public static Vector2? LineSegmentCircleClosestIntersectionPoint(
             Vector2 a, Vector2 b, Vector2 c, float r)
         {
-            throw new NotImplementedException();
+            Vector2 toBNorm = Vector2.Normalize(b - a);
+
+            //move the circle into the local space defined by the vector B-A with origin
+            //at A
+            Vector2 LocalPos = WorldToLocal(c, a, (float)Math.Atan2(toBNorm.Y, toBNorm.X));
+            
+            //if the local position + the radius is negative then the circle lays behind
+            //point A so there is no intersection possible. If the local x pos minus the 
+            //radius is greater than length A-B then the circle cannot intersect the 
+            //line segment
+            if ((LocalPos.X + r >= 0) &&
+               ((LocalPos.X - r) * (LocalPos.X - r) <= Vector2.DistanceSquared(b, a)))
+            {
+                //if the distance from the x axis to the object's position is less
+                //than its radius then there is a potential intersection.
+                if (Math.Abs(LocalPos.Y) < r)
+                {
+                    //now to do a line/circle intersection test. The center of the 
+                    //circle is represented by A, B. The intersection points are 
+                    //given by the formulae x = A +/-sqrt(r^2-B^2), y=0. We only 
+                    //need to look at the smallest positive value of x.
+                    float aa = LocalPos.X;
+                    float bb = LocalPos.Y;
+
+                    float ip = aa - (float)Math.Sqrt(r * r - bb * bb);
+
+                    if (ip <= 0)
+                    {
+                        ip = aa + (float)Math.Sqrt(r * r - bb * bb);
+                    }
+
+                    return a + toBNorm * ip;
+                }
+            }
+
+            return null;
         }
 
 

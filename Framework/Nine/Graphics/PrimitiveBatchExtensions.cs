@@ -614,15 +614,15 @@ namespace Nine.Graphics
             if (world.HasValue)
                 transform *= world.Value;
 
-            DrawGrid(primitiveBatch, size, size, tessellation, tessellation, transform, color);
+            DrawGrid(primitiveBatch, 0, 0, 0, size, size, tessellation, tessellation, transform, color);
         }
 
-        public static void DrawGrid(this PrimitiveBatch primitiveBatch, float step, int countX, int countY, Matrix? world, Color color)
+        public static void DrawGrid(this PrimitiveBatch primitiveBatch, float x, float y, float z, float step, int countX, int countY, Matrix? world, Color color)
         {
-            DrawGrid(primitiveBatch, step * countX, step * countY, countX, countY, world, color);
+            DrawGrid(primitiveBatch, x, y, z, step * countX, step * countY, countX, countY, world, color);
         }
 
-        public static void DrawGrid(this PrimitiveBatch primitiveBatch, float width, float height, int countX, int countY, Matrix? world, Color color)
+        public static void DrawGrid(this PrimitiveBatch primitiveBatch, float x, float y, float z, float width, float height, int countX, int countY, Matrix? world, Color color)
         {
             primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
             {
@@ -631,27 +631,22 @@ namespace Nine.Graphics
 
                 for (int u = 0; u <= countX; u++)
                 {
-                    primitiveBatch.AddVertex(new Vector3(-height / 2, u * incU - width / 2, 0), color);
-                    primitiveBatch.AddVertex(new Vector3(height / 2, u * incU - width / 2, 0), color);
+                    primitiveBatch.AddVertex(new Vector3(x + 0, y + u * incU, z), color);
+                    primitiveBatch.AddVertex(new Vector3(x + height, y + u * incU, z), color);
                 }
 
                 for (int v = 0; v <= countY; v++)
                 {
-                    primitiveBatch.AddVertex(new Vector3(v * incV - height / 2, -width / 2, 0), color);
-                    primitiveBatch.AddVertex(new Vector3(v * incV - height / 2, height / 2, 0), color);
-                }            
+                    primitiveBatch.AddVertex(new Vector3(x + v * incV, y + 0, z), color);
+                    primitiveBatch.AddVertex(new Vector3(x + v * incV, y + width, z), color);
+                }
             }
             primitiveBatch.EndPrimitive();
         }
 
         public static void DrawGrid(this PrimitiveBatch primitiveBatch, UniformGrid grid, Matrix? world, Color color)
         {
-            if (grid.Position == Vector2.Zero)
-                DrawGrid(primitiveBatch, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, world, color);
-            else if (world.HasValue)
-                DrawGrid(primitiveBatch, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, Matrix.CreateTranslation(new Vector3(grid.Position, 0)) * world.Value, color);
-            else
-                DrawGrid(primitiveBatch, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, Matrix.CreateTranslation(new Vector3(grid.Position, 0)), color);
+            DrawGrid(primitiveBatch, grid.Position.X, grid.Position.Y, 0, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, world, color);
         }
 
         public static void DrawRay(this PrimitiveBatch primitiveBatch, Ray ray, float length, Matrix? world, Color color)
@@ -783,6 +778,17 @@ namespace Nine.Graphics
                     primitiveBatch.DrawSolidSphere(mesh.BoundingSphere, 18, bones[mesh.ParentBone.Index] * transform, color);
                 }
             }
+        }
+
+        public static void DrawLineSegment(this PrimitiveBatch primitiveBatch, LineSegment line, float z, Matrix? world, Color color)
+        {
+            primitiveBatch.DrawLine(new Vector3(line.Start, z), new Vector3(line.End, z), world, color);
+        }
+
+        public static void DrawLineSegment(this PrimitiveBatch primitiveBatch, LineSegment line, float z, float arrowLength, Matrix? world, Color color)
+        {
+            primitiveBatch.DrawLine(new Vector3(line.Start, z), new Vector3(line.End, z), world, color);
+            primitiveBatch.DrawArrow(new Vector3(line.Center, z), new Vector3(line.Center + line.Normal * arrowLength, z), world, color);
         }
     }
 }

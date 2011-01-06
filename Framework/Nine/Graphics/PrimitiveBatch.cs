@@ -462,15 +462,7 @@ namespace Nine.Graphics
 
             hasBegin = false;
         }
-
-        public void Dispose()
-        {
-            if (vertexBuffer != null)
-                vertexBuffer.Dispose();
-            if (indexBuffer != null)
-                indexBuffer.Dispose();
-        }
-
+        
         internal void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world)
         {
             if (!hasBegin)
@@ -714,6 +706,25 @@ namespace Nine.Graphics
             if (!cameraPosition.HasValue)
                 cameraPosition = Matrix.Invert(View).Translation;
             return cameraPosition.Value;
+        }
+
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (vertexBuffer != null)
+                    vertexBuffer.Dispose();
+                if (indexBuffer != null)
+                    indexBuffer.Dispose();
+            }
         }
     }
 

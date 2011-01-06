@@ -105,12 +105,17 @@ namespace Nine.Graphics.Effects
             return Texture = map;
         }
 
+        /// <summary>
+        /// Disposes any resources associated with this instance.
+        /// </summary>
         public void Dispose()
         {
             if (renderTarget != null)
                 renderTarget.Dispose();
             if (Texture != null)
                 Texture.Dispose();
+
+            GC.SuppressFinalize(this);
         }
     }
 }

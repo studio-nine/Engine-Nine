@@ -406,7 +406,7 @@ namespace Nine
 
         public bool IsReadOnly
         {
-            get { throw new NotImplementedException(); }
+            get { return false; }
         }
 
         public bool Remove(T item)

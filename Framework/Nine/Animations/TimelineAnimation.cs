@@ -249,7 +249,7 @@ namespace Nine.Animations
             ElapsedTime += increment;
             undirectedPosition += increment;
 
-            while (undirectedPosition >= Duration)
+            while (undirectedPosition > Duration)
             {
                 undirectedPosition -= Duration;
                 if (AutoReverse)
@@ -267,8 +267,8 @@ namespace Nine.Animations
                 undirectedPosition -= (ElapsedTime - targetElapsedTime);
                 ElapsedTime = targetElapsedTime;
 
-                OnSeek(Duration, previousPosition);
-                                
+                OnSeek(Position, previousPosition);
+
                 Stop();
                 OnCompleted();
                 return;

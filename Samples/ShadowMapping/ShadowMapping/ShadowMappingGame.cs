@@ -79,7 +79,7 @@ namespace ShadowMapping
             model = Content.Load<Model>("dude");
             terrain = Content.Load<Model>("Terrain");
 
-            animation = new BoneAnimation(model, model.GetAnimation(0));
+            animation = new BoneAnimation(model, null, model.GetAnimation(0));
             animation.Play();
 
             // Create skybox.

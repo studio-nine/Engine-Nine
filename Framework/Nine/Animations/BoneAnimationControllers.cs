@@ -173,7 +173,11 @@ namespace Nine.Animations
         /// <summary>
         /// Gets or sets the forward axis.
         /// </summary>
-        public Vector3 Forward { get; set; }
+        public Vector3 Forward 
+        {
+            get { return forward; }
+            set { forward = currentLookAt = value; }
+        }
 
         /// <summary>
         /// Gets or sets the base world transform of the parent BoneAnimation.
@@ -200,9 +204,14 @@ namespace Nine.Animations
         /// </summary>
         public BoneAnimation ParentAnimation { get; private set; }
 
+        public event EventHandler<EventArgs> TargetSpotted;
+        public event EventHandler<EventArgs> TargetLost;
+
+        private Vector3 forward;
         private Vector3 currentLookAt;
         private Matrix desiredTransform;
-        private float desiredBlendWeight = 1;
+        private float desiredBlendWeight;
+        private bool hasTargetLastFrame;
 
         /// <summary>
         /// Creates a new LookAtController.
@@ -231,7 +240,12 @@ namespace Nine.Animations
             if (hasTarget)
             {
                 // Transform target to the local space of parent bone
-                Matrix parentWorldTransform = ParentAnimation.GetAbsoluteBoneTransform(ParentAnimation.GetParentBone(Bone)) * Transform;
+                Matrix parentWorldTransform = Transform;
+                
+                int parentBone = ParentAnimation.GetParentBone(Bone);
+                if (parentBone >= 0)
+                    parentWorldTransform = ParentAnimation.GetAbsoluteBoneTransform(parentBone) * Transform;
+
                 Vector3 parentLocal = Vector3.Transform(Target.Value, Matrix.Invert(parentWorldTransform));
 
                 // Compute the rotation transform to the target position
@@ -278,6 +292,16 @@ namespace Nine.Animations
                 desiredBlendWeight = 0;
             else if (desiredBlendWeight > 1)
                 desiredBlendWeight = 1;
+
+            if (hasTarget && !hasTargetLastFrame && TargetSpotted != null)
+            {
+                TargetSpotted(this, EventArgs.Empty);
+            }
+            else if (!hasTarget && hasTargetLastFrame && TargetLost != null)
+            {
+                TargetLost(this, EventArgs.Empty);
+            }
+            hasTargetLastFrame = hasTarget;
         }
 
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)

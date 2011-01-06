@@ -144,6 +144,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
+        internal static byte[] PointLight {
+            get {
+                object obj = ResourceManager.GetObject("PointLight", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] PositionColor {
             get {
                 object obj = ResourceManager.GetObject("PositionColor", resourceCulture);
@@ -210,6 +217,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
         internal static byte[] SplatterTexture {
             get {
                 object obj = ResourceManager.GetObject("SplatterTexture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] SpotLight {
+            get {
+                object obj = ResourceManager.GetObject("SpotLight", resourceCulture);
                 return ((byte[])(obj));
             }
         }

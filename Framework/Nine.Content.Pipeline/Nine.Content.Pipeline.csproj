@@ -76,6 +76,7 @@
     <Compile Include="Graphics\Effects\LinkedEffectContent.cs" />
     <Compile Include="Processors\LinkedEffectProcessor.cs" />
     <Compile Include="Processors\ModelCollisionProcessor.cs" />
+    <Compile Include="Processors\NormalTextureProcessor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -279,7 +280,6 @@
     <Compile Include="Processors\ExtendedModelProcessor.cs" />
     <Compile Include="Processors\HeightmapProcessor.cs" />
     <Compile Include="Processors\GeometryProcessor.cs" />
-    <Compile Include="Processors\NormalTextureProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +325,8 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\SpotLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\PointLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\SplatterTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\ScreenEffect.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\NormalMap.fragment" />

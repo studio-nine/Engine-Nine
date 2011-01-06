@@ -207,11 +207,10 @@ namespace Nine
 
                 if (save)
                 {
-                    screenshot.SaveAsPng(
-                        new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate),
-                        width, height);
-                    screenshot.Dispose();
-                    screenshot = null;
+                    using (FileStream savedFile = new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate))
+                    {
+                        screenshot.SaveAsPng(savedFile, width, height);
+                    }
                     return null;
                 }
 #endif
@@ -221,8 +220,6 @@ namespace Nine
             catch (Exception ex)
             {
                 ex.ToString();
-                if (screenshot != null)
-                    screenshot.Dispose();
                 return null;
             }
         }

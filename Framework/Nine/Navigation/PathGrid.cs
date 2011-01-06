@@ -69,10 +69,12 @@ namespace Nine.Navigation
         /// <summary>
         /// Creates a new PathGraph.
         /// </summary>
-        public PathGrid(float width, float height, float x, float y, int countX, int countY)
-            : base(width, height, x, y, countX, countY)
+        public PathGrid(float x, float y, float width, float height, int countX, int countY) 
+            : base(x, y, width, height, countX, countY)
         {
             data = new byte[countX, countY];
+
+            Position = new Vector2(x, y);
 
             Bounds = new Rectangle(0, 0, countX, countY);
         }
@@ -147,8 +149,14 @@ namespace Nine.Navigation
 
             return data[pt.X, pt.Y] > 0;
         }
-
         
+        /// <summary>
+        /// Gets total node count.
+        /// </summary>
+        public int NodeCount
+        {
+            get { return SegmentCountX * SegmentCountY; }
+        }
 
         /// <summary>
         /// Gets the path graph node under the specified grid.

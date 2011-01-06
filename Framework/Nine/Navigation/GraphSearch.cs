@@ -71,7 +71,7 @@ namespace Nine.Navigation
         /// <summary>
         /// Gets the total number of nodes in the graph
         /// </summary>
-        int Count { get; }
+        int NodeCount { get; }
 
         /// <summary>
         /// Gets all the out-going edges of a given node.
@@ -123,7 +123,7 @@ namespace Nine.Navigation
         /// <returns>The result path from end node to start node.</returns>
         public IEnumerable<TGraphNode> Search(IGraph<TGraphNode> graph, TGraphNode start, TGraphNode end)
         {
-            int newLength = graph.Count;    
+            int newLength = graph.NodeCount;    
 
             if (newLength > length)
             {

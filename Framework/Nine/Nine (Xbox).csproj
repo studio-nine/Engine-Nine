@@ -48,8 +48,8 @@
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\BoneAnimation.cs" />
     <Compile Include="Animations\BoneAnimationControllers.cs" />
-    <Compile Include="Animations\BoneAnimations.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
@@ -61,12 +61,16 @@
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="BoundingRectangle.cs" />
+    <Compile Include="BoundingCircle.cs" />
+    <Compile Include="LineSegment.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\PointLightEffectPart.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\SpotLightEffectPart.cs" />
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
@@ -185,6 +189,7 @@
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="GridObjectManager.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Math2D.cs" />
@@ -194,6 +199,7 @@
     <Compile Include="Navigation\Steering\FlockingBehaviors.cs" />
     <Compile Include="Navigation\Steering\Steerer.cs" />
     <Compile Include="Navigation\Steering\SteeringBehavior.cs" />
+    <Compile Include="Navigation\Steering\SteeringHelper.cs" />
     <Compile Include="OcTree.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />

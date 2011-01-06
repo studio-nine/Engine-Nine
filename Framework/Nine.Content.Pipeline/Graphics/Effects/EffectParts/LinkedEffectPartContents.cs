@@ -121,6 +121,87 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.PointLightEffectPart, Nine")]
+    public class PointLight : LinkedEffectPartContent
+    {
+        [ContentSerializer(Optional = true)]
+        public Vector3 Position { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 DiffuseColor { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 SpecularColor { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float Range { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float Attenuation { get; set; }
+
+        public PointLight()
+        {
+            DiffuseColor = Vector3.One;
+            SpecularColor = Vector3.One;
+            Range = 100;
+            Attenuation = 1;
+        }
+
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.PointLight); }
+        }
+    }
+
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SpotLightEffectPart, Nine")]
+    public class SpotLight : LinkedEffectPartContent
+    {
+        [ContentSerializer(Optional = true)]
+        public Vector3 Position { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 Direction { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 DiffuseColor { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 SpecularColor { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float Range { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float Attenuation { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float InnerAngle { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float OuterAngle { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public float Falloff { get; set; }
+
+        public SpotLight()
+        {
+            Direction = new Vector3(0, -0.707107f, -0.707107f);
+            DiffuseColor = Vector3.One;
+            SpecularColor = Vector3.One;
+            Range = 100;
+            Attenuation = 1;
+            InnerAngle = MathHelper.PiOver4;
+            OuterAngle = MathHelper.PiOver2;
+            Falloff = 1;
+        }
+
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.SpotLight); }
+        }
+    }
+
+
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DualTextureEffectPart, Nine")]
     public class DualTexture : LinkedEffectPartContent
     {
@@ -341,6 +422,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.NormalMapEffectPart, Nine")]
     public class NormalMap : LinkedEffectPartContent
     {
+        [ContentSerializer(Optional = true)]
+        public ContentReference<Texture2DContent> Texture { get; set; }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.NormalMap); }
