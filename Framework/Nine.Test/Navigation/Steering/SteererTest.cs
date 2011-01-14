@@ -18,15 +18,16 @@ namespace Nine.Navigation.Steering.Test
     [TestClass()]
     public class SteererTest
     {
-        private GameTime ElapsedTime = new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.102342f));
+        private static GameTime ElapsedTime = new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.102342f));
 
         [TestMethod()]
         public void SeekToPosition()
         {
-            Steerer steerer = new Steerer();
+            Steerable steerer = new Steerable();
             steerer.MaxSpeed = 10;
             steerer.Acceleration = 10;
-            steerer.Behaviors.Add(new SeekBehavior() { Target = Vector2.One * 1000 });
+            steerer.Target = Vector2.One * 1000;
+            steerer.Behaviors.Add(new SeekBehavior());
 
             float[] targetSpeed = new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10 };
 
@@ -40,10 +41,11 @@ namespace Nine.Navigation.Steering.Test
         [TestMethod()]
         public void SeekToPositionMaxAcceleration()
         {
-            Steerer steerer = new Steerer();
+            Steerable steerer = new Steerable();
             steerer.MaxSpeed = 10;
             steerer.Acceleration = float.MaxValue;
-            steerer.Behaviors.Add(new SeekBehavior() { Target = Vector2.One * 1000 });
+            steerer.Target = Vector2.One * 1000;
+            steerer.Behaviors.Add(new SeekBehavior());
 
             float[] targetSpeed = new float[] { 10, 10, 10 };
 
@@ -57,10 +59,11 @@ namespace Nine.Navigation.Steering.Test
         [TestMethod()]
         public void ArriveAtPosition()
         {
-            Steerer steerer = new Steerer();
+            Steerable steerer = new Steerable();
             steerer.MaxSpeed = 10;
             steerer.Acceleration = 20.02345f;
-            steerer.Behaviors.Add(new ArriveBehavior() { Target = Vector2.One * 100 });
+            steerer.Target = Vector2.One * 100;
+            steerer.Behaviors.Add(new ArriveBehavior());
 
             float[] targetSpeed = new float[] { 2, 4, 6, 8, 10, 10, 10 };
 
@@ -99,10 +102,11 @@ namespace Nine.Navigation.Steering.Test
         [TestMethod()]
         public void ArriveAtPositionMaxAcceleration()
         {
-            Steerer steerer = new Steerer();
+            Steerable steerer = new Steerable();
             steerer.MaxSpeed = 10;
             steerer.Acceleration = float.MaxValue;
-            steerer.Behaviors.Add(new ArriveBehavior() { Target = Vector2.One * 100 });
+            steerer.Target = Vector2.One * 100;
+            steerer.Behaviors.Add(new ArriveBehavior());
 
             float[] targetSpeed = new float[] { 10, 10, 10 };
 
@@ -124,6 +128,8 @@ namespace Nine.Navigation.Steering.Test
                 }
                 if ((int)Math.Round(steerer.Speed) != (int)Math.Round(steerer.MaxSpeed))
                     hasStopped = true;
+                else
+                    Assert.AreEqual<int>(10, (int)Math.Round(steerer.Speed));
             }
             Assert.IsTrue(hasStopped);
         }
@@ -131,10 +137,11 @@ namespace Nine.Navigation.Steering.Test
         [TestMethod()]
         public void ArriveAtPositionNearby()
         {
-            Steerer steerer = new Steerer();
+            Steerable steerer = new Steerable();
             steerer.MaxSpeed = 10;
             steerer.Acceleration = 20.02345f;
-            steerer.Behaviors.Add(new ArriveBehavior() { Target = Vector2.One * 5 });
+            steerer.Target = Vector2.One * 5;
+            steerer.Behaviors.Add(new ArriveBehavior());
 
             bool hasStopped = false;
             bool hasFullyStopped = false;

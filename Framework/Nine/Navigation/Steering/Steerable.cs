@@ -37,34 +37,103 @@ namespace Nine.Navigation.Steering
     }
 
     /// <summary>
-    /// Represents a steerer that can steer a moving entity with steering behaviors.
+    /// Represents a steerable moving entity that can with steering behaviors.
     /// </summary>
-    public class Steerer : ISteerable
+    public class Steerable
     {
+        /// <summary>
+        /// Gets or sets the target position of the moving entity.
+        /// </summary>
+        public Vector2? Target { get; set; }
+
+        /// <summary>
+        /// Gets the position of the moving entity.
+        /// </summary>
         public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the forward moving direction of the moving entity.
+        /// </summary>
         public Vector2 Forward
         {
             get { return forward; }
             set { forward = value; Velocity = value * Speed; }
         }
 
+        /// <summary>
+        /// Gets or sets the acceleration of the moving entity.
+        /// </summary>
+        public float Acceleration
+        {
+            get { return currentAcceleration; }
+            set { acceleration = value; currentAcceleration = value; }
+        }
+
+        /// <summary>
+        /// Gets the moving speed of the moving entity.
+        /// </summary>
         public float Speed { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the maximum moving speed of the moving entity.
+        /// </summary>
         public float MaxSpeed { get; set; }
+
+        /// <summary>
+        /// Gets the current force that is applied to the moving entity.
+        /// </summary>
         public Vector2 Force { get { return force; } }
+
+        /// <summary>
+        /// Gets the maximum force that can be applied to the moving entity.
+        /// </summary>
         public float MaxForce { get; private set; }
+
+        /// <summary>
+        /// Gets the velocity of the moving entity.
+        /// </summary>
         public Vector2 Velocity { get; private set; }
-        public float Acceleration { get; set; }  
+
+        /// <summary>
+        /// Gets the bounding radius of the moving entity.
+        /// </summary>
         public float BoundingRadius { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this moving entity can penetrate through obstacles.
+        /// </summary>
         public bool AllowPenetration { get; set; }
+
+        /// <summary>
+        /// Gets whether this moving entity is stucked this frame.
+        /// </summary>
+        public bool IsStucked { get; private set; }
+
+        /// <summary>
+        /// Gets or sets user data.
+        /// </summary>
         public object Tag { get; set; }
 
+        /// <summary>
+        /// Gets or sets the technique used to blend between behaviors
+        /// </summary>
         public SteeringBehaviorBlendMode BlendMode { get; set; }
-        public SteeringBehaviorCollection Behaviors { get; private set; }
 
+        /// <summary>
+        /// Gets the collection of behaviors used by this moving entity.
+        /// </summary>
+        public SteeringBehaviorCollection Behaviors { get; private set; }
+        
+        internal float DecelerationRange;
+        internal float Skin;
+        internal Vector2 TargetedForward;
+
+        private float acceleration = float.MaxValue;
+        private float currentAcceleration = float.MaxValue;
         private Vector2 force;
         private Vector2 forward;
                 
-        public Steerer()
+        public Steerable()
         {
             MaxSpeed = 10.0f;
             Acceleration = 20.0f;
@@ -77,24 +146,26 @@ namespace Nine.Navigation.Steering
 
         public void Update(GameTime gameTime)
         {
-            float elapsedSeconds = (float)(gameTime.ElapsedGameTime.TotalSeconds);
-
-            if (elapsedSeconds <= 0)
+            float elapsedTime = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            if (elapsedTime <= 0)
                 return;
 
             // The max acceleration can stops the moving entity from top speed.
-            float MaxAcceleration = MaxSpeed / elapsedSeconds;
-
-            if (Acceleration >= MaxAcceleration)
-                Acceleration = MaxAcceleration;
+            float MaxAcceleration = MaxSpeed / elapsedTime;
+            if (acceleration >= MaxAcceleration)
+                currentAcceleration = MaxAcceleration;
 
             force = Vector2.Zero;
             MaxForce = Acceleration;
 
+            DecelerationRange = SteeringHelper.GetDecelerateRange(this);
+            TargetedForward = SteeringHelper.GetTargetedForward(this);
+            Skin = MaxSpeed * elapsedTime * 2;
+
             // Accumulate force of each behavior
             for (int i = 0; i < Behaviors.Count; i++)
             {
-                Vector2 steeringForce = Behaviors.GetWeightByIndex(i) * Behaviors[i].UpdateSteeringForce(elapsedSeconds, this);
+                Vector2 steeringForce = Behaviors.GetWeightByIndex(i) * Behaviors[i].UpdateSteeringForce(elapsedTime, this);
                 if (BlendMode == SteeringBehaviorBlendMode.WeightedSum)
                 {
                     if (!AccumulateForceWeightedSum(ref force, MaxForce, steeringForce))
@@ -115,7 +186,7 @@ namespace Nine.Navigation.Steering
 
                 // Apply friction when there is no force but the entity is still moving.
                 Vector2 previousVelocity = Velocity;
-                Velocity -= forward * MaxForce * elapsedSeconds;
+                Velocity -= forward * MaxForce * elapsedTime;
 
                 // When the velocity has changed its direction, that indicates the moving
                 // entity has fully stopped.
@@ -132,7 +203,7 @@ namespace Nine.Navigation.Steering
             {
                 // We don't multiply elapsedTime here because our force
                 // is calculated based on the subtracting desired speed and current speed.
-                Velocity += force * elapsedSeconds;
+                Velocity += force * elapsedTime;
                 Speed = Velocity.Length();
 
                 if (Speed <= 0)
@@ -150,30 +221,46 @@ namespace Nine.Navigation.Steering
             forward = Vector2.Normalize(Velocity);
 
             // Update position
-            Vector2 newPosition = Position + Velocity * elapsedSeconds;
+            Vector2 newPosition;
+            IsStucked = DetectCollision(Position, Position + Velocity * elapsedTime, elapsedTime, out newPosition);
+            Position = newPosition;
+        }
 
+        private bool DetectCollision(Vector2 from, Vector2 to, float elapsedTime, out Vector2 position)
+        {
             // Perform collision detection when penetration is not allowed.
-            if (!AllowPenetration)
+            if (AllowPenetration)
             {
-                // Find the max penetration depth.
-                float? maxPenetration = null;
-                foreach (ISteeringBehavior behavior in Behaviors)
-                {
-                    float? penetration = behavior.Collides(Position, newPosition, this);
-                    if (penetration.HasValue && (!maxPenetration.HasValue || penetration.Value > maxPenetration.Value))
-                    {
-                        maxPenetration = penetration;
-                    }
-                }
+                position = to;
+                return false;
+            }
 
-                if (maxPenetration.HasValue)
+            // Find the min penetration depth.
+            float? minPenetration = null;
+            foreach (ISteeringBehavior behavior in Behaviors)
+            {
+                float? penetration = behavior.Collides(from, to, elapsedTime, this);
+                if (penetration.HasValue && (!minPenetration.HasValue || penetration.Value < minPenetration.Value))
                 {
-                    // Adjust target position based on penetration depth.
-                    newPosition = Position + forward * maxPenetration.Value;
+                    minPenetration = penetration;
+                    if (minPenetration <= 0.0001f)
+                    {
+                        // No penetration is allowed.
+                        position = from;
+                        return true;
+                    }
                 }
             }
 
-            Position = newPosition;
+            if (minPenetration.HasValue)
+            {
+                // Adjust target position based on penetration depth.
+                position = from + forward * minPenetration.Value;
+                return false;
+            }
+
+            position = to;
+            return false;
         }
 
         private bool AccumulateForceWeightedSum(ref Vector2 force, float maxForce, Vector2 steeringForce)
@@ -229,133 +316,4 @@ namespace Nine.Navigation.Steering
             return true;
         }
     }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class SteeringBehaviorCollection : ICollection<ISteeringBehavior>
-    {
-        Collection<KeyValuePair<ISteeringBehavior, float>> array = new Collection<KeyValuePair<ISteeringBehavior, float>>();
-
-        public void Add(ISteeringBehavior behavior, float weight)
-        {
-            array.Add(new KeyValuePair<ISteeringBehavior, float>(behavior, weight));
-        }
-
-        public float GetWeight(ISteeringBehavior behavior)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                if (array[i].Key == behavior)
-                {
-                    return array[i].Value;
-                }
-            }
-
-            return 0;
-        }
-
-        public ISteeringBehavior this[int index]
-        {
-            get { return array[index].Key; }
-        }
-
-        public T FindFirst<T>()
-        {
-            for (int i = 0; i < Count; i++)
-                if (array[i].Key is T)
-                    return (T)array[i].Key;
-
-            return default(T);
-        }
-
-        public IEnumerable<T> Find<T>()
-        {
-            for (int i = 0; i < Count; i++)
-                if (array[i].Key is T)
-                    yield return (T)array[i].Key;
-        }
-
-        internal float GetWeightByIndex(int index)
-        {
-            return array[index].Value;
-        }
-
-        #region ICollection<IFlockingBehavior> Members
-
-        public void Add(ISteeringBehavior behavior)
-        {
-            array.Add(new KeyValuePair<ISteeringBehavior, float>(behavior, 1.0f));
-        }
-
-        public void Clear()
-        {
-            array.Clear();
-        }
-
-        public bool Contains(ISteeringBehavior item)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                if (array[i].Key == item)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void CopyTo(ISteeringBehavior[] array, int arrayIndex)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                array[i + arrayIndex] = this.array[i].Key;
-            }
-        }
-
-        public int Count
-        {
-            get { return array.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-
-        public bool Remove(ISteeringBehavior item)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                if (array[i].Key == item)
-                {
-                    array.RemoveAt(i);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        #endregion
-
-        #region IEnumerable<IFlockingBehavior> Members
-
-        public IEnumerator<ISteeringBehavior> GetEnumerator()
-        {
-            for (int i = 0; i < Count; i++)
-                yield return array[i].Key;
-        }
-
-        #endregion
-
-        #region IEnumerable Members
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-    }
-
 }

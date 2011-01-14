@@ -29,38 +29,35 @@ namespace Nine.Navigation.Steering
     #region CohesionBehavior
     public class CohesionBehavior : SteeringBehavior
     {
-        SeekBehavior seek = new SeekBehavior();
-
         public float Range { get; set; }
-        public ISpatialQuery<ISteerable> Neighbors { get; set; }
+        public ISpatialQuery<Steerable> Neighbors { get; set; }
 
         public CohesionBehavior()
         {
             Range = 100.0f;
         }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             int count = 0;
             Vector2 center = Vector2.Zero;
 
-            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range))
+            foreach (Steerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range))
             {
                 if (partner != null && partner != movingEntity)
                 {
                     center += partner.Position;
-
-                    count++;
+                    if (++count >= SteeringHelper.MaxAffectingEntities)
+                        break;
                 }
             }
 
             if (count > 0)
             {
                 center /= count;
-                seek.Target = center;
-                return seek.UpdateSteeringForce(elapsedTime, movingEntity);
+                movingEntity.Target = center;
+                return SteeringHelper.Seek(elapsedTime, movingEntity);
             }
-
             return Vector2.Zero;
         }
     }
@@ -70,36 +67,52 @@ namespace Nine.Navigation.Steering
     public class SeparationBehavior : SteeringBehavior
     {
         public float Range { get; set; }
-        public ISpatialQuery<ISteerable> Neighbors { get; set; }
+        public ISpatialQuery<Steerable> Neighbors { get; set; }
 
         public SeparationBehavior()
         {
             Range = 10.0f;
         }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
-            Vector2 totalForce = Vector2.Zero;
+            int count = 0;
+            Steerable nearestPartner = null;
+            Vector2 nearestToPartner = new Vector2();
+            float minDistanceToPartner = float.MaxValue;
+            
+            // Make sure seperation gets called earlier then steerable avoidance.
+            float detectorLength = movingEntity.BoundingRadius + movingEntity.Skin * 2; 
 
-            Vector2 position = movingEntity.Position + movingEntity.Velocity * elapsedTime;
-            float range = Range + movingEntity.BoundingRadius;
-            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), range))
+            foreach (Steerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), detectorLength))
             {
-                if (partner != null && partner != movingEntity)
+                if (partner == null || partner == movingEntity)
+                    continue;
+
+                Vector2 toPartner = partner.Position - movingEntity.Position;
+
+                // Ignore entities moving away
+                //if (Vector2.Dot(toPartner, partner.Velocity) >= 0)
+                //    continue;
+
+                float distance = toPartner.Length() - detectorLength - partner.BoundingRadius;
+
+                if (distance <= 0 && distance < minDistanceToPartner)
                 {
-                    Vector2 toPartner = partner.Position - movingEntity.Position;
-
-                    float distance = toPartner.Length();
-
-                    if (distance > 0 && distance < range + partner.BoundingRadius)
-                    {
-                        //totalForce -= Vector2.Normalize(toPartner) / distance;
-                        totalForce -= Vector2.Normalize(toPartner) * movingEntity.MaxForce;
-                    }
+                    nearestToPartner = toPartner;
+                    nearestPartner = partner;
+                    minDistanceToPartner = distance;
                 }
+
+                if (++count >= SteeringHelper.MaxAffectingEntities)
+                    break;
             }
 
-            return totalForce;
+            if (nearestPartner != null)
+            {
+                return -Vector2.Normalize(nearestToPartner) * movingEntity.MaxForce;
+            }
+            return Vector2.Zero;
         }
     }
     #endregion
@@ -108,25 +121,25 @@ namespace Nine.Navigation.Steering
     public class AlignmentBehavior : SteeringBehavior
     {
         public float Range { get; set; }
-        public ISpatialQuery<ISteerable> Neighbors { get; set; }
+        public ISpatialQuery<Steerable> Neighbors { get; set; }
 
         public AlignmentBehavior()
         {
             Range = 50.0f;
         }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             int count = 0;
             Vector2 totalForce = Vector2.Zero;
 
-            foreach (ISteerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range))
+            foreach (Steerable partner in Neighbors.Find(new Vector3(movingEntity.Position, 0), Range))
             {
                 if (partner != null && partner != movingEntity)
                 {
                     totalForce += partner.Forward;
-
-                    count++;
+                    if (++count >= SteeringHelper.MaxAffectingEntities)
+                        break;
                 }
             }
 

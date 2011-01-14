@@ -34,16 +34,16 @@ namespace Nine.Navigation
         #region Fields
         private NavigatorState state = NavigatorState.Stopped;
 
-        public Steerer steerer;
+        public Steerable steerable;
         private ArriveBehavior arrive;
         private SeparationBehavior separation;
-        private ObstacleAvoidanceBehavior obstacleAvoidance;
+        private SteerableAvoidanceBehavior steerableAvoidance;
         private WallAvoidanceBehavior wallAvoidance;
 
         private ISpatialQuery<Navigator> myFriends;
         private ISpatialQuery<Navigator> myOpponents;
-        private ISpatialQuery<ISteerable> friends;
-        private ISpatialQuery<ISteerable> friendsAndOpponents;
+        private ISpatialQuery<Steerable> friends;
+        private ISpatialQuery<Steerable> friendsAndOpponents;
         private ISpatialQuery<LineSegment> walls;
         private ISpatialQuery<BoundingCircle> obstacles;
 
@@ -61,7 +61,7 @@ namespace Nine.Navigation
             {
                 return Matrix.CreateFromAxisAngle(Vector3.UnitZ, Rotation - MathHelper.PiOver2) *
                        Matrix.CreateTranslation(Position);
-                //return Matrix.CreateFromAxisAngle(Vector3.UnitZ, (float)(Math.Atan2(steerer.Forward.Y, steerer.Forward.X)) - MathHelper.PiOver2) *
+                //return Matrix.CreateFromAxisAngle(Vector3.UnitZ, (float)(Math.Atan2(steerable.Forward.Y, steerable.Forward.X)) - MathHelper.PiOver2) *
                 //       Matrix.CreateTranslation(Position);
             }
         }
@@ -71,8 +71,8 @@ namespace Nine.Navigation
         /// </summary>
         public Vector3 Position 
         {
-            get { return new Vector3(steerer.Position, realHeight); }
-            set { steerer.Position = new Vector2(value.X, value.Y); realHeight = value.Z; }
+            get { return new Vector3(steerable.Position, realHeight); }
+            set { steerable.Position = new Vector2(value.X, value.Y); realHeight = value.Z; }
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Nine.Navigation
         /// </summary>
         public Vector2 Forward
         {
-            get { return steerer.Forward; }
+            get { return steerable.Forward; }
         }
 
         /// <summary>
@@ -93,8 +93,8 @@ namespace Nine.Navigation
         /// </summary>
         public float Acceleration
         {
-            get { return steerer.Acceleration; }
-            set { steerer.Acceleration = value; }
+            get { return steerable.Acceleration; }
+            set { steerable.Acceleration = value; }
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Nine.Navigation
         /// </summary>
         public float Speed
         {
-            get { return steerer.Speed; }
+            get { return steerable.Speed; }
         }
 
         /// <summary>
@@ -110,8 +110,8 @@ namespace Nine.Navigation
         /// </summary>
         public float MaxSpeed
         {
-            get { return steerer.MaxSpeed; }
-            set { steerer.MaxSpeed = value; }
+            get { return steerable.MaxSpeed; }
+            set { steerable.MaxSpeed = value; }
         }
 
         /// <summary>
@@ -119,10 +119,10 @@ namespace Nine.Navigation
         /// </summary>
         public float SoftBoundingRadius
         {
-            get { return steerer.BoundingRadius; }
+            get { return steerable.BoundingRadius; }
             set
             {
-                steerer.BoundingRadius = value;
+                steerable.BoundingRadius = value;
                 separation.Range = 0;
             }
         }
@@ -240,13 +240,13 @@ namespace Nine.Navigation
         /// </summary>
         public Navigator()
         {
-            steerer = new Steerer();
-            steerer.BlendMode = SteeringBehaviorBlendMode.Solo;
-            steerer.Behaviors.Add(wallAvoidance = new WallAvoidanceBehavior() { Enabled = false });
-            obstacleAvoidance = new ObstacleAvoidanceBehavior();
-            //steerer.Behaviors.Add(obstacleAvoidance = new ObstacleAvoidanceBehavior() { Enabled = false });
-            steerer.Behaviors.Add(arrive = new ArriveBehavior() { Enabled = false });
-            steerer.Behaviors.Add(separation = new SeparationBehavior() { Enabled = false });
+            steerable = new Steerable();
+            steerable.BlendMode = SteeringBehaviorBlendMode.Solo;
+            steerable.Behaviors.Add(new StuckAvoidanceBehavior());
+            steerable.Behaviors.Add(wallAvoidance = new WallAvoidanceBehavior() { Enabled = false });
+            steerable.Behaviors.Add(steerableAvoidance = new SteerableAvoidanceBehavior() { Enabled = false });
+            steerable.Behaviors.Add(separation = new SeparationBehavior() { Enabled = false });
+            steerable.Behaviors.Add(arrive = new ArriveBehavior() { Enabled = false });
         }
 
         /// <summary>
@@ -254,15 +254,15 @@ namespace Nine.Navigation
         /// </summary>
         public void MoveTo(Vector3 position)
         {
-            obstacleAvoidance.Enabled = true;
+            Vector2 target = new Vector2(position.X, position.Y);
+
+            steerable.Target = target;
             arrive.Enabled = true;
-            arrive.Target = new Vector2(position.X, position.Y);
-            obstacleAvoidance.TargetHint = arrive.Target;
-            wallAvoidance.TargetHint = arrive.Target;
+            steerableAvoidance.Enabled = true;
 
             if (!IsMachinery)
             {
-                steerer.Forward = Vector2.Normalize(arrive.Target.Value - steerer.Position);
+                steerable.Forward = Vector2.Normalize(target - steerable.Position);
             }
 
             state = NavigatorState.Moving;
@@ -292,7 +292,7 @@ namespace Nine.Navigation
         {
             if (state == NavigatorState.Moving)
             {
-                obstacleAvoidance.Enabled = false;
+                steerableAvoidance.Enabled = false;
                 arrive.Enabled = false;
                 state = NavigatorState.Stopped;
                 OnStopped();
@@ -301,55 +301,28 @@ namespace Nine.Navigation
 
         public void Update(GameTime gameTime)
         {
-            float elapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (elapsedSeconds <= 0)
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (elapsedTime <= 0)
                 return;
-            /*
-            float fareast = float.MinValue;
-            Vector2 fareastPosition = new Vector2();
-            Vector2 nextPosition = new Vector2();
-            Vector2 currentPosition = steerer.Position;
-            for (int i = 0; i < 20; i++)
-            {
-                nextPosition = steerer.Position;
-                steerer.Update(gameTime);
-                if (i == 0)
-                    fareastPosition = steerer.Position;
-                if (steerer.Speed <= 0 && steerer.Force.LengthSquared() <= 0)
-                {
-                    fareastPosition = steerer.Position;
-                    break;
-                }
 
-                float distance = Vector2.Distance(steerer.Position, currentPosition);
-                float maxDistance = steerer.MaxSpeed * elapsedSeconds;
-                if (distance < maxDistance && distance > fareast)
-                {
-                    fareast = distance;
-                    fareastPosition = steerer.Position;
-                }
-            }
-            //nextPosition = steerer.Position;
-            nextPosition = fareastPosition;
-            steerer.Position = nextPosition;
-            */
-            Vector2 currentPosition = steerer.Position;
-            steerer.Update(gameTime);
+            Vector2 currentPosition = steerable.Position;
+            steerable.Update(gameTime);
 
-            if (steerer.Speed > 0 && steerer.Force != Vector2.Zero && state == NavigatorState.Stopped)
+            if (steerable.Speed > 0 && steerable.Force != Vector2.Zero && state == NavigatorState.Stopped)
             {
                 state = NavigatorState.Moving;
                 OnStarted();
                 return;
             }
 
-            if (steerer.Speed <= 0 && steerer.Force == Vector2.Zero && state == NavigatorState.Moving)
+            if (steerable.Speed <= 0 && steerable.Force == Vector2.Zero)
             {
-                Stop();
+                if (state == NavigatorState.Moving)
+                    Stop();
                 return;
             }
 
-            Vector2 nextPosition = steerer.Position;
+            Vector2 nextPosition = steerable.Position;
             
             // Compute the normal of the terrain. We don't want to our entity
             // to be moving too fast when climbing hills :)
@@ -359,13 +332,13 @@ namespace Nine.Navigation
             // Test to see if we reached the border of the ground.
             if (Ground != null && !Ground.TryGetHeightAndNormal(Position, out height, out normal))
             {
-                steerer.Position = currentPosition;
+                steerable.Position = currentPosition;
                 return;
             }
 
             // We don't want to make the entity moving too physically
             // Moves the agent towards the target.
-            Vector3 facing = new Vector3(steerer.Forward, 0);
+            Vector3 facing = new Vector3(steerable.Forward, 0);
 
             // Imagine we are climbing a hill
             Vector3 right = Vector3.Cross(facing, normal);
@@ -373,11 +346,11 @@ namespace Nine.Navigation
 
             // Adjust player animation speed to avoid sliding artifact
             float increment = Vector3.Dot(direction, facing);
-            steerer.Position = Vector2.Lerp(currentPosition, nextPosition, increment);
+            steerable.Position = Vector2.Lerp(currentPosition, nextPosition, increment);
 
             realHeight = height;
 
-            UpdateRotation(elapsedSeconds, facing);
+            UpdateRotation(elapsedTime, facing);
         }
 
         private void UpdateRotation(float elapsedSeconds, Vector3 facing)
@@ -404,10 +377,10 @@ namespace Nine.Navigation
         {
             if (myFriends != null)
             {
-                friends = new SpatialQuery<Navigator, ISteerable>(myFriends) { Converter = NavigatorToSteerer };
+                friends = new SpatialQuery<Navigator, Steerable>(myFriends) { Converter = NavigatorToSteerer };
 
                 if (myOpponents != null)
-                    friendsAndOpponents = new SpatialQuery<Navigator, ISteerable>(myFriends, myOpponents) { Converter = NavigatorToSteerer };
+                    friendsAndOpponents = new SpatialQuery<Navigator, Steerable>(myFriends, myOpponents) { Converter = NavigatorToSteerer };
                 else
                     friendsAndOpponents = friends;
             }
@@ -416,7 +389,7 @@ namespace Nine.Navigation
                 friends = null;
 
                 if (myOpponents != null)
-                    friendsAndOpponents = new SpatialQuery<Navigator, ISteerable>(myOpponents) { Converter = NavigatorToSteerer };
+                    friendsAndOpponents = new SpatialQuery<Navigator, Steerable>(myOpponents) { Converter = NavigatorToSteerer };
                 else
                     friendsAndOpponents = null;
             }
@@ -424,18 +397,8 @@ namespace Nine.Navigation
             separation.Neighbors = friends;
             separation.Enabled = friends != null;
 
-            SpatialQuery<Navigator, BoundingCircle> obstacles = new SpatialQuery<Navigator, BoundingCircle>();
-            obstacles.Converter = NavigatorToBoundingCircle;
-            obstacles.Filter = SelfFilter;
-            if (myFriends != null)
-                obstacles.InnerQueries.Add(myFriends);
-            if (myOpponents != null)
-                obstacles.InnerQueries.Add(myOpponents);
-
-            if (this.obstacles != null)
-                obstacleAvoidance.Obstacles = new SpatialQuery<BoundingCircle, BoundingCircle>(obstacles, this.obstacles);
-            else
-                obstacleAvoidance.Obstacles = obstacles;
+            steerableAvoidance.Neighbors = friendsAndOpponents;
+            steerableAvoidance.Enabled = friendsAndOpponents != null;
         }
 
         protected virtual void OnStarted()
@@ -452,14 +415,14 @@ namespace Nine.Navigation
                 Stopped(this, EventArgs.Empty);
         }
 
-        private static ISteerable NavigatorToSteerer(Navigator navigator)
+        private static Steerable NavigatorToSteerer(Navigator navigator)
         {
-            return navigator.steerer;
+            return navigator.steerable;
         }
 
         private static BoundingCircle NavigatorToBoundingCircle(Navigator navigator)
         {
-            return new BoundingCircle(navigator.steerer.Position, navigator.HardBoundingRadius);
+            return new BoundingCircle(navigator.steerable.Position, navigator.HardBoundingRadius);
         }
 
         private bool SelfFilter(Navigator navigator)

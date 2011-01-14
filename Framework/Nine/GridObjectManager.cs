@@ -165,18 +165,18 @@ namespace Nine
         {
             Point pt = new Point();
 
-            if (x == Position.X + Size.X)
+            pt.X = (int)((x - Position.X) * SegmentCountX / Size.X);
+            pt.Y = (int)((y - Position.Y) * SegmentCountY / Size.Y);
+
+            if (pt.X < 0)
+                pt.X = 0;
+            if (pt.X >= SegmentCountX)
                 pt.X = SegmentCountX - 1;
-            else
-                pt.X = (int)((x - Position.X) * SegmentCountX / Size.X);
 
-            if (y == Position.Y + Size.Y)
+            if (pt.Y < 0)
+                pt.Y = 0;
+            if (pt.Y >= SegmentCountY)
                 pt.Y = SegmentCountY - 1;
-            else
-                pt.Y = (int)((y - Position.Y) * SegmentCountY / Size.Y);
-
-            if (!Contains(pt.X, pt.Y))
-                throw new ArgumentOutOfRangeException();
 
             return pt;
         }
@@ -214,35 +214,22 @@ namespace Nine
         }
 
         /// <summary>
-        /// Gets the min position of the specified integral grid.
+        /// Gets the bounding rectangle of the specified integral grid.
         /// </summary>
-        public Vector2 SegmentToPositionMin(int x, int y)
+        public BoundingRectangle GetSegmentBounds(int x, int y)
         {
             if (!Contains(x, y))
                 throw new ArgumentOutOfRangeException();
 
-            Vector2 v = new Vector2();
+            Vector2 min = new Vector2();
+            Vector2 max = new Vector2();
 
-            v.X = (x) * Size.X / SegmentCountX;
-            v.Y = (y) * Size.Y / SegmentCountY;
+            min.X = (x) * Size.X / SegmentCountX;
+            min.Y = (y) * Size.Y / SegmentCountY;
+            max.X = (x + 1) * Size.X / SegmentCountX;
+            max.Y = (y + 1) * Size.Y / SegmentCountY;
 
-            return v + Position;
-        }
-
-        /// <summary>
-        /// Gets the max position of the specified integral grid.
-        /// </summary>
-        public Vector2 SegmentToPositionMax(int x, int y)
-        {
-            if (!Contains(x, y))
-                throw new ArgumentOutOfRangeException();
-
-            Vector2 v = new Vector2();
-
-            v.X = (x + 1) * Size.X / SegmentCountX;
-            v.Y = (y + 1) * Size.Y / SegmentCountY;
-
-            return v + Position;
+            return new BoundingRectangle(min + Position, max + Position);
         }
 
         /// <summary>
@@ -536,13 +523,12 @@ namespace Nine
                     Data[grid.X, grid.Y].Objects = new List<T>();
                     Data[grid.X, grid.Y].ObjectBounds = new List<BoundingBox>();
 
-                    Vector2 min = SegmentToPositionMin(grid.X, grid.Y);
-                    Vector2 max = SegmentToPositionMax(grid.X, grid.Y);
+                    BoundingRectangle bounds = GetSegmentBounds(grid.X, grid.Y);
 
-                    Data[grid.X, grid.Y].Bounds.Min.X = min.X;
-                    Data[grid.X, grid.Y].Bounds.Min.Y = min.Y;
-                    Data[grid.X, grid.Y].Bounds.Max.X = min.X;
-                    Data[grid.X, grid.Y].Bounds.Max.Y = min.Y;
+                    Data[grid.X, grid.Y].Bounds.Min.X = bounds.Min.X;
+                    Data[grid.X, grid.Y].Bounds.Min.Y = bounds.Min.Y;
+                    Data[grid.X, grid.Y].Bounds.Max.X = bounds.Max.X;
+                    Data[grid.X, grid.Y].Bounds.Max.Y = bounds.Max.Y;
                 }
 
                 Data[grid.X, grid.Y].Objects.Add(obj);

@@ -29,11 +29,9 @@ namespace Nine.Navigation.Steering
     #region SeekBehavior
     public class SeekBehavior : SteeringBehavior
     {
-        public Vector2 Target { get; set; }
-
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
-            return SteeringHelper.SeekToTarget(movingEntity, Target);
+            return SteeringHelper.Seek(elapsedTime, movingEntity);
         }
     }
     #endregion
@@ -43,9 +41,9 @@ namespace Nine.Navigation.Steering
     {
         public Vector2 Target { get; set; }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
-            return SteeringHelper.FleeFromTarget(movingEntity, Target);
+            return SteeringHelper.Flee(elapsedTime, movingEntity, Target);
         }
     }
     #endregion
@@ -53,34 +51,9 @@ namespace Nine.Navigation.Steering
     #region ArriveBehavior
     public class ArriveBehavior : SteeringBehavior
     {
-        public Vector2? Target { get; set; }
-
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
-            if (!Target.HasValue)
-                return Vector2.Zero;
-            
-            Vector2 toTarget = Target.Value - movingEntity.Position;
-
-            // Stop when the moving entity has passed target.
-            if (toTarget.Length() < movingEntity.BoundingRadius + movingEntity.MaxSpeed * elapsedTime)
-            {
-                if (movingEntity.Velocity != Vector2.Zero && Vector2.Dot(toTarget, movingEntity.Velocity) <= 0)
-                {
-                    Target = null;
-                    return Vector2.Zero;
-                }
-            }
-
-            // Stop when the moving entity is close enough.
-            float distance = toTarget.Length();
-            if (distance <= SteeringHelper.GetDecelerateRange(movingEntity))
-            {
-                Target = null;
-                return Vector2.Zero;
-            }
-
-            return SteeringHelper.SeekToTarget(movingEntity, Target.Value);
+            return SteeringHelper.Arrive(elapsedTime, movingEntity); 
         }
     }
     #endregion
@@ -88,12 +61,10 @@ namespace Nine.Navigation.Steering
     #region PursuitBehavior
     public class PursuitBehavior : SteeringBehavior
     {
-        private SeekBehavior seek = new SeekBehavior();
-
         public Vector2 Offset { get; set; }
-        public ISteerable Evader { get; set; }
+        public Steerable Evader { get; set; }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             //if the evader is ahead and facing the agent then we can just seek
             //for the evader's current position.
@@ -104,8 +75,8 @@ namespace Nine.Navigation.Steering
             if ((Vector2.Dot(toEvader, movingEntity.Forward) > 0) &&
                 (relativeHeading < -0.95f))  //acos(0.95)=18 degs
             {
-                seek.Target = Evader.Position + Offset;
-                return seek.UpdateSteeringForce(elapsedTime, movingEntity);
+                movingEntity.Target = Evader.Position + Offset;
+                return SteeringHelper.Seek(elapsedTime, movingEntity);
             }
 
             //Not considered ahead so we predict where the evader will be.
@@ -116,8 +87,8 @@ namespace Nine.Navigation.Steering
             float lookAheadTime = toEvader.Length() / (movingEntity.MaxSpeed + Evader.Speed);
 
             //now seek to the predicted future position of the evader
-            seek.Target = Evader.Position + Evader.Velocity * lookAheadTime + Offset;
-            return seek.UpdateSteeringForce(elapsedTime, movingEntity);
+            movingEntity.Target = Evader.Position + Evader.Velocity * lookAheadTime + Offset;
+            return SteeringHelper.Seek(elapsedTime, movingEntity);
         }
     }
     #endregion
@@ -125,9 +96,7 @@ namespace Nine.Navigation.Steering
     #region EvadeBehavior
     public class EvadeBehavior : SteeringBehavior
     {
-        private FleeBehavior flee = new FleeBehavior();
-
-        public ISteerable Pursuer { get; set; }
+        public Steerable Pursuer { get; set; }
         public float ThreatRange { get; set; }
 
         public EvadeBehavior()
@@ -135,7 +104,7 @@ namespace Nine.Navigation.Steering
             ThreatRange = 100.0f;
         }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             // Not necessary to include the check for facing direction this time
             Vector2 toPursuer = Pursuer.Position - movingEntity.Position;
@@ -153,8 +122,7 @@ namespace Nine.Navigation.Steering
             float LookAheadTime = toPursuer.Length() / (movingEntity.MaxSpeed + Pursuer.Speed);
 
             //now flee away from predicted future position of the pursuer
-            flee.Target = Pursuer.Position + Pursuer.Velocity * LookAheadTime;
-            return flee.UpdateSteeringForce(elapsedTime, movingEntity);
+            return SteeringHelper.Flee(elapsedTime, movingEntity, Pursuer.Position + Pursuer.Velocity * LookAheadTime);
         }
     }
     #endregion
@@ -175,7 +143,7 @@ namespace Nine.Navigation.Steering
             Radius = 5f;
         }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             //this behavior is dependent on the update rate, so this line must
             //be included when using time independent framerate.
@@ -211,7 +179,6 @@ namespace Nine.Navigation.Steering
     {
         private float timer;
         private Vector2 location;
-        private ArriveBehavior arrive;
 
         public float MovesPerMinute { get; set; }
         public float PatrolRange { get; set; }        
@@ -223,11 +190,9 @@ namespace Nine.Navigation.Steering
 
             MovesPerMinute = 6.0f;
             PatrolRange = 50.0f;
-
-            arrive = new ArriveBehavior();
         }
 
-        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             if (MovesPerMinute < 0f)
                 MovesPerMinute = 0f;
@@ -252,12 +217,12 @@ namespace Nine.Navigation.Steering
                 target.X = (float)(Math.Cos(a) * PatrolRange * r);
                 target.Y = (float)(Math.Sin(a) * PatrolRange * r);
 
-                arrive.Target = target + location;
+                movingEntity.Target = target + location;
 
                 timer = (float)(Random.NextDouble() * 60 / (MovesPerMinute + 0.001f));
             }
 
-            return arrive.UpdateSteeringForce(elapsedTime, movingEntity);
+            return SteeringHelper.Arrive(elapsedTime, movingEntity);
         }
     }
     #endregion

@@ -28,7 +28,7 @@ namespace Nine
 
         public Vector2 Normal
         {
-            get { return Math2D.Perpendicular(Vector2.Normalize(End - Start)); }
+            get { return Math2D.Rotate90DegreesCcw(Vector2.Normalize(End - Start)); }
         }
 
         public Vector2 Center

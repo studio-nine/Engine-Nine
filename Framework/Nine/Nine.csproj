@@ -94,6 +94,10 @@
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="LineSegment.cs" />
+    <Compile Include="Navigation\Steering\BoundAvoidanceBehavior.cs" />
+    <Compile Include="Navigation\Steering\WallAvoidanceBehavior.cs" />
+    <Compile Include="Navigation\Steering\StuckAvoidanceBehavior.cs" />
+    <Compile Include="Navigation\Steering\SteeringBehaviorCollection.cs" />
     <Compile Include="Navigation\Steering\SteeringHelper.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
@@ -245,9 +249,9 @@
     </Compile>
     <Compile Include="Input.cs">
     </Compile>
-    <Compile Include="Navigation\Steering\Steerer.cs" />
+    <Compile Include="Navigation\Steering\Steerable.cs" />
     <Compile Include="Navigation\Steering\BasicSteeringBehaviors.cs" />
-    <Compile Include="Navigation\Steering\AvoidanceBehaviors.cs" />
+    <Compile Include="Navigation\Steering\SteerableAvoidanceBehavior.cs" />
     <Compile Include="Navigation\Steering\FlockingBehaviors.cs" />
     <Compile Include="GridObjectManager.cs" />
     <Compile Include="Graphics\FreeCamera.cs" />

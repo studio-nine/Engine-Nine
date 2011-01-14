@@ -20,57 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Navigation.Steering
 {
     /// <summary>
-    /// Interface for an object that can be steered by the Steerer.
-    /// </summary>
-    /// <remarks>
-    /// This interface is to be used by ISteeringBehavior and is not meant
-    /// to be implemented.
-    /// </remarks>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface ISteerable
-    {
-        /// <summary>
-        /// Gets the position of the moving entity.
-        /// </summary>
-        Vector2 Position { get; }
-
-        /// <summary>
-        /// Gets the forward moving direction of the moving entity.
-        /// </summary>
-        Vector2 Forward { get; }
-
-        /// <summary>
-        /// Gets the velocity of the moving entity.
-        /// </summary>
-        Vector2 Velocity { get; }
-
-        /// <summary>
-        /// Gets the moving speed of the moving entity.
-        /// </summary>
-        float Speed { get; }
-
-        /// <summary>
-        /// Gets the maximum moving speed of the moving entity.
-        /// </summary>
-        float MaxSpeed { get; }
-
-        /// <summary>
-        /// Gets the maximum force that can be applied to the moving entity.
-        /// </summary>
-        float MaxForce { get; }
-
-        /// <summary>
-        /// Gets the acceleration of the moving entity.
-        /// </summary>
-        float Acceleration { get; }
-
-        /// <summary>
-        /// Gets the bounding radius of the moving entity.
-        /// </summary>
-        float BoundingRadius { get; }
-    }
-
-    /// <summary>
     /// Defines the behavior of the Steerer.
     /// </summary>
     public interface ISteeringBehavior
@@ -78,13 +27,13 @@ namespace Nine.Navigation.Steering
         /// <summary>
         /// Updates and returns the steering force.
         /// </summary>
-        Vector2 UpdateSteeringForce(float elapsedTime, ISteerable movingEntity);
+        Vector2 UpdateSteeringForce(float elapsedTime, Steerable movingEntity);
 
         /// <summary>
         /// Checks if the step collides with any obstacles. Return null if don't collide, 
         /// otherwise, returns the max penertration depth allowed.
         /// </summary>
-        float? Collides(Vector2 from, Vector2 to, ISteerable movingEntity);
+        float? Collides(Vector2 from, Vector2 to, float elapsedTime, Steerable movingEntity);
     }
 
     /// <summary>
@@ -106,7 +55,7 @@ namespace Nine.Navigation.Steering
 
         public SteeringBehavior() { Enabled = true; }
 
-        public Vector2 UpdateSteeringForce(float elapsedTime, ISteerable movingEntity)
+        public Vector2 UpdateSteeringForce(float elapsedTime, Steerable movingEntity)
         {
             if (!Enabled)
                 return Vector2.Zero;
@@ -114,15 +63,15 @@ namespace Nine.Navigation.Steering
             return OnUpdateSteeringForce(elapsedTime, movingEntity);
         }
 
-        public float? Collides(Vector2 from, Vector2 to, ISteerable movingEntity)
+        public float? Collides(Vector2 from, Vector2 to, float elapsedTime, Steerable movingEntity)
         {
             if (!Enabled)
                 return null;
 
-            return OnCollides(from, to, movingEntity);
+            return OnCollides(from, to, elapsedTime, movingEntity);
         }
 
-        protected abstract Vector2 OnUpdateSteeringForce(float elapsedTime, ISteerable movingEntity);
-        protected virtual float? OnCollides(Vector2 from, Vector2 to, ISteerable movingEntity) { return null; }
+        protected abstract Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity);
+        protected virtual float? OnCollides(Vector2 from, Vector2 to, float elapsedTime, Steerable movingEntity) { return null; }
     }
 }

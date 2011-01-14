@@ -36,9 +36,14 @@ namespace Nine
             return ((n1 - n2) < Epsilon) && ((n2 - n1) < Epsilon);
         }
 
-        public static Vector2 Perpendicular(Vector2 v)
+        public static Vector2 Rotate90DegreesCcw(Vector2 v)
         {
             return new Vector2(-v.Y, v.X);
+        }
+
+        public static Vector2 Rotate90DegreesCw(Vector2 v)
+        {
+            return new Vector2(v.Y, -v.X);
         }
 
 
@@ -258,6 +263,98 @@ namespace Nine
             Vector2 Point = a + ((b - a) * dotA) / (dotA + dotB);
 
             //calculate the distance p-Point
+            return Vector2.Distance(p, Point);
+        }
+
+
+
+        /// <summary>
+        /// given a line AB and a point P, this function returns the
+        /// shortest distance between a line AB and P.
+        /// </summary>
+        /// <returns></returns>
+        public static float DistanceToLine(Vector2 a, Vector2 b, Vector2 p)
+        {
+            //if the angle is obtuse between PA and AB is obtuse then the closest
+            //vertex must be a
+            float dotA = (p.X - a.X) * (b.X - a.X) + (p.Y - a.Y) * (b.Y - a.Y);
+
+            //if the angle is obtuse between PB and AB is obtuse then the closest
+            //vertex must be b
+            float dotB = (p.X - b.X) * (a.X - b.X) + (p.Y - b.Y) * (a.Y - b.Y);
+
+            //calculate the point along AB that is the closest to p
+            Vector2 Point = a + ((b - a) * dotA) / (dotA + dotB);
+
+            //calculate the distance p-Point
+            return Vector2.Distance(p, Point);
+        }
+
+
+
+        /// <summary>
+        /// given a line AB and a point P, this function returns the
+        /// shortest distance between a line AB and P.
+        /// </summary>
+        /// <returns></returns>
+        public static float DistanceToLineSquared(Vector2 a, Vector2 b, Vector2 p)
+        {
+            //if the angle is obtuse between PA and AB is obtuse then the closest
+            //vertex must be a
+            float dotA = (p.X - a.X) * (b.X - a.X) + (p.Y - a.Y) * (b.Y - a.Y);
+
+            //if the angle is obtuse between PB and AB is obtuse then the closest
+            //vertex must be b
+            float dotB = (p.X - b.X) * (a.X - b.X) + (p.Y - b.Y) * (a.Y - b.Y);
+
+            //calculate the point along AB that is the closest to p
+            Vector2 Point = a + ((b - a) * dotA) / (dotA + dotB);
+
+            //calculate the distance p-Point
+            return Vector2.DistanceSquared(p, Point);
+        }
+
+
+
+        /// <summary>
+        /// given a line segment AB and a point P, this function returns the
+        /// shortest distance between a point on AB and P.
+        /// N represents the vector from the closest point on AB to P.
+        /// </summary>
+        /// <returns></returns>
+        public static float DistanceToLineSegment(Vector2 a, Vector2 b, Vector2 p, out Vector2 n)
+        {
+            //if the angle is obtuse between PA and AB is obtuse then the closest
+            //vertex must be a
+            float dotA = (p.X - a.X) * (b.X - a.X) + (p.Y - a.Y) * (b.Y - a.Y);
+
+            if (dotA <= 0)
+            {
+                n = Vector2.Normalize(p - a);
+                if (float.IsNaN(n.X))
+                    n = Rotate90DegreesCcw(Vector2.Normalize(b - a));
+                return Vector2.Distance(a, p);
+            }
+
+            //if the angle is obtuse between PB and AB is obtuse then the closest
+            //vertex must be b
+            float dotB = (p.X - b.X) * (a.X - b.X) + (p.Y - b.Y) * (a.Y - b.Y);
+
+            if (dotB <= 0)
+            {
+                n = Vector2.Normalize(p - b);
+                if (float.IsNaN(n.X))
+                    n = Rotate90DegreesCcw(Vector2.Normalize(b - a));
+                return Vector2.Distance(b, p);
+            }
+
+            //calculate the point along AB that is the closest to p
+            Vector2 Point = a + ((b - a) * dotA) / (dotA + dotB);
+
+            //calculate the distance p-Point
+            n = Vector2.Normalize(p - Point);
+            if (float.IsNaN(n.X))
+                n = Rotate90DegreesCcw(Vector2.Normalize(b - a));
             return Vector2.Distance(p, Point);
         }
 

@@ -56,9 +56,9 @@ namespace NavigationSample
             Navigator = new Navigator();
             Navigator.IsMachinery = false;
             Navigator.MaxSpeed = 6;
-            Navigator.SoftBoundingRadius = bound;
-            Navigator.HardBoundingRadius = bound;
-            Navigator.Acceleration = 20;
+            Navigator.SoftBoundingRadius = 0.5f;
+            Navigator.HardBoundingRadius = 0.5f;
+            Navigator.Acceleration = 60;
             Navigator.Ground = ground;
             Navigator.Friends = friends;
             Navigator.Walls = walls;
@@ -92,7 +92,7 @@ namespace NavigationSample
         {
             Navigator.Update(gameTime);
 
-            animations.Update(gameTime);
+            //animations.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime, ModelBatch modelBatch, PrimitiveBatch primitiveBatch)
