@@ -1,11 +1,10 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
-
 
 #region Using Directives
 using System;
@@ -17,64 +16,78 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-
 namespace Nine.Graphics.ParticleEffects
 {
-    public sealed class ParticleEmitter
+    /// <summary>
+    /// Defines an emitter that emit new particles for particle effect.
+    /// </summary>
+    public interface IParticleEmitter
     {
-        float timeLeftOver = 0;
+        /// <summary>
+        /// Gets the bounding box that defines the region of this particle emitter.
+        /// </summary>
+        BoundingBox BoundingBox { get; }
 
-        public float Emission { get; set; }
-        public ISpatialEmitter SpatialEmitter { get; set; }
+        /// <summary>
+        /// Emits a new particle.
+        /// </summary>
+        void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity);
+    }
 
+    /// <summary>
+    /// Defines the base class for all particle emitters.
+    /// </summary>
+    public abstract class ParticleEmitter : IParticleEmitter
+    {
+        /// <summary>
+        /// Gets the random number generator used by particle emitters.
+        /// </summary>
+        protected Random Random { get { return random; } }
+        static Random random = new Random();
 
-        public ParticleEmitter()
+        protected void CreateRandomVelocity(ref Vector3 velocity)
         {
-            Emission = 100;
-            SpatialEmitter = new PointEmitter();
+            double a = random.NextDouble() * Math.PI * 2;
+            double b = random.NextDouble() * Math.PI - MathHelper.PiOver2;
+            double r = Math.Cos(b);
+
+            velocity.X = (float)(r * Math.Cos(a));
+            velocity.Y = (float)(r * Math.Sin(a));
+            velocity.Z = (float)(Math.Sin(b));
         }
 
-        public ParticleEmitter(float emission, ISpatialEmitter emitter)
+        protected void CreateRandomVelocity(ref Vector3 velocity, ref Vector3 direction, float spread)
         {
-            Emission = emission;
-            SpatialEmitter = emitter;
-        }
-
-        public IEnumerable<Vector3> Update(GameTime time)
-        {
-            if (SpatialEmitter != null)
+            if (spread >= MathHelper.Pi)
+                CreateRandomVelocity(ref velocity);
+            else if (spread <= 0)
+                velocity = direction;
+            else
             {
-                // Work out how much time has passed since the previous update.
-                float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
-                float timeBetweenParticles = 1.0f / Emission;
+                double a = random.NextDouble() * Math.PI * 2;
+                double b = random.NextDouble() * spread + MathHelper.PiOver2;
+                double r = Math.Cos(b);
 
-                if (elapsedTime > 0)
+                velocity.X = (float)(r * Math.Cos(a));
+                velocity.Y = (float)(r * Math.Sin(a));
+                velocity.Z = (float)(Math.Sin(b));
+
+                if (direction != Vector3.UnitZ)
                 {
-                    // If we had any time left over that we didn't use during the
-                    // previous update, add that to the current elapsed time.
-                    float timeToSpend = timeLeftOver + elapsedTime;
-
-                    // Counter for looping over the time interval.
-                    float currentTime = -timeLeftOver;
-
-                    // Create particles as long as we have a big enough time interval.
-                    while (timeToSpend > timeBetweenParticles)
-                    {
-                        currentTime += timeBetweenParticles;
-                        timeToSpend -= timeBetweenParticles;
-
-                        // Work out the optimal position for this particle. This will produce
-                        // evenly spaced particles regardless of the object speed, particle
-                        // creation frequency, or game update rate.
-                        float mu = currentTime / elapsedTime;
-
-                        yield return SpatialEmitter.Emit(time, mu);
-                    }
-
-                    // Store any time we didn't use, so it can be part of the next update.
-                    timeLeftOver = timeToSpend;
+                    Matrix rotation = MatrixHelper.CreateRotation(Vector3.UnitZ, direction);
+                    Vector3.TransformNormal(ref velocity, ref rotation, out velocity);
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the bounding box that defines the region of this particle emitter.
+        /// </summary>
+        public abstract BoundingBox BoundingBox { get; }
+
+        /// <summary>
+        /// Emits a new particle.
+        /// </summary>
+        public abstract void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity);
     }
 }

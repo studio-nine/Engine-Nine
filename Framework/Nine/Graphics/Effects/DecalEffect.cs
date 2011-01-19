@@ -17,7 +17,10 @@ using Microsoft.Xna.Framework.Content;
 namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
-    
+
+    /// <summary>
+    /// Represents an effect for drawing decals.
+    /// </summary>
     public partial class DecalEffect : IEffectMatrices
     {
         public Vector3 Position { get; set; }

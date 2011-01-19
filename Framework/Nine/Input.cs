@@ -36,6 +36,7 @@ namespace Nine
     /// <summary>
     /// Event args use for keyboard events.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class KeyboardEventArgs : EventArgs 
     {
         /// <summary>
@@ -104,6 +105,7 @@ namespace Nine
     /// <summary>
     /// EventArgs use for mouse events.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class MouseEventArgs : EventArgs
     {
         /// <summary>

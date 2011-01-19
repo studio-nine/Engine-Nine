@@ -69,62 +69,67 @@ namespace Nine.Graphics
     public static class TextureNames
     {
         /// <summary>
-        /// The texture type name used for Diffuse texture.
+        /// The texture type name used for diffuse texture.
         /// </summary>
         public static readonly string Diffuse = "Diffuse";
 
         /// <summary>
-        /// The texture type name used for Ambient texture.
+        /// The texture type name used for ambient texture.
         /// </summary>
         public static readonly string Ambient = "Ambient";
 
         /// <summary>
-        /// The texture type name used for Emissive texture.
+        /// The texture type name used for emissive texture.
         /// </summary>
         public static readonly string Emissive = "Emissive";
 
         /// <summary>
-        /// The texture type name used for Specular texture.
+        /// The texture type name used for specular texture.
         /// </summary>
         public static readonly string Specular = "Specular";
 
         /// <summary>
-        /// The texture type name used for Detail texture.
+        /// The texture type name used for detail texture.
         /// </summary>
         public static readonly string Detail = "Refraction";
 
         /// <summary>
-        /// The texture type name used for Overlay texture.
+        /// The texture type name used for overlay texture.
         /// </summary>
         public static readonly string Overlay = "Overlay";
 
         /// <summary>
-        /// The texture type name used for Reflection texture.
+        /// The texture type name used for dual texture.
+        /// </summary>
+        public static readonly string Dual = "Dual";
+
+        /// <summary>
+        /// The texture type name used for reflection texture.
         /// </summary>
         public static readonly string Reflection = "Reflection";
 
         /// <summary>
-        /// The texture type name used for Refraction texture.
+        /// The texture type name used for refraction texture.
         /// </summary>
         public static readonly string Refraction = "Refraction";
 
         /// <summary>
-        /// The texture type name used for Lightmap texture.
+        /// The texture type name used for lightmap texture.
         /// </summary>
         public static readonly string Lightmap = "Lightmap";
 
         /// <summary>
-        /// The texture type name used for ShadowMap texture.
+        /// The texture type name used for shadowmap texture.
         /// </summary>
         public static readonly string ShadowMap = "ShadowMap";
 
         /// <summary>
-        /// The texture type name used for NormalMap texture.
+        /// The texture type name used for normalmap texture.
         /// </summary>
         public static readonly string NormalMap = "NormalMap";
 
         /// <summary>
-        /// The texture type name used for Bump texture.
+        /// The texture type name used for bump texture.
         /// </summary>
         public static readonly string BumpMap = "BumpMap";
 
@@ -134,7 +139,7 @@ namespace Nine.Graphics
         public static readonly string DepthMap = "DepthMap";
 
         /// <summary>
-        /// The texture type name used for Environment texture.
+        /// The texture type name used for environment texture.
         /// </summary>
         public static readonly string EnvironmentMap = "EnvironmentMap";
     }

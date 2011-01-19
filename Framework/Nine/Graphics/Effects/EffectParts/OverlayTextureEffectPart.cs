@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class OverlayTextureEffectPart : LinkedEffectPart, IEffectTexture
+    internal class OverlayTextureEffectPart : LinkedEffectPart, IEffectTexture
     {
         private uint dirtyMask = 0;
         private Texture2D texture;
@@ -51,15 +51,11 @@ namespace Nine.Graphics.Effects.EffectParts
             };
         }
 
-        Texture2D IEffectTexture.Texture
-        {
-            get { return null; }
-            set { }
-        }
+        Texture2D IEffectTexture.Texture { get { return null; } set { } }
 
         void IEffectTexture.SetTexture(string name, Texture texture)
         {
-            if (name == TextureNames.Overlay && texture is Texture2D)
+            if (name == TextureNames.Overlay)
                 Texture = texture as Texture2D;
         }
     }

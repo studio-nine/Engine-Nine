@@ -18,6 +18,9 @@ namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
+    /// <summary>
+    /// Represents an effect for drawing skyboxes.
+    /// </summary>
     public partial class SkyBoxEffect : IEffectMatrices
     {
         private Matrix world;

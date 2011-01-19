@@ -22,12 +22,11 @@ using Nine.Graphics.Effects;
 namespace MaterialsSample
 {
     /// <summary>
-    /// Demonstrates how to create a terrain based on a heightmap.
+    /// Demonstrates how to use LinkedEffect to create various materials.
     /// </summary>
     public class MaterialsGame : Microsoft.Xna.Framework.Game
     {
         ModelViewerCamera camera;
-
         DrawableSurface surface;
         BasicEffect basicEffect;
         LinkedEffect normalMappingEffect;
@@ -61,7 +60,7 @@ namespace MaterialsSample
             // Create a terrain based on the terrain geometry loaded from file
             surface = new DrawableSurface(GraphicsDevice, 1, 32, 32, 8);
             surface.ConvertVertexType<VertexPositionNormalTangentBinormalTexture>(InitializeSurfaceVertices);
-            surface.Freeze();
+            surface.Position = -surface.BoundingBox.GetCenter();
 
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Texture = Content.Load<Texture2D>("box");

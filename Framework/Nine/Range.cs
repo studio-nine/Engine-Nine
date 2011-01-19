@@ -48,12 +48,36 @@ namespace Nine
             return new Range<T> { Min = value, Max = value };
         }
 
-        /// <summary>
-        /// Determines if a Range object equals to another Range object
-        /// </summary>
         public bool Equals(Range<T> other)
         {
             return Min.Equals(other.Min) && Max.Equals(other.Max);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Range<T>)
+                return Equals((Range<T>)obj);
+
+            return false;
+        }
+
+        public static bool operator ==(Range<T> value1, Range<T> value2)
+        {
+            return (value1.Equals(value2.Min) && value1.Max.Equals(value2.Max));
+        }
+
+        public static bool operator !=(Range<T> value1, Range<T> value2)
+        {
+            if (value1.Min.Equals(value2.Min))
+            {
+                return !(value1.Max.Equals(value2.Max));
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return Min.GetHashCode() + Max.GetHashCode();
         }
 
         public override string ToString()

@@ -63,6 +63,6 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets or sets any user data.
         /// </summary>
-        public object Tag;
+        public object Tag { get; set; }
     }
 }

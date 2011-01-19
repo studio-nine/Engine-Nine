@@ -120,8 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MaterialsContent\MaterialsContent.contentproj">
-      <Name>MaterialsContent</Name>
+      <Name>MaterialsContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{94C85F35-F0D6-4734-B41F-A2392ACDB34C}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

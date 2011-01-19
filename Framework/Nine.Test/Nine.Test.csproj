@@ -51,10 +51,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Navigation\Steering\WallAvoidanceTest.cs" />
     <Compile Include="UniformGridTest.cs" />
     <Compile Include="GridObjectManagerTest.cs" />
-    <Compile Include="Navigation\Steering\SteererTest.cs" />
     <Compile Include="QuadTreeTest.cs" />
     <Compile Include="Graphics\BoneAnimationTest.cs" />
     <Compile Include="Graphics\TestGame.cs" />

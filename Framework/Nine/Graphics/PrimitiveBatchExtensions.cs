@@ -18,6 +18,9 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Graphics
 {
+    /// <summary>
+    /// Contains extension method for <c>PrimitiveBatch</c>.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PrimitiveBatchExtensions
     {
@@ -615,6 +618,11 @@ namespace Nine.Graphics
                 transform *= world.Value;
 
             DrawGrid(primitiveBatch, 0, 0, 0, size, size, tessellation, tessellation, transform, color);
+        }
+
+        public static void DrawGrid(this PrimitiveBatch primitiveBatch, float step, int countX, int countY, Matrix? world, Color color)
+        {
+            DrawGrid(primitiveBatch, -step * countX * 0.5f, -step * countY * 0.5f, 0, step * countX, step * countY, countX, countY, world, color);
         }
 
         public static void DrawGrid(this PrimitiveBatch primitiveBatch, float x, float y, float z, float step, int countX, int countY, Matrix? world, Color color)

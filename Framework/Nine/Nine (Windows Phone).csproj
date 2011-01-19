@@ -49,7 +49,9 @@
     <XnaCompressContent>false</XnaCompressContent>
     <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Graphics\Effects\EffectParts\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
@@ -80,32 +82,23 @@
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\EffectExtensions.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\BasicTextureEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\DirectionalLightEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\DualTextureEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\FogEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\LightEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\NormalMapEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\OverlayTextureEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\PointLightEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\ShadowMapEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\SkinTransformEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\SplatterTextureEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\SpotLightEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\TextureTransformEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\VertexTransformEffectPart.cs" />
-    <Compile Include="Graphics\Effects\LinkedEffect.cs" />
+    <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
-    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs" />
-    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
-      <DependentUpon>LineSpriteEffect.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\Particle.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleController.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleControllers.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
     <Compile Include="Graphics\ScreenCamera.cs" />
+    <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
@@ -114,23 +107,11 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="Math2D.cs" />
-    <Compile Include="Navigation\Navigator.cs" />
-    <Compile Include="Navigation\Steering\BasicSteeringBehaviors.cs" />
-    <Compile Include="Navigation\Steering\BoundAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\FlockingBehaviors.cs" />
-    <Compile Include="Navigation\Steering\Steerable.cs" />
-    <Compile Include="Navigation\Steering\SteerableAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\SteeringBehavior.cs" />
-    <Compile Include="Navigation\Steering\SteeringBehaviorCollection.cs" />
-    <Compile Include="Navigation\Steering\SteeringHelper.cs" />
-    <Compile Include="Navigation\Steering\StuckAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\WallAvoidanceBehavior.cs" />
     <Compile Include="OcTree.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
     <Compile Include="Graphics\Batch.cs" />
-    <Compile Include="Graphics\ImageList.cs" />
     <Compile Include="Input.cs">
     </Compile>
     <Compile Include="Graphics\FreeCamera.cs" />
@@ -152,9 +133,6 @@
   <ItemGroup>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
-    <Compile Include="Navigation\PathGrid.cs" />
-    <Compile Include="Navigation\PriorityQueue.cs" />
-    <Compile Include="Navigation\GraphSearch.cs" />
     <None Include="Background.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
@@ -165,7 +143,7 @@
     <None Include="Diagrams\GameComponents.cd" />
     <None Include="Diagrams\Input.cd" />
     <None Include="Diagrams\Misc.cd" />
-    <None Include="Diagrams\ScreenEffects.cd" />
+    <None Include="Diagrams\Navigation.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
     <None Include="Properties\AppManifest.xml">

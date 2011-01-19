@@ -30,8 +30,7 @@ namespace SpriteAnimationGame
         SpriteBatch spriteBatch;
         SpriteAnimation run;
         SpriteAnimation fireball;
-
-
+        
         ColorMatrixEffect gray;
         ColorMatrixEffect highlight;
         BlurEffect blur;
@@ -66,15 +65,15 @@ namespace SpriteAnimationGame
             // Load animations
             //
             // We support 2 sprite animation types,
-            // This run animation is processed using ImageListProcessor.
-            run = new SpriteAnimation(Content.Load<ImageList>("Run"));
+            // This run animation is processed using TextureListProcessor.
+            run = new SpriteAnimation(Content.Load<TextureList>("Run"));
             run.FramesPerSecond = 10;
             run.Play();
 
             // This animation is a sequense of image files.
-            // It's been imported by SequentialmageListImporter and processed by SequentialImageListProcessor.
+            // It's been imported by SequentiaTextureListImporter and processed by SequentialTextureListProcessor.
             // You can choose if the images will be packed into a single large texture.
-            fireball = new SpriteAnimation(Content.Load<ImageList>("fireball"));
+            fireball = new SpriteAnimation(Content.Load<TextureList>("fireball"));
             fireball.Play();
 
             // Create effects

@@ -18,11 +18,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
+    /// <summary>
+    /// Represents a 2d curve.
+    /// </summary>
     public interface ICurve
     {
         float Evaluate(float position);
     }
 
+    /// <summary>
+    /// Contains commonly used curves.
+    /// </summary>
     public static class Curves
     {
         public static ICurve Linear { get; private set; }

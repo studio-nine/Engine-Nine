@@ -97,14 +97,13 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Represents a Effect that is linked from LinkedEffectParts.
     /// </summary>
-    public class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial
+    public sealed class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial
     {
         internal static LinkedEffect CurrentEffect;
         internal static string CurrentUniqueName;
 
         internal LinkedEffect(GraphicsDevice graphics, byte[] code) : base(graphics, code) { }
-
-        protected LinkedEffect(Effect cloneSource) : base(cloneSource) { }
+        internal LinkedEffect(Effect cloneSource) : base(cloneSource) { }
 
         /// <summary>
         /// Gets all the LinkedEffectPart that makes up this LinkedEffect.

@@ -113,9 +113,9 @@
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <KeepLogFile>True</KeepLogFile>
     <CopyrightHref>http://nine.codeplex.com</CopyrightHref>
-    <CopyrightText>Copyright %28c%29 2009 - 2010 Engine Nine. All Rights Reserved.</CopyrightText>
-    <FeedbackEMailAddress>yufeih%40live.com</FeedbackEMailAddress>
-    <FeedbackEMailLinkText>yufeih%40live.com</FeedbackEMailLinkText>
+    <CopyrightText>Copyright %28c%29 2009 - 2011 Engine Nine. All Rights Reserved.</CopyrightText>
+    <FeedbackEMailAddress>nine%40discussions.codeplex.com</FeedbackEMailAddress>
+    <FeedbackEMailLinkText>Engine Nine Discussions</FeedbackEMailLinkText>
     <HeaderText>
     </HeaderText>
     <HelpTitle>Engine Nine 1.0</HelpTitle>
@@ -132,13 +132,20 @@
     </RootNamespaceTitle>
     <ProjectSummary>Engine Nine is a framework for creating immersive full 3D game.</ProjectSummary>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Nine" isDocumented="True" xmlns="">Provides commonly needed game classes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Nine.Components" isDocumented="True" xmlns="">Provides commonly needed game components such as frame rate profiler.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Nine.Graphics" isDocumented="True" xmlns="">Contains classes and methods that take advantage of hardware acceleration capabilities to render 3D graphics.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Nine.Graphics.Effects" isDocumented="True" xmlns="">Provides commonly needed ahader effects for drawing triangle meshes.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Nine.Graphics.ScreenEffects" isDocumented="True" xmlns="">Contains classes to display post processing screen effects.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Nine.Navigation" isDocumented="True" xmlns="">Contains classes to move an entity around the environment.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="Nine.Navigation.SteeringBehaviors" isDocumented="True" xmlns="">Provides commonly needed steering behaviors used for navigation.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine" isDocumented="True">Provides commonly needed game classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Graphics" isDocumented="True">Contains classes and methods that take advantage of hardware acceleration capabilities to render 3D graphics.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Graphics.Effects" isDocumented="True">Provides commonly needed ahader effects for drawing triangle meshes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Navigation" isDocumented="True">Contains classes to move an entity around the environment.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Navigation.SteeringBehaviors" isDocumented="True">Provides commonly needed steering behaviors used for navigation.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Animations" isDocumented="True">Provides commonly needed classes used for animation.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Content.Pipeline" isDocumented="True">Provides commonly needed classes used for content pipeline.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Content.Pipeline.Graphics" isDocumented="True">Provides commonly needed classes used for content pipeline graphics.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Content.Pipeline.Graphics.Effects" isDocumented="True">Provides commonly needed classes used for content pipeline effects.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Content.Pipeline.Graphics.Effects.EffectParts" isDocumented="True">Provides commonly needed effect parts.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Content.Pipeline.Importers" isDocumented="True">Provides commonly needed importers.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Content.Pipeline.Processors" isDocumented="True">Provides commonly needed processors.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Graphics.Effects.EffectParts" isDocumented="True">Provides commonly needed effect parts.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Nine.Graphics.ParticleEffects" isDocumented="True">Provides commonly needed classes used for particle system.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <PlugInConfigurations>

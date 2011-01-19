@@ -47,6 +47,9 @@
     <DocumentationFile>..\..\References\x86\Nine.XML</DocumentationFile>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
@@ -87,6 +90,11 @@
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
+    <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
+    <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleControllers.cs" />
+    <Compile Include="Graphics\ParticleEffects\Particle.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleController.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="Graphics\Effects\EffectParts\SpotLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\PointLightEffectPart.cs" />
@@ -94,11 +102,6 @@
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="LineSegment.cs" />
-    <Compile Include="Navigation\Steering\BoundAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\WallAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\StuckAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\SteeringBehaviorCollection.cs" />
-    <Compile Include="Navigation\Steering\SteeringHelper.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\BasicTextureEffectPart.cs" />
@@ -123,25 +126,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\ShadowEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\SkyBoxEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\LinkedEffect.cs" />
-    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.cs">
-      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ParticleEffects\LineSpriteEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LineSpriteEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\BlurEffect.cs">
       <DependentUpon>BlurEffect.fx</DependentUpon>
     </Compile>
@@ -197,7 +187,6 @@
       <DependentUpon>ThresholdEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenCamera.cs" />
-    <Compile Include="Navigation\Steering\SteeringBehavior.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
     <Compile Include="Math2D.cs" />
@@ -221,38 +210,18 @@
     </Compile>
     <Compile Include="Range.cs" />
     <Compile Include="Graphics\Batch.cs" />
-    <Compile Include="Graphics\ImageList.cs" />
+    <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="Graphics\Effects\DecalEffect.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\ShadowEffect.cs">
-      <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\EffectExtensions.cs" />
     <Compile Include="Graphics\Effects\SkyBoxEffect.cs">
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ParticleEffects\LineSpriteBatch.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
-    <Compile Include="Graphics\ParticleEffects\ParticleEffectBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
-    <Compile Include="Graphics\ParticleEffects\PointSpriteBatch.cs" />
-    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.cs">
-      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\ParticleEffects\PointSpriteEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PointSpriteEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Input.cs">
     </Compile>
-    <Compile Include="Navigation\Steering\Steerable.cs" />
-    <Compile Include="Navigation\Steering\BasicSteeringBehaviors.cs" />
-    <Compile Include="Navigation\Steering\SteerableAvoidanceBehavior.cs" />
-    <Compile Include="Navigation\Steering\FlockingBehaviors.cs" />
     <Compile Include="GridObjectManager.cs" />
     <Compile Include="Graphics\FreeCamera.cs" />
     <Compile Include="Graphics\ModelViewerCamera.cs" />
@@ -264,7 +233,7 @@
     <Compile Include="Graphics\ModelBatch.cs" />
     <Compile Include="Graphics\ModelExtensions.cs" />
     <Compile Include="Graphics\ModelSkinning.cs" />
-    <Compile Include="Graphics\ParticleEffects\SpacialEmitters.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
@@ -294,18 +263,14 @@
     </Compile>
     <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
     <Compile Include="Graphics\DrawableSurfacePatch.cs" />
-    <Compile Include="Navigation\PathGrid.cs" />
-    <Compile Include="Navigation\PriorityQueue.cs" />
-    <Compile Include="Navigation\GraphSearch.cs" />
-    <Compile Include="Navigation\Navigator.cs" />
     <None Include="Diagrams\Animations.cd" />
     <None Include="Diagrams\Cameras.cd" />
+    <None Include="Diagrams\Navigation.cd" />
     <None Include="Diagrams\Effects.cd" />
     <None Include="Diagrams\GameComponents.cd" />
     <None Include="Diagrams\Input.cd" />
     <None Include="Diagrams\Curves.cd" />
     <None Include="Diagrams\Misc.cd" />
-    <None Include="Diagrams\ScreenEffects.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
     <None Include="Graphics\Effects\DepthEffect.fx">
@@ -316,25 +281,13 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\ShadowEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ShadowEffect.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\ParticleEffects\LineSpriteEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>LineSpriteEffect.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Graphics\ParticleEffects\ParticleSystemEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\ParticleEffects\PointSpriteEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>PointSpriteEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Effects\BlurEffect.fx">
       <Generator>EffectCustomTool</Generator>

@@ -60,12 +60,32 @@ namespace Nine
             End += normal * length;
         }
 
-        /// <summary>
-        /// Determines if a Range object equals to another Range object
-        /// </summary>
         public bool Equals(LineSegment other)
         {
-            return Start.Equals(other.Start) && End.Equals(other.End);
+            return Start == other.Start && End == other.End;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is LineSegment)
+                return Equals((LineSegment)obj);
+
+            return false;
+        }
+
+        public static bool operator ==(LineSegment value1, LineSegment value2)
+        {
+            return ((value1.Start == value2.Start) && (value1.End == value2.End));
+        }
+
+        public static bool operator !=(LineSegment value1, LineSegment value2)
+        {
+            return !(value1.Start == value2.Start && value1.End == value2.End);
+        }
+
+        public override int GetHashCode()
+        {
+            return Start.GetHashCode() + End.GetHashCode();
         }
 
         public override string ToString()

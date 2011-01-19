@@ -23,9 +23,9 @@ namespace Nine.Graphics
     public class DrawableSurfacePatch : IDisposable
     {
         /// <summary>
-        /// Gets the number of tessellation of this patch.
+        /// Gets the number of segments of this patch.
         /// </summary>
-        public int Tessellation { get; internal set; }
+        public int SegmentCount { get; internal set; }
 
         /// <summary>
         /// Gets the x index of the patch on the parent surface.
@@ -55,7 +55,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the number of vertices that made up the patch.
         /// </summary>
-        public int VertexCount { get { return (Tessellation + 1) * (Tessellation + 1); } }
+        public int VertexCount { get { return (SegmentCount + 1) * (SegmentCount + 1); } }
 
         /// <summary>
         /// Gets all the patch parts of this patch.
@@ -65,7 +65,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets all the effects used to draw the surface patch.
         /// </summary>
-        public Collection<Effect> Effects { get; internal set; }
+        public ICollection<Effect> Effects { get; internal set; }
 
         /// <summary>
         /// Gets the underlying GraphicsDevice.
@@ -129,20 +129,17 @@ namespace Nine.Graphics
             this.surface = surface;
             this.GraphicsDevice = graphics;
             this.heightmap = geometry;
-            this.Tessellation = tessellation;
+            this.SegmentCount = tessellation;
             this.X = xPatch;
             this.Y = yPatch;
-            this.Effects = new Collection<Effect>();
+            this.Effects = new List<Effect>();
 
             offset = new Vector3();
 
-            int xPatchCount = surface.GridCountX / Tessellation;
-            int yPatchCount = surface.GridCountY / Tessellation;
+            float step = surface.Size.X / surface.SegmentCountX;
 
-            float step = surface.Size.X / surface.GridCountX;
-
-            offset.X = (X + 0.5f - xPatchCount * 0.5f) * step * Tessellation;
-            offset.Y = (Y + 0.5f - yPatchCount * 0.5f) * step * Tessellation;
+            offset.X = (X + 0.5f) * step * SegmentCount;
+            offset.Y = (Y + 0.5f) * step * SegmentCount;
             offset.Z = 0;
             
             // Initialize patch parts
@@ -191,21 +188,21 @@ namespace Nine.Graphics
                     "Cannot perform this operation when DrawableSurface is freezed");
 
             return position + heightmap.GetPosition(
-                pt.X + part.X * 2 + X * Tessellation, 
-                pt.Y + part.Y * 2 + Y * Tessellation);
+                pt.X + part.X * 2 + X * SegmentCount, 
+                pt.Y + part.Y * 2 + Y * SegmentCount);
         }
 
         private IEnumerable<Vector3> EnumeratePositions()
         {
-            for (int x = X * Tessellation; x <= (X + 1) * Tessellation; x++)
-                for (int y = Y * Tessellation; y <= (Y + 1) * Tessellation; y++)
+            for (int x = X * SegmentCount; x <= (X + 1) * SegmentCount; x++)
+                for (int y = Y * SegmentCount; y <= (Y + 1) * SegmentCount; y++)
                     yield return heightmap.GetPosition(x, y);
         }
         
         private void UpdatePartPositions()
         {
             int i = 0;
-            int part = Tessellation / 2;
+            int part = SegmentCount / 2;
 
             for (int y = 0; y < part; y++)
             {
@@ -297,11 +294,16 @@ namespace Nine.Graphics
                     IndexBuffer.Dispose();
             }
         }
+
+        ~DrawableSurfacePatch()
+        {
+            Dispose(false);
+        }
     }
 
     internal class DrawableSurfacePatchImpl<T> : DrawableSurfacePatch where T: struct, IVertexType
     {
-        public DrawSurfaceConvertVertex<T> FillVertex;
+        public DrawSurfaceVertexConverter<T> FillVertex;
 
         internal DrawableSurfacePatchImpl(DrawableSurface surface, GraphicsDevice graphics, Heightmap geometry, int xPatch, int yPatch, int tessellation)
             : base(surface, graphics, geometry, xPatch, yPatch, tessellation)
@@ -312,7 +314,7 @@ namespace Nine.Graphics
                                             VertexCount, BufferUsage.WriteOnly);
 
             IndexBuffer = new IndexBuffer(GraphicsDevice,
-                                            typeof(ushort), 6 * Tessellation * Tessellation, BufferUsage.WriteOnly);
+                                            typeof(ushort), 6 * SegmentCount * SegmentCount, BufferUsage.WriteOnly);
         }
 
         private static T[] vertexPool;
@@ -323,7 +325,7 @@ namespace Nine.Graphics
             base.Invalidate();
 
             // Reuse the array to avoid creating large chunk of data.
-            int indexCount = 6 * Tessellation * Tessellation;
+            int indexCount = 6 * SegmentCount * SegmentCount;
 
             if (vertexPool == null || vertexPool.Length < VertexCount)
                 vertexPool = new T[VertexCount];
@@ -333,9 +335,9 @@ namespace Nine.Graphics
             // Fill vertices
             int i = 0;
 
-            for (int x = X * Tessellation; x <= (X + 1) * Tessellation; x++)
+            for (int x = X * SegmentCount; x <= (X + 1) * SegmentCount; x++)
             {
-                for (int y = Y * Tessellation; y <= (Y + 1) * Tessellation; y++)
+                for (int y = Y * SegmentCount; y <= (Y + 1) * SegmentCount; y++)
                 {
                     VertexPositionColorNormalTexture vertex = new VertexPositionColorNormalTexture();
                     surface.DefaultFillVertex(x, y, ref vertex, ref vertex);
@@ -350,7 +352,7 @@ namespace Nine.Graphics
             // Fill indices
             i = 0;
             PrimitiveCount = 0;
-            int part = Tessellation / 2;
+            int part = SegmentCount / 2;
 
             for (int y = 0; y < part; y++)
             {
@@ -358,7 +360,7 @@ namespace Nine.Graphics
                 {
                     foreach (Point pt in PatchParts[i++].GetIndices())
                     {
-                        indexPool[PrimitiveCount++] = (ushort)(pt.X + x * 2 + (pt.Y + y * 2) * (Tessellation + 1));
+                        indexPool[PrimitiveCount++] = (ushort)(pt.X + x * 2 + (pt.Y + y * 2) * (SegmentCount + 1));
                     }
                 }
             }

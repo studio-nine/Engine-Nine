@@ -26,13 +26,13 @@ void main(INPUT input, inout OUTPUT output)
 	import(Normal, normal = Normal);
 	import(PositionToEye, positionToEye = PositionToEye);
 
-    float3 L = -DirLightDirection;
-    float3 H = normalize(positionToEye + L);
-    float dt = max(0,dot(L, normal));
+	float3 L = -DirLightDirection;
+    float dotL = dot(L, normal);
+	float dotH = dot(normalize(positionToEye + L), normal);
+	float zeroL = step(0, dotL);
     
-	diffuse += DirLightDiffuseColor * dt;
-    if (dt != 0)
-        specular += DirLightSpecularColor * pow(dot(H, normal), specularPower);
+	diffuse += DirLightDiffuseColor * zeroL * dotL;
+    specular += DirLightSpecularColor * pow(max(dotH, 0.000001), specularPower);
 
 	export(float3, LightDiffuse, diffuse);
 	export(float3, LightSpecular, specular);

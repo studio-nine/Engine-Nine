@@ -351,15 +351,61 @@
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{85663E71-7622-427F-B316-829104E9FDB2}</td><td>V1.0</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{BB125010-AA09-4436-813A-1C7C2D1419EA}</td><td>REFERENCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{B446AB45-0B36-4570-B375-2E4C8858D1F0}</td><td>ENGINE_NINE_1.0</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT11</td><td>{90D3E9E8-5988-4BC0-8315-4F34AE845A4F}</td><td>CONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT12</td><td>{9142124A-C5AE-4457-ABBB-82AD4BBE02DE}</td><td>EFFECTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT13</td><td>{29D863BA-1552-446D-8AF5-440806877ACE}</td><td>FONTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT14</td><td>{9352A8AF-FC0E-448C-AEB3-2EA350F6BCD7}</td><td>MODELS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT15</td><td>{EDC19C00-09F5-4E36-AFB7-9851236703C8}</td><td>DUDE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT16</td><td>{5E9D522A-D8AF-4AAD-AAFA-40C236099951}</td><td>PEON</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT17</td><td>{FFB9F81B-EDE1-4CDF-8EC6-007B667634C0}</td><td>TERRAIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT18</td><td>{C88BEA98-EEB5-4DCC-983D-87708241B3D2}</td><td>TERRAIN1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT19</td><td>{D3163E13-B1B0-4209-B25A-B8D1673BB919}</td><td>TEXTURES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{302C7E8C-B38C-43E8-8C48-935255A1D8B3}</td><td>WINDOWS_PHONE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT20</td><td>{747958E4-B754-4218-A042-8159A634BF48}</td><td>FIREBALL</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT21</td><td>{974840CB-A069-44E8-ACD8-99C1F06AD04D}</td><td>DEBUGGERPRIMITIVES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT22</td><td>{22484D3A-2425-4B06-92F2-D3462F9D0E1E}</td><td>DEBUGGERPRIMITIVES1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT23</td><td>{8818DF38-0B51-4746-80E6-40883058CF5D}</td><td>PROPERTIES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT24</td><td>{07B16994-E390-49FA-BCCD-B1FC37EA6ACB}</td><td>DEBUGGERPRIMITIVESCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT29</td><td>{55549801-EE1D-48FD-A50F-803B08357B3A}</td><td>MATERIALS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{EFA286F0-1117-4BDC-875F-780FA02EB976}</td><td>X86</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT30</td><td>{8E0B9314-7DFD-4EA5-9A0C-0BF727A7EFE1}</td><td>MATERIALS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT31</td><td>{1A0B52B6-FB54-4382-B2F6-0AF199B998E9}</td><td>PROPERTIES2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT32</td><td>{2091EE17-A0E3-428C-9301-79CF45F8A4D7}</td><td>MATERIALSCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT33</td><td>{FD09CA38-5CA1-494F-96D7-C3B8C38466F0}</td><td>PARTICLESYSTEM</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT34</td><td>{FD4CA390-1AB0-47D0-B8E6-0FA47A799F93}</td><td>PARTICLESYSTEM1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT35</td><td>{8B88B039-B3E9-4946-B164-85E516E4DCB4}</td><td>PROPERTIES3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT36</td><td>{D3B21576-6A8C-473E-806F-89B9B5BA488E}</td><td>PARTICLESYSTEMCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{3282705C-7B36-46BF-86F8-1EA97A1ABDF4}</td><td>XBOX_360</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT41</td><td>{84C84E17-EC19-4FE3-ABA0-9008EBACA2DB}</td><td>SCREENEFFECTS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT42</td><td>{6EEE801A-F3B2-476B-AE88-A14F55594B77}</td><td>SCREENEFFECTS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT424</td><td>{7573D3CC-61E7-4C36-85E8-8320427BC320}</td><td>DOCUMENTATION</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT425</td><td>{AEE43CFA-0AB5-4B81-B56F-2505DDE19569}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT43</td><td>{2A7E0977-3716-4E9C-8252-463E33DA6F68}</td><td>PROPERTIES5</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT44</td><td>{DA37940B-A1F3-48FD-8A53-CEC49475712E}</td><td>SCREENEFFECTSCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT45</td><td>{34FA6B40-044D-4921-8721-562133714652}</td><td>SHADOWMAPPING</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT46</td><td>{CD11DF80-DB74-4F05-ABA3-82E2D42328C2}</td><td>SHADOWMAPPING1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT47</td><td>{0B180BF7-6202-437B-BA33-D1814CF6BF67}</td><td>PROPERTIES6</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT48</td><td>{31172BA4-46F6-4436-AEB1-2A96C8DB5081}</td><td>SHADOWMAPPINGCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT49</td><td>{69815299-840D-408B-B1F3-30EF20926DEF}</td><td>SKINNEDMODEL</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{4CEB0C74-752F-463F-B598-2B50D54AC7C8}</td><td>IMAGES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT50</td><td>{EE842B4C-BC32-4EDB-B398-AD278057519E}</td><td>SKINNEDMODEL1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT51</td><td>{A3AAC87C-7C03-4F83-9E23-4E6BBE303C71}</td><td>PROPERTIES7</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT52</td><td>{5264001B-B01C-443B-999C-EAA4DAA284DA}</td><td>SKINNEDMODELCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT53</td><td>{61B4BDC3-4623-4B70-B16C-7B54FAD2CC34}</td><td>SPRITEANIMATION</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT54</td><td>{A7EDB26D-40DF-440A-B148-5F4F4B629520}</td><td>SPRITEANIMATION1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT55</td><td>{9960011B-C8D2-4B50-BBF4-14ABFA274D7C}</td><td>PROPERTIES8</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT56</td><td>{49F22515-436C-4CEF-8FC4-B949BE1380C0}</td><td>SPRITEANIMATIONCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT57</td><td>{1218A874-0E50-46FC-A459-1A68C92090DA}</td><td>TERRAIN2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT58</td><td>{E086CA47-127C-4CA2-9569-29612B5FD0B8}</td><td>TERRAIN3</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT59</td><td>{39C76147-B720-4421-B93C-140FFC360580}</td><td>PROPERTIES9</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{36402639-303A-4731-BD59-637DD53B7554}</td><td>_033</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT60</td><td>{B8A57E69-A807-4193-8DB6-F53BC70E13CE}</td><td>TERRAINCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT61</td><td>{944105D2-9DF1-4799-B858-AADAD55E34EB}</td><td>TRANSITIONS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT62</td><td>{16DF7B80-12CF-467E-AB44-2E934ABB52C7}</td><td>TRANSITIONS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT63</td><td>{D76FEFF4-8E5B-493F-802F-89A5210595BF}</td><td>PROPERTIES10</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT64</td><td>{F43F8E56-7F4B-4623-B3C1-C0D9E201D8EF}</td><td>TRANSITIONSCONTENT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{00BCC22B-869D-4B24-8830-91BA09CFAA5F}</td><td>BIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{CB6C60DC-BC27-4241-ADF0-E49339FD6373}</td><td>SAMPLES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{6E8AB5D6-01BB-4CA7-AF2D-84DC17FB66FA}</td><td>SAMPLES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{B15A023B-05ED-4FBF-9EB9-BF5D0DDE9A0F}</td><td>ProgramMenuFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td>{0CEA02AB-4DBD-4E5C-81DB-18CC0DEA35A7}</td><td>BIN</td><td>2</td><td/><td>microsoft.visualstudio.shell</td><td>33</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Nine.Content.Pipeline.dll</td><td>{58B6EF53-1076-47C3-86FA-6302B7A5CEC3}</td><td>X86</td><td>2</td><td/><td>nine.content.pipeline.dll</td><td>1</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1076,11 +1122,21 @@
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>BIN</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>CONTENT</td><td>ISX_DEFAULTCOMPONENT11</td></row>
+		<row><td>DEBUGGERPRIMITIVES</td><td>ISX_DEFAULTCOMPONENT21</td></row>
 		<row><td>DOCUMENTATION</td><td>ISX_DEFAULTCOMPONENT424</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT425</td></row>
+		<row><td>MATERIALS</td><td>ISX_DEFAULTCOMPONENT29</td></row>
+		<row><td>MODELS</td><td>ISX_DEFAULTCOMPONENT14</td></row>
+		<row><td>PARTICLESYSTEM</td><td>ISX_DEFAULTCOMPONENT33</td></row>
 		<row><td>ProgramMenuFolder</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>REFERENCES</td><td>ISX_DEFAULTCOMPONENT1</td></row>
-		<row><td>SAMPLES</td><td>ISX_DEFAULTCOMPONENT8</td></row>
+		<row><td>SCREENEFFECTS</td><td>ISX_DEFAULTCOMPONENT41</td></row>
+		<row><td>SHADOWMAPPING</td><td>ISX_DEFAULTCOMPONENT45</td></row>
+		<row><td>SKINNEDMODEL</td><td>ISX_DEFAULTCOMPONENT49</td></row>
+		<row><td>SPRITEANIMATION</td><td>ISX_DEFAULTCOMPONENT53</td></row>
+		<row><td>TERRAIN2</td><td>ISX_DEFAULTCOMPONENT57</td></row>
+		<row><td>TRANSITIONS</td><td>ISX_DEFAULTCOMPONENT61</td></row>
 		<row><td>_033</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 	</table>
 
@@ -1164,13 +1220,21 @@
 		<row><td>AdminToolsFolder</td><td>TARGETDIR</td><td>.:Admint~1|AdminTools</td><td/><td>0</td><td/></row>
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
 		<row><td>BIN</td><td>V1.0</td><td>Bin</td><td/><td>0</td><td/></row>
+		<row><td>CONTENT</td><td>SAMPLES</td><td>Content</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DEBUGGERPRIMITIVES</td><td>SAMPLES</td><td>DEBUGG~1|DebuggerPrimitives</td><td/><td>0</td><td/></row>
+		<row><td>DEBUGGERPRIMITIVES1</td><td>DEBUGGERPRIMITIVES</td><td>DEBUGG~1|DebuggerPrimitives</td><td/><td>0</td><td/></row>
+		<row><td>DEBUGGERPRIMITIVESCONTENT</td><td>DEBUGGERPRIMITIVES</td><td>DEBUGG~1|DebuggerPrimitivesContent</td><td/><td>0</td><td/></row>
 		<row><td>DOCUMENTATION</td><td>V1.0</td><td>DOCUME~1|Documentation</td><td/><td>0</td><td/></row>
+		<row><td>DUDE</td><td>MODELS</td><td>Dude</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
+		<row><td>EFFECTS</td><td>CONTENT</td><td>Effects</td><td/><td>0</td><td/></row>
 		<row><td>ENGINE_NINE</td><td>ProgramFilesFolder</td><td>ENGINE~1|Engine Nine</td><td/><td>0</td><td/></row>
 		<row><td>ENGINE_NINE_1.0</td><td>ProgramMenuFolder</td><td>ENGINE~1|Engine Nine 1.0</td><td/><td>0</td><td/></row>
+		<row><td>FIREBALL</td><td>TEXTURES</td><td>fireball</td><td/><td>0</td><td/></row>
+		<row><td>FONTS</td><td>CONTENT</td><td>Fonts</td><td/><td>0</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
@@ -1181,9 +1245,26 @@
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>ISYourDataBaseDir</td><td>INSTALLDIR</td><td>Database</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
+		<row><td>MATERIALS</td><td>SAMPLES</td><td>MATERI~1|Materials</td><td/><td>0</td><td/></row>
+		<row><td>MATERIALS1</td><td>MATERIALS</td><td>MATERI~1|Materials</td><td/><td>0</td><td/></row>
+		<row><td>MATERIALSCONTENT</td><td>MATERIALS</td><td>MATERI~1|MaterialsContent</td><td/><td>0</td><td/></row>
+		<row><td>MODELS</td><td>CONTENT</td><td>Models</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>ProgramFilesFolder</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
+		<row><td>PARTICLESYSTEM</td><td>SAMPLES</td><td>PARTIC~1|ParticleSystem</td><td/><td>0</td><td/></row>
+		<row><td>PARTICLESYSTEM1</td><td>PARTICLESYSTEM</td><td>PARTIC~1|ParticleSystem</td><td/><td>0</td><td/></row>
+		<row><td>PARTICLESYSTEMCONTENT</td><td>PARTICLESYSTEM</td><td>PARTIC~1|ParticleSystemContent</td><td/><td>0</td><td/></row>
+		<row><td>PEON</td><td>MODELS</td><td>Peon</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES</td><td>DEBUGGERPRIMITIVES1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES10</td><td>TRANSITIONS1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES2</td><td>MATERIALS1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES3</td><td>PARTICLESYSTEM1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES5</td><td>SCREENEFFECTS1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES6</td><td>SHADOWMAPPING1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES7</td><td>SKINNEDMODEL1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES8</td><td>SPRITEANIMATION1</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
+		<row><td>PROPERTIES9</td><td>TERRAIN3</td><td>PROPER~1|Properties</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
 		<row><td>PrintHoodFolder</td><td>TARGETDIR</td><td>.:PRINTH~1|PrintHood</td><td/><td>0</td><td/></row>
@@ -1192,12 +1273,33 @@
 		<row><td>REFERENCES</td><td>V1.0</td><td>REFERE~1|References</td><td/><td>0</td><td/></row>
 		<row><td>RecentFolder</td><td>TARGETDIR</td><td>.:Recent</td><td/><td>0</td><td/></row>
 		<row><td>SAMPLES</td><td>V1.0</td><td>Samples</td><td/><td>0</td><td/></row>
+		<row><td>SCREENEFFECTS</td><td>SAMPLES</td><td>SCREEN~1|ScreenEffects</td><td/><td>0</td><td/></row>
+		<row><td>SCREENEFFECTS1</td><td>SCREENEFFECTS</td><td>SCREEN~1|ScreenEffects</td><td/><td>0</td><td/></row>
+		<row><td>SCREENEFFECTSCONTENT</td><td>SCREENEFFECTS</td><td>SCREEN~1|ScreenEffectsContent</td><td/><td>0</td><td/></row>
+		<row><td>SHADOWMAPPING</td><td>SAMPLES</td><td>SHADOW~1|ShadowMapping</td><td/><td>0</td><td/></row>
+		<row><td>SHADOWMAPPING1</td><td>SHADOWMAPPING</td><td>SHADOW~1|ShadowMapping</td><td/><td>0</td><td/></row>
+		<row><td>SHADOWMAPPINGCONTENT</td><td>SHADOWMAPPING</td><td>SHADOW~1|ShadowMappingContent</td><td/><td>0</td><td/></row>
+		<row><td>SKINNEDMODEL</td><td>SAMPLES</td><td>SKINNE~1|SkinnedModel</td><td/><td>0</td><td/></row>
+		<row><td>SKINNEDMODEL1</td><td>SKINNEDMODEL</td><td>SKINNE~1|SkinnedModel</td><td/><td>0</td><td/></row>
+		<row><td>SKINNEDMODELCONTENT</td><td>SKINNEDMODEL</td><td>SKINNE~1|SkinnedModelContent</td><td/><td>0</td><td/></row>
+		<row><td>SPRITEANIMATION</td><td>SAMPLES</td><td>SPRITE~1|SpriteAnimation</td><td/><td>0</td><td/></row>
+		<row><td>SPRITEANIMATION1</td><td>SPRITEANIMATION</td><td>SPRITE~1|SpriteAnimation</td><td/><td>0</td><td/></row>
+		<row><td>SPRITEANIMATIONCONTENT</td><td>SPRITEANIMATION</td><td>SPRITE~1|SpriteAnimationContent</td><td/><td>0</td><td/></row>
 		<row><td>SendToFolder</td><td>TARGETDIR</td><td>.:SendTo</td><td/><td>3</td><td/></row>
 		<row><td>StartMenuFolder</td><td>TARGETDIR</td><td>.:STARTM~1|Start Menu</td><td/><td>3</td><td/></row>
 		<row><td>StartupFolder</td><td>TARGETDIR</td><td>.:StartUp</td><td/><td>3</td><td/></row>
 		<row><td>System16Folder</td><td>TARGETDIR</td><td>.:System</td><td/><td>0</td><td/></row>
 		<row><td>SystemFolder</td><td>TARGETDIR</td><td>.:System32</td><td/><td>0</td><td/></row>
 		<row><td>TARGETDIR</td><td/><td>SourceDir</td><td/><td>0</td><td/></row>
+		<row><td>TERRAIN</td><td>MODELS</td><td>Terrain</td><td/><td>0</td><td/></row>
+		<row><td>TERRAIN1</td><td>CONTENT</td><td>Terrain</td><td/><td>0</td><td/></row>
+		<row><td>TERRAIN2</td><td>SAMPLES</td><td>Terrain</td><td/><td>0</td><td/></row>
+		<row><td>TERRAIN3</td><td>TERRAIN2</td><td>Terrain</td><td/><td>0</td><td/></row>
+		<row><td>TERRAINCONTENT</td><td>TERRAIN2</td><td>TERRAI~1|TerrainContent</td><td/><td>0</td><td/></row>
+		<row><td>TEXTURES</td><td>CONTENT</td><td>Textures</td><td/><td>0</td><td/></row>
+		<row><td>TRANSITIONS</td><td>SAMPLES</td><td>TRANSI~1|Transitions</td><td/><td>0</td><td/></row>
+		<row><td>TRANSITIONS1</td><td>TRANSITIONS</td><td>TRANSI~1|Transitions</td><td/><td>0</td><td/></row>
+		<row><td>TRANSITIONSCONTENT</td><td>TRANSITIONS</td><td>TRANSI~1|TransitionsContent</td><td/><td>0</td><td/></row>
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
@@ -1231,6 +1333,7 @@
 		<col def="l255">Name</col>
 		<col def="L255">Value</col>
 		<col def="s72">Component_</col>
+		<row><td>NewEnvironment1</td><td>##ID_STRING13##</td><td>##ID_STRING14##</td><td>ISX_DEFAULTCOMPONENT425</td></row>
 	</table>
 
 	<table name="Error">
@@ -1904,13 +2007,59 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT10</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT11</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT12</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT13</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT14</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT15</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT16</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT17</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT18</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT19</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT20</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT21</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT22</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT23</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT24</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT29</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT30</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT31</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT32</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT33</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT34</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT35</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT36</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT41</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT42</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT424</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT425</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT43</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT44</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT45</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT46</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT47</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT48</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT49</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT50</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT51</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT52</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT53</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT54</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT55</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT56</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT57</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT58</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT59</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT60</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT61</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT62</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT63</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT64</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT9</td></row>
@@ -1933,7 +2082,52 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>_.bmp</td><td>ISX_DEFAULTCOMPONENT18</td><td>2.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\2.bmp</td><td>1</td><td/></row>
+		<row><td>_.bmp1</td><td>ISX_DEFAULTCOMPONENT18</td><td>3.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\3.bmp</td><td>1</td><td/></row>
+		<row><td>app.config</td><td>ISX_DEFAULTCOMPONENT22</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\App.config</td><td>1</td><td/></row>
+		<row><td>app.config2</td><td>ISX_DEFAULTCOMPONENT34</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\App.config</td><td>1</td><td/></row>
+		<row><td>app.config4</td><td>ISX_DEFAULTCOMPONENT42</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\App.config</td><td>1</td><td/></row>
+		<row><td>app.config5</td><td>ISX_DEFAULTCOMPONENT46</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\App.config</td><td>1</td><td/></row>
+		<row><td>app.config6</td><td>ISX_DEFAULTCOMPONENT50</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\App.config</td><td>1</td><td/></row>
+		<row><td>app.config7</td><td>ISX_DEFAULTCOMPONENT54</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\App.config</td><td>1</td><td/></row>
+		<row><td>app.config8</td><td>ISX_DEFAULTCOMPONENT58</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\App.config</td><td>1</td><td/></row>
+		<row><td>app.config9</td><td>ISX_DEFAULTCOMPONENT62</td><td>APP~1.CON|App.config</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\App.config</td><td>1</td><td/></row>
+		<row><td>appmanifest.xml</td><td>ISX_DEFAULTCOMPONENT23</td><td>APPMAN~1.XML|AppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\Properties\AppManifest.xml</td><td>1</td><td/></row>
+		<row><td>appmanifest.xml3</td><td>ISX_DEFAULTCOMPONENT51</td><td>APPMAN~1.XML|AppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\Properties\AppManifest.xml</td><td>1</td><td/></row>
+		<row><td>appmanifest.xml4</td><td>ISX_DEFAULTCOMPONENT55</td><td>APPMAN~1.XML|AppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\Properties\AppManifest.xml</td><td>1</td><td/></row>
+		<row><td>appmanifest.xml5</td><td>ISX_DEFAULTCOMPONENT59</td><td>APPMAN~1.XML|AppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Properties\AppManifest.xml</td><td>1</td><td/></row>
+		<row><td>appmanifest.xml6</td><td>ISX_DEFAULTCOMPONENT63</td><td>APPMAN~1.XML|AppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Properties\AppManifest.xml</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs</td><td>ISX_DEFAULTCOMPONENT23</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs10</td><td>ISX_DEFAULTCOMPONENT63</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs2</td><td>ISX_DEFAULTCOMPONENT31</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\Materials\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs3</td><td>ISX_DEFAULTCOMPONENT35</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs5</td><td>ISX_DEFAULTCOMPONENT43</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs6</td><td>ISX_DEFAULTCOMPONENT47</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs7</td><td>ISX_DEFAULTCOMPONENT51</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs8</td><td>ISX_DEFAULTCOMPONENT55</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
+		<row><td>assemblyinfo.cs9</td><td>ISX_DEFAULTCOMPONENT59</td><td>ASSEMB~1.CS|AssemblyInfo.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Properties\AssemblyInfo.cs</td><td>1</td><td/></row>
 		<row><td>background.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\Background.png</td><td>1</td><td/></row>
+		<row><td>background.png1</td><td>ISX_DEFAULTCOMPONENT22</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\Background.png</td><td>1</td><td/></row>
+		<row><td>background.png4</td><td>ISX_DEFAULTCOMPONENT50</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\Background.png</td><td>1</td><td/></row>
+		<row><td>background.png5</td><td>ISX_DEFAULTCOMPONENT54</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\Background.png</td><td>1</td><td/></row>
+		<row><td>background.png6</td><td>ISX_DEFAULTCOMPONENT58</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Background.png</td><td>1</td><td/></row>
+		<row><td>background.png7</td><td>ISX_DEFAULTCOMPONENT62</td><td>BACKGR~1.PNG|Background.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Background.png</td><td>1</td><td/></row>
+		<row><td>basepass.xml</td><td>ISX_DEFAULTCOMPONENT12</td><td>BasePass.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\BasePass.xml</td><td>1</td><td/></row>
+		<row><td>box.dds</td><td>ISX_DEFAULTCOMPONENT19</td><td>box.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\box.dds</td><td>1</td><td/></row>
+		<row><td>box_n.dds</td><td>ISX_DEFAULTCOMPONENT19</td><td>box_n.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\box_n.dds</td><td>1</td><td/></row>
+		<row><td>brightpass.xml</td><td>ISX_DEFAULTCOMPONENT12</td><td>BRIGHT~1.XML|BrightPass.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\BrightPass.xml</td><td>1</td><td/></row>
+		<row><td>butterfly.png</td><td>ISX_DEFAULTCOMPONENT19</td><td>BUTTER~1.PNG|Butterfly.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\Butterfly.png</td><td>1</td><td/></row>
+		<row><td>button.cs</td><td>ISX_DEFAULTCOMPONENT62</td><td>Button.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Button.cs</td><td>1</td><td/></row>
+		<row><td>checker.bmp</td><td>ISX_DEFAULTCOMPONENT18</td><td>checker.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\checker.bmp</td><td>1</td><td/></row>
+		<row><td>clouds.tga</td><td>ISX_DEFAULTCOMPONENT18</td><td>clouds.tga</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\clouds.tga</td><td>1</td><td/></row>
+		<row><td>consolas.spritefont</td><td>ISX_DEFAULTCOMPONENT13</td><td>CONSOL~1.SPR|Consolas.spritefont</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Fonts\Consolas.spritefont</td><td>1</td><td/></row>
+		<row><td>cube.x</td><td>ISX_DEFAULTCOMPONENT17</td><td>cube.x</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Terrain\cube.x</td><td>1</td><td/></row>
+		<row><td>debuggerprimitivegame.cs</td><td>ISX_DEFAULTCOMPONENT22</td><td>DEBUGG~1.CS|DebuggerPrimitiveGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitiveGame.cs</td><td>1</td><td/></row>
+		<row><td>debuggerprimitives.csproj</td><td>ISX_DEFAULTCOMPONENT22</td><td>DEBUGG~1.CSP|DebuggerPrimitives.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitives.csproj</td><td>1</td><td/></row>
+		<row><td>debuggerprimitives__windows_</td><td>ISX_DEFAULTCOMPONENT22</td><td>DEBUGG~1.CSP|DebuggerPrimitives (Windows Phone).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitives (Windows Phone).csproj</td><td>1</td><td/></row>
+		<row><td>debuggerprimitives__xbox_.cs</td><td>ISX_DEFAULTCOMPONENT22</td><td>DEBUGG~1.CSP|DebuggerPrimitives (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitives (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>debuggerprimitivescontent.co</td><td>ISX_DEFAULTCOMPONENT24</td><td>DEBUGG~1.CON|DebuggerPrimitivesContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitivesContent\DebuggerPrimitivesContent.contentproj</td><td>1</td><td/></row>
+		<row><td>dude.fbx</td><td>ISX_DEFAULTCOMPONENT15</td><td>dude.fbx</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\dude.fbx</td><td>1</td><td/></row>
 		<row><td>engine_nine_documentation.ch</td><td>Engine_Nine_Documentation.chm</td><td>ENGINE~1.CHM|Engine Nine Documentation.chm</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Documentation\Help\Engine Nine Documentation.chm</td><td>1</td><td/></row>
 		<row><td>engine_nine_online.url</td><td>ISX_DEFAULTCOMPONENT10</td><td>ENGINE~1.URL|Engine Nine Online.url</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Installer\Engine Nine Online.url</td><td>1</td><td/></row>
 		<row><td>enginenine.200.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNine.200.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNine.200.png</td><td>1</td><td/></row>
@@ -1944,10 +2138,61 @@
 		<row><td>enginenineicon.256.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNineIcon.256.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNineIcon.256.png</td><td>1</td><td/></row>
 		<row><td>enginenineicon.512.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNineIcon.512.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNineIcon.512.png</td><td>1</td><td/></row>
 		<row><td>enginenineicon.64.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>ENGINE~1.PNG|EngineNineIcon.64.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\EngineNineIcon.64.png</td><td>1</td><td/></row>
+		<row><td>fire.png</td><td>ISX_DEFAULTCOMPONENT19</td><td>fire.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fire.png</td><td>1</td><td/></row>
+		<row><td>fireball002.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball002.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball002.DDS</td><td>1</td><td/></row>
+		<row><td>fireball003.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball003.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball003.DDS</td><td>1</td><td/></row>
+		<row><td>fireball004.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball004.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball004.DDS</td><td>1</td><td/></row>
+		<row><td>fireball005.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball005.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball005.DDS</td><td>1</td><td/></row>
+		<row><td>fireball006.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball006.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball006.DDS</td><td>1</td><td/></row>
+		<row><td>fireball007.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball007.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball007.DDS</td><td>1</td><td/></row>
+		<row><td>fireball008.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball008.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball008.DDS</td><td>1</td><td/></row>
+		<row><td>fireball009.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball009.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball009.dds</td><td>1</td><td/></row>
+		<row><td>fireball010.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball010.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball010.DDS</td><td>1</td><td/></row>
+		<row><td>fireball011.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball011.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball011.DDS</td><td>1</td><td/></row>
+		<row><td>fireball012.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball012.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball012.DDS</td><td>1</td><td/></row>
+		<row><td>fireball013.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball013.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball013.DDS</td><td>1</td><td/></row>
+		<row><td>fireball014.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball014.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball014.DDS</td><td>1</td><td/></row>
+		<row><td>fireball015.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball015.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball015.DDS</td><td>1</td><td/></row>
+		<row><td>fireball016.dds</td><td>ISX_DEFAULTCOMPONENT20</td><td>FIREBA~1.DDS|fireball016.DDS</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\fireball\fireball016.DDS</td><td>1</td><td/></row>
+		<row><td>flake.png</td><td>ISX_DEFAULTCOMPONENT19</td><td>flake.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\flake.png</td><td>1</td><td/></row>
 		<row><td>game.ico</td><td>ISX_DEFAULTCOMPONENT5</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico1</td><td>ISX_DEFAULTCOMPONENT22</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico10</td><td>ISX_DEFAULTCOMPONENT58</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico11</td><td>ISX_DEFAULTCOMPONENT62</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico3</td><td>ISX_DEFAULTCOMPONENT30</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\Materials\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico4</td><td>ISX_DEFAULTCOMPONENT34</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico6</td><td>ISX_DEFAULTCOMPONENT42</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico7</td><td>ISX_DEFAULTCOMPONENT46</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico8</td><td>ISX_DEFAULTCOMPONENT50</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\Game.ico</td><td>1</td><td/></row>
+		<row><td>game.ico9</td><td>ISX_DEFAULTCOMPONENT54</td><td>Game.ico</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\Game.ico</td><td>1</td><td/></row>
 		<row><td>gamethumbnail.png</td><td>ISX_DEFAULTCOMPONENT5</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Images\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png1</td><td>ISX_DEFAULTCOMPONENT22</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png10</td><td>ISX_DEFAULTCOMPONENT58</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png11</td><td>ISX_DEFAULTCOMPONENT62</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png3</td><td>ISX_DEFAULTCOMPONENT30</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\Materials\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png4</td><td>ISX_DEFAULTCOMPONENT34</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png6</td><td>ISX_DEFAULTCOMPONENT42</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png7</td><td>ISX_DEFAULTCOMPONENT46</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png8</td><td>ISX_DEFAULTCOMPONENT50</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>gamethumbnail.png9</td><td>ISX_DEFAULTCOMPONENT54</td><td>GAMETH~1.PNG|GameThumbnail.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\GameThumbnail.png</td><td>1</td><td/></row>
+		<row><td>glacier.jpg</td><td>ISX_DEFAULTCOMPONENT19</td><td>glacier.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\glacier.jpg</td><td>1</td><td/></row>
+		<row><td>grass.dds</td><td>ISX_DEFAULTCOMPONENT18</td><td>grass.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\grass.dds</td><td>1</td><td/></row>
+		<row><td>grass_n.dds</td><td>ISX_DEFAULTCOMPONENT18</td><td>grass_n.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\grass_n.dds</td><td>1</td><td/></row>
+		<row><td>hammer.png</td><td>ISX_DEFAULTCOMPONENT16</td><td>hammer.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Peon\hammer.png</td><td>1</td><td/></row>
+		<row><td>hammer.x</td><td>ISX_DEFAULTCOMPONENT16</td><td>hammer.X</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Peon\hammer.X</td><td>1</td><td/></row>
+		<row><td>head.tga</td><td>ISX_DEFAULTCOMPONENT15</td><td>head.tga</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\head.tga</td><td>1</td><td/></row>
+		<row><td>head_n.dds</td><td>ISX_DEFAULTCOMPONENT15</td><td>head_n.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\head_n.dds</td><td>1</td><td/></row>
+		<row><td>jacket.tga</td><td>ISX_DEFAULTCOMPONENT15</td><td>jacket.tga</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\jacket.tga</td><td>1</td><td/></row>
+		<row><td>jacket_n.dds</td><td>ISX_DEFAULTCOMPONENT15</td><td>jacket_n.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\jacket_n.dds</td><td>1</td><td/></row>
 		<row><td>license.txt</td><td>ISX_DEFAULTCOMPONENT</td><td>License.txt</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\License.txt</td><td>1</td><td/></row>
+		<row><td>lightning.dds</td><td>ISX_DEFAULTCOMPONENT19</td><td>LIGHTN~1.DDS|lightning.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\lightning.dds</td><td>1</td><td/></row>
+		<row><td>materials.csproj</td><td>ISX_DEFAULTCOMPONENT30</td><td>MATERI~1.CSP|Materials.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\Materials\Materials.csproj</td><td>1</td><td/></row>
+		<row><td>materialscontent.contentproj</td><td>ISX_DEFAULTCOMPONENT32</td><td>MATERI~1.CON|MaterialsContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\MaterialsContent\MaterialsContent.contentproj</td><td>1</td><td/></row>
+		<row><td>materialsgame.cs</td><td>ISX_DEFAULTCOMPONENT30</td><td>MATERI~1.CS|MaterialsGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\Materials\MaterialsGame.cs</td><td>1</td><td/></row>
 		<row><td>microsoft.visualstudio.shell</td><td>Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td>MICROS~1.DLL|Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td>0</td><td/><td/><td>0</td><td>1</td><td>D:\Nine\Bin\Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td>1</td><td/></row>
+		<row><td>mountain.low.png</td><td>ISX_DEFAULTCOMPONENT18</td><td>MOUNTA~1.PNG|Mountain.Low.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\Mountain.Low.png</td><td>1</td><td/></row>
+		<row><td>mountain.png</td><td>ISX_DEFAULTCOMPONENT18</td><td>Mountain.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\Mountain.png</td><td>1</td><td/></row>
+		<row><td>mountainheightmap.bmp</td><td>ISX_DEFAULTCOMPONENT18</td><td>MOUNTA~1.BMP|MountainHeightmap.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\MountainHeightmap.bmp</td><td>1</td><td/></row>
 		<row><td>nine.content.pipeline.dll</td><td>Nine.Content.Pipeline.dll</td><td>NINECO~1.DLL|Nine.Content.Pipeline.dll</td><td>0</td><td/><td/><td>0</td><td>1</td><td>D:\Nine\References\x86\Nine.Content.Pipeline.dll</td><td>1</td><td/></row>
 		<row><td>nine.content.pipeline.xml</td><td>ISX_DEFAULTCOMPONENT3</td><td>NINECO~1.XML|Nine.Content.Pipeline.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\x86\Nine.Content.Pipeline.XML</td><td>1</td><td/></row>
 		<row><td>nine.dll</td><td>Nine.dll</td><td>Nine.dll</td><td>0</td><td/><td/><td>0</td><td>1</td><td>D:\Nine\References\Windows Phone\Nine.dll</td><td>1</td><td/></row>
@@ -1956,6 +2201,73 @@
 		<row><td>nine.xml</td><td>ISX_DEFAULTCOMPONENT2</td><td>Nine.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\Windows Phone\Nine.XML</td><td>1</td><td/></row>
 		<row><td>nine.xml1</td><td>ISX_DEFAULTCOMPONENT3</td><td>Nine.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\x86\Nine.XML</td><td>1</td><td/></row>
 		<row><td>nine.xml2</td><td>ISX_DEFAULTCOMPONENT4</td><td>Nine.XML</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\References\Xbox 360\Nine.XML</td><td>1</td><td/></row>
+		<row><td>normalmappingeffect.xml</td><td>ISX_DEFAULTCOMPONENT12</td><td>NORMAL~1.XML|NormalMappingEffect.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\NormalMappingEffect.xml</td><td>1</td><td/></row>
+		<row><td>pants.tga</td><td>ISX_DEFAULTCOMPONENT15</td><td>pants.tga</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\pants.tga</td><td>1</td><td/></row>
+		<row><td>pants_n.dds</td><td>ISX_DEFAULTCOMPONENT15</td><td>pants_n.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\pants_n.dds</td><td>1</td><td/></row>
+		<row><td>particlesystem.csproj</td><td>ISX_DEFAULTCOMPONENT34</td><td>PARTIC~1.CSP|ParticleSystem.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\ParticleSystem.csproj</td><td>1</td><td/></row>
+		<row><td>particlesystem__xbox_.csproj</td><td>ISX_DEFAULTCOMPONENT34</td><td>PARTIC~1.CSP|ParticleSystem (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\ParticleSystem (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>particlesystemcontent.conten</td><td>ISX_DEFAULTCOMPONENT36</td><td>PARTIC~1.CON|ParticleSystemContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystemContent\ParticleSystemContent.contentproj</td><td>1</td><td/></row>
+		<row><td>particlesystemgame.cs</td><td>ISX_DEFAULTCOMPONENT34</td><td>PARTIC~1.CS|ParticleSystemGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\ParticleSystemGame.cs</td><td>1</td><td/></row>
+		<row><td>peon.x</td><td>ISX_DEFAULTCOMPONENT16</td><td>Peon.X</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Peon\Peon.X</td><td>1</td><td/></row>
+		<row><td>program.cs</td><td>ISX_DEFAULTCOMPONENT22</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs10</td><td>ISX_DEFAULTCOMPONENT62</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs2</td><td>ISX_DEFAULTCOMPONENT30</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Materials\Materials\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs3</td><td>ISX_DEFAULTCOMPONENT34</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ParticleSystem\ParticleSystem\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs5</td><td>ISX_DEFAULTCOMPONENT42</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs6</td><td>ISX_DEFAULTCOMPONENT46</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs7</td><td>ISX_DEFAULTCOMPONENT50</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs8</td><td>ISX_DEFAULTCOMPONENT54</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\Program.cs</td><td>1</td><td/></row>
+		<row><td>program.cs9</td><td>ISX_DEFAULTCOMPONENT58</td><td>Program.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Program.cs</td><td>1</td><td/></row>
+		<row><td>rf1.bmp</td><td>ISX_DEFAULTCOMPONENT18</td><td>RF1.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\RF1.bmp</td><td>1</td><td/></row>
+		<row><td>run.png</td><td>ISX_DEFAULTCOMPONENT19</td><td>Run.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Textures\Run.png</td><td>1</td><td/></row>
+		<row><td>samples.sln</td><td>ISX_DEFAULTCOMPONENT8</td><td>Samples.sln</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Samples.sln</td><td>1</td><td/></row>
+		<row><td>samples.windows.sln</td><td>ISX_DEFAULTCOMPONENT8</td><td>SAMPLE~1.SLN|Samples.Windows.sln</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Samples.Windows.sln</td><td>1</td><td/></row>
+		<row><td>samples.windowsphone.sln</td><td>ISX_DEFAULTCOMPONENT8</td><td>SAMPLE~1.SLN|Samples.WindowsPhone.sln</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Samples.WindowsPhone.sln</td><td>1</td><td/></row>
+		<row><td>samples.xbox360.sln</td><td>ISX_DEFAULTCOMPONENT8</td><td>SAMPLE~1.SLN|Samples.Xbox360.sln</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Samples.Xbox360.sln</td><td>1</td><td/></row>
+		<row><td>screeneffects.csproj</td><td>ISX_DEFAULTCOMPONENT42</td><td>SCREEN~1.CSP|ScreenEffects.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\ScreenEffects.csproj</td><td>1</td><td/></row>
+		<row><td>screeneffects__xbox_.csproj</td><td>ISX_DEFAULTCOMPONENT42</td><td>SCREEN~1.CSP|ScreenEffects (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\ScreenEffects (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>screeneffectscontent.content</td><td>ISX_DEFAULTCOMPONENT44</td><td>SCREEN~1.CON|ScreenEffectsContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffectsContent\ScreenEffectsContent.contentproj</td><td>1</td><td/></row>
+		<row><td>screeneffectsgame.cs</td><td>ISX_DEFAULTCOMPONENT42</td><td>SCREEN~1.CS|ScreenEffectsGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ScreenEffects\ScreenEffects\ScreenEffectsGame.cs</td><td>1</td><td/></row>
+		<row><td>shadoweffect.xml</td><td>ISX_DEFAULTCOMPONENT12</td><td>SHADOW~1.XML|ShadowEffect.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\ShadowEffect.xml</td><td>1</td><td/></row>
+		<row><td>shadowmapping.csproj</td><td>ISX_DEFAULTCOMPONENT46</td><td>SHADOW~1.CSP|ShadowMapping.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\ShadowMapping.csproj</td><td>1</td><td/></row>
+		<row><td>shadowmapping__xbox_.csproj</td><td>ISX_DEFAULTCOMPONENT46</td><td>SHADOW~1.CSP|ShadowMapping (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\ShadowMapping (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>shadowmappingcontent.content</td><td>ISX_DEFAULTCOMPONENT48</td><td>SHADOW~1.CON|ShadowMappingContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMappingContent\ShadowMappingContent.contentproj</td><td>1</td><td/></row>
+		<row><td>shadowmappinggame.cs</td><td>ISX_DEFAULTCOMPONENT46</td><td>SHADOW~1.CS|ShadowMappingGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\ShadowMapping\ShadowMapping\ShadowMappingGame.cs</td><td>1</td><td/></row>
+		<row><td>shadownormalskinnedeffect.xm</td><td>ISX_DEFAULTCOMPONENT12</td><td>SHADOW~1.XML|ShadowNormalSkinnedEffect.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\ShadowNormalSkinnedEffect.xml</td><td>1</td><td/></row>
+		<row><td>skinnedeffect.xml</td><td>ISX_DEFAULTCOMPONENT12</td><td>SKINNE~1.XML|SkinnedEffect.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\SkinnedEffect.xml</td><td>1</td><td/></row>
+		<row><td>skinnedmodel.csproj</td><td>ISX_DEFAULTCOMPONENT50</td><td>SKINNE~1.CSP|SkinnedModel.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\SkinnedModel.csproj</td><td>1</td><td/></row>
+		<row><td>skinnedmodel__windows_phone_</td><td>ISX_DEFAULTCOMPONENT50</td><td>SKINNE~1.CSP|SkinnedModel (Windows Phone).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\SkinnedModel (Windows Phone).csproj</td><td>1</td><td/></row>
+		<row><td>skinnedmodel__xbox_.csproj</td><td>ISX_DEFAULTCOMPONENT50</td><td>SKINNE~1.CSP|SkinnedModel (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\SkinnedModel (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>skinnedmodelcontent.contentp</td><td>ISX_DEFAULTCOMPONENT52</td><td>SKINNE~1.CON|SkinnedModelContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModelContent\SkinnedModelContent.contentproj</td><td>1</td><td/></row>
+		<row><td>skinnedmodelgame.cs</td><td>ISX_DEFAULTCOMPONENT50</td><td>SKINNE~1.CS|SkinnedModelGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\SkinnedModelGame.cs</td><td>1</td><td/></row>
+		<row><td>skycubemap.dds</td><td>ISX_DEFAULTCOMPONENT17</td><td>SKYCUB~1.DDS|SkyCubeMap.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Terrain\SkyCubeMap.dds</td><td>1</td><td/></row>
+		<row><td>splat.xml</td><td>ISX_DEFAULTCOMPONENT18</td><td>Splat.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Terrain\Splat.xml</td><td>1</td><td/></row>
+		<row><td>spriteanimation.csproj</td><td>ISX_DEFAULTCOMPONENT54</td><td>SPRITE~1.CSP|SpriteAnimation.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\SpriteAnimation.csproj</td><td>1</td><td/></row>
+		<row><td>spriteanimation__windows_pho</td><td>ISX_DEFAULTCOMPONENT54</td><td>SPRITE~1.CSP|SpriteAnimation (Windows Phone).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\SpriteAnimation (Windows Phone).csproj</td><td>1</td><td/></row>
+		<row><td>spriteanimation__xbox_.cspro</td><td>ISX_DEFAULTCOMPONENT54</td><td>SPRITE~1.CSP|SpriteAnimation (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\SpriteAnimation (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>spriteanimationcontent.conte</td><td>ISX_DEFAULTCOMPONENT56</td><td>SPRITE~1.CON|SpriteAnimationContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimationContent\SpriteAnimationContent.contentproj</td><td>1</td><td/></row>
+		<row><td>spriteanimationgame.cs</td><td>ISX_DEFAULTCOMPONENT54</td><td>SPRITE~1.CS|SpriteAnimationGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\SpriteAnimationGame.cs</td><td>1</td><td/></row>
+		<row><td>terrain.csproj</td><td>ISX_DEFAULTCOMPONENT58</td><td>TERRAI~1.CSP|Terrain.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Terrain.csproj</td><td>1</td><td/></row>
+		<row><td>terrain.fbx</td><td>ISX_DEFAULTCOMPONENT17</td><td>Terrain.fbx</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Terrain\Terrain.fbx</td><td>1</td><td/></row>
+		<row><td>terrain__windows_phone_.cspr</td><td>ISX_DEFAULTCOMPONENT58</td><td>TERRAI~1.CSP|Terrain (Windows Phone).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Terrain (Windows Phone).csproj</td><td>1</td><td/></row>
+		<row><td>terrain__xbox_.csproj</td><td>ISX_DEFAULTCOMPONENT58</td><td>TERRAI~1.CSP|Terrain (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Terrain (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>terraincontent.contentproj</td><td>ISX_DEFAULTCOMPONENT60</td><td>TERRAI~1.CON|TerrainContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\TerrainContent\TerrainContent.contentproj</td><td>1</td><td/></row>
+		<row><td>terraineffect.xml</td><td>ISX_DEFAULTCOMPONENT12</td><td>TERRAI~1.XML|TerrainEffect.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Effects\TerrainEffect.xml</td><td>1</td><td/></row>
+		<row><td>terraingame.cs</td><td>ISX_DEFAULTCOMPONENT58</td><td>TERRAI~1.CS|TerrainGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\TerrainGame.cs</td><td>1</td><td/></row>
+		<row><td>terraintex.png</td><td>ISX_DEFAULTCOMPONENT17</td><td>TERRAI~1.PNG|TerrainTex.png</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Terrain\TerrainTex.png</td><td>1</td><td/></row>
+		<row><td>tietu_nongmin.bmp</td><td>ISX_DEFAULTCOMPONENT16</td><td>TIETU_~1.BMP|tietu_nongmin.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Peon\tietu_nongmin.bmp</td><td>1</td><td/></row>
+		<row><td>transitiongame.cs</td><td>ISX_DEFAULTCOMPONENT62</td><td>TRANSI~1.CS|TransitionGame.cs</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\TransitionGame.cs</td><td>1</td><td/></row>
+		<row><td>transitions.csproj</td><td>ISX_DEFAULTCOMPONENT62</td><td>TRANSI~1.CSP|Transitions.csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Transitions.csproj</td><td>1</td><td/></row>
+		<row><td>transitions__windows_phone_.</td><td>ISX_DEFAULTCOMPONENT62</td><td>TRANSI~1.CSP|Transitions (Windows Phone).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Transitions (Windows Phone).csproj</td><td>1</td><td/></row>
+		<row><td>transitions__xbox_.csproj</td><td>ISX_DEFAULTCOMPONENT62</td><td>TRANSI~1.CSP|Transitions (Xbox).csproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Transitions (Xbox).csproj</td><td>1</td><td/></row>
+		<row><td>transitionscontent.contentpr</td><td>ISX_DEFAULTCOMPONENT64</td><td>TRANSI~1.CON|TransitionsContent.contentproj</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\TransitionsContent\TransitionsContent.contentproj</td><td>1</td><td/></row>
+		<row><td>upbodyc.tga</td><td>ISX_DEFAULTCOMPONENT15</td><td>upBodyC.tga</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\upBodyC.tga</td><td>1</td><td/></row>
+		<row><td>upbodyc_n.dds</td><td>ISX_DEFAULTCOMPONENT15</td><td>UPBODY~1.DDS|upbodyC_n.dds</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Content\Models\Dude\upbodyC_n.dds</td><td>1</td><td/></row>
+		<row><td>wmappmanifest.xml</td><td>ISX_DEFAULTCOMPONENT23</td><td>WMAPPM~1.XML|WMAppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\DebuggerPrimitives\DebuggerPrimitives\Properties\WMAppManifest.xml</td><td>1</td><td/></row>
+		<row><td>wmappmanifest.xml3</td><td>ISX_DEFAULTCOMPONENT51</td><td>WMAPPM~1.XML|WMAppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SkinnedModel\SkinnedModel\Properties\WMAppManifest.xml</td><td>1</td><td/></row>
+		<row><td>wmappmanifest.xml4</td><td>ISX_DEFAULTCOMPONENT55</td><td>WMAPPM~1.XML|WMAppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\SpriteAnimation\SpriteAnimation\Properties\WMAppManifest.xml</td><td>1</td><td/></row>
+		<row><td>wmappmanifest.xml5</td><td>ISX_DEFAULTCOMPONENT59</td><td>WMAPPM~1.XML|WMAppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Terrain\Terrain\Properties\WMAppManifest.xml</td><td>1</td><td/></row>
+		<row><td>wmappmanifest.xml6</td><td>ISX_DEFAULTCOMPONENT63</td><td>WMAPPM~1.XML|WMAppManifest.xml</td><td>0</td><td/><td/><td/><td>1</td><td>D:\Nine\Samples\Transitions\Transitions\Properties\WMAppManifest.xml</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2214,15 +2526,61 @@
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_B730393C_533C_4464_9D01_2BE5D5F7B4DF_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_2AC2D0B4_68A2_42F1_9FFB_D44977660D79_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_A51747A7_B6E1_47FB_9C4C_0309205767B8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT11</td><td/><td/><td>_670FD77B_BABC_4306_A3F5_0A4327928B88_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT12</td><td/><td/><td>_0B2506E8_AFAA_40AC_A605_1D00F417342C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT13</td><td/><td/><td>_F0EC1C26_D92A_4276_9011_01AC1F3E5B7E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT14</td><td/><td/><td>_44C3259B_7EF1_4E51_915E_0FF1C365623F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT15</td><td/><td/><td>_898B2BF1_022F_44A8_84FD_D33E66C72B93_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT16</td><td/><td/><td>_3DE06473_59FC_4EC4_B9B9_CA096D78F472_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT17</td><td/><td/><td>_615B5DF6_1B8A_4B93_A247_20BBE9B189AF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT18</td><td/><td/><td>_47AD91F4_7943_477A_A707_C80EE045A646_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT19</td><td/><td/><td>_3F3F9D95_F92B_4C0F_810E_1A44EB122FE1_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_5B3E50AD_072C_4737_8269_862E8FBD31F5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT20</td><td/><td/><td>_E9D80FD5_6253_49A9_B9FE_FF5E604FF9A5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT21</td><td/><td/><td>_5B7DCDA7_DFF6_4F62_8DE5_AC1552BC6777_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT22</td><td/><td/><td>_47354CA3_48E8_4755_831F_98FAD9B89D4E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT23</td><td/><td/><td>_632DFEB0_7F77_44A7_9524_FB2D36460763_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT24</td><td/><td/><td>_849B1668_8178_4DA1_9065_3D9A938420DB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT29</td><td/><td/><td>_67F34FD5_57F4_451F_91F2_94724918C459_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_9393F3AC_4517_46F2_AEDD_DC7423E77E2A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT30</td><td/><td/><td>_BB9AF44E_EEA3_4B7C_868C_D9201F38BBC3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT31</td><td/><td/><td>_F432CC57_1E6B_4F2F_B649_577F01C298A6_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT32</td><td/><td/><td>_37669D72_F9DB_4637_9842_E3759B89A873_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT33</td><td/><td/><td>_59DA8807_20AE_49CD_B12C_775213D10323_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT34</td><td/><td/><td>_F25A6DA7_AFC1_44C1_B293_A2808C864028_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT35</td><td/><td/><td>_A404AEFB_D304_45C7_8FD7_70B227151BCC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT36</td><td/><td/><td>_6AF4D601_456E_44AF_904D_A996E06D1CD1_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_C80E4D65_0174_434E_8093_BEB5A44B47B7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT41</td><td/><td/><td>_2D095C9F_2E9F_426F_9363_85C8462698A6_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT42</td><td/><td/><td>_C1904E98_ABE2_43C1_B73F_BAFCC0CF1FBD_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT424</td><td/><td/><td>_611405BC_D01A_49EC_B897_CDCF35263E56_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT425</td><td/><td/><td>_2AECC652_AAE0_463B_A53E_12E2052BF7C0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT43</td><td/><td/><td>_DB17D5E3_2A69_450B_9716_15C81604FB38_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT44</td><td/><td/><td>_2C89CFC4_C893_4C90_AAAB_4E954CA8C3A4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT45</td><td/><td/><td>_3FCA507D_8264_4951_9330_A0DE5AA02B9E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT46</td><td/><td/><td>_0E7F4BBB_55E4_4B6A_90CB_85C1272EAA96_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT47</td><td/><td/><td>_D9702471_930F_4E05_8B0B_18174059A0D8_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT48</td><td/><td/><td>_A6D5B5E8_521D_413D_A116_B1AE2F4F727D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT49</td><td/><td/><td>_B60B0DE9_2784_46E2_B3F1_581E8D9C87BC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_B0841551_DB59_4019_A4BC_FF057E15F218_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT50</td><td/><td/><td>_CECBFC4A_35BB_4E14_B767_F9CF53BF1E9F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT51</td><td/><td/><td>_248D2506_942E_4661_AC75_2CA3612ABF43_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT52</td><td/><td/><td>_A1B60E36_F48C_44E8_83EE_3B7CB0823D9D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT53</td><td/><td/><td>_73123AA9_6361_465E_A722_3CA0DD2CC57E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT54</td><td/><td/><td>_365D873D_59D4_44F9_940B_62EC2EE25FC4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT55</td><td/><td/><td>_3CB201D6_8847_475A_A451_5498D8E2CB47_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT56</td><td/><td/><td>_0EDA907D_FE80_4E00_86EB_1B845AD078D9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT57</td><td/><td/><td>_6D6FBEDA_91DF_40AC_B197_7948A91AD1A0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT58</td><td/><td/><td>_387058FE_4516_4626_88F2_A4570E73D060_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT59</td><td/><td/><td>_7B62058C_F50B_4499_9AA3_792CCE491D64_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_5919A84F_32D2_4B7F_AA78_659A5D0E02E1_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT60</td><td/><td/><td>_FE32D662_66F3_4C08_BED4_BAA25781BB14_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT61</td><td/><td/><td>_379BE1BF_E702_4930_909F_376AE50EE5CE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT62</td><td/><td/><td>_1E1444A2_C763_4C55_9092_CF309BB6F909_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT63</td><td/><td/><td>_BEF3F3AC_7AAF_494F_AC13_09D80335FE5C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT64</td><td/><td/><td>_37E5F4F7_8A6B_4BC8_8179_1F1E1ADAF5FC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_BBA556F5_9D04_4EAC_B9A5_0082AF681EED_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_BBA3F347_43AA_4435_9849_48A50BFFB98F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_D34BBF42_00EB_4C8C_9483_E54DFCEF88AF_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_F2CC287B_90E2_4C7A_A18B_93375F1E10F3_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Microsoft.VisualStudio.Shell.Interop.EffectCustomTool.dll</td><td/><td/><td>_F9A6F0FF_0274_461B_830B_3EC4C9FE2F4F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Nine.Content.Pipeline.dll</td><td/><td/><td>_F7979F3B_4E84_4AD2_A929_261142BC6117_FILTER</td><td/><td/><td/><td/></row>
@@ -3942,7 +4300,7 @@
 		<row><td>IDS__IsVerifyRemoveAllDlg_Remove</td><td>1033</td><td>&amp;Remove</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__IsVerifyRemoveAllDlg_RemoveProgram</td><td>1033</td><td>{&amp;MSSansBold8}Remove the Program</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__IsWelcomeDlg_InstallProductName</td><td>1033</td><td>The InstallShield(R) Wizard will install [ProductName] on your computer. To continue, click Next.</td><td>0</td><td/><td>-2061613205</td></row>
-		<row><td>IDS__IsWelcomeDlg_WarningCopyright</td><td>1033</td><td>Copyright 2009 - 2010 (c) Engine Nine.</td><td>0</td><td/><td>-2061615057</td></row>
+		<row><td>IDS__IsWelcomeDlg_WarningCopyright</td><td>1033</td><td>Copyright 2009 - 2011 (c) Engine Nine.</td><td>0</td><td/><td>-2137052496</td></row>
 		<row><td>IDS__IsWelcomeDlg_WelcomeProductName</td><td>1033</td><td>{&amp;TahomaBold10}Welcome to the InstallShield Wizard for [ProductName]</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__TargetReq_DESC_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-2061613205</td></row>
 		<row><td>IDS__TargetReq_DESC_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-2061613205</td></row>
@@ -3952,7 +4310,11 @@
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-2061609109</td></row>
 		<row><td>ID_STRING10</td><td>1033</td><td>Samples</td><td>0</td><td/><td>-2061603311</td></row>
 		<row><td>ID_STRING11</td><td>1033</td><td>ENGINE~1|Engine Nine Documentation</td><td>0</td><td/><td>-585203980</td></row>
-		<row><td>ID_STRING12</td><td>1033</td><td>ENGINE~1|Engine Nine Samples</td><td>0</td><td/><td>1570668969</td></row>
+		<row><td>ID_STRING13</td><td>1033</td><td>*=-NINEINSTALLDIR</td><td>0</td><td/><td>-2137011920</td></row>
+		<row><td>ID_STRING14</td><td>1033</td><td>[~];[INSTALLDIR]</td><td>0</td><td/><td>-2137050832</td></row>
+		<row><td>ID_STRING15</td><td>1033</td><td/><td>0</td><td/><td>-2137031920</td></row>
+		<row><td>ID_STRING16</td><td>1033</td><td/><td>0</td><td/><td>-2137036016</td></row>
+		<row><td>ID_STRING17</td><td>1033</td><td>ENGINE~1|Engine Nine Samples</td><td>0</td><td/><td>-2137009264</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061603956</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Engine Nine</td><td>0</td><td/><td>-2061595764</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>This installer database contains the logic and data required to install Engine Nine</td><td>0</td><td/><td>-2061603892</td></row>
@@ -4200,7 +4562,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{946589CC-C16B-4870-8FE7-C2EB628C4AC3}</td></row>
 		<row><td>ISUSSignature</td><td>{DA202455-4E41-494C-88E1-AFB78AD212F2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewProject,viewRealSetupDesign,viewSetupDesign,viewSetupTypes,viewUpgradePaths,viewUpdateService,viewAppFiles,viewDependencies,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewRelease,viewFeatureFiles,viewCustomActions</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewProject,viewRealSetupDesign,viewSetupDesign,viewSetupTypes,viewUpgradePaths,viewUpdateService,viewAppFiles,viewDependencies,viewObjects,viewShortcuts,viewRegistry,viewIniFiles,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewRelease,viewFeatureFiles,viewCustomActions,viewEnvironmentVariables</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4577,7 +4939,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{DA8B86FA-7148-4D26-9B33-A7BB09556794}</td><td/></row>
-		<row><td>ProductName</td><td>Engine Nine</td><td/></row>
+		<row><td>ProductName</td><td>Engine Nine 1.0</td><td/></row>
 		<row><td>ProductVersion</td><td>1.0.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
@@ -4668,7 +5030,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
 		<row><td>NewShortcut1</td><td>Engine_Nine_Documentation.chm</td><td/><td>newfolder1</td><td>2</td></row>
-		<row><td>NewShortcut2</td><td>Engine_Nine_Documentation.chm</td><td/><td>newfolder1</td><td>2</td></row>
+		<row><td>NewShortcut3</td><td>ISX_DEFAULTCOMPONENT425</td><td/><td>newfolder1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4754,8 +5116,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>NewShortcut1</td><td>newfolder1</td><td>##ID_STRING11##</td><td>Engine_Nine_Documentation.chm</td><td>[INSTALLDIR]v1.0\Documentation\1033\Engine Nine Documentation.chm</td><td/><td/><td/><td>NewShortcut1_8326C16804624EB3910F69A40B251BC1.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>NewShortcut2</td><td>newfolder1</td><td>##ID_STRING12##</td><td>Engine_Nine_Documentation.chm</td><td>[INSTALLDIR]\v1.0\Samples\</td><td/><td/><td/><td>NewShortcut2_A3356F8002124F18B5CD7BFD02C1C22F.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut1</td><td>newfolder1</td><td>##ID_STRING11##</td><td>Engine_Nine_Documentation.chm</td><td>[INSTALLDIR]v1.0\Documentation\1033\Engine Nine Documentation.chm</td><td/><td>##ID_STRING16##</td><td/><td>NewShortcut1_8326C16804624EB3910F69A40B251BC1.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut3</td><td>newfolder1</td><td>##ID_STRING17##</td><td>ISX_DEFAULTCOMPONENT425</td><td>[SAMPLES]</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

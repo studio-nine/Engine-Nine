@@ -20,6 +20,9 @@ namespace Nine.Animations
 {
     using Nine.Graphics;
 
+    /// <summary>
+    /// Contains extension method for <c>PrimitiveBatch</c>.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PrimitiveBatchExtensions
     {

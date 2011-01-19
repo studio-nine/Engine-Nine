@@ -20,7 +20,8 @@ using Nine.Graphics;
 namespace DebuggerPrimitives
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This sample demenstrates the use of PrimitiveBatch to draw
+    /// various commonly used 3D shapes and geometries.
     /// </summary>
     public class DebuggerPrimitiveGame : Microsoft.Xna.Framework.Game
     {

@@ -20,7 +20,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class SplatterTextureEffectPart : LinkedEffectPart
+    internal class SplatterTextureEffectPart : LinkedEffectPart, IEffectSplatterTexture
     {
         internal uint dirtyMask = 0;
 
@@ -52,28 +52,28 @@ namespace Nine.Graphics.Effects.EffectParts
         internal const uint maskDirtyMask = 1 << 6;
 
         [ContentSerializer(Optional = true)]
-        internal Texture2D TextureX
+        public Texture2D TextureX
         {
             get { return textureX; }
             set { textureX = value; dirtyMask |= textureXDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
-        internal Texture2D TextureY
+        public Texture2D TextureY
         {
             get { return textureY; }
             set { textureY = value; dirtyMask |= textureYDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
-        internal Texture2D TextureZ
+        public Texture2D TextureZ
         {
             get { return textureZ; }
             set { textureZ = value; dirtyMask |= textureZDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
-        internal Texture2D TextureW
+        public Texture2D TextureW
         {
             get { return textureW; }
             set { textureW = value; dirtyMask |= textureWDirtyMask; }
@@ -92,15 +92,10 @@ namespace Nine.Graphics.Effects.EffectParts
             get { return splatterTextureScale; }
             set { splatterTextureScale = value; dirtyMask |= splatterTextureScaleDirtyMask; }
         }
-
-        public SplatterTextureCollection Textures { get; private set; }
-
         public SplatterTextureEffectPart()
         {
             dirtyMask |= splatterTextureDirtyMask;
             dirtyMask |= maskDirtyMask;
-
-            Textures = new SplatterTextureCollection(this);
         }
 
         protected internal override void OnApply()
@@ -159,10 +154,10 @@ namespace Nine.Graphics.Effects.EffectParts
                     maskParameter = GetParameter("Mask");
 
                 Vector4 mask = new Vector4();
-                mask.X = (Textures[0] != null ? 1.0f : 0.0f);
-                mask.Y = (Textures[1] != null ? 1.0f : 0.0f);
-                mask.Z = (Textures[2] != null ? 1.0f : 0.0f);
-                mask.W = (Textures[3] != null ? 1.0f : 0.0f);
+                mask.X = (TextureX != null ? 1.0f : 0.0f);
+                mask.Y = (TextureY != null ? 1.0f : 0.0f);
+                mask.Z = (TextureZ != null ? 1.0f : 0.0f);
+                mask.W = (TextureW != null ? 1.0f : 0.0f);
                 
                 maskParameter.SetValue(mask);
                 dirtyMask &= ~maskDirtyMask;
@@ -172,63 +167,6 @@ namespace Nine.Graphics.Effects.EffectParts
         protected internal override LinkedEffectPart Clone()
         {
             throw new KeyNotFoundException();
-        }
-    }
-
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class SplatterTextureCollection : IEnumerable<Texture2D>
-    {
-        SplatterTextureEffectPart effect;
-
-        internal SplatterTextureCollection(SplatterTextureEffectPart effect)
-        {
-            this.effect = effect;
-        }
-
-        public Texture2D this[int index]
-        {
-            get
-            {
-                if (index == 0)
-                    return effect.TextureX;
-                if (index == 1)
-                    return effect.TextureY;
-                if (index == 2)
-                    return effect.TextureZ;
-                if (index == 3)
-                    return effect.TextureW;
-
-                throw new IndexOutOfRangeException();
-            }
-            set
-            {
-                effect.dirtyMask |= SplatterTextureEffectPart.maskDirtyMask;
-
-                if (index == 0)
-                    effect.TextureX = value;
-                else if (index == 1)
-                    effect.TextureY = value;
-                else if (index == 2)
-                    effect.TextureZ = value;
-                else if (index == 3)
-                    effect.TextureW = value;
-                else
-                    throw new IndexOutOfRangeException();
-            }
-        }
-
-        public IEnumerator<Texture2D> GetEnumerator()
-        {
-            yield return effect.TextureX;
-            yield return effect.TextureY;
-            yield return effect.TextureZ;
-            yield return effect.TextureW;
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 

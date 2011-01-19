@@ -9,6 +9,9 @@ namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
+    /// <summary>
+    /// A post processing screen effect that only show pixels brighter than the threshold.
+    /// </summary>
     public partial class ThresholdEffect
     {
         private void OnCreated() { }

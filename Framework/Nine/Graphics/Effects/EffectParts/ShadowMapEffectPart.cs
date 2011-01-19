@@ -19,7 +19,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class ShadowMapEffectPart : LinkedEffectPart, IEffectTexture
+    internal class ShadowMapEffectPart : LinkedEffectPart, IEffectTexture, IEffectShadowMap
     {
         private uint dirtyMask = 0;
         

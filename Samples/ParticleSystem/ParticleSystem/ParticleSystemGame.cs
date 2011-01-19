@@ -16,7 +16,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
-using Nine.Graphics.Effects;
 using Nine.Graphics.ParticleEffects;
 using Nine.Animations;
 #endregion
@@ -24,31 +23,44 @@ using Nine.Animations;
 namespace ParticleSystem
 {
     /// <summary>
-    /// Demonstrate how to use ParticleBatch to draw point sprites, textured lines and particle effects.
+    /// Demonstrates how to draw particle effects.
     /// </summary>
     public class ParticleSystemGame : Microsoft.Xna.Framework.Game
     {
-        TopDownEditorCamera camera;
-        ParticleBatch particles;
-        PrimitiveBatch primitiveBatch;
-        
-        Texture2D lightning;
+#if WINDOWS_PHONE
+        private const int TargetFrameRate = 30;
+        private const int BackBufferWidth = 800;
+        private const int BackBufferHeight = 480;
+#elif XBOX
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 720;
+#else
+        private const int TargetFrameRate = 60;
+        private const int BackBufferWidth = 900;
+        private const int BackBufferHeight = 600;
+#endif
 
+        ModelViewerCamera camera;
         ParticleEffect snow;
+        ParticleBatch particlePatch;
+        PrimitiveBatch primitiveBatch;
 
         public ParticleSystemGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
             graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.PreferredBackBufferWidth = 900;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = BackBufferWidth;
+            graphics.PreferredBackBufferHeight = BackBufferHeight;
+
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
 
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            //Components.Add(new FrameRate(this, "Consolas"));
+            Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }
 
@@ -59,26 +71,34 @@ namespace ParticleSystem
         /// </summary>
         protected override void LoadContent()
         {
-            camera = new TopDownEditorCamera(GraphicsDevice);
+            camera = new ModelViewerCamera(GraphicsDevice);
 
-            particles = new ParticleBatch(GraphicsDevice, 1024);
+            particlePatch = new ParticleBatch(GraphicsDevice);
             primitiveBatch = new PrimitiveBatch(GraphicsDevice);
             
-            snow = new ParticleEffect(600);
+            snow = new ParticleEffect(5000);
             snow.Texture = Content.Load<Texture2D>("flake");
-            snow.Duration = TimeSpan.FromSeconds(1.5f);
-            snow.Gravity = Vector3.Zero;
-            snow.Emitter.Emission = 400;
-            snow.StartSize = 0.8f;
-            snow.EndSize = 0.4f;
-            snow.EndVelocity = 1.0f;
-            snow.HorizontalVelocity = 0;
-            snow.VerticalVelocity = -40.0f;
+            snow.Duration = 4;
+            snow.Emission = 100;
+            snow.Size = 0.2f;
+            snow.Color = Color.White;
+            snow.Speed = 8f;
+            snow.Stretch = 10;
             
-            snow.SpatialEmitter = new BoxEmitter()
-            {
-                Box = new BoundingBox(new Vector3(-30, -30, 30), new Vector3(30, 30, 30))
-            };
+            //snow.Controllers.Add(new SizeController() { EndSize = 0.4f });
+            snow.Controllers.Add(new ColorController() { EndColor = Color.White });
+            snow.Controllers.Add(new FadeController());
+            //snow.Controllers.Add(new AbsorbController() { Force = 40 });
+            //snow.Controllers.Add(new SpeedController() { EndSpeed = 0 });
+            //snow.Controllers.Add(new RotationController() { EndRotation = MathHelper.Pi });
+            //snow.Controllers.Add(new ForceController() { Force = Vector3.UnitZ * 20 });
+            //snow.Controllers.Add(new TangentForceController() { Force = 0.5f });
+
+            //snow.Emitter = new LineEmitter() { LineList = new[] { Vector3.Zero, Vector3.One, Vector3.UnitX, Vector3.UnitY, } };
+            //snow.Emitter = new CylinderEmitter() { Radius = 0, Height = 0, Shell = true, Radiate = true };
+            //snow.Emitter = new SphereEmitter() { Radius = 10, Shell = true, Radiate = true };
+            //snow.Emitter = new PointEmitter() { Spread = MathHelper.PiOver4 };
+            //snow.Emitter = new BoxEmitter() { Box = new BoundingBox(new Vector3(-30, -30, 30), new Vector3(30, 30, 30)) };
         }
 
         /// <summary>
@@ -92,15 +112,15 @@ namespace ParticleSystem
             GraphicsDevice.BlendState = BlendState.Additive;
             GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
             
-            GraphicsDevice.SetVertexBuffer(null);
 
             // Update effects
             snow.Update(gameTime);
 
-
-            particles.Begin(camera.View, camera.Projection);
-            particles.Draw(snow, gameTime);
-            particles.End();
+            particlePatch.Begin(camera.View, camera.Projection);
+            //particlePatch.DrawBillboard(snow);
+            particlePatch.DrawConstrainedBillboard(snow);
+            //particlePatch.DrawConstrainedBillboard(snow, Vector3.UnitX);
+            particlePatch.End();
 
             primitiveBatch.Begin(camera.View, camera.Projection);
             primitiveBatch.DrawBox(snow.BoundingBox, null, Color.Azure);

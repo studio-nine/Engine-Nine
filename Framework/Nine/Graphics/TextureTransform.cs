@@ -40,6 +40,11 @@ namespace Nine.Graphics
             return Matrix.CreateRotationZ(-radius);
         }
 
+        public static Matrix CreateSourceRectange(Texture2D texture, Rectangle? rectangle)
+        {
+            return Matrix.Identity;
+        }
+
         public static Vector2 Transform(Matrix matrix, Vector2 uv)
         {
             Vector3 v3 = new Vector3(uv, 0);

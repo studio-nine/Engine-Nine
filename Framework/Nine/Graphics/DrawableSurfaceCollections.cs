@@ -18,12 +18,15 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Graphics
 {    
+    /// <summary>
+    /// A collection of all the effect in a DrawableSurface.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class DrawableSurfaceCollections : Collection<Effect>
+    public sealed class DrawableSurfaceEffectCollections : Collection<Effect>
     {
         private DrawableSurface surface;
 
-        internal DrawableSurfaceCollections(DrawableSurface surface)
+        internal DrawableSurfaceEffectCollections(DrawableSurface surface)
         {
             this.surface = surface;
         }
@@ -32,7 +35,7 @@ namespace Nine.Graphics
         {
             foreach (DrawableSurfacePatch patch in surface.Patches)
             {
-                patch.Effects.Insert(index, item);
+                ((List<Effect>)patch.Effects).Insert(index, item);
             }
 
             base.InsertItem(index, item);
@@ -54,8 +57,11 @@ namespace Nine.Graphics
         }
     }
 
+    /// <summary>
+    /// A collection of all the pathes in a DrawableSurface.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class DrawableSurfacePatchCollection : ReadOnlyCollection<DrawableSurfacePatch>
+    public class DrawableSurfacePatchCollection : ReadOnlyCollection<DrawableSurfacePatch>
     {
         private DrawableSurface surface;
 
@@ -80,6 +86,9 @@ namespace Nine.Graphics
         }
     }
 
+    /// <summary>
+    /// A collection of all the triangles in a DrawableSurface.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DrawableSurfaceTriangleCollection : IEnumerable<DrawableSurfaceTriangle>
     {

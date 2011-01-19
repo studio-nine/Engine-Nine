@@ -40,7 +40,7 @@ namespace Nine.Graphics.Test
             Assert.AreEqual<Vector3>(new Vector3(2, 2, 0), heightmap.Size);
 
             Assert.AreEqual<BoundingBox>(
-                new BoundingBox(new Vector3(-1, -1,0), new Vector3(1, 1, 0)),
+                new BoundingBox(Vector3.Zero, new Vector3(2, 2, 0)),
                 heightmap.BoundingBox);
         }
 
@@ -57,13 +57,13 @@ namespace Nine.Graphics.Test
                 Assert.AreEqual<Vector3>(new Vector3(2, 2, 0), surface.Size);
 
                 Assert.AreEqual<BoundingBox>(
-                    new BoundingBox(Vector3.Zero, new Vector3(2, 2, 0)),
+                    new BoundingBox(new Vector3(1, 1, 0), new Vector3(3, 3, 0)),
                     surface.BoundingBox);
 
                 Assert.AreEqual<int>(1, surface.PatchCountX);
                 Assert.AreEqual<int>(1, surface.PatchCountY);
                 Assert.AreEqual<int>(1, surface.Patches.Count);
-                Assert.AreEqual<int>(2, surface.PatchTessellation);
+                Assert.AreEqual<int>(2, surface.PatchSegmentCount);
                                 
                 Game.Exit();
             };
@@ -80,8 +80,8 @@ namespace Nine.Graphics.Test
 
                 Assert.AreEqual<int>(8, surface.Patches[0].PrimitiveCount);
 
-                surface.Triangles[-1, -1].Visible = false;
-                surface.Triangles[0.95f, 0.95f].Visible = false;
+                surface.Triangles[0, 0].Visible = false;
+                surface.Triangles[1.95f, 1.95f].Visible = false;
                 surface.Invalidate();
 
                 Assert.AreEqual<int>(6, surface.Patches[0].PrimitiveCount);

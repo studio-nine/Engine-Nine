@@ -1,100 +1,151 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
-
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-
 namespace Nine.Graphics.ParticleEffects
 {
-    public sealed class ParticleBatch : IDisposable
+    /// <summary>
+    /// Enables a group of particle effects to be drawn in batches.
+    /// </summary>
+    public class ParticleBatch : IDisposable
     {
-        PointSpriteBatch pointSprite;
-        LineSpriteBatch lineSprite;
-        ParticleEffectBatch particleEffect;
+        private PrimitiveBatch primitiveBatch;
 
+        /// <summary>
+        /// Gets the underlying graphics device used by this ModelBatch.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get { return primitiveBatch.GraphicsDevice; } }
 
-        public GraphicsDevice GraphicsDevice { get; private set; }
-        public bool IsDisposed { get; private set; }
-
+        /// <summary>
+        /// Gets or sets user data.
+        /// </summary>
+        public object Tag { get; set; }
+        
+#if WINDOWS_PHONE
+        public ParticleBatch(GraphicsDevice graphics) : this(graphics, 2048)
+#else
+        public ParticleBatch(GraphicsDevice graphics) : this(graphics, 8192)
+#endif
+        {
+        }
 
         public ParticleBatch(GraphicsDevice graphics, int capacity)
         {
-            GraphicsDevice = graphics;
+            primitiveBatch = new PrimitiveBatch(graphics, capacity);
+        }
 
-            pointSprite = new PointSpriteBatch(graphics, capacity);
-            lineSprite = new LineSpriteBatch(graphics, capacity);
-            particleEffect = new ParticleEffectBatch(graphics, capacity);
+        public void Begin()
+        {
         }
 
         public void Begin(Matrix view, Matrix projection)
         {
-            if (IsDisposed)
-                throw new ObjectDisposedException("Particle Batch");
-
-            pointSprite.Begin(view, projection);
-            lineSprite.Begin(view, projection);
-            particleEffect.Begin(view, projection);
+            primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection);
         }
 
-        public void Draw(Texture2D texture, Vector3 position, float size, float rotation, Color color)
+        public void Draw(ParticleEffect particleEffect)
         {
-            pointSprite.Draw(texture, position, size, rotation, color);
+
         }
 
-        public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Color color)
+        public void DrawBillboard(ParticleEffect particleEffect)
         {
-            DrawLine(texture, start, end, width, Vector2.One, Vector2.Zero, color);
+            for (int currentParticle = particleEffect.firstParticle; 
+                     currentParticle != particleEffect.lastParticle;
+                     currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+            {
+                if (particleEffect.particles[currentParticle].Age <= 1)
+                {
+                    Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);                         
+
+                    primitiveBatch.DrawSprite(particleEffect.Texture,
+                                              particleEffect.particles[currentParticle].Position,
+                                              particleEffect.particles[currentParticle].Size, 
+                                              particleEffect.particles[currentParticle].Size,
+                                              particleEffect.particles[currentParticle].Rotation, Vector3.UnitZ, textureTransform, null,
+                                              particleEffect.particles[currentParticle].Color);
+                }
+            }
         }
 
-        public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Vector2 textureScale, Vector2 textureOffset, Color color)
+        public void DrawConstrainedBillboard(ParticleEffect particleEffect)
         {
-            lineSprite.Draw(texture, start, end, width, textureScale, textureOffset, color);
+            for (int currentParticle = particleEffect.firstParticle;
+                     currentParticle != particleEffect.lastParticle;
+                     currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+            {
+                if (particleEffect.particles[currentParticle].Age <= 1)
+                {
+                    Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+                    Vector3 forward = Vector3.Normalize(particleEffect.particles[currentParticle].Velocity);
+                    forward *= particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+                    primitiveBatch.DrawLine(particleEffect.Texture,
+                                            particleEffect.particles[currentParticle].Position,
+                                            particleEffect.particles[currentParticle].Position + forward,
+                                            particleEffect.particles[currentParticle].Size,
+                                            textureTransform, null,
+                                            particleEffect.particles[currentParticle].Color);
+                }
+            }
         }
 
-        public void DrawLine(Texture2D texture, Vector3[] lineStrip, float width, Color color)
+        public void DrawConstrainedBillboard(ParticleEffect particleEffect, Vector3 axis)
         {
-            DrawLine(texture, lineStrip, width, Vector2.One, Vector2.Zero, color);
+            for (int currentParticle = particleEffect.firstParticle;
+                     currentParticle != particleEffect.lastParticle;
+                     currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+            {
+                if (particleEffect.particles[currentParticle].Age <= 1)
+                {
+                    Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+                    Vector3 forward = axis * particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+                    primitiveBatch.DrawLine(particleEffect.Texture,
+                                            particleEffect.particles[currentParticle].Position,
+                                            particleEffect.particles[currentParticle].Position + forward,
+                                            particleEffect.particles[currentParticle].Size,
+                                            textureTransform, null,
+                                            particleEffect.particles[currentParticle].Color);
+                }
+            }
         }
 
-        public void DrawLine(Texture2D texture, Vector3[] lineStrip, float width, Vector2 textureScale, Vector2 textureOffset, Color color)
+        public void End()
         {
-            lineSprite.Draw(texture, lineStrip, width, textureScale, textureOffset, color);
-        }
-
-        public void Draw(ParticleEffect effect, GameTime time)
-        {
-            particleEffect.Draw(effect, time);
-        }
-
-        public void End() 
-        {
-            pointSprite.End();
-            lineSprite.End();
-            particleEffect.End();
+            primitiveBatch.End();
         }
 
         public void Dispose()
         {
-            if (pointSprite != null)
-                pointSprite.Dispose();
-            if (lineSprite != null)
-                lineSprite.Dispose();
+            Dispose(true);
 
-            IsDisposed = true;
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                primitiveBatch.Dispose();
+            }
+        }
+
+        ~ParticleBatch()
+        {
+            Dispose(false);
         }
     }
 }

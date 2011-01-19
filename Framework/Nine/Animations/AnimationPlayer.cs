@@ -22,7 +22,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Animations
 {
     /// <summary>
-    /// A basic animation player that can play multiple IAnimation instances.
+    /// Represents a basic animation player that can play multiple animation
+    /// sequences using different channels.
     /// </summary>
     public class AnimationPlayer : AnimationPlayerChannel
     {
@@ -43,6 +44,7 @@ namespace Nine.Animations
         /// </summary>
         public AnimationPlayer()
         {
+            this.Animations = new Dictionary<string, IAnimation>();
             base.animations = this.Animations;
         }
 
@@ -83,6 +85,9 @@ namespace Nine.Animations
         }
     }
 
+    /// <summary>
+    /// Represents a channel used by <c>AnimationPlayer</c>.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class AnimationPlayerChannel : Animation
     {
@@ -142,7 +147,7 @@ namespace Nine.Animations
             if (Current != null)
                 Current.Stop();
 
-            Current = new SequentialAnimationBase<IAnimation>(new DelayAnimation(delay), current);
+            Current = new SequentialAnimation(new DelayAnimation(delay), current);
             CurrentName = null;
 
             Play();

@@ -30,8 +30,8 @@
     <Compile Include="..\..\Content\Textures\fireball\fireball002.DDS">
       <Link>fireball002.DDS</Link>
       <Name>fireball</Name>
-      <Importer>SequentialImageListImporter</Importer>
-      <Processor>SequentialImageListProcessor</Processor>
+      <Importer>SequentialTextureListImporter</Importer>
+      <Processor>SequentialTextureListProcessor</Processor>
       <ProcessorParameters_Pack>False</ProcessorParameters_Pack>
     </Compile>
   </ItemGroup>

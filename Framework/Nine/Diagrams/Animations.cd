@@ -9,62 +9,85 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Nine.Animations.DelayAnimation" Collapsed="true">
-    <Position X="10.25" Y="3.5" Width="1.5" />
+    <Position X="6" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Animations\DelayAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Animations.KeyframeAnimation" Collapsed="true">
-    <Position X="5.75" Y="3.5" Width="1.5" />
+    <Position X="10.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BCCgEAAgAAAACAIICAAAAAgAAAAAQCAAAAwAAAAAAAg=</HashCode>
+      <HashCode>BCCgEAAgAAAACAIICAAAAAgAAAAAQCAABAwAAAAAAAg=</HashCode>
       <FileName>Animations\KeyframeAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Animations.LayeredAnimation" Collapsed="true">
     <Position X="3.5" Y="2" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>ACQBAAAAAAAAABoAAAAAAAAAAAAAACAEAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Animations\LayeredAnimation.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Nine.Animations.SequentialAnimation" Collapsed="true">
     <Position X="5.75" Y="2" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>ACQBAAAAAAAAABoACACAAAAQAAAAECAAgAAAAAAAACA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Animations\SequentialAnimation.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Nine.Animations.TimelineAnimation" Collapsed="true">
     <Position X="8" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACQhAAAgAgACAAIACCAAIAABAAAAAyEAAAIAAAAIAAE=</HashCode>
+      <HashCode>ACQhAAAgAAACCAIgCCAAIAANAAAAAyEAAAIAAAAIAAE=</HashCode>
       <FileName>Animations\TimelineAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Nine.Animations.TweenAnimation&lt;T&gt;" Collapsed="true">
     <Position X="8" Y="3.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AgAiAAIgIAACIgABAAAAACgAAADIACAAiAAgACACCAA=</HashCode>
+      <HashCode>AgAiAAIgIAACIgIBAAAAACgAAADIACAAiAAgACACCAA=</HashCode>
       <FileName>Animations\TweenAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Nine.Graphics.SpriteAnimation" Collapsed="true">
-    <Position X="4.75" Y="5" Width="1.5" />
+  <Class Name="Nine.Animations.SpriteAnimation" Collapsed="true">
+    <Position X="9.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAABAAAAYAAAAAABAAAAAoAAAAAAAA=</HashCode>
-      <FileName>Graphics\SpriteAnimation.cs</FileName>
+      <FileName>Animations\SpriteAnimation.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Nine.Graphics.BoneAnimation" Collapsed="true">
-    <Position X="7" Y="5" Width="1.5" />
+  <Class Name="Nine.Animations.BoneAnimation" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQwAAAAAAAAIIQAAAEIABAAAAAEACAgAEggAAAIEIA=</HashCode>
-      <FileName>Graphics\BoneAnimation.cs</FileName>
+      <HashCode>ACQRAAAAAAgUAAsiEIEAEFBBABICACAAAkhCAgAAQgA=</HashCode>
+      <FileName>Animations\BoneAnimation.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Animations.BoneAnimationController" Collapsed="true">
+    <Position X="12.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQQgAAAAgAAAIAAgAAAIAIAAAAAAAAAIAAgAAAAAAAA=</HashCode>
+      <FileName>Animations\BoneAnimationControllers.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Animations.LookAtController" Collapsed="true">
+    <Position X="12.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAgAAAAAAABggAAAAAyRAIACAAAAAAAAAAAACUAI=</HashCode>
+      <FileName>Animations\BoneAnimationControllers.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Nine.Animations.BoneSnapshotController" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Animations\BoneAnimationControllers.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Nine.Animations.IAnimation">
     <Position X="1.5" Y="0.5" Width="1.5" />

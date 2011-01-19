@@ -570,12 +570,12 @@ namespace Nine
         }
 
         #region ISpatialQuery Members
-        public IEnumerable<T> Find(Vector3 position, float radius)
+        public IEnumerable<T> FindAll(Vector3 position, float radius)
         {
-            return Find(new BoundingSphere(position, radius));
+            return FindAll(new BoundingSphere(position, radius));
         }
 
-        public IEnumerable<T> Find(BoundingBox box)
+        public IEnumerable<T> FindAll(BoundingBox box)
         {
             return Unique(InternalFind(box));
         }
@@ -596,7 +596,7 @@ namespace Nine
                 }
             }
         }
-        public IEnumerable<T> Find(BoundingSphere sphere)
+        public IEnumerable<T> FindAll(BoundingSphere sphere)
         {
             return Unique(InternalFind(sphere));
         }
@@ -616,7 +616,7 @@ namespace Nine
             }
         }
 
-        public IEnumerable<T> Find(Ray ray)
+        public IEnumerable<T> FindAll(Ray ray)
         {
             foreach (Point grid in Traverse(ray, rayPickPrecision))
             {
@@ -638,7 +638,7 @@ namespace Nine
             }
         }
 
-        public T FindFirst(Ray ray)
+        public T Find(Ray ray)
         {
             float? currentDistance;
             float minDistance = float.MaxValue;
@@ -675,7 +675,7 @@ namespace Nine
             return result;
         }
 
-        public IEnumerable<T> Find(BoundingFrustum frustum)
+        public IEnumerable<T> FindAll(BoundingFrustum frustum)
         {
             return Unique(InternalFind(frustum));
         }

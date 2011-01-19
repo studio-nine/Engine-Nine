@@ -33,10 +33,6 @@ namespace TerrainSample
         DrawableSurface terrain;
         BasicEffect basicEffect;
 
-#if !WINDOWS_PHONE
-        LinkedEffect terrainEffect;
-#endif
-
         public TerrainGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -64,24 +60,22 @@ namespace TerrainSample
             camera = new TopDownEditorCamera(GraphicsDevice);
 
             // Create a terrain based on the terrain geometry loaded from file
-            //terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("RF1"), 64);
             terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 8);
+            
+            // Center the terrain to the camera
+            terrain.Position = -terrain.BoundingBox.GetCenter();
             terrain.TextureTransform = TextureTransform.CreateScale(32, 32);
-            terrain.Invalidate();
 
-            // Uncomment next line to create a flat terrain
-            //terrain = new DrawableSurface(GraphicsDevice, 1, 128, 128, 8);
-            terrain.Freeze();
+            // Need to call invalidate after changing TextureTransform
+            terrain.Invalidate();
 
             // Initialize terrain effects
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.TextureEnabled = true;
-
-#if !WINDOWS_PHONE
-            basicEffect.Texture = Content.Load<Texture2D>("Mountain");
-            terrainEffect = Content.Load<LinkedEffect>("TerrainEffect");
-#else
+#if WINDOWS_PHONE
             basicEffect.Texture = Content.Load<Texture2D>("Mountain.Low");
+#else
+            basicEffect.Texture = Content.Load<Texture2D>("Mountain");
 #endif
         }
 

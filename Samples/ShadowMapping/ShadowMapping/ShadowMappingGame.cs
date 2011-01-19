@@ -112,7 +112,7 @@ namespace ShadowMapping
 
             // Light view and light projection defines a light frustum.
             // Shadows will be projected based on this frustom.
-            ShadowMapEffectPart shadowMapEffectPart = shadow.FindFirst<ShadowMapEffectPart>();
+            IEffectShadowMap shadowMapEffectPart = shadow.FindFirst<IEffectShadowMap>();
 
             // This value needs to be tweaked
             shadowMapEffectPart.DepthBias = 0.005f;

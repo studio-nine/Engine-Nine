@@ -20,7 +20,10 @@ using Nine.Graphics.Effects;
 
 namespace Nine.Graphics.Effects
 {
-    public sealed class ShadowMap : IDisposable
+    /// <summary>
+    /// Represents a shadow drawing technique using shadowmap.
+    /// </summary>
+    public class ShadowMap : IDisposable
     {
         BlurEffect blur;
         RenderTarget2D renderTarget;
@@ -104,18 +107,28 @@ namespace Nine.Graphics.Effects
 
             return Texture = map;
         }
-
-        /// <summary>
-        /// Disposes any resources associated with this instance.
-        /// </summary>
+        
         public void Dispose()
         {
-            if (renderTarget != null)
-                renderTarget.Dispose();
-            if (Texture != null)
-                Texture.Dispose();
+            Dispose(true);
 
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (renderTarget != null)
+                    renderTarget.Dispose();
+                if (Texture != null)
+                    Texture.Dispose();
+            }
+        }
+
+        ~ShadowMap()
+        {
+            Dispose(false);
         }
     }
 }

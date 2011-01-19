@@ -182,7 +182,7 @@ namespace Nine
         /// however, so in this particular case the performance benefits from passing
         /// everything by reference outweigh the loss of readability.
         /// </remarks>
-        public static void Intersects(this Ray ray,
+        internal static void Intersects(this Ray ray,
                                           ref Vector3 vertex1,
                                           ref Vector3 vertex2,
                                           ref Vector3 vertex3, out float? result)

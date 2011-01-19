@@ -103,12 +103,32 @@ namespace Nine
             }
         }
 
-        /// <summary>
-        /// Determines if a Range object equals to another Range object
-        /// </summary>
         public bool Equals(BoundingRectangle other)
         {
-            return Min.Equals(other.Min) && Max.Equals(other.Max);
+            return Min == other.Min && Max == other.Max;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BoundingRectangle)
+                return Equals((BoundingRectangle)obj);
+
+            return false;
+        }
+
+        public static bool operator ==(BoundingRectangle value1, BoundingRectangle value2)
+        {
+            return ((value1.Min == value2.Min) && (value1.Max == value2.Max));
+        }
+
+        public static bool operator !=(BoundingRectangle value1, BoundingRectangle value2)
+        {
+            return !(value1.Min == value2.Min && value1.Max == value2.Max);
+        }
+
+        public override int GetHashCode()
+        {
+            return Min.GetHashCode() + Max.GetHashCode();
         }
 
         public override string ToString()

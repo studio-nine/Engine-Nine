@@ -19,6 +19,57 @@ namespace Nine.Animations.Test
     public class TweenTest
     {
         [TestMethod()]
+        public void CompleteTest()
+        {
+            bool completed = false;
+            TweenAnimation<float> tween = new TweenAnimation<float>()
+            {
+                From = -0.239572048f,
+                To = 1.2223f,
+                Duration = TimeSpan.FromSeconds(2.34123f),
+            };
+            tween.Completed += (o, e) =>
+            {
+                completed = true;
+            };
+            tween.Play();
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.34234f)));
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.284957f)));
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.0001479f)));
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2.38562939f)));
+
+            Assert.IsTrue(completed);
+            Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
+            Assert.AreEqual<TimeSpan>(tween.Duration, tween.ElapsedTime);
+        }
+
+        [TestMethod()]
+        public void BackwardCompleteTest()
+        {
+            bool completed = false;
+            TweenAnimation<float> tween = new TweenAnimation<float>()
+            {
+                From = -0.239572048f,
+                To = 1.2223f,
+                Duration = TimeSpan.FromSeconds(2.34123f),
+            };
+            tween.Completed += (o, e) =>
+            {
+                completed = true;
+            };
+            tween.StartupDirection = AnimationDirection.Backward;
+            tween.Play();
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.34234f)));
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.284957f)));
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.0001479f)));
+            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2.38562939f)));
+
+            Assert.IsTrue(completed);
+            Assert.AreEqual<TimeSpan>(TimeSpan.Zero, tween.Position);
+            Assert.AreEqual<TimeSpan>(tween.Duration, tween.ElapsedTime);
+        }
+
+        [TestMethod()]
         public void ByTest()
         {
             Assert.AreEqual<Vector2>(

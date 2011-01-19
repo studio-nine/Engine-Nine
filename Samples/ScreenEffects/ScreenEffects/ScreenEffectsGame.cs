@@ -27,7 +27,6 @@ namespace ScreenEffects
     public class ScreenEffectsGame : Microsoft.Xna.Framework.Game
     {
         SpriteBatch spriteBatch;
-
         Texture2D background;
 
         ScreenEffect linkedScreenEffect;
@@ -50,8 +49,8 @@ namespace ScreenEffects
 
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
-            Components.Add(new FrameRate(this, "Consolas"));
             IsMouseVisible = true;
+            Components.Add(new FrameRate(this, "Consolas"));
         }
 
 
@@ -68,9 +67,10 @@ namespace ScreenEffects
             linkedScreenEffect = new ScreenEffect(GraphicsDevice);
 
             // Create a bloom effect using two ScreenEffectPass.
+            // This effect is created using LinkedEffect which is linked at
+            // compile time into a single shader, thus it is likely to be faster.
             ScreenEffectPass basePass = new ScreenEffectPass(GraphicsDevice);
             basePass.Effects.Add(Content.Load<Effect>("BasePass"));
-            //basePass.Color = Color.Yellow;
             basePass.BlendState = BlendState.Opaque;
 
             ScreenEffectPass brightPass = new ScreenEffectPass(GraphicsDevice);
@@ -81,21 +81,22 @@ namespace ScreenEffects
             linkedScreenEffect.Passes.Add(basePass);
             linkedScreenEffect.Passes.Add(brightPass);
 
-
+            // This effect is composes using basic primitive effects, it allows
+            // for arbitrary combination but might be a little slower.
             composedScreenEffect = new ScreenEffect(GraphicsDevice);
 
-            ScreenEffectPass basePassTest = new ScreenEffectPass(GraphicsDevice);
-            basePassTest.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateSaturation(0.9f) });
-            basePassTest.BlendState = BlendState.Opaque;
+            ScreenEffectPass composedBasePass = new ScreenEffectPass(GraphicsDevice);
+            composedBasePass.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Matrix = ColorMatrix.CreateHue(0.7f) });
+            composedBasePass.BlendState = BlendState.Opaque;
 
-            ScreenEffectPass brightPassTest = new ScreenEffectPass(GraphicsDevice);
-            brightPassTest.Effects.Add(new RadialBlurEffect(GraphicsDevice));
-            brightPassTest.Effects.Add(new ThresholdEffect(GraphicsDevice));
-            brightPassTest.BlendState = BlendState.Additive;
-            brightPassTest.DownScaleEnabled = false;
+            ScreenEffectPass composedBrightPass = new ScreenEffectPass(GraphicsDevice);
+            composedBrightPass.Effects.Add(new RadialBlurEffect(GraphicsDevice));
+            composedBrightPass.Effects.Add(new ThresholdEffect(GraphicsDevice));
+            composedBrightPass.BlendState = BlendState.Additive;
+            composedBrightPass.DownScaleEnabled = false;
 
-            composedScreenEffect.Passes.Add(basePassTest);
-            composedScreenEffect.Passes.Add(brightPassTest);
+            composedScreenEffect.Passes.Add(composedBasePass);
+            //composedScreenEffect.Passes.Add(composedBrightPass);
         }
 
         /// <summary>
@@ -105,8 +106,13 @@ namespace ScreenEffects
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
-            ScreenEffect currentScreenEffect = Keyboard.GetState().IsKeyDown(Keys.T) ? composedScreenEffect : linkedScreenEffect;
-            
+            ScreenEffect currentScreenEffect = !Keyboard.GetState().IsKeyDown(Keys.T) ? composedScreenEffect : linkedScreenEffect;
+
+            if (currentScreenEffect == composedScreenEffect)
+            {
+                ((ColorMatrixEffect)(currentScreenEffect.Passes[0].Effects[0])).Matrix = ColorMatrix.CreateSaturation((float)gameTime.TotalGameTime.TotalSeconds / 10);
+            }
+
             currentScreenEffect.Begin();
             {
                 // Draw the scene between screen effect Begin/End

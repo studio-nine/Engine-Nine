@@ -25,20 +25,19 @@ namespace Nine.Animations
     /// The animation completes when all of its containing animations
     /// had finished playing.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class LayeredAnimationBase<T> : Animation, IEnumerable<T> where T : IAnimation
+    public class LayeredAnimation : Animation, IEnumerable<IAnimation>
     {
         /// <summary>
         /// Gets all the layers in the animation.
         /// </summary>
-        public IList<T> Animations { get; private set; }
-
+        public IList<IAnimation> Animations { get; private set; }
+        
         /// <summary>
         /// Gets or sets the key animation of this LayeredAnimation.
         /// A LayeredAnimation ends either when the last contained 
         /// animation stops or when the specifed KeyAnimation ends.
         /// </summary>
-        public T KeyAnimation
+        public IAnimation KeyAnimation
         {
             get { return keyAnimation; }
             set
@@ -55,25 +54,37 @@ namespace Nine.Animations
             }
         }
 
-        private T keyAnimation;
+        private IAnimation keyAnimation;
+
+        /// <summary>
+        /// Gets or sets number of times this animation will be played.
+        /// </summary>
+        public int Repeat { get; set; }
+        private int repeatCounter = 0;
+
+        /// <summary>
+        /// Occurs when this animation has reached the end and repeated.
+        /// </summary>
+        public event EventHandler Repeated;
 
         /// <summary>
         /// Creates a new <c>LayeredAnimation</c>.
         /// </summary>
-        public LayeredAnimationBase() 
+        public LayeredAnimation() 
         {
-            Animations = new LayeredAnimationCollection<T>(this);
+            Repeat = 1;
+            Animations = new List<IAnimation>();
         }
 
         /// <summary>
         /// Creates a new <c>LayeredAnimation</c> then fill each layer
         /// with the input animations.
         /// </summary>
-        public LayeredAnimationBase(IEnumerable<T> animations)
+        public LayeredAnimation(IEnumerable<IAnimation> animations)
         {
-            Animations = new LayeredAnimationCollection<T>(this);
-
-            foreach (T animation in animations)
+            Repeat = 1;
+            Animations = new List<IAnimation>();
+            foreach (IAnimation animation in animations)
                 Animations.Add(animation);
         }
 
@@ -81,16 +92,18 @@ namespace Nine.Animations
         /// Creates a new <c>LayeredAnimation</c> then fill each layer
         /// with the input animations.
         /// </summary>
-        public LayeredAnimationBase(params T[] animations)
+        public LayeredAnimation(params IAnimation[] animations)
         {
-            Animations = new LayeredAnimationCollection<T>(this);
-
-            foreach (T animation in animations)
+            Repeat = 1;
+            Animations = new List<IAnimation>();
+            foreach (IAnimation animation in animations)
                 Animations.Add(animation);
         }
         
         protected override void OnStarted()
         {
+            repeatCounter = 0;
+
             for (int i = 0; i < Animations.Count; i++)
                 Animations[i].Play();
 
@@ -154,8 +167,18 @@ namespace Nine.Animations
 
                 if (allStopped)
                 {
-                    Stop();
-                    OnCompleted();
+                    repeatCounter++;
+                    if (repeatCounter == Repeat)
+                    {
+                        Stop();
+                        OnCompleted();
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Animations.Count; i++)
+                            Animations[i].Play();
+                        OnRepeated();
+                    }
                 }
             }
  	    
@@ -168,7 +191,13 @@ namespace Nine.Animations
                 Completed(this, EventArgs.Empty);
         }
 
-        public IEnumerator<T> GetEnumerator()
+        protected virtual void OnRepeated()
+        {
+            if (Repeated != null)
+                Repeated(this, EventArgs.Empty);
+        }
+
+        public IEnumerator<IAnimation> GetEnumerator()
         {
             return Animations.GetEnumerator();
         }
@@ -177,72 +206,5 @@ namespace Nine.Animations
         {
             return Animations.GetEnumerator();
         }
-    }
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class LayeredAnimationCollection<T> : EnumerableCollection<T> where T : IAnimation
-    {
-        LayeredAnimationBase<T> Animation;
-
-        internal LayeredAnimationCollection(LayeredAnimationBase<T> animation)
-        {
-            this.Animation = animation;
-        }
-
-        protected override void OnAdded(int index, T value)
-        {
-            if (value == null)
-                throw new ArgumentNullException("value");
-
-            if (Animation.State != AnimationState.Stopped)
-                throw new InvalidOperationException(
-                    "Cannot modify the collection when the animation is been played.");
-
-            base.OnAdded(index, value);
-        }
-
-        protected override void OnChanged(int index, T value, T previousValue)
-        {
-            if (value == null)
-                throw new ArgumentNullException("value");
-
-            if (Animation.State != AnimationState.Stopped)
-                throw new InvalidOperationException(
-                    "Cannot modify the collection when the animation is been played.");
-
-            base.OnChanged(index, value, previousValue);
-        }
-
-        protected override void OnRemoved(int index, T value)
-        {
-            if (Animation.State != AnimationState.Stopped)
-                throw new InvalidOperationException(
-                    "Cannot modify the collection when the animation is been played.");
-
-            base.OnRemoved(index, value);
-        }
-    }
-
-    /// <summary>
-    /// Contains several animation clips that are played concurrently.
-    /// The animation completes when all of its containing animations
-    /// had finished playing.
-    /// </summary>
-    public class LayeredAnimation : LayeredAnimationBase<IAnimation>
-    {
-        /// <summary>
-        /// Creates a new <c>LayeredAnimation</c>.
-        /// </summary>
-        public LayeredAnimation() { }
-
-        /// <summary>
-        /// Creates a new <c>LayeredAnimation</c> with the specified animations.
-        /// </summary>
-        public LayeredAnimation(IEnumerable<IAnimation> animations) : base(animations) { }
-
-        /// <summary>
-        /// Creates a new <c>LayeredAnimation</c> with the specified animations.
-        /// </summary>
-        public LayeredAnimation(params IAnimation[] animations) : base(animations) { }
     }
 }

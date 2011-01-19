@@ -26,22 +26,22 @@ namespace Nine
         /// <summary>
         /// Finds the nearest object intersects with the specified ray.
         /// </summary>
-        T FindFirst(Ray ray);
+        T Find(Ray ray);
         
         /// <summary>
         /// Finds all the objects resides within the specified bounding sphere.
         /// </summary>
-        IEnumerable<T> Find(Vector3 position, float radius);
+        IEnumerable<T> FindAll(Vector3 position, float radius);
 
         /// <summary>
         /// Finds all the objects that intersects with the specified ray.
         /// </summary>
-        IEnumerable<T> Find(Ray ray);
+        IEnumerable<T> FindAll(Ray ray);
 
         /// <summary>
         /// Finds all the objects resides within the specified bounding frustum.
         /// </summary>
-        IEnumerable<T> Find(BoundingFrustum frustum);
+        IEnumerable<T> FindAll(BoundingFrustum frustum);
     }
 
     /// <summary>
@@ -102,29 +102,29 @@ namespace Nine
             }
         }
         
-        public TOutput FindFirst(Ray ray)
+        public TOutput Find(Ray ray)
         {
-            return Convert(InnerQueries[0].FindFirst(ray));
+            return Convert(InnerQueries[0].Find(ray));
         }
 
-        public IEnumerable<TOutput> Find(Vector3 position, float radius)
+        public IEnumerable<TOutput> FindAll(Vector3 position, float radius)
         {
             foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.Find(position, radius)))
+                foreach (TOutput output in Convert(query.FindAll(position, radius)))
                     yield return output;
         }
 
-        public IEnumerable<TOutput> Find(Ray ray)
+        public IEnumerable<TOutput> FindAll(Ray ray)
         {
             foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.Find(ray)))
+                foreach (TOutput output in Convert(query.FindAll(ray)))
                     yield return output;
         }
 
-        public IEnumerable<TOutput> Find(BoundingFrustum frustum)
+        public IEnumerable<TOutput> FindAll(BoundingFrustum frustum)
         {
             foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.Find(frustum)))
+                foreach (TOutput output in Convert(query.FindAll(frustum)))
                     yield return output;
         }
     }

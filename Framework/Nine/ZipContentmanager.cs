@@ -65,7 +65,7 @@ namespace Nine
 
 
         #region ZipEntry
-        internal class ZipEntry
+        internal class ZipEntry : IDisposable
         {
 
             private const int ZipEntrySignature = 0x04034b50;
@@ -759,6 +759,24 @@ namespace Nine
                 //_CompressedStream= null;
                 _UnderlyingMemoryStream.Close();
                 _UnderlyingMemoryStream = null;
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    if (_UnderlyingMemoryStream != null)
+                        _UnderlyingMemoryStream.Dispose();
+                    if (_CompressedStream != null)
+                        _CompressedStream.Dispose();
+                }
             }
         }
         #endregion

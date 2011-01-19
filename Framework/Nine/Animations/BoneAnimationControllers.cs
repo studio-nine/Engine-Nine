@@ -62,7 +62,7 @@ namespace Nine.Animations
 
             this.AnimationClip = animationClip;
             this.Ending = animationClip.PreferredEnding;
-            this.InterpolationEnabled = true;
+            this.InterpolationEnabled = false;
             this.FramesPerSecond = animationClip.FramesPerSecond;
         }
 

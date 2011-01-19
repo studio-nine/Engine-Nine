@@ -73,7 +73,7 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new instance of <c>KeyframeAnimation</c>.
         /// </summary>
-        public KeyframeAnimation()
+        protected KeyframeAnimation()
         {
             CurrentFrame = 0;
             FramesPerSecond = 24;

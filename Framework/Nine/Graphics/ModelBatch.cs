@@ -103,16 +103,9 @@ namespace Nine.Graphics
         private SamplerState samplerState;
         private DepthStencilState depthStencilState;
         private RasterizerState rasterizerState;
-        
-        /// <summary>
-        /// Gets the view matrix used by this ModelBatch.
-        /// </summary>
-        public Matrix View { get; private set; }
 
-        /// <summary>
-        /// Gets the projection matrix used by this ModelBatch.
-        /// </summary>
-        public Matrix Projection { get; private set; }
+        private Matrix view;
+        private Matrix projection;
 
         /// <summary>
         /// Gets the underlying graphics device used by this ModelBatch.
@@ -130,10 +123,18 @@ namespace Nine.Graphics
         public SkinnedEffect SkinnedEffect { get; private set; }
 
         /// <summary>
+        /// Gets or sets user data.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
         /// Creates a new ModelBatch instance.
         /// </summary>
         public ModelBatch(GraphicsDevice graphics)
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
             GraphicsDevice = graphics;
 
             BasicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
@@ -165,8 +166,8 @@ namespace Nine.Graphics
             this.depthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.Default;
             this.rasterizerState = rasterizerState != null ? rasterizerState : RasterizerState.CullCounterClockwise;
 
-            View = view;
-            Projection = projection;
+            this.view = view;
+            this.projection = projection;
 
             eyePosition = Matrix.Invert(view).Translation;
 
@@ -310,8 +311,8 @@ namespace Nine.Graphics
             {
                 IEffectMatrices matrices = effect as IEffectMatrices;
                 matrices.World = world;
-                matrices.View = View;
-                matrices.Projection = Projection;
+                matrices.View = view;
+                matrices.Projection = projection;
             }
 
             // Setup bones
@@ -418,6 +419,11 @@ namespace Nine.Graphics
                 if (SkinnedEffect != null)
                     SkinnedEffect.Dispose();
             }
+        }
+
+        ~ModelBatch()
+        {
+            Dispose(false);
         }
     }
 }

@@ -10,7 +10,7 @@
   <Class Name="Nine.MouseEventArgs">
     <Position X="4.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAACAAAAAAAAAAAUAAAAAAAAAAAYEA=</HashCode>
+      <HashCode>AEAAAAAAAAAAAAAgCAAAAAAAAAAAUAAAAAAAAAAAYEA=</HashCode>
       <FileName>Input.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -24,16 +24,8 @@
   <Class Name="Nine.InputComponent" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="0.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BASAQAIAAQgDjEEAAEiAhAKAAJAAEBAQAAEAKACAAgA=</HashCode>
+      <HashCode>BASAAAIAAQgDjEEAAEiAhAKAAJAAEBAQIKEAKBCAAgg=</HashCode>
       <FileName>Input.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="Nine.GameComponent" Collapsed="true">
-    <Position X="0.75" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>gwQAAAAAAAAAAYAAAACAAAAACAABAAAAAAAIAYAAAAA=</HashCode>
-      <FileName>Component.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

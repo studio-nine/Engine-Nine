@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -18,535 +18,274 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics.ParticleEffects
 {
-    public sealed class ParticleEffect : IDisposable
+    /// <summary>
+    /// Defines a special visual effect made up of particles.
+    /// </summary>
+    public class ParticleEffect : IDisposable
     {
-        #region Properties
+        /// <summary>
+        /// Gets or sets whether this particle effect is enabled.
+        /// </summary>
+        public bool Enabled { get; set; }
 
-        public ParticleEmitter Emitter { get; private set; }
+        /// <summary>
+        /// Gets or sets the number of particles emitted per second.
+        /// </summary>
+        public float Emission { get; set; }
 
-        public ISpatialEmitter SpatialEmitter
-        {
-            get { return Emitter.SpatialEmitter; }
-            set { Emitter.SpatialEmitter = value; }
-        }
+        /// <summary>
+        /// Gets or sets the emitter of this particle effect.
+        /// </summary>
+        public IParticleEmitter Emitter { get; set; }
 
+        /// <summary>
+        /// Gets a collection of controllers that defines the visual of this particle effect.
+        /// </summary>
+        public ParticleControllerCollection Controllers { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the position of this particle effect.
+        /// </summary>
+        public Vector3 Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the duration of each particle.
+        /// </summary>
+        public Range<float> Duration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the range of values controlling the particle start color and alpha. 
+        /// </summary>
+        public Range<Color> Color { get; set; }
+
+        /// <summary>
+        /// Gets or sets the range of values controlling the particle start size.
+        /// </summary>
+        public Range<float> Size { get; set; }
+
+        /// <summary>
+        /// Gets or sets the range of values controlling the particle start rotation.
+        /// </summary>
+        public Range<float> Rotation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the range of values controlling the particle start speed.
+        /// </summary>
+        public Range<float> Speed { get; set; }
+
+        /// <summary>
+        /// Gets the graphics device.
+        /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
-        /// Gets the estimated bounding box of this particle effect.
+        /// Gets or sets the texture used by this particle effect.
+        /// </summary>
+        public Texture2D Texture { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source rectangle in the texture.
+        /// </summary>
+        public Rectangle? SourceRectangle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the blend state used by this particle effect.
+        /// </summary>
+        public BlendState BlendState { get; set; }
+
+        /// <summary>
+        /// Gets or sets a scale factor along the forward axis when drawing this
+        /// particle effect using constrained billboard.
+        /// </summary>
+        public float Stretch { get; set; }
+
+        /// <summary>
+        /// Gets or sets user data.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
+        /// Gets the approximate bounds of this particle effect.
         /// </summary>
         public BoundingBox BoundingBox
         {
             get
             {
-                BoundingBox box = SpatialEmitter.BoundingBox;
+                if (Emitter == null)
+                    return new Microsoft.Xna.Framework.BoundingBox();
 
-                float h = (float)(Math.Abs(HorizontalVelocity.Max) * Duration.Max.TotalSeconds);
-                float v = (float)(VerticalVelocity.Max * Duration.Max.TotalSeconds);
+                // TODO: Should cache this value
+                BoundingBox box = Emitter.BoundingBox;
 
-                box.Max.X += h;
-                box.Max.Y += h;
-                box.Min.X -= h;
-                box.Min.Y -= h;
+                Vector3 maxBorder = Vector3.Zero;
+                for (int currentController = 0; currentController < Controllers.Count; currentController++)
+                {
+                    Vector3 border = Controllers[currentController].Border;
 
-                if (v > 0)
-                    box.Min.Z -= v;
-                else if (v < 0)
-                    box.Max.Z += v;
+                    if (border.X > maxBorder.X)
+                        maxBorder.X = border.X;
+                    if (border.Y > maxBorder.Y)
+                        maxBorder.Y = border.Y;
+                    if (border.Z > maxBorder.Z)
+                        maxBorder.Z = border.Z;
+                }
 
+                box.Max += maxBorder;
+                box.Min -= maxBorder;
                 return box;
             }
         }
 
         /// <summary>
-        /// Gets or sets the texture used by this particle system.
+        /// Gets the current active particle count
         /// </summary>
-        public Texture2D Texture { get; set; }
-
-        /// <summary>
-        /// Duration of each particle.
-        /// </summary>
-        public Range<TimeSpan> Duration { get; set; }
-
-        /// <summary>
-        /// Range of values controlling how much X and Y axis velocity to give each particle.
-        /// </summary>
-        public Range<float> HorizontalVelocity { get; set; }
-        
-        /// <summary>
-        /// Range of values controlling how much Z axis velocity to give each particle.
-        /// </summary>
-        public Range<float> VerticalVelocity { get; set; }
-        
-        /// <summary>
-        /// Direction and strength of the gravity effect. 
-        /// </summary>
-        public Vector3 Gravity { get; set; }
-
-        /// <summary>
-        /// Controls how the particle velocity will change over their lifetime. If set
-        /// to 1, particles will keep going at the same speed as when they were created.
-        /// If set to 0, particles will come to a complete stop right before they die.
-        /// Values greater than 1 make the particles speed up over time.
-        /// </summary>
-        public float EndVelocity { get; set; }
-
-
-        /// <summary>
-        /// Range of values controlling the particle start color and alpha. 
-        /// </summary>
-        public Range<Color> StartColor { get; set; }
-
-        /// <summary>
-        /// Range of values controlling the particle end color and alpha. 
-        /// </summary>
-        public Range<Color> EndColor { get; set; }
-
-        /// <summary>
-        /// Range of values controlling how fast the particles rotate.
-        /// </summary>
-        public Range<float> RotateSpeed { get; set; }
-
-        /// <summary>
-        /// Range of values controlling how big the particles are when first created.
-        /// </summary>
-        public Range<float> StartSize { get; set; }
-
-        /// <summary>
-        /// Range of values controlling how big particles become at the end of their life.
-        /// </summary>
-        public Range<float> EndSize { get; set; }
-
-        #endregion
-        
-        #region Fields
-
-        // An array of particles, treated as a circular queue.
-        ParticleVertex[] particles;
-
-
-        // A vertex buffer holding our particles. This contains the same data as
-        // the particles array, but copied across to where the GPU can access it.
-        DynamicVertexBuffer vertexBuffer = null;
-               
-        // The index buffer is static since all particle system has the same index buffer
-        static IndexBuffer indexBuffer = null;
-
-        // The particles array and vertex buffer are treated as a circular queue.
-        // Initially, the entire contents of the array are free, because no particles
-        // are in use. When a new particle is created, this is allocated from the
-        // beginning of the array. If more than one particle is created, these will
-        // always be stored in a consecutive block of array elements. Because all
-        // particles last for the same amount of time, old particles will always be
-        // removed in order from the start of this active particle region, so the
-        // active and free regions will never be intermingled. Because the queue is
-        // circular, there can be times when the active particle region wraps from the
-        // end of the array back to the start. The queue uses modulo arithmetic to
-        // handle these cases. For instance with a four entry queue we could have:
-        //
-        //      0
-        //      1 - first active particle
-        //      2 
-        //      3 - first free particle
-        //
-        // In this case, particles 1 and 2 are active, while 3 and 4 are free.
-        // Using modulo arithmetic we could also have:
-        //
-        //      0
-        //      1 - first free particle
-        //      2 
-        //      3 - first active particle
-        //
-        // Here, 3 and 0 are active, while 1 and 2 are free.
-        //
-        // But wait! The full story is even more complex.
-        //
-        // When we create a new particle, we add them to our managed particles array.
-        // We also need to copy this new data into the GPU vertex buffer, but we don't
-        // want to do that straight away, because setting new data into a vertex buffer
-        // can be an expensive operation. If we are going to be adding several particles
-        // in a single frame, it is faster to initially just store them in our managed
-        // array, and then later upload them all to the GPU in one single call. So our
-        // queue also needs a region for storing new particles that have been added to
-        // the managed array but not yet uploaded to the vertex buffer.
-        //
-        // Another issue occurs when old particles are retired. The CPU and GPU run
-        // asynchronously, so the GPU will often still be busy drawing the previous
-        // frame while the CPU is working on the next frame. This can cause a
-        // synchronization problem if an old particle is retired, and then immediately
-        // overwritten by a new one, because the CPU might try to change the contents
-        // of the vertex buffer while the GPU is still busy drawing the old data from
-        // it. Normally the graphics driver will take care of this by waiting until
-        // the GPU has finished drawing inside the VertexBuffer.SetData call, but we
-        // don't want to waste time waiting around every time we try to add a new
-        // particle! To avoid this delay, we can specify the SetDataOptions.NoOverwrite
-        // flag when we write to the vertex buffer. This basically means "I promise I
-        // will never try to overwrite any data that the GPU might still be using, so
-        // you can just go ahead and update the buffer straight away". To keep this
-        // promise, we must avoid reusing vertices immediately after they are drawn.
-        //
-        // So in total, our queue contains four different regions:
-        //
-        // Vertices between firstActiveParticle and firstNewParticle are actively
-        // being drawn, and exist in both the managed particles array and the GPU
-        // vertex buffer.
-        //
-        // Vertices between firstNewParticle and firstFreeParticle are newly created,
-        // and exist only in the managed particles array. These need to be uploaded
-        // to the GPU at the start of the next draw call.
-        //
-        // Vertices between firstFreeParticle and firstRetiredParticle are free and
-        // waiting to be allocated.
-        //
-        // Vertices between firstRetiredParticle and firstActiveParticle are no longer
-        // being drawn, but were drawn recently enough that the GPU could still be
-        // using them. These need to be kept around for a few more frames before they
-        // can be reallocated.
-
-        int firstActiveParticle;
-        int firstNewParticle;
-        int firstFreeParticle;
-        int firstRetiredParticle;
-
-
-        // Store the current time, in seconds.
-        float currentTime;
-
-
-        // Count how many times Draw has been called. This is used to know
-        // when it is safe to retire old particles back into the free list.
-        int drawCounter;
-
-        
-        // Shared random number generator.
-        static Random random = new Random();
-
-        #endregion
-
-
-        public ParticleEffect(int maxParticles)
+        public int ParticleCount
         {
-            Duration = TimeSpan.FromSeconds(2);
-
-            HorizontalVelocity = new Range<float>(0, 15);
-            VerticalVelocity = new Range<float>(-10, 10);
-
-            // Set gravity upside down, so the flames will 'fall' upward.
-            Gravity = new Vector3(0, 0, -10);
-
-            StartColor = new Color(255, 255, 255, 255);
-            EndColor = new Color(255, 255, 255, 0);
-
-            StartSize = 1;
-            EndSize = 3;
-
-            Emitter = new ParticleEmitter();
-
-            particles = new ParticleVertex[maxParticles * 4];
+            get { return (lastParticle + maxParticles) % maxParticles - firstParticle; }
         }
 
 
+        // An array of particles, treated as a circular queue.
+        internal Particle[] particles;
+        internal int firstParticle = 0;
+        internal int lastParticle = 0;
+        internal int currentParticle = 0;
+        internal int maxParticles;
+
+        private Random random = new Random();
+        private float timeLeftOver = 0;
+
+        /// <summary>
+        /// Creates a new particle effect.
+        /// </summary>
+        public ParticleEffect(int maxParticles)
+        {
+            Stretch = 1;
+            Duration = 2;
+            BlendState = BlendState.Additive;
+            Controllers = new ParticleControllerCollection(this);
+            Emitter = new PointEmitter();
+
+            particles = new Particle[this.maxParticles = maxParticles];
+        }
+        
         /// <summary>
         /// Updates the particle system
         /// </summary>
         public void Update(GameTime time)
         {
-            currentTime += (float)time.ElapsedGameTime.TotalSeconds;
-
-            if (Emitter != null)
-            {
-                foreach (Vector3 position in Emitter.Update(time))
-                {
-                    AddParticle(position);
-                }
-            }
-            
-            RetireActiveParticles();
-            FreeRetiredParticles();
-
-            // If we let our timer go on increasing for ever, it would eventually
-            // run out of floating point precision, at which point the particles
-            // would render incorrectly. An easy way to prevent this is to notice
-            // that the time value doesn't matter when no particles are being drawn,
-            // so we can reset it back to zero any time the active queue is empty.
-
-            if (firstActiveParticle == firstFreeParticle)
-                currentTime = 0;
-
-            if (firstRetiredParticle == firstActiveParticle)
-                drawCounter = 0;
-        }
-
-
-        /// <summary>
-        /// Draws the particle system.
-        /// </summary>
-        internal void Draw(GraphicsDevice graphics, GameTime gameTime)
-        {
-            // If we are drawed for the first time, create vertex buffers.
-            if (vertexBuffer == null)
-            {
-                LoadContent(graphics);
-            }
-
-            // If there are any particles waiting in the newly added queue,
-            // we'd better upload them to the GPU ready for drawing.
-            if (firstNewParticle != firstFreeParticle)
-            {
-                AddNewParticlesToVertexBuffer();
-            }
-
-            // If there are any active particles, draw them now!
-            if (firstActiveParticle != firstFreeParticle)
-            {
-                // Set the particle vertex buffer and vertex declaration.
-                GraphicsDevice.SetVertexBuffer(vertexBuffer);
-                GraphicsDevice.Indices = indexBuffer;
-
-                if (firstActiveParticle < firstFreeParticle)
-                {
-                    // If the active particles are all in one consecutive range,
-                    // we can draw them all in a single call.
-                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-                                          0, 0, 
-                                          firstFreeParticle - firstActiveParticle,
-                                          firstActiveParticle / 4 * 6,
-                                          (firstFreeParticle - firstActiveParticle) / 2);
-                }
-                else
-                {
-                    // If the active particle range wraps past the end of the queue
-                    // back to the start, we must split them over two draw calls.
-                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-                                          0, 0, 
-                                          particles.Length - firstActiveParticle,
-                                          firstActiveParticle / 4 * 6,
-                                          (particles.Length - firstActiveParticle) / 2);
-
-                    if (firstFreeParticle > 0)
-                    {
-                        GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList,
-                                              0, 0,
-                                              firstFreeParticle,
-                                              0,
-                                              firstFreeParticle / 2);
-                    }
-                }
-            }
-
-            drawCounter++;
-        }
-
-
-        void LoadContent(GraphicsDevice graphics)
-        {
-            GraphicsDevice = graphics;
-                        
-            // Create a dynamic vertex buffer.
-            vertexBuffer = new DynamicVertexBuffer(GraphicsDevice, typeof(ParticleVertex), particles.Length, BufferUsage.WriteOnly);
-
-            // Initialize the vertex buffer contents. This is necessary in order
-            // to correctly restore any existing particles after a lost device.
-            vertexBuffer.SetData(particles);
-
-            RequestIndexBuffer(GraphicsDevice, particles.Length / 2);
-        }
-
-        static void RequestIndexBuffer(GraphicsDevice graphics, int maxPrimitiveCount)
-        {
-            int indexCount = maxPrimitiveCount * 3;
-
-            if (indexBuffer != null && indexBuffer.IndexCount < indexCount)
-            {
-                indexBuffer.Dispose();
-                indexBuffer = null;
-            }
-
-            if (indexBuffer == null)
-            {
-                indexBuffer = new IndexBuffer(graphics, typeof(ushort), indexCount, BufferUsage.WriteOnly);
-
-                ushort[] indices = new ushort[indexCount];
-
-                int n = 0;
-
-                for (int i = 0; i < maxPrimitiveCount / 2; i++)
-                {
-                    indices[n++] = (ushort)(i * 4 + 0);
-                    indices[n++] = (ushort)(i * 4 + 1);
-                    indices[n++] = (ushort)(i * 4 + 2);
-                    indices[n++] = (ushort)(i * 4 + 1);
-                    indices[n++] = (ushort)(i * 4 + 3);
-                    indices[n++] = (ushort)(i * 4 + 2);
-                }
-
-                indexBuffer.SetData<ushort>(indices);
-            }
-        }
-
-
-        /// <summary>
-        /// Helper for checking when active particles have reached the end of
-        /// their life. It moves old particles from the active area of the queue
-        /// to the retired section.
-        /// </summary>
-        void RetireActiveParticles()
-        {
-            float particleDuration = (float)Duration.Max.TotalSeconds;
-
-            while (firstActiveParticle != firstNewParticle)
-            {
-                // Is this particle old enough to retire?
-                float particleAge = currentTime - particles[firstActiveParticle].Time;
-
-                if (particleAge < particleDuration)
-                    break;
-
-                // Remember the time at which we retired this particle.
-                particles[firstActiveParticle].Time = drawCounter;
-
-                // Move the particle from the active to the retired queue.
-                firstActiveParticle += 4;
-
-                if (firstActiveParticle >= particles.Length)
-                    firstActiveParticle = 0;
-            }
-        }
-
-
-        /// <summary>
-        /// Helper for checking when retired particles have been kept around long
-        /// enough that we can be sure the GPU is no longer using them. It moves
-        /// old particles from the retired area of the queue to the free section.
-        /// </summary>
-        void FreeRetiredParticles()
-        {
-            while (firstRetiredParticle != firstActiveParticle)
-            {
-                // Has this particle been unused long enough that
-                // the GPU is sure to be finished with it?
-                int age = drawCounter - (int)particles[firstRetiredParticle].Time;
-
-                // The GPU is never supposed to get more than 2 frames behind the CPU.
-                // We add 1 to that, just to be safe in case of buggy drivers that
-                // might bend the rules and let the GPU get further behind.
-                if (age < 3)
-                    break;
-
-                // Move the particle from the retired to the free queue.
-                firstRetiredParticle += 4;
-
-                if (firstRetiredParticle >= particles.Length)
-                    firstRetiredParticle = 0;
-            }
-        }
-
-
-        /// <summary>
-        /// Helper for uploading new particles from our managed
-        /// array to the GPU vertex buffer.
-        /// </summary>
-        void AddNewParticlesToVertexBuffer()
-        {
-            int stride = ParticleVertex.SizeInBytes;
-
-            if (firstNewParticle < firstFreeParticle)
-            {
-                // If the new particles are all in one consecutive range,
-                // we can upload them all in a single call.
-                vertexBuffer.SetData(firstNewParticle * stride, particles,
-                                     firstNewParticle,
-                                     firstFreeParticle - firstNewParticle,
-                                     stride, SetDataOptions.NoOverwrite);
-            }
-            else
-            {
-                // If the new particle range wraps past the end of the queue
-                // back to the start, we must split them over two upload calls.
-                vertexBuffer.SetData(firstNewParticle * stride, particles,
-                                     firstNewParticle,
-                                     particles.Length - firstNewParticle,
-                                     stride, SetDataOptions.NoOverwrite);
-
-                if (firstFreeParticle > 0)
-                {
-                    vertexBuffer.SetData(0, particles,
-                                         0, firstFreeParticle,
-                                         stride, SetDataOptions.NoOverwrite);
-                }
-            }
-
-            // Move the particles we just uploaded from the new to the active queue.
-            firstNewParticle = firstFreeParticle;
-        }
-        
-        /// <summary>
-        /// Adds a new particle to the system.
-        /// </summary>
-        void AddParticle(Vector3 position)
-        {
-            // Figure out where in the circular queue to allocate the new particle.
-            int nextFreeParticle = firstFreeParticle + 4;
-
-            if (nextFreeParticle >= particles.Length)
-                nextFreeParticle = 0;
-
-            // If there are no free particles, we just have to give up.
-            if (nextFreeParticle == firstRetiredParticle)
+            if (Emitter == null)
                 return;
 
+            float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
 
-            ParticleVertex vertex = new ParticleVertex();
+            UpdateEmitter(elapsedTime);
+            UpdateControllers(elapsedTime);
+            UpdateParticles(elapsedTime);
+            
+            if (ParticleCount > 0)
+                System.Diagnostics.Debug.WriteLine(particles[firstParticle]);
+        }
 
-            vertex.Position = position;
+        private void UpdateEmitter(float elapsedTime)
+        {
+            // Work out how much time has passed since the previous update.
+            float timeBetweenParticles = 1.0f / Emission;
 
-            // Fill in the particle vertex structure.
-            vertex.Time = currentTime;
+            if (elapsedTime > 0)
+            {
+                // If we had any time left over that we didn't use during the
+                // previous update, add that to the current elapsed time.
+                float timeToSpend = timeLeftOver + elapsedTime;
 
-            // Choose four random control values. These will be used by the vertex
-            // shader to give each particle a different size, rotation, and color.
-            vertex.Random1 = new Color((byte)random.Next(255),
-                                      (byte)random.Next(255),
-                                      (byte)random.Next(255),
-                                      (byte)random.Next(255));
-            vertex.Random2 = new Color((byte)random.Next(255),
-                                      (byte)random.Next(255),
-                                      (byte)random.Next(255),
-                                      (byte)random.Next(255));
+                // Counter for looping over the time interval.
+                float currentTime = -timeLeftOver;
 
-            float horizontalVelocity = MathHelper.Lerp(HorizontalVelocity.Min,
-                                                       HorizontalVelocity.Max,
-                                                       (float)random.NextDouble());
+                // Create particles as long as we have a big enough time interval.
+                while (timeToSpend > timeBetweenParticles)
+                {
+                    currentTime += timeBetweenParticles;
+                    timeToSpend -= timeBetweenParticles;
 
-            double horizontalAngle = random.NextDouble() * MathHelper.TwoPi;
+                    // Work out the optimal position for this particle. This will produce
+                    // evenly spaced particles regardless of the object speed, particle
+                    // creation frequency, or game update rate.
+                    float mu = currentTime / elapsedTime;
 
-            vertex.Velocity.X = horizontalVelocity * (float)Math.Cos(horizontalAngle);
-            vertex.Velocity.Y = horizontalVelocity * (float)Math.Sin(horizontalAngle);
+                    // Don't add new particles when the queue is full.
+                    currentParticle = lastParticle;
+                    int nextParticle = (currentParticle + 1) % maxParticles;
+                    if (nextParticle == firstParticle - 1)
+                        break;
+                    lastParticle = nextParticle;
 
-            // Add in some random amount of vertical velocity.
-            vertex.Velocity.Z = MathHelper.Lerp(VerticalVelocity.Min,
-                                                VerticalVelocity.Max,
-                                                (float)random.NextDouble());
+                    Emitter.Emit(mu, ref particles[currentParticle].Position, ref particles[currentParticle].Velocity);
 
-            vertex.TextureCoordinates = Vector2.UnitY;
-            particles[firstFreeParticle + 0] = vertex;
+                    particles[currentParticle].Age = 0;
+                    particles[currentParticle].ElapsedTime = 0;
+                    particles[currentParticle].Position += Position;
+                    particles[currentParticle].Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min); ;
+                    particles[currentParticle].Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
+                    particles[currentParticle].Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
+                    particles[currentParticle].Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
+                    particles[currentParticle].Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
+                    
+                    for (int currentController = 0; currentController < Controllers.Count; currentController++)
+                    {
+                        Controllers[currentController].Reset(ref particles[currentParticle]);
+                    }
+                }
 
-            vertex.TextureCoordinates = Vector2.One;
-            particles[firstFreeParticle + 1] = vertex;
+                // Store any time we didn't use, so it can be part of the next update.
+                timeLeftOver = timeToSpend;
+            }
+        }
 
-            vertex.TextureCoordinates = Vector2.Zero;
-            particles[firstFreeParticle + 2] = vertex;
+        private void UpdateControllers(float elapsedTime)
+        {   
+            if (firstParticle == lastParticle)
+                return;
 
-            vertex.TextureCoordinates = Vector2.UnitX;
-            particles[firstFreeParticle + 3] = vertex;
+            for (int currentController = 0; currentController < Controllers.Count; currentController++)
+            {
+                for (currentParticle = firstParticle; currentParticle != lastParticle;
+                                                      currentParticle = (currentParticle + 1) % maxParticles)
+                {
+                    Controllers[currentController].Update(elapsedTime, ref particles[currentParticle]);
+                }
+            }
+        }
 
-            firstFreeParticle = nextFreeParticle;
+        private void UpdateParticles(float elapsedTime)
+        {
+            for (currentParticle = firstParticle; currentParticle != lastParticle;
+                                                  currentParticle = (currentParticle + 1) % maxParticles)
+            {
+                particles[currentParticle].Update(elapsedTime);
+                if (currentParticle == firstParticle && particles[currentParticle].Age >= 1)
+                {
+                    firstParticle = (firstParticle + 1) % maxParticles;
+                }
+            }
         }
 
         public void Dispose()
         {
-            if (vertexBuffer != null)
-                vertexBuffer.Dispose();
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
+        }
+
+        ~ParticleEffect()
+        {
+            Dispose(false);
         }
     }
 }

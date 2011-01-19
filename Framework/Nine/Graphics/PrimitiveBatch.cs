@@ -80,20 +80,18 @@ namespace Nine.Graphics
         private int baseSegmentIndex;
         private int beginSegment;
         
-        /// <summary>
-        /// Gets the view matrix used by this PrimitiveBatch.
-        /// </summary>
-        public Matrix View { get; private set; }
-
-        /// <summary>
-        /// Gets the projection matrix used by this PrimitiveBatch.
-        /// </summary>
-        public Matrix Projection { get; private set; }
+        private Matrix view;
+        private Matrix projection;
 
         /// <summary>
         /// Gets the underlying graphics device used by this PrimitiveBatch.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
+        /// Gets or sets user data.
+        /// </summary>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Creates a new PrimitiveBatch instance.
@@ -137,8 +135,8 @@ namespace Nine.Graphics
 
         public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
-            this.View = view;
-            this.Projection = projection;
+            this.view = view;
+            this.projection = projection;
             this.sort = sortMode;
             this.hasBegin = true;
             this.cameraPosition = null;
@@ -704,7 +702,7 @@ namespace Nine.Graphics
         private Vector3 GetCameraPosition()
         {
             if (!cameraPosition.HasValue)
-                cameraPosition = Matrix.Invert(View).Translation;
+                cameraPosition = Matrix.Invert(view).Translation;
             return cameraPosition.Value;
         }
 
@@ -725,6 +723,11 @@ namespace Nine.Graphics
                 if (indexBuffer != null)
                     indexBuffer.Dispose();
             }
+        }
+
+        ~PrimitiveBatch()
+        {
+            Dispose(false);
         }
     }
 

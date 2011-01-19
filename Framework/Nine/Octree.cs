@@ -28,7 +28,7 @@ namespace Nine
         /// <summary>
         /// Specifies the total number of child nodes (8) in the Octree.
         /// </summary>
-        public const int ChildCount = 8;
+        const int ChildCount = 8;
 
         /// <summary>
         /// Gets the root OctreeNode of this Octree.

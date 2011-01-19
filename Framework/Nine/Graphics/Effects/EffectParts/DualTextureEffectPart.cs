@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    public class DualTextureEffectPart : LinkedEffectPart
+    internal class DualTextureEffectPart : LinkedEffectPart, IEffectTexture
     {
         private uint dirtyMask = 0;
         private Texture2D texture;
@@ -49,6 +49,14 @@ namespace Nine.Graphics.Effects.EffectParts
             {
                 Texture = this.Texture,
             };
+        }
+
+        Texture2D IEffectTexture.Texture { get { return null; } set { } }
+
+        public void SetTexture(string name, Texture texture)
+        {
+            if (name == TextureNames.Dual)
+                Texture = texture as Texture2D;
         }
     }
 

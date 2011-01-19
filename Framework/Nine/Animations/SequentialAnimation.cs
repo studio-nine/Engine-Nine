@@ -25,35 +25,48 @@ namespace Nine.Animations
     /// The animation completes when the last animation has finished playing.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class SequentialAnimationBase<T> : Animation, IEnumerable<T> where T : IAnimation
+    public class SequentialAnimation : Animation, IEnumerable<IAnimation>
     {
-        List<T> animations = new List<T>();
+        List<IAnimation> animations = new List<IAnimation>();
 
         /// <summary>
         /// Gets all the animations.
         /// </summary>
-        public IList<T> Animations { get { return animations; } }
+        public IList<IAnimation> Animations { get { return animations; } }
+
+        /// <summary>
+        /// Gets or sets number of times this animation will be played.
+        /// </summary>
+        public int Repeat { get; set; }
+        private int repeatCounter = 0;
+        
+        /// <summary>
+        /// Occurs when this animation has reached the end and repeated.
+        /// </summary>
+        public event EventHandler Repeated;
 
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c>.
         /// </summary>
-        public SequentialAnimationBase() { }
+        public SequentialAnimation() { Repeat = 1; }
 
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c> with the specified animations.
         /// </summary>
-        public SequentialAnimationBase(IEnumerable<T> animations)
+        public SequentialAnimation(IEnumerable<IAnimation> animations)
         {
-            foreach (T animation in animations)
+            Repeat = 1;
+            foreach (IAnimation animation in animations)
                 this.animations.Add(animation);
         }
         
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c> with the specified animations.
         /// </summary>
-        public SequentialAnimationBase(params T[] animations)
+        public SequentialAnimation(params IAnimation[] animations)
         {
-            foreach (T animation in animations)
+            Repeat = 1;
+            foreach (IAnimation animation in animations)
                 this.animations.Add(animation);
         }
 
@@ -79,7 +92,7 @@ namespace Nine.Animations
         /// <summary>
         /// Plays the specified animation clip.
         /// </summary>
-        public void Play(T animation)
+        public void Play(IAnimation animation)
         {
             int index = animations.IndexOf(animation);
 
@@ -111,6 +124,8 @@ namespace Nine.Animations
 
         protected override void OnStarted()
         {
+            repeatCounter = 0;
+
             Seek(0);
 
             base.OnStarted();
@@ -166,8 +181,17 @@ namespace Nine.Animations
 
                 if (CurrentIndex == animations.Count)
                 {
-                    Stop();
-                    OnCompleted();
+                    repeatCounter++;
+                    if (repeatCounter == Repeat)
+                    {
+                        Stop();
+                        OnCompleted();
+                    }
+                    else
+                    {
+                        Seek(0);
+                        OnRepeated();
+                    }
                 }
             }
         }
@@ -178,7 +202,13 @@ namespace Nine.Animations
                 Completed(this, EventArgs.Empty);
         }
 
-        public IEnumerator<T> GetEnumerator()
+        protected virtual void OnRepeated()
+        {
+            if (Repeated != null)
+                Repeated(this, EventArgs.Empty);
+        }
+
+        public IEnumerator<IAnimation> GetEnumerator()
         {
             return animations.GetEnumerator();
         }
@@ -187,27 +217,5 @@ namespace Nine.Animations
         {
             return animations.GetEnumerator();
         }
-    }
-
-    /// <summary>
-    /// Contains several animation clips that are played one after another.
-    /// The animation completes when the last animation has finished playing.
-    /// </summary>
-    public class SequentialAnimation : SequentialAnimationBase<IAnimation> 
-    {
-        /// <summary>
-        /// Creates a new <c>SequentialAnimation</c>.
-        /// </summary>
-        public SequentialAnimation() { }
-
-        /// <summary>
-        /// Creates a new <c>SequentialAnimation</c> with the specified animations.
-        /// </summary>
-        public SequentialAnimation(IEnumerable<IAnimation> animations) : base(animations) { }
-        
-        /// <summary>
-        /// Creates a new <c>SequentialAnimation</c> with the specified animations.
-        /// </summary>
-        public SequentialAnimation(params IAnimation[] animations) : base(animations) { }
     }
 }

@@ -54,12 +54,19 @@ namespace Nine.Animations
     #endregion
 
     #region BoneAnimation
+    /// <summary>
+    /// Represents the animation of a skeleton that can be controlled by
+    /// either the predefined animation clip or by custom controllers.
+    /// </summary>
     public class BoneAnimation : Animation, IBoneAnimationController
     {
         public BoneAnimation(Model model, object modelInstance)
         {
             if (model == null)
                 throw new ArgumentNullException("model");
+
+            if (modelInstance is BoneAnimationClip || modelInstance is IBoneAnimationController)
+                throw new ArgumentException("modelInstance should be anything other then BoneAnimationClip or IBoneAnimatinoController.");
 
             this.Model = model;
             this.BlendEnabled = modelInstance != null;
@@ -72,6 +79,9 @@ namespace Nine.Animations
         {
             if (model == null)
                 throw new ArgumentNullException("model");
+
+            if (modelInstance is BoneAnimationClip || modelInstance is IBoneAnimationController)
+                throw new ArgumentException("modelInstance should be anything other then BoneAnimationClip or IBoneAnimatinoController.");
 
             this.Model = model;
             this.BlendEnabled = modelInstance != null;
@@ -220,8 +230,9 @@ namespace Nine.Animations
 
             foreach (IBoneAnimationController controller in Controllers)
             {
-                if (controller is IAnimation)
-                    ((IAnimation)controller).Play();
+                IAnimation animation = controller as IAnimation;
+                if (animation != null)
+                    animation.Play();
             }
 
             base.OnStarted();
@@ -231,8 +242,9 @@ namespace Nine.Animations
         {
             foreach (IBoneAnimationController controller in Controllers)
             {
-                if (controller is IAnimation)
-                    ((IAnimation)controller).Stop();
+                IAnimation animation = controller as IAnimation;
+                if (animation != null)
+                    animation.Stop();
             }
 
             base.OnStopped();
@@ -242,8 +254,9 @@ namespace Nine.Animations
         {
             foreach (IBoneAnimationController controller in Controllers)
             {
-                if (controller is IAnimation)
-                    ((IAnimation)controller).Pause();
+                IAnimation animation = controller as IAnimation;
+                if (animation != null)
+                    animation.Pause();
             }
 
             base.OnPaused();
@@ -253,8 +266,9 @@ namespace Nine.Animations
         {
             foreach (IBoneAnimationController controller in Controllers)
             {
-                if (controller is IAnimation)
-                    ((IAnimation)controller).Resume();
+                IAnimation animation = controller as IAnimation;
+                if (animation != null)
+                    animation.Resume();
             }
 
             base.OnResumed();
@@ -282,8 +296,9 @@ namespace Nine.Animations
 
             foreach (IBoneAnimationController controller in Controllers)
             {
-                if (controller is IUpdateObject)
-                    ((IUpdateObject)controller).Update(gameTime);
+                IUpdateObject update = controller as IUpdateObject;
+                if (update != null)
+                    update.Update(gameTime);
             }
 
             bool allStopped = true;
@@ -296,9 +311,10 @@ namespace Nine.Animations
             {
                 foreach (IBoneAnimationController controller in Controllers)
                 {
-                    if (controller is IAnimation)
+                    IAnimation animation = controller as IAnimation;
+                    if (animation != null)
                     {
-                        if (((IAnimation)controller).State != AnimationState.Stopped)
+                        if (animation.State != AnimationState.Stopped)
                             allStopped = false;
                     }
                     else
@@ -322,10 +338,13 @@ namespace Nine.Animations
                 TimeSpan duration = keyController.Duration;
                 foreach (IBoneAnimationController controller in Controllers)
                 {
-                    if (controller == keyController || !(controller is TimelineAnimation))
+                    if (controller == keyController)
                         continue;
 
-                    TimelineAnimation animation = (TimelineAnimation)controller;
+                    TimelineAnimation animation = controller as TimelineAnimation;
+                    if (animation == null)
+                        continue;
+
                     animation.Speed = (float)(
                         (double)animation.Duration.Ticks * keyController.Speed / duration.Ticks);
                 }
@@ -660,6 +679,9 @@ namespace Nine.Animations
         }
     }
 
+    /// <summary>
+    /// Represents a bone that has a blend weight.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class WeightedBoneAnimationControllerBone
     {
@@ -680,6 +702,9 @@ namespace Nine.Animations
         public bool Enabled { get; set; }
     }
 
+    /// <summary>
+    /// Represents a collection of weighted bone for BoneAnimation.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class WeightedBoneAnimationControllerBoneCollection : ReadOnlyCollection<WeightedBoneAnimationControllerBone>
     {
@@ -697,6 +722,9 @@ namespace Nine.Animations
         }
     }
     
+    /// <summary>
+    /// Represents a collection of controllers for BoneAnimation.
+    /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class BoneAnimationControllerCollection : ICollection<IBoneAnimationController>
     {

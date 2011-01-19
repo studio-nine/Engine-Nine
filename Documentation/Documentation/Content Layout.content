@@ -3,9 +3,6 @@
   <Topic id="c2ed3708-9d91-478f-b1e4-260b7b902185" visible="True" isDefault="true" title="Welcome" />
   <Topic id="75aef1a1-4c05-411b-bce8-43ff0990df8f" visible="True" title="License Agreement" />
   <Topic id="b1d8d283-cb42-4013-a7e0-ba73e35abd3b" visible="True" title="Engine Nine 1.0">
-    <Topic id="66fda33b-5ee6-47cb-bbf5-e6acfa2b106f" visible="True" title="Introduction to Engine Nine 1.0">
-      <Topic id="142275cc-d62a-464c-ab21-7682117e6eaa" visible="True" title="What's New in Engine Nine 1.0" />
-    </Topic>
     <Topic id="9d71946c-c526-4f2e-80f4-f96b7139ce59" visible="True" apiParentMode="InsertAsChild" title="Engine Nine Class Library Reference" />
   </Topic>
 </Topics>

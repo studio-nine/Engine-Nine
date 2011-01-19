@@ -18,8 +18,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
-
-    public class TextureTransformEffectPart : LinkedEffectPart
+    
+    internal class TextureTransformEffectPart : LinkedEffectPart, IEffectTextureTransform
     {
         private uint dirtyMask = 0;
 

@@ -30,20 +30,23 @@ namespace Nine.Graphics
         public BoundingBox BoundingBox { get; private set; }
 
         [ContentSerializer]
-        public List<Vector3> Positions { get; private set; }
+        public Vector3[] Positions { get; private set; }
         
         [ContentSerializer]
-        public List<ushort> Indices { get; private set; }
+        public ushort[] Indices { get; private set; }
 
 
-        IList<Vector3> IGeometry.Positions { get { return Positions.AsReadOnly(); } }
-        IList<ushort> IGeometry.Indices { get { return Indices.AsReadOnly(); } }
+        IList<Vector3> IGeometry.Positions { get { return Positions; } }
+        IList<ushort> IGeometry.Indices { get { return Indices; } }
 
 
-        public Geometry(IList<Vector3> positions, IList<ushort> indices)
+        public Geometry(ICollection<Vector3> positions, ICollection<ushort> indices)
         {
-            Positions = new List<Vector3>(positions);
-            Indices = new List<ushort>(indices);
+            Positions = new Vector3[positions.Count];
+            Indices = new ushort[indices.Count];
+
+            positions.CopyTo(Positions, 0);
+            indices.CopyTo(Indices, 0);
 
             BoundingBox =  BoundingBox.CreateFromPoints(Positions);
             BoundingSphere = BoundingSphere.CreateFromPoints(Positions);

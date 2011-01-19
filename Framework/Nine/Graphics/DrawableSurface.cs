@@ -21,7 +21,7 @@ namespace Nine.Graphics
     /// <summary>
     /// A triangle mesh constructed from heightmap to represent game surface. 
     /// The up axis of the surface is Vector.UnitZ.
-    /// </summary>    
+    /// </summary>
     public class DrawableSurface : IDisposable, ISurface, IPickable
     {
         /// <summary>
@@ -32,7 +32,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the effects used to draw the surface.
         /// </summary>
-        public DrawableSurfaceCollections Effects { get; private set; }
+        public DrawableSurfaceEffectCollections Effects { get; private set; }
 
         /// <summary>
         /// Gets the underlying GraphicsDevice.
@@ -45,9 +45,9 @@ namespace Nine.Graphics
         public DrawableSurfacePatchCollection Patches { get; private set; }
 
         /// <summary>
-        /// Gets the number of tessellation of each patch.
+        /// Gets the number of segments of each patch.
         /// </summary>
-        public int PatchTessellation { get; private set; }
+        public int PatchSegmentCount { get; private set; }
         
         /// <summary>
         /// Gets the count of patches along the x axis.
@@ -62,12 +62,12 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
         /// </summary>
-        public int GridCountX { get; private set; }
+        public int SegmentCountX { get; private set; }
 
         /// <summary>
         /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
         /// </summary>
-        public int GridCountY { get; private set; }
+        public int SegmentCountY { get; private set; }
 
         /// <summary>
         /// Gets or sets any user data.
@@ -139,11 +139,11 @@ namespace Nine.Graphics
         /// </summary>
         /// <param name="graphics">Graphics device.</param>
         /// <param name="step">Size of the smallest square block that made up the surface.</param>
-        /// <param name="tessellationU">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
-        /// <param name="tessellationV">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
+        /// <param name="segmentCountX">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
+        /// <param name="segmentCountY">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
         /// <param name="patchTessellation">Number of the smallest square block that made up the surface patch.</param>
-        public DrawableSurface(GraphicsDevice graphics, float step, int tessellationU, int tessellationV, int patchTessellation)
-            : this(graphics, new Heightmap(step, tessellationU, tessellationV), patchTessellation)
+        public DrawableSurface(GraphicsDevice graphics, float step, int segmentCountX, int segmentCountY, int patchTessellation)
+            : this(graphics, new Heightmap(step, segmentCountX, segmentCountY), patchTessellation)
         { }
 
         /// <summary>
@@ -162,17 +162,17 @@ namespace Nine.Graphics
                 throw new ArgumentNullException("heightmap");
 
             if (patchTessellation < 2 || patchTessellation % 2 != 0 ||
-                heightmap.TessellationU % patchTessellation != 0 ||
-                heightmap.TessellationV % patchTessellation != 0)
+                heightmap.Width % patchTessellation != 0 ||
+                heightmap.Height % patchTessellation != 0)
             {
                 throw new ArgumentOutOfRangeException(
                     "patchTessellation must be a even number, " +
-                    "tessellationU/tessellationV must be a multiplier of patchTessellation.");
+                    "segmentCountX/segmentCountY must be a multiplier of patchTessellation.");
             }
 
             TextureTransform = Matrix.Identity;
-            Effects = new DrawableSurfaceCollections(this);
-            PatchTessellation = patchTessellation;
+            Effects = new DrawableSurfaceEffectCollections(this);
+            PatchSegmentCount = patchTessellation;
             GraphicsDevice = graphics;
             Heightmap = heightmap;
             Size = heightmap.Size;
@@ -181,12 +181,12 @@ namespace Nine.Graphics
             Heightmap.Invalidate += (a, b) => Invalidate();
 
             // Create patches
-            PatchCountX = heightmap.TessellationU / patchTessellation;
-            PatchCountY = heightmap.TessellationV / patchTessellation;
+            PatchCountX = heightmap.Width / patchTessellation;
+            PatchCountY = heightmap.Height / patchTessellation;
 
             // Store these values in case they change
-            GridCountX = Heightmap.TessellationU;
-            GridCountY = Heightmap.TessellationV;
+            SegmentCountX = Heightmap.Width;
+            SegmentCountY = Heightmap.Height;
 
             Triangles = new DrawableSurfaceTriangleCollection();
             Triangles.Surface = this;
@@ -197,8 +197,9 @@ namespace Nine.Graphics
         /// <summary>
         /// Converts and fills the surface vertex buffer to another vertex full.
         /// The default vertex format is VertexPositionColorNormalTexture.
+        /// This method must be called immediately after the surface is created.
         /// </summary>
-        public void ConvertVertexType<T>(DrawSurfaceConvertVertex<T> fillVertex) where T : struct, IVertexType
+        public void ConvertVertexType<T>(DrawSurfaceVertexConverter<T> fillVertex) where T : struct, IVertexType
         {
             if (IsFreezed)
                 throw new InvalidOperationException(
@@ -227,7 +228,7 @@ namespace Nine.Graphics
                     {
                         DrawableSurfacePatchImpl<T> patch;
 
-                        patch = new DrawableSurfacePatchImpl<T>(this, GraphicsDevice, Heightmap, x, y, PatchTessellation);
+                        patch = new DrawableSurfacePatchImpl<T>(this, GraphicsDevice, Heightmap, x, y, PatchSegmentCount);
 
                         patches[i] = patch;
 
@@ -248,8 +249,8 @@ namespace Nine.Graphics
         {
             Vector2 uv = new Vector2();
 
-            uv.X = 1.0f * x / PatchTessellation;
-            uv.Y = 1.0f * y / PatchTessellation;
+            uv.X = 1.0f * x / PatchSegmentCount;
+            uv.Y = 1.0f * y / PatchSegmentCount;
 
             vertex.Color = Color.White;
             vertex.Position = Heightmap.GetPosition(x, y);
@@ -295,6 +296,9 @@ namespace Nine.Graphics
             }
         }
 
+        /// <summary>
+        /// Gets the triangle on with the specified position.
+        /// </summary>
         internal DrawableSurfaceTriangle GetTriangle(float x, float y)
         {
             if (IsFreezed)
@@ -304,8 +308,6 @@ namespace Nine.Graphics
             // first we'll figure out where on the heightmap "position" is...
             x -= Position.X;
             y -= Position.Y;
-            x += Size.X / 2;
-            y += Size.Y / 2;
 
             if (x == Size.X)
                 x -= float.Epsilon;
@@ -322,25 +324,23 @@ namespace Nine.Graphics
             int pLeft = (int)x / (int)(Size.X / PatchCountX);
             int pTop = (int)y / (int)(Size.Y / PatchCountY);
 
-            int left = (int)x / (int)(Size.X / Heightmap.TessellationU);
-            int top = (int)y / (int)(Size.Y / Heightmap.TessellationV);
+            int left = (int)x / (int)(Size.X / Heightmap.Width);
+            int top = (int)y / (int)(Size.Y / Heightmap.Height);
 
-            float tx = x - (Size.X / Heightmap.TessellationU) * left;
-            float ty = y - (Size.Y / Heightmap.TessellationV) * top;
-
-            left -= pLeft * PatchTessellation;
-            top -= pTop * PatchTessellation;
+            left -= pLeft * PatchSegmentCount;
+            top -= pTop * PatchSegmentCount;
 
             int partLeft = left / 2;
             int partTop = top / 2;
 
             DrawableSurfacePatch patch = Patches[pLeft, pTop];
-            DrawableSurfacePatchPart part = patch.PatchParts[partTop * PatchTessellation / 2 + partLeft];
+            DrawableSurfacePatchPart part = patch.PatchParts[partTop * PatchSegmentCount / 2 + partLeft];
 
             int yy = top - partTop * 2;
             int xx = left - partLeft * 2;
 
-            // FIXME: This is incorrect
+            // NOTE: This is not the accurate position as seen in the rendered geometry.
+            //       it is just an approximation.
             return part.Triangles[yy * 4 + xx];
         }
         
@@ -376,6 +376,11 @@ namespace Nine.Graphics
                     patch.Dispose();
                 }
             }
+        }
+
+        ~DrawableSurface()
+        {
+            Dispose(false);
         }
         #endregion
 
@@ -430,11 +435,7 @@ namespace Nine.Graphics
         /// </summary>
         public bool Contains(Vector3 point)
         {
-            if (IsFreezed)
-                throw new InvalidOperationException(
-                    "Cannot perform this operation when DrawableSurface is freezed");
-
-            return Heightmap.Pick(point - position);
+            return BoundingBox.Contains(point) == ContainmentType.Contains;
         }
         
         /// <summary>
@@ -497,5 +498,5 @@ namespace Nine.Graphics
     /// Fills a vertex data in a drawable surface.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public delegate void DrawSurfaceConvertVertex<T>(int x, int y, ref VertexPositionColorNormalTexture input, ref T output);
+    public delegate void DrawSurfaceVertexConverter<T>(int x, int y, ref VertexPositionColorNormalTexture input, ref T output);
 }

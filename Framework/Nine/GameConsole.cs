@@ -36,6 +36,15 @@ namespace Nine
     }
 
     /// <summary>
+    /// Command collection used by game console.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class GameConsoleCommandCollection : Dictionary<string, EventHandler<GameConsoleEventArgs>>
+    {
+        internal GameConsoleCommandCollection(StringComparer stringComparer) : base(stringComparer) { }
+    }
+
+    /// <summary>
     /// In game console
     /// </summary>
     public class GameConsole : DrawableGameComponent
@@ -56,7 +65,7 @@ namespace Nine
         public SpriteBatch SpriteBatch { get; set; }
         public Input Input { get; private set; }
         public Microsoft.Xna.Framework.Input.Keys ActivateKey { get; set; }
-        public IDictionary<string, EventHandler<GameConsoleEventArgs>> Commands { get; private set; }
+        public GameConsoleCommandCollection Commands { get; private set; }
 
 
         /// <summary>
@@ -110,8 +119,7 @@ namespace Nine
             Input = new Input();
             Input.KeyDown += new EventHandler<KeyboardEventArgs>(Input_KeyDown);
 
-            Commands = new Dictionary
-                <string, EventHandler<GameConsoleEventArgs>>(StringComparer.CurrentCultureIgnoreCase);
+            Commands = new GameConsoleCommandCollection(StringComparer.CurrentCultureIgnoreCase);
 
             // Add default commands
             Commands.Add("Help", delegate(object sender, GameConsoleEventArgs args)
@@ -213,21 +221,12 @@ namespace Nine
             // Compute number of lines to be rendered
             int height = (int)(FontSize + LineSpacing);
             int lineCount = messages.Count + 1;
-            int maxCount = Math.Min(MaxLines, (GraphicsDevice.PresentationParameters.BackBufferHeight - Border * 2) / height);
             if (lineCount > MaxLines)
                 lineCount = MaxLines;
 
             // Use Graphics.Clear to draw a background quad
             int y = GraphicsDevice.PresentationParameters.BackBufferHeight - lineCount * height - Border;
-
-            /*
-            GraphicsDevice.Clear(
-                ClearOptions.Target, BackgroundColor, 0, 0,
-                new Rectangle[] { new Rectangle(
-                    Border, y, GraphicsDevice.PresentationParameters.BackBufferWidth - Border * 2, lineCount * height) });
-            */
-
-
+            
             // Draw text
             float fontScale = 1.0f * FontSize / (Font.MeasureString("A").Y - 10);
             int i = messages.Count - (lineCount - 1);

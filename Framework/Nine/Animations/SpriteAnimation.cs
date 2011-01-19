@@ -23,7 +23,7 @@ namespace Nine.Animations
     using Nine.Graphics;
 
     /// <summary>
-    /// An animation player that plays ImageList based sprite animations.
+    /// An animation player that plays TextureList based sprite animations.
     /// </summary>
     public class SpriteAnimation : KeyframeAnimation
     {
@@ -35,43 +35,43 @@ namespace Nine.Animations
             return count;
         }
 
-        public ImageList ImageList { get; private set; }
-        public Texture2D Texture { get { return ImageList[CurrentFrame + startFrame].Texture; } }
-        public Rectangle SourceRectangle { get { return ImageList[CurrentFrame + startFrame].SourceRectangle; } }
+        public TextureList TextureList { get; private set; }
+        public Texture2D Texture { get { return TextureList[CurrentFrame + startFrame].Texture; } }
+        public Rectangle SourceRectangle { get { return TextureList[CurrentFrame + startFrame].SourceRectangle; } }
 
         public SpriteAnimation()
         {
-            ImageList = new ImageList();
+            TextureList = new TextureList();
         }
 
         public SpriteAnimation(IEnumerable<Texture2D> textures)
         {
-            ImageList = new ImageList();
+            TextureList = new TextureList();
 
             foreach (Texture2D texture in textures)
             {
-                ImageList.Add(texture, texture.Bounds);
+                TextureList.Add(texture, texture.Bounds);
             }
 
-            count = ImageList.Count;
+            count = TextureList.Count;
         }
 
-        public SpriteAnimation(ImageList imageList)
+        public SpriteAnimation(TextureList imageList)
         {
             if (imageList == null)
                 throw new ArgumentNullException();
 
-            ImageList = imageList;
+            TextureList = imageList;
 
             count = imageList.Count;
         }
 
-        public SpriteAnimation(ImageList imageList, int startFrame, int count)
+        public SpriteAnimation(TextureList imageList, int startFrame, int count)
         {
             if (imageList == null)
                 throw new ArgumentNullException();
 
-            ImageList = imageList;
+            TextureList = imageList;
 
             this.startFrame = startFrame;
             this.count = count;

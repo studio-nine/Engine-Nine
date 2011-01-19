@@ -56,10 +56,10 @@ namespace Transitions
 
         // These properties need to be public since
         // TransitonManager works with only public properties and fields.
-        public float ImageScale { get; set; }
-        public float ImageRoation { get; set; }
-        public Color ImageColor { get; set; }
-        public Color TextColor { get; set; }
+        public float ImageScale;
+        public float ImageRoation;
+        public Color ImageColor;
+        public Color TextColor;
 
 
         public TransitionGame()

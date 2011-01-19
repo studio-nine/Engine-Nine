@@ -78,8 +78,7 @@ float4 ComputeParticleRotation(float rotation)
 
 
 // Vertex shader helper for computing the position of a particle.
-float4 ComputeParticlePosition(float3 position, float3 velocity,
-                              float age, float normalizedAge, float duration)
+float4 ComputeParticlePosition(float3 position, float3 velocity, float age, float normalizedAge, float duration)
 { 
    float startVelocity = length(velocity);
 
@@ -137,22 +136,6 @@ float4 ComputeParticleColor(float4 projectedPosition,
    // will reach all the way up to fully solid.
    
    color.a *= normalizedAge * (1-normalizedAge) * (1-normalizedAge) * 6.7;
-   
-   // On Xbox, point sprites are clipped away entirely as soon as their center
-   // point moves off the screen, even when rest of the sprite should still be
-   // visible. This causes an irritating flicker when large particles reach the
-   // edge of the screen. We can hide this problem by fading the sprite out
-   // slightly before it is about to get clipped.
-#ifdef XBOX
-   float2 screenPosition = abs(projectedPosition.xy / projectedPosition.w);
-   
-   float distanceFromBorder = 1 - max(screenPosition.x, screenPosition.y);
-   
-   // The value 16 is chosen arbitrarily. Make this smaller to fade particles
-   // out sooner, or larger to fade them later (which can cause visible popping).
-   color.a *= saturate(distanceFromBorder * 16);
-#endif
-   
    return color;
 }
 

@@ -40,7 +40,8 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Nine.Content.Pipeline">
+    <Reference Include="Nine.Content.Pipeline, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\References\x86\Nine.Content.Pipeline.dll</HintPath>
     </Reference>
   </ItemGroup>

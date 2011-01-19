@@ -9,6 +9,9 @@ namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
+    /// <summary>
+    /// A post processing screen effect that pixelate the whole screen.
+    /// </summary>
     public partial class PixelateEffect
     {
 		private void OnCreated() { }

@@ -48,19 +48,6 @@ namespace Nine
         }
 
         /// <summary>
-        /// Determines if a Vector3 equals to another Vector3.
-        /// </summary>
-        public bool Equals(Triangle other)
-        {
-            return V1.Equals(other.V1) && V2.Equals(other.V2) && V3.Equals(other.V3);
-        }
-
-        public override string ToString()
-        {
-            return V1.ToString() + "|" + V2.ToString() + "|" + V3.ToString();
-        }
-
-        /// <summary>
         /// Checks whether the current Triangle intersects a Ray.
         /// </summary>
         public float? Intersects(Ray ray)
@@ -93,6 +80,39 @@ namespace Nine
             RayExtensions.Intersects(new Ray(v1, dir), ref V1, ref V2, ref V3, out result);
 
             return result.HasValue && result.Value <= length;
+        }
+
+        public bool Equals(Triangle other)
+        {
+            return V1 == other.V1 && V2 == other.V2 && V3 == other.V3;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Triangle)
+                return Equals((Triangle)obj);
+
+            return false;
+        }
+
+        public static bool operator ==(Triangle value1, Triangle value2)
+        {
+            return ((value1.V1 == value2.V1) && (value1.V2 == value2.V2) && (value1.V3 == value2.V3));
+        }
+
+        public static bool operator !=(Triangle value1, Triangle value2)
+        {
+            return !(value1.V1 == value2.V1 && value1.V2 == value2.V2 && value1.V3 == value2.V3);
+        }
+
+        public override int GetHashCode()
+        {
+            return V1.GetHashCode() + V2.GetHashCode() + V3.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return V1.ToString() + "|" + V2.ToString() + "|" + V3.ToString();
         }
     }
 }

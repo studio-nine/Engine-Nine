@@ -26,7 +26,7 @@
       <Link>Run.png</Link>
       <Name>Run</Name>
       <Importer>TextureImporter</Importer>
-      <Processor>GridImageListProcessor</Processor>
+      <Processor>GridTextureListProcessor</Processor>
       <ProcessorParameters_ColumnCount>10</ProcessorParameters_ColumnCount>
     </Compile>
   </ItemGroup>
@@ -34,8 +34,8 @@
     <Compile Include="..\..\Content\Textures\fireball\fireball002.DDS">
       <Link>fireball002.DDS</Link>
       <Name>fireball</Name>
-      <Importer>SequentialImageListImporter</Importer>
-      <Processor>SequentialImageListProcessor</Processor>
+      <Importer>SequentialTextureListImporter</Importer>
+      <Processor>SequentialTextureListProcessor</Processor>
       <ProcessorParameters_TextureFormat>Color</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>

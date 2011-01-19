@@ -19,6 +19,10 @@ namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
 
+    /// <summary>
+    /// Represents an effect for drawing geometry depth.
+    /// This effect is usually used to generate shadow map depth values.
+    /// </summary>
     public partial class DepthEffect : IEffectMatrices, IEffectSkinned
     {
         public bool SkinningEnabled

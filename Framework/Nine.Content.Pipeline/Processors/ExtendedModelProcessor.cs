@@ -26,6 +26,8 @@ using Nine.Graphics;
 
 namespace Nine.Content.Pipeline.Processors
 {
+    using Nine.Content.Pipeline.Graphics;
+
     /// <summary>
     /// Custom processor extends the builtin framework ModelProcessor class,
     /// adding animation support.
@@ -273,15 +275,5 @@ namespace Nine.Content.Pipeline.Processors
                 }
             }
         }
-    }
-
-    [ContentSerializerRuntimeType("Nine.Graphics.ModelMeshPartTag, Nine")]
-    public class ModelMeshPartTagContent
-    {
-        /// <summary>
-        /// Gets the additional textures (E.g. normalmap) attached to the ModelMeshPart.
-        /// </summary>
-        [ContentSerializer()]
-        public Dictionary<string, ExternalReference<TextureContent>> Textures { get; internal set; }
     }
 }

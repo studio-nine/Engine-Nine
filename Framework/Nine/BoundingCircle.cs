@@ -76,12 +76,32 @@ namespace Nine
             return Math2D.CircleIntersects(Center, Radius, circle.Center, circle.Radius);
         }
 
-        /// <summary>
-        /// Determines if a Range object equals to another Range object
-        /// </summary>
         public bool Equals(BoundingCircle other)
         {
-            return Center.Equals(other.Center) && Radius.Equals(other.Radius);
+            return Center == other.Center && Radius == other.Radius;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is BoundingCircle)
+                return Equals((BoundingCircle)obj);
+            
+            return false;
+        }
+
+        public static bool operator ==(BoundingCircle value1, BoundingCircle value2)
+        {
+            return ((value1.Center == value2.Center) && (value1.Radius == value2.Radius));
+        }
+
+        public static bool operator !=(BoundingCircle value1, BoundingCircle value2)
+        {
+            return !(value1.Center == value2.Center && value1.Radius == value2.Radius);
+        }
+
+        public override int GetHashCode()
+        {
+            return Center.GetHashCode() + Radius.GetHashCode();
         }
 
         public override string ToString()

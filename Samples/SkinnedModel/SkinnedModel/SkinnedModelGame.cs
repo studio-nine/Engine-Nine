@@ -48,6 +48,7 @@ namespace SkinnedModel
         ModelBatch modelBatch;
         PrimitiveBatch primitiveBatch;
         Input input;
+        Random random = new Random();
         ModelViewerCamera camera;
 
         LookAtController lookAtController;
@@ -116,15 +117,16 @@ namespace SkinnedModel
             animation2 = PlayIdleRunCarryBlended();
             animation3 = PlayAnimation(0);
 
-            Random random = new Random();
             input = new Input();
-            input.MouseDown += (o, e) => 
+            input.MouseDown += new EventHandler<MouseEventArgs>(input_MouseDown);
+        }
+
+        private void input_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                if (e.Button == MouseButtons.Left)
-                {
-                    animation3 = PlayAnimation(random.Next(model.GetAnimations().Count));
-                }
-            };
+                animation3 = PlayAnimation(random.Next(model.GetAnimations().Count));
+            }
         }
 
         private BoneAnimation PlayAnimation(int i)
@@ -133,7 +135,7 @@ namespace SkinnedModel
             BoneAnimationController animation = new BoneAnimationController(model.GetAnimation(i));
             //animation.Speed = 0.04f;
             //animation.Ending = KeyframeEnding.Clamp;
-            //animation.InterpolationEnabled = false;
+            //animation.InterpolationEnabled = true;
             //animation.Repeat = 1.5f;
             //animation.AutoReverse = true;
             //animation.StartupDirection = AnimationDirection.Backward;
@@ -207,6 +209,7 @@ namespace SkinnedModel
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
+            // Makes the model looks at the camera
             lookAtController.Target = Matrix.Invert(camera.View).Translation;
 
             animation1.Update(gameTime);

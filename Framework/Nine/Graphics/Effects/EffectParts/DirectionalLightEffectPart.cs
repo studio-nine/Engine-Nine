@@ -17,8 +17,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
-
-    public class DirectionalLightEffectPart : LinkedEffectPart
+    
+    internal class DirectionalLightEffectPart : LinkedEffectPart, IEffectDirectionalLight
     {
         private uint dirtyMask = 0;
         

@@ -24,11 +24,19 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Nine.Graphics.ScreenCamera" Collapsed="true">
+    <Position X="2.75" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAABAEABAAAEAAAACAA1AABAgAAAAAGAAAQYAE=</HashCode>
+      <FileName>Graphics\ScreenCamera.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="Nine.Graphics.ICamera">
     <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAQAAA=</HashCode>
-      <FileName>Graphics\Interface.cs</FileName>
+      <FileName>Graphics\ModelViewerCamera.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

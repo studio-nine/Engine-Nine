@@ -44,7 +44,7 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new instance of <c>TimelineAnimation</c>.
         /// </summary>
-        public TimelineAnimation()
+        protected TimelineAnimation()
         {
             ElapsedTime = TimeSpan.Zero;
             StartupDirection = AnimationDirection.Forward;
@@ -219,12 +219,7 @@ namespace Nine.Animations
 
             base.OnStarted();
         }
-
-        protected override void OnStopped()
-        {
-            base.OnStopped();
-        }
-
+        
         public override void Update(GameTime gameTime)
         {
             if (Duration < TimeSpan.Zero)
@@ -265,6 +260,11 @@ namespace Nine.Animations
             if (ElapsedTime >= targetElapsedTime)
             {
                 undirectedPosition -= (ElapsedTime - targetElapsedTime);
+
+                // Stop at the end when targetElapsedTime is Duration.
+                if (undirectedPosition == TimeSpan.Zero)
+                    undirectedPosition = Duration;
+
                 ElapsedTime = targetElapsedTime;
 
                 OnSeek(Position, previousPosition);

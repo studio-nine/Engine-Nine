@@ -74,6 +74,7 @@
       <DependentUpon>LinkedEffectParts.resx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\LinkedEffectContent.cs" />
+    <Compile Include="Graphics\ModelMeshPartTagContent.cs" />
     <Compile Include="Processors\LinkedEffectProcessor.cs" />
     <Compile Include="Processors\ModelCollisionProcessor.cs" />
     <Compile Include="Processors\NormalTextureProcessor.cs" />
@@ -268,12 +269,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TreeWriter.cs" />
-    <Compile Include="Graphics\ImageListContent.cs" />
-    <Compile Include="Importers\SequentialImageListImporter.cs" />
+    <Compile Include="Graphics\TextureListContent.cs" />
+    <Compile Include="Importers\SequentialTextureListImporter.cs" />
     <Compile Include="Processors\ModelAnimationProcessor.cs" />
     <Compile Include="Processors\ModelSkinningProcessor.cs" />
-    <Compile Include="Processors\SequentialImageListProcessor.cs" />
-    <Compile Include="Processors\GridImageListProcessor.cs" />
+    <Compile Include="Processors\SequentialTextureListProcessor.cs" />
+    <Compile Include="Processors\GridTextureListProcessor.cs" />
     <Compile Include="Importers\RawTextureImporter.cs" />
     <Compile Include="Processors\GrayScaleTextureProcessor.cs" />
     <Compile Include="Processors\SplatterTextureProcessor.cs" />

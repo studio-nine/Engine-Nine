@@ -53,7 +53,7 @@ namespace Nine.Graphics.Effects.EffectParts
 
         void IEffectTexture.SetTexture(string name, Texture texture)
         {
-            if (name == TextureNames.NormalMap && texture is Texture2D)
+            if (name == TextureNames.NormalMap)
                 NormalMap = texture as Texture2D;
         }
 
