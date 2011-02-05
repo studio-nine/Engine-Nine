@@ -133,9 +133,6 @@
   <ItemGroup>
     <Compile Include="Graphics\GraphicsExtensions.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTangentTexture.cs" />
-    <None Include="Background.png">
-      <XnaPlatformSpecific>true</XnaPlatformSpecific>
-    </None>
     <None Include="Diagrams\Animations.cd" />
     <None Include="Diagrams\Cameras.cd" />
     <None Include="Diagrams\Curves.cd" />

@@ -193,18 +193,21 @@ namespace Nine.Animations
             float percentage = 0;
             float position = (float)(elapsedTime.TotalSeconds / Duration.TotalSeconds);
 
-            switch (Easing)
+            if (!float.IsNaN(position))
             {
-                case Easing.In:
-                    percentage = Curve.Evaluate(position);
-                    break;
-                case Easing.Out:
-                    percentage = 1.0f - Curve.Evaluate(1.0f - position);
-                    break;
-                case Easing.InOut:
-                    percentage = position < 0.5f ? (0.5f - Curve.Evaluate(1.0f - position * 2) * 0.5f) :
-                                                   (0.5f + Curve.Evaluate((position - 0.5f) * 2) * 0.5f);
-                    break;
+                switch (Easing)
+                {
+                    case Easing.In:
+                        percentage = Curve.Evaluate(position);
+                        break;
+                    case Easing.Out:
+                        percentage = 1.0f - Curve.Evaluate(1.0f - position);
+                        break;
+                    case Easing.InOut:
+                        percentage = position < 0.5f ? (0.5f - Curve.Evaluate(1.0f - position * 2) * 0.5f) :
+                                                       (0.5f + Curve.Evaluate((position - 0.5f) * 2) * 0.5f);
+                        break;
+                }
             }
 
             SetValue(Value = lerp(from, to, percentage));

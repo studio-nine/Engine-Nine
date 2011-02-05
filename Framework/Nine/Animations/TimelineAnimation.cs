@@ -244,21 +244,11 @@ namespace Nine.Animations
             ElapsedTime += increment;
             undirectedPosition += increment;
 
-            while (undirectedPosition > Duration)
-            {
-                undirectedPosition -= Duration;
-                if (AutoReverse)
-                {
-                    if (Direction == AnimationDirection.Backward)
-                        Direction = AnimationDirection.Forward;
-                    else
-                        Direction = AnimationDirection.Backward;
-                }
-                OnRepeated();
-            }
-
             if (ElapsedTime >= targetElapsedTime)
             {
+                while (undirectedPosition > Duration)
+                    undirectedPosition -= Duration;
+
                 undirectedPosition -= (ElapsedTime - targetElapsedTime);
 
                 // Stop at the end when targetElapsedTime is Duration.
@@ -272,6 +262,19 @@ namespace Nine.Animations
                 Stop();
                 OnCompleted();
                 return;
+            }
+
+            while (undirectedPosition > Duration)
+            {
+                undirectedPosition -= Duration;
+                if (AutoReverse)
+                {
+                    if (Direction == AnimationDirection.Backward)
+                        Direction = AnimationDirection.Forward;
+                    else
+                        Direction = AnimationDirection.Backward;
+                }
+                OnRepeated();
             }
 
             OnSeek(Position, previousPosition);

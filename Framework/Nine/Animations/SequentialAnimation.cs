@@ -24,7 +24,6 @@ namespace Nine.Animations
     /// Contains several animation clips that are played one after another.
     /// The animation completes when the last animation has finished playing.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public class SequentialAnimation : Animation, IEnumerable<IAnimation>
     {
         List<IAnimation> animations = new List<IAnimation>();

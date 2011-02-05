@@ -55,9 +55,16 @@ namespace Nine.Graphics
         public float NearClip { get; set; }
         public float FarClip { get; set; }
         public float Sensitivity { get; set; }
-        
-        private Point startPoint = Point.Zero;
-        
+
+        private Vector2 startMouse = Vector2.Zero;
+        private Vector2 startPosition = Vector2.Zero;
+
+        public Vector2 Position
+        {
+            get { return new Vector2(X, Y); }
+            set { X = value.X; Y = value.Y; }
+        }
+
         public Matrix View
         {
             get { return Matrix.CreateTranslation(-X, -Y, -Z); }
@@ -67,11 +74,22 @@ namespace Nine.Graphics
         {
             get
             {
-                return Matrix.CreateOrthographic(Zoom * GraphicsDevice.Viewport.Width,
-                    CoordinateType == ScreenCameraCoordinate.TwoDimension ? -Zoom * GraphicsDevice.Viewport.Height : Zoom * GraphicsDevice.Viewport.Height, NearClip, FarClip);
+                float scale = 0.5f / Zoom;
+                if (CoordinateType == ScreenCameraCoordinate.TwoDimension)
+                {
+                    return Matrix.CreateOrthographicOffCenter(
+                        -GraphicsDevice.Viewport.Width * scale, GraphicsDevice.Viewport.Width * scale,
+                        GraphicsDevice.Viewport.Height * scale, -GraphicsDevice.Viewport.Height * scale, NearClip, FarClip);
+                }
+                else
+                {
+                    return Matrix.CreateOrthographicOffCenter(
+                        -GraphicsDevice.Viewport.Width * scale, GraphicsDevice.Viewport.Width * scale,
+                        -GraphicsDevice.Viewport.Height * scale, GraphicsDevice.Viewport.Height * scale, NearClip, FarClip);
+                }
             }
         }
-
+        
         public ScreenCamera(GraphicsDevice graphics) : this(graphics, ScreenCameraCoordinate.ThreeDimension)
         {
         }
@@ -92,11 +110,10 @@ namespace Nine.Graphics
             NearClip = 0;
             FarClip = 10000;
 
-            if (coordinateType == ScreenCameraCoordinate.TwoDimension)
+            if (CoordinateType == ScreenCameraCoordinate.TwoDimension)
             {
-                X = graphics.Viewport.Width / 2;
-                Y = graphics.Viewport.Height / 2;
-                Z = 0;
+                X = GraphicsDevice.Viewport.Width / 2;
+                Y = GraphicsDevice.Viewport.Height / 2;
             }
 
             Input = new Input();
@@ -106,7 +123,7 @@ namespace Nine.Graphics
             Input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
         }
 
-        void Input_ButtonDown(object sender, MouseEventArgs e)
+        private void Input_ButtonDown(object sender, MouseEventArgs e)
         {
 #if WINDOWS_PHONE
             if (e.Button == MouseButtons.Left)
@@ -114,36 +131,51 @@ namespace Nine.Graphics
             if (e.Button == MouseButtons.Right)
 #endif
             {
-                startPoint.X = e.X;
-                startPoint.Y = e.Y;
+                startMouse.X = e.X;
+                startMouse.Y = e.Y;
+                startPosition.X = X;
+                startPosition.Y = Y;
             }
         }
 
-        void Input_MouseMove(object sender, MouseEventArgs e)
+        private void Input_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.IsRightButtonDown)
             {
-                X -= e.X - startPoint.X;
-
+                X = startPosition.X - (e.X - startMouse.X) / Zoom;
                 if (CoordinateType == ScreenCameraCoordinate.TwoDimension)
-                    Y -= e.Y - startPoint.Y;
+                    Y = startPosition.Y - (e.Y - startMouse.Y) / Zoom;
                 else
-                    Y += e.Y - startPoint.Y;
-
-                startPoint.X = e.X;
-                startPoint.Y = e.Y;
+                    Y = startPosition.Y + (e.Y - startMouse.Y) / Zoom;
             }
         }
 
 
-        void Input_Wheel(object sender, MouseEventArgs e)
-        {   
-            Zoom -= e.WheelDelta * (MaxZoom - MinZoom) * 0.0001f * Sensitivity;
+        private void Input_Wheel(object sender, MouseEventArgs e)
+        {
+            float zoom = NormalizeZoom(this.Zoom);
+            float maxZoom = NormalizeZoom(this.MaxZoom);
+            float minZoom = NormalizeZoom(this.MinZoom);
 
-            if (Zoom < MinZoom)
-                Zoom = MinZoom;
-            else if (Zoom > MaxZoom)
-                Zoom = MaxZoom;
+            zoom += e.WheelDelta * (maxZoom - minZoom) * 0.0001f * Sensitivity;
+            zoom = MathHelper.Clamp(zoom, minZoom, maxZoom);
+            this.Zoom = DenormalizeZoom(zoom);
+        }
+
+        private float NormalizeZoom(float zoom)
+        {
+            System.Diagnostics.Debug.Assert(zoom > 0);
+
+            if (zoom >= 1)
+                return zoom - 1;
+            return 1 - 1.0f / zoom;
+        }
+
+        private float DenormalizeZoom(float zoom)
+        {
+            if (zoom >= 0)
+                return zoom = 1 + zoom;
+            return zoom = 1.0f / (1 - zoom);
         }
     }
 }

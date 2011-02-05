@@ -9,6 +9,7 @@
 #region Using Directives
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -134,6 +135,29 @@ namespace Nine
         public override string ToString()
         {
             return Min.ToString() + " ~ " + Max.ToString();
+        }
+
+        /// <summary>
+        /// Creates the smallest BoundingBox that will contain a group of points.
+        /// </summary>
+        public static BoundingRectangle CreateFromPoints(IEnumerable<Vector2> points)
+        {
+            BoundingRectangle rect = new BoundingRectangle();
+            rect.Min = Vector2.One * float.MaxValue;
+            rect.Max = Vector2.One * float.MinValue;
+            
+            foreach (Vector2 pt in points)
+            {
+                if (pt.X < rect.Min.X)
+                    rect.Min.X = pt.X;
+                if (pt.X > rect.Max.X)
+                    rect.Max.X = pt.X;
+                if (pt.Y < rect.Min.Y)
+                    rect.Min.Y = pt.Y;
+                if (pt.Y > rect.Max.Y)
+                    rect.Max.Y = pt.Y;
+            }
+            return rect;
         }
     }
 }

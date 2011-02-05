@@ -260,17 +260,17 @@ namespace Nine.Graphics
 
             if (textureTransform != null)
             {
-                aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.Zero);
+                aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.One);
                 ab.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitX);
                 ba.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitY);
-                bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.One);
+                bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.Zero);
             }
             else
             {
-                aa.TextureCoordinate = Vector2.Zero;
+                aa.TextureCoordinate = Vector2.One;
                 ab.TextureCoordinate = Vector2.UnitX;
                 ba.TextureCoordinate = Vector2.UnitY;
-                bb.TextureCoordinate = Vector2.One;
+                bb.TextureCoordinate = Vector2.Zero;
             }
 
             aa.Color = ab.Color =
@@ -329,6 +329,7 @@ namespace Nine.Graphics
             while (enumerator.MoveNext())
             {
                 totalLength += Vector3.Subtract(enumerator.Current, previous).Length();
+                previous = enumerator.Current;
             }
             
             BeginPrimitive(PrimitiveType.TriangleList, texture, world);
@@ -348,13 +349,13 @@ namespace Nine.Graphics
 
                     if (textureTransform != null)
                     {
-                        ba.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, new Vector2(0, 1 - percentage));
-                        bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, new Vector2(1, 1 - percentage));
+                        ba.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, new Vector2(percentage, 1));
+                        bb.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, new Vector2(percentage, 0));
                     }
                     else
                     {
-                        ba.TextureCoordinate = new Vector2(0, 1 - percentage);
-                        bb.TextureCoordinate = new Vector2(1, 1 - percentage);
+                        ba.TextureCoordinate = new Vector2(percentage, 1);
+                        bb.TextureCoordinate = new Vector2(percentage, 0);
                     }
 
                     percentage += Vector3.Subtract(enumerator.Current, start).Length() / totalLength;
@@ -400,12 +401,12 @@ namespace Nine.Graphics
                 // Last segment
                 if (textureTransform != null)
                 {
-                    aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.Zero);
+                    aa.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.One);
                     ab.TextureCoordinate = TextureTransform.Transform(textureTransform.Value, Vector2.UnitX);
                 }
                 else
                 {
-                    aa.TextureCoordinate = Vector2.Zero;
+                    aa.TextureCoordinate = Vector2.One;
                     ab.TextureCoordinate = Vector2.UnitX;
                 }
 

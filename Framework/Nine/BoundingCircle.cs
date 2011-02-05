@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 #endregion
@@ -107,6 +108,20 @@ namespace Nine
         public override string ToString()
         {
             return Center.ToString() + " ~ " + Radius.ToString();
+        }
+
+        /// <summary>
+        /// Creates a BoundingCircle that can contain a specified list of points.
+        /// </summary>
+        public static BoundingCircle CreateFromPoints(IEnumerable<Vector2> points)
+        {
+            return new BoundingCircle(BoundingSphere.CreateFromPoints(Vector2ToVector3(points)));
+        }
+
+        private static IEnumerable<Vector3> Vector2ToVector3(IEnumerable<Vector2> points)
+        {
+            foreach (Vector2 pt in points)
+                yield return new Vector3(pt, 0);
         }
     }
 }
