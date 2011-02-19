@@ -18,13 +18,14 @@ using Nine;
 using Nine.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Animations;
+using System.ComponentModel;
 #endregion
 
 namespace ParticleSystem
 {
-    /// <summary>
-    /// Demonstrates how to draw particle effects.
-    /// </summary>
+    [Category("Graphics, Animation")]
+    [DisplayName("Particle System")]
+    [Description("This sample demenstrates how to draw particle effects.")]
     public class ParticleSystemGame : Microsoft.Xna.Framework.Game
     {
 #if WINDOWS_PHONE
@@ -75,8 +76,19 @@ namespace ParticleSystem
 
             particlePatch = new ParticleBatch(GraphicsDevice);
             primitiveBatch = new PrimitiveBatch(GraphicsDevice);
-            
-            snow = new ParticleEffect(5000);
+
+            // You can either programatically create the effect or author the effect
+            // using xml file and load it through the content pipeline.
+            snow = CreateParticleEffect();
+            snow = Content.Load<ParticleEffect>("Galaxy");
+
+            // Trigger another wave of particles for 5 seconds
+            snow.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
+        }
+
+        private ParticleEffect CreateParticleEffect()
+        {
+            ParticleEffect snow = new ParticleEffect(1024);
             snow.Texture = Content.Load<Texture2D>("flake");
             snow.Duration = 4;
             snow.Emission = 100;
@@ -84,7 +96,7 @@ namespace ParticleSystem
             snow.Color = Color.White;
             snow.Speed = 8f;
             snow.Stretch = 10;
-            
+
             //snow.Controllers.Add(new SizeController() { EndSize = 0.4f });
             snow.Controllers.Add(new ColorController() { EndColor = Color.White });
             snow.Controllers.Add(new FadeController());
@@ -99,6 +111,8 @@ namespace ParticleSystem
             //snow.Emitter = new SphereEmitter() { Radius = 10, Shell = true, Radiate = true };
             //snow.Emitter = new PointEmitter() { Spread = MathHelper.PiOver4 };
             //snow.Emitter = new BoxEmitter() { Box = new BoundingBox(new Vector3(-30, -30, 30), new Vector3(30, 30, 30)) };
+
+            return snow;
         }
 
         /// <summary>

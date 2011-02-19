@@ -18,13 +18,14 @@ using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
 using Nine.Animations;
+using System.ComponentModel;
 #endregion
 
 namespace SpriteAnimationGame
 {
-    /// <summary>
-    /// Demonstrates how to create 2D graphics.
-    /// </summary>
+    [Category("Graphics, Animation")]
+    [DisplayName("Skinned Animation")]
+    [Description("This sample demenstrates how to create 2D graphics and animation.")]
     public class SpriteAnimationGame : Microsoft.Xna.Framework.Game
     {
         SpriteBatch spriteBatch;

@@ -20,13 +20,14 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 #endif
 using Nine.Animations;
+using System.ComponentModel;
 #endregion
 
 namespace Transitions
 {
-    /// <summary>
-    /// Demonstrates how to use transitions to create various smoothed tweening animations.
-    /// </summary>
+    [Category("Animation")]
+    [DisplayName("Tween Animations")]
+    [Description("This sample demenstrates how to create various smoothed tweening animations.")]
     public class TransitionGame : Microsoft.Xna.Framework.Game
     {
 #if WINDOWS_PHONE

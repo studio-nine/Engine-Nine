@@ -35,7 +35,7 @@ namespace Nine.Content.Pipeline
     }
 
     [ContentTypeWriter]
-    internal class ContentReferenceWriter<T> : ContentTypeWriter<ContentReference<T>>
+    class ContentReferenceWriter<T> : ContentTypeWriter<ContentReference<T>>
     {
         ContentTypeWriter targetWriter;
 
@@ -62,8 +62,7 @@ namespace Nine.Content.Pipeline
             return (typeof(ContentTypeReader).Namespace + ".ExternalReferenceReader");
         }
     }
-
-
+    
     [ContentTypeSerializer]
     class ContentReferenceSerializer<T> : ContentTypeSerializer<ContentReference<T>>
     {

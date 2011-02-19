@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.ComponentModel;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects

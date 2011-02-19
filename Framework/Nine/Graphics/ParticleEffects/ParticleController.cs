@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -52,6 +53,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets whether this emitter is enabled.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public bool Enabled { get; set; }
 
         /// <summary>
@@ -134,12 +136,9 @@ namespace Nine.Graphics.ParticleEffects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ParticleControllerCollection : EnumerableCollection<IParticleController> 
     {
-        private ParticleEffect particleEffect;
-        
-        internal ParticleControllerCollection(ParticleEffect particleEffect)
-        {
-            this.particleEffect = particleEffect;
-        }
+        internal ParticleEffect ParticleEffect;
+
+        internal ParticleControllerCollection() { }
 
         protected override void OnAdded(int index, IParticleController value)
         {
@@ -147,8 +146,8 @@ namespace Nine.Graphics.ParticleEffects
                 throw new ArgumentNullException();
 
             ParticleController controller = value as ParticleController;
-            if (controller != null)
-                controller.Initialize(particleEffect);
+            if (controller != null && ParticleEffect != null)
+                controller.Initialize(ParticleEffect);
         }
 
         protected override void OnChanged(int index, IParticleController value, IParticleController previousValue)
@@ -157,8 +156,16 @@ namespace Nine.Graphics.ParticleEffects
                 throw new ArgumentNullException();
 
             ParticleController controller = value as ParticleController;
-            if (controller != null)
-                controller.Initialize(particleEffect);
+            if (controller != null && ParticleEffect != null)
+                controller.Initialize(ParticleEffect);
+        }
+    }
+
+    class ParticleControllerCollectionReader : ContentTypeReader<ParticleControllerCollection>
+    {
+        protected override ParticleControllerCollection Read(ContentReader input, ParticleControllerCollection existingInstance)
+        {
+            throw new NotImplementedException();
         }
     }
 }

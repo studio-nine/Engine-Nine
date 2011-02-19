@@ -75,11 +75,8 @@ namespace Nine.Graphics.Effects
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            if (Pool == null)
-            {
-                Pool = new ScreenEffectRenderTargetPool(graphics, 1);
-                DownScalePool = new ScreenEffectRenderTargetPool(graphics, 0.5f);
-            }
+            Pool = GraphicsResources<ScreenEffectRenderTargetPool>.GetInstance(graphics);
+            DownScalePool = GraphicsResources<ScreenEffectRenderTargetDownScalePool>.GetInstance(graphics);
 
             this.GraphicsDevice = graphics;
             this.DownScaleEnabled = downScaleEnabled;
@@ -140,7 +137,7 @@ namespace Nine.Graphics.Effects
         }
 
         internal static ScreenEffectRenderTargetPool Pool;
-        internal static ScreenEffectRenderTargetPool DownScalePool;
+        internal static ScreenEffectRenderTargetDownScalePool DownScalePool;
     }
 
 
@@ -197,6 +194,10 @@ namespace Nine.Graphics.Effects
         GraphicsDevice graphics;
         float renderTargetScale;
 
+        public ScreenEffectRenderTargetPool(GraphicsDevice graphics)
+            : this(graphics, 1) 
+        { }
+
         public ScreenEffectRenderTargetPool(GraphicsDevice graphics, float renderTargetScale)
         {
             this.graphics = graphics;
@@ -239,7 +240,7 @@ namespace Nine.Graphics.Effects
         public void Unlock(int i) { locked[i]--; }
         public void Begin(int i) { renderTargets[i].Begin(); }
         public Texture2D End(int i) { return renderTargets[i].End(); }
-
+        
         public void Dispose()
         {
             foreach (RenderTarget2D renderTarget in renderTargets)
@@ -247,7 +248,13 @@ namespace Nine.Graphics.Effects
                 if (renderTarget != null)
                     renderTarget.Dispose();
             }
+            renderTargets.Clear();
         }
+    }
+
+    internal class ScreenEffectRenderTargetDownScalePool : ScreenEffectRenderTargetPool 
+    {
+        public ScreenEffectRenderTargetDownScalePool(GraphicsDevice graphics) : base(graphics, 0.5f) { }
     }
 }
 

@@ -200,13 +200,13 @@ namespace Nine
                 screenshot.SetData<Color>(backbuffer);
 #if WINDOWS
                 screenshotNum++;
-
-                // Make sure screenshots directory exists
-                if (Directory.Exists(ScreenshotsDirectory) == false)
-                    Directory.CreateDirectory(ScreenshotsDirectory);
-
+                
                 if (save)
                 {
+                    // Make sure screenshots directory exists
+                    if (Directory.Exists(ScreenshotsDirectory) == false)
+                        Directory.CreateDirectory(ScreenshotsDirectory);
+
                     using (FileStream savedFile = new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate))
                     {
                         screenshot.SaveAsPng(savedFile, width, height);
@@ -217,9 +217,8 @@ namespace Nine
                 OnCaptured(new ScreenshotCapturedEventArgs() { Filename = filename, Screenshot = screenshot });
                 return screenshot;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ex.ToString();
                 return null;
             }
         }

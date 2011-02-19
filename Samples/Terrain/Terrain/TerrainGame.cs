@@ -18,14 +18,15 @@ using Nine;
 using Nine.Graphics;
 #if !WINDOWS_PHONE
 using Nine.Graphics.Effects;
+using System.ComponentModel;
 #endif
 #endregion
 
 namespace TerrainSample
 {
-    /// <summary>
-    /// Demonstrates how to create a terrain based on a heightmap.
-    /// </summary>
+    [Category("Graphics")]
+    [DisplayName("Skinned Animation")]
+    [Description("This sample demenstrates how to create and draw heightmap based terrain.")]
     public class TerrainGame : Microsoft.Xna.Framework.Game
     {
         TopDownEditorCamera camera;

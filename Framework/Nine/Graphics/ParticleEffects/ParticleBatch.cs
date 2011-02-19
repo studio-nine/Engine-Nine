@@ -32,6 +32,7 @@ namespace Nine.Graphics.ParticleEffects
         /// Gets or sets user data.
         /// </summary>
         public object Tag { get; set; }
+
         
 #if WINDOWS_PHONE
         public ParticleBatch(GraphicsDevice graphics) : this(graphics, 2048)
@@ -55,6 +56,12 @@ namespace Nine.Graphics.ParticleEffects
             primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection);
         }
 
+        public void Begin(Matrix view, Matrix projection, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
+        {
+            // TODO: Support per effect blend state.
+            primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, BlendState.Additive, samplerState, depthStencilState, rasterizerState);
+        }
+
         public void Draw(ParticleEffect particleEffect)
         {
 
@@ -62,6 +69,9 @@ namespace Nine.Graphics.ParticleEffects
 
         public void DrawBillboard(ParticleEffect particleEffect)
         {
+            if (particleEffect.Texture == null)
+                return;
+
             for (int currentParticle = particleEffect.firstParticle; 
                      currentParticle != particleEffect.lastParticle;
                      currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
@@ -82,6 +92,9 @@ namespace Nine.Graphics.ParticleEffects
 
         public void DrawConstrainedBillboard(ParticleEffect particleEffect)
         {
+            if (particleEffect.Texture == null)
+                return;
+
             for (int currentParticle = particleEffect.firstParticle;
                      currentParticle != particleEffect.lastParticle;
                      currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
@@ -104,6 +117,9 @@ namespace Nine.Graphics.ParticleEffects
 
         public void DrawConstrainedBillboard(ParticleEffect particleEffect, Vector3 axis)
         {
+            if (particleEffect.Texture == null)
+                return;
+
             for (int currentParticle = particleEffect.firstParticle;
                      currentParticle != particleEffect.lastParticle;
                      currentParticle = (currentParticle + 1) % particleEffect.maxParticles)

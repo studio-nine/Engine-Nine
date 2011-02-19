@@ -19,13 +19,14 @@ using Nine.Animations;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
 using Nine.Graphics.Effects.EffectParts;
+using System.ComponentModel;
 #endregion
 
 namespace ShadowMapping
 {
-    /// <summary>
-    /// Sample game showing how to draw shadows using shadow mapping.
-    /// </summary>
+    [Category("Graphics")]
+    [DisplayName("Shadow Mapping")]
+    [Description("This sample demenstrates how to draw shadows using shadow mapping.")]
     public class ShadowMappingGame : Microsoft.Xna.Framework.Game
     {
         SpriteBatch spriteBatch;

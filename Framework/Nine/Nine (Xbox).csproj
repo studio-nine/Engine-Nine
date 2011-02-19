@@ -65,9 +65,12 @@
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleAnimation.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleController.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleControllers.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffectCollection.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffectReader.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="LineSegment.cs" />

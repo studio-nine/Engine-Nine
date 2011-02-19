@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    
+    <DirectoryRef Id="ProductDir">      
+      <Directory Id="Documentation" Name="Documentation">        
+        <Component Id="DocumentationComponent" Guid="*" DiskId="1">
+          <File Id="Documentation" Name="Engine Nine Documentation.chm" KeyPath="yes" Source="$(sys.SOURCEFILEDIR)../../Documentation/Help/Engine Nine Documentation.chm">
+            <Shortcut Id="DocumentationShortcut" Name="Engine Nine Documentation" Directory="ProductProgramMenuFolder" WorkingDirectory="INSTALLDIR" Advertise="yes">
+              <Icon Id="VSDocs.ico" SourceFile="$(sys.SOURCEFILEDIR)../UI/VSDocs.ico"/>
+            </Shortcut>
+          </File>
+         </Component>        
+      </Directory>      
+    </DirectoryRef>
+
+    <ComponentGroup Id="DocumentationComponent" >
+      <ComponentRef Id="DocumentationComponent" />
+    </ComponentGroup>
+    
+  </Fragment>
+</Wix>

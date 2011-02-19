@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent xmlns:Particles="Nine.Graphics.ParticleEffects">
+  <Asset Type="Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent">
+    <AutoTrigger>true</AutoTrigger>
+    <MaxParticles>1024</MaxParticles>
+    <Emission>100</Emission>
+    <Duration>
+      <Min>4</Min>
+      <Max>4</Max>
+    </Duration>
+    <Color>
+      <Min>FFFFFFFF</Min>
+      <Max>FFFFFFFF</Max>
+    </Color>
+    <Size>
+      <Min>0.2</Min>
+      <Max>0.2</Max>
+    </Size>
+    <Speed>
+      <Min>8</Min>
+      <Max>8</Max>
+    </Speed>
+    <Stretch>10</Stretch>
+    <Texture>flake</Texture>
+    <Controllers>
+      <Item Type="Particles:ColorController">
+        <EndColor>
+          <Min>FFFFFFFF</Min>
+          <Max>FFFFFFFF</Max>
+        </EndColor>
+      </Item>
+      <Item Type="Particles:FadeController"></Item>
+    </Controllers>
+  </Asset>
+</XnaContent>

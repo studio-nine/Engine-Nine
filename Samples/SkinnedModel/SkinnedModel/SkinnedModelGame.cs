@@ -20,13 +20,14 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 #endif
 using Nine.Animations;
+using System.ComponentModel;
 #endregion
 
 namespace SkinnedModel
 {
-    /// <summary>
-    /// Sample game showing how to display skinned character animation.
-    /// </summary>
+    [Category("Graphics")]
+    [DisplayName("Skinned Animation")]
+    [Description("This sample demenstrates how to display skinned character animation.")]
     public class SkinnedModelGame : Microsoft.Xna.Framework.Game
     {
 #if WINDOWS_PHONE

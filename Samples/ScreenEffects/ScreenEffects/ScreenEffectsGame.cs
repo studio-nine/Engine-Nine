@@ -17,13 +17,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
+using System.ComponentModel;
 #endregion
 
 namespace ScreenEffects
 {
-    /// <summary>
-    /// Sample game for full screen post processing effects.
-    /// </summary>
+    [Category("Graphics")]
+    [DisplayName("Screen Effects")]
+    [Description("This sample demenstrates how to create full screen post processing effects.")]
     public class ScreenEffectsGame : Microsoft.Xna.Framework.Game
     {
         SpriteBatch spriteBatch;

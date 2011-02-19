@@ -15,6 +15,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -28,6 +29,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Range of values controlling the particle end color and alpha. 
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Range<Color> EndColor { get; set; }
 
         public ColorController()
@@ -73,6 +75,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Range of values controlling the particle end size.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Range<float> EndSize { get; set; }
 
         public SizeController()
@@ -102,6 +105,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Range of values controlling the particle end rotation.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Range<float> EndRotation { get; set; }
 
         public override Vector3 Border { get { return Vector3.Zero; } }
@@ -126,6 +130,7 @@ namespace Nine.Graphics.ParticleEffects
         /// Range of values representing the particle end speed in proportion to its start speed.
         /// A value of 1 means no change, a value of 0 means complete stop.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Range<float> EndSpeed { get; set; }
 
         public override Vector3 Border { get { return Vector3.One * EndSpeed.Max * 0.5f * ParticleEffect.Duration.Max; } }
@@ -150,6 +155,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets the force amount.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Vector3 Force { get; set; }
 
         public ForceController()
@@ -178,16 +184,19 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets the force amount.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public float Force { get; set; }
 
         /// <summary>
         /// Gets or sets the up axis.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Vector3 Up { get; set; }
 
         /// <summary>
         /// Gets or sets the center position.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Vector3 Center { get; set; }
 
         public TangentForceController()
@@ -216,11 +225,13 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets the absorb position.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public Vector3 Position { get; set; }
 
         /// <summary>
         /// Gets or sets the absorb force.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public float Force { get; set; }
 
         public override Vector3 Border { get { return Vector3.Zero; } }

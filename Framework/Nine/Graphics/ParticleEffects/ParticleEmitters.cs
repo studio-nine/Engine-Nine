@@ -9,11 +9,13 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -25,15 +27,18 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class PointEmitter : ParticleEmitter
     {
+        [ContentSerializer(Optional = true)]
         public Vector3 Position { get; set; }
 
+        [ContentSerializer(Optional = true)]
         public Vector3 Direction
         {
             get { return direction; }
             set { direction = value; }
         }
         private Vector3 direction = Vector3.UnitZ;
-        
+
+        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -41,6 +46,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private float spread = MathHelper.Pi;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
             get { return new BoundingBox { Min = Position, Max = Position }; }
@@ -58,8 +64,10 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class BoxEmitter : ParticleEmitter
     {
+        [ContentSerializer(Optional = true)]
         public BoundingBox Box { get; set; }
 
+        [ContentSerializer(Optional = true)]
         public Vector3 Direction
         {
             get { return direction; }
@@ -67,6 +75,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private Vector3 direction = Vector3.UnitZ;
 
+        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -74,6 +83,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private float spread = MathHelper.Pi;
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
             get { return Box; }
@@ -99,11 +109,16 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class SphereEmitter : ParticleEmitter
     {
+        [ContentSerializer(Optional = true)]
         public bool Shell { get; set; }
+        [ContentSerializer(Optional = true)]
         public bool Radiate { get; set; }
+        [ContentSerializer(Optional = true)]
         public Vector3 Center { get; set; }
+        [ContentSerializer(Optional = true)]
         public float Radius { get; set; }
 
+        [ContentSerializer(Optional = true)]
         public Vector3 Direction
         {
             get { return direction; }
@@ -111,6 +126,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private Vector3 direction = Vector3.UnitZ;
 
+        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -123,6 +139,7 @@ namespace Nine.Graphics.ParticleEffects
             Radius = 100;
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
             get { return BoundingBox.CreateFromSphere(new BoundingSphere(Center, Radius)); }
@@ -151,10 +168,14 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class CylinderEmitter : ParticleEmitter
     {
+        [ContentSerializer(Optional = true)]
         public bool Shell { get; set; }
+        [ContentSerializer(Optional = true)]
         public bool Radiate { get; set; }
+        [ContentSerializer(Optional = true)]
         public float Height { get; set; }
 
+        [ContentSerializer(Optional = true)]
         public Vector3 Direction
         {
             get { return direction; }
@@ -162,6 +183,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private Vector3 direction = Vector3.UnitZ;
 
+        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -169,10 +191,14 @@ namespace Nine.Graphics.ParticleEffects
         }
         private float spread = MathHelper.Pi;
 
+        [ContentSerializer(Optional = true)]
         public Vector3 Center { get; set; }
+        [ContentSerializer(Optional = true)]
         public Vector3 Up { get; set; }
+        [ContentSerializer(Optional = true)]
         public float Radius { get; set; }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
             get { return BoundingBox.CreateFromSphere(new BoundingSphere(Center, Radius)); }
@@ -238,6 +264,7 @@ namespace Nine.Graphics.ParticleEffects
         private List<float> lineWeights = new List<float>();
         private BoundingBox bounds;
 
+        [ContentSerializer(Optional = true)]
         public Vector3 Direction
         {
             get { return direction; }
@@ -245,6 +272,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private Vector3 direction = Vector3.UnitZ;
 
+        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -252,6 +280,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private float spread = MathHelper.Pi;
 
+        [ContentSerializer(Optional = true)]
         public IEnumerable<Vector3> LineList
         {
             get { return lineList; }
@@ -282,6 +311,7 @@ namespace Nine.Graphics.ParticleEffects
             bounds = BoundingBox.CreateFromPoints(value);
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox { get { return bounds; } }
 
         public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
@@ -322,6 +352,7 @@ namespace Nine.Graphics.ParticleEffects
 
         }
 
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
             get { return lineEmitter.BoundingBox; }

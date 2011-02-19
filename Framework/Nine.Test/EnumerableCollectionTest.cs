@@ -330,5 +330,51 @@ namespace Nine.Test
             Assert.AreEqual(2, prev);
             Assert.AreEqual(4, expected);
         }
+
+        [TestMethod()]
+        public void MultiLayerEnumerationTest()
+        {
+            EnumerableCollection<int> target = new EnumerableCollection<int>()
+            {
+                1, 2, 3, 4, 5, 6, 7
+            };
+            
+            foreach (int a in target)
+            {
+                target.Remove(1);
+                foreach (int b in target)
+                {
+                    target.Remove(7);
+                    foreach (int c in target)
+                    {
+                        target.Remove(3);
+                        foreach (int d in target)
+                        {
+                            target.Remove(4);
+                        }
+                    }
+                }
+            }
+
+            Assert.IsTrue(!target.Contains(1));
+            Assert.IsTrue(!target.Contains(7));
+            Assert.IsTrue(!target.Contains(3));
+            Assert.IsTrue(!target.Contains(4));
+
+            Assert.IsTrue(target.Contains(2));
+            Assert.IsTrue(target.Contains(5));
+            Assert.IsTrue(target.Contains(6));
+
+            List<int> copy = new List<int>(target);
+
+            Assert.IsTrue(!copy.Contains(1));
+            Assert.IsTrue(!copy.Contains(7));
+            Assert.IsTrue(!copy.Contains(3));
+            Assert.IsTrue(!copy.Contains(4));
+
+            Assert.IsTrue(copy.Contains(2));
+            Assert.IsTrue(copy.Contains(5));
+            Assert.IsTrue(copy.Contains(6));
+        }
     }
 }

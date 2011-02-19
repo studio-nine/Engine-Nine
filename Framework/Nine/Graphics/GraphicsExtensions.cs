@@ -27,22 +27,17 @@ namespace Nine.Graphics
     public static class GraphicsExtensions
     {
         #region DrawSprite
-        static SpriteBatch spriteBatch;
-
         internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Effect effect)
         {
-            PrepareSprite(graphics, effect);
-
+            SpriteBatch spriteBatch = PrepareSprite(graphics, effect);            
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, effect);
-
             spriteBatch.Draw(texture, position, sourceRectangle, color);
-
             spriteBatch.End();
         }
 
         internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, Color color, Effect effect)
         {
-            PrepareSprite(graphics, effect);
+            SpriteBatch spriteBatch = PrepareSprite(graphics, effect);
                         
 
             Rectangle destination = new Rectangle(graphics.Viewport.X,
@@ -51,15 +46,13 @@ namespace Nine.Graphics
                                                   graphics.Viewport.Height);
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, samplerState, null, null, effect);
-
             spriteBatch.Draw(texture, destination, null, color);
-
             spriteBatch.End();
         }
 
         internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color)
         {
-            PrepareSprite(graphics, null);
+            SpriteBatch spriteBatch = PrepareSprite(graphics, null);
 
 
             Rectangle destination = new Rectangle(graphics.Viewport.X,
@@ -68,15 +61,13 @@ namespace Nine.Graphics
                                                   graphics.Viewport.Height);
 
             spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, null, null);
-
             spriteBatch.Draw(texture, destination, null, color);
-
             spriteBatch.End();
         }
 
         internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color, Effect effect)
         {
-            PrepareSprite(graphics, effect);
+            SpriteBatch spriteBatch = PrepareSprite(graphics, effect);
 
             if (effect != null)
                 effect.SetTexture(texture);
@@ -87,25 +78,15 @@ namespace Nine.Graphics
                                                   graphics.Viewport.Height);
 
             spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, null, null, effect);
-
             spriteBatch.Draw(texture, destination, null, color);
-
             spriteBatch.End();
         }
 
-        internal static SpriteBatch GetSpriteBatch(GraphicsDevice graphics)
+        private static SpriteBatch PrepareSprite(GraphicsDevice graphics, Effect effect)
         {
-            if (spriteBatch == null)
-                spriteBatch = new SpriteBatch(graphics);
-
-            return spriteBatch;
-        }
-
-        private static void PrepareSprite(GraphicsDevice graphics, Effect effect)
-        {
-            GetSpriteBatch(graphics);
-
             SetViewport(effect as IEffectMatrices, graphics.Viewport.Bounds);
+
+            return GraphicsResources<SpriteBatch>.GetInstance(graphics);
         }
 
         public static void SetViewport(this IEffectMatrices effect, Rectangle viewport)

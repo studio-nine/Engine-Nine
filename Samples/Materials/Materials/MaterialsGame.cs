@@ -17,13 +17,14 @@ using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
+using System.ComponentModel;
 #endregion
 
 namespace MaterialsSample
 {
-    /// <summary>
-    /// Demonstrates how to use LinkedEffect to create various materials.
-    /// </summary>
+    [Category("Graphics")]
+    [DisplayName("Materials")]
+    [Description("This sample demenstrates how to use LinkedEffect to create various materials.")]
     public class MaterialsGame : Microsoft.Xna.Framework.Game
     {
         ModelViewerCamera camera;

@@ -15,14 +15,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
+using System.ComponentModel;
 #endregion
 
 namespace DebuggerPrimitives
 {
-    /// <summary>
-    /// This sample demenstrates the use of PrimitiveBatch to draw
-    /// various commonly used 3D shapes and geometries.
-    /// </summary>
+    [Category("Graphics")]
+    [DisplayName("Basic Primitives")]
+    [Description("This sample demenstrates the use of PrimitiveBatch to draw " +
+                 "various commonly used 3D shapes and geometries.")]
     public class DebuggerPrimitiveGame : Microsoft.Xna.Framework.Game
     {
 #if WINDOWS_PHONE

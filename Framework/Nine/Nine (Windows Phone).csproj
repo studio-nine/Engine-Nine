@@ -88,10 +88,13 @@
     <Compile Include="Graphics\ModelCollision.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleAnimation.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleBatch.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleController.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleControllers.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffectCollection.cs" />
+    <Compile Include="Graphics\ParticleEffects\ParticleEffectReader.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />

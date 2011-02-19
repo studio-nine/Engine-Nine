@@ -1524,7 +1524,7 @@ namespace Nine
             {
                 return base.OpenStream(assetName);
             }
-            catch (Exception e) { e.ToString(); }
+            catch (Exception) { }
 
             if (zipFile != null)
             {

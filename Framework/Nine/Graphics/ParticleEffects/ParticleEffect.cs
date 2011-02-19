@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -32,21 +33,6 @@ namespace Nine.Graphics.ParticleEffects
         /// Gets or sets the number of particles emitted per second.
         /// </summary>
         public float Emission { get; set; }
-
-        /// <summary>
-        /// Gets or sets the emitter of this particle effect.
-        /// </summary>
-        public IParticleEmitter Emitter { get; set; }
-
-        /// <summary>
-        /// Gets a collection of controllers that defines the visual of this particle effect.
-        /// </summary>
-        public ParticleControllerCollection Controllers { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the position of this particle effect.
-        /// </summary>
-        public Vector3 Position { get; set; }
 
         /// <summary>
         /// Gets or sets the duration of each particle.
@@ -74,9 +60,10 @@ namespace Nine.Graphics.ParticleEffects
         public Range<float> Speed { get; set; }
 
         /// <summary>
-        /// Gets the graphics device.
+        /// Gets or sets a scale factor along the forward axis when drawing this
+        /// particle effect using constrained billboard.
         /// </summary>
-        public GraphicsDevice GraphicsDevice { get; private set; }
+        public float Stretch { get; set; }
 
         /// <summary>
         /// Gets or sets the texture used by this particle effect.
@@ -94,47 +81,20 @@ namespace Nine.Graphics.ParticleEffects
         public BlendState BlendState { get; set; }
 
         /// <summary>
-        /// Gets or sets a scale factor along the forward axis when drawing this
-        /// particle effect using constrained billboard.
+        /// Gets or sets the emitter of this particle effect.
         /// </summary>
-        public float Stretch { get; set; }
+        public IParticleEmitter Emitter { get; set; }
+
+        /// <summary>
+        /// Gets a collection of controllers that defines the visual of this particle effect.
+        /// </summary>
+        public ParticleControllerCollection Controllers { get; internal set; }
 
         /// <summary>
         /// Gets or sets user data.
         /// </summary>
+        [ContentSerializer(Optional = true, SharedResource=true)]
         public object Tag { get; set; }
-
-        /// <summary>
-        /// Gets the approximate bounds of this particle effect.
-        /// </summary>
-        public BoundingBox BoundingBox
-        {
-            get
-            {
-                if (Emitter == null)
-                    return new Microsoft.Xna.Framework.BoundingBox();
-
-                // TODO: Should cache this value
-                BoundingBox box = Emitter.BoundingBox;
-
-                Vector3 maxBorder = Vector3.Zero;
-                for (int currentController = 0; currentController < Controllers.Count; currentController++)
-                {
-                    Vector3 border = Controllers[currentController].Border;
-
-                    if (border.X > maxBorder.X)
-                        maxBorder.X = border.X;
-                    if (border.Y > maxBorder.Y)
-                        maxBorder.Y = border.Y;
-                    if (border.Z > maxBorder.Z)
-                        maxBorder.Z = border.Z;
-                }
-
-                box.Max += maxBorder;
-                box.Min -= maxBorder;
-                return box;
-            }
-        }
 
         /// <summary>
         /// Gets the current active particle count
@@ -144,6 +104,28 @@ namespace Nine.Graphics.ParticleEffects
             get { return (lastParticle + maxParticles) % maxParticles - firstParticle; }
         }
 
+        /// <summary>
+        /// Gets the approximate bounds of first triggered effect.
+        /// </summary>
+        public BoundingBox BoundingBox { get { return triggerList.Count > 0 ? triggerList[0].BoundingBox : new BoundingBox(); } }
+
+        /// <summary>
+        /// Gets a collection of particle effects that will run side by side with this
+        /// particle effect.
+        /// </summary>
+        public ParticleEffectCollection SiblingEffects { get; private set; }
+
+        /// <summary>
+        /// Gets a collection of particle effects that is used as the appareance of each
+        /// particle spawned by this particle effect.
+        /// </summary>
+        public ParticleEffectCollection ChildEffects { get; private set; }
+
+        /// <summary>
+        /// Gets a collection of particle effects that is fired when each particle spawned
+        /// by this particle effect is about to die.
+        /// </summary>
+        public ParticleEffectCollection EndingEffects { get; private set; }
 
         // An array of particles, treated as a circular queue.
         internal Particle[] particles;
@@ -155,39 +137,123 @@ namespace Nine.Graphics.ParticleEffects
         private Random random = new Random();
         private float timeLeftOver = 0;
 
+        private List<ParticleAnimation> triggerList = new List<ParticleAnimation>();
+
         /// <summary>
         /// Creates a new particle effect.
         /// </summary>
-        public ParticleEffect(int maxParticles)
+        public ParticleEffect() : this(true, 1024)
         {
+
+        }
+
+        /// <summary>
+        /// Creates a new particle effect.
+        /// </summary>
+        public ParticleEffect(int maxParticles) : this(true, maxParticles)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new particle effect.
+        /// </summary>
+        public ParticleEffect(bool autoTrigger, int maxParticles)
+        {
+            Enabled = true;
             Stretch = 1;
             Duration = 2;
             BlendState = BlendState.Additive;
-            Controllers = new ParticleControllerCollection(this);
             Emitter = new PointEmitter();
 
+            Controllers = new ParticleControllerCollection();
+            Controllers.ParticleEffect = this;
+
+            SiblingEffects = new ParticleEffectCollection();
+            ChildEffects = new ParticleEffectCollection();
+            EndingEffects = new ParticleEffectCollection();
+
             particles = new Particle[this.maxParticles = maxParticles];
+            if (autoTrigger)
+                Trigger();
         }
-        
+
         /// <summary>
-        /// Updates the particle system
+        /// Creates an ever lasting the particle effect.
+        /// </summary>
+        public ParticleAnimation Trigger()
+        {
+            return Trigger(Vector3.Zero, TimeSpan.MaxValue);
+        }
+
+        /// <summary>
+        /// Creates the particle effect at the specified position that last forever.
+        /// </summary>
+        public ParticleAnimation Trigger(Vector3 position)
+        {
+            return Trigger(position, TimeSpan.MaxValue);
+        }
+
+        /// <summary>
+        /// Creates the particle effect at the specified position that
+        /// lasts for the given amount of time.
+        /// </summary>
+        public ParticleAnimation Trigger(Vector3 position, TimeSpan duration)
+        {
+            ParticleAnimation result = new ParticleAnimation() { Position = position, Duration = duration };
+            triggerList.Add(result);
+            result.Effect = this;
+            result.Play();
+            return result;
+        }
+
+        /// <summary>
+        /// Creates an impulse of particles at the specified position.
+        /// </summary>
+        public void Trigger(Vector3 position, int particleCount)
+        {
+            for (int i = 0; i < particleCount; i++)
+            {
+                if (!EmitNewParticle(position, 0))
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Updates the particle system.
         /// </summary>
         public void Update(GameTime time)
         {
-            if (Emitter == null)
-                return;
-
             float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
 
-            UpdateEmitter(elapsedTime);
+            UpdateTriggers(time, elapsedTime);
             UpdateControllers(elapsedTime);
-            UpdateParticles(elapsedTime);
+            UpdateParticles(time, elapsedTime);
             
-            if (ParticleCount > 0)
-                System.Diagnostics.Debug.WriteLine(particles[firstParticle]);
+            foreach (var sliblingEffect in SiblingEffects)
+                sliblingEffect.Update(time);
         }
 
-        private void UpdateEmitter(float elapsedTime)
+        private void UpdateTriggers(GameTime time, float elapsedTime)
+        {
+            if (!Enabled)
+                return;
+
+            for (int i = 0; i < triggerList.Count; i++)
+            {
+                ParticleAnimation anim = triggerList[i];
+                if (anim.State == Animations.AnimationState.Stopped)
+                {
+                    triggerList.RemoveAt(i);
+                    continue;
+                }
+
+                anim.Update(time);
+                UpdateEmitter(anim.Position, elapsedTime);
+            }
+        }
+
+        private void UpdateEmitter(Vector3 position, float elapsedTime)
         {
             // Work out how much time has passed since the previous update.
             float timeBetweenParticles = 1.0f / Emission;
@@ -212,33 +278,43 @@ namespace Nine.Graphics.ParticleEffects
                     // creation frequency, or game update rate.
                     float mu = currentTime / elapsedTime;
 
-                    // Don't add new particles when the queue is full.
-                    currentParticle = lastParticle;
-                    int nextParticle = (currentParticle + 1) % maxParticles;
-                    if (nextParticle == firstParticle - 1)
+                    if (!EmitNewParticle(position, mu))
                         break;
-                    lastParticle = nextParticle;
-
-                    Emitter.Emit(mu, ref particles[currentParticle].Position, ref particles[currentParticle].Velocity);
-
-                    particles[currentParticle].Age = 0;
-                    particles[currentParticle].ElapsedTime = 0;
-                    particles[currentParticle].Position += Position;
-                    particles[currentParticle].Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min); ;
-                    particles[currentParticle].Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
-                    particles[currentParticle].Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
-                    particles[currentParticle].Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
-                    particles[currentParticle].Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
-                    
-                    for (int currentController = 0; currentController < Controllers.Count; currentController++)
-                    {
-                        Controllers[currentController].Reset(ref particles[currentParticle]);
-                    }
                 }
 
                 // Store any time we didn't use, so it can be part of the next update.
                 timeLeftOver = timeToSpend;
             }
+        }
+
+        private bool EmitNewParticle(Vector3 position, float mu)
+        {
+            if (Emitter == null)
+                return false;
+
+            // Don't add new particles when the queue is full.
+            currentParticle = lastParticle;
+            int nextParticle = (currentParticle + 1) % maxParticles;
+            if (nextParticle == firstParticle - 1)
+                return false;
+            lastParticle = nextParticle;
+
+            Emitter.Emit(mu, ref particles[currentParticle].Position, ref particles[currentParticle].Velocity);
+
+            particles[currentParticle].Age = 0;
+            particles[currentParticle].ElapsedTime = 0;
+            particles[currentParticle].Position += position;
+            particles[currentParticle].Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min); ;
+            particles[currentParticle].Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
+            particles[currentParticle].Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
+            particles[currentParticle].Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
+            particles[currentParticle].Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
+
+            for (int currentController = 0; currentController < Controllers.Count; currentController++)
+            {
+                Controllers[currentController].Reset(ref particles[currentParticle]);
+            }
+            return true;
         }
 
         private void UpdateControllers(float elapsedTime)
@@ -256,12 +332,18 @@ namespace Nine.Graphics.ParticleEffects
             }
         }
 
-        private void UpdateParticles(float elapsedTime)
+        private void UpdateParticles(GameTime time, float elapsedTime)
         {
             for (currentParticle = firstParticle; currentParticle != lastParticle;
                                                   currentParticle = (currentParticle + 1) % maxParticles)
             {
                 particles[currentParticle].Update(elapsedTime);
+
+                foreach (var childEffect in ChildEffects)
+                {
+                    childEffect.Update(time);
+                }
+
                 if (currentParticle == firstParticle && particles[currentParticle].Age >= 1)
                 {
                     firstParticle = (firstParticle + 1) % maxParticles;

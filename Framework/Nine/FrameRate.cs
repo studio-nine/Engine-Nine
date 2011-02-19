@@ -17,6 +17,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine
 {
+    using Nine.Graphics;
+
     /// <summary>
     /// Frame rate profiler
     /// </summary>
@@ -116,7 +118,7 @@ namespace Nine
             if (Font != null)
             {
                 if (SpriteBatch == null)
-                    SpriteBatch = Graphics.GraphicsExtensions.GetSpriteBatch(GraphicsDevice);
+                    SpriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
 
                 SpriteBatch.Begin();
                 SpriteBatch.DrawString(Font, "FPS: " + fps, Position, Color);

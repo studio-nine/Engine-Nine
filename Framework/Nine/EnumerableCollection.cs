@@ -75,7 +75,7 @@ namespace Nine
         /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
-            // Copy a new list whiling iterating it
+            // Copy a new list while iterating it
             if (isDirty)
             {
                 if (copy == null)
@@ -92,12 +92,7 @@ namespace Nine
                 isDirty = false;
             }
 
-            // NOTE: If copy contains references to an object and this
-            //       collection is never enumerated again, copy array
-            //       will keep the reference to the object as long as
-            //       this collection is alive, will this be a potential
-            //       memery pitfall?
-            return copy.GetEnumerator();
+            return new EnumerableCollectionEnumerator<T>() { List = copy, CurrentIndex = -1 };
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -315,6 +310,37 @@ namespace Nine
         {
             if (Changed != null && !previousValue.Equals(value))
                 Changed(this, new ItemChangedEventArgs<T> { Index = index, Value = value, PreviousValue = previousValue });
+        }
+    }
+
+    internal struct EnumerableCollectionEnumerator<T> : IEnumerator<T>
+    {
+        internal IList<T> List;
+        internal int CurrentIndex;
+
+        public T Current
+        {
+            get { return List[CurrentIndex]; }
+        }
+
+        public void Dispose()
+        {
+
+        }
+
+        object IEnumerator.Current
+        {
+            get { return List[CurrentIndex]; }
+        }
+
+        public bool MoveNext()
+        {
+            return ++CurrentIndex < List.Count;
+        }
+
+        public void Reset()
+        {
+            CurrentIndex = -1;
         }
     }
 }
