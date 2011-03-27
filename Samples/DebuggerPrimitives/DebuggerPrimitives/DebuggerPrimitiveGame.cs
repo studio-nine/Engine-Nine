@@ -62,6 +62,7 @@ namespace DebuggerPrimitives
             IsFixedTimeStep = false;
             Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
+            Components.Add(new ScreenshotCapturer(this));
         }
 
 
@@ -97,13 +98,13 @@ namespace DebuggerPrimitives
 
             primitiveBatch.Begin(PrimitiveSortMode.Deferred, camera.View, camera.Projection);
             {
-                primitiveBatch.DrawSprite(butterfly, Vector3.Zero, 2, Color.White);
+                primitiveBatch.DrawBillboard(butterfly, Vector3.Zero, 2, Color.White);
                 primitiveBatch.DrawSphere(new BoundingSphere(Vector3.UnitX * 4, 1), 24, null, Color.White);
                 primitiveBatch.DrawGrid(1, 128, 128, null, Color.White * 0.25f);
                 primitiveBatch.DrawGrid(8, 16, 16, null, Color.Black);
                 primitiveBatch.DrawLine(new Vector3(5, 5, 0), new Vector3(5, 5, 5), Color.Blue);
-                primitiveBatch.DrawLine(null, new Vector3(5, -5, 0), new Vector3(5, -5, 5), 0.05f, null, null, Color.Yellow);
-                primitiveBatch.DrawLine(lightning, new Vector3[] { new Vector3(5, -5, 0), new Vector3(5, 0, 2), new Vector3(5, 5, 0) }, 1f, null, null, Color.White);
+                primitiveBatch.DrawConstrainedBillboard(null, new Vector3(5, -5, 0), new Vector3(5, -5, 5), 0.05f, null, null, Color.Yellow);
+                primitiveBatch.DrawConstrainedBillboard(lightning, new Vector3[] { new Vector3(5, -5, 0), new Vector3(5, 0, 2), new Vector3(5, 5, 0) }, 1f, null, null, Color.White);
                 primitiveBatch.DrawArrow(Vector3.Zero, Vector3.UnitZ * 2, null, Color.White);
                 primitiveBatch.DrawBox(new BoundingBox(-Vector3.One, Vector3.One), null, Color.White);
                 primitiveBatch.DrawSolidBox(new BoundingBox(-Vector3.One, Vector3.One), null, Color.Yellow * 0.2f);

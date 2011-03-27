@@ -51,4 +51,25 @@ namespace Nine
             return provider.GetService(Type.GetType(type)) as K;
         }
     }
+
+
+#if !WINDOWS    
+    /// <summary>
+    /// Mimic the System.ComponentModel.DisplayNameAttribute for .NET Compact Framework.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event)]
+    public class DisplayNameAttribute : Attribute
+    {
+        public DisplayNameAttribute()
+        {
+        }
+
+        public DisplayNameAttribute(string displayName)
+        {
+            DisplayName = displayName;
+        }
+
+        public string DisplayName { get; set; }
+    }
+#endif
 }

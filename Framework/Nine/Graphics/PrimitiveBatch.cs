@@ -135,6 +135,9 @@ namespace Nine.Graphics
 
         public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
+            if (hasBegin)
+                throw new InvalidOperationException("Begin has already been called.");
+
             this.view = view;
             this.projection = projection;
             this.sort = sortMode;
@@ -153,12 +156,12 @@ namespace Nine.Graphics
             basicEffect.Projection = projection;
         }
 
-        public void DrawSprite(Texture2D texture, Vector3 position, float size, Color color)
+        public void DrawBillboard(Texture2D texture, Vector3 position, float size, Color color)
         {
-            DrawSprite(texture, position, size, size, 0, Vector3.UnitZ, null, null, color);
+            DrawBillboard(texture, position, size, size, 0, Vector3.UnitZ, null, null, color);
         }
 
-        public void DrawSprite(Texture2D texture, Vector3 position, float width, float height, float rotation, Vector3 up, Matrix? textureTransform, Matrix? world, Color color)
+        public void DrawBillboard(Texture2D texture, Vector3 position, float width, float height, float rotation, Vector3 up, Matrix? textureTransform, Matrix? world, Color color)
         {
             //      aa --- ab
             //       |     |
@@ -244,7 +247,7 @@ namespace Nine.Graphics
             EndPrimitive();
         }
 
-        public void DrawLine(Texture2D texture, Vector3 start, Vector3 end, float width, Matrix? textureTransform, Matrix? world, Color color)
+        public void DrawConstrainedBillboard(Texture2D texture, Vector3 start, Vector3 end, float width, Matrix? textureTransform, Matrix? world, Color color)
         {
             //      aa --- ab
             //       |     |
@@ -294,7 +297,7 @@ namespace Nine.Graphics
             EndPrimitive();
         }
 
-        public void DrawLine(Texture2D texture, IEnumerable<Vector3> lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color)
+        public void DrawConstrainedBillboard(Texture2D texture, IEnumerable<Vector3> lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color)
         {
             if (lineStrip == null)
                 throw new ArgumentNullException("lineStrip");

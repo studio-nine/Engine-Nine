@@ -65,6 +65,26 @@ namespace Nine.Graphics.ParticleEffects
     public class BoxEmitter : ParticleEmitter
     {
         [ContentSerializer(Optional = true)]
+        public Matrix? Transform 
+        {
+            get
+            {
+                if (hasTransform)
+                    return transform;
+                return null;
+            }
+            set
+            {
+                if ((hasTransform = (value != null)))
+                {
+                    transform = value.Value;
+                }
+            }
+        }
+        private bool hasTransform;
+        private Matrix transform;
+
+        [ContentSerializer(Optional = true)]
         public BoundingBox Box { get; set; }
 
         [ContentSerializer(Optional = true)]
@@ -99,6 +119,11 @@ namespace Nine.Graphics.ParticleEffects
             position.X = Box.Min.X + (float)(Random.NextDouble() * (Box.Max.X - Box.Min.X));
             position.Y = Box.Min.Y + (float)(Random.NextDouble() * (Box.Max.Y - Box.Min.Y));
             position.Z = Box.Min.Z + (float)(Random.NextDouble() * (Box.Max.Z - Box.Min.Z));
+
+            if (Transform != null)
+            {
+                Vector3.Transform(ref position, ref transform, out position);
+            }
 
             CreateRandomVelocity(ref velocity, ref direction, spread);
         }

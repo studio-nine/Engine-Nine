@@ -66,14 +66,14 @@ namespace Nine.Content.Pipeline
     [ContentTypeSerializer]
     class ContentReferenceSerializer<T> : ContentTypeSerializer<ContentReference<T>>
     {
+        protected override ContentReference<T> Deserialize(IntermediateReader input, ContentSerializerAttribute format, ContentReference<T> existingInstance)
+        {
+            return new ContentReference<T>(input.Xml.ReadContentAsString());
+        }
+
         protected override void Serialize(IntermediateWriter output, ContentReference<T> value, ContentSerializerAttribute format)
         {
             output.Xml.WriteString(value.Filename);
-        }
-
-        protected override ContentReference<T> Deserialize(IntermediateReader input, ContentSerializerAttribute format, ContentReference<T> existingInstance)
-        {
-            return new ContentReference<T>(input.Xml.ReadString());
         }
     }
 }

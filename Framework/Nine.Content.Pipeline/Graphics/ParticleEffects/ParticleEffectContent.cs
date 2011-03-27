@@ -152,7 +152,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.Write(value.AutoTrigger);
             output.Write(value.MaxParticles);
             output.WriteObject(value.Texture);
-            //output.WriteObject(value.BlendState);
+            output.WriteObject(value.BlendState);
             output.WriteObject(value.Color);
             output.WriteObject(value.Duration);
             output.Write(value.Emission);

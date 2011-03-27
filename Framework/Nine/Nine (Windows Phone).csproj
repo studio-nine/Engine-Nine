@@ -75,6 +75,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FrameRate.cs" />
     <Compile Include="GameConsole.cs" />
+    <Compile Include="Graphics\BlendStateReader.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\DrawableSurface.cs" />
     <Compile Include="Graphics\DrawableSurfaceCollections.cs" />

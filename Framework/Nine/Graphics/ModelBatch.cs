@@ -161,6 +161,9 @@ namespace Nine.Graphics
         
         public void Begin(ModelSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
+            if (hasBegin)
+                throw new InvalidOperationException("Begin has already been called.");
+
             this.blendState = blendState != null ? blendState : BlendState.Opaque;
             this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
             this.depthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.Default;
@@ -302,6 +305,8 @@ namespace Nine.Graphics
                 ModelBatchItem item = batches[i];
                 InternalDraw(item.VertexBuffer, item.IndexBuffer, item.VertexOffset, item.NumVertices, item.StartIndex, item.PrimitiveCount, item.World, item.BoneTransforms, item.Effect, item.Texture);
             }
+
+            hasBegin = false;
         }
 
         private void InternalDraw(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int vertexOffset, int numVertices, int startIndex, int primitiveCount, Matrix world, Matrix[] boneTransforms, Effect effect, Texture2D texture)

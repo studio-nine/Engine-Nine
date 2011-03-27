@@ -5,28 +5,23 @@
     <MaxParticles>1024</MaxParticles>
     <Emission>100</Emission>
     <Duration>
-      <Min>4</Min>
-      <Max>4</Max>
+      <Min>2</Min>
+      <Max>2</Max>
     </Duration>
-    <Color>
-      <Min>FFFFFFFF</Min>
-      <Max>FFFFFFFF</Max>
-    </Color>
+    <Color>FFFFFFFF</Color>
     <Size>
       <Min>0.2</Min>
       <Max>0.2</Max>
     </Size>
-    <Speed>
-      <Min>8</Min>
-      <Max>8</Max>
-    </Speed>
+    <Speed>8</Speed>
     <Stretch>10</Stretch>
     <Texture>flake</Texture>
+    <BlendState>Additive</BlendState>
     <Controllers>
       <Item Type="Particles:ColorController">
         <EndColor>
-          <Min>FFFFFFFF</Min>
-          <Max>FFFFFFFF</Max>
+          <Min>FF00FFFF</Min>
+          <Max>FFFF00FF</Max>
         </EndColor>
       </Item>
       <Item Type="Particles:FadeController"></Item>

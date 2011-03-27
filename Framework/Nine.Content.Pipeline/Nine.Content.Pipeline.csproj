@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentReference.cs" />
-    <Compile Include="BlendStateSerializer.cs" />
+    <Compile Include="Graphics\BlendStateSerializer.cs" />
     <Compile Include="RangeSerializer.cs" />
     <Compile Include="Graphics\Effects\EffectParts\LinkedEffectPartContents.cs" />
     <Compile Include="Graphics\Effects\EffectParts\LinkedEffectParts.Designer.cs">

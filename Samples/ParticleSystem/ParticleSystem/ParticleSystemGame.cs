@@ -83,7 +83,8 @@ namespace ParticleSystem
             snow = Content.Load<ParticleEffect>("Galaxy");
 
             // Trigger another wave of particles for 5 seconds
-            snow.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
+            //snow.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
+            //snow.Trigger(Vector3.Zero, 10);
         }
 
         private ParticleEffect CreateParticleEffect()

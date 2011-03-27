@@ -40,7 +40,7 @@ namespace Nine
     /// <summary>
     /// Screenshot capturer component that captures screenshots.
     /// </summary>
-    public class ScreenshotCapturer : GameComponent
+    public class ScreenshotCapturer : DrawableGameComponent
     {
         #region Variables
         /// <summary>
@@ -232,9 +232,9 @@ namespace Nine
                 Captured(this, e);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
-            base.Update(gameTime);
+            base.Draw(gameTime);
 
             bool pressed = Keyboard.GetState().IsKeyDown(CaptureKey);
 

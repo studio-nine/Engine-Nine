@@ -26,7 +26,7 @@ namespace Nine.Graphics.ParticleEffects
             ParticleEffect effect = new ParticleEffect(input.ReadBoolean(), input.ReadInt32());
 
             effect.Texture = input.ReadObject<Texture2D>();
-            //effect.BlendState = input.ReadObject<BlendState>();
+            effect.BlendState = input.ReadObject<BlendState>();
             effect.Color = input.ReadObject<Range<Color>>();
             effect.Duration = input.ReadObject<Range<float>>();
             effect.Emission = input.ReadSingle();

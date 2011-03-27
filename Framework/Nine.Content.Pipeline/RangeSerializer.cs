@@ -8,6 +8,8 @@
 
 #region Using Directives
 using System;
+using System.Reflection;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -20,42 +22,67 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Content.Pipeline
 {    
-    /*
     [ContentTypeSerializer]
     class RangeSerializer<T> : ContentTypeSerializer<Range<T>>
     {
         protected override Range<T> Deserialize(IntermediateReader input, ContentSerializerAttribute format, Range<T> existingInstance)
-        {
-            Range<T> range = new Range<T>();
-
-            input.Xml.ReadStartElement("Min");
-            range.Min = input.ReadObject<T>(null);
-            input.Xml.ReadEndElement();
-
-            input.Xml.ReadStartElement("Max");
-            range.Max = input.ReadObject<T>(null);
-            input.Xml.ReadEndElement();
-
-            return range;
+        {   
+            try
+            {
+                // Shawn choose to internalize this method, so hack around using reflection.
+                ContentTypeSerializer serializer = input.Serializer.GetTypeSerializer(typeof(T));
+                T value = (T)Invoke(serializer, "Deserialize", input, format, existingInstance.Min);
+                return new Range<T>(value, value);
+            }
+            catch (Exception)
+            {
+                Range<T> range = new Range<T>();
+                string elementName = format.ElementName;
+                {
+                    format.ElementName = "Min";
+                    range.Min = input.ReadObject<T>(format);
+                    format.ElementName = "Max";
+                    range.Max = input.ReadObject<T>(format);
+                }
+                format.ElementName = elementName;
+                return range;
+            }
         }
 
         protected override void Serialize(IntermediateWriter output, Range<T> value, ContentSerializerAttribute format)
         {
             if (value.Min.Equals(value.Max))
             {
-                output.WriteObject(value.Min, format);
+                ContentTypeSerializer serializer = output.Serializer.GetTypeSerializer(typeof(T));
+                Invoke(serializer, "Deserialize", output, value.Min, format);
+                return;
             }
-            else
-            {
-                output.Xml.WriteStartElement("Min");
-                output.WriteObject(value.Min, format);
-                output.Xml.WriteEndElement();
 
-                output.Xml.WriteStartElement("Max");
+            string elementName = format.ElementName;
+            {
+                format.ElementName = "Min";
+                output.WriteObject(value.Min, format);
+                format.ElementName = "Max";
                 output.WriteObject(value.Max, format);
-                output.Xml.WriteEndElement();
+            }
+            format.ElementName = elementName;
+        }
+
+        static object Invoke(object target, string method, params object[] args)
+        {
+            try
+            {
+                MethodInfo methodInfo = target.GetType().GetMethod(method,
+                                                   BindingFlags.Instance | BindingFlags.InvokeMethod |
+                                                   BindingFlags.NonPublic | BindingFlags.Public, null,
+                                                   args.Select(o => o.GetType()).ToArray(), null);
+
+                return methodInfo.Invoke(target, args);
+            }
+            catch (TargetInvocationException e)
+            {
+                throw e.InnerException;
             }
         }
     }
-     */
 }

@@ -87,7 +87,7 @@ namespace Nine.Graphics.ParticleEffects
 
         protected override void OnReset(ref Particle particle, ref float tag)
         {
-            tag = MathHelper.Lerp(EndSize.Min, EndSize.Max, (float)Random.NextDouble()) - particle.Size;
+            tag = (MathHelper.Lerp(EndSize.Min, EndSize.Max, (float)Random.NextDouble()) - particle.Size) / particle.Duration;
         }
 
         protected override void OnUpdate(float elapsedTime, ref Particle particle, ref float tag)
@@ -112,7 +112,7 @@ namespace Nine.Graphics.ParticleEffects
 
         protected override void OnReset(ref Particle particle, ref float tag)
         {
-            tag = MathHelper.Lerp(EndRotation.Min, EndRotation.Max, (float)Random.NextDouble()) - particle.Rotation;
+            tag = (MathHelper.Lerp(EndRotation.Min, EndRotation.Max, (float)Random.NextDouble()) - particle.Rotation) / particle.Duration;
         }
 
         protected override void OnUpdate(float elapsedTime, ref Particle particle, ref float tag)

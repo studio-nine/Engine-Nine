@@ -670,7 +670,7 @@ namespace Nine.Graphics
             float width = length * Ratio * 0.8f;
             Vector3 mid = Vector3.Lerp(end, start, Ratio);
 
-            primitiveBatch.DrawLine(null, start, mid, length * 0.04f, null, world, color);
+            primitiveBatch.DrawConstrainedBillboard(null, start, mid, length * 0.04f, null, world, color);
 
             primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {

@@ -21,8 +21,6 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class ParticleBatch : IDisposable
     {
-        private PrimitiveBatch primitiveBatch;
-
         /// <summary>
         /// Gets the underlying graphics device used by this ModelBatch.
         /// </summary>
@@ -33,6 +31,17 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public object Tag { get; set; }
 
+        private bool hasBegin = false;
+        private PrimitiveBatch primitiveBatch;
+        private List<ParticleBatchItem> batches;
+        private ParticleBatchSortComparer comparer = new ParticleBatchSortComparer();
+
+        private SamplerState samplerState;
+        private DepthStencilState depthStencilState;
+        private RasterizerState rasterizerState;
+
+        private Matrix view;
+        private Matrix projection;
         
 #if WINDOWS_PHONE
         public ParticleBatch(GraphicsDevice graphics) : this(graphics, 2048)
@@ -45,103 +54,163 @@ namespace Nine.Graphics.ParticleEffects
         public ParticleBatch(GraphicsDevice graphics, int capacity)
         {
             primitiveBatch = new PrimitiveBatch(graphics, capacity);
+            batches = new List<ParticleBatchItem>();
         }
 
         public void Begin()
         {
+            Begin(Matrix.Identity, Matrix.Identity);
         }
 
         public void Begin(Matrix view, Matrix projection)
         {
-            primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection);
+            Begin(view, projection, null, null, null);
         }
 
         public void Begin(Matrix view, Matrix projection, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
-            // TODO: Support per effect blend state.
-            primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, BlendState.Additive, samplerState, depthStencilState, rasterizerState);
+            if (hasBegin)
+                throw new InvalidOperationException("Begin has already been called.");
+
+            this.view = view;
+            this.projection = projection;
+            this.samplerState = samplerState;
+            this.depthStencilState = depthStencilState;
+            this.rasterizerState = rasterizerState;
+            this.hasBegin = true;
         }
 
         public void Draw(ParticleEffect particleEffect)
-        {
+        {   
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
 
+            if (particleEffect.Texture != null)
+                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.Sprite, ParticleEffect = particleEffect });
         }
 
         public void DrawBillboard(ParticleEffect particleEffect)
         {
-            if (particleEffect.Texture == null)
-                return;
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
 
-            for (int currentParticle = particleEffect.firstParticle; 
-                     currentParticle != particleEffect.lastParticle;
-                     currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
-            {
-                if (particleEffect.particles[currentParticle].Age <= 1)
-                {
-                    Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);                         
-
-                    primitiveBatch.DrawSprite(particleEffect.Texture,
-                                              particleEffect.particles[currentParticle].Position,
-                                              particleEffect.particles[currentParticle].Size, 
-                                              particleEffect.particles[currentParticle].Size,
-                                              particleEffect.particles[currentParticle].Rotation, Vector3.UnitZ, textureTransform, null,
-                                              particleEffect.particles[currentParticle].Color);
-                }
-            }
+            if (particleEffect.Texture != null)
+                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.Billboard, ParticleEffect = particleEffect });
         }
 
         public void DrawConstrainedBillboard(ParticleEffect particleEffect)
         {
-            if (particleEffect.Texture == null)
-                return;
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
 
-            for (int currentParticle = particleEffect.firstParticle;
-                     currentParticle != particleEffect.lastParticle;
-                     currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
-            {
-                if (particleEffect.particles[currentParticle].Age <= 1)
-                {
-                    Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
-                    Vector3 forward = Vector3.Normalize(particleEffect.particles[currentParticle].Velocity);
-                    forward *= particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
-
-                    primitiveBatch.DrawLine(particleEffect.Texture,
-                                            particleEffect.particles[currentParticle].Position,
-                                            particleEffect.particles[currentParticle].Position + forward,
-                                            particleEffect.particles[currentParticle].Size,
-                                            textureTransform, null,
-                                            particleEffect.particles[currentParticle].Color);
-                }
-            }
+            if (particleEffect.Texture != null)
+                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.ConstrainedBillboard, ParticleEffect = particleEffect });
         }
 
         public void DrawConstrainedBillboard(ParticleEffect particleEffect, Vector3 axis)
         {
-            if (particleEffect.Texture == null)
-                return;
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
 
-            for (int currentParticle = particleEffect.firstParticle;
-                     currentParticle != particleEffect.lastParticle;
-                     currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
-            {
-                if (particleEffect.particles[currentParticle].Age <= 1)
-                {
-                    Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
-                    Vector3 forward = axis * particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
-
-                    primitiveBatch.DrawLine(particleEffect.Texture,
-                                            particleEffect.particles[currentParticle].Position,
-                                            particleEffect.particles[currentParticle].Position + forward,
-                                            particleEffect.particles[currentParticle].Size,
-                                            textureTransform, null,
-                                            particleEffect.particles[currentParticle].Color);
-                }
-            }
+            if (particleEffect.Texture != null)
+                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.ConstrainedBillboardUp, ParticleEffect = particleEffect, Axis = axis });
         }
 
         public void End()
         {
-            primitiveBatch.End();
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
+
+            if (batches.Count > 0)
+            {
+                batches.Sort(comparer);
+                BlendState blendState = batches[0].ParticleEffect.BlendState;
+                primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState);
+                for (int i = 0; i < batches.Count; i++)
+                {
+                    if (batches[i].ParticleEffect.BlendState != blendState)
+                    {
+                        primitiveBatch.End();
+                        blendState = batches[i].ParticleEffect.BlendState;
+                        primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState);
+                    }
+                    Draw(batches[i]);
+                }
+                primitiveBatch.End();
+            }
+
+            batches.Clear();
+            hasBegin = false;
+        }
+
+        private void Draw(ParticleBatchItem item)
+        {
+            ParticleEffect particleEffect = item.ParticleEffect;
+
+            if (item.Type == ParticleBatchType.Sprite)
+            {
+                throw new NotImplementedException();
+            }
+            else if (item.Type == ParticleBatchType.Billboard)
+            {
+                for (int currentParticle = particleEffect.firstParticle;
+                         currentParticle != particleEffect.lastParticle;
+                         currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+                {
+                    if (particleEffect.particles[currentParticle].Age <= 1)
+                    {
+                        Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+
+                        primitiveBatch.DrawBillboard(particleEffect.Texture,
+                                                  particleEffect.particles[currentParticle].Position,
+                                                  particleEffect.particles[currentParticle].Size,
+                                                  particleEffect.particles[currentParticle].Size,
+                                                  particleEffect.particles[currentParticle].Rotation, Vector3.UnitZ, textureTransform, null,
+                                                  particleEffect.particles[currentParticle].Color);
+                    }
+                }
+            }
+            else if (item.Type == ParticleBatchType.ConstrainedBillboard)
+            {
+                for (int currentParticle = particleEffect.firstParticle;
+                         currentParticle != particleEffect.lastParticle;
+                         currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+                {
+                    if (particleEffect.particles[currentParticle].Age <= 1)
+                    {
+                        Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+                        Vector3 forward = Vector3.Normalize(particleEffect.particles[currentParticle].Velocity);
+                        forward *= particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+                        primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                                particleEffect.particles[currentParticle].Position,
+                                                particleEffect.particles[currentParticle].Position + forward,
+                                                particleEffect.particles[currentParticle].Size,
+                                                textureTransform, null,
+                                                particleEffect.particles[currentParticle].Color);
+                    }
+                }
+            }
+            else if (item.Type == ParticleBatchType.ConstrainedBillboardUp)
+            {
+                for (int currentParticle = particleEffect.firstParticle;
+                         currentParticle != particleEffect.lastParticle;
+                         currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+                {
+                    if (particleEffect.particles[currentParticle].Age <= 1)
+                    {
+                        Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+                        Vector3 forward = item.Axis * particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+                        primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                                particleEffect.particles[currentParticle].Position,
+                                                particleEffect.particles[currentParticle].Position + forward,
+                                                particleEffect.particles[currentParticle].Size,
+                                                textureTransform, null,
+                                                particleEffect.particles[currentParticle].Color);
+                    }
+                }
+            }
         }
 
         public void Dispose()
@@ -162,6 +231,59 @@ namespace Nine.Graphics.ParticleEffects
         ~ParticleBatch()
         {
             Dispose(false);
+        }
+    }
+        
+    enum ParticleBatchType
+    {
+        Sprite,
+        Billboard,
+        ConstrainedBillboard,
+        ConstrainedBillboardUp,
+    }
+
+    class ParticleBatchItem
+    {
+        public ParticleBatchType Type;
+        public ParticleEffect ParticleEffect;
+        public Vector3 Axis;
+    }
+
+    class ParticleBatchSortComparer : IComparer<ParticleBatchItem>
+    {
+        public int Compare(ParticleBatchItem x, ParticleBatchItem y)
+        {
+            return Compare(x.ParticleEffect.BlendState, y.ParticleEffect.BlendState);
+        }
+
+        private int Compare(BlendState x, BlendState y)
+        {
+            int result = 0;
+            if ((result = x.AlphaBlendFunction.CompareTo(y.AlphaBlendFunction)) != 0)
+                return result;
+            if ((result = x.AlphaDestinationBlend.CompareTo(y.AlphaDestinationBlend)) != 0)
+                return result;
+            if ((result = x.AlphaSourceBlend.CompareTo(y.AlphaSourceBlend)) != 0)
+                return result;
+            if ((result = x.BlendFactor.PackedValue.CompareTo(y.BlendFactor.PackedValue)) != 0)
+                return result;
+            if ((result = x.ColorBlendFunction.CompareTo(y.ColorBlendFunction)) != 0)
+                return result;
+            if ((result = x.ColorDestinationBlend.CompareTo(y.ColorDestinationBlend)) != 0)
+                return result;
+            if ((result = x.ColorSourceBlend.CompareTo(y.ColorSourceBlend)) != 0)
+                return result;
+            if ((result = x.ColorWriteChannels.CompareTo(y.ColorWriteChannels)) != 0)
+                return result;
+            if ((result = x.ColorWriteChannels1.CompareTo(y.ColorWriteChannels1)) != 0)
+                return result;
+            if ((result = x.ColorWriteChannels2.CompareTo(y.ColorWriteChannels2)) != 0)
+                return result;
+            if ((result = x.ColorWriteChannels3.CompareTo(y.ColorWriteChannels3)) != 0)
+                return result;
+            if ((result = x.MultiSampleMask.CompareTo(y.MultiSampleMask)) != 0)
+                return result;
+            return 0;
         }
     }
 }
