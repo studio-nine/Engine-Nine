@@ -24,10 +24,9 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using CustomToolTemplate;
 #endregion
 
-namespace Microsoft.VisualStudio.Shell.Interop
+namespace Nine.Tools.EffectCustomTool
 {
     public class EffectCompiler
     {

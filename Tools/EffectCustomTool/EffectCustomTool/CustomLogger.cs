@@ -12,7 +12,7 @@ using System;
 using Microsoft.Xna.Framework.Content.Pipeline;
 #endregion
 
-namespace Microsoft.VisualStudio.Shell.Interop
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// Custom logger class for capturing Content Pipeline output messages. This implementation

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Shell;
 using VSLangProj80;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// The CustomToolRegistrationAttribute allows you to test and 

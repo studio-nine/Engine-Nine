@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Diagnostics;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// Wraps IVsGeneratorProgress to allow for easy generation-time

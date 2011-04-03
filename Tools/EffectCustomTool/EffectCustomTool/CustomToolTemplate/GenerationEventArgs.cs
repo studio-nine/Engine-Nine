@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.Shell.Interop;
 using EnvDTE;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// This is the class passed to the custom tool class that provides

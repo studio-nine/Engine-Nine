@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using EnvDTE;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     public class CompletedGenerationEventArgs : EventArgs
     {

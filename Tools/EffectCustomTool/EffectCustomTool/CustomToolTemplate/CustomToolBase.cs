@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections.Generic;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// The base class for the Custom Tool.  It implements the correct

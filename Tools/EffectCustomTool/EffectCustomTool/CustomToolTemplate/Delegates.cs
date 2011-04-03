@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// The delegate in which to perform code Generation ofr the custom tool

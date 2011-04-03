@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.VisualStudio.Shell;
 using VSLangProj80;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     public class MyCustomTool : CustomToolBase
     {

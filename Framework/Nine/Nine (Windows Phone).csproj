@@ -83,6 +83,9 @@
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\EffectExtensions.cs" />
+    <Compile Include="Graphics\Effects\BlurEffect.Designer.cs">
+      <DependentUpon>BlurEffect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\Heightmap.cs" />

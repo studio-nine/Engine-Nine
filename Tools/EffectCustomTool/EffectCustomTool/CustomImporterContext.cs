@@ -11,7 +11,7 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 #endregion
 
-namespace Microsoft.VisualStudio.Shell.Interop
+namespace Nine.Tools.EffectCustomTool
 {
     /// <summary>
     /// Custom context object for running Content Pipeline importers.

@@ -24,10 +24,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using CustomToolTemplate;
 #endregion
 
-namespace Microsoft.VisualStudio.Shell.Interop
+namespace Nine.Tools.EffectCustomTool
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     [System.Runtime.InteropServices.Guid("72C1F067-C0D6-4263-8279-65A8786C628F")]

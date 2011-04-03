@@ -63,6 +63,11 @@
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="Graphics\BlendStateReader.cs" />
+    <Compile Include="Graphics\Effects\BlurEffect.Designer.cs">
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
@@ -135,11 +140,6 @@
     </Compile>
     <Compile Include="Graphics\Effects\BlurEffect.cs">
       <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\BlurEffect.Designer.cs">
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Graphics\Effects\PixelateEffect.cs">
       <DependentUpon>PixelateEffect.fx</DependentUpon>

@@ -13,7 +13,7 @@ using System;
 using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 
-namespace CustomToolTemplate
+namespace Nine.Tools.EffectCustomTool
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public sealed class CodeGeneratorRegistrationAttribute : RegistrationAttribute

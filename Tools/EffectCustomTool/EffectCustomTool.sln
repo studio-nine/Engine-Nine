@@ -3,12 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EffectCustomTool", "EffectCustomTool\EffectCustomTool.csproj", "{09717903-B7E9-4E29-97A1-B3E54341A6E9}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}"
-EndProject
 Global
-	GlobalSection(SharpSetup) = preSolution
-		Version = 1.2
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|x86 = Debug|x86
@@ -23,19 +18,14 @@ Global
 		{09717903-B7E9-4E29-97A1-B3E54341A6E9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{09717903-B7E9-4E29-97A1-B3E54341A6E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{09717903-B7E9-4E29-97A1-B3E54341A6E9}.Release|x86.Build.0 = Release|Any CPU
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Debug|Mixed Platforms.Build.0 = Debug
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Debug|x86.ActiveCfg = Debug
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Debug|x86.Build.0 = Debug
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Release|Mixed Platforms.ActiveCfg = Release
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Release|Mixed Platforms.Build.0 = Release
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Release|x86.ActiveCfg = Release
-		{426FDE99-B7A9-4F22-BF27-F9CA06242EBF}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		BuildVersion_BuildVersioningStyle = None.None.Increment.TimeStamp
+	EndGlobalSection
+	GlobalSection(SharpSetup) = preSolution
+		Version = 1.2
 	EndGlobalSection
 EndGlobal
