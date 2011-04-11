@@ -266,22 +266,23 @@ namespace Nine
     {
         protected override Octree<T> Read(ContentReader input, Octree<T> existingInstance)
         {
-            Octree<T> tree = new Octree<T>();
+            if (existingInstance == null)
+                existingInstance = new Octree<T>();
 
-            tree.MaxDepth = input.ReadInt32();
-            tree.Bounds = input.ReadObject<BoundingBox>();
-            tree.Root = input.ReadRawObject<OctreeNode<T>>(new OctreeNodeReader<T>());
+            existingInstance.MaxDepth = input.ReadInt32();
+            existingInstance.Bounds = input.ReadObject<BoundingBox>();
+            existingInstance.Root = input.ReadRawObject<OctreeNode<T>>(new OctreeNodeReader<T>());
 
             // Fix reference
             Stack<OctreeNode<T>> stack = new Stack<OctreeNode<T>>();
 
-            stack.Push(tree.Root);
+            stack.Push(existingInstance.Root);
 
             while (stack.Count > 0)
             {
                 OctreeNode<T> node = stack.Pop();
 
-                node.Tree = tree;
+                node.Tree = existingInstance;
 
                 if (node.HasChildren)
                 {
@@ -293,7 +294,7 @@ namespace Nine
                 }
             }
 
-            return tree;
+            return existingInstance;
         }
     }
 
@@ -301,17 +302,18 @@ namespace Nine
     {
         protected override OctreeNode<T> Read(ContentReader input, OctreeNode<T> existingInstance)
         {
-            OctreeNode<T> node = new OctreeNode<T>();
+            if (existingInstance == null)
+                existingInstance = new OctreeNode<T>();
 
-            node.HasChildren = input.ReadBoolean();
-            node.Depth = input.ReadInt32();
-            node.Bounds = input.ReadObject<BoundingBox>();
-            node.Value = input.ReadObject<T>();
+            existingInstance.HasChildren = input.ReadBoolean();
+            existingInstance.Depth = input.ReadInt32();
+            existingInstance.Bounds = input.ReadObject<BoundingBox>();
+            existingInstance.Value = input.ReadObject<T>();
 
-            if (node.HasChildren)
-                node.childNodes = input.ReadObject<OctreeNode<T>[]>();
+            if (existingInstance.HasChildren)
+                existingInstance.childNodes = input.ReadObject<OctreeNode<T>[]>();
 
-            return node;
+            return existingInstance;
         }
     }
 }

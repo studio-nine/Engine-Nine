@@ -160,12 +160,4 @@ namespace Nine.Graphics.ParticleEffects
                 controller.Initialize(ParticleEffect);
         }
     }
-
-    class ParticleControllerCollectionReader : ContentTypeReader<ParticleControllerCollection>
-    {
-        protected override ParticleControllerCollection Read(ContentReader input, ParticleControllerCollection existingInstance)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }

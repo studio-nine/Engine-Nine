@@ -25,6 +25,8 @@ namespace Nine.Graphics.ParticleEffects
         {
             ParticleEffect effect = new ParticleEffect(input.ReadBoolean(), input.ReadInt32());
 
+            effect.ParticleType = (ParticleType)input.ReadByte();
+            effect.Lifetime = TimeSpan.FromSeconds(input.ReadSingle());
             effect.Texture = input.ReadObject<Texture2D>();
             effect.BlendState = input.ReadObject<BlendState>();
             effect.Color = input.ReadObject<Range<Color>>();
@@ -37,11 +39,20 @@ namespace Nine.Graphics.ParticleEffects
             effect.SourceRectangle = input.ReadObject<Rectangle?>();
             effect.Speed = input.ReadObject<Range<float>>();
             effect.Stretch = input.ReadSingle();
+            effect.Up = input.ReadVector3();
             effect.Tag = input.ReadObject<object>();
 
             int count = input.ReadInt32();
             for (int i = 0; i < count; i++)
                 effect.Controllers.Add(input.ReadObject<IParticleController>());
+
+            count = input.ReadInt32();
+            for (int i = 0; i < count; i++)
+                effect.ChildEffects.Add(input.ReadObject<ParticleEffect>());
+
+            count = input.ReadInt32();
+            for (int i = 0; i < count; i++)
+                effect.EndingEffects.Add(input.ReadObject<ParticleEffect>());
 
             return effect;
         }

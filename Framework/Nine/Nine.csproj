@@ -66,6 +66,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
@@ -91,12 +92,8 @@
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="Graphics\BlendStateReader.cs" />
-    <Compile Include="Graphics\Effects\BlurEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffectReader.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleAnimation.cs" />
@@ -104,6 +101,94 @@
     <Compile Include="Graphics\ParticleEffects\ParticleControllers.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleController.cs" />
+    <Compile Include="Graphics\ScreenEffects\AntiAliasEffect.cs">
+      <DependentUpon>AntiAliasEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\AntiAliasEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AntiAliasEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\BlurEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.cs">
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ScreenEffectEdge.cs" />
+    <Compile Include="Graphics\ScreenEffects\RenderTargetPool.cs" />
+    <Compile Include="Graphics\ScreenEffects\EmbossEffect.cs">
+      <DependentUpon>EmbossEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\EmbossEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EmbossEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Luminance.cs">
+      <DependentUpon>Luminance.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Luminance.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Luminance.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\NoiseEffect.cs">
+      <DependentUpon>NoiseEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\NoiseEffect.Designer.cs">
+      <DependentUpon>NoiseEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.cs">
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\PixelateEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PixelateEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.cs">
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\RadialBlurEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ScaleEffect.cs">
+      <DependentUpon>ScaleEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ScaleEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScaleEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ScreenEffectPass.cs" />
+    <Compile Include="Graphics\ScreenEffects\ThresholdEffect.Designer.cs">
+      <DependentUpon>ThresholdEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\WiggleEffect.cs">
+      <DependentUpon>WiggleEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\WiggleEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WiggleEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="Graphics\Effects\EffectParts\SpotLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\PointLightEffectPart.cs" />
@@ -141,53 +226,10 @@
       <DependentUpon>SkyBoxEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\LinkedEffect.cs" />
-    <Compile Include="Graphics\Effects\BlurEffect.cs">
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\ColorMatrixEffect.cs">
-      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Graphics\Effects\ColorMatrixEffect.Designer.cs">
-      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Graphics\Effects\Luminance.cs">
-      <DependentUpon>Luminance.fx</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\Effects\Luminance.Designer.cs">
-      <DependentUpon>Luminance.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Graphics\Effects\PixelateEffect.cs">
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\PixelateEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\RadialBlurEffect.cs">
-      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\Effects\RadialBlurEffect.Designer.cs">
-      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Graphics\Effects\ScreenEffect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Graphics\Effects\ThresholdEffect.cs">
-      <DependentUpon>ThresholdEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\ThresholdEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Graphics\ScreenEffects\ThresholdEffect.cs">
       <DependentUpon>ThresholdEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenCamera.cs" />
@@ -293,32 +335,51 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\BlurEffect.fx">
+    <None Include="Graphics\ScreenEffects\AntiAliasEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>AntiAliasEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\BlurEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\ColorMatrixEffect.fx">
+    <None Include="Graphics\ScreenEffects\ColorMatrixEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\Luminance.fx">
+    <None Include="Graphics\ScreenEffects\EmbossEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>EmbossEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\Luminance.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>Luminance.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\PixelateEffect.fx">
+    <None Include="Graphics\ScreenEffects\NoiseEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>NoiseEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\PixelateEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>PixelateEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\RadialBlurEffect.fx">
+    <None Include="Graphics\ScreenEffects\RadialBlurEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>RadialBlurEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\ThresholdEffect.fx">
+    <None Include="Graphics\ScreenEffects\ScaleEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ScaleEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\ThresholdEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ThresholdEffect.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\ScreenEffects\WiggleEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>WiggleEffect.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

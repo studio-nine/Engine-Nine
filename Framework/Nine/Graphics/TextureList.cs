@@ -88,19 +88,20 @@ namespace Nine.Graphics
     {
         protected override TextureList Read(ContentReader input, TextureList existingInstance)
         {
-            TextureList list = new TextureList();
+            if (existingInstance == null)
+                existingInstance = new TextureList();
 
             Texture2D[] textures = input.ReadObject<Texture2D[]>();
             Rectangle[] rectangles = input.ReadObject<Rectangle[]>();
             int[] indices = input.ReadObject<int[]>();
-            list.spriteNames = input.ReadObject<Dictionary<string, int>>();
+            existingInstance.spriteNames = input.ReadObject<Dictionary<string, int>>();
 
             for (int i = 0; i < indices.Length; i++)
             {
-                list.Add(textures[indices[i]], rectangles[i]);
+                existingInstance.Add(textures[indices[i]], rectangles[i]);
             }
 
-            return list;
+            return existingInstance;
         }
     }
     #endregion

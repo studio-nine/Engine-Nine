@@ -12,9 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Test", "Nine.Test\Nine.Test.csproj", "{411E5108-42A6-4829-AE8A-C022868E4E1A}"
 EndProject
 Global
-	GlobalSection(SharpSetup) = preSolution
-		Version = 1.2
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -125,5 +122,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SharpSetup) = preSolution
+		Version = 1.2
 	EndGlobalSection
 EndGlobal

@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Graphics
 {
-    internal static class GraphicsResources<T>
+    static class GraphicsResources<T>
     {
         static Dictionary<GraphicsDevice, T> resourceDictionary;
 

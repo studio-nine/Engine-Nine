@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent xmlns:Particles="Nine.Graphics.ParticleEffects">
   <Asset Type="Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent">
-    <AutoTrigger>true</AutoTrigger>
     <MaxParticles>1024</MaxParticles>
+    <ParticleType>ConstrainedBillboard</ParticleType>
     <Emission>100</Emission>
     <Duration>
       <Min>2</Min>

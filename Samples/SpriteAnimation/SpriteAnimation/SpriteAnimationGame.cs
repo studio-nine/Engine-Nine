@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
+using Nine.Graphics.ScreenEffects;
 using Nine.Animations;
 using System.ComponentModel;
 #endregion
@@ -79,10 +80,10 @@ namespace SpriteAnimationGame
 
             // Create effects
             gray = new ColorMatrixEffect(GraphicsDevice);
-            gray.Matrix = ColorMatrix.CreateGrayscale();
+            gray.Transform = ColorMatrix.CreateGrayscale();
 
             highlight = new ColorMatrixEffect(GraphicsDevice);
-            highlight.Matrix = ColorMatrix.CreateBrightness(0.2f);
+            highlight.Transform = ColorMatrix.CreateBrightness(0.2f);
 
             blur = new BlurEffect(GraphicsDevice);
             blur.BlurAmount = 2.0f;

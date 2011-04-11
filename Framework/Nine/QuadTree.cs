@@ -262,22 +262,23 @@ namespace Nine
     {
         protected override QuadTree<T> Read(ContentReader input, QuadTree<T> existingInstance)
         {
-            QuadTree<T> tree = new QuadTree<T>();
+            if (existingInstance == null)
+                existingInstance = new QuadTree<T>();
 
-            tree.MaxDepth = input.ReadInt32();
-            tree.Bounds = input.ReadObject<BoundingRectangle>();
-            tree.Root = input.ReadRawObject<QuadTreeNode<T>>(new QuadTreeNodeReader<T>());
+            existingInstance.MaxDepth = input.ReadInt32();
+            existingInstance.Bounds = input.ReadObject<BoundingRectangle>();
+            existingInstance.Root = input.ReadRawObject<QuadTreeNode<T>>(new QuadTreeNodeReader<T>());
 
             // Fix reference
             Stack<QuadTreeNode<T>> stack = new Stack<QuadTreeNode<T>>();
 
-            stack.Push(tree.Root);
+            stack.Push(existingInstance.Root);
 
             while (stack.Count > 0)
             {
                 QuadTreeNode<T> node = stack.Pop();
 
-                node.Tree = tree;
+                node.Tree = existingInstance;
 
                 if (node.HasChildren)
                 {
@@ -289,7 +290,7 @@ namespace Nine
                 }
             }
 
-            return tree;
+            return existingInstance;
         }
     }
 
@@ -297,17 +298,18 @@ namespace Nine
     {
         protected override QuadTreeNode<T> Read(ContentReader input, QuadTreeNode<T> existingInstance)
         {
-            QuadTreeNode<T> node = new QuadTreeNode<T>();
+            if (existingInstance == null)
+                existingInstance = new QuadTreeNode<T>();
 
-            node.HasChildren = input.ReadBoolean();
-            node.Depth = input.ReadInt32();
-            node.Bounds = input.ReadObject<BoundingRectangle>();
-            node.Value = input.ReadObject<T>();
+            existingInstance.HasChildren = input.ReadBoolean();
+            existingInstance.Depth = input.ReadInt32();
+            existingInstance.Bounds = input.ReadObject<BoundingRectangle>();
+            existingInstance.Value = input.ReadObject<T>();
 
-            if (node.HasChildren)
-                node.childNodes = input.ReadObject<QuadTreeNode<T>[]>();
+            if (existingInstance.HasChildren)
+                existingInstance.childNodes = input.ReadObject<QuadTreeNode<T>[]>();
 
-            return node;
+            return existingInstance;
         }
     }
 }

@@ -26,6 +26,25 @@ namespace Nine.Graphics.ParticleEffects
     [EditorBrowsable()]
     public class ParticleEffectCollection : Collection<ParticleEffect>
     {
+        internal bool ClearTriggerList = false;
+        internal bool EnsureHasTrigger = false;
 
+        protected override void InsertItem(int index, ParticleEffect item)
+        {
+            if (ClearTriggerList)
+                item.TriggerList.Clear();
+            if (EnsureHasTrigger && item.TriggerList.Count == 0)
+                item.Trigger();
+            base.InsertItem(index, item);
+        }
+
+        protected override void SetItem(int index, ParticleEffect item)
+        {
+            if (ClearTriggerList)
+                item.TriggerList.Clear();
+            if (EnsureHasTrigger && item.TriggerList.Count == 0)
+                item.Trigger();
+            base.SetItem(index, item);
+        }
     }
 }

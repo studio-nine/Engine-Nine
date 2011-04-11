@@ -49,9 +49,7 @@
     <XnaCompressContent>false</XnaCompressContent>
     <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Graphics\Effects\EffectParts\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
@@ -83,10 +81,8 @@
     <Compile Include="Graphics\DrawableSurfacePatchPart.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\EffectExtensions.cs" />
-    <Compile Include="Graphics\Effects\BlurEffect.Designer.cs">
-      <DependentUpon>BlurEffect.cs</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />

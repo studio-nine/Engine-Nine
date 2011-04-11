@@ -62,7 +62,7 @@ namespace Nine.Graphics.ParticleEffects
 
         protected override void OnUpdate(float elapsedTime, ref Particle particle)
         {
-            particle.Color *= particle.Age * (1 - particle.Age) * (1 - particle.Age) * 6.7f;
+            particle.Alpha = particle.Age * (1 - particle.Age) * (1 - particle.Age) * 6.7f;
         }
     }
 

@@ -38,7 +38,11 @@ namespace Nine.Graphics.Effects
 
         public GraphicsDevice GraphicsDevice
         {
-            get { return Effect.GraphicsDevice; }
+            get
+            {
+                Effect effect = Effect != null ? Effect : LinkedEffect.CurrentEffect;
+                return effect.GraphicsDevice;
+            }
         }
 
         /// <summary>

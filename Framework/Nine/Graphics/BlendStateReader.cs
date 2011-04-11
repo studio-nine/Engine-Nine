@@ -20,20 +20,22 @@ namespace Nine.Graphics
     {
         protected override BlendState Read(ContentReader input, BlendState existingInstance)
         {
-            BlendState state = new BlendState();
-            state.AlphaBlendFunction = (BlendFunction)input.ReadByte();
-            state.AlphaDestinationBlend = (Blend)input.ReadByte();
-            state.AlphaSourceBlend = (Blend)input.ReadByte();
-            state.BlendFactor = input.ReadColor();
-            state.ColorBlendFunction = (BlendFunction)input.ReadByte();
-            state.ColorDestinationBlend = (Blend)input.ReadByte();
-            state.ColorSourceBlend = (Blend)input.ReadByte();
-            state.ColorWriteChannels = (ColorWriteChannels)input.ReadByte();
-            state.ColorWriteChannels1 = (ColorWriteChannels)input.ReadByte();
-            state.ColorWriteChannels2 = (ColorWriteChannels)input.ReadByte();
-            state.ColorWriteChannels3 = (ColorWriteChannels)input.ReadByte();
-            state.MultiSampleMask = input.ReadInt32();
-            return state;
+            if (existingInstance == null)
+                existingInstance = new BlendState();
+
+            existingInstance.AlphaBlendFunction = (BlendFunction)input.ReadByte();
+            existingInstance.AlphaDestinationBlend = (Blend)input.ReadByte();
+            existingInstance.AlphaSourceBlend = (Blend)input.ReadByte();
+            existingInstance.BlendFactor = input.ReadColor();
+            existingInstance.ColorBlendFunction = (BlendFunction)input.ReadByte();
+            existingInstance.ColorDestinationBlend = (Blend)input.ReadByte();
+            existingInstance.ColorSourceBlend = (Blend)input.ReadByte();
+            existingInstance.ColorWriteChannels = (ColorWriteChannels)input.ReadByte();
+            existingInstance.ColorWriteChannels1 = (ColorWriteChannels)input.ReadByte();
+            existingInstance.ColorWriteChannels2 = (ColorWriteChannels)input.ReadByte();
+            existingInstance.ColorWriteChannels3 = (ColorWriteChannels)input.ReadByte();
+            existingInstance.MultiSampleMask = input.ReadInt32();
+            return existingInstance;
         }
     }
 }

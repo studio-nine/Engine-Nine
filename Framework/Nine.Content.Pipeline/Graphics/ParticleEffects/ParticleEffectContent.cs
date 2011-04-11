@@ -34,7 +34,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// Gets or sets whether the particle system will be triggered
         /// automatically after been created.
         /// </summary>
-        public bool AutoTrigger { get; set; }
+        public bool TriggerOnStartup { get; set; }
 
         [ContentSerializer(Optional = true)]
         /// <summary>
@@ -43,10 +43,22 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public int MaxParticles { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of each particle.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public ParticleType ParticleType { get; set; }
+
+        /// <summary>
         /// Gets or sets whether this particle effect is enabled.
         /// </summary>
         [ContentSerializer(Optional = true)]
         public bool Enabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the lifetime or duration of this particle effect.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public float Lifetime { get; set; }
 
         /// <summary>
         /// Gets or sets the number of particles emitted per second.
@@ -92,6 +104,12 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public float Stretch { get; set; }
 
         /// <summary>
+        /// Gets or sets the up axis of each particle.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public Vector3 Up { get; set; }
+
+        /// <summary>
         /// Gets or sets the texture used by this particle effect.
         /// </summary>
         [ContentSerializer(Optional = true)]
@@ -122,6 +140,20 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public List<IParticleController> Controllers { get; private set; }
 
         /// <summary>
+        /// Gets a collection of particle effects that is used as the appareance of each
+        /// particle spawned by this particle effect.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public List<ParticleEffectContent> ChildEffects { get; private set; }
+
+        /// <summary>
+        /// Gets a collection of particle effects that is fired when each particle spawned
+        /// by this particle effect is about to die.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public List<ParticleEffectContent> EndingEffects { get; private set; }
+
+        /// <summary>
         /// Gets or sets user data.
         /// </summary>
         [ContentSerializer(Optional = true, SharedResource = true)]
@@ -132,14 +164,19 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         public ParticleEffectContent()
         {
-            AutoTrigger = true;
+            Up = Vector3.UnitZ;
+            TriggerOnStartup = true;
             MaxParticles = 1024;
+            Lifetime = (float)(TimeSpan.MaxValue.TotalSeconds * 0.5);
             Enabled = true;
             Stretch = 1;
             Duration = 2;
+            Color = Microsoft.Xna.Framework.Color.White;
             BlendState = BlendState.Additive;
             Emitter = new PointEmitter();
             Controllers = new List<IParticleController>();
+            ChildEffects = new List<ParticleEffectContent>();
+            EndingEffects = new List<ParticleEffectContent>();
         }
     }
 
@@ -149,8 +186,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     {
         protected override void Write(ContentWriter output, ParticleEffectContent value)
         {
-            output.Write(value.AutoTrigger);
+            output.Write(value.TriggerOnStartup);
             output.Write(value.MaxParticles);
+            output.Write((byte)value.ParticleType);
+            output.Write(value.Lifetime);
             output.WriteObject(value.Texture);
             output.WriteObject(value.BlendState);
             output.WriteObject(value.Color);
@@ -163,11 +202,20 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.WriteObject(value.SourceRectangle);
             output.WriteObject(value.Speed);
             output.Write(value.Stretch);
+            output.Write(value.Up);
             output.WriteObject(value.Tag);
 
             output.Write(value.Controllers.Count);
             foreach (IParticleController controller in value.Controllers)
                 output.WriteObject(controller);
+
+            output.Write(value.ChildEffects.Count);
+            foreach (ParticleEffectContent effect in value.ChildEffects)
+                output.WriteObject(effect);
+
+            output.Write(value.EndingEffects.Count);
+            foreach (ParticleEffectContent effect in value.EndingEffects)
+                output.WriteObject(effect);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

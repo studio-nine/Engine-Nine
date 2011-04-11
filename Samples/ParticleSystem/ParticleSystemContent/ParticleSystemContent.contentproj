@@ -70,6 +70,31 @@
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\ParticleEffects\Fireworks.xml">
+      <Link>Fireworks.xml</Link>
+      <Name>Fireworks</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Textures\fire.png">
+      <Link>fire.png</Link>
+      <Name>fire</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Textures\smoke.png">
+      <Link>smoke.png</Link>
+      <Name>smoke</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

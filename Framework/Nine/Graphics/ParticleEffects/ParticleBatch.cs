@@ -86,34 +86,13 @@ namespace Nine.Graphics.ParticleEffects
                 throw new InvalidOperationException("Begin must be called first.");
 
             if (particleEffect.Texture != null)
-                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.Sprite, ParticleEffect = particleEffect });
-        }
+                batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
 
-        public void DrawBillboard(ParticleEffect particleEffect)
-        {
-            if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+            foreach (var childEffect in particleEffect.ChildEffects)
+                Draw(childEffect);
 
-            if (particleEffect.Texture != null)
-                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.Billboard, ParticleEffect = particleEffect });
-        }
-
-        public void DrawConstrainedBillboard(ParticleEffect particleEffect)
-        {
-            if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
-
-            if (particleEffect.Texture != null)
-                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.ConstrainedBillboard, ParticleEffect = particleEffect });
-        }
-
-        public void DrawConstrainedBillboard(ParticleEffect particleEffect, Vector3 axis)
-        {
-            if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
-
-            if (particleEffect.Texture != null)
-                batches.Add(new ParticleBatchItem() { Type = ParticleBatchType.ConstrainedBillboardUp, ParticleEffect = particleEffect, Axis = axis });
+            foreach (var endingEffect in particleEffect.EndingEffects)
+                Draw(endingEffect);
         }
 
         public void End()
@@ -147,11 +126,16 @@ namespace Nine.Graphics.ParticleEffects
         {
             ParticleEffect particleEffect = item.ParticleEffect;
 
-            if (item.Type == ParticleBatchType.Sprite)
+            Matrix? textureTransform = null;
+            if (particleEffect.SourceRectangle.HasValue)
+                textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+
+
+            if (item.Type == ParticleType.Sprite)
             {
                 throw new NotImplementedException();
             }
-            else if (item.Type == ParticleBatchType.Billboard)
+            else if (item.Type == ParticleType.Billboard)
             {
                 for (int currentParticle = particleEffect.firstParticle;
                          currentParticle != particleEffect.lastParticle;
@@ -159,18 +143,16 @@ namespace Nine.Graphics.ParticleEffects
                 {
                     if (particleEffect.particles[currentParticle].Age <= 1)
                     {
-                        Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
-
                         primitiveBatch.DrawBillboard(particleEffect.Texture,
                                                   particleEffect.particles[currentParticle].Position,
                                                   particleEffect.particles[currentParticle].Size,
                                                   particleEffect.particles[currentParticle].Size,
                                                   particleEffect.particles[currentParticle].Rotation, Vector3.UnitZ, textureTransform, null,
-                                                  particleEffect.particles[currentParticle].Color);
+                                                  particleEffect.particles[currentParticle].Color * particleEffect.particles[currentParticle].Alpha);
                     }
                 }
             }
-            else if (item.Type == ParticleBatchType.ConstrainedBillboard)
+            else if (item.Type == ParticleType.ConstrainedBillboard)
             {
                 for (int currentParticle = particleEffect.firstParticle;
                          currentParticle != particleEffect.lastParticle;
@@ -178,7 +160,6 @@ namespace Nine.Graphics.ParticleEffects
                 {
                     if (particleEffect.particles[currentParticle].Age <= 1)
                     {
-                        Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
                         Vector3 forward = Vector3.Normalize(particleEffect.particles[currentParticle].Velocity);
                         forward *= particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
 
@@ -187,11 +168,11 @@ namespace Nine.Graphics.ParticleEffects
                                                 particleEffect.particles[currentParticle].Position + forward,
                                                 particleEffect.particles[currentParticle].Size,
                                                 textureTransform, null,
-                                                particleEffect.particles[currentParticle].Color);
+                                                particleEffect.particles[currentParticle].Color * particleEffect.particles[currentParticle].Alpha);
                     }
                 }
             }
-            else if (item.Type == ParticleBatchType.ConstrainedBillboardUp)
+            else if (item.Type == ParticleType.ConstrainedBillboardUp)
             {
                 for (int currentParticle = particleEffect.firstParticle;
                          currentParticle != particleEffect.lastParticle;
@@ -199,7 +180,6 @@ namespace Nine.Graphics.ParticleEffects
                 {
                     if (particleEffect.particles[currentParticle].Age <= 1)
                     {
-                        Matrix textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
                         Vector3 forward = item.Axis * particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
 
                         primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
@@ -207,7 +187,7 @@ namespace Nine.Graphics.ParticleEffects
                                                 particleEffect.particles[currentParticle].Position + forward,
                                                 particleEffect.particles[currentParticle].Size,
                                                 textureTransform, null,
-                                                particleEffect.particles[currentParticle].Color);
+                                                particleEffect.particles[currentParticle].Color * particleEffect.particles[currentParticle].Alpha);
                     }
                 }
             }
@@ -233,18 +213,10 @@ namespace Nine.Graphics.ParticleEffects
             Dispose(false);
         }
     }
-        
-    enum ParticleBatchType
-    {
-        Sprite,
-        Billboard,
-        ConstrainedBillboard,
-        ConstrainedBillboardUp,
-    }
 
     class ParticleBatchItem
     {
-        public ParticleBatchType Type;
+        public ParticleType Type;
         public ParticleEffect ParticleEffect;
         public Vector3 Axis;
     }

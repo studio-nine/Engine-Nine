@@ -42,6 +42,11 @@ namespace Nine.Graphics.ParticleEffects
         public float Rotation;
 
         /// <summary>
+        /// Gets or sets the transparency of this particle.
+        /// </summary>
+        public float Alpha;
+
+        /// <summary>
         /// Gets or sets the color of this particle.
         /// </summary>
         public Color Color;
@@ -67,14 +72,6 @@ namespace Nine.Graphics.ParticleEffects
         public float Age;
 
 
-        internal void Reset(float duration)
-        {
-            Duration = duration;
-            Color = Color.White;
-            Rotation = ElapsedTime = Age = 0;
-            Size = 1;
-        }
-
         internal void Update(float elapsedTime)
         {
             ElapsedTime += elapsedTime;
@@ -84,7 +81,7 @@ namespace Nine.Graphics.ParticleEffects
 
         public override string ToString()
         {
-            return string.Format("Position: {0}, Size: {1}, Color {2}", Position, Size, Color);
+            return string.Format("Position: {0}, Size: {1}, Color {2}", Position, Size, Color * Alpha);
         }
     }
 }

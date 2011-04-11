@@ -58,19 +58,29 @@ namespace Nine.Tools.EffectCustomTool
             }
 
 
+
+            // .cs
+            string strFile = Path.Combine(
+                e.InputFilePath.Substring(0,
+                e.InputFilePath.LastIndexOf(Path.DirectorySeparatorChar)), name + ".cs");
+
+
             // .Designer.cs
+            string designerFile = Path.Combine(
+                e.InputFilePath.Substring(0,
+                e.InputFilePath.LastIndexOf(Path.DirectorySeparatorChar)), name + ".Designer.cs");
+
+            if (File.Exists(designerFile))
+                File.Delete(designerFile);
+
             e.OutputFileExtension = ".Designer.cs";
+
 
             string content = compiler.Designer;
 
             e.OutputCode.Append(content);
 
 
-
-            // .cs
-            string strFile = Path.Combine(
-                e.InputFilePath.Substring(0, 
-                e.InputFilePath.LastIndexOf(Path.DirectorySeparatorChar)), name + ".cs");
 
 
             if (!File.Exists(strFile))
@@ -131,6 +141,26 @@ namespace Nine.Tools.EffectCustomTool
                         fs.Close();
                         if (File.Exists(strFile))
                             File.Delete(strFile);
+                    }
+                }
+            }
+
+            // Add the .cs file as the child of the .fx file
+            else
+            {
+                //System.Diagnostics.Debugger.Launch();
+                e.ProjectItem.ProjectItems.AddFromFile(strFile);
+                foreach (EnvDTE.ProjectItem childItem in e.ProjectItem.ProjectItems)
+                {
+                    if (childItem.Name.ToLower() == name.ToLower() + ".cs")
+                    {
+                        foreach (EnvDTE.ProjectItem cc in childItem.ProjectItems)
+                        {
+                            if (File.Exists(cc.Name))
+                                File.Delete(cc.Name);
+                            cc.Delete();
+                        }
+                        break;
                     }
                 }
             }

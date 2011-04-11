@@ -63,11 +63,14 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentReference.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Graphics\BlendStateSerializer.cs" />
+    <Compile Include="Graphics\Effects\ScreenEffectContent.cs" />
     <Compile Include="RangeSerializer.cs" />
     <Compile Include="Graphics\Effects\EffectParts\LinkedEffectPartContents.cs" />
     <Compile Include="Graphics\Effects\EffectParts\LinkedEffectParts.Designer.cs">

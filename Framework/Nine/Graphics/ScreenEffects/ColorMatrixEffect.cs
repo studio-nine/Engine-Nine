@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 #endregion
 
-namespace Nine.Graphics.Effects
+namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 

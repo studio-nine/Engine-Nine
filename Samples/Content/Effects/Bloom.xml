@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent xmlns:nine="Nine.Content.Pipeline">
+  <Asset Type="nine:Graphics.Effects.ScreenEffectContent">
+    <BlendState>Opaque</BlendState>
+    <Passes>
+      <Item>
+        <BlendState>Opaque</BlendState>
+        <Color>FFFFFFFF</Color>
+        <DownScaleEnabled>false</DownScaleEnabled>
+        <Effects>
+          <Item Type="nine:ContentReference[nine:Graphics.Effects.LinkedEffectContent]">BasePass</Item>
+        </Effects>
+      </Item>
+      <Item>
+        <BlendState>Additive</BlendState>
+        <Color>FFFFFFFF</Color>
+        <DownScaleEnabled>true</DownScaleEnabled>
+        <FilteringEnabled>false</FilteringEnabled>
+        <Effects>
+          <Item Type="nine:ContentReference[nine:Graphics.Effects.LinkedEffectContent]">BrightPass</Item>
+        </Effects>
+      </Item>
+    </Passes>    
+  </Asset>
+</XnaContent>

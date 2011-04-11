@@ -147,7 +147,8 @@
 <NamespaceSummaryItem name="Nine.Content.Pipeline.Processors" isDocumented="True">Provides commonly needed processors.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Nine.Graphics.Effects.EffectParts" isDocumented="True">Provides commonly needed effect parts.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Nine.Graphics.ParticleEffects" isDocumented="True">Provides commonly needed classes used for particle system.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Nine.Content.Pipeline.Graphics.ParticleEffects" isDocumented="True">Provides commonly needed classes used for content pipeline particle effects.</NamespaceSummaryItem></NamespaceSummaries>
+<NamespaceSummaryItem name="Nine.Content.Pipeline.Graphics.ParticleEffects" isDocumented="True">Provides commonly needed classes used for content pipeline particle effects.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Nine.Graphics.ScreenEffects" isDocumented="True">Provides commonly needed classes used for post processing effects.</NamespaceSummaryItem></NamespaceSummaries>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <PlugInConfigurations>
       <PlugInConfig id="Version Builder" enabled="False" xmlns="">

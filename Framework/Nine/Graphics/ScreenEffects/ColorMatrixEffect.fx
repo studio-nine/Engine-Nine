@@ -8,16 +8,22 @@
 sampler Sampler : register(s0);
 
 
-float4x4 Matrix
+float4x4 Transform
 <
     string SasUiDescription =  "Gets or sets the color transform matrix. See MatrixExtensions.";
-> = 0.5f;
+> = 
+{
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	0, 0, 0, 1,
+};
 
 
 float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 {
     // Look up the bloom and original base image colors.
-    return mul(tex2D(Sampler, texCoord), Matrix);
+    return mul(tex2D(Sampler, texCoord), Transform);
 }
 
 

@@ -481,9 +481,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart, Nine")]
     public class ColorMatrix : LinkedEffectPartContent
     {
+        [ContentSerializer(Optional=true)]
+        public Matrix Transform { get; set; }
+
+        public ColorMatrix()
+        {
+            Transform = Matrix.Identity;
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ColorMatrix); }

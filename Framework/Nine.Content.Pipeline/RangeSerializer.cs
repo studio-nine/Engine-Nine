@@ -29,9 +29,8 @@ namespace Nine.Content.Pipeline
         {   
             try
             {
-                // Shawn choose to internalize this method, so hack around using reflection.
                 ContentTypeSerializer serializer = input.Serializer.GetTypeSerializer(typeof(T));
-                T value = (T)Invoke(serializer, "Deserialize", input, format, existingInstance.Min);
+                T value = (T)ReflectionHelper.Invoke(serializer, "Deserialize", input, format, existingInstance.Min);
                 return new Range<T>(value, value);
             }
             catch (Exception)
@@ -54,7 +53,7 @@ namespace Nine.Content.Pipeline
             if (value.Min.Equals(value.Max))
             {
                 ContentTypeSerializer serializer = output.Serializer.GetTypeSerializer(typeof(T));
-                Invoke(serializer, "Deserialize", output, value.Min, format);
+                ReflectionHelper.Invoke(serializer, "Serialize", output, value.Min, format);
                 return;
             }
 
@@ -66,23 +65,6 @@ namespace Nine.Content.Pipeline
                 output.WriteObject(value.Max, format);
             }
             format.ElementName = elementName;
-        }
-
-        static object Invoke(object target, string method, params object[] args)
-        {
-            try
-            {
-                MethodInfo methodInfo = target.GetType().GetMethod(method,
-                                                   BindingFlags.Instance | BindingFlags.InvokeMethod |
-                                                   BindingFlags.NonPublic | BindingFlags.Public, null,
-                                                   args.Select(o => o.GetType()).ToArray(), null);
-
-                return methodInfo.Invoke(target, args);
-            }
-            catch (TargetInvocationException e)
-            {
-                throw e.InnerException;
-            }
         }
     }
 }

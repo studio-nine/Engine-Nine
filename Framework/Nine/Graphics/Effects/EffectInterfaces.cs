@@ -87,7 +87,6 @@ namespace Nine.Graphics.Effects
     {
         Matrix Transform { get; set; }
     }
-    
 
 #endif
 }

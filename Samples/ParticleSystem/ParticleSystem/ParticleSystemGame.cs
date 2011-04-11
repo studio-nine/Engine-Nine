@@ -43,7 +43,8 @@ namespace ParticleSystem
 #endif
 
         ModelViewerCamera camera;
-        ParticleEffect snow;
+        ParticleEffect fireworks;
+        ParticleEffect galaxy;
         ParticleBatch particlePatch;
         PrimitiveBatch primitiveBatch;
 
@@ -79,12 +80,16 @@ namespace ParticleSystem
 
             // You can either programatically create the effect or author the effect
             // using xml file and load it through the content pipeline.
-            snow = CreateParticleEffect();
-            snow = Content.Load<ParticleEffect>("Galaxy");
+            //particleEffect = CreateParticleEffect();
+            galaxy = Content.Load<ParticleEffect>("Galaxy");
 
             // Trigger another wave of particles for 5 seconds
-            //snow.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
-            //snow.Trigger(Vector3.Zero, 10);
+            //particleEffect.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
+            //particleEffect.Trigger(Vector3.Zero, 10);
+
+            // Advanced particle effects can be composed through ChildEffects
+            // and EndingEffects property.
+            fireworks = Content.Load<ParticleEffect>("Fireworks");
         }
 
         private ParticleEffect CreateParticleEffect()
@@ -99,7 +104,7 @@ namespace ParticleSystem
             snow.Stretch = 10;
 
             //snow.Controllers.Add(new SizeController() { EndSize = 0.4f });
-            snow.Controllers.Add(new ColorController() { EndColor = Color.White });
+            //snow.Controllers.Add(new ColorController() { EndColor = Color.White });
             snow.Controllers.Add(new FadeController());
             //snow.Controllers.Add(new AbsorbController() { Force = 40 });
             //snow.Controllers.Add(new SpeedController() { EndSpeed = 0 });
@@ -129,16 +134,16 @@ namespace ParticleSystem
             
 
             // Update effects
-            snow.Update(gameTime);
+            fireworks.Update(gameTime);
+            galaxy.Update(gameTime);
 
             particlePatch.Begin(camera.View, camera.Projection);
-            //particlePatch.DrawBillboard(snow);
-            particlePatch.DrawConstrainedBillboard(snow);
-            //particlePatch.DrawConstrainedBillboard(snow, Vector3.UnitX);
+            particlePatch.Draw(fireworks);
+            particlePatch.Draw(galaxy);
             particlePatch.End();
 
             primitiveBatch.Begin(camera.View, camera.Projection);
-            primitiveBatch.DrawBox(snow.BoundingBox, null, Color.Azure);
+            primitiveBatch.DrawBox(fireworks.BoundingBox, null, Color.Azure);
             primitiveBatch.End();
 
             base.Draw(gameTime);

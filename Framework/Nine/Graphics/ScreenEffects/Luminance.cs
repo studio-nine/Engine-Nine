@@ -5,17 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
-namespace Nine.Graphics.Effects
+namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    /// <summary>
-    /// A post processing screen effect that pixelate the whole screen.
-    /// </summary>
-    public partial class PixelateEffect
+    public partial class Luminance
     {
 		private void OnCreated() { }
-		private void OnClone(PixelateEffect cloneSource) { }
+		private void OnClone(Luminance cloneSource) { }
 		private void OnApplyChanges() { }
     }	
 

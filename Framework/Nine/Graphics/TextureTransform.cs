@@ -42,6 +42,7 @@ namespace Nine.Graphics
 
         public static Matrix CreateSourceRectange(Texture2D texture, Rectangle? rectangle)
         {
+            // TODO: Implement this
             return Matrix.Identity;
         }
 
