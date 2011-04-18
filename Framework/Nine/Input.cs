@@ -291,6 +291,11 @@ namespace Nine
         /// </summary>
         public event EventHandler<MouseEventArgs> MouseMove;
 
+        /// <summary>
+        /// Occurs when the game update itself.
+        /// </summary>
+        public event EventHandler<EventArgs> Update;
+
         #region Raise Events
         internal protected virtual void OnKeyUp(KeyboardEventArgs keyboardArgs)
         {
@@ -326,6 +331,12 @@ namespace Nine
         {
             if (MouseWheel != null)
                 MouseWheel(this, mouseArgs);
+        }
+
+        internal protected virtual void OnUpdate()
+        {
+            if (Update != null)
+                Update(this, EventArgs.Empty);
         }
         #endregion
     }
@@ -576,6 +587,7 @@ namespace Nine
         /// </summary>
         public override void Update(GameTime gameTime)
         {
+            Update(this);
 #if WINDOWS
             if (control != null)
                 return;
@@ -893,6 +905,25 @@ namespace Nine
 
                     if (input.Enabled)
                         input.OnMouseWheel(mouseArgs);
+                }
+                else
+                {
+                    inputs.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        private void Update(InputComponent inputComponent)
+        {
+            for (int i = 0; i < inputs.Count; i++)
+            {
+                if (inputs[i].IsAlive)
+                {
+                    Input input = (Input)inputs[i].Target;
+
+                    if (input.Enabled)
+                        input.OnUpdate();
                 }
                 else
                 {

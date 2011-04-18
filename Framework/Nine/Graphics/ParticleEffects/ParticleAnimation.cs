@@ -53,10 +53,14 @@ namespace Nine.Graphics.ParticleEffects
                 // TODO: Should cache this value
                 BoundingBox box = Effect.Emitter.BoundingBox;
 
-                Vector3 maxBorder = Vector3.Zero;
+                Vector3 maxBorder = Vector3.One * Effect.Speed.Max * Effect.Duration.Max;
                 for (int currentController = 0; currentController < Effect.Controllers.Count; currentController++)
                 {
                     Vector3 border = Effect.Controllers[currentController].Border;
+                    
+                    border.X = Math.Abs(border.X);
+                    border.Y = Math.Abs(border.Y);
+                    border.Z = Math.Abs(border.Z);
 
                     if (border.X > maxBorder.X)
                         maxBorder.X = border.X;
@@ -65,9 +69,10 @@ namespace Nine.Graphics.ParticleEffects
                     if (border.Z > maxBorder.Z)
                         maxBorder.Z = border.Z;
                 }
-
                 box.Max += maxBorder;
                 box.Min -= maxBorder;
+                box.Min += Position;
+                box.Max += Position;
                 return box;
             }
         }

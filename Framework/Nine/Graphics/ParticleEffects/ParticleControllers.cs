@@ -133,7 +133,13 @@ namespace Nine.Graphics.ParticleEffects
         [ContentSerializer(Optional = true)]
         public Range<float> EndSpeed { get; set; }
 
-        public override Vector3 Border { get { return Vector3.One * EndSpeed.Max * 0.5f * ParticleEffect.Duration.Max; } }
+        public override Vector3 Border 
+        {
+            get 
+            {
+                return Vector3.One * (ParticleEffect.Speed.Max + EndSpeed.Max) * 0.5f * ParticleEffect.Duration.Max; 
+            }
+        }
 
         protected override void OnReset(ref Particle particle, ref float tag)
         {
@@ -165,7 +171,15 @@ namespace Nine.Graphics.ParticleEffects
 
         public override Vector3 Border
         {
-            get { return Force * ParticleEffect.Duration.Max * ParticleEffect.Duration.Max * 0.5f; }
+            get 
+            {
+                Vector3 border = Force;
+                border.X = Math.Abs(border.X);
+                border.Y = Math.Abs(border.Y);
+                border.Z = Math.Abs(border.Z);
+                return Vector3.One * ParticleEffect.Speed.Max * ParticleEffect.Duration.Max +
+                       border * ParticleEffect.Duration.Max * ParticleEffect.Duration.Max * 0.5f; 
+            }
         }
 
         protected override void OnReset(ref Particle particle) { }

@@ -30,7 +30,7 @@ namespace Nine.Graphics.ParticleEffects
         Vector3 Border { get; }
 
         /// <summary>
-        /// Resets a new emitted particle.
+        /// Resets a newly emitted particle.
         /// </summary>
         void Reset(ref Particle particle);
 

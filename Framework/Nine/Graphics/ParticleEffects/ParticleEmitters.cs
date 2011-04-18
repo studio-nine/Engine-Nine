@@ -106,8 +106,17 @@ namespace Nine.Graphics.ParticleEffects
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
-            get { return Box; }
+            get 
+            {
+                if (!hasTransform)
+                    return Box;
+                
+                Box.GetCorners(corners);
+                Vector3.Transform(corners, ref transform, corners);
+                return BoundingBox.CreateFromPoints(corners);
+            }
         }
+        static Vector3[] corners = new Vector3[BoundingBox.CornerCount];
 
         public BoxEmitter()
         {
@@ -226,7 +235,7 @@ namespace Nine.Graphics.ParticleEffects
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override BoundingBox BoundingBox
         {
-            get { return BoundingBox.CreateFromSphere(new BoundingSphere(Center, Radius)); }
+            get { return BoundingBox.CreateFromSphere(new BoundingSphere(Center, Math.Max(Radius, Height * 0.5f))); }
         }
 
         public CylinderEmitter()
@@ -369,12 +378,12 @@ namespace Nine.Graphics.ParticleEffects
 
         public void SetBoneTransforms(Model model, Matrix transform)
         {
-
+            throw new NotImplementedException();
         }
 
         public void SetBoneTransforms(BoneAnimation animation, Matrix transform)
         {
-
+            throw new NotImplementedException();
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

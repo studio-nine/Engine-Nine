@@ -143,7 +143,7 @@ namespace ParticleSystem
             particlePatch.End();
 
             primitiveBatch.Begin(camera.View, camera.Projection);
-            primitiveBatch.DrawBox(fireworks.BoundingBox, null, Color.Azure);
+            primitiveBatch.DrawBox(galaxy.BoundingBox, null, Color.Azure);
             primitiveBatch.End();
 
             base.Draw(gameTime);

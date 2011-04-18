@@ -85,6 +85,9 @@ namespace Nine.Graphics.ParticleEffects
             if (!hasBegin)
                 throw new InvalidOperationException("Begin must be called first.");
 
+            if (particleEffect.ParticleType == ParticleType.Sprite)
+                throw new NotImplementedException();
+
             if (particleEffect.Texture != null)
                 batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
 

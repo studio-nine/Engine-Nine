@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 #endregion
 
 namespace Nine.Graphics
@@ -95,6 +96,27 @@ namespace Nine.Graphics
             Input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
             Input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
             Input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+            Input.Update += new EventHandler<EventArgs>(Input_Update);
+        }
+
+        void Input_Update(object sender, EventArgs e)
+        {
+#if XBOX
+            GamePadState state = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
+            if (state.Buttons.LeftShoulder == ButtonState.Pressed)
+                Radius -= (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+            if (state.Buttons.RightShoulder == ButtonState.Pressed)
+                Radius += (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+
+            if (Radius < MinRadius)
+                Radius = MinRadius;
+            else if (Radius > MaxRadius)
+                Radius = MaxRadius;
+
+            BeginRotation(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            EndRotation(GraphicsDevice.Viewport.Width / 2 + state.ThumbSticks.Right.X * 5 * Sensitivity,
+                        GraphicsDevice.Viewport.Height / 2 - state.ThumbSticks.Right.Y * 5 * Sensitivity);
+#endif
         }
 
         void Input_ButtonDown(object sender, MouseEventArgs e)
@@ -105,9 +127,7 @@ namespace Nine.Graphics
             if (e.Button == MouseButtons.Right)
 #endif
             {
-                start = ScreenToArcBall(e.X, e.Y);
-
-                worldStart = world;
+                BeginRotation(e.X, e.Y);
             }
         }
 
@@ -119,19 +139,7 @@ namespace Nine.Graphics
             if (e.IsRightButtonDown)
 #endif
 			{
-                end = ScreenToArcBall(e.X, e.Y);
-
-                Vector3 v = Vector3.Cross(start, end);
-                v.Normalize();
-
-                float angle = (float)(Math.Acos(Vector3.Dot(start, end)));
-
-                if (angle != 0 && v.LengthSquared() > 0)
-                {
-                    rotate = Matrix.CreateFromAxisAngle(v, angle);
-
-                    world = Matrix.Multiply(worldStart, rotate);
-                }
+                EndRotation(e.X, e.Y);
             }
         }
 
@@ -146,6 +154,28 @@ namespace Nine.Graphics
                 Radius = MaxRadius;
         }
         
+        private void BeginRotation(float x, float y)
+        {
+            start = ScreenToArcBall(x, y);
+            worldStart = world;
+        }
+
+        private void EndRotation(float x, float y)
+        {
+            end = ScreenToArcBall(x, y);
+
+            Vector3 v = Vector3.Cross(start, end);
+            v.Normalize();
+
+            float angle = (float)(Math.Acos(Vector3.Dot(start, end)));
+
+            if (angle != 0 && v.LengthSquared() > 0)
+            {
+                rotate = Matrix.CreateFromAxisAngle(v, angle);
+
+                world = Matrix.Multiply(worldStart, rotate);
+            }
+        }
 		
 		private Vector3 ScreenToArcBall(float x, float y)
 		{

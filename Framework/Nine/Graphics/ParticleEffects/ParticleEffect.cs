@@ -160,9 +160,22 @@ namespace Nine.Graphics.ParticleEffects
         }        
 
         /// <summary>
-        /// Gets the approximate bounds of first triggered effect.
+        /// Gets the approximate bounds of all triggered effects.
+        /// Use <c>ParticleAnimation.BoundingBox</c> to get the bounds of each triggered effects.
         /// </summary>
-        public BoundingBox BoundingBox { get { return TriggerList.Count > 0 ? TriggerList[0].BoundingBox : new BoundingBox(); } }
+        public BoundingBox BoundingBox
+        {
+            get 
+            {
+                if (TriggerList.Count <= 0)
+                    return new BoundingBox();
+
+                BoundingBox box = TriggerList[0].BoundingBox;
+                for (int i = 1; i < TriggerList.Count; i++)
+                    box = BoundingBox.CreateMerged(box, TriggerList[i].BoundingBox);
+                return box;
+            }
+        }
         
         /// <summary>
         /// Gets a list of triggers owned by this <c>ParticleEffect</c>.

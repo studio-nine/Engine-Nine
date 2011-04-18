@@ -14,6 +14,7 @@ using System.IO;
 using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 #endregion
 
 namespace Nine.Graphics
@@ -85,6 +86,29 @@ namespace Nine.Graphics
             Input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
             Input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
             Input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+            Input.Update += new EventHandler<EventArgs>(Input_Update);
+        }
+
+        void Input_Update(object sender, EventArgs e)
+        {
+#if XBOX
+            GamePadState state = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
+            if (state.Buttons.LeftShoulder == ButtonState.Pressed)
+                Radius -= (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+            if (state.Buttons.RightShoulder == ButtonState.Pressed)
+                Radius += (MaxRadius - MinRadius) * 0.005f * Sensitivity;
+
+            if (Radius < MinRadius)
+                Radius = MinRadius;
+            else if (Radius > MaxRadius)
+                Radius = MaxRadius;
+
+            float dx = -state.ThumbSticks.Right.X * Sensitivity;
+            float dy = state.ThumbSticks.Right.Y * Sensitivity;
+
+            target.X -= ((float)Math.Cos(Yaw) * dy - (float)Math.Sin(Yaw) * dx);
+            target.Y -= ((float)Math.Sin(Yaw) * dy + (float)Math.Cos(Yaw) * dx);
+#endif
         }
 
 
