@@ -100,6 +100,7 @@
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
+    <Compile Include="Graphics\QuaternionCamera.cs" />
     <Compile Include="Graphics\ScreenCamera.cs" />
     <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
