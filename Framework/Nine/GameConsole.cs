@@ -270,7 +270,7 @@ namespace Nine
 
         public override void Update(GameTime gameTime)
         {
-            Input.Component.CatchKeyboardInput(ref lastLine, 80);
+            Input.CatchKeyboardInput(ref lastLine, 80);
             
             base.Update(gameTime);
         }

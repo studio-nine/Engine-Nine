@@ -101,6 +101,7 @@
     <Compile Include="Graphics\ParticleEffects\ParticleControllers.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleController.cs" />
+    <Compile Include="Graphics\ParticleEffects\SpriteBatchExtensions.cs" />
     <Compile Include="Graphics\QuaternionCamera.cs" />
     <Compile Include="Graphics\ScreenEffects\AntiAliasEffect.cs">
       <DependentUpon>AntiAliasEffect.fx</DependentUpon>

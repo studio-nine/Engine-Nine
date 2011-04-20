@@ -140,7 +140,7 @@ namespace Nine.Graphics
 
         private void Input_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.IsRightButtonDown)
+            if (e.IsButtonDown(MouseButtons.Right))
             {
                 X = startPosition.X - (e.X - startMouse.X) / Zoom;
                 if (CoordinateType == ScreenCameraCoordinate.TwoDimension)

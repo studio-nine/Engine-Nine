@@ -45,37 +45,22 @@ namespace Nine
         public Keys Key { get; internal set; }
 
         /// <summary>
-        /// Gets whether shift is been pressed during event.
+        /// Gets the current keyboard state.
         /// </summary>
-        public bool IsShiftPressed { get; internal set; }
-
-        /// <summary>
-        /// Gets whether ctrl is been pressed during event.
-        /// </summary>
-        public bool IsCtrlPressed { get; internal set; }
-
-        /// <summary>
-        /// Gets whether alt is been pressed during event.
-        /// </summary>
-        public bool IsAltPressed { get; internal set; }
+        public KeyboardState KeyboardState { get; internal set; }
 
         /// <summary>
         /// Creates a new instance of KeyboardEventArgs.
         /// </summary>
-        public KeyboardEventArgs() { }
+        internal KeyboardEventArgs() { }
 
         /// <summary>
         /// Creates a new instance of KeyboardEventArgs.
         /// </summary>
-        public KeyboardEventArgs(Keys key)
+        internal KeyboardEventArgs(Keys key)
         {
             Key = key;
-
-            KeyboardState keyboardState = Keyboard.GetState();
-
-            IsAltPressed = keyboardState.IsKeyDown(Keys.LeftAlt) | keyboardState.IsKeyDown(Keys.RightAlt);
-            IsCtrlPressed = keyboardState.IsKeyDown(Keys.LeftControl) | keyboardState.IsKeyDown(Keys.RightControl);
-            IsShiftPressed = keyboardState.IsKeyDown(Keys.LeftShift) | keyboardState.IsKeyDown(Keys.RightShift);
+            KeyboardState = Keyboard.GetState();
         }
     }
     #endregion
@@ -89,17 +74,17 @@ namespace Nine
         /// <summary>
         /// Defines the mouse left button.
         /// </summary>
-        Left,
+        Left = 1,
 
         /// <summary>
         /// Defines the mouse right button.
         /// </summary>
-        Right,
+        Right = 1 << 1,
 
         /// <summary>
         /// Defines the mouse middle button.
         /// </summary>
-        Middle,
+        Middle = 1 << 2,
     }
 
     /// <summary>
@@ -134,39 +119,84 @@ namespace Nine
         public float WheelDelta { get; internal set; }
 
         /// <summary>
-        /// Gets whether left mouse button is been pressed during event.
+        /// Gets the current mouse state.
         /// </summary>
-        public bool IsLeftButtonDown { get; internal set; }
+        public MouseState MouseState { get; internal set; }
 
         /// <summary>
-        /// Gets whether right mouse button is been pressed during event.
+        /// Gets whether the specified button is pressed.
         /// </summary>
-        public bool IsRightButtonDown { get; internal set; }
+        public bool IsButtonDown(MouseButtons button)
+        {
+            if (button == MouseButtons.Left)
+                return IsLeftButtonDown;
+            if (button == MouseButtons.Middle)
+                return IsMiddleButtonDown;
+            return IsRightButtonDown;
+        }
 
         /// <summary>
-        /// Gets whether middle mouse button is been pressed during event.
+        /// Gets whether the specified button is released.
         /// </summary>
-        public bool IsMiddleButtonDown { get; internal set; }
+        public bool IsButtonUp(MouseButtons button)
+        {
+            return !IsButtonDown(button);
+        }
+
+        internal bool IsLeftButtonDown;
+        internal bool IsRightButtonDown;
+        internal bool IsMiddleButtonDown;
 
         /// <summary>
         /// Creates a new instance of MouseEventArgs.
         /// </summary>
-        public MouseEventArgs() { }
+        internal MouseEventArgs() { }
 
         /// <summary>
         /// Creates a new instance of MouseEventArgs.
         /// </summary>
-        public MouseEventArgs(MouseButtons button, int x, int y, float wheelDelta)
+        internal MouseEventArgs(MouseButtons button, int x, int y, float wheelDelta)
         {
             Button = button;
             X = x;
             Y = y;
             WheelDelta = wheelDelta;
 
-            IsLeftButtonDown = Mouse.GetState().LeftButton == ButtonState.Pressed;
-            IsRightButtonDown = Mouse.GetState().RightButton == ButtonState.Pressed;
-            IsMiddleButtonDown = Mouse.GetState().MiddleButton == ButtonState.Pressed;
+            MouseState = Mouse.GetState();
+
+            IsLeftButtonDown = MouseState.LeftButton == ButtonState.Pressed;
+            IsRightButtonDown = MouseState.RightButton == ButtonState.Pressed;
+            IsMiddleButtonDown = MouseState.MiddleButton == ButtonState.Pressed;
         }
+    }
+    #endregion
+
+    #region GamePadEventArgs
+    /// <summary>
+    /// EventArgs use for gamepad events.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class GamePadEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Gets the gamepad button been pressed or released.
+        /// </summary>
+        public Buttons Button { get; internal set; }
+
+        /// <summary>
+        /// Gets which player has triggered the event.
+        /// </summary>
+        public PlayerIndex PlayerIndex { get; internal set; }
+
+        /// <summary>
+        /// Gets the current gamepad state.
+        /// </summary>
+        public GamePadState GamePadState { get; internal set; }
+
+        /// <summary>
+        /// Creates a new instance of GamePadEventArgs.
+        /// </summary>
+        internal GamePadEventArgs() { }
     }
     #endregion
 
@@ -232,6 +262,11 @@ namespace Nine
     public class Input
     {
         /// <summary>
+        /// Gets the InputComponent associated with this instance.
+        /// </summary>
+        internal InputComponent Component;
+
+        /// <summary>
         /// Creates a new instance of Input.
         /// </summary>
         public Input() : this(InputComponent.Current) { }
@@ -252,15 +287,32 @@ namespace Nine
         }
 
         /// <summary>
-        /// Gets the InputComponent associated with this instance.
-        /// </summary>
-        public InputComponent Component { get; private set; }
-
-        /// <summary>
         /// Gets or sets whether this instance will raise input events.
         /// </summary>
         public bool Enabled { get; set; }
 
+        /// <summary>
+        /// Gets or sets the player index to which this <c>Input</c> class will respond to.
+        /// A value of null represents this instance will respond to all player inputs.
+        /// </summary>
+        public PlayerIndex? PlayerIndex { get; set; }
+
+        /// <summary>
+        /// Gets the current keyboard state.
+        /// </summary>
+        public KeyboardState KeyboardState { get { return Component.keyboardState; } }
+
+        /// <summary>
+        /// Gets the current mouse state.
+        /// </summary>
+        public MouseState MouseState { get { return Component.mouseState; } }
+
+        /// <summary>
+        /// Gets the current gamePad state.
+        /// </summary>
+        public GamePadState GamePadState { get { return PlayerIndex != null ? Component.gamePadStates[(int)PlayerIndex] : new GamePadState(); } }
+
+        #region Events
         /// <summary>
         /// Occurs when a key is been pressed.
         /// </summary>
@@ -292,45 +344,67 @@ namespace Nine
         public event EventHandler<MouseEventArgs> MouseMove;
 
         /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
+        /// </summary>
+        public event EventHandler<GamePadEventArgs> ButtonDown;
+
+        /// <summary>
+        /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been released.
+        /// </summary>
+        public event EventHandler<GamePadEventArgs> ButtonUp;
+
+        /// <summary>
         /// Occurs when the game update itself.
         /// </summary>
         public event EventHandler<EventArgs> Update;
 
-        #region Raise Events
-        internal protected virtual void OnKeyUp(KeyboardEventArgs keyboardArgs)
+
+        internal protected virtual void OnKeyUp(KeyboardEventArgs e)
         {
             if (KeyUp != null)
-                KeyUp(this, keyboardArgs);
+                KeyUp(this, e);
         }
 
-        internal protected virtual void OnKeyDown(KeyboardEventArgs keyboardArgs)
+        internal protected virtual void OnKeyDown(KeyboardEventArgs e)
         {
             if (KeyDown != null)
-                KeyDown(this, keyboardArgs);
+                KeyDown(this, e);
         }
 
-        internal protected virtual void OnMouseMove(MouseEventArgs mouseArgs)
+        internal protected virtual void OnButtonDown(GamePadEventArgs e)
+        {
+            if (ButtonDown != null)
+                ButtonDown(this, e);
+        }
+
+        internal protected virtual void OnButtonUp(GamePadEventArgs e)
+        {
+            if (ButtonUp != null)
+                ButtonUp(this, e);
+        }
+
+        internal protected virtual void OnMouseMove(MouseEventArgs e)
         {
             if (MouseMove != null)
-                MouseMove(this, mouseArgs);
+                MouseMove(this, e);
         }
 
-        internal protected virtual void OnMouseUp(MouseEventArgs mouseArgs)
+        internal protected virtual void OnMouseUp(MouseEventArgs e)
         {
             if (MouseUp != null)
-                MouseUp(this, mouseArgs);
+                MouseUp(this, e);
         }
 
-        internal protected virtual void OnMouseDown(MouseEventArgs mouseArgs)
+        internal protected virtual void OnMouseDown(MouseEventArgs e)
         {
             if (MouseDown != null)
-                MouseDown(this, mouseArgs);
+                MouseDown(this, e);
         }
 
-        internal protected virtual void OnMouseWheel(MouseEventArgs mouseArgs)
+        internal protected virtual void OnMouseWheel(MouseEventArgs e)
         {
             if (MouseWheel != null)
-                MouseWheel(this, mouseArgs);
+                MouseWheel(this, e);
         }
 
         internal protected virtual void OnUpdate()
@@ -339,109 +413,19 @@ namespace Nine
                 Update(this, EventArgs.Empty);
         }
         #endregion
-    }
-    #endregion
 
-    #region InputComponent
-    /// <summary>
-    /// An input component that manages a set of <c>Input</c> instances based on push model.
-    /// </summary>
-    public class InputComponent : GameComponent, IUpdateObject
-    {
-        #region Field
-        internal List<WeakReference> inputs = new List<WeakReference>();
-
-        /// <summary>
-        /// Mouse state, set every frame in the Update method.
-        /// </summary>
-        MouseState mouseState = Mouse.GetState(), mouseStateLastFrame;
-
-        /// <summary>
-        /// Keyboard state, set every frame in the Update method.
-        /// Note: KeyboardState is a class and not a struct,
-        /// we have to initialize it here, else we might run into trouble when
-        /// accessing any keyboardState data before BaseGame.Update() is called.
-        /// We can also NOT use the last state because every time we call
-        /// Keyboard.GetState() the old state is useless (see XNA help for more
-        /// information, section Input). We store our own array of keys from
-        /// the last frame for comparing stuff.
-        /// </summary>
-        KeyboardState keyboardState = Keyboard.GetState();
-
-        /// <summary>
-        /// Keys pressed last frame, for comparison if a key was just pressed.
-        /// </summary>
-        List<Keys> keysPressedLastFrame = new List<Keys>();
-
-        /// <summary>
-        /// Mouse wheel delta this frame. XNA does report only the total
-        /// scroll value, but we usually need the current delta!
-        /// </summary>
-        /// <returns>0</returns>
-        int mouseWheelDelta = 0;
-        int mouseWheelValue = 0;
-        
-        /// <summary>
-        /// Time interval for double click, measured in seconds
-        /// </summary>
-        private const float DoubleClickInterval = 0.25f;
-
-        /// <summary>
-        /// Gets the current MouseState.
-        /// </summary>
-        public MouseState MouseState { get { return mouseState; } }
-
-        /// <summary>
-        /// Gets the current keyboard state.
-        /// </summary>
-        public KeyboardState KeyboardState { get { return keyboardState; } }
-
-        /// <summary>
-        /// Gets or sets the InputComponent for current context.
-        /// </summary>
-        public static InputComponent Current { get; set; }
-        #endregion
-
-        #region Method
-        /// <summary>
-        /// Creates a new instance of InputComponent.
-        /// </summary>
-        public InputComponent() : base(null) 
-        {
-            Current = this;
-        }
-
-        /// <summary>
-        /// Creates a new instance of InputComponent using the input system of windows forms.
-        /// </summary>
-        /// <param name="handle">Handle of the game window</param>
-        public InputComponent(IntPtr handle) : base(null)
-        {
-            Current = this;
-#if WINDOWS
-            control = Form.FromHandle(handle);
-            control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
-            control.MouseDown += new MouseEventHandler(control_MouseDown);
-            control.MouseUp += new MouseEventHandler(control_MouseUp);
-            control.MouseCaptureChanged += new EventHandler(control_MouseCaptureChanged);
-            control.MouseMove += new MouseEventHandler(control_MouseMove);
-            control.KeyDown += new KeyEventHandler(control_KeyDown);
-            control.KeyUp += new KeyEventHandler(control_KeyUp);
-            control.MouseWheel += new MouseEventHandler(control_MouseWheel);
-#endif
-        }
-
+        #region Extras
         /// <summary>
         /// Gets whether the cursor is inside the specified rectangle.
         /// </summary>
         /// <param name="rect">Rectangle</param>
         /// <returns>Bool</returns>
-        public bool MouseInBox(Rectangle rect)
+        internal bool MouseInBox(Rectangle rect)
         {
-            return mouseState.X >= rect.X &&
-                   mouseState.Y >= rect.Y &&
-                   mouseState.X < rect.Right &&
-                   mouseState.Y < rect.Bottom;
+            return MouseState.X >= rect.X &&
+                   MouseState.Y >= rect.Y &&
+                   MouseState.X < rect.Right &&
+                   MouseState.Y < rect.Bottom;
         }
 
         /// <summary>
@@ -552,15 +536,18 @@ namespace Nine
         /// </summary>
         public void CatchKeyboardInput(ref string inputText, int maxChars)
         {
+            if (!Enabled)
+                return;
+
             // Is a shift key pressed (we have to check both, left and right)
             bool isShiftPressed =
-                keyboardState.IsKeyDown(Keys.LeftShift) ||
-                keyboardState.IsKeyDown(Keys.RightShift);
+                KeyboardState.IsKeyDown(Keys.LeftShift) ||
+                KeyboardState.IsKeyDown(Keys.RightShift);
 
             // Go through all pressed keys
-            foreach (Keys pressedKey in keyboardState.GetPressedKeys())
+            foreach (Keys pressedKey in KeyboardState.GetPressedKeys())
                 // Only process if it was not pressed last frame
-                if (keysPressedLastFrame.Contains(pressedKey) == false)
+                if (Component.keysPressedLastFrame.Contains(pressedKey) == false)
                 {
                     // No special key?
                     if (IsSpecialKey(pressedKey) == false &&
@@ -580,6 +567,106 @@ namespace Nine
                 }
         }
         #endregion
+    }
+    #endregion
+
+    #region InputComponent
+    /// <summary>
+    /// An input component that manages a set of <c>Input</c> instances based on push model.
+    /// </summary>
+    public class InputComponent : GameComponent, IUpdateObject
+    {
+        #region Field
+        internal List<WeakReference> inputs = new List<WeakReference>();
+
+        /// <summary>
+        /// Mouse state, set every frame in the Update method.
+        /// </summary>
+        internal MouseState mouseState = Mouse.GetState(), mouseStateLastFrame;
+
+        /// <summary>
+        /// Keyboard state, set every frame in the Update method.
+        /// Note: KeyboardState is a class and not a struct,
+        /// we have to initialize it here, else we might run into trouble when
+        /// accessing any keyboardState data before BaseGame.Update() is called.
+        /// We can also NOT use the last state because every time we call
+        /// Keyboard.GetState() the old state is useless (see XNA help for more
+        /// information, section Input). We store our own array of keys from
+        /// the last frame for comparing stuff.
+        /// </summary>
+        internal KeyboardState keyboardState = Keyboard.GetState();
+
+        /// <summary>
+        /// Keys pressed last frame, for comparison if a key was just pressed.
+        /// </summary>
+        internal List<Keys> keysPressedLastFrame = new List<Keys>();
+        
+        internal GamePadState[] gamePadStates = new GamePadState[4];
+        internal GamePadState[] gamePadStatesLastFrame = new GamePadState[4];
+
+        /// <summary>
+        /// Mouse wheel delta this frame. XNA does report only the total
+        /// scroll value, but we usually need the current delta!
+        /// </summary>
+        /// <returns>0</returns>
+        int mouseWheelDelta = 0;
+        int mouseWheelValue = 0;
+
+        /// <summary>
+        /// Gets or sets the InputComponent for current context.
+        /// </summary>
+        public static InputComponent Current { get; set; }
+        
+        /// <summary>
+        /// Time interval for double click, measured in seconds
+        /// </summary>
+        private const float DoubleClickInterval = 0.25f;
+
+        private static readonly Buttons[] AllGamePadButtons = new Buttons[] 
+        {
+#if WINDOWS_PHONE
+            Buttons.Back,
+#else
+            Buttons.A, Buttons.B, Buttons.Back, Buttons.BigButton, Buttons.DPadDown,
+            Buttons.DPadLeft, Buttons.DPadRight, Buttons.DPadUp, Buttons.LeftShoulder,
+            Buttons.LeftStick, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft,
+            Buttons.LeftThumbstickRight, Buttons.LeftThumbstickUp, Buttons.LeftTrigger,
+            Buttons.RightShoulder, Buttons.RightStick, Buttons.RightThumbstickDown,
+            Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight, Buttons.RightThumbstickUp,
+            Buttons.RightTrigger, Buttons.Start, Buttons.X, Buttons.Y,
+#endif
+        };
+        #endregion
+
+        #region Method
+        /// <summary>
+        /// Creates a new instance of InputComponent.
+        /// </summary>
+        public InputComponent() : base(null) 
+        {
+            Current = this;
+        }
+
+        /// <summary>
+        /// Creates a new instance of InputComponent using the input system of windows forms.
+        /// </summary>
+        /// <param name="handle">Handle of the game window</param>
+        public InputComponent(IntPtr handle) : base(null)
+        {
+            Current = this;
+#if WINDOWS
+            control = Form.FromHandle(handle);
+            control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
+            control.MouseDown += new MouseEventHandler(control_MouseDown);
+            control.MouseUp += new MouseEventHandler(control_MouseUp);
+            control.MouseCaptureChanged += new EventHandler(control_MouseCaptureChanged);
+            control.MouseMove += new MouseEventHandler(control_MouseMove);
+            control.KeyDown += new KeyEventHandler(control_KeyDown);
+            control.KeyUp += new KeyEventHandler(control_KeyUp);
+            control.MouseWheel += new MouseEventHandler(control_MouseWheel);
+#endif
+        }
+        #endregion
 
         #region Update
         /// <summary>
@@ -591,7 +678,17 @@ namespace Nine
 #if WINDOWS
             if (control != null)
                 return;
-#endif
+#endif      
+            UpdateMouse();
+            UpdateKeyboard();
+            UpdateGamePad();
+
+            // Update component
+            base.Update(gameTime);
+        }
+
+        private void UpdateMouse()
+        {
             // Handle mouse input variables
             mouseStateLastFrame = mouseState;
             mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
@@ -601,6 +698,7 @@ namespace Nine
 
             // Initialzie mouse event args
             MouseEventArgs mouseArgs = new MouseEventArgs();
+            mouseArgs.MouseState = mouseState;
             mouseArgs.X = mouseState.X;
             mouseArgs.Y = mouseState.Y;
             mouseArgs.WheelDelta = mouseWheelDelta;
@@ -634,7 +732,7 @@ namespace Nine
             {
                 mouseArgs.Button = MouseButtons.Right;
 
-                MouseDown(this, mouseArgs); 
+                MouseDown(this, mouseArgs);
             }
             else if (mouseState.RightButton == ButtonState.Released &&
                      mouseStateLastFrame.RightButton == ButtonState.Pressed)
@@ -664,20 +762,18 @@ namespace Nine
             if (mouseState.X != mouseStateLastFrame.X ||
                 mouseState.Y != mouseStateLastFrame.Y)
                 MouseMove(this, mouseArgs);
-
-
+        }
+        
+        private void UpdateKeyboard()
+        {
             // Handle keyboard input
-            keysPressedLastFrame = new List<Keys>(keyboardState.GetPressedKeys());
+            keysPressedLastFrame.Clear();
+            keysPressedLastFrame.AddRange(keyboardState.GetPressedKeys());
             keyboardState = Microsoft.Xna.Framework.Input.Keyboard.GetState();
 
             KeyboardEventArgs keyboardArgs = new KeyboardEventArgs();
 
-            keyboardArgs.IsAltPressed = keyboardState.IsKeyDown(Keys.LeftAlt) |
-                                        keyboardState.IsKeyDown(Keys.RightAlt);
-            keyboardArgs.IsCtrlPressed = keyboardState.IsKeyDown(Keys.LeftControl) |
-                                        keyboardState.IsKeyDown(Keys.RightControl);
-            keyboardArgs.IsShiftPressed = keyboardState.IsKeyDown(Keys.LeftShift) |
-                                        keyboardState.IsKeyDown(Keys.RightShift);
+            keyboardArgs.KeyboardState = keyboardState;
 
             // Key down events
             foreach (Keys key in keyboardState.GetPressedKeys())
@@ -706,9 +802,29 @@ namespace Nine
                     KeyUp(this, keyboardArgs);
                 }
             }
+        }
 
-            // Update component
-            base.Update(gameTime);
+        private void UpdateGamePad()
+        {
+            for (int i = 0; i < gamePadStates.Length; i++)
+            {
+                gamePadStatesLastFrame[i] = gamePadStates[i];
+                gamePadStates[i] = GamePad.GetState((PlayerIndex)i);
+
+                // TODO: Optimize this by filtering out unwanted events
+                foreach (Buttons button in AllGamePadButtons)
+                {
+                    RaiseButtonEvent(button, i);
+                }
+            }
+        }
+
+        private void RaiseButtonEvent(Buttons button, int i)
+        {
+            if (gamePadStatesLastFrame[i].IsButtonUp(button) && gamePadStates[i].IsButtonDown(button))
+                ButtonDown(this, new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
+            else if (gamePadStatesLastFrame[i].IsButtonDown(button) && gamePadStates[i].IsButtonUp(button))
+                ButtonUp(this, new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
         }
 
 #if WINDOWS
@@ -800,16 +916,13 @@ namespace Nine
         #endregion
 
         #region Raise Events
-        private void KeyUp(InputComponent inputComponent, KeyboardEventArgs keyboardArgs)
+        private void ForEach(Action<Input> action)
         {
             for (int i = 0; i < inputs.Count; i++)
             {
                 if (inputs[i].IsAlive)
                 {
-                    Input input = (Input)inputs[i].Target;
-
-                    if (input.Enabled)
-                        input.OnKeyUp(keyboardArgs);
+                    action((Input)inputs[i].Target);                    
                 }
                 else
                 {
@@ -817,120 +930,87 @@ namespace Nine
                     i--;
                 }
             }
+        }
+
+        private void KeyUp(InputComponent inputComponent, KeyboardEventArgs keyboardArgs)
+        {
+            ForEach(input =>
+            {
+                if (input.Enabled)
+                    input.OnKeyUp(keyboardArgs);
+            });
         }
 
         private void KeyDown(InputComponent inputComponent, KeyboardEventArgs keyboardArgs)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            ForEach(input =>
             {
-                if (inputs[i].IsAlive)
-                {
-                    Input input = (Input)inputs[i].Target;
+                if (input.Enabled)
+                    input.OnKeyDown(keyboardArgs);
+            });
+        }
 
-                    if (input.Enabled)
-                        input.OnKeyDown(keyboardArgs);
-                }
-                else
-                {
-                    inputs.RemoveAt(i);
-                    i--;
-                }
-            }
+        private void ButtonUp(InputComponent inputComponent, GamePadEventArgs gamePadArgs)
+        {
+            ForEach(input =>
+            {
+                if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
+                    input.OnButtonUp(gamePadArgs);
+            });
+        }
+
+        private void ButtonDown(InputComponent inputComponent, GamePadEventArgs gamePadArgs)
+        {
+            ForEach(input =>
+            {
+                if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
+                    input.OnButtonDown(gamePadArgs);
+            });
         }
 
         private void MouseMove(InputComponent inputComponent, MouseEventArgs mouseArgs)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            ForEach(input =>
             {
-                if (inputs[i].IsAlive)
-                {
-                    Input input = (Input)inputs[i].Target;
-
-                    if (input.Enabled)
-                        input.OnMouseMove(mouseArgs);
-                }
-                else
-                {
-                    inputs.RemoveAt(i);
-                    i--;
-                }
-            }
+                if (input.Enabled)
+                    input.OnMouseMove(mouseArgs);
+            });
         }
 
         private void MouseUp(InputComponent inputComponent, MouseEventArgs mouseArgs)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            ForEach(input =>
             {
-                if (inputs[i].IsAlive)
-                {
-                    Input input = (Input)inputs[i].Target;
-
-                    if (input.Enabled)
-                        input.OnMouseUp(mouseArgs);
-                }
-                else
-                {
-                    inputs.RemoveAt(i);
-                    i--;
-                }
-            }
+                if (input.Enabled)
+                    input.OnMouseUp(mouseArgs);
+            });
         }
 
         private void MouseDown(InputComponent inputComponent, MouseEventArgs mouseArgs)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            ForEach(input =>
             {
-                if (inputs[i].IsAlive)
-                {
-                    Input input = (Input)inputs[i].Target;
-
-                    if (input.Enabled)
-                        input.OnMouseDown(mouseArgs);
-                }
-                else
-                {
-                    inputs.RemoveAt(i);
-                    i--;
-                }
-            }
+                if (input.Enabled)
+                    input.OnMouseDown(mouseArgs);
+            });
         }
 
         private void Wheel(InputComponent inputComponent, MouseEventArgs mouseArgs)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            ForEach(input =>
             {
-                if (inputs[i].IsAlive)
-                {
-                    Input input = (Input)inputs[i].Target;
-
-                    if (input.Enabled)
-                        input.OnMouseWheel(mouseArgs);
-                }
-                else
-                {
-                    inputs.RemoveAt(i);
-                    i--;
-                }
-            }
+                if (input.Enabled)
+                    input.OnMouseWheel(mouseArgs);
+            });
         }
 
         private void Update(InputComponent inputComponent)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            ForEach(input =>
             {
-                if (inputs[i].IsAlive)
-                {
-                    Input input = (Input)inputs[i].Target;
-
-                    if (input.Enabled)
-                        input.OnUpdate();
-                }
-                else
-                {
-                    inputs.RemoveAt(i);
-                    i--;
-                }
-            }
+                if (input.Enabled)
+                    input.OnUpdate();
+            });
         }
         #endregion
     }

@@ -47,6 +47,7 @@ namespace ParticleSystem
         ParticleEffect galaxy;
         ParticleBatch particlePatch;
         PrimitiveBatch primitiveBatch;
+        SpriteBatch spriteBatch;
 
         public ParticleSystemGame()
         {
@@ -77,6 +78,7 @@ namespace ParticleSystem
 
             particlePatch = new ParticleBatch(GraphicsDevice);
             primitiveBatch = new PrimitiveBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // You can either programatically create the effect or author the effect
             // using xml file and load it through the content pipeline.
@@ -137,11 +139,22 @@ namespace ParticleSystem
             fireworks.Update(gameTime);
             galaxy.Update(gameTime);
 
+
+            // Draw particle system using ParticleBatch
             particlePatch.Begin(camera.View, camera.Projection);
             particlePatch.Draw(fireworks);
             particlePatch.Draw(galaxy);
             particlePatch.End();
 
+
+            // Use SpriteBatch to draw 2D particles
+            // Scale up the effect since it's too small
+            spriteBatch.Begin(0, null, null, null, null, null, Matrix.CreateScale(20, 20, 1) * Matrix.CreateTranslation(100, 100, 0));
+            spriteBatch.DrawParticleEffect(galaxy);
+            spriteBatch.End();
+
+
+            // Draw particle system bounds
             primitiveBatch.Begin(camera.View, camera.Projection);
             primitiveBatch.DrawBox(galaxy.BoundingBox, null, Color.Azure);
             primitiveBatch.End();

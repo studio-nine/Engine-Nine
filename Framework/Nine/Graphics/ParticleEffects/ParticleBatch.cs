@@ -85,9 +85,6 @@ namespace Nine.Graphics.ParticleEffects
             if (!hasBegin)
                 throw new InvalidOperationException("Begin must be called first.");
 
-            if (particleEffect.ParticleType == ParticleType.Sprite)
-                throw new NotImplementedException();
-
             if (particleEffect.Texture != null)
                 batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
 
@@ -133,66 +130,46 @@ namespace Nine.Graphics.ParticleEffects
             if (particleEffect.SourceRectangle.HasValue)
                 textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
 
-
-            if (item.Type == ParticleType.Sprite)
+            if (item.Type == ParticleType.Billboard)
             {
-                throw new NotImplementedException();
-            }
-            else if (item.Type == ParticleType.Billboard)
-            {
-                for (int currentParticle = particleEffect.firstParticle;
-                         currentParticle != particleEffect.lastParticle;
-                         currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+                particleEffect.ForEach(particle =>
                 {
-                    if (particleEffect.particles[currentParticle].Age <= 1)
-                    {
-                        primitiveBatch.DrawBillboard(particleEffect.Texture,
-                                                  particleEffect.particles[currentParticle].Position,
-                                                  particleEffect.particles[currentParticle].Size,
-                                                  particleEffect.particles[currentParticle].Size,
-                                                  particleEffect.particles[currentParticle].Rotation, Vector3.UnitZ, textureTransform, null,
-                                                  particleEffect.particles[currentParticle].Color * particleEffect.particles[currentParticle].Alpha);
-                    }
-                }
+                    primitiveBatch.DrawBillboard(particleEffect.Texture,
+                                                particle.Position,
+                                                particle.Size,
+                                                particle.Size,
+                                                particle.Rotation, Vector3.UnitZ, textureTransform, null,
+                                                particle.Color * particle.Alpha);
+                });
             }
             else if (item.Type == ParticleType.ConstrainedBillboard)
             {
-                for (int currentParticle = particleEffect.firstParticle;
-                         currentParticle != particleEffect.lastParticle;
-                         currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+                particleEffect.ForEach(particle =>
                 {
-                    if (particleEffect.particles[currentParticle].Age <= 1)
-                    {
-                        Vector3 forward = Vector3.Normalize(particleEffect.particles[currentParticle].Velocity);
-                        forward *= particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+                    Vector3 forward = Vector3.Normalize(particle.Velocity);
+                    forward *= 0.5f * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
 
-                        primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
-                                                particleEffect.particles[currentParticle].Position,
-                                                particleEffect.particles[currentParticle].Position + forward,
-                                                particleEffect.particles[currentParticle].Size,
+                    primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                                particle.Position - forward,
+                                                particle.Position + forward,
+                                                particle.Size,
                                                 textureTransform, null,
-                                                particleEffect.particles[currentParticle].Color * particleEffect.particles[currentParticle].Alpha);
-                    }
-                }
+                                                particle.Color * particle.Alpha);
+                });
             }
             else if (item.Type == ParticleType.ConstrainedBillboardUp)
             {
-                for (int currentParticle = particleEffect.firstParticle;
-                         currentParticle != particleEffect.lastParticle;
-                         currentParticle = (currentParticle + 1) % particleEffect.maxParticles)
+                particleEffect.ForEach(particle =>
                 {
-                    if (particleEffect.particles[currentParticle].Age <= 1)
-                    {
-                        Vector3 forward = item.Axis * particleEffect.particles[currentParticle].Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+                    Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
 
-                        primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
-                                                particleEffect.particles[currentParticle].Position,
-                                                particleEffect.particles[currentParticle].Position + forward,
-                                                particleEffect.particles[currentParticle].Size,
+                    primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                                particle.Position - forward,
+                                                particle.Position + forward,
+                                                particle.Size,
                                                 textureTransform, null,
-                                                particleEffect.particles[currentParticle].Color * particleEffect.particles[currentParticle].Alpha);
-                    }
-                }
+                                                particle.Color * particle.Alpha);
+                });
             }
         }
 

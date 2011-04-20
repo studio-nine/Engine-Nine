@@ -73,6 +73,7 @@
     <Compile Include="Graphics\ParticleEffects\ParticleEffectCollection.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffectReader.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
+    <Compile Include="Graphics\ParticleEffects\SpriteBatchExtensions.cs" />
     <Compile Include="Graphics\QuaternionCamera.cs" />
     <Compile Include="Graphics\ScreenEffects\AntiAliasEffect.cs">
       <DependentUpon>AntiAliasEffect.fx</DependentUpon>

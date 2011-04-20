@@ -50,10 +50,10 @@ namespace Nine.Graphics.ParticleEffects
         /// Gets or sets the color of this particle.
         /// </summary>
         public Color Color;
-
+        
         /// <summary>
         /// Gets or sets the size of this particle.
-        /// </summary>
+        /// </summary>        
         public float Size;
 
         /// <summary>

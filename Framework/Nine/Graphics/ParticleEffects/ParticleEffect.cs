@@ -40,11 +40,6 @@ namespace Nine.Graphics.ParticleEffects
         /// by the specified axis while still faces the camera.
         /// </summary>
         ConstrainedBillboardUp,
-
-        /// <summary>
-        /// The particle will be rendered as 2D sprite.
-        /// </summary>
-        Sprite,
     }
 
     /// <summary>
@@ -271,6 +266,20 @@ namespace Nine.Graphics.ParticleEffects
             {
                 if (!EmitNewParticle(position, 0))
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Traverses all active particles.
+        /// </summary>
+        public void ForEach(Action<Particle> action)
+        {
+            for (int currentParticle = firstParticle; currentParticle != lastParticle;  currentParticle = (currentParticle + 1) % maxParticles)
+            {
+                if (particles[currentParticle].Age <= 1)
+                {
+                    action(particles[currentParticle]);
+                }
             }
         }
 

@@ -7,7 +7,7 @@ echo Deleting all *.user, *.cachefile, *.suo files...
 
 for /f "delims=" %%i in ('dir /b /a-d /s "*.user"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.cachefile"') do (del /s "%%i")
-for /f "delims=" %%i in ('dir /b /a-d /s "*.suo"') do (del /s "%%i")
+for /f "delims=" %%i in ('dir /b /a-d /s "*.suo"') do (del /ah /s "%%i")
 
 
 echo Deleting all bin/obj/testresults folders...
