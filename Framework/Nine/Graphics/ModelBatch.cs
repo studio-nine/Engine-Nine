@@ -291,6 +291,8 @@ namespace Nine.Graphics
             if (!hasBegin)
                 throw new InvalidOperationException("Begin must be called first.");
 
+            hasBegin = false;
+
             if (batches == null || batchCount <= 0)
                 return;
 
@@ -305,8 +307,6 @@ namespace Nine.Graphics
                 ModelBatchItem item = batches[i];
                 InternalDraw(item.VertexBuffer, item.IndexBuffer, item.VertexOffset, item.NumVertices, item.StartIndex, item.PrimitiveCount, item.World, item.BoneTransforms, item.Effect, item.Texture);
             }
-
-            hasBegin = false;
         }
 
         private void InternalDraw(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int vertexOffset, int numVertices, int startIndex, int primitiveCount, Matrix world, Matrix[] boneTransforms, Effect effect, Texture2D texture)

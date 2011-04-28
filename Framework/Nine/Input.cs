@@ -28,6 +28,7 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 #endregion
 
 namespace Nine
@@ -48,6 +49,12 @@ namespace Nine
         /// Gets the current keyboard state.
         /// </summary>
         public KeyboardState KeyboardState { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets whether this event has been handled.
+        /// Handled events will stop propagation to the next input container.
+        /// </summary>
+        public bool Handled { get; set; }
 
         /// <summary>
         /// Creates a new instance of KeyboardEventArgs.
@@ -124,6 +131,12 @@ namespace Nine
         public MouseState MouseState { get; internal set; }
 
         /// <summary>
+        /// Gets or sets whether this event has been handled.
+        /// Handled events will stop propagation to the next input container.
+        /// </summary>
+        public bool Handled { get; set; }
+
+        /// <summary>
         /// Gets whether the specified button is pressed.
         /// </summary>
         public bool IsButtonDown(MouseButtons button)
@@ -194,9 +207,45 @@ namespace Nine
         public GamePadState GamePadState { get; internal set; }
 
         /// <summary>
+        /// Gets or sets whether this event has been handled.
+        /// Handled events will stop propagation to the next input container.
+        /// </summary>
+        public bool Handled { get; set; }
+
+        /// <summary>
         /// Creates a new instance of GamePadEventArgs.
         /// </summary>
         internal GamePadEventArgs() { }
+    }
+    #endregion
+
+    #region GestureEventArgs
+    /// <summary>
+    /// EventArgs use for touch gesture events.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class GestureEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Gets the gesture type.
+        /// </summary>
+        public GestureType GestureType { get; internal set; }
+
+        /// <summary>
+        /// Gets the detailed gesture sample.
+        /// </summary>
+        public GestureSample GestureSample { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets whether this event has been handled.
+        /// Handled events will stop propagation to the next input container.
+        /// </summary>
+        public bool Handled { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of GamePadEventArgs.
+        /// </summary>
+        internal GestureEventArgs() { }
     }
     #endregion
 
@@ -289,13 +338,50 @@ namespace Nine
         /// <summary>
         /// Gets or sets whether this instance will raise input events.
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool Enabled 
+        {
+            get { return enabled; }
+            set 
+            {
+                enabled = value; 
+                Component.PlayerIndexChanged = true;
+                if (EnabledGestures != GestureType.None)
+                    Component.EnabledGesturesChanged = true; 
+            }
+        }
+
+        private bool enabled;
 
         /// <summary>
         /// Gets or sets the player index to which this <c>Input</c> class will respond to.
         /// A value of null represents this instance will respond to all player inputs.
         /// </summary>
-        public PlayerIndex? PlayerIndex { get; set; }
+        public PlayerIndex? PlayerIndex
+        {
+            get { return playerIndex; }
+            set { playerIndex = value; Component.PlayerIndexChanged = true; }
+        }
+
+        private PlayerIndex? playerIndex;
+
+        /// <summary>
+        /// Gets or sets enabled gestures handles by this input.
+        /// </summary>
+        /// <remarks>
+        /// You can choose to handle gestures either using the method provided by <c>Input</c>
+        /// or manually detect it using <c>TouchPanel</c>. But these two methods don't work
+        /// together with each other. By setting this <c>Input.EnabledGestures</c> property,
+        /// you indicate that you are going to handle gestures using the event model provided
+        /// by Engine Nine across your whole application, in which case you may fail to read
+        /// gestures using <c>TouchPanel.ReadGesture</c> method.
+        /// </remarks>
+        public GestureType EnabledGestures
+        {
+            get { return enabledGestures; }
+            set { enabledGestures = value; Component.EnabledGesturesChanged = true; }
+        }
+
+        private GestureType enabledGestures = GestureType.None;
 
         /// <summary>
         /// Gets the current keyboard state.
@@ -354,10 +440,16 @@ namespace Nine
         public event EventHandler<GamePadEventArgs> ButtonUp;
 
         /// <summary>
+        /// Occurs when a new gesture has been sampled.
+        /// </summary>
+        public event EventHandler<GestureEventArgs> GestureSampled;
+
+        /// <summary>
         /// Occurs when the game update itself.
         /// </summary>
         public event EventHandler<EventArgs> Update;
 
+        internal bool HasGestureSampled { get { return GestureSampled != null; } }
 
         internal protected virtual void OnKeyUp(KeyboardEventArgs e)
         {
@@ -381,6 +473,12 @@ namespace Nine
         {
             if (ButtonUp != null)
                 ButtonUp(this, e);
+        }
+
+        internal protected virtual void OnGestureSampled(GestureEventArgs e)
+        {
+            if (GestureSampled != null)
+                GestureSampled(this, e);
         }
 
         internal protected virtual void OnMouseMove(MouseEventArgs e)
@@ -416,23 +514,10 @@ namespace Nine
 
         #region Extras
         /// <summary>
-        /// Gets whether the cursor is inside the specified rectangle.
-        /// </summary>
-        /// <param name="rect">Rectangle</param>
-        /// <returns>Bool</returns>
-        internal bool MouseInBox(Rectangle rect)
-        {
-            return MouseState.X >= rect.X &&
-                   MouseState.Y >= rect.Y &&
-                   MouseState.X < rect.Right &&
-                   MouseState.Y < rect.Bottom;
-        }
-
-        /// <summary>
         /// All keys except A-Z, 0-9 and `-\[];',./= (and space) are special keys.
         /// With shift pressed this also results in this keys:
         /// </summary>
-        public static bool IsSpecialKey(Keys key)
+        internal static bool IsSpecialKey(Keys key)
         {
             // All keys except A-Z, 0-9 and `-\[];',./= (and space) are special keys.
             // With shift pressed this also results in this keys:
@@ -466,7 +551,7 @@ namespace Nine
         /// will return the same for A-Z and 0-9, but the special keys
         /// might be different.
         /// </summary>
-        public static char KeyToChar(Keys key, bool shiftPressed)
+        internal static char KeyToChar(Keys key, bool shiftPressed)
         {
             // If key will not be found, just return space
             char ret = ' ';
@@ -534,7 +619,7 @@ namespace Nine
         /// Handle keyboard input helper method to catch keyboard input
         /// for an input text. Only used to enter the player name in the game.
         /// </summary>
-        public void CatchKeyboardInput(ref string inputText, int maxChars)
+        internal void CatchKeyboardInput(ref string inputText, int maxChars)
         {
             if (!Enabled)
                 return;
@@ -603,6 +688,7 @@ namespace Nine
         
         internal GamePadState[] gamePadStates = new GamePadState[4];
         internal GamePadState[] gamePadStatesLastFrame = new GamePadState[4];
+        private bool[] playerIndexEnabled = new bool[4] { true, true, true, true, };
 
         /// <summary>
         /// Mouse wheel delta this frame. XNA does report only the total
@@ -611,6 +697,10 @@ namespace Nine
         /// <returns>0</returns>
         int mouseWheelDelta = 0;
         int mouseWheelValue = 0;
+
+        internal bool PlayerIndexChanged = false;
+        internal bool EnabledGesturesChanged = false;
+        private GestureType enabledGestures = GestureType.None;
 
         /// <summary>
         /// Gets or sets the InputComponent for current context.
@@ -681,7 +771,13 @@ namespace Nine
 #endif      
             UpdateMouse();
             UpdateKeyboard();
+#if XBOX
             UpdateGamePad();
+#endif
+
+#if WINDOWS_PHONE
+            UpdateTouchGestures();
+#endif
 
             // Update component
             base.Update(gameTime);
@@ -806,16 +902,58 @@ namespace Nine
 
         private void UpdateGamePad()
         {
+            if (PlayerIndexChanged)
+            {
+                PlayerIndexChanged = false;
+                Array.Clear(playerIndexEnabled, 0, 4);
+                ForEach(input => 
+                {
+                    if (input.PlayerIndex.HasValue)
+                        playerIndexEnabled[(int)input.PlayerIndex.Value] = true;
+                    else
+                        for (int i = 0; i < 4; i++)
+                            playerIndexEnabled[i] = true;
+                    return false;
+                });
+            }
+
             for (int i = 0; i < gamePadStates.Length; i++)
             {
-                gamePadStatesLastFrame[i] = gamePadStates[i];
-                gamePadStates[i] = GamePad.GetState((PlayerIndex)i);
-
-                // TODO: Optimize this by filtering out unwanted events
-                foreach (Buttons button in AllGamePadButtons)
+                if (playerIndexEnabled[i])
                 {
-                    RaiseButtonEvent(button, i);
+                    gamePadStates[i] = GamePad.GetState((PlayerIndex)i);
+
+                    if (gamePadStates[i].IsConnected)
+                    {
+                        foreach (Buttons button in AllGamePadButtons)
+                        {
+                            RaiseButtonEvent(button, i);
+                        }
+                    }
+                    gamePadStatesLastFrame[i] = gamePadStates[i];
                 }
+            }
+        }
+        
+        private void UpdateTouchGestures()
+        {
+            if (EnabledGesturesChanged)
+            {
+                EnabledGesturesChanged = false;
+                enabledGestures = GestureType.None;
+                ForEach(input => 
+                {
+                    if (input.Enabled && input.HasGestureSampled)
+                        enabledGestures |= input.EnabledGestures; 
+                    return false; 
+                });
+                TouchPanel.EnabledGestures = enabledGestures;
+            }
+
+            if (enabledGestures != GestureType.None && TouchPanel.IsGestureAvailable)
+            {
+                GestureSample gesture = TouchPanel.ReadGesture();
+                GestureSampled(this, new GestureEventArgs() { GestureSample = gesture, GestureType = gesture.GestureType });
             }
         }
 
@@ -916,13 +1054,14 @@ namespace Nine
         #endregion
 
         #region Raise Events
-        private void ForEach(Action<Input> action)
+        private void ForEach(Predicate<Input> action)
         {
             for (int i = 0; i < inputs.Count; i++)
             {
                 if (inputs[i].IsAlive)
                 {
-                    action((Input)inputs[i].Target);                    
+                    if (action((Input)inputs[i].Target))
+                        break;
                 }
                 else
                 {
@@ -938,6 +1077,7 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnKeyUp(keyboardArgs);
+                return keyboardArgs.Handled;
             });
         }
 
@@ -947,6 +1087,7 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnKeyDown(keyboardArgs);
+                return keyboardArgs.Handled;
             });
         }
 
@@ -956,6 +1097,7 @@ namespace Nine
             {
                 if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
                     input.OnButtonUp(gamePadArgs);
+                return gamePadArgs.Handled;
             });
         }
 
@@ -965,6 +1107,7 @@ namespace Nine
             {
                 if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
                     input.OnButtonDown(gamePadArgs);
+                return gamePadArgs.Handled;
             });
         }
 
@@ -974,6 +1117,7 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnMouseMove(mouseArgs);
+                return mouseArgs.Handled;
             });
         }
 
@@ -983,6 +1127,7 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnMouseUp(mouseArgs);
+                return mouseArgs.Handled;
             });
         }
 
@@ -992,6 +1137,7 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnMouseDown(mouseArgs);
+                return mouseArgs.Handled;
             });
         }
 
@@ -1001,6 +1147,17 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnMouseWheel(mouseArgs);
+                return mouseArgs.Handled;
+            });
+        }
+
+        private void GestureSampled(InputComponent inputComponent, GestureEventArgs gestureArgs)
+        {
+            ForEach(input =>
+            {
+                if (input.Enabled && (input.EnabledGestures & gestureArgs.GestureType) != 0)
+                    input.OnGestureSampled(gestureArgs);
+                return gestureArgs.Handled;
             });
         }
 
@@ -1010,6 +1167,7 @@ namespace Nine
             {
                 if (input.Enabled)
                     input.OnUpdate();
+                return false;
             });
         }
         #endregion

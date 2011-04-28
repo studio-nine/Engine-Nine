@@ -10,7 +10,7 @@
 
 sampler TextureSampler : register(s0);
 
-float BrightnessThreshold = 0.5f;
+float Threshold = 0.5f;
 
 
 float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
@@ -19,7 +19,7 @@ float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
     float4 c = tex2D(TextureSampler, texCoord);
 
     // Adjust it to keep only values brighter than the specified threshold.
-    return saturate((c - BrightnessThreshold) / (1 - BrightnessThreshold));
+    return (c - Threshold) / (1 - Threshold);
 }
 
 

@@ -9,11 +9,15 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    public partial class Luminance
+    public partial class LuminanceEffect
     {
 		private void OnCreated() { }
-		private void OnClone(Luminance cloneSource) { }
-		private void OnApplyChanges() { }
+        private void OnClone(LuminanceEffect cloneSource) { }
+
+        private void OnApplyChanges()
+        {
+            pixelSize = new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height);
+        }
     }	
 
 #endif

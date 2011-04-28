@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Materials (Xbox)", "Materia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSystem (Windows Phone)", "ParticleSystem\ParticleSystem\ParticleSystem (Windows Phone).csproj", "{7A7EABE5-693D-437B-9E34-DB2B8E6042DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenEffects (Windows Phone)", "ScreenEffects\ScreenEffects\ScreenEffects (Windows Phone).csproj", "{C05E8576-5C96-49F3-ABD2-806D0EA0D375}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -585,6 +587,24 @@ Global
 		{7A7EABE5-693D-437B-9E34-DB2B8E6042DE}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
 		{7A7EABE5-693D-437B-9E34-DB2B8E6042DE}.Release|x86.ActiveCfg = Release|Windows Phone
 		{7A7EABE5-693D-437B-9E34-DB2B8E6042DE}.Release|Xbox 360.ActiveCfg = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Mixed Platforms.Build.0 = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Mixed Platforms.Deploy.0 = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Windows Phone.Deploy.0 = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|x86.ActiveCfg = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Debug|Xbox 360.ActiveCfg = Debug|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Mixed Platforms.Build.0 = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Mixed Platforms.Deploy.0 = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Windows Phone.Build.0 = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|x86.ActiveCfg = Release|Windows Phone
+		{C05E8576-5C96-49F3-ABD2-806D0EA0D375}.Release|Xbox 360.ActiveCfg = Release|Windows Phone
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,11 +9,15 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    internal partial class ScaleEffect
+    public partial class ScaleEffect
     {
 		private void OnCreated() { }
-		private void OnClone(ScaleEffect cloneSource) { }
-		private void OnApplyChanges() { }
+        private void OnClone(ScaleEffect cloneSource) { }
+
+        private void OnApplyChanges()
+        {
+            pixelSize = new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height);
+        }
     }	
 
 #endif

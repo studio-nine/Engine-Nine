@@ -64,6 +64,14 @@
     <Compile Include="Graphics\BlendStateReader.cs" />
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
+    <Compile Include="Graphics\Effects\NormalEffect.cs">
+      <DependentUpon>NormalEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\NormalEffect.Designer.cs">
+      <DependentUpon>NormalEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleAnimation.cs" />
@@ -75,6 +83,16 @@
     <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\SpriteBatchExtensions.cs" />
     <Compile Include="Graphics\QuaternionCamera.cs" />
+    <Compile Include="Graphics\RenderTargetPool.cs" />
+    <Compile Include="Graphics\ScreenEffects\Adoption.cs">
+      <DependentUpon>Adoption.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\Adoption.Designer.cs">
+      <DependentUpon>Adoption.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\AdoptionEffect.cs" />
     <Compile Include="Graphics\ScreenEffects\AntiAliasEffect.cs">
       <DependentUpon>AntiAliasEffect.fx</DependentUpon>
     </Compile>
@@ -83,6 +101,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Graphics\ScreenEffects\BasicScreenEffect.cs" />
     <Compile Include="Graphics\ScreenEffects\BlurEffect.cs">
       <DependentUpon>BlurEffect.fx</DependentUpon>
     </Compile>
@@ -91,6 +110,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BlurEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\ScreenEffects\ChainedScreenEffect.cs" />
     <Compile Include="Graphics\ScreenEffects\ColorMatrixEffect.cs">
       <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
     </Compile>
@@ -98,6 +118,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\DepthOfFieldEffect.cs">
+      <DependentUpon>DepthOfFieldEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\DepthOfFieldEffect.Designer.cs">
+      <DependentUpon>DepthOfFieldEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\EmbossEffect.cs">
       <DependentUpon>EmbossEffect.fx</DependentUpon>
@@ -107,14 +135,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EmbossEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ScreenEffects\Luminance.cs">
-      <DependentUpon>Luminance.fx</DependentUpon>
+    <Compile Include="Graphics\ScreenEffects\LuminanceEffect.cs">
+      <DependentUpon>LuminanceEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ScreenEffects\Luminance.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Include="Graphics\ScreenEffects\LuminanceEffect.Designer.cs">
+      <DependentUpon>LuminanceEffect.fx</DependentUpon>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Luminance.fx</DependentUpon>
+      <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Graphics\ScreenEffects\MultiPassScreenEffect.cs" />
     <Compile Include="Graphics\ScreenEffects\NoiseEffect.cs">
       <DependentUpon>NoiseEffect.fx</DependentUpon>
     </Compile>
@@ -139,7 +168,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RadialBlurEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\ScreenEffects\RenderTargetPool.cs" />
     <Compile Include="Graphics\ScreenEffects\ScaleEffect.cs">
       <DependentUpon>ScaleEffect.fx</DependentUpon>
     </Compile>
@@ -149,8 +177,6 @@
       <DependentUpon>ScaleEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
-    <Compile Include="Graphics\ScreenEffects\ScreenEffectEdge.cs" />
-    <Compile Include="Graphics\ScreenEffects\ScreenEffectPass.cs" />
     <Compile Include="Graphics\ScreenEffects\ThresholdEffect.cs">
       <DependentUpon>ThresholdEffect.fx</DependentUpon>
     </Compile>
@@ -158,6 +184,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ThresholdEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ToneMappingEffect.cs">
+      <DependentUpon>ToneMappingEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\ToneMappingEffect.Designer.cs">
+      <DependentUpon>ToneMappingEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\ScreenEffects\WiggleEffect.cs">
       <DependentUpon>WiggleEffect.fx</DependentUpon>
@@ -290,6 +324,10 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\Effects\NormalEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>NormalEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
@@ -297,6 +335,10 @@
     <None Include="Graphics\ParticleEffects\ParticleSystemEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\ScreenEffects\Adoption.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>Adoption.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\AntiAliasEffect.fx">
       <Generator>EffectCustomTool</Generator>
@@ -310,13 +352,17 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\ScreenEffects\DepthOfFieldEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DepthOfFieldEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\ScreenEffects\EmbossEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>EmbossEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\ScreenEffects\Luminance.fx">
+    <None Include="Graphics\ScreenEffects\LuminanceEffect.fx">
       <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>Luminance.Designer.cs</LastGenOutput>
+      <LastGenOutput>LuminanceEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ScreenEffects\NoiseEffect.fx">
       <Generator>EffectCustomTool</Generator>
@@ -338,6 +384,10 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ThresholdEffect.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\ScreenEffects\ToneMappingEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ToneMappingEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\ScreenEffects\WiggleEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>WiggleEffect.Designer.cs</LastGenOutput>
@@ -353,6 +403,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>

@@ -25,14 +25,15 @@ namespace Nine.Graphics.Effects
     /// </summary>
     public class ShadowMap : IDisposable
     {
+        bool hasBegin;
         BlurEffect blur;
         RenderTarget2D renderTarget;
         RenderTarget2D depthBlur;
 
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        public int Width { get { return renderTarget.Width; } }
-        public int Height { get { return renderTarget.Height; } }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public SurfaceFormat SurfaceFormat { get { return renderTarget.Format; } }
         public Texture2D Texture { get; private set; }
 
@@ -62,28 +63,32 @@ namespace Nine.Graphics.Effects
         public ShadowMap(GraphicsDevice graphics, int width, int height)
         {
             GraphicsDevice = graphics;
-
-            //renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Single,
-            //                                  graphics.PresentationParameters.DepthStencilFormat);
-
-            renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Color,
-                                              graphics.PresentationParameters.DepthStencilFormat);
+            Width = width;
+            Height = height;
         }
 
         public void Begin()
         {
+            if (hasBegin)
+                throw new InvalidOperationException("Begin has already been called.");
+
+            hasBegin = true;
+            renderTarget = RenderTargetPool.AddRef(GraphicsDevice, Width, Height, false, SurfaceFormat.Color, GraphicsDevice.PresentationParameters.DepthStencilFormat);
             renderTarget.Begin();
         }
 
         public Texture2D End()
         {
+            if (!hasBegin)
+                throw new InvalidOperationException("Begin must be called first.");
+
+            hasBegin = false;
+
             Texture2D map = renderTarget.End();
 
             if (BlurEnabled)
             {
-                if (depthBlur == null)
-                    depthBlur = new RenderTarget2D(GraphicsDevice, Width, Height, false, SurfaceFormat,
-                                                   GraphicsDevice.PresentationParameters.DepthStencilFormat);
+                depthBlur = RenderTargetPool.AddRef(GraphicsDevice, Width, Height, false, SurfaceFormat, GraphicsDevice.PresentationParameters.DepthStencilFormat);
 
                 // Blur H
                 depthBlur.Begin();
@@ -92,6 +97,7 @@ namespace Nine.Graphics.Effects
                 GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
 
                 map = depthBlur.End();
+                RenderTargetPool.Release(depthBlur);
 
                 // Blur V
                 renderTarget.Begin();
@@ -105,6 +111,7 @@ namespace Nine.Graphics.Effects
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             }
 
+            RenderTargetPool.Release(renderTarget);
             return Texture = map;
         }
         

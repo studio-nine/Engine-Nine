@@ -119,6 +119,21 @@ namespace Nine.Graphics
         public static readonly string Lightmap = "Lightmap";
 
         /// <summary>
+        /// The texture type name used for luminance texture.
+        /// </summary>
+        public static readonly string Luminance = "Luminance";
+
+        /// <summary>
+        /// The texture type name used for bloom texture.
+        /// </summary>
+        public static readonly string Bloom = "Bloom";
+
+        /// <summary>
+        /// The texture type name used for blur texture.
+        /// </summary>
+        public static readonly string Blur = "Blur";
+
+        /// <summary>
         /// The texture type name used for shadowmap texture.
         /// </summary>
         public static readonly string ShadowMap = "ShadowMap";

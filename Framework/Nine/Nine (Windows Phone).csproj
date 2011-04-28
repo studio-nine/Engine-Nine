@@ -82,7 +82,10 @@
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\EffectExtensions.cs" />
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
+    <Compile Include="Graphics\Effects\NormalEffect.cs" />
+    <Compile Include="Graphics\Effects\NormalEffect.designer.cs">
+      <DependentUpon>NormalEffect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
@@ -102,7 +105,16 @@
     <Compile Include="Graphics\QuaternionCamera.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
+    <Compile Include="Graphics\RenderTargetPool.cs" />
     <Compile Include="Graphics\ScreenCamera.cs" />
+    <Compile Include="Graphics\ScreenEffects\BasicScreenEffect.cs" />
+    <Compile Include="Graphics\ScreenEffects\ChainedScreenEffect.cs" />
+    <Compile Include="Graphics\ScreenEffects\DepthOfFieldEffect.cs" />
+    <Compile Include="Graphics\ScreenEffects\DepthOfFieldEffect.Designer.cs">
+      <DependentUpon>DepthOfFieldEffect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\ScreenEffects\MultiPassScreenEffect.cs" />
+    <Compile Include="Graphics\ScreenEffects\ScreenEffect.cs" />
     <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
@@ -165,6 +177,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>

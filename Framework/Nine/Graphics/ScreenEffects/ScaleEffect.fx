@@ -7,7 +7,7 @@
 //  Edit        : -
 //=============================================================================
 
-float2    SourceTextureDimensions;
+float2    pixelSize;
 
 sampler2D PointSampler0 : register(s0);
 
@@ -20,7 +20,7 @@ float4 SoftwareScale4x4PS(float2 TexCoord : TEXCOORD0) : COLOR0
     {
         for (int y = 0; y < 4; y++)
         {
-            float2 Offset = (KernelOffsets[x], KernelOffsets[y]) / SourceTextureDimensions;
+            float2 Offset = (KernelOffsets[x], KernelOffsets[y]) * pixelSize;
             Color += tex2D(PointSampler0, TexCoord + Offset);;
         }
     }
