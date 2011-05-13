@@ -43,7 +43,7 @@ namespace Nine.Graphics
     }
     
     /// <summary>
-    /// Enables a group of basic primitives to be drawn.
+    /// Enables a group of dynamic primitives to be drawn.
     /// </summary>
     public class PrimitiveBatch : IDisposable
     {
@@ -136,7 +136,7 @@ namespace Nine.Graphics
         public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
             if (hasBegin)
-                throw new InvalidOperationException("Begin has already been called.");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             this.view = view;
             this.projection = projection;
@@ -454,7 +454,7 @@ namespace Nine.Graphics
         public void End()
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             vertexSegments.Add(baseSegmentVertex + currentVertex);
             indexSegments.Add(baseSegmentIndex + currentIndex);

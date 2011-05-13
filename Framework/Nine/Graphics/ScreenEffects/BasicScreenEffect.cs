@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -47,7 +47,7 @@ namespace Nine.Graphics.ScreenEffects
 
         /// <summary>
         /// Gets or sets the render target size.
-        /// Specify null to use current viewport size.
+        /// Specify null to use input texture size.
         /// </summary>
         public Vector2? RenderTargetSize { get; set; }
 
@@ -82,7 +82,7 @@ namespace Nine.Graphics.ScreenEffects
                 return input;
 
             RenderTargetPool.AddRef(input as RenderTarget2D);
-            RenderTarget2D renderTarget = RenderTargetPool.AddRef(GraphicsDevice, RenderTargetSize, RenderTargetScale, SurfaceFormat);
+            RenderTarget2D renderTarget = RenderTargetPool.AddRef(GraphicsDevice, input, RenderTargetSize, RenderTargetScale, SurfaceFormat);
             renderTarget.Begin();
 
             GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, Effect);

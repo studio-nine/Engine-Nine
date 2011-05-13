@@ -49,7 +49,12 @@
     <XnaCompressContent>false</XnaCompressContent>
     <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
@@ -82,10 +87,6 @@
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
     <Compile Include="Graphics\EffectExtensions.cs" />
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
-    <Compile Include="Graphics\Effects\NormalEffect.cs" />
-    <Compile Include="Graphics\Effects\NormalEffect.designer.cs">
-      <DependentUpon>NormalEffect.cs</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="Graphics\Batch.cs" />
     <Compile Include="Input.cs">
     </Compile>
     <Compile Include="Graphics\FreeCamera.cs" />
@@ -141,6 +141,11 @@
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
     <Compile Include="ScreenshotCapturer.cs" />
     <Compile Include="SpatialQuery.cs" />
+    <Compile Include="Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Surface.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="ZipContentmanager.cs" />

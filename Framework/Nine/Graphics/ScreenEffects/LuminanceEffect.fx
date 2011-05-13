@@ -8,7 +8,7 @@
 //=============================================================================
 
 
-float2    pixelSize;
+float2  pixelSize;
 sampler Sampler : register(s0);
 
 static const float KernelOffsets[2] = {-0.5f, 0.5f};
@@ -35,7 +35,7 @@ float4 LuminancePS(float2 TexCoord : TEXCOORD0) : COLOR0
         }
 
         average = exp( average );
-        return float4( average, average, average, 1.0f );
+        return float4( average, maximum, 0, 1.0f );
 }
 
 technique Luminance

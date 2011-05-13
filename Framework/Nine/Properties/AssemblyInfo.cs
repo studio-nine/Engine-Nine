@@ -42,3 +42,6 @@ using System.Runtime.InteropServices;
 
 // Make this visible to test so we can check internal state.
 [assembly: InternalsVisibleTo("Nine.Test")]
+
+// Enable Nine.Studio input integration.
+[assembly: InternalsVisibleTo("Nine.Studio.Xna")]

@@ -70,7 +70,7 @@ namespace Nine.Graphics.Effects
         public void Begin()
         {
             if (hasBegin)
-                throw new InvalidOperationException("Begin has already been called.");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             hasBegin = true;
             renderTarget = RenderTargetPool.AddRef(GraphicsDevice, Width, Height, false, SurfaceFormat.Color, GraphicsDevice.PresentationParameters.DepthStencilFormat);
@@ -80,7 +80,7 @@ namespace Nine.Graphics.Effects
         public Texture2D End()
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             hasBegin = false;
 

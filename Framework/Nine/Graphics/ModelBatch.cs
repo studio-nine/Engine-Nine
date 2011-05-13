@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -162,7 +162,7 @@ namespace Nine.Graphics
         public void Begin(ModelSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
             if (hasBegin)
-                throw new InvalidOperationException("Begin has already been called.");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             this.blendState = blendState != null ? blendState : BlendState.Opaque;
             this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
@@ -246,7 +246,7 @@ namespace Nine.Graphics
         internal void DrawVerticesSkinned(VertexBuffer vertexBuffer, IndexBuffer indexBuffer, int vertexOffset, int numVertices, int startIndex, int primitiveCount, Matrix world, Matrix[] boneTransforms, Effect effect, Texture2D texture, BoundingSphere? boundingSphere)
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             if (boundingSphere == null && (sort == ModelSortMode.BackToFront || sort == ModelSortMode.FrontToBack))
                 throw new ArgumentNullException("boundingSphere must not be null when you specify ModelSortMode.BackToFront or ModelSortMode.FrontToBack.");
@@ -289,7 +289,7 @@ namespace Nine.Graphics
         public void End()
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             hasBegin = false;
 

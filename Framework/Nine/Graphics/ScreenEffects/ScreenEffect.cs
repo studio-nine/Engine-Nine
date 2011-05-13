@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -85,14 +85,14 @@ namespace Nine.Graphics.ScreenEffects
         public void Begin()
         {
             if (hasBegin)
-                throw new InvalidOperationException("Begin has already been called.");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             hasBegin = true;
 
             if (Effects.Count <= 0 || !Enabled)
                 return;
 
-            renderTarget = RenderTargetPool.AddRef(GraphicsDevice, RenderTargetSize, RenderTargetScale, SurfaceFormat, GraphicsDevice.PresentationParameters.DepthStencilFormat);
+            renderTarget = RenderTargetPool.AddRef(GraphicsDevice, null, RenderTargetSize, RenderTargetScale, SurfaceFormat, GraphicsDevice.PresentationParameters.DepthStencilFormat);
             renderTarget.Begin();
         }
 
@@ -102,7 +102,7 @@ namespace Nine.Graphics.ScreenEffects
         public void End()
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             hasBegin = false;
 
@@ -118,16 +118,6 @@ namespace Nine.Graphics.ScreenEffects
             }
         }
 
-        public void Update(GameTime gameTime)
-        {
-            ((IUpdateObject)this).Update(gameTime);
-        }
-
-        public void SetTexture(string name, Texture texture)
-        {
-            ((IEffectTexture)this).SetTexture(name, texture);
-        }
-
 #if !WINDOWS_PHONE
         /// <summary>
         /// Creates a bloom post processing effect.
@@ -139,10 +129,10 @@ namespace Nine.Graphics.ScreenEffects
 
             MultiPassScreenEffectPass brightPass = new MultiPassScreenEffectPass();
             brightPass.Effects.Add(new ScaleEffect(graphics), 0.5f);
-            brightPass.Effects.Add(new ThresholdEffect(graphics) { Threshold = threshold }, 0.5f);
-            brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 }, 0.5f);
-            brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 }, 0.5f);
-            brightPass.Effects.Add(new ScaleEffect(graphics), 0.5f);
+            brightPass.Effects.Add(new ThresholdEffect(graphics) { Threshold = threshold });
+            brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 });
+            brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 });
+            brightPass.Effects.Add(new ScaleEffect(graphics), 2);
             brightPass.BlendState = BlendState.Additive;
 
             MultiPassScreenEffect multipassEffect = new MultiPassScreenEffect(graphics);
@@ -157,21 +147,21 @@ namespace Nine.Graphics.ScreenEffects
         /// <summary>
         /// Creates a High Dynamic Range (HDR) post processing effect.
         /// </summary>
-        public static ScreenEffect CreateHighDynamicRange(GraphicsDevice graphics, float threshold, float blurAmount, float exposure, float maxLuminance, float? adoptation)
+        public static ScreenEffect CreateHighDynamicRange(GraphicsDevice graphics, float threshold, float blurAmount, float exposure, float maxLuminance, float? adoption)
         {
             SurfaceFormat hdrFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.HdrBlendable;
 
             MultiPassScreenEffectPass basePass = new MultiPassScreenEffectPass();
 
             MultiPassScreenEffectPass brightPass = new MultiPassScreenEffectPass();
-            brightPass.Effects.Add(new BasicScreenEffect() { Effect = new ScaleEffect(graphics), RenderTargetScale = 0.5f, SurfaceFormat = hdrFormat });
-            brightPass.Effects.Add(new BasicScreenEffect() { Effect = new ThresholdEffect(graphics) { Threshold = threshold }, RenderTargetScale = 0.5f, SurfaceFormat = hdrFormat });
-            brightPass.Effects.Add(new BasicScreenEffect() { Effect = new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 }, RenderTargetScale = 0.5f, SurfaceFormat = hdrFormat });
-            brightPass.Effects.Add(new BasicScreenEffect() { Effect = new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 }, RenderTargetScale = 0.5f, SurfaceFormat = hdrFormat });
-            brightPass.Effects.Add(new BasicScreenEffect() { Effect = new ScaleEffect(graphics), RenderTargetScale = 0.5f, SurfaceFormat = hdrFormat });
+            brightPass.Effects.Add(new ScaleEffect(graphics), 0.5f);
+            brightPass.Effects.Add(new ThresholdEffect(graphics) { Threshold = threshold });
+            brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 });
+            brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 });
+            brightPass.Effects.Add(new ScaleEffect(graphics), 2);
             brightPass.OutputTextureName = TextureNames.Bloom;
 
-            MultiPassScreenEffectPass luminancePass = CreateLuminanceChain(graphics, 4, adoptation);
+            MultiPassScreenEffectPass luminancePass = CreateLuminanceChain(graphics, 4, adoption);
 
             MultiPassScreenEffect multipassEffect = new MultiPassScreenEffect(graphics);
             multipassEffect.Passes.Add(basePass);
@@ -188,7 +178,7 @@ namespace Nine.Graphics.ScreenEffects
         /// <summary>
         /// Creates a luminance chain for computing the luminance of the scene.
         /// </summary>
-        public static MultiPassScreenEffectPass CreateLuminanceChain(GraphicsDevice graphics, int scale, float? adoptation)
+        public static MultiPassScreenEffectPass CreateLuminanceChain(GraphicsDevice graphics, int scale, float? adoption)
         {
             MultiPassScreenEffectPass luminancePass = new MultiPassScreenEffectPass();
 
@@ -198,7 +188,7 @@ namespace Nine.Graphics.ScreenEffects
             {
                 Effect = new LuminanceEffect(graphics),
                 RenderTargetSize = Vector2.One * size,
-                SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Single,
+                SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Vector2,
             });
             size = Math.Max(1, size / scale);
 
@@ -208,23 +198,21 @@ namespace Nine.Graphics.ScreenEffects
                 {
                     Effect = new ScaleEffect(graphics),
                     RenderTargetSize = Vector2.One * size,
-                    SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Single,
                 });
                 size /= scale;
             }
 
-            if (adoptation.HasValue)
+            if (adoption.HasValue)
             {
                 luminancePass.Effects.Add(new AdoptionEffect(graphics)
                 {
-                    Speed = adoptation.Value,
+                    Speed = adoption.Value,
                     RenderTargetSize = Vector2.One,
-                    SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Single,
                 });
             }
 
             luminancePass.RenderTargetSize = Vector2.One;
-            luminancePass.SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Single;
+            luminancePass.SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Vector2;
             luminancePass.OutputTextureName = TextureNames.Luminance;
             return luminancePass;
         }
@@ -250,9 +238,9 @@ namespace Nine.Graphics.ScreenEffects
 
             MultiPassScreenEffectPass blurPass = new MultiPassScreenEffectPass();
             blurPass.Effects.Add(new ScaleEffect(graphics), 0.5f);
-            blurPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 }, 0.5f);
-            blurPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 }, 0.5f);
-            blurPass.Effects.Add(new ScaleEffect(graphics), 0.5f);
+            blurPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 });
+            blurPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 });
+            blurPass.Effects.Add(new ScaleEffect(graphics), 2);
             blurPass.OutputTextureName = TextureNames.Blur;
 
             MultiPassScreenEffect multipassEffect = new MultiPassScreenEffect(graphics);

@@ -712,6 +712,14 @@ namespace Nine
         /// </summary>
         private const float DoubleClickInterval = 0.25f;
 
+#if WINDOWS
+        private bool leftDown = false;
+        private bool rightDown = false;
+        private bool middleDown = false;
+        private Control control = null;
+        internal bool HostingEnabled = false;        
+#endif
+
         private static readonly Buttons[] AllGamePadButtons = new Buttons[] 
         {
 #if WINDOWS_PHONE
@@ -745,6 +753,7 @@ namespace Nine
         {
             Current = this;
 #if WINDOWS
+            Mouse.WindowHandle = handle;
             control = Form.FromHandle(handle);
             control.PreviewKeyDown += new PreviewKeyDownEventHandler(control_PreviewKeyDown);
             control.MouseDown += new MouseEventHandler(control_MouseDown);
@@ -764,9 +773,9 @@ namespace Nine
         /// </summary>
         public override void Update(GameTime gameTime)
         {
-            Update(this);
+            Update();
 #if WINDOWS
-            if (control != null)
+            if (control != null || HostingEnabled)
                 return;
 #endif      
             UpdateMouse();
@@ -804,7 +813,7 @@ namespace Nine
 
             // Mouse wheel event
             if (mouseWheelDelta != 0)
-                Wheel(this, mouseArgs);
+                Wheel(mouseArgs);
 
             // Mouse Left Button Events
             if (mouseState.LeftButton == ButtonState.Pressed &&
@@ -812,14 +821,14 @@ namespace Nine
             {
                 mouseArgs.Button = MouseButtons.Left;
 
-                MouseDown(this, mouseArgs);
+                MouseDown(mouseArgs);
             }
             else if (mouseState.LeftButton == ButtonState.Released &&
                      mouseStateLastFrame.LeftButton == ButtonState.Pressed)
             {
                 mouseArgs.Button = MouseButtons.Left;
 
-                MouseUp(this, mouseArgs);
+                MouseUp(mouseArgs);
             }
 
             // Mouse Right Button Events
@@ -828,14 +837,14 @@ namespace Nine
             {
                 mouseArgs.Button = MouseButtons.Right;
 
-                MouseDown(this, mouseArgs);
+                MouseDown(mouseArgs);
             }
             else if (mouseState.RightButton == ButtonState.Released &&
                      mouseStateLastFrame.RightButton == ButtonState.Pressed)
             {
                 mouseArgs.Button = MouseButtons.Right;
 
-                MouseUp(this, mouseArgs);
+                MouseUp(mouseArgs);
             }
 
             // Mouse Middle Button Events
@@ -844,20 +853,20 @@ namespace Nine
             {
                 mouseArgs.Button = MouseButtons.Middle;
 
-                MouseDown(this, mouseArgs);
+                MouseDown(mouseArgs);
             }
             else if (mouseState.MiddleButton == ButtonState.Released &&
                      mouseStateLastFrame.MiddleButton == ButtonState.Pressed)
             {
                 mouseArgs.Button = MouseButtons.Middle;
 
-                MouseUp(this, mouseArgs);
+                MouseUp(mouseArgs);
             }
 
             // Mouse move event
             if (mouseState.X != mouseStateLastFrame.X ||
                 mouseState.Y != mouseStateLastFrame.Y)
-                MouseMove(this, mouseArgs);
+                MouseMove(mouseArgs);
         }
         
         private void UpdateKeyboard()
@@ -877,7 +886,7 @@ namespace Nine
                 if (!keysPressedLastFrame.Contains(key))
                 {
                     keyboardArgs.Key = key;
-                    KeyDown(this, keyboardArgs);
+                    KeyDown(keyboardArgs);
                 }
             }
 
@@ -895,7 +904,7 @@ namespace Nine
                 if (!found)
                 {
                     keyboardArgs.Key = key;
-                    KeyUp(this, keyboardArgs);
+                    KeyUp(keyboardArgs);
                 }
             }
         }
@@ -953,27 +962,22 @@ namespace Nine
             if (enabledGestures != GestureType.None && TouchPanel.IsGestureAvailable)
             {
                 GestureSample gesture = TouchPanel.ReadGesture();
-                GestureSampled(this, new GestureEventArgs() { GestureSample = gesture, GestureType = gesture.GestureType });
+                GestureSampled(new GestureEventArgs() { GestureSample = gesture, GestureType = gesture.GestureType });
             }
         }
 
         private void RaiseButtonEvent(Buttons button, int i)
         {
             if (gamePadStatesLastFrame[i].IsButtonUp(button) && gamePadStates[i].IsButtonDown(button))
-                ButtonDown(this, new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
+                ButtonDown(new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
             else if (gamePadStatesLastFrame[i].IsButtonDown(button) && gamePadStates[i].IsButtonUp(button))
-                ButtonUp(this, new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
+                ButtonUp(new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
         }
 
 #if WINDOWS
-        bool leftDown = false;
-        bool rightDown = false;
-        bool middleDown = false;
-        Control control = null;
-        
         void control_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            Wheel(this, new MouseEventArgs(MouseButtons.Middle, e.X, e.Y, e.Delta));
+            Wheel(new MouseEventArgs(MouseButtons.Middle, e.X, e.Y, e.Delta));
         }
 
         void control_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -984,7 +988,7 @@ namespace Nine
             args.IsRightButtonDown = rightDown;
             args.IsMiddleButtonDown = middleDown;
 
-            MouseMove(this, args);
+            MouseMove(args);
         }
 
         void control_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -998,7 +1002,7 @@ namespace Nine
             else if (e.Button == FormMouseButtons.Middle)
                 middleDown = true;
 
-            MouseDown(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
+            MouseDown(new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
         }
 
         void control_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -1012,7 +1016,7 @@ namespace Nine
             else if (e.Button == FormMouseButtons.Middle)
                 middleDown = false;
 
-            MouseUp(this, new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
+            MouseUp(new MouseEventArgs(ConvertButton(e.Button), e.X, e.Y, e.Delta));
         }
 
         void control_MouseCaptureChanged(object sender, EventArgs e)
@@ -1032,12 +1036,14 @@ namespace Nine
 
         void control_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            KeyDown(this, new KeyboardEventArgs((Keys)e.KeyValue));
+            // FIXME: This is not correct. Avoid using it!!!
+            KeyDown(new KeyboardEventArgs((Keys)e.KeyValue));
         }
 
         void control_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            KeyUp(this, new KeyboardEventArgs((Keys)e.KeyValue));
+            // FIXME: This is not correct. Avoid using it!!!
+            KeyUp(new KeyboardEventArgs((Keys)e.KeyValue));
         }
 
         MouseButtons ConvertButton(System.Windows.Forms.MouseButtons button)
@@ -1071,7 +1077,7 @@ namespace Nine
             }
         }
 
-        private void KeyUp(InputComponent inputComponent, KeyboardEventArgs keyboardArgs)
+        internal void KeyUp(KeyboardEventArgs keyboardArgs)
         {
             ForEach(input =>
             {
@@ -1081,7 +1087,7 @@ namespace Nine
             });
         }
 
-        private void KeyDown(InputComponent inputComponent, KeyboardEventArgs keyboardArgs)
+        internal void KeyDown(KeyboardEventArgs keyboardArgs)
         {
             ForEach(input =>
             {
@@ -1091,7 +1097,7 @@ namespace Nine
             });
         }
 
-        private void ButtonUp(InputComponent inputComponent, GamePadEventArgs gamePadArgs)
+        internal void ButtonUp(GamePadEventArgs gamePadArgs)
         {
             ForEach(input =>
             {
@@ -1101,7 +1107,7 @@ namespace Nine
             });
         }
 
-        private void ButtonDown(InputComponent inputComponent, GamePadEventArgs gamePadArgs)
+        internal void ButtonDown(GamePadEventArgs gamePadArgs)
         {
             ForEach(input =>
             {
@@ -1111,7 +1117,7 @@ namespace Nine
             });
         }
 
-        private void MouseMove(InputComponent inputComponent, MouseEventArgs mouseArgs)
+        internal void MouseMove(MouseEventArgs mouseArgs)
         {
             ForEach(input =>
             {
@@ -1121,7 +1127,7 @@ namespace Nine
             });
         }
 
-        private void MouseUp(InputComponent inputComponent, MouseEventArgs mouseArgs)
+        internal void MouseUp(MouseEventArgs mouseArgs)
         {
             ForEach(input =>
             {
@@ -1131,7 +1137,7 @@ namespace Nine
             });
         }
 
-        private void MouseDown(InputComponent inputComponent, MouseEventArgs mouseArgs)
+        internal void MouseDown(MouseEventArgs mouseArgs)
         {
             ForEach(input =>
             {
@@ -1141,7 +1147,7 @@ namespace Nine
             });
         }
 
-        private void Wheel(InputComponent inputComponent, MouseEventArgs mouseArgs)
+        internal void Wheel(MouseEventArgs mouseArgs)
         {
             ForEach(input =>
             {
@@ -1151,7 +1157,7 @@ namespace Nine
             });
         }
 
-        private void GestureSampled(InputComponent inputComponent, GestureEventArgs gestureArgs)
+        internal void GestureSampled(GestureEventArgs gestureArgs)
         {
             ForEach(input =>
             {
@@ -1161,7 +1167,7 @@ namespace Nine
             });
         }
 
-        private void Update(InputComponent inputComponent)
+        private void Update()
         {
             ForEach(input =>
             {

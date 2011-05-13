@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -44,7 +44,6 @@ namespace Nine.Graphics.ScreenEffects
             Effects = new ScreenEffectCollection();
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual void Update(GameTime gameTime)
         {
             if (Enabled)
@@ -58,7 +57,7 @@ namespace Nine.Graphics.ScreenEffects
             }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        public void SetTexture(string name, Texture texture)
         {
             for (int i = 0; i < Effects.Count; i++)
             {

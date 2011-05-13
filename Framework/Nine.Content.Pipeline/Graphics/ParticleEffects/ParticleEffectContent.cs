@@ -29,17 +29,17 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine")]
     public class ParticleEffectContent
     {
-        [ContentSerializer(Optional = true)]
         /// <summary>
         /// Gets or sets whether the particle system will be triggered
         /// automatically after been created.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public bool TriggerOnStartup { get; set; }
 
-        [ContentSerializer(Optional = true)]
         /// <summary>
         /// Gets or sets the max particle count of the particle effect.
         /// </summary>
+        [ContentSerializer(Optional = true)]
         public int MaxParticles { get; set; }
 
         /// <summary>

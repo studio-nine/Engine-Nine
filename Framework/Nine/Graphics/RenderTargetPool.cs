@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -97,16 +97,20 @@ namespace Nine.Graphics
             throw new ArgumentException("Did not found the specified render target.");
         }
 
-        internal static RenderTarget2D AddRef(GraphicsDevice graphicsDevice, Vector2? renderTargetSize, float renderTargetScale, SurfaceFormat? surfaceFormat)
+        internal static RenderTarget2D AddRef(GraphicsDevice graphicsDevice, Texture2D input, Vector2? renderTargetSize, float renderTargetScale, SurfaceFormat? surfaceFormat)
         {
-            return AddRef(graphicsDevice, renderTargetSize, renderTargetScale, surfaceFormat, null);
+            return AddRef(graphicsDevice, input, renderTargetSize, renderTargetScale, surfaceFormat, null);
         }
 
-        internal static RenderTarget2D AddRef(GraphicsDevice graphicsDevice, Vector2? renderTargetSize, float renderTargetScale, SurfaceFormat? surfaceFormat, DepthFormat? depthFormat)
+        internal static RenderTarget2D AddRef(GraphicsDevice graphicsDevice, Texture2D input, Vector2? renderTargetSize, float renderTargetScale, SurfaceFormat? surfaceFormat, DepthFormat? depthFormat)
         {
-            float renderTargetWidth = renderTargetSize.HasValue ? renderTargetSize.Value.X : graphicsDevice.Viewport.Width;
-            float renderTargetHeight = renderTargetSize.HasValue ? renderTargetSize.Value.Y : graphicsDevice.Viewport.Height;
-            SurfaceFormat sFormat = surfaceFormat.HasValue ? surfaceFormat.Value : graphicsDevice.PresentationParameters.BackBufferFormat;
+            float width = input != null ? input.Width : graphicsDevice.PresentationParameters.BackBufferWidth;
+            float height = input != null ? input.Height : graphicsDevice.PresentationParameters.BackBufferHeight;
+            SurfaceFormat inputFormat = input != null ? input.Format : graphicsDevice.PresentationParameters.BackBufferFormat;
+
+            float renderTargetWidth = renderTargetSize.HasValue ? renderTargetSize.Value.X : width;
+            float renderTargetHeight = renderTargetSize.HasValue ? renderTargetSize.Value.Y : height;
+            SurfaceFormat sFormat = surfaceFormat.HasValue ? surfaceFormat.Value : inputFormat;
             DepthFormat dFormat = depthFormat.HasValue ? depthFormat.Value : DepthFormat.None;
 
             return AddRef(graphicsDevice, (int)(renderTargetWidth * renderTargetScale),

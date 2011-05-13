@@ -70,7 +70,7 @@ namespace Nine.Graphics.ParticleEffects
         public void Begin(Matrix view, Matrix projection, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
             if (hasBegin)
-                throw new InvalidOperationException("Begin has already been called.");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             this.view = view;
             this.projection = projection;
@@ -83,7 +83,7 @@ namespace Nine.Graphics.ParticleEffects
         public void Draw(ParticleEffect particleEffect)
         {   
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             if (particleEffect.Texture != null)
                 batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
@@ -98,7 +98,7 @@ namespace Nine.Graphics.ParticleEffects
         public void End()
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called first.");
+                throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             if (batches.Count > 0)
             {

@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
