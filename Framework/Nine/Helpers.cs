@@ -156,6 +156,9 @@ namespace Nine
         }
     }
 
+    /// <summary>
+    /// Contains helper method for Matrix.
+    /// </summary>
     internal static class MatrixHelper
     {
         public static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
@@ -167,6 +170,21 @@ namespace Nine
             
             axis.Normalize();
             return Matrix.CreateFromAxisAngle(axis, (float)Math.Acos(Vector3.Dot(fromDirection, toDirection)));
+        }
+
+        public static float GetFarClip(this Matrix projection)
+        {
+            return Math.Abs(projection.M43 / (Math.Abs(projection.M33) - 1));
+        }
+
+        public static float GetNearClip(this Matrix projection)
+        {
+            return Math.Abs(projection.M43 / projection.M33);
+        }
+
+        public static float GetFrustumLength(this Matrix projection)
+        {
+            return GetFarClip(projection) - GetNearClip(projection);
         }
     }
 }

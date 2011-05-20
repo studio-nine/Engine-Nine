@@ -13,20 +13,15 @@
         <Texture>box_n</Texture>
       </Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLight">
+        <SpecularPower>32</SpecularPower>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight">
+        <AmbientLightColor>0 0 0</AmbientLightColor>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight">
+        <Direction>0 -0.707107 -0.707107</Direction>
+        <DiffuseColor>1 1 1</DiffuseColor>
         <SpecularColor>1 1 1</SpecularColor>
-      </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PointLight">
-        <Position>10 10 1</Position>
-        <Range>20</Range>
-        <Attenuation>0.2</Attenuation>
-      </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SpotLight">
-        <Position>0 0 1</Position>
-        <Direction>-1 0 0</Direction>
-        <Range>20</Range>
-        <Attenuation>0.02</Attenuation>
-        <Falloff>2</Falloff>
       </Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLight"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>

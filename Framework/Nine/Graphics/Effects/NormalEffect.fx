@@ -9,6 +9,12 @@ float4x4 View;
 float4x4 Projection;
 
 
+texture NormalMap;
+sampler NormalSampler = sampler_state
+{
+    Texture = (NormalMap);
+};
+
 //-----------------------------------------------------------------------------
 // Vertex Shader: VertShadow
 // Desc: Process vertex for the shadow map
@@ -72,7 +78,7 @@ void VertShadowSkinned( float4 Pos : POSITION,
 void PixShadow( float3 Normal : TEXCOORD0,
                 out float4 Color : COLOR )
 {
-    Color.xyz = Normal;
+    Color.xyz = (normalize(Normal) + 1) * 0.5f;
 	Color.a = 1;
 }
 

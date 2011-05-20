@@ -117,7 +117,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Finds the first accurance of LinkedEffectPart that is of type T.
         /// </summary>
-        public T FindFirst<T>() where T :class
+        public T Find<T>() where T :class
         {
             foreach (LinkedEffectPart part in EffectParts)
             {
@@ -130,7 +130,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Finds all the accurances of LinkedEffectPart that is of type T.
         /// </summary>
-        public IEnumerable<T> Find<T>() where T : class
+        public IEnumerable<T> FindAll<T>() where T : class
         {
             foreach (LinkedEffectPart part in EffectParts)
             {
@@ -172,11 +172,11 @@ namespace Nine.Graphics.Effects
         {
             int i = 0;
 
-            AmbientLightEffectPart ambient = FindFirst<AmbientLightEffectPart>();
+            AmbientLightEffectPart ambient = Find<AmbientLightEffectPart>();
             if (ambient != null)
                 ambient.AmbientLightColor = new Vector3(0.05333332f, 0.09882354f, 0.1819608f);
 
-            foreach (DirectionalLightEffectPart light in Find<DirectionalLightEffectPart>())
+            foreach (DirectionalLightEffectPart light in FindAll<DirectionalLightEffectPart>())
             {
                 if (i == 0)
                 {
@@ -218,7 +218,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 projection = value;
-                foreach (IEffectMatrices part in Find<IEffectMatrices>())
+                foreach (IEffectMatrices part in FindAll<IEffectMatrices>())
                     part.Projection = value;
             }
         }
@@ -230,7 +230,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 view = value;
-                foreach (IEffectMatrices part in Find<IEffectMatrices>())
+                foreach (IEffectMatrices part in FindAll<IEffectMatrices>())
                     part.View = value;
             }
         }
@@ -242,7 +242,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 world = value;
-                foreach (IEffectMatrices part in Find<IEffectMatrices>())
+                foreach (IEffectMatrices part in FindAll<IEffectMatrices>())
                     part.World = value;
             }
         }
@@ -251,19 +251,19 @@ namespace Nine.Graphics.Effects
         {
             get
             {
-                IEffectSkinned part = FindFirst<IEffectSkinned>();
+                IEffectSkinned part = Find<IEffectSkinned>();
                 return part != null ? part.SkinningEnabled : false;
             }
             set
             {
-                foreach (IEffectSkinned part in Find<IEffectSkinned>())
+                foreach (IEffectSkinned part in FindAll<IEffectSkinned>())
                     part.SkinningEnabled = value;
             }
         }
 
         void IEffectSkinned.SetBoneTransforms(Matrix[] boneTransforms)
         {
-            foreach (IEffectSkinned part in Find<IEffectSkinned>())
+            foreach (IEffectSkinned part in FindAll<IEffectSkinned>())
                 part.SetBoneTransforms(boneTransforms);
         }
 
@@ -274,14 +274,14 @@ namespace Nine.Graphics.Effects
             set
             {
                 texture = value;
-                foreach (IEffectTexture part in Find<IEffectTexture>())
+                foreach (IEffectTexture part in FindAll<IEffectTexture>())
                     part.Texture = value;
             }
         }
 
         void IEffectTexture.SetTexture(string name, Texture texture)
         {
-            foreach (IEffectTexture part in Find<IEffectTexture>())
+            foreach (IEffectTexture part in FindAll<IEffectTexture>())
                 part.SetTexture(name, texture);
         }
 
@@ -292,7 +292,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 diffuseColor = value;
-                foreach (IEffectMaterial part in Find<IEffectMaterial>())
+                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
                     part.DiffuseColor = value;
             }
         }
@@ -304,7 +304,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 emissiveColor = value;
-                foreach (IEffectMaterial part in Find<IEffectMaterial>())
+                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
                     part.EmissiveColor = value;
             }
         }
@@ -316,7 +316,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 specularColor = value;
-                foreach (IEffectMaterial part in Find<IEffectMaterial>())
+                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
                     part.SpecularColor = value;
             }
         }
@@ -328,7 +328,7 @@ namespace Nine.Graphics.Effects
             set
             {
                 specularPower = value;
-                foreach (IEffectMaterial part in Find<IEffectMaterial>())
+                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
                     part.SpecularPower = value;
             }
         }

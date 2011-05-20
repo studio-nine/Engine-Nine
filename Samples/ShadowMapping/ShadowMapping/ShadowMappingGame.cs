@@ -94,16 +94,11 @@ namespace ShadowMapping
 
             // Create shadow map related effects, depth is used to generate shadow maps,
             // shadow is used to draw a shadow receiver with a shadow map.
-            shadowMap = new ShadowMap(GraphicsDevice, 1024);
+            shadowMap = new ShadowMap(GraphicsDevice, 512);
             depth = new DepthEffect(GraphicsDevice);
             
             LoadShadowEffect(terrain, "ShadowEffect");
             LoadShadowEffect(model, "ShadowNormalSkinnedEffect");
-
-            // Enable shadowmap bluring, this will produce smoothed shadow edge.
-            // You can increase the shadow quality by using a larger shadowmap resolution (like 1024 or 2048),
-            // and increase the blur samples.
-            shadowMap.BlurEnabled = true;
         }
 
         private void LoadShadowEffect(Model model, string effect)
@@ -113,7 +108,7 @@ namespace ShadowMapping
 
             // Light view and light projection defines a light frustum.
             // Shadows will be projected based on this frustom.
-            IEffectShadowMap shadowMapEffectPart = shadow.FindFirst<IEffectShadowMap>();
+            IEffectShadowMap shadowMapEffectPart = shadow.Find<IEffectShadowMap>();
 
             // This value needs to be tweaked
             shadowMapEffectPart.DepthBias = 0.005f;
@@ -140,11 +135,9 @@ namespace ShadowMapping
 
 
             // We need to draw the shadow casters on to a render target.
+            // ShadowMap.Begin will clear everything to white for us.
             shadowMap.Begin();
             {
-                // Clear everything to white. This is required.
-                GraphicsDevice.Clear(Color.White);
-
                 GraphicsDevice.BlendState = BlendState.Opaque;
 
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
@@ -177,7 +170,7 @@ namespace ShadowMapping
             // Draw shadow map
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                spriteBatch.Begin();
+                spriteBatch.Begin(0, null, SamplerState.PointClamp, null, null);
                 spriteBatch.Draw(shadowMap.Texture, Vector2.Zero, Color.White);
                 spriteBatch.End();
             }

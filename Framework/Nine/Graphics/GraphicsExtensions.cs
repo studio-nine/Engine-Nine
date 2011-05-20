@@ -104,27 +104,53 @@ namespace Nine.Graphics
         #endregion
         
         #region RenderTargetStack
-        static Stack<RenderTarget2D> renderTargetStack;
+        static Dictionary<GraphicsDevice, Stack<RenderTarget2D>> renderTargetStacks;
+
+        internal static RenderTarget2D PopRenderTarget(GraphicsDevice graphics)
+        {
+            if (renderTargetStacks == null)
+                return null;
+
+            Stack<RenderTarget2D> stack = null;
+            if (!renderTargetStacks.TryGetValue(graphics, out stack))
+                return null;
+
+            RenderTarget2D renderTarget = stack.Pop();
+            graphics.SetRenderTarget(renderTarget);
+            return renderTarget;
+        }
+
+        internal static void PushRenderTarget(RenderTarget2D renderTarget)
+        {
+            if (renderTarget != null)
+            {
+                if (renderTargetStacks == null)
+                    renderTargetStacks = new Dictionary<GraphicsDevice, Stack<RenderTarget2D>>();
+
+                Stack<RenderTarget2D> stack = null;
+                if (!renderTargetStacks.TryGetValue(renderTarget.GraphicsDevice, out stack))
+                    renderTargetStacks.Add(renderTarget.GraphicsDevice, stack = new Stack<RenderTarget2D>());
+
+                // Get old render target
+                RenderTarget2D previous = null;
+
+                RenderTargetBinding[] bindings = renderTarget.GraphicsDevice.GetRenderTargets();
+
+                if (bindings.Length > 0)
+                    previous = bindings[0].RenderTarget as RenderTarget2D;
+
+                stack.Push(previous);
+
+                renderTarget.GraphicsDevice.SetRenderTarget(renderTarget);
+            }
+        }
 
         public static void Begin(this RenderTarget2D renderTarget)
         {
             if (renderTarget == null)
                 throw new ArgumentNullException();
 
-            if (renderTargetStack == null)
-                renderTargetStack = new Stack<RenderTarget2D>();
-                        
-            // Get old render target
-            RenderTarget2D previous = null;
-
-            RenderTargetBinding[] bindings = renderTarget.GraphicsDevice.GetRenderTargets();
-
-            if (bindings.Length > 0)
-                previous = bindings[0].RenderTarget as RenderTarget2D;
-
-            renderTargetStack.Push(previous);
-
-            renderTarget.GraphicsDevice.SetRenderTarget(renderTarget);
+            PushRenderTarget(renderTarget);
         }
 
         public static Texture2D End(this RenderTarget2D renderTarget)
@@ -132,8 +158,7 @@ namespace Nine.Graphics
             if (renderTarget == null)
                 throw new ArgumentNullException();
 
-            renderTarget.GraphicsDevice.SetRenderTarget(renderTargetStack.Pop());
-
+            PopRenderTarget(renderTarget.GraphicsDevice);
             return renderTarget;
         }
         #endregion

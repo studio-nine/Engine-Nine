@@ -13,7 +13,7 @@ namespace Nine.Graphics.ScreenEffects
     {
 		private void OnCreated() 
         {
-            Weight = 2;
+            Weight = 0.5f;
         }
 
         private void OnClone(AntiAliasEffect cloneSource) { }

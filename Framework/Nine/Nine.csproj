@@ -93,6 +93,10 @@
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="Graphics\BlendStateReader.cs" />
+    <None Include="Graphics\Effects\Deferred\ClearEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ClearEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\Deferred\DeferredSpotLight.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DeferredSpotLight.Designer.cs</LastGenOutput>
@@ -109,20 +113,54 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DeferredAmbientLight.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Graphics\Effects\Deferred\DeferredAmbientLight.cs">
-      <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
+    <None Include="Graphics\Effects\Deferred\DeferredLighting.fxh" />
+    <None Include="Graphics\Effects\Deferred\DeferredEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DeferredEffect.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Graphics\Effects\Deferred\ClearEffect.cs">
+      <DependentUpon>ClearEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Effects\Deferred\ClearEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClearEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\DeferredDirectionalLight.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\Quad.cs" />
     <Compile Include="Graphics\Effects\Deferred\DeferredAmbientLight.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\Deferred\DeferredDirectionalLight.cs">
-      <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
+    <Compile Include="Graphics\Effects\Deferred\DeferredEffect.cs">
+      <DependentUpon>DeferredEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\Deferred\DeferredDirectionalLight.Designer.cs">
+    <Compile Include="Graphics\Effects\Deferred\DeferredEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>DeferredEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.cs">
+      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\IDeferredLight.cs" />
+    <Compile Include="Graphics\Effects\Deferred\ModelBatchExtensions.cs" />
+    <Compile Include="Graphics\ModelBatchExtensions.cs" />
+    <Compile Include="Graphics\VertexPositionNormal.cs" />
+    <Compile Include="Graphics\Effects\Deferred\DeferredAmbientLight.cs">
+      <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\DeferredDirectionalLight.cs">
       <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredPointLight.cs">
@@ -141,7 +179,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeferredSpotLight.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\Deferred\IDeferredLight.cs" />
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBuffer.cs" />
     <Compile Include="Graphics\Effects\NormalEffect.cs">
       <DependentUpon>NormalEffect.fx</DependentUpon>
     </Compile>
@@ -409,6 +447,10 @@
     <None Include="Diagrams\Misc.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
+    <None Include="Graphics\Effects\Deferred\GraphicsBufferEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>GraphicsBufferEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\NormalEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>NormalEffect.Designer.cs</LastGenOutput>

@@ -89,6 +89,7 @@
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
+    <Compile Include="Graphics\ModelBatchExtensions.cs" />
     <Compile Include="Graphics\ModelCollision.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
+    <Compile Include="Graphics\VertexPositionNormal.cs" />
     <Compile Include="Graphics\VertexPositionNormalDualTexture.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="GridObjectManager.cs" />

@@ -1,4 +1,4 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
 //  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
@@ -8,28 +8,33 @@
 
 #region Using Directives
 using System;
-using System.Threading;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 using System.IO;
-using System.Reflection;
 using System.Xml;
-using System.Xml.Serialization;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Nine.Graphics.ScreenEffects;
 #endregion
 
 namespace Nine.Graphics.Effects.Deferred
 {
-#if !WINDOWS_PHONE
-
     public interface IDeferredLight
     {
+        /// <summary>
+        /// Gets the vertex buffer of the light geometry.
+        /// </summary>
+        VertexBuffer VertexBuffer { get; }
 
+        /// <summary>
+        /// Gets the index buffer of the light geometry.
+        /// </summary>
+        IndexBuffer IndexBuffer { get; }
+
+        /// <summary>
+        /// Gets the effect used to draw the light geometry.
+        /// </summary>
+        Effect Effect { get; }
     }
-
-#endif
 }

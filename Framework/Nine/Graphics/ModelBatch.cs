@@ -99,10 +99,11 @@ namespace Nine.Graphics
         private int batchCount;
         private ModelBatchSortComparer comparer;
         private Vector3 eyePosition;
-        private BlendState blendState;
-        private SamplerState samplerState;
-        private DepthStencilState depthStencilState;
-        private RasterizerState rasterizerState;
+
+        internal BlendState BlendState;
+        internal SamplerState SamplerState;
+        internal DepthStencilState DepthStencilState;
+        internal RasterizerState RasterizerState;
 
         private Matrix view;
         private Matrix projection;
@@ -164,10 +165,10 @@ namespace Nine.Graphics
             if (hasBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
-            this.blendState = blendState != null ? blendState : BlendState.Opaque;
-            this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
-            this.depthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.Default;
-            this.rasterizerState = rasterizerState != null ? rasterizerState : RasterizerState.CullCounterClockwise;
+            this.BlendState = blendState != null ? blendState : BlendState.Opaque;
+            this.SamplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
+            this.DepthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.Default;
+            this.RasterizerState = rasterizerState != null ? rasterizerState : RasterizerState.CullCounterClockwise;
 
             this.view = view;
             this.projection = projection;
@@ -343,10 +344,10 @@ namespace Nine.Graphics
                 effect.SetTexture(texture);
 
             // Setup state
-            GraphicsDevice.BlendState = blendState;
-            GraphicsDevice.DepthStencilState = depthStencilState;
-            GraphicsDevice.SamplerStates[0] = samplerState;
-            GraphicsDevice.RasterizerState = rasterizerState;
+            GraphicsDevice.BlendState = BlendState;
+            GraphicsDevice.DepthStencilState = DepthStencilState;
+            GraphicsDevice.SamplerStates[0] = SamplerState;
+            GraphicsDevice.RasterizerState = RasterizerState;
 
             // Draw geometry
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)

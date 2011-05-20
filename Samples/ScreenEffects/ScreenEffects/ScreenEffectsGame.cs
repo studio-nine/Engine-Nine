@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
+#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -87,8 +87,8 @@ namespace ScreenEffects
             //screenEffect.Effects.Add(new WiggleEffect(GraphicsDevice));
             //screenEffect.Effects.Add(ScreenEffect.CreateBloom(GraphicsDevice, 0.5f, 10.0f));
             //screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Transform = ColorMatrix.CreateBrightness(10f) });
-            screenEffect = ScreenEffect.CreateHighDynamicRange(GraphicsDevice, 0.5f, 1f, 4f, 5f, 1);
-            //screenEffect = ScreenEffect.CreateDepthOfField(GraphicsDevice, 2, 0, 0, 0.16f);
+            //screenEffect = ScreenEffect.CreateHighDynamicRange(GraphicsDevice, 0.5f, 1f, 4f, 5f, 1);
+            screenEffect = ScreenEffect.CreateDepthOfField(GraphicsDevice, 2, 0, 0, 0.16f);
 
             depthEffect = new DepthEffect(GraphicsDevice);
 #endif

@@ -67,9 +67,9 @@ namespace Nine.Graphics.Effects
     public interface IEffectShadowMap
     {
         float DepthBias { get; set; }
+        float ShadowIntensity { get; set; }
         Matrix LightProjection { get; set; }
         Matrix LightView { get; set; }
-        Vector3 ShadowColor { get; set; }
         Texture2D ShadowMap { get; set; }
     }
 

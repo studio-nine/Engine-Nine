@@ -1,5 +1,5 @@
 
-float Weight = 2;
+float Weight = 0.5;
 float2 pixelSize;
 
 sampler TextureSampler : register(s0);
@@ -26,12 +26,14 @@ float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
  {
   
  float4 tex = tex2D(normalSampler ,texCoord);
+ tex = tex * 2 - 1;
  float factor = 0.0f;
 
 int i;
  for(  i=0;i<4;i++ )
  {
 	 float4 t = tex2D(normalSampler ,texCoord+ delta[i]*pixelSize);
+     t = t * 2 - 1;
 	 t -= tex;
 	 factor += dot(t,t);
  }

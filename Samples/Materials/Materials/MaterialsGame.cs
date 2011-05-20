@@ -44,6 +44,7 @@ namespace MaterialsSample
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
+            Window.AllowUserResizing = true;
             Components.Add(new FrameRate(this, "Consolas"));
             Components.Add(new InputComponent(Window.Handle));
         }

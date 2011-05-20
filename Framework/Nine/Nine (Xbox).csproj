@@ -62,21 +62,37 @@
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="Graphics\BlendStateReader.cs" />
+    <Compile Include="Graphics\Effects\Deferred\ClearEffect.cs">
+      <DependentUpon>ClearEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\ClearEffect.Designer.cs">
+      <DependentUpon>ClearEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredAmbientLight.cs">
       <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredAmbientLight.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredDirectionalLight.cs">
       <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredDirectionalLight.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\DeferredEffect.cs">
+      <DependentUpon>DeferredEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\DeferredEffect.Designer.cs">
+      <DependentUpon>DeferredEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredPointLight.cs">
       <DependentUpon>DeferredPointLight.fx</DependentUpon>
@@ -94,7 +110,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeferredSpotLight.fx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBuffer.cs" />
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.cs">
+      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.Designer.cs">
+      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Graphics\Effects\Deferred\IDeferredLight.cs" />
+    <Compile Include="Graphics\Effects\Deferred\ModelBatchExtensions.cs" />
+    <Compile Include="Graphics\Effects\Deferred\Quad.cs" />
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
     <Compile Include="Graphics\Effects\NormalEffect.cs">
@@ -105,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Graphics\ModelBatchExtensions.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleAnimation.cs" />
@@ -235,6 +263,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\TextureList.cs" />
+    <Compile Include="Graphics\VertexPositionNormal.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
@@ -353,6 +382,10 @@
     <None Include="Diagrams\Navigation.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
+    <None Include="Graphics\Effects\Deferred\ClearEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ClearEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\Deferred\DeferredAmbientLight.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DeferredAmbientLight.Designer.cs</LastGenOutput>
@@ -361,6 +394,11 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DeferredDirectionalLight.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\Effects\Deferred\DeferredEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DeferredEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\Deferred\DeferredLighting.fxh" />
     <None Include="Graphics\Effects\Deferred\DeferredPointLight.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DeferredPointLight.Designer.cs</LastGenOutput>
@@ -368,6 +406,10 @@
     <None Include="Graphics\Effects\Deferred\DeferredSpotLight.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DeferredSpotLight.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\Deferred\GraphicsBufferEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>GraphicsBufferEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Effects\DepthEffect.fx">
       <Generator>EffectCustomTool</Generator>

@@ -402,14 +402,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     public class ShadowMap : LinkedEffectPartContent
     {
         [ContentSerializer(Optional = true)]
-        public Vector3 ShadowColor { get; set; }
+        public float ShadowIntensity { get; set; }
 
         [ContentSerializer(Optional = true)]
         public float DepthBias { get; set; }
 
         public ShadowMap()
         {
-            ShadowColor = Vector3.One * 0.5f;
+            ShadowIntensity = 0.5f;
             DepthBias = 0.0005f;
         }
         

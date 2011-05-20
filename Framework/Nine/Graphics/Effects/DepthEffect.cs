@@ -52,7 +52,7 @@ namespace Nine.Graphics.Effects
 
         private void OnApplyChanges()
         {
-            farClip = Math.Abs(Projection.M43 / (Math.Abs(Projection.M33) - 1));
+            frustumLength = Projection.GetFrustumLength();
         }
     }
 

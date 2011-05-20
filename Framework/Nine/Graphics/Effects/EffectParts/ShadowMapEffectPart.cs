@@ -23,9 +23,9 @@ namespace Nine.Graphics.Effects.EffectParts
     {
         private uint dirtyMask = 0;
         
-        private Vector3 shadowColor;
-        private EffectParameter shadowColorParameter;
-        private const uint shadowColorDirtyMask = 1 << 0;
+        private float shadowIntensity;
+        private EffectParameter shadowIntensityParameter;
+        private const uint shadowIntensityDirtyMask = 1 << 0;
 
         private float depthBias;
         private EffectParameter depthBiasParameter;
@@ -39,13 +39,14 @@ namespace Nine.Graphics.Effects.EffectParts
 
         private Texture2D shadowMap;
         private EffectParameter shadowMapParameter;
+        private EffectParameter shadowMapSizeParameter;
         private const uint shadowMapDirtyMask = 1 << 3;
 
         [ContentSerializer(Optional = true)]
-        public Vector3 ShadowColor
+        public float ShadowIntensity
         {
-            get { return shadowColor; }
-            set { shadowColor = value; dirtyMask |= shadowColorDirtyMask; }
+            get { return shadowIntensity; }
+            set { shadowIntensity = value; dirtyMask |= shadowIntensityDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
@@ -78,12 +79,12 @@ namespace Nine.Graphics.Effects.EffectParts
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & shadowColorDirtyMask) != 0)
+            if ((dirtyMask & shadowIntensityDirtyMask) != 0)
             {
-                if (shadowColorParameter == null)
-                    shadowColorParameter = GetParameter("ShadowColor");
-                shadowColorParameter.SetValue(shadowColor);
-                dirtyMask &= ~shadowColorDirtyMask;
+                if (shadowIntensityParameter == null)
+                    shadowIntensityParameter = GetParameter("ShadowIntensity");
+                shadowIntensityParameter.SetValue(shadowIntensity);
+                dirtyMask &= ~shadowIntensityDirtyMask;
             }
 
             if ((dirtyMask & depthBiasDirtyMask) != 0)
@@ -100,8 +101,8 @@ namespace Nine.Graphics.Effects.EffectParts
                     lightViewProjectionParameter = GetParameter("LightViewProjection");
                 lightViewProjectionParameter.SetValue(lightView * lightProjection);
                 if (farClipParameter == null)
-                    farClipParameter = GetParameter("FarClip");
-                farClipParameter.SetValue(Math.Abs(lightProjection.M43 / (Math.Abs(lightProjection.M33) - 1)));
+                    farClipParameter = GetParameter("FrustumLength");
+                farClipParameter.SetValue(lightProjection.GetFrustumLength());
                 dirtyMask &= ~lightViewProjectionDirtyMask;
             }
 
@@ -110,6 +111,9 @@ namespace Nine.Graphics.Effects.EffectParts
                 if (shadowMapParameter == null)
                     shadowMapParameter = GetParameter("ShadowMap");
                 shadowMapParameter.SetValue(shadowMap);
+                if (shadowMapSizeParameter == null)
+                    shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
+                shadowMapSizeParameter.SetValue(new Vector2(1.0f / shadowMap.Width, 1.0f / shadowMap.Height));
                 dirtyMask &= ~shadowMapDirtyMask;
             }
         }
@@ -119,7 +123,7 @@ namespace Nine.Graphics.Effects.EffectParts
             return new ShadowMapEffectPart()
             {
                 DepthBias = this.DepthBias,
-                ShadowColor = this.ShadowColor,
+                ShadowIntensity = this.ShadowIntensity,
                 ShadowMap = this.ShadowMap,
                 LightView = this.LightView,
                 LightProjection = this.LightProjection,

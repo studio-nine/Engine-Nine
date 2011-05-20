@@ -120,6 +120,12 @@
   <data name="AlreadyInBeginEndPair" xml:space="preserve">
     <value>Begin cannot be called again until End has been successfully called.</value>
   </data>
+  <data name="InvalidDeferredLightBlendState" xml:space="preserve">
+    <value>ModelBatch blendstate must be set to DeferredEffect.BlendState before drawing deferred lights.</value>
+  </data>
+  <data name="InvalidDeferredLightDepthStencilState" xml:space="preserve">
+    <value>ModelBatch depth stencil state must be set to DepthStencilState.None before drawing deferred lights.</value>
+  </data>
   <data name="NotInBeginEndPair" xml:space="preserve">
     <value>Begin must be called successfully before End can be called.</value>
   </data>

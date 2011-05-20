@@ -157,6 +157,11 @@ namespace Nine.Graphics
         /// The texture type name used for environment texture.
         /// </summary>
         public static readonly string EnvironmentMap = "EnvironmentMap";
+
+        /// <summary>
+        /// The texture type name used for light buffer texture.
+        /// </summary>
+        public static readonly string LightBuffer = "LightBuffer";
     }
 
     /// <summary>
