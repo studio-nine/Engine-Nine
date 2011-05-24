@@ -27,15 +27,7 @@ namespace Nine.Graphics
     public static class GraphicsExtensions
     {
         #region DrawSprite
-        internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, Effect effect)
-        {
-            SpriteBatch spriteBatch = PrepareSprite(graphics, effect);            
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, null, null, null, effect);
-            spriteBatch.Draw(texture, position, sourceRectangle, color);
-            spriteBatch.End();
-        }
-
-        internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, Color color, Effect effect)
+        internal static void DrawFullscreenQuad(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, Color color, Effect effect)
         {
             SpriteBatch spriteBatch = PrepareSprite(graphics, effect);
                         
@@ -44,28 +36,13 @@ namespace Nine.Graphics
                                                   graphics.Viewport.Y,
                                                   graphics.Viewport.Width,
                                                   graphics.Viewport.Height);
-
+            
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, samplerState, null, null, effect);
             spriteBatch.Draw(texture, destination, null, color);
             spriteBatch.End();
         }
 
-        internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color)
-        {
-            SpriteBatch spriteBatch = PrepareSprite(graphics, null);
-
-
-            Rectangle destination = new Rectangle(graphics.Viewport.X,
-                                                  graphics.Viewport.Y,
-                                                  graphics.Viewport.Width,
-                                                  graphics.Viewport.Height);
-
-            spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, null, null);
-            spriteBatch.Draw(texture, destination, null, color);
-            spriteBatch.End();
-        }
-
-        internal static void DrawSprite(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color, Effect effect)
+        internal static void DrawFullscreenQuad(this GraphicsDevice graphics, Texture2D texture, SamplerState samplerState, BlendState blendState, Color color, Effect effect)
         {
             SpriteBatch spriteBatch = PrepareSprite(graphics, effect);
 

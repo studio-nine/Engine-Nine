@@ -9,7 +9,6 @@ float4x4 bones[MaxBones];
 float4x4 View;
 float4x4 Projection;
 
-float frustumLength;
 float SpecularPower = 32;
 
 texture NormalMap;
@@ -24,14 +23,14 @@ sampler NormalSampler = sampler_state
 void Vert( float4 Pos : POSITION,
 			     float3 Normal : NORMAL0,
                  out float4 oPos : POSITION,
-                 out float  oDepth : TEXCOORD0,
+                 out float2 oDepth : TEXCOORD0,
                  out float3 oNormal : TEXCOORD1)
 {
     oPos = mul( Pos, World );
     oPos = mul( oPos, View );
     oPos = mul( oPos, Projection );
 
-    oDepth = oPos.z / frustumLength;
+    oDepth = oPos.zw;
     
     oNormal = mul( Normal, (float3x3)World );
     oNormal = mul( oNormal, (float3x3)View );
@@ -46,7 +45,7 @@ void VertSkinned( float4 Pos : POSITION,
 						float4 BoneIndices : BLENDINDICES0,
 						float4 BoneWeights : BLENDWEIGHT0,
                         out float4 oPos : POSITION,
-                        out float  oDepth : TEXCOORD0,
+                        out float2 oDepth : TEXCOORD0,
                         out float3 oNormal : TEXCOORD1)
 {
     // Blend between the weighted bone matrices.
@@ -62,7 +61,7 @@ void VertSkinned( float4 Pos : POSITION,
     oPos = mul( oPos, View );
     oPos = mul( oPos, Projection );
 
-    oDepth = oPos.z / frustumLength;
+    oDepth = oPos.zw;
 
     oNormal = mul( Normal, (float3x3)skinTransform );
     oNormal = mul( oNormal, (float3x3)World );
@@ -81,7 +80,7 @@ void VertNormalMapping(
                  float2 TexCoord : TEXCOORD0,
                  out float4 oPos : POSITION,
                  out float2 oTexCoord : TEXCOORD0,
-                 out float  oDepth : TEXCOORD1,
+                 out float2 oDepth : TEXCOORD1,
                  out float3 oNormal : TEXCOORD2,
                  out float3 oTangent : TEXCOORD3,
                  out float3 oBinormal : TEXCOORD4)
@@ -91,7 +90,7 @@ void VertNormalMapping(
     oPos = mul( oPos, Projection );
 
     oTexCoord = TexCoord;
-    oDepth = oPos.z / frustumLength;
+    oDepth = oPos.zw;
 
     oNormal = mul( Normal, (float3x3)World );    
     oBinormal = mul( Binormal, (float3x3)World );
@@ -111,7 +110,7 @@ void VertNormalMappingSkinned(
                         float2 TexCoord : TEXCOORD0,
                         out float4 oPos : POSITION,
                         out float2 oTexCoord : TEXCOORD0,
-                        out float  oDepth : TEXCOORD1,
+                        out float2 oDepth : TEXCOORD1,
                         out float3 oNormal : TEXCOORD2,
                         out float3 oTangent : TEXCOORD3,
                         out float3 oBinormal : TEXCOORD4)
@@ -129,7 +128,7 @@ void VertNormalMappingSkinned(
     oPos = mul( oPos, View );
     oPos = mul( oPos, Projection );
 
-    oDepth = oPos.z / frustumLength;
+    oDepth = oPos.zw;
 
     oNormal = mul( Normal, (float3x3)skinTransform );    
     oNormal = mul( oNormal, (float3x3)World );   
@@ -146,14 +145,14 @@ void VertNormalMappingSkinned(
 //-----------------------------------------------------------------------------
 // Pixel Shader: Pix
 //-----------------------------------------------------------------------------
-void Pix(       float  Depth : TEXCOORD0,
+void Pix(       float2 Depth : TEXCOORD0,
                 float3 Normal : TEXCOORD1,
                 out float4 oNormal : COLOR0,
                 out float4 oDepth : COLOR1  )
 {
     oNormal.rgb = Normal * 0.5 + 0.5;
     oNormal.a = SpecularPower / MaxSpecular;
-    oDepth = float4(Depth, 0, 0, 0);
+    oDepth = float4(Depth.x / Depth.y, 0, 0, 0);
 }
 
 //-----------------------------------------------------------------------------
@@ -161,7 +160,7 @@ void Pix(       float  Depth : TEXCOORD0,
 //-----------------------------------------------------------------------------
 void PixNormalMapping( 
                 float2 TexCoord : TEXCOORD0,
-                float  Depth : TEXCOORD1, 
+                float2 Depth : TEXCOORD1, 
                 float3 Normal : TEXCOORD2,
                 float3 Tangent : TEXCOORD3,
                 float3 Binormal : TEXCOORD4,
@@ -178,7 +177,7 @@ void PixNormalMapping(
     
     oNormal.rgb = normalFromMap * 0.5 + 0.5;
     oNormal.a = SpecularPower / MaxSpecular;
-    oDepth = float4(Depth, 0, 0, 0);
+    oDepth = float4(Depth.x / Depth.y, 0, 0, 0);
 }
 
 

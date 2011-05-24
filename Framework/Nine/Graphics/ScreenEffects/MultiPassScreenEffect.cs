@@ -157,14 +157,14 @@ namespace Nine.Graphics.ScreenEffects
                 }
                 else
                 {
-                    GraphicsDevice.DrawSprite(texture, SamplerState.PointClamp, pass.BlendState, pass.Color, null);
+                    GraphicsDevice.DrawFullscreenQuad(texture, SamplerState.PointClamp, pass.BlendState, pass.Color, null);
                 }
             }
 
             if (CombineEffect != null)
             {
                 Texture2D texture = Passes.Count > 0 && passResults[0] != null ? passResults[0] : input;
-                GraphicsDevice.DrawSprite(texture, SamplerState.PointClamp, BlendState, Color.White, CombineEffect);
+                GraphicsDevice.DrawFullscreenQuad(texture, SamplerState.PointClamp, BlendState, Color.White, CombineEffect);
             }
 
             foreach (Texture2D passRenderTarget in passResults)

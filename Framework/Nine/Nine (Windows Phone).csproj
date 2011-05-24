@@ -104,6 +104,17 @@
     <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
     <Compile Include="Graphics\ParticleEffects\SpriteBatchExtensions.cs" />
+    <Compile Include="Graphics\Primitives\Bezier.cs" />
+    <Compile Include="Graphics\Primitives\Centrum.cs" />
+    <Compile Include="Graphics\Primitives\Cube.cs" />
+    <Compile Include="Graphics\Primitives\Cylinder.cs" />
+    <Compile Include="Graphics\Primitives\Dome.cs" />
+    <Compile Include="Graphics\Primitives\ModelBatchExtensions.cs" />
+    <Compile Include="Graphics\Primitives\Plane.cs" />
+    <Compile Include="Graphics\Primitives\Primitive.cs" />
+    <Compile Include="Graphics\Primitives\Sphere.cs" />
+    <Compile Include="Graphics\Primitives\Teapot.cs" />
+    <Compile Include="Graphics\Primitives\Torus.cs" />
     <Compile Include="Graphics\QuaternionCamera.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
     <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />

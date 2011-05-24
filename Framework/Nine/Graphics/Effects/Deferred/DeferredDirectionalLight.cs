@@ -1,14 +1,31 @@
-#region Using Statements
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+#region Copyright 2009 - 2011 (c) Engine Nine
+//=============================================================================
+//
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
 #endregion
+
+#region Using Directives
+using System;
+using System.Threading;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.IO;
+using System.Reflection;
+using System.Xml;
+using System.Xml.Serialization;
+using System.ComponentModel;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Primitives;
+#endregion
+
 
 namespace Nine.Graphics.Effects.Deferred
 {
-#if !WINDOWS_PHONE
-
     public partial class DeferredDirectionalLight : IDeferredLight, IEffectMatrices, IEffectTexture, IEffectDirectionalLight
     {
         Quad primitive;
@@ -32,7 +49,6 @@ namespace Nine.Graphics.Effects.Deferred
             {
                 projection = value;
                 viewProjectionInverse = Matrix.Invert(view * projection);
-                frustumLength = projection.GetFrustumLength();
             }
         }
         private Matrix projection;
@@ -95,6 +111,10 @@ namespace Nine.Graphics.Effects.Deferred
             else if (name == TextureNames.DepthMap)
                 DepthBuffer = texture as Texture2D;
         }
+
+        bool IDeferredLight.Contains(Vector3 point)
+        {
+            return false;
+        }
     }
-#endif
 }

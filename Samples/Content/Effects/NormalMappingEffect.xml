@@ -16,13 +16,26 @@
         <SpecularPower>32</SpecularPower>
       </Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight">
-        <AmbientLightColor>0 0 0</AmbientLightColor>
+        <AmbientLightColor>0.1 0.1 0.1</AmbientLightColor>
       </Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight">
         <Direction>0 -0.707107 -0.707107</Direction>
-        <DiffuseColor>1 1 1</DiffuseColor>
-        <SpecularColor>1 1 1</SpecularColor>
+        <DiffuseColor>0.1 0.1 0.1</DiffuseColor>
       </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PointLight">
+        <Position>2 2 1</Position>
+        <DiffuseColor>1 1 0</DiffuseColor>
+        <Range>5</Range>
+      </Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SpotLight">
+        <Position>0 0 1</Position>
+        <Direction>-1 0 0</Direction>
+        <DiffuseColor>1 0 0</DiffuseColor>
+        <Range>16</Range>
+        <Falloff>2</Falloff>
+      </Item>
+      <!--
+      -->
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLight"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>
     </EffectParts>

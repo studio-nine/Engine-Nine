@@ -46,15 +46,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Models\Terrain\cube.x">
-      <Link>cube.x</Link>
-      <Name>cube</Name>
-      <Importer>XImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_SwapWindingOrder>True</ProcessorParameters_SwapWindingOrder>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\Models\Terrain\SkyCubeMap.dds">
       <Link>SkyCubeMap.dds</Link>
       <Name>SkyCubeMap</Name>

@@ -32,17 +32,18 @@ void main(INPUT input, inout OUTPUT output)
 	import(PositionWorld, positionWorld = PositionWorld);
 	
     float3 L = PointLightPosition - positionWorld.xyz;
-    float dotL = dot(L, normal);
+    float dotL = dot(normalize(L), normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
 	float zeroL = step(0, dotL);
 
 	float distanceSq = dot(L, L);
 	float distance = sqrt(distanceSq);
-	float fade = distance > Range ? 0 : saturate(1 / (Attenuation * distanceSq));
+
+    float fade = max(0, (pow(max(Attenuation, 0.000001), 1 - distance / Range) - 1) / (Attenuation - 1));
     
 	diffuse += PointLightDiffuseColor * zeroL * dotL * fade;
     specular += PointLightSpecularColor * pow(max(dotH, 0.000001), specularPower) * fade;
-
+    
 	export(float3, LightDiffuse, diffuse);
 	export(float3, LightSpecular, specular);
 }

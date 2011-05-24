@@ -78,9 +78,10 @@ namespace DeferredLighting
 
             // Create lights
             lights = new List<IDeferredLight>();
-            //lights.Add(new DeferredAmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.2f });
-            lights.Add(new DeferredDirectionalLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 1, 1) });
-            //lights.Add(new DeferredDirectionalLight(GraphicsDevice) { DiffuseColor = Color.Yellow.ToVector3(), Direction = -Vector3.UnitZ });
+            lights.Add(new DeferredAmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.1f });
+            lights.Add(new DeferredDirectionalLight(GraphicsDevice) { DiffuseColor = Vector3.One * 0.1f });
+            lights.Add(new DeferredPointLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 1, 0), Position = new Vector3(2, 2, 1f), Range = 5 });
+            lights.Add(new DeferredSpotLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 0, 0), Position = new Vector3(0, 0, 1), Direction = new Vector3(-1, 0, 0), Range = 16, Falloff = 2 });
         }
 
         private void InitializeSurfaceVertices(int x, int y, ref VertexPositionColorNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
@@ -113,23 +114,16 @@ namespace DeferredLighting
             GraphicsDevice.Clear(Color.Black);
 
             // 1. Draw deferred scene with DepthNormalEffect first.
-            graphicsBuffer.BeginScene();
+            graphicsBuffer.Begin();
             {
-                graphicsBuffer.GraphicsBufferEffect.NormalMap = boxNormalTexture;
-                graphicsBuffer.GraphicsBufferEffect.NormalMappingEnabled = true;
-                DrawTerrain(graphicsBuffer.GraphicsBufferEffect);
+                graphicsBuffer.Effect.NormalMap = boxNormalTexture;
+                graphicsBuffer.Effect.NormalMappingEnabled = true;
+                DrawTerrain(graphicsBuffer.Effect);
             }
-            graphicsBuffer.EndScene();
+            graphicsBuffer.End();
 
             // 2. Draw all the lights
-            graphicsBuffer.BeginLights();
-            {
-                modelBatch.BeginLights(camera.View, camera.Projection);
-                foreach (IDeferredLight light in lights)
-                    modelBatch.DrawLight(graphicsBuffer.NormalBuffer, graphicsBuffer.DepthBuffer, light);
-                modelBatch.EndLights();
-            }
-            graphicsBuffer.EndLights();
+            graphicsBuffer.DrawLights(camera.View, camera.Projection, lights);
 
             // 3. Draw the scene using DeferredEffect.
             GraphicsDevice.Clear(Color.DarkSlateGray);

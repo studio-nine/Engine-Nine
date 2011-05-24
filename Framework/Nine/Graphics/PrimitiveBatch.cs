@@ -468,7 +468,7 @@ namespace Nine.Graphics
         internal void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world)
         {
             if (!hasBegin)
-                throw new InvalidOperationException("Begin must be called before end and draw calls");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             currentPrimitive = new PrimitiveBatchEntry();
             currentPrimitive.World = world;
@@ -498,7 +498,7 @@ namespace Nine.Graphics
         internal void AddVertex(VertexPositionColorTexture vertex)
         {
             if (!hasPrimitiveBegin)
-                throw new InvalidOperationException("Begin must be called before end and draw calls");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             if (baseSegmentVertex + currentVertex >= vertexData.Length)
                 Array.Resize(ref vertexData, vertexData.Length * 2);
@@ -522,7 +522,7 @@ namespace Nine.Graphics
         internal void AddIndex(ushort index)
         {
             if (!hasPrimitiveBegin)
-                throw new InvalidOperationException("Begin must be called before end and draw calls");
+                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             if (baseSegmentIndex + currentIndex >= indexData.Length)
                 Array.Resize(ref indexData, indexData.Length * 2);
@@ -545,7 +545,7 @@ namespace Nine.Graphics
             currentSegment++;
 
             if (currentSegment - beginSegment >= 2)
-                throw new ArgumentOutOfRangeException("Input primitive too large for a single draw call.");
+                throw new ArgumentOutOfRangeException(Strings.PrimitiveTooLarge);
 
             indexSegments.Add(baseSegmentIndex = baseSegmentIndex + currentBaseIndex);
             vertexSegments.Add(baseSegmentVertex = baseSegmentVertex + currentBaseVertex);
@@ -675,7 +675,7 @@ namespace Nine.Graphics
                 case PrimitiveType.TriangleStrip:
                     return indexCount - 2;
                 default:
-                    throw new InvalidOperationException("primitive is not valid");
+                    throw new InvalidOperationException(Strings.InvalidPrimitive);
             }
         }
 

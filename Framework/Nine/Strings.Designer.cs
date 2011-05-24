@@ -61,7 +61,7 @@ namespace Nine {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Begin cannot be called again until End has been successfully called..
+        ///   Looks up a localized string similar to Begin cannot be called until End has been successfully called..
         /// </summary>
         internal static string AlreadyInBeginEndPair {
             get {
@@ -70,20 +70,11 @@ namespace Nine {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ModelBatch blendstate must be set to DeferredEffect.BlendState before drawing deferred lights..
+        ///   Looks up a localized string similar to The input primitive is invalid..
         /// </summary>
-        internal static string InvalidDeferredLightBlendState {
+        internal static string InvalidPrimitive {
             get {
-                return ResourceManager.GetString("InvalidDeferredLightBlendState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ModelBatch depth stencil state must be set to DepthStencilState.None before drawing deferred lights..
-        /// </summary>
-        internal static string InvalidDeferredLightDepthStencilState {
-            get {
-                return ResourceManager.GetString("InvalidDeferredLightDepthStencilState", resourceCulture);
+                return ResourceManager.GetString("InvalidPrimitive", resourceCulture);
             }
         }
         
@@ -93,6 +84,15 @@ namespace Nine {
         internal static string NotInBeginEndPair {
             get {
                 return ResourceManager.GetString("NotInBeginEndPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Input primitive is too large for a single draw call. Try increase the capability of PrimitiveBatch..
+        /// </summary>
+        internal static string PrimitiveTooLarge {
+            get {
+                return ResourceManager.GetString("PrimitiveTooLarge", resourceCulture);
             }
         }
     }

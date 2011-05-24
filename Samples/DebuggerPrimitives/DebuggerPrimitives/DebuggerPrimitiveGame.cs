@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
 using System.ComponentModel;
+using Nine.Graphics.Primitives;
 #endregion
 
 namespace DebuggerPrimitives
@@ -45,6 +46,9 @@ namespace DebuggerPrimitives
         Texture2D butterfly;
         Texture2D lightning;
         PrimitiveBatch primitiveBatch;
+        ModelBatch modelBatch;
+        BasicEffect primitiveEffect;
+        List<ICustomPrimitive> primitives;
 
         public DebuggerPrimitiveGame()
         {
@@ -74,10 +78,26 @@ namespace DebuggerPrimitives
         {
             camera = new ModelViewerCamera(GraphicsDevice);
             primitiveBatch = new PrimitiveBatch(GraphicsDevice, 4096);
+            modelBatch = new ModelBatch(GraphicsDevice);
 
             model = Content.Load<Geometry>("peon");
             butterfly = Content.Load<Texture2D>("butterfly");
             lightning = Content.Load<Texture2D>("lightning");
+
+            primitives = new List<ICustomPrimitive>();
+            primitives.Add(new Sphere(GraphicsDevice));
+            primitives.Add(new Centrum(GraphicsDevice));
+            primitives.Add(new Cube(GraphicsDevice));
+            primitives.Add(new Cylinder(GraphicsDevice));
+            primitives.Add(new Dome(GraphicsDevice));
+            primitives.Add(new Nine.Graphics.Primitives.Plane(GraphicsDevice));
+            primitives.Add(new Torus(GraphicsDevice));
+            primitives.Add(new Teapot(GraphicsDevice));
+
+            primitiveEffect = new BasicEffect(GraphicsDevice);
+            primitiveEffect.TextureEnabled = false;
+            primitiveEffect.EnableDefaultLighting();
+            primitiveEffect.DiffuseColor = Color.BlueViolet.ToVector3();
 
             base.LoadContent();
         }
@@ -120,6 +140,17 @@ namespace DebuggerPrimitives
                 primitiveBatch.DrawSolidCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, Color.Lavender * 0.3f);
             }
             primitiveBatch.End();
+
+            modelBatch.Begin(camera.View, camera.Projection);
+            {
+                for (int i = 0; i < primitives.Count; i++)
+                {
+                    Matrix world = Matrix.CreateTranslation(i * 4 - 16, 5, 0);
+
+                    modelBatch.DrawPrimitive(primitives[i], world, primitiveEffect);
+                }
+            }
+            modelBatch.End();
 
             base.Draw(gameTime);
         }

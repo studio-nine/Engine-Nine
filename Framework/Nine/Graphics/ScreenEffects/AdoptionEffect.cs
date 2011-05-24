@@ -77,7 +77,7 @@ namespace Nine.Graphics.ScreenEffects
 
             if (Enabled)
             {
-                GraphicsDevice.DrawSprite(lastFrameTexture = adoptedTexture, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
+                GraphicsDevice.DrawFullscreenQuad(lastFrameTexture = adoptedTexture, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
             }
         }
     }

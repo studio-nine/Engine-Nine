@@ -101,8 +101,8 @@ namespace Nine.Graphics.Effects.EffectParts
                     lightViewProjectionParameter = GetParameter("LightViewProjection");
                 lightViewProjectionParameter.SetValue(lightView * lightProjection);
                 if (farClipParameter == null)
-                    farClipParameter = GetParameter("FrustumLength");
-                farClipParameter.SetValue(lightProjection.GetFrustumLength());
+                    farClipParameter = GetParameter("FarClip");
+                farClipParameter.SetValue(lightProjection.GetFarClip());
                 dirtyMask &= ~lightViewProjectionDirtyMask;
             }
 

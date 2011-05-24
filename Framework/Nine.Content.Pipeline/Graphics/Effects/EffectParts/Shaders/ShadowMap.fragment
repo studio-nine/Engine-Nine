@@ -10,7 +10,7 @@ fragment ShadowMap;
 matrix	LightViewProjection;
 float 	ShadowIntensity = 0.5;
 float	DepthBias = 0.0005f;
-float	FrustumLength;
+float	FarClip;
 float2  ShadowMapTexelSize = float2(0.0009765625f, 0.0009765625f); // 1.0f/1024
 
 // Poison filter pseudo random filter positions for PCF with 10 samples
@@ -53,7 +53,7 @@ void main(INPUT input, inout OUTPUT output)
 	float3 shadow;
 	shadow.x   	=  positionShadow.x / positionShadow.w / 2.0f + 0.5f;
 	shadow.y   	= -positionShadow.y / positionShadow.w / 2.0f + 0.5f;
-	shadow.z   	=  positionShadow.z / FrustumLength;
+	shadow.z   	=  positionShadow.z / FarClip;
 
 	output(Shadow, shadow);
 }

@@ -23,6 +23,11 @@ namespace Nine.Graphics.Effects.Deferred
     public interface IDeferredLight
     {
         /// <summary>
+        /// Gets the effect used to draw the light geometry.
+        /// </summary>
+        Effect Effect { get; }
+
+        /// <summary>
         /// Gets the vertex buffer of the light geometry.
         /// </summary>
         VertexBuffer VertexBuffer { get; }
@@ -33,8 +38,8 @@ namespace Nine.Graphics.Effects.Deferred
         IndexBuffer IndexBuffer { get; }
 
         /// <summary>
-        /// Gets the effect used to draw the light geometry.
+        /// Gets whether the light frustum contains the point exactly.
         /// </summary>
-        Effect Effect { get; }
+        bool Contains(Vector3 point);
     }
 }

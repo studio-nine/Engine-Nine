@@ -7,7 +7,7 @@ float4x4 World;
 float4x4 bones[MaxBones];
 float4x4 View;
 float4x4 Projection;
-float    frustumLength;
+float    farClip;
 
 
 //-----------------------------------------------------------------------------
@@ -28,7 +28,7 @@ void VertShadow( float4 Pos : POSITION,
     //
     // Store z and w in our spare texcoord
     //
-    Depth = oPos.z / frustumLength;
+    Depth = oPos.z / farClip;
 }
 
 
@@ -61,7 +61,7 @@ void VertShadowSkinned( float4 Pos : POSITION,
     //
     // Store z and w in our spare texcoord
     //
-    Depth = oPos.z / frustumLength;
+    Depth = oPos.z / farClip;
 }
 
 

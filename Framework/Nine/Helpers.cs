@@ -181,10 +181,5 @@ namespace Nine
         {
             return Math.Abs(projection.M43 / projection.M33);
         }
-
-        public static float GetFrustumLength(this Matrix projection)
-        {
-            return GetFarClip(projection) - GetNearClip(projection);
-        }
     }
 }

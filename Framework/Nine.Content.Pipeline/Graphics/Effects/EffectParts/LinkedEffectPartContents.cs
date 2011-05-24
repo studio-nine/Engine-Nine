@@ -143,8 +143,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.One;
-            Range = 100;
-            Attenuation = 1;
+            Range = 10;
+            Attenuation = 1.0f / MathHelper.E;
         }
 
         public override string Code
@@ -189,7 +189,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.One;
             Range = 100;
-            Attenuation = 1;
+            Attenuation = 1.0f / MathHelper.E;
             InnerAngle = MathHelper.PiOver4;
             OuterAngle = MathHelper.PiOver2;
             Falloff = 1;

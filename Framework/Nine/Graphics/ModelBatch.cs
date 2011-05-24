@@ -116,12 +116,12 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the basic effect used by this ModelBatch.
         /// </summary>
-        public BasicEffect BasicEffect { get; private set; }
+        internal BasicEffect BasicEffect { get; private set; }
 
         /// <summary>
         /// Gets the skinned effect used by this ModelBatch.
         /// </summary>
-        public SkinnedEffect SkinnedEffect { get; private set; }
+        internal SkinnedEffect SkinnedEffect { get; private set; }
 
         /// <summary>
         /// Gets or sets user data.

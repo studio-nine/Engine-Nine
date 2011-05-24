@@ -20,12 +20,11 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Primitives;
 #endregion
 
 namespace Nine.Graphics.Effects.Deferred
 {
-#if !WINDOWS_PHONE
-
     public partial class DeferredAmbientLight : IDeferredLight, IEffectAmbientLight
     {
         Quad primitive;
@@ -57,7 +56,10 @@ namespace Nine.Graphics.Effects.Deferred
         {
             get { return this; }
         }
-    }
 
-#endif
+        bool IDeferredLight.Contains(Vector3 point)
+        {
+            return false;
+        }
+    }
 }

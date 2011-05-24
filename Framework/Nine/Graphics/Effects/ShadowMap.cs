@@ -36,19 +36,20 @@ namespace Nine.Graphics.Effects
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
-        /// Gets the width of the shadow map texture.
+        /// Gets the effect used to draw models between Begin/End pair.
         /// </summary>
-        public int Width { get { return renderTarget.Width; } }
+        public Effect Effect { get; private set; }
 
         /// <summary>
-        /// Gets the height of the shadow map texture.
+        /// Gets or sets the size of the shadow map texture.
         /// </summary>
-        public int Height { get { return renderTarget.Height; } }
+        public int Size { get; set; }
 
         /// <summary>
-        /// Gets the surface format of the shadow map texture.
+        /// Gets or sets the preferred surface format of the shadow map texture.
+        /// The default value is SurfaceFormat.Single.
         /// </summary>
-        public SurfaceFormat SurfaceFormat { get { return renderTarget.Format; } }
+        public SurfaceFormat SurfaceFormat { get; set; }
 
         /// <summary>
         /// Gets the underlying shadow map texture.
@@ -82,21 +83,12 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Initializes a new instance of ShadowMap.
         /// </summary>
-        public ShadowMap(GraphicsDevice graphics, int resolution)
-            : this(graphics, resolution, resolution)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of ShadowMap.
-        /// </summary>
-        public ShadowMap(GraphicsDevice graphics, int width, int height)
+        public ShadowMap(GraphicsDevice graphics, int size)
         {
             GraphicsDevice = graphics;
-
-            renderTarget = new RenderTarget2D(graphics, width, height, false, SurfaceFormat.Single,
-                                              graphics.PresentationParameters.DepthStencilFormat);
+            Size = size;
+            SurfaceFormat = SurfaceFormat.Single;
+            Effect = new DepthEffect(graphics);
         }
 
         /// <summary>
@@ -108,6 +100,13 @@ namespace Nine.Graphics.Effects
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             hasBegin = true;
+            if (renderTarget == null || renderTarget.Width != Size)
+            {
+                if (renderTarget != null)
+                    renderTarget.Dispose();
+                renderTarget = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat.Single,
+                                                  GraphicsDevice.PresentationParameters.DepthStencilFormat);
+            }
             renderTarget.Begin();
             GraphicsDevice.Clear(Color.White);
         }
@@ -126,15 +125,19 @@ namespace Nine.Graphics.Effects
 
             if (BlurEnabled)
             {
-                if (depthBlur == null)
-                    depthBlur = new RenderTarget2D(GraphicsDevice, Width, Height, false, SurfaceFormat,
+                if (depthBlur == null || depthBlur.Width != Size)
+                {
+                    if (depthBlur != null)
+                        depthBlur.Dispose();
+                    depthBlur = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat,
                                                    GraphicsDevice.PresentationParameters.DepthStencilFormat);
+                }
 
                 // Blur H
                 depthBlur.Begin();
                 Blur.Direction = MathHelper.PiOver4;
 
-                GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
+                GraphicsDevice.DrawFullscreenQuad(map, SamplerState.PointWrap, Color.White, Blur);
 
                 map = depthBlur.End();
 
@@ -142,7 +145,7 @@ namespace Nine.Graphics.Effects
                 renderTarget.Begin();
                 Blur.Direction = -MathHelper.PiOver4;
 
-                GraphicsDevice.DrawSprite(map, SamplerState.PointWrap, Color.White, Blur);
+                GraphicsDevice.DrawFullscreenQuad(map, SamplerState.PointWrap, Color.White, Blur);
 
                 map = renderTarget.End();
 

@@ -23,7 +23,7 @@ namespace Nine.Graphics.Effects
     /// Represents an effect for drawing geometry depth.
     /// This effect is usually used to generate shadow map depth values.
     /// </summary>
-    public partial class DepthEffect : IEffectMatrices, IEffectSkinned
+    partial class DepthEffect : IEffectMatrices, IEffectSkinned
     {
         public bool SkinningEnabled
         {
@@ -52,7 +52,7 @@ namespace Nine.Graphics.Effects
 
         private void OnApplyChanges()
         {
-            frustumLength = Projection.GetFrustumLength();
+            farClip = Projection.GetFarClip();
         }
     }
 

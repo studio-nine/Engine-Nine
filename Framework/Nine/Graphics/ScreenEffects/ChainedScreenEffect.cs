@@ -95,7 +95,7 @@ namespace Nine.Graphics.ScreenEffects
             {
                 if (Effects.Count <= 0)
                 {
-                    input.GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
+                    input.GraphicsDevice.DrawFullscreenQuad(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
                     return;
                 }
 

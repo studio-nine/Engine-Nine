@@ -1,105 +1,90 @@
-
-#define MaxBones 59
-
+#include "DeferredLighting.fxh"
 
 // Input parameters.
-float4x4 World;
-float4x4 bones[MaxBones];
-float4x4 View;
-float4x4 Projection;
-float    frustumLength;
+float4x4 world;
+float4x4 viewProjection;
+float4x4 viewProjectionInverse;
 
+float2 halfPixel;
+float3 eyePosition;
 
-//-----------------------------------------------------------------------------
-// Vertex Shader: VertShadow
-// Desc: Process vertex for the shadow map
-//-----------------------------------------------------------------------------
-void VertShadow( float4 Pos : POSITION,
-                 out float4 oPos : POSITION,
-                 out float Depth : TEXCOORD0 )
+float3 Direction;
+float3 Position;
+float3 DiffuseColor;
+
+float Range = 100;
+float Attenuation = 1;
+float Falloff = 1;
+float innerAngle;
+float outerAngle;
+
+texture2D NormalBuffer;
+sampler NormalBufferSampler = sampler_state
 {
-    //
-    // Compute the projected coordinates
-    //
-    oPos = mul( Pos, World );
-    oPos = mul( oPos, View );
-    oPos = mul( oPos, Projection );
-
-    //
-    // Store z and w in our spare texcoord
-    //
-    Depth = oPos.z / frustumLength;
-}
-
-
-//-----------------------------------------------------------------------------
-// Vertex Shader: VertShadow
-// Desc: Process vertex for the shadow map
-//-----------------------------------------------------------------------------
-void VertShadowSkinned( float4 Pos : POSITION,
-						float4 BoneIndices : BLENDINDICES0,
-						float4 BoneWeights : BLENDWEIGHT0,
-                 out float4 oPos : POSITION,
-                 out float Depth : TEXCOORD0 )
-{
-    // Blend between the weighted bone matrices.
-    float4x4 skinTransform = 0;
-    
-    skinTransform += bones[BoneIndices.x] * BoneWeights.x;
-    skinTransform += bones[BoneIndices.y] * BoneWeights.y;
-    skinTransform += bones[BoneIndices.z] * BoneWeights.z;
-    skinTransform += bones[BoneIndices.w] * BoneWeights.w;
-    
-    //
-    // Compute the projected coordinates
-    //
-    oPos = mul( Pos, skinTransform );
-    oPos = mul( oPos, World );
-    oPos = mul( oPos, View );
-    oPos = mul( oPos, Projection );
-
-    //
-    // Store z and w in our spare texcoord
-    //
-    Depth = oPos.z / frustumLength;
-}
-
-
-//-----------------------------------------------------------------------------
-// Pixel Shader: PixShadow
-// Desc: Process pixel for the shadow map
-//-----------------------------------------------------------------------------
-void PixShadow( float Depth : TEXCOORD0,
-                out float4 Color : COLOR )
-{
-    //
-    // Depth is z / w
-    //
-    Color = Depth;
-}
-
-int ShaderIndex = 0;
-
-
-VertexShader VSArray[2] =
-{
-	compile vs_2_0 VertShadow(),
-	compile vs_2_0 VertShadowSkinned(),
+    Texture = (NormalBuffer);
 };
 
-
-PixelShader PSArray[2] =
+texture2D DepthBuffer;
+sampler DepthBufferSampler = sampler_state
 {
-	compile ps_2_0 PixShadow(),
-	compile ps_2_0 PixShadow(),
+    Texture = (DepthBuffer);
+    MipFilter = Point;
+    MagFilter = Point;
+    MinFilter = Point;
 };
+
+void VS(float4 Pos : POSITION,
+        out float4 oPos : POSITION,
+        out float4 oPosProjection : TEXCOORD0)
+{
+    oPos = mul(Pos, world);
+    oPos = mul(oPos, viewProjection);
+    oPosProjection = oPos;
+}
+
+void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
+{
+    float3 normal;
+    float3 position;
+    float specularPower;
+
+    Extract(NormalBufferSampler, DepthBufferSampler, 
+            PosProjection, halfPixel, viewProjectionInverse, 
+            normal, position, specularPower);
+    
+    float3 positionToEye = eyePosition - position;
+    float3 L = Position - position.xyz;
+    float dotL = dot(normalize(L), normal);
+	float dotH = dot(normalize(positionToEye + L), normal);
+	float zeroL = step(0, dotL);
+	
+	float distanceSq = dot(L, L);
+	float distance = sqrt(distanceSq);
+    
+	float angle = dot(normalize(L), -Direction);
+	float inner = innerAngle;
+	float outer = outerAngle;
+
+	float fade = 0;
+	if (distance <= Range && angle > outer)
+	{
+        fade = (pow(max(Attenuation, 0.000001), 1 - distance / Range) - 1) / (Attenuation - 1);
+		if (angle < inner)
+			fade *= pow(max((angle - outer) / (inner - outer), 0.000001), Falloff);
+    }
+
+	float3 diffuse = DiffuseColor * zeroL * dotL* fade;
+    float specular = pow(max(dotH, 0.000001), specularPower)* fade;
+    
+    Color = float4(diffuse, specular);
+}
 
 
 Technique BasicEffect
 {
 	Pass
 	{
-		VertexShader = (VSArray[ShaderIndex]);
-		PixelShader	 = (PSArray[ShaderIndex]);
+		VertexShader = compile vs_2_0 VS();
+		PixelShader	 = compile ps_2_0 PS();
 	}
 }

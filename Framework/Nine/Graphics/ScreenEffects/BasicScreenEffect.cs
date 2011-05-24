@@ -85,7 +85,7 @@ namespace Nine.Graphics.ScreenEffects
             RenderTarget2D renderTarget = RenderTargetPool.AddRef(GraphicsDevice, input, RenderTargetSize, RenderTargetScale, SurfaceFormat);
             renderTarget.Begin();
 
-            GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, Effect);
+            GraphicsDevice.DrawFullscreenQuad(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, Effect);
 
             RenderTargetPool.Release(renderTarget);
             RenderTargetPool.Release(input as RenderTarget2D);
@@ -97,7 +97,7 @@ namespace Nine.Graphics.ScreenEffects
         {
             if (Enabled)
             {
-                GraphicsDevice.DrawSprite(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, Effect);
+                GraphicsDevice.DrawFullscreenQuad(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, Effect);
             }
         }
 

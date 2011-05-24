@@ -19,6 +19,7 @@ using Nine.Animations;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
 using Nine.Graphics.Effects.EffectParts;
+using Nine.Graphics.Primitives;
 using System.ComponentModel;
 #endregion
 
@@ -33,14 +34,12 @@ namespace ShadowMapping
 
         Model model;
         Model terrain;
-        Model skyBox;
         ModelBatch modelBatch;
         BoneAnimation animation;
 
         ModelViewerCamera camera;
 
-        DepthEffect depth;
-        SkyBoxEffect skyBoxEffect;
+        TextureCube skyBoxTexture;
         ShadowMap shadowMap;
 
         Matrix lightView;
@@ -84,9 +83,7 @@ namespace ShadowMapping
             animation.Play();
 
             // Create skybox.
-            skyBox = Content.Load<Model>("cube");
-            skyBoxEffect = new SkyBoxEffect(GraphicsDevice);
-            skyBoxEffect.Texture = Content.Load<TextureCube>("SkyCubeMap");
+            skyBoxTexture = Content.Load<TextureCube>("SkyCubeMap");
 
             // Create lights.
             lightView = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ);
@@ -95,7 +92,6 @@ namespace ShadowMapping
             // Create shadow map related effects, depth is used to generate shadow maps,
             // shadow is used to draw a shadow receiver with a shadow map.
             shadowMap = new ShadowMap(GraphicsDevice, 512);
-            depth = new DepthEffect(GraphicsDevice);
             
             LoadShadowEffect(terrain, "ShadowEffect");
             LoadShadowEffect(model, "ShadowNormalSkinnedEffect");
@@ -142,7 +138,7 @@ namespace ShadowMapping
 
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
                 modelBatch.Begin(lightView, lightProjection);
-                modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), depth);
+                modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), shadowMap.Effect);
                 modelBatch.End();
             }
             // We got a shadow map rendered.
@@ -160,7 +156,7 @@ namespace ShadowMapping
             // Draw all shadow receivers with the shadow effect
             modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
             {
-                modelBatch.Draw(skyBox, Matrix.Identity, skyBoxEffect);
+                modelBatch.DrawSkyBox(skyBoxTexture);
                 modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), null);
                 modelBatch.Draw(terrain, worldTerrain, null);
             }

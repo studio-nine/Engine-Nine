@@ -4,7 +4,6 @@
 float4x4 viewProjectionInverse;
 
 float2 halfPixel;
-float  frustumLength;
 float3 eyePosition;
 
 float3 Direction;
@@ -41,7 +40,9 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
     float3 position;
     float specularPower;
 
-    Extract(NormalBufferSampler, DepthBufferSampler, PosProjection, halfPixel, viewProjectionInverse, frustumLength, normal, position, specularPower);
+    Extract(NormalBufferSampler, DepthBufferSampler,
+            PosProjection, halfPixel, viewProjectionInverse, 
+            normal, position, specularPower);
     
     float3 positionToEye = eyePosition - position;
 	float3 L = -Direction; 

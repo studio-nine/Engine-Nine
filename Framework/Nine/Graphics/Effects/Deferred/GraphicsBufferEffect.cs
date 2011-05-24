@@ -69,8 +69,6 @@ namespace Nine.Graphics.Effects.Deferred
 
                 shaderIndexNeedsUpdate = false;
             }
-
-            frustumLength = Projection.GetFrustumLength();
         }
 
         Texture2D IEffectTexture.Texture

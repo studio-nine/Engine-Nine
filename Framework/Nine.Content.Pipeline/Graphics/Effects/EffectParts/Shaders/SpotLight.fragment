@@ -36,7 +36,7 @@ void main(INPUT input, inout OUTPUT output)
 	import(PositionWorld, positionWorld = PositionWorld);
 
     float3 L = SpotLightPosition - positionWorld.xyz;
-    float dotL = dot(L, normal);
+    float dotL = dot(normalize(L), normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
 	float zeroL = step(0, dotL);
 	
@@ -50,14 +50,14 @@ void main(INPUT input, inout OUTPUT output)
 	float fade = 0;
 	if (distance <= Range && angle > outer)
 	{
-		fade = saturate(1 / (Attenuation * distanceSq));
+        fade = (pow(max(Attenuation, 0.000001), 1 - distance / Range) - 1) / (Attenuation - 1);
 		if (angle < inner)
 			fade *= pow(max((angle - outer) / (inner - outer), 0.000001), Falloff);
     }
 
 	diffuse += SpotLightDiffuseColor * dotL * zeroL * fade;
     specular += SpotLightSpecularColor * pow(max(dotH, 0.000001), specularPower) * fade;
-
+    
 	export(float3, LightDiffuse, diffuse);
 	export(float3, LightSpecular, specular);
 }
