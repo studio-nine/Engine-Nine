@@ -73,14 +73,14 @@ namespace Nine.Animations
             }
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
-            base.Update(gameTime);
+            base.Update(elapsedTime);
 
             if (channels != null)
             {
                 foreach (AnimationPlayerChannel channel in channels.Values)
-                    channel.Update(gameTime);
+                    channel.Update(elapsedTime);
             }
         }
     }
@@ -205,11 +205,11 @@ namespace Nine.Animations
                 Current.Resume();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
-            if (Current is IUpdateObject && State == AnimationState.Playing)
+            if (Current is IUpdateable && State == AnimationState.Playing)
             {
-                ((IUpdateObject)Current).Update(gameTime);
+                ((IUpdateable)Current).Update(elapsedTime);
 
                 if (Current.State == AnimationState.Stopped)
                 {

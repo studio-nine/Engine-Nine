@@ -49,6 +49,15 @@
     <XnaCompressContent>false</XnaCompressContent>
     <DocumentationFile>..\..\References\Windows Phone\Nine.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -56,6 +65,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
@@ -63,6 +75,7 @@
     <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
+    <Compile Include="Animations\IBoneHierarchy.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
@@ -76,8 +89,6 @@
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FrameRate.cs" />
-    <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\BlendStateReader.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\DrawableSurface.cs" />
@@ -136,14 +147,15 @@
     <Compile Include="Graphics\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="GridObjectManager.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="IInputSource.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="InputEventArgs.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="Math2D.cs" />
     <Compile Include="OcTree.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="Input.cs">
-    </Compile>
     <Compile Include="Graphics\FreeCamera.cs" />
     <Compile Include="Graphics\ModelViewerCamera.cs" />
     <Compile Include="Graphics\TopDownEditorCamera.cs" />
@@ -152,7 +164,6 @@
     <Compile Include="Graphics\ModelExtensions.cs" />
     <Compile Include="Graphics\ModelSkinning.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
-    <Compile Include="ScreenshotCapturer.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -178,6 +189,7 @@
     <None Include="Diagrams\Navigation.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
+    <None Include="Nine.snk" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
@@ -187,9 +199,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game">
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Graphics">
@@ -208,6 +217,9 @@
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Input\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

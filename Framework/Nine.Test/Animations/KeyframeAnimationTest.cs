@@ -57,7 +57,7 @@ namespace Nine.Animations.Test
             animation.Play();
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(5)));
+            animation.Update(TimeSpan.FromSeconds(5));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -68,7 +68,7 @@ namespace Nine.Animations.Test
             
             animation.StartupDirection = AnimationDirection.Backward;
             animation.Play();
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2)));
+            animation.Update(TimeSpan.FromSeconds(2));
 
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(3), animation.Position);
@@ -82,10 +82,10 @@ namespace Nine.Animations.Test
             animation.Repeat = 2.5f;
             animation.Play();
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(12.4)));
+            animation.Update(TimeSpan.FromSeconds(12.4));
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.1)));
+            animation.Update(TimeSpan.FromSeconds(0.1));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -98,15 +98,15 @@ namespace Nine.Animations.Test
             animation.AutoReverse = true;
             animation.Play();
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(6)));
+            animation.Update(TimeSpan.FromSeconds(6));
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4), animation.Position);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(5)));
+            animation.Update(TimeSpan.FromSeconds(5));
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(1), animation.Position);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.5)));
+            animation.Update(TimeSpan.FromSeconds(1.5));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -125,7 +125,7 @@ namespace Nine.Animations.Test
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(2), animation.Position);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(3)));
+            animation.Update(TimeSpan.FromSeconds(3));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
 
             animation.StartupDirection = AnimationDirection.Backward;
@@ -133,7 +133,7 @@ namespace Nine.Animations.Test
             animation.Seek(1);
             Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
 
-            animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.001)));
+            animation.Update(TimeSpan.FromSeconds(1.001));
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
         }
 
@@ -153,7 +153,7 @@ namespace Nine.Animations.Test
             animation.Play();
 
             for (int i = 0; i < 20; i++)
-                animation.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.25)));
+                animation.Update(TimeSpan.FromSeconds(0.25));
 
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
             Assert.AreEqual(5, index);

@@ -9,15 +9,15 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    public partial class NoiseEffect : IUpdateObject
+    public partial class NoiseEffect : IUpdateable
     {
         private void OnCreated() { NoiseAmount = 1; }
 		private void OnClone(NoiseEffect cloneSource) { }
 		private void OnApplyChanges() { }
 
-        void IUpdateObject.Update(GameTime gameTime)
+        void IUpdateable.Update(TimeSpan elapsedTime)
         {
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer += (float)elapsedTime.TotalSeconds;
         }
     }
 

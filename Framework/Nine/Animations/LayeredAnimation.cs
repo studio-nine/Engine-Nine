@@ -136,16 +136,16 @@ namespace Nine.Animations
 
         public override event EventHandler Completed;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing)
             {
                 for (int i = 0; i < Animations.Count; i++)
                 {
-                    IUpdateObject update = Animations[i] as IUpdateObject;
+                    IUpdateable update = Animations[i] as IUpdateable;
 
                     if (update != null)
-                        update.Update(gameTime);
+                        update.Update(elapsedTime);
                 }
 
                 bool allStopped = true;
@@ -182,7 +182,7 @@ namespace Nine.Animations
                 }
             }
  	    
-            base.Update(gameTime);
+            base.Update(elapsedTime);
         }
 
         protected virtual void OnCompleted()

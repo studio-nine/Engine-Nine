@@ -24,24 +24,24 @@ namespace Nine
     /// <summary>
     /// Object that react to game updates.
     /// </summary>
-    public interface IUpdateObject
+    public interface IUpdateable
     {
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        void Update(GameTime gameTime);
+        void Update(TimeSpan elapsedTime);
     }
 
 
     /// <summary>
     /// Object that react to game draws.
     /// </summary>
-    public interface IDisplayObject
+    public interface IDrawable
     {
         /// <summary>
         /// Draws the internal state of the object.
         /// </summary>
-        void Draw(GameTime gameTime);
+        void Draw(TimeSpan elapsedTime);
     }
 
 

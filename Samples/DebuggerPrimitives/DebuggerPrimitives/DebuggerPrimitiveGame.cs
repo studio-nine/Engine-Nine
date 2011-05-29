@@ -17,6 +17,7 @@ using Nine;
 using Nine.Graphics;
 using System.ComponentModel;
 using Nine.Graphics.Primitives;
+using Nine.Components;
 #endregion
 
 namespace DebuggerPrimitives
@@ -64,9 +65,6 @@ namespace DebuggerPrimitives
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
-            Components.Add(new ScreenshotCapturer(this));
         }
 
 
@@ -76,6 +74,9 @@ namespace DebuggerPrimitives
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             camera = new ModelViewerCamera(GraphicsDevice);
             primitiveBatch = new PrimitiveBatch(GraphicsDevice, 4096);
             modelBatch = new ModelBatch(GraphicsDevice);

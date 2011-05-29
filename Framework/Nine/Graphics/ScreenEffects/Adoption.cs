@@ -9,7 +9,7 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    internal partial class Adoption : IUpdateObject
+    internal partial class Adoption : IUpdateable
     {
         public bool HighQuality
         {
@@ -27,9 +27,9 @@ namespace Nine.Graphics.ScreenEffects
 
 		private void OnApplyChanges() { }
         
-        public void Update(GameTime gameTime)
+        public void Update(TimeSpan elapsedTime)
         {
-            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            deltaTime = (float)elapsedTime.TotalSeconds;
         }
     }
 

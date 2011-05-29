@@ -239,24 +239,27 @@ namespace Nine.Content.Pipeline.Processors
 
         protected override MaterialContent ConvertMaterial(MaterialContent material, ContentProcessorContext context)
         {
-            string filename = material.Textures["Texture"].Filename;
-
+            ExternalReference<TextureContent> textureContent;
             Dictionary<string, ExternalReference<TextureContent>> textureDictionary = new Dictionary<string, ExternalReference<TextureContent>>();
 
-            foreach (string name in attachedTextureNames.Keys)
+            if (material.Textures.TryGetValue("Texture", out textureContent))
             {
-                string path = filename.Substring(0, filename.LastIndexOf(Path.GetFileName(filename)));
-                string textureFilename = attachedTextureNames[name].Replace("*", Path.GetFileNameWithoutExtension(filename));
-                textureFilename = Path.Combine(path, textureFilename);
-
-                if (File.Exists(textureFilename))
+                string filename = textureContent.Filename;
+                foreach (string name in attachedTextureNames.Keys)
                 {
-                    string processor = null;
-                    attachedTextureProcessors.TryGetValue(name, out processor);
+                    string path = filename.Substring(0, filename.LastIndexOf(Path.GetFileName(filename)));
+                    string textureFilename = attachedTextureNames[name].Replace("*", Path.GetFileNameWithoutExtension(filename));
+                    textureFilename = Path.Combine(path, textureFilename);
 
-                    ExternalReference<TextureContent> texture = new ExternalReference<TextureContent>(textureFilename);
-                    texture = context.BuildAsset<TextureContent, TextureContent>(texture, processor);
-                    textureDictionary.Add(name, texture);
+                    if (File.Exists(textureFilename))
+                    {
+                        string processor = null;
+                        attachedTextureProcessors.TryGetValue(name, out processor);
+
+                        ExternalReference<TextureContent> texture = new ExternalReference<TextureContent>(textureFilename);
+                        texture = context.BuildAsset<TextureContent, TextureContent>(texture, processor);
+                        textureDictionary.Add(name, texture);
+                    }
                 }
             }
 

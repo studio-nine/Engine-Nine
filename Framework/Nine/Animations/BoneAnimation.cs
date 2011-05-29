@@ -280,25 +280,25 @@ namespace Nine.Animations
                 Completed(this, EventArgs.Empty);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing && Model != null)
             {
-                UpdateControllers(gameTime);
-                UpdateBoneTransforms(gameTime);
+                UpdateControllers(elapsedTime);
+                UpdateBoneTransforms(elapsedTime);
                 UpdateSkinTransform();
             }
         }
 
-        private void UpdateControllers(GameTime gameTime)
+        private void UpdateControllers(TimeSpan elapsedTime)
         {
             SychronizeSpeed();
 
             foreach (IBoneAnimationController controller in Controllers)
             {
-                IUpdateObject update = controller as IUpdateObject;
+                IUpdateable update = controller as IUpdateable;
                 if (update != null)
-                    update.Update(gameTime);
+                    update.Update(elapsedTime);
             }
 
             bool allStopped = true;
@@ -351,14 +351,14 @@ namespace Nine.Animations
             }
         }
 
-        private void UpdateBoneTransforms(GameTime gameTime)
+        private void UpdateBoneTransforms(TimeSpan elapsedTime)
         {
             // Update default blend
             float blendLerp = 0;
 
             if (BlendEnabled && blendTarget != null)
             {
-                blendTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                blendTimer += elapsedTime.TotalSeconds;
                 blendLerp = (float)(blendTimer / BlendDuration.TotalSeconds);
             }
 

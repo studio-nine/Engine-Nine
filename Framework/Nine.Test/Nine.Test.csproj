@@ -32,6 +32,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -52,6 +61,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="UniformGridTest.cs" />
     <Compile Include="GridObjectManagerTest.cs" />
     <Compile Include="QuadTreeTest.cs" />
@@ -66,10 +78,17 @@
     <Compile Include="TriangleTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Game\Nine.Game.csproj">
+      <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
+      <Name>Nine.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine.csproj">
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
       <Name>Nine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Nine.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

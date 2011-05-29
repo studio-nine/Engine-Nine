@@ -14,9 +14,10 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Nine.Graphics;
 #endregion
 
-namespace Nine
+namespace Nine.Components
 {
     /// <summary>
     /// Event args used by GameConsole.
@@ -47,13 +48,16 @@ namespace Nine
     /// <summary>
     /// In game console
     /// </summary>
-    public class GameConsole : DrawableGameComponent
+    public class GameConsole : IUpdateable, IDrawable
     {
         private string fontFile;
         private float currentBlinkTime;
         private string lastLine = "";
         private List<string> messages = new List<string>();
 
+        public bool Enabled { get; set; }
+        public bool Visible { get; set; }
+        public GraphicsDevice GraphicsDevice { get; private set; }
         public int MaxLines { get; set; }
         public int LineSpacing { get; set; }
         public Color BackgroundColor { get; set; }
@@ -62,7 +66,6 @@ namespace Nine
         public float CursorBlinkInterval { get; set; }
         public float FontSize { get; set; }
         public SpriteFont Font { get; set; }
-        public SpriteBatch SpriteBatch { get; set; }
         public Input Input { get; private set; }
         public Microsoft.Xna.Framework.Input.Keys ActivateKey { get; set; }
         public GameConsoleCommandCollection Commands { get; private set; }
@@ -92,20 +95,13 @@ namespace Nine
         }
 
 
-        public GameConsole(Game game) : base(game)
+        public GameConsole(GraphicsDevice graphics, SpriteFont font)
         {
-            Initialize();
-        }
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
 
-        public GameConsole(Game game, string fontFile) : base(game)
-        {
-            this.fontFile = fontFile;
-
-            Initialize();
-        }
-
-        private new void Initialize()
-        {
+            Font = font;
+            GraphicsDevice = graphics;
             LineSpacing = 4;
             MaxLines = 20;
             FontSize = 12;
@@ -125,10 +121,6 @@ namespace Nine
             Commands.Add("Help", delegate(object sender, GameConsoleEventArgs args)
             {
                 WriteLine("Type \"List\" for a list of available commands.");
-            });
-            Commands.Add("Quit", delegate(object sender, GameConsoleEventArgs args)
-            {
-                Game.Exit();
             });
             Commands.Add("List", delegate(object sender, GameConsoleEventArgs args)
             {
@@ -155,18 +147,6 @@ namespace Nine
                 TriggerCommand(command);
             }
         }
-
-        protected override void LoadContent()
-        {
-            if (SpriteBatch == null)
-                SpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            if (!string.IsNullOrEmpty(fontFile))
-                Font = Game.Content.Load<SpriteFont>(fontFile);
-
-            base.LoadContent();
-        }
-
 
         public void Write(string value)
         {
@@ -208,13 +188,13 @@ namespace Nine
             lastLine = "";
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(TimeSpan elapsedTime)
         {
-            if (SpriteBatch == null || Font == null)
+            if (Font == null)
                 return;
-            
 
-            SpriteBatch.Begin();
+            SpriteBatch spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
+            spriteBatch.Begin();
 
             const int Border = 8;
 
@@ -235,7 +215,7 @@ namespace Nine
             
             for (; i < messages.Count; i++)
             {
-                SpriteBatch.DrawString(
+                spriteBatch.DrawString(
                     Font, messages[i], new Vector2(Border + 2, y), ForegroundColor, 0,
                     Vector2.Zero, fontScale, SpriteEffects.None, 0);
 
@@ -243,7 +223,7 @@ namespace Nine
             }
 
             // Update text cursor
-            currentBlinkTime += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            currentBlinkTime += (float)elapsedTime.TotalMilliseconds;
 
             if (currentBlinkTime > CursorBlinkInterval)
                 currentBlinkTime = -CursorBlinkInterval;
@@ -252,27 +232,23 @@ namespace Nine
             // FIXME: Timing not working when game is paused
             if (currentBlinkTime < 0)
             {
-                SpriteBatch.DrawString(
+                spriteBatch.DrawString(
                     Font, lastLine, new Vector2(Border + 2, y), ForegroundColor, 0,
                     Vector2.Zero, fontScale, SpriteEffects.None, 0);
             }
             else
             {
-                SpriteBatch.DrawString(
+                spriteBatch.DrawString(
                     Font, lastLine + CursorText, new Vector2(Border + 2, y), ForegroundColor, 0,
                     Vector2.Zero, fontScale, SpriteEffects.None, 0);
             }
 
-            SpriteBatch.End();
-
-            base.Draw(gameTime);
+            spriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(TimeSpan elapsedTime)
         {
             Input.CatchKeyboardInput(ref lastLine, 80);
-            
-            base.Update(gameTime);
         }
 
         private void TriggerCommand(string line)

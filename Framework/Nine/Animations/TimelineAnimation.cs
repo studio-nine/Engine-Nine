@@ -220,7 +220,7 @@ namespace Nine.Animations
             base.OnStarted();
         }
         
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             if (Duration < TimeSpan.Zero)
                 throw new ArgumentOutOfRangeException("Duration cannot be negative");
@@ -236,7 +236,7 @@ namespace Nine.Animations
             }
 
             TimeSpan previousPosition = Position;
-            TimeSpan increment = TimeSpan.FromTicks((long)(gameTime.ElapsedGameTime.Ticks * (double)Speed));
+            TimeSpan increment = TimeSpan.FromTicks((long)(elapsedTime.Ticks * (double)Speed));
 
             if (increment == TimeSpan.Zero)
                 return;

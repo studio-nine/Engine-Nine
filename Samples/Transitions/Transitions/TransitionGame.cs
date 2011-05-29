@@ -21,6 +21,7 @@ using Nine.Graphics.Effects;
 #endif
 using Nine.Animations;
 using System.ComponentModel;
+using Nine.Components;
 #endregion
 
 namespace Transitions
@@ -77,8 +78,6 @@ namespace Transitions
 
             IsMouseVisible = true;
             IsFixedTimeStep = true;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -88,6 +87,9 @@ namespace Transitions
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             // Create a input component to be used by buttons
             input = new Input();
 
@@ -307,7 +309,7 @@ namespace Transitions
             
 
             // Update transitions
-            animations.Update(gameTime);
+            animations.Update(gameTime.ElapsedGameTime);
 
 
             spriteBatch.Begin();

@@ -57,6 +57,15 @@
     <PlatformTarget>x86</PlatformTarget>
     <DocumentationFile>..\..\References\x86\Nine.Content.Pipeline.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -67,6 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="ContentReference.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Graphics\BlendStateSerializer.cs" />
@@ -356,6 +368,7 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\TextureTransform.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\VertexShaderOutput.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\VertexTransform.fragment" />
+    <None Include="Nine.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

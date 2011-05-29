@@ -18,6 +18,7 @@ using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
 using System.ComponentModel;
+using Nine.Components;
 #endregion
 
 namespace MaterialsSample
@@ -45,8 +46,6 @@ namespace MaterialsSample
             IsMouseVisible = true;
             IsFixedTimeStep = false;
             Window.AllowUserResizing = true;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -56,6 +55,9 @@ namespace MaterialsSample
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);
 

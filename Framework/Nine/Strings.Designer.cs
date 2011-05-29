@@ -70,6 +70,15 @@ namespace Nine {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified graphics profile is not supported..
+        /// </summary>
+        internal static string InvalidGraphicsProfile {
+            get {
+                return ResourceManager.GetString("InvalidGraphicsProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The input primitive is invalid..
         /// </summary>
         internal static string InvalidPrimitive {

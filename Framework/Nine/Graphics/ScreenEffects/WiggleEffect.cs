@@ -9,7 +9,7 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    public partial class WiggleEffect : IUpdateObject
+    public partial class WiggleEffect : IUpdateable
     {
 		private void OnCreated()
         {
@@ -25,9 +25,9 @@ namespace Nine.Graphics.ScreenEffects
             pixelSize = new Vector2(1.0f / GraphicsDevice.Viewport.Width, 1.0f / GraphicsDevice.Viewport.Height);
         }
 
-        void IUpdateObject.Update(GameTime gameTime)
+        void IUpdateable.Update(TimeSpan elapsedTime)
         {
-            fTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            fTimer += (float)elapsedTime.TotalSeconds;
         }
     }	
 

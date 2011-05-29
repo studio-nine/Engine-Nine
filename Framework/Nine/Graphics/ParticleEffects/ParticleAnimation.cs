@@ -90,12 +90,12 @@ namespace Nine.Graphics.ParticleEffects
             Duration = TimeSpan.MaxValue;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             if (Enabled && State == AnimationState.Playing)
             {
-                elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-                if (elapsedTime >= Duration.TotalSeconds)
+                currentTime += elapsedTime;
+                if (currentTime >= Duration)
                 {
                     Stop();
                     if (Completed != null)
@@ -106,10 +106,10 @@ namespace Nine.Graphics.ParticleEffects
 
         protected override void OnStarted()
         {
-            elapsedTime = 0;
+            currentTime = TimeSpan.Zero;
             base.OnStarted();
         }
 
-        double elapsedTime;
+        TimeSpan currentTime;
     }
 }

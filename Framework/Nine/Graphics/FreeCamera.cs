@@ -75,11 +75,11 @@ namespace Nine.Graphics
         }
 
 
-        public void Update(GameTime gameTime)
+        public void Update(TimeSpan elapsedTime)
         {
             // Assume screen size always greater then 100
             int center = 100;
-            float delta = (float)gameTime.TotalGameTime.TotalSeconds;
+            float delta = (float)elapsedTime.TotalSeconds;
             GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
             Vector3 forward;
             Vector3 left;

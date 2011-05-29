@@ -21,6 +21,7 @@ using Nine.Graphics.Effects;
 using Nine.Graphics.Effects.EffectParts;
 using Nine.Graphics.Primitives;
 using System.ComponentModel;
+using Nine.Components;
 #endregion
 
 namespace ShadowMapping
@@ -57,8 +58,6 @@ namespace ShadowMapping
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
         }
 
         /// <summary>
@@ -67,6 +66,9 @@ namespace ShadowMapping
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             modelBatch = new ModelBatch(GraphicsDevice);
 
@@ -120,7 +122,7 @@ namespace ShadowMapping
         protected override void Draw(GameTime gameTime)
         {
             // Update model animation.
-            animation.Update(gameTime);
+            animation.Update(gameTime.ElapsedGameTime);
 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;

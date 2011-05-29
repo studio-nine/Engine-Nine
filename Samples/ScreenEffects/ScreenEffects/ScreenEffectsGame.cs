@@ -18,10 +18,11 @@ using Nine;
 using Nine.Graphics;
 #if !WINDOWS_PHONE
 using Nine.Graphics.Effects;
+using Nine.Graphics.Effects.Deferred;
 #endif
 using Nine.Graphics.ScreenEffects;
 using System.ComponentModel;
-using Nine.Graphics.Effects.Deferred;
+using Nine.Components;
 #endregion
 
 namespace ScreenEffects
@@ -38,7 +39,9 @@ namespace ScreenEffects
         ModelViewerCamera camera;
         SpriteBatch spriteBatch;
         Effect modelEffect;
+#if !WINDOWS_PHONE
         GraphicsBuffer graphicsBuffer;
+#endif
 
         public ScreenEffectsGame()
         {
@@ -52,8 +55,6 @@ namespace ScreenEffects
             IsFixedTimeStep = false;
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
         }
 
         /// <summary>
@@ -62,6 +63,9 @@ namespace ScreenEffects
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             modelBatch = new ModelBatch(GraphicsDevice);
 
@@ -118,7 +122,7 @@ namespace ScreenEffects
 #endif
 
             // Update the screen effect
-            screenEffect.Update(gameTime);
+            screenEffect.Update(gameTime.ElapsedGameTime);
             screenEffect.Enabled = !Keyboard.GetState().IsKeyDown(Keys.Space);
 
             screenEffect.Begin();

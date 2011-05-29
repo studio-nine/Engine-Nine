@@ -48,13 +48,16 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
@@ -78,11 +81,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
     <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
+    <Compile Include="Animations\IBoneHierarchy.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
@@ -322,6 +329,8 @@
     <Compile Include="Graphics\PrimitiveBatchExtensions.cs" />
     <Compile Include="Graphics\GraphicsResources.cs" />
     <Compile Include="Graphics\PrimitiveBatch.cs" />
+    <Compile Include="InputEventArgs.cs" />
+    <Compile Include="IInputSource.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Graphics\Effects\EffectParts\AmbientLightEffectPart.cs" />
@@ -370,11 +379,8 @@
     <Compile Include="Math2D.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
-    <Compile Include="FrameRate.cs" />
-    <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\VertexPositionColorNormalTexture.cs" />
     <Compile Include="Graphics\DrawableSurfaceTriangle.cs" />
-    <Compile Include="ScreenshotCapturer.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\TextureTransform.cs" />
@@ -423,6 +429,7 @@
     <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerableCollection.cs">

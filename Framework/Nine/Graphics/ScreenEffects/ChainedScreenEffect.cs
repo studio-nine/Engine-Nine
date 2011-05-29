@@ -23,7 +23,7 @@ namespace Nine.Graphics.ScreenEffects
     /// Defines an basic screen effect that uses an effect chain.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ChainedScreenEffect : IScreenEffect, IUpdateObject, IEffectTexture
+    public class ChainedScreenEffect : IScreenEffect, IUpdateable, IEffectTexture
     {
         /// <summary>
         /// Gets all the effects used by this pass.
@@ -44,15 +44,15 @@ namespace Nine.Graphics.ScreenEffects
             Effects = new ScreenEffectCollection();
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(TimeSpan elapsedTime)
         {
             if (Enabled)
             {
                 for (int i = 0; i < Effects.Count; i++)
                 {
-                    IUpdateObject update = Effects[i] as IUpdateObject;
+                    IUpdateable update = Effects[i] as IUpdateable;
                     if (update != null)
-                        update.Update(gameTime);
+                        update.Update(elapsedTime);
                 }
             }
         }

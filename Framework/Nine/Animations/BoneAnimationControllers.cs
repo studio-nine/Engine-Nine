@@ -76,14 +76,14 @@ namespace Nine.Animations
         private float percentage;
         private bool shouldLerp;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             if (State == Animations.AnimationState.Playing)
             {
-                shouldLerp = (gameTime.ElapsedGameTime.TotalSeconds * Speed) < (1.0 / FramesPerSecond);
+                shouldLerp = (elapsedTime.TotalSeconds * Speed) < (1.0 / FramesPerSecond);
             }
 
-            base.Update(gameTime);
+            base.Update(elapsedTime);
         }
 
         protected override void OnSeek(int startFrame, int endFrame, float percentage)
@@ -153,7 +153,7 @@ namespace Nine.Animations
     /// <summary>
     /// Controls the target bone to make it always look at the specified target.
     /// </summary>
-    public class LookAtController : IUpdateObject, IBoneAnimationController
+    public class LookAtController : IUpdateable, IBoneAnimationController
     {
         /// <summary>
         /// Gets or sets the index of the controlled bone.
@@ -233,7 +233,7 @@ namespace Nine.Animations
             desiredTransform = Matrix.Identity;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(TimeSpan elapsedTime)
         {
             bool hasTarget = Target.HasValue;
 
@@ -269,7 +269,7 @@ namespace Nine.Animations
                     desiredLookAt = Forward;
                 }
 
-                float maxRotation = (float)(RotationSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+                float maxRotation = (float)(RotationSpeed * elapsedTime.TotalSeconds);
                 float currentRotation = (float)Math.Acos(Vector3.Dot(desiredLookAt, currentLookAt));
                 if (currentRotation > maxRotation)
                 {
@@ -284,9 +284,9 @@ namespace Nine.Animations
             }
 
             if (hasTarget)
-                desiredBlendWeight += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                desiredBlendWeight += (float)elapsedTime.TotalSeconds;
             else
-                desiredBlendWeight -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                desiredBlendWeight -= (float)elapsedTime.TotalSeconds;
 
             if (desiredBlendWeight < 0)
                 desiredBlendWeight = 0;

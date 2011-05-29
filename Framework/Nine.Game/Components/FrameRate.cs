@@ -15,49 +15,47 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine
+namespace Nine.Components
 {
     using Nine.Graphics;
 
     /// <summary>
     /// Frame rate profiler
     /// </summary>
-    public class FrameRate : DrawableGameComponent
+    public class FrameRate : IDrawable
     {
         private int updateCount = 0;
         private int currentFrame = 0;
         private int counter = 0;
-        private double storedTime = 0;
+        private TimeSpan elapsedTimeSinceLastUpdate = TimeSpan.Zero;
         private float fps = 0;
         private float overallFps = 0;
 
+        
+        /// <summary>
+        /// Gets the graphics device.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
-        /// Gets or set the frame rate position on the screen
+        /// Time needed to calculate FPS.
         /// </summary>
-        public Vector2 Position { get; set; }
-
-        /// <summary>
-        /// Time needed to calculate FPS, Measured in milliseconds
-        /// </summary>
-        public float UpdateFrequency { get; set; }
-
-        /// <summary>
-        /// Gets or sets the sprite batch used to draw FPS string
-        /// </summary>
-        public SpriteBatch SpriteBatch { get; set; }
+        public TimeSpan UpdateFrequency { get; set; }
 
         /// <summary>
         /// Gets or sets the sprite font used to draw FPS string
         /// </summary>
         public SpriteFont Font { get; set; }
 
-        private string font;
-
         /// <summary>
         /// Gets or sets the color used to draw FPS string
         /// </summary>
         public Color Color { get; set; }
+
+        /// <summary>
+        /// Gets or set the frame rate position on the screen
+        /// </summary>
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// Gets the total number of frames since profiler started
@@ -86,63 +84,43 @@ namespace Nine
         /// <summary>
         /// The main constructor for the class.
         /// </summary>
-        public FrameRate(Game game, string font) : base(game)
+        public FrameRate(GraphicsDevice graphics, SpriteFont font)
         {
-            this.font = font;
-            this.UpdateFrequency = 1000;
+            this.Font = font;
+            this.GraphicsDevice = graphics;
+            this.UpdateFrequency = TimeSpan.FromSeconds(1);
             this.Color = Color.Yellow;
-#if DEBUG
-            game.Exiting += (o, e) =>
-            {
-                System.Diagnostics.Debug.WriteLine("Overall Frames Per Seconds: " + OverallFPS);
-            };
-#endif
         }
-
-        protected override void LoadContent()
+        
+        public void Draw(TimeSpan elapsedTime)
         {
-            if (!string.IsNullOrEmpty(font))
-                Font = Game.Content.Load<SpriteFont>(font);
+            UpdateFPS(elapsedTime);
 
-            base.LoadContent();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            UpdateFPS(gameTime);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
             // Draw FPS text
-            if (Font != null)
+            if (Font != null && GraphicsDevice != null)
             {
-                if (SpriteBatch == null)
-                    SpriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
+                SpriteBatch spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
 
-                SpriteBatch.Begin();
-                SpriteBatch.DrawString(Font, "FPS: " + fps, Position, Color);
-                SpriteBatch.End();
+                spriteBatch.Begin();
+                spriteBatch.DrawString(Font, string.Format("FPS: {0:00.00}", fps), Position, Color);
+                spriteBatch.End();
 
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             }
         }
 
-        private void UpdateFPS(GameTime gameTime)
+        private void UpdateFPS(TimeSpan elapsedTime)
         {
-            if (!this.Enabled)
-                return;
-
             counter++;
             currentFrame++;
 
-            float elapsed = (float)(gameTime.TotalGameTime.TotalMilliseconds - storedTime);
+            elapsedTimeSinceLastUpdate += elapsedTime;
 
-            if (elapsed > UpdateFrequency)
+            if (elapsedTimeSinceLastUpdate >= UpdateFrequency)
             {
-                fps = 1000 * counter / elapsed;
+                fps = (float)(1000 * counter / elapsedTimeSinceLastUpdate.TotalMilliseconds);
                 counter = 0;
-                storedTime = gameTime.TotalGameTime.TotalMilliseconds;
+                elapsedTimeSinceLastUpdate -= UpdateFrequency;
 
                 overallFps = (overallFps * updateCount + fps) / (updateCount + 1);
                 updateCount++;

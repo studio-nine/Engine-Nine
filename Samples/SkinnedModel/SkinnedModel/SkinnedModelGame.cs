@@ -21,6 +21,7 @@ using Nine.Graphics.Effects;
 #endif
 using Nine.Animations;
 using System.ComponentModel;
+using Nine.Components;
 #endregion
 
 namespace SkinnedModel
@@ -76,8 +77,6 @@ namespace SkinnedModel
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
         }
 
         /// <summary>
@@ -86,6 +85,9 @@ namespace SkinnedModel
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             // Create a model viewer camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);
 
@@ -213,9 +215,9 @@ namespace SkinnedModel
             // Makes the model looks at the camera
             lookAtController.Target = Matrix.Invert(camera.View).Translation;
 
-            animation1.Update(gameTime);
-            animation2.Update(gameTime);
-            animation3.Update(gameTime);
+            animation1.Update(gameTime.ElapsedGameTime);
+            animation2.Update(gameTime.ElapsedGameTime);
+            animation3.Update(gameTime.ElapsedGameTime);
 
             GraphicsDevice.Clear(Color.DarkSlateGray);
 

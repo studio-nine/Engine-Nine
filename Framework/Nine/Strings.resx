@@ -120,6 +120,9 @@
   <data name="AlreadyInBeginEndPair" xml:space="preserve">
     <value>Begin cannot be called until End has been successfully called.</value>
   </data>
+  <data name="InvalidGraphicsProfile" xml:space="preserve">
+    <value>The specified graphics profile is not supported.</value>
+  </data>
   <data name="InvalidPrimitive" xml:space="preserve">
     <value>The input primitive is invalid.</value>
   </data>

@@ -22,7 +22,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Defines an basic screen effect that uses only one <c>Effect</c>.
     /// </summary>
-    public class BasicScreenEffect : IScreenEffect, IUpdateObject, IEffectTexture
+    public class BasicScreenEffect : IScreenEffect, IUpdateable, IEffectTexture
     {
         /// <summary>
         /// Gets the GraphicsDevice associated with this instance.
@@ -102,10 +102,10 @@ namespace Nine.Graphics.ScreenEffects
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(TimeSpan elapsedTime)
         {
-            if (Enabled && Effect is IUpdateObject)
-                ((IUpdateObject)Effect).Update(gameTime);
+            if (Enabled && Effect is IUpdateable)
+                ((IUpdateable)Effect).Update(elapsedTime);
         }
     }
 

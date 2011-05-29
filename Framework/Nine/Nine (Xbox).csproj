@@ -43,14 +43,28 @@
     <XnaCompressContent>true</XnaCompressContent>
     <DocumentationFile>..\..\References\Xbox 360\Nine.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Nine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\AvatarAnimation.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
     <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
+    <Compile Include="Animations\IBoneHierarchy.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
@@ -266,12 +280,13 @@
     </Compile>
     <Compile Include="Graphics\TextureList.cs" />
     <Compile Include="Graphics\VertexPositionNormal.cs" />
+    <Compile Include="IInputSource.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="InputEventArgs.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="EnumerableCollection.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FrameRate.cs" />
-    <Compile Include="GameConsole.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\Effects\EffectParts\PointLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\SpotLightEffectPart.cs" />
@@ -342,8 +357,6 @@
       <DependentUpon>DecalEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\ParticleEffects\ParticleEmitter.cs" />
-    <Compile Include="Input.cs">
-    </Compile>
     <Compile Include="Graphics\FreeCamera.cs" />
     <Compile Include="Graphics\ModelViewerCamera.cs" />
     <Compile Include="Graphics\TopDownEditorCamera.cs" />
@@ -354,7 +367,6 @@
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />
     <Compile Include="Graphics\VertexPositionNormalTangentTexture.cs" />
-    <Compile Include="ScreenshotCapturer.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -485,14 +497,13 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>WiggleEffect.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Graphics">
       <Private>False</Private>
     </Reference>

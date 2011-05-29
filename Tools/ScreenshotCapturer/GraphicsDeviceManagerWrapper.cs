@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
+using Nine.Components;
 #endregion
 
 namespace Nine.Tools.ScreenshotCapturer
@@ -29,7 +30,7 @@ namespace Nine.Tools.ScreenshotCapturer
 
     class GraphicsDeviceManagerWrapper : IGraphicsDeviceService, IDisposable, IGraphicsDeviceManager
     {
-        Nine.ScreenshotCapturer capturer = null;
+        Nine.Components.ScreenshotCapturer capturer = null;
         IGraphicsDeviceManager manager;
         IGraphicsDeviceService service;
         Game game;
@@ -71,7 +72,7 @@ namespace Nine.Tools.ScreenshotCapturer
             game.Services.AddService(typeof(IGraphicsDeviceManager), this);
             game.Services.AddService(typeof(IGraphicsDeviceService), this);
 
-            game.Components.Add(capturer = new Nine.ScreenshotCapturer(game));
+            game.Components.Add(capturer = new Nine.Components.ScreenshotCapturer(GraphicsDevice));
         }
         
         public bool BeginDraw()

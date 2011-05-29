@@ -20,6 +20,7 @@ using Nine.Graphics.Effects;
 using Nine.Graphics.ScreenEffects;
 using Nine.Animations;
 using System.ComponentModel;
+using Nine.Components;
 #endregion
 
 namespace SpriteAnimationGame
@@ -50,7 +51,6 @@ namespace SpriteAnimationGame
 
             Content.RootDirectory = "Content";
             IsFixedTimeStep = false;
-            Components.Add(new FrameRate(this, "Consolas"));
             IsMouseVisible = true;
         }
 
@@ -61,6 +61,9 @@ namespace SpriteAnimationGame
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
@@ -102,8 +105,8 @@ namespace SpriteAnimationGame
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             // Update animations
-            run.Update(gameTime);
-            fireball.Update(gameTime);
+            run.Update(gameTime.ElapsedGameTime);
+            fireball.Update(gameTime.ElapsedGameTime);
 
             Vector2 position = new Vector2(100, 300);
 

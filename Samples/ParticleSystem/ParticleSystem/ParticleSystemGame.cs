@@ -19,6 +19,7 @@ using Nine.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Animations;
 using System.ComponentModel;
+using Nine.Components;
 #endregion
 
 namespace ParticleSystem
@@ -63,8 +64,6 @@ namespace ParticleSystem
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Components.Add(new FrameRate(this, "Consolas"));
-            Components.Add(new InputComponent(Window.Handle));
         }
 
 
@@ -74,6 +73,9 @@ namespace ParticleSystem
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            Components.Add(new InputComponent(Window.Handle));
+
             camera = new ModelViewerCamera(GraphicsDevice);
 
             particlePatch = new ParticleBatch(GraphicsDevice);
@@ -136,8 +138,8 @@ namespace ParticleSystem
             
 
             // Update effects
-            fireworks.Update(gameTime);
-            galaxy.Update(gameTime);
+            fireworks.Update(gameTime.ElapsedGameTime);
+            galaxy.Update(gameTime.ElapsedGameTime);
 
 
             // Draw particle system using ParticleBatch

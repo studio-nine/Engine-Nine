@@ -7,6 +7,7 @@
 #endregion
 
 using Nine;
+using Nine.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -45,9 +46,6 @@ namespace Nine.Test
             input2.MouseWheel += (o, e) => { };
             input2.KeyDown += (o, e) => { };
             input2.KeyUp += (o, e) => { };
-
-            game.Tick();
-            game.Exit();
         }
 
         [TestMethod()]

@@ -22,7 +22,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Defines a post processing effect combined from multiple passes.
     /// </summary>
-    public class MultiPassScreenEffect : IScreenEffect, IUpdateObject, IEffectTexture
+    public class MultiPassScreenEffect : IScreenEffect, IUpdateable, IEffectTexture
     {
         /// <summary>
         /// Gets the GraphicsDevice associated with this instance.
@@ -175,15 +175,15 @@ namespace Nine.Graphics.ScreenEffects
         }
         
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(TimeSpan elapsedTime)
         {
             if (Enabled)
             {
-                foreach (IUpdateObject pass in Passes)
-                    pass.Update(gameTime);
+                foreach (IUpdateable pass in Passes)
+                    pass.Update(elapsedTime);
 
-                if (CombineEffect is IUpdateObject)
-                    ((IUpdateObject)CombineEffect).Update(gameTime);
+                if (CombineEffect is IUpdateable)
+                    ((IUpdateable)CombineEffect).Update(elapsedTime);
             }
         }
     }

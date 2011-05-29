@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine
+namespace Nine.Components
 {
     /// <summary>
     /// EventArgs used by ScreenshotCapturer.
@@ -40,7 +40,7 @@ namespace Nine
     /// <summary>
     /// Screenshot capturer component that captures screenshots.
     /// </summary>
-    public class ScreenshotCapturer : DrawableGameComponent
+    public class ScreenshotCapturer : IDrawable
     {
         #region Variables
         /// <summary>
@@ -71,6 +71,11 @@ namespace Nine
         public Keys CaptureKey { get; set; }
 
         /// <summary>
+        /// Gets the graphics device.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
         /// Occurs when a new screenshot is captured.
         /// </summary>
         public event EventHandler<ScreenshotCapturedEventArgs> Captured;
@@ -80,8 +85,12 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of ScreenshotCapturer.
         /// </summary>
-        public ScreenshotCapturer(Game game) : base(game)
+        public ScreenshotCapturer(GraphicsDevice graphics)
         {
+            if (graphics.GraphicsProfile == GraphicsProfile.Reach)
+                throw new NotSupportedException(Strings.InvalidGraphicsProfile);
+
+            GraphicsDevice = graphics;
             ScreenshotsDirectory = "Screenshots";
             screenshotNum = GetCurrentScreenshotNum();
             CaptureKey = Keys.PrintScreen;
@@ -97,9 +106,7 @@ namespace Nine
         /// <returns>String</returns>
         private string ScreenshotNameBuilder(int num)
         {
-            return ScreenshotsDirectory + "/" +
-                Game.Window.Title + " Screenshot " +
-                num.ToString("0000") + ".png";
+            return ScreenshotsDirectory + "/Screenshot " + num.ToString("0000") + ".png";
         }
         #endregion
 
@@ -189,14 +196,14 @@ namespace Nine
 
             try
             {
-                int width = Game.GraphicsDevice.PresentationParameters.BackBufferWidth;
-                int height = Game.GraphicsDevice.PresentationParameters.BackBufferHeight;
+                int width = GraphicsDevice.PresentationParameters.BackBufferWidth;
+                int height = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
                 // Get data with help of the resolve method
                 Color[] backbuffer = new Color[width * height];
-                Game.GraphicsDevice.GetBackBufferData<Color>(backbuffer);
+                GraphicsDevice.GetBackBufferData<Color>(backbuffer);
 
-                screenshot = new Texture2D(Game.GraphicsDevice, width, height);
+                screenshot = new Texture2D(GraphicsDevice, width, height);
                 screenshot.SetData<Color>(backbuffer);
 #if WINDOWS
                 screenshotNum++;
@@ -232,10 +239,8 @@ namespace Nine
                 Captured(this, e);
         }
 
-        public override void Draw(GameTime gameTime)
+        public void Draw(TimeSpan elapsedTime)
         {
-            base.Draw(gameTime);
-
             bool pressed = Keyboard.GetState().IsKeyDown(CaptureKey);
 
             if (pressedLastFrame && !pressed)

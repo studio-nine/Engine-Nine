@@ -159,14 +159,14 @@ namespace Nine.Animations
 
         public override event EventHandler Completed;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing)
             {
-                IUpdateObject update = Current as IUpdateObject;
+                IUpdateable update = Current as IUpdateable;
 
                 if (update != null)
-                    update.Update(gameTime);
+                    update.Update(elapsedTime);
 
 
                 if (Current != null &&

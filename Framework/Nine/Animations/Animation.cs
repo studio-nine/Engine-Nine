@@ -23,7 +23,7 @@ namespace Nine.Animations
     /// <summary>
     /// Base class for all playable animations.
     /// </summary>
-    public abstract class Animation : IUpdateObject, IAnimation
+    public abstract class Animation : IUpdateable, IAnimation
     {
         /// <summary>
         /// Gets the current state of the animation.
@@ -75,7 +75,7 @@ namespace Nine.Animations
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update(TimeSpan elapsedTime) { }
 
         /// <summary>
         /// Plays the animation from start.

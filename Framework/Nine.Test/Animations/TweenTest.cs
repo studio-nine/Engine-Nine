@@ -33,10 +33,10 @@ namespace Nine.Animations.Test
                 completed = true;
             };
             tween.Play();
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.34234f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.284957f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.0001479f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2.38562939f)));
+            tween.Update(TimeSpan.FromSeconds(0.34234f));
+            tween.Update(TimeSpan.FromSeconds(1.284957f));
+            tween.Update(TimeSpan.FromSeconds(0.0001479f));
+            tween.Update(TimeSpan.FromSeconds(2.38562939f));
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
@@ -59,7 +59,7 @@ namespace Nine.Animations.Test
                 completed = true;
             };
             tween.Play();
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.34234f)));
+            tween.Update(TimeSpan.FromSeconds(0.34234f));
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
@@ -83,10 +83,10 @@ namespace Nine.Animations.Test
                 completed = true;
             };
             tween.Play();
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.34234f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.284957f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.0001479f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2.38562939f)));
+            tween.Update(TimeSpan.FromSeconds(0.34234f));
+            tween.Update(TimeSpan.FromSeconds(1.284957f));
+            tween.Update(TimeSpan.FromSeconds(0.0001479f));
+            tween.Update(TimeSpan.FromSeconds(2.38562939f));
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(tween.Duration, tween.Position);
@@ -110,10 +110,10 @@ namespace Nine.Animations.Test
             };
             tween.StartupDirection = AnimationDirection.Backward;
             tween.Play();
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.34234f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(1.284957f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(0.0001479f)));
-            tween.Update(new GameTime(TimeSpan.Zero, TimeSpan.FromSeconds(2.38562939f)));
+            tween.Update(TimeSpan.FromSeconds(0.34234f));
+            tween.Update(TimeSpan.FromSeconds(1.284957f));
+            tween.Update(TimeSpan.FromSeconds(0.0001479f));
+            tween.Update(TimeSpan.FromSeconds(2.38562939f));
 
             Assert.IsTrue(completed);
             Assert.AreEqual<TimeSpan>(TimeSpan.Zero, tween.Position);

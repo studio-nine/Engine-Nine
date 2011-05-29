@@ -286,32 +286,32 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Updates the particle system.
         /// </summary>
-        public void Update(GameTime time)
+        public void Update(TimeSpan time)
         {
             Update(time, false);
         }
 
-        public void Update(GameTime time, bool ignoreTrigger)
+        public void Update(TimeSpan elapsedTime, bool ignoreTrigger)
         {
-            float elapsedTime = (float)time.ElapsedGameTime.TotalSeconds;
+            float elapsedSeconds = (float)elapsedTime.TotalSeconds;
 
             if (!ignoreTrigger)
-                UpdateTriggers(time, elapsedTime);
-            UpdateControllers(elapsedTime);
-            UpdateParticles(time, elapsedTime);
+                UpdateTriggers(elapsedTime);
+            UpdateControllers(elapsedSeconds);
+            UpdateParticles(elapsedTime);
             
             foreach (var childEffect in ChildEffects)
             {
-                childEffect.Update(time, true);
+                childEffect.Update(elapsedTime, true);
             }
 
             foreach (var endEffect in EndingEffects)
             {
-                endEffect.Update(time);
+                endEffect.Update(elapsedTime);
             }
         }
 
-        private void UpdateTriggers(GameTime time, float elapsedTime)
+        private void UpdateTriggers(TimeSpan elapsedTime)
         {
             if (!Enabled)
                 return;
@@ -325,21 +325,22 @@ namespace Nine.Graphics.ParticleEffects
                     continue;
                 }
 
-                anim.Update(time);
+                anim.Update(elapsedTime);
                 UpdateEmitter(anim.Position, elapsedTime);
             }
         }
 
-        private void UpdateEmitter(Vector3 position, float elapsedTime)
+        private void UpdateEmitter(Vector3 position, TimeSpan elapsedTime)
         {
             // Work out how much time has passed since the previous update.
             float timeBetweenParticles = 1.0f / Emission;
+            float elapsedSeconds = (float)elapsedTime.TotalSeconds;
 
-            if (elapsedTime > 0)
+            if (elapsedSeconds > 0)
             {
                 // If we had any time left over that we didn't use during the
                 // previous update, add that to the current elapsed time.
-                float timeToSpend = timeLeftOver + elapsedTime;
+                float timeToSpend = timeLeftOver + elapsedSeconds;
 
                 // Counter for looping over the time interval.
                 float currentTime = -timeLeftOver;
@@ -353,7 +354,7 @@ namespace Nine.Graphics.ParticleEffects
                     // Work out the optimal position for this particle. This will produce
                     // evenly spaced particles regardless of the object speed, particle
                     // creation frequency, or game update rate.
-                    float mu = currentTime / elapsedTime;
+                    float mu = currentTime / elapsedSeconds;
 
                     if (!EmitNewParticle(position, mu))
                         break;
@@ -410,15 +411,17 @@ namespace Nine.Graphics.ParticleEffects
             }
         }
 
-        private void UpdateParticles(GameTime time, float elapsedTime)
+        private void UpdateParticles(TimeSpan elapsedTime)
         {
+            float elapsedSeconds = (float)elapsedTime.TotalSeconds;
+
             bool hasEndingEffects = EndingEffects.Count > 0;
             bool hasChildEffects = ChildEffects.Count > 0;
 
             for (currentParticle = firstParticle; currentParticle != lastParticle;
                                                   currentParticle = (currentParticle + 1) % maxParticles)
             {
-                particles[currentParticle].Update(elapsedTime);
+                particles[currentParticle].Update(elapsedSeconds);
 
                 if (hasChildEffects)
                 {
@@ -426,7 +429,7 @@ namespace Nine.Graphics.ParticleEffects
                     {
                         foreach (var trigger in childEffect.TriggerList)
                             trigger.Position = particles[currentParticle].Position;
-                        childEffect.UpdateTriggers(time, elapsedTime);
+                        childEffect.UpdateTriggers(elapsedTime);
                     }
                 }
 
