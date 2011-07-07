@@ -19,7 +19,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    internal class SpotLightEffectPart : LinkedEffectPart, IEffectSpotLight
+    internal class SpotLightEffectPart : LinkedEffectPart, ISpotLight
     {
         private uint dirtyMask = 0;
         

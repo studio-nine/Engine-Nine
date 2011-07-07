@@ -68,7 +68,7 @@ namespace Nine.Components
         /// <summary>
         /// Gets the average frame rate up until now
         /// </summary>
-        public float OverallFPS
+        public float OverallFramesPerSecond
         {
             get { return overallFps; }
         }

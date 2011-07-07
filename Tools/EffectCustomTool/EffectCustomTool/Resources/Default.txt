@@ -11,10 +11,10 @@ namespace {$NAMESPACE}
 
     public partial class {$CLASS}
     {
-		private void OnCreated() { }
-		private void OnClone({$CLASS} cloneSource) { }
-		private void OnApplyChanges() { }
-    }	
+        private void OnCreated() { }
+        private void OnClone({$CLASS} cloneSource) { }
+        private void OnApplyChanges() { }
+    }
 
 #endif
 }

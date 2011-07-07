@@ -15,6 +15,7 @@ using System.Text;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 #endregion
 
 namespace Nine
@@ -113,6 +114,31 @@ namespace Nine
                 left * min.X, right * max.X, bottom * min.Y, top * max.Y, nearClip, farClip, out innerProject);
 
             return new BoundingFrustum(view * innerProject);
+        }
+
+        /// <summary>
+        /// Gets the picked position in world space from current mouse coordinates.
+        /// </summary>
+        public static bool TryPick(this IPickable pickable, Viewport viewport, Matrix view, Matrix projection, out Vector3 position)
+        {
+            MouseState mouse = Mouse.GetState();
+            return TryPick(pickable, viewport, mouse.X, mouse.Y, view, projection, out position);
+        }
+
+        /// <summary>
+        /// Gets the picked position in world space from screen coordinates.
+        /// </summary>
+        public static bool TryPick(this IPickable pickable, Viewport viewport, int x, int y, Matrix view, Matrix projection, out Vector3 position)
+        {
+            Ray pickRay = viewport.CreatePickRay(x, y, view, projection);
+            float? distance = pickable.Intersects(pickRay);
+            if (distance == null)
+            {
+                position = Vector3.Zero;
+                return false;
+            }
+            position = pickRay.Position + pickRay.Direction * distance.Value;
+            return true;
         }
     }
 

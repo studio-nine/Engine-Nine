@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +22,7 @@ namespace Nine
     /// <summary>
     /// Defines Spatial relations between objects.
     /// </summary>
-    public interface ISpatialQuery<T>
+    public interface ISpatialQuery<T> : IEnumerable<T>
     {
         /// <summary>
         /// Finds the nearest object intersects with the specified ray.
@@ -126,6 +127,80 @@ namespace Nine
             foreach (ISpatialQuery<TInput> query in InnerQueries)
                 foreach (TOutput output in Convert(query.FindAll(frustum)))
                     yield return output;
+        }
+
+        public IEnumerator<TOutput> GetEnumerator()
+        {
+            foreach (ISpatialQuery<TInput> query in InnerQueries)
+                foreach (TOutput output in Convert(query))
+                    yield return output;
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
+    /// <summary>
+    /// Represents a basic query from fixed list.
+    /// </summary>
+    public class SpatialQuery<T> : ISpatialQuery<T>
+    {
+        private IEnumerable<T> innerObjects;
+        public IEnumerable<T> Objects
+        {
+            get { return innerObjects ?? Enumerable.Empty<T>(); }
+            set { innerObjects = value; }
+        }
+
+        public SpatialQuery() { }
+
+        public SpatialQuery(IEnumerable<T> objects)
+        {
+            if (objects == null)
+                throw new ArgumentNullException("objects");
+            this.Objects = objects;
+        }
+        
+        public IEnumerable<T> FindAll(Vector3 position, float radius)
+        {
+            return Objects;
+        }
+
+        public IEnumerable<T> FindAll(BoundingBox box)
+        {
+            return Objects;
+        }
+
+        public IEnumerable<T> FindAll(BoundingSphere sphere)
+        {
+            return Objects;
+        }
+
+        public IEnumerable<T> FindAll(BoundingFrustum frustum)
+        {
+            return Objects;
+        }
+
+        public IEnumerable<T> FindAll(Ray ray)
+        {
+            return Objects;
+        }
+
+        public T Find(Ray ray)
+        {
+            return Objects.FirstOrDefault();
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return Objects.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

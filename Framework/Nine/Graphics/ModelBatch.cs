@@ -108,25 +108,19 @@ namespace Nine.Graphics
         private Matrix view;
         private Matrix projection;
 
+        private BasicEffect basicEffect;
+        private SkinnedEffect skinnedEffect;
+
         /// <summary>
         /// Gets the underlying graphics device used by this ModelBatch.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
-        /// Gets the basic effect used by this ModelBatch.
-        /// </summary>
-        internal BasicEffect BasicEffect { get; private set; }
-
-        /// <summary>
-        /// Gets the skinned effect used by this ModelBatch.
-        /// </summary>
-        internal SkinnedEffect SkinnedEffect { get; private set; }
-
-        /// <summary>
         /// Gets or sets user data.
         /// </summary>
         public object Tag { get; set; }
+
 
         /// <summary>
         /// Creates a new ModelBatch instance.
@@ -138,16 +132,16 @@ namespace Nine.Graphics
 
             GraphicsDevice = graphics;
 
-            BasicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
-            BasicEffect.TextureEnabled = true;
-            BasicEffect.VertexColorEnabled = true;
-            BasicEffect.PreferPerPixelLighting = true;
-            BasicEffect.EnableDefaultLighting();
+            basicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
+            basicEffect.TextureEnabled = true;
+            basicEffect.VertexColorEnabled = true;
+            basicEffect.PreferPerPixelLighting = true;
+            basicEffect.EnableDefaultLighting();
 
-            SkinnedEffect = (SkinnedEffect)GraphicsResources<SkinnedEffect>.GetInstance(GraphicsDevice).Clone();
-            SkinnedEffect.WeightsPerVertex = 4;
-            SkinnedEffect.PreferPerPixelLighting = true;
-            SkinnedEffect.EnableDefaultLighting();
+            skinnedEffect = (SkinnedEffect)GraphicsResources<SkinnedEffect>.GetInstance(GraphicsDevice).Clone();
+            skinnedEffect.WeightsPerVertex = 4;
+            skinnedEffect.PreferPerPixelLighting = true;
+            skinnedEffect.EnableDefaultLighting();
         }
 
         public void Begin(Matrix view, Matrix projection)
@@ -402,9 +396,9 @@ namespace Nine.Graphics
             if (effect == null)
             {
                 if (boneTransforms != null)
-                    effect = SkinnedEffect;
+                    effect = skinnedEffect;
                 else
-                    effect = BasicEffect;
+                    effect = basicEffect;
             }
             return effect;
         }
@@ -420,10 +414,10 @@ namespace Nine.Graphics
         {
             if (disposing)
             {
-                if (BasicEffect != null)
-                    BasicEffect.Dispose();
-                if (SkinnedEffect != null)
-                    SkinnedEffect.Dispose();
+                if (basicEffect != null)
+                    basicEffect.Dispose();
+                if (skinnedEffect != null)
+                    skinnedEffect.Dispose();
             }
         }
 

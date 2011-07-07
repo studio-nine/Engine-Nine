@@ -28,10 +28,13 @@ namespace MaterialsSample
     [Description("This sample demenstrates how to use LinkedEffect to create various materials.")]
     public class MaterialsGame : Microsoft.Xna.Framework.Game
     {
+        Model model;
+        ModelBatch modelBatch;
         ModelViewerCamera camera;
         DrawableSurface surface;
         BasicEffect basicEffect;
         LinkedEffect normalMappingEffect;
+        DirectionalLightEffect directionalLightEffect;
 
         public MaterialsGame()
         {
@@ -60,17 +63,35 @@ namespace MaterialsSample
 
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);
+            modelBatch = new ModelBatch(GraphicsDevice);
 
             // Create a terrain based on the terrain geometry loaded from file
             surface = new DrawableSurface(GraphicsDevice, 1, 32, 32, 8);
             surface.ConvertVertexType<VertexPositionNormalTangentBinormalTexture>(InitializeSurfaceVertices);
             surface.Position = -surface.BoundingBox.GetCenter();
 
+            normalMappingEffect = Content.Load<LinkedEffect>("NormalMappingEffect");
+
+            model = Content.Load<Model>("dude");
+
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.Texture = Content.Load<Texture2D>("box");
             basicEffect.TextureEnabled = true;
+            basicEffect.EnableDefaultLighting();
+            basicEffect.AmbientLightColor = Vector3.Zero;
 
-            normalMappingEffect = Content.Load<LinkedEffect>("NormalMappingEffect");
+            directionalLightEffect = new DirectionalLightEffect(GraphicsDevice);
+            directionalLightEffect.Lights[0].DiffuseColor = basicEffect.DirectionalLight0.DiffuseColor;
+            directionalLightEffect.Lights[0].Direction = basicEffect.DirectionalLight0.Direction;
+            directionalLightEffect.Lights[0].SpecularColor = basicEffect.DirectionalLight0.SpecularColor;
+
+            directionalLightEffect.Lights[1].DiffuseColor = basicEffect.DirectionalLight1.DiffuseColor;
+            directionalLightEffect.Lights[1].Direction = basicEffect.DirectionalLight1.Direction;
+            directionalLightEffect.Lights[1].SpecularColor = basicEffect.DirectionalLight1.SpecularColor;
+
+            directionalLightEffect.Lights[2].DiffuseColor = basicEffect.DirectionalLight2.DiffuseColor;
+            directionalLightEffect.Lights[2].Direction = basicEffect.DirectionalLight2.Direction;
+            directionalLightEffect.Lights[2].SpecularColor = basicEffect.DirectionalLight2.SpecularColor;
         }
 
         private void InitializeSurfaceVertices(int x, int y, ref VertexPositionColorNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
@@ -119,6 +140,10 @@ namespace MaterialsSample
                     patch.Draw(normalMappingEffect);
                 }
             }
+
+            modelBatch.Begin(camera.View, camera.Projection);
+            modelBatch.Draw(model, Matrix.CreateScale(0.1f), directionalLightEffect);
+            modelBatch.End();
 
             base.Draw(gameTime);
         }

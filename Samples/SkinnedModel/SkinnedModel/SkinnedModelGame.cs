@@ -100,7 +100,7 @@ namespace SkinnedModel
             // we will try to add model animation and skinning data.
             model = Content.Load<Model>("peon");
             hammer = Content.Load<Model>("hammer");
-
+            
 #if WINDOWS_PHONE
             // Convert the effect used by the model to SkinnedEffect to
             // support skeleton animation.

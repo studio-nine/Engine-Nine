@@ -18,6 +18,7 @@ echo.
 echo.
 echo Registering Effect Custom Tool...
 
+call %regasm% Nine.Tools.EffectCustomTool.dll /ur
 call %regasm% Nine.Tools.EffectCustomTool.dll /codebase
 
 if %PROCESSOR_ARCHITECTURE% == x86 goto regx86

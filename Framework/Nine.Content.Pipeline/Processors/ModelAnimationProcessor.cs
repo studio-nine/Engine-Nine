@@ -407,11 +407,11 @@ namespace Nine.Content.Pipeline.Processors
             float thresoldApproximate = 10000;
 
             if (maxDifference <= thresoldIdentical)
-                clip.PreferredEnding = Animations.KeyframeEnding.Discard;
+                clip.PreferredEnding = KeyframeEnding.Discard;
             else if (maxDifference <= thresoldApproximate)
-                clip.PreferredEnding = Animations.KeyframeEnding.Wrap;
+                clip.PreferredEnding = KeyframeEnding.Wrap;
             else
-                clip.PreferredEnding = Animations.KeyframeEnding.Clamp;
+                clip.PreferredEnding = KeyframeEnding.Clamp;
         }
 
         private float MatrixDifference(Matrix a, Matrix b)

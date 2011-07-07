@@ -88,6 +88,15 @@ namespace Nine {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target object is not a drawable view..
+        /// </summary>
+        internal static string NotADrawableView {
+            get {
+                return ResourceManager.GetString("NotADrawableView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Begin must be called successfully before End can be called..
         /// </summary>
         internal static string NotInBeginEndPair {

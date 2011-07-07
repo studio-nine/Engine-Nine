@@ -6,8 +6,9 @@ cd /D %BATDIR%
 setlocal
 
 call Framework
-call Test
 call Samples
 call Tools
+call Test
+call Documentation
 
 endlocal

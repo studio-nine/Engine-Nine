@@ -25,44 +25,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Graphics.Effects
 {
 #if !WINDOWS_PHONE
-    
-    public interface IEffectAmbientLight
-    {
-        /// <summary>
-        /// Gets or sets the ambient light color.
-        /// </summary>
-        Vector3 AmbientLightColor { get; set; }
-    }
-    
-    public interface IEffectDirectionalLight
-    {
-        Vector3 Direction { get; set; }
-        Vector3 DiffuseColor { get; set; }
-        Vector3 SpecularColor { get; set; }
-    }
-
-    public interface IEffectPointLight
-    {
-        Vector3 Position { get; set; }
-        Vector3 DiffuseColor { get; set; }
-        Vector3 SpecularColor { get; set; }
-        float Range { get; set; }
-        float Attenuation { get; set; }
-    }
-
-    public interface IEffectSpotLight
-    {
-        Vector3 Position { get; set; }
-        Vector3 Direction { get; set; }
-        Vector3 DiffuseColor { get; set; }
-        Vector3 SpecularColor { get; set; }
-
-        float Range { get; set; }
-        float Attenuation { get; set; }
-        float InnerAngle { get; set; }
-        float OuterAngle { get; set; }
-        float Falloff { get; set; }
-    }
 
     public interface IEffectShadowMap
     {

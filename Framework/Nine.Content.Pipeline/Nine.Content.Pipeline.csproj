@@ -79,6 +79,12 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="..\TextTemplates\Nine.Content.Model.Generated.cs">
+      <Link>Nine.Content.Model.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Content.Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="ContentReference.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Graphics\BlendStateSerializer.cs" />
@@ -90,7 +96,6 @@
       <DependentUpon>LinkedEffectParts.resx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\LinkedEffectContent.cs" />
-    <Compile Include="Graphics\ModelMeshPartTagContent.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffectContent.cs" />
     <Compile Include="Processors\LinkedEffectProcessor.cs" />
     <Compile Include="Processors\ModelCollisionProcessor.cs" />
@@ -340,6 +345,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\TextTemplates\Nine.Content.Model.tt">
+      <Link>Nine.Content.Model.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Content.Model.Generated.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
@@ -369,6 +379,9 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\VertexShaderOutput.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\VertexTransform.fragment" />
     <None Include="Nine.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

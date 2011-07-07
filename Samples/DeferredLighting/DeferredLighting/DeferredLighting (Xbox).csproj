@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{9f127490-8b8f-4c25-b37f-fa6dcc0f736c}</ProjectGuid>
+    <ProjectGuid>{9F127490-8B8F-4C25-B37F-FA6DCC0F736C}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">Xbox 360</Platform>
@@ -59,8 +59,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeferredLightingContent\DeferredLightingContent.contentproj">
-      <Name>DeferredLightingContent</Name>
+      <Name>DeferredLightingContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{653EAFD3-08FF-43C4-852E-F29D0756A118}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

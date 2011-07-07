@@ -33,15 +33,12 @@ namespace Nine.Tools.EffectCustomTool
         public string Designer;
         public string Default;
 
-        StringBuilder Apply = new StringBuilder();
-        StringBuilder Clone = new StringBuilder();
-        StringBuilder DirtyFlags = new StringBuilder();
-        StringBuilder Initialize = new StringBuilder();
-        StringBuilder Properties = new StringBuilder();
+        bool hiDef = false;
         string WindowsEffectCode;
         string XboxEffectCode;
-        bool hiDef = false;
-
+        string lastStructureName;
+        StringBuilder structures = new StringBuilder();
+        
         public EffectCompiler(string className, string nameSpace, string sourceFile)
         {
             // Create graphics device
@@ -76,12 +73,14 @@ namespace Nine.Tools.EffectCustomTool
 
             string indent = "        ";
 
+            StringBuilder check = new StringBuilder();
             if (hiDef)
             {
-                Initialize.AppendLine(indent + "    if (GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)");
-                Initialize.AppendFormat(indent + "        throw new InvalidOperationException(\"{{$CLASS}} requires GraphicsProfile.HiDef.\");");
-                Initialize.AppendLine();
-                Initialize.AppendLine();
+                check.AppendLine();
+                check.AppendLine(indent + "    if (GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)");
+                check.AppendFormat(indent + "        throw new InvalidOperationException(\"{{$CLASS}} requires GraphicsProfile.HiDef.\");");
+                check.AppendLine();
+                check.AppendLine();
             }
 
             windowsEffectCode = windowsCompiledEffect.GetEffectCode();
@@ -93,13 +92,38 @@ namespace Nine.Tools.EffectCustomTool
             // Initialize parameters
             Effect effect = new Effect(device, windowsEffectCode);
 
+            string body = GetProperties(className, indent, effect.Parameters);
+
+            string content = Strings.Designer;
+
+            content = content.Replace(@"{$CHECK}", check.ToString());
+            content = content.Replace(@"{$BODY}", body.ToString());
+            content = content.Replace(@"{$STRUCTS}", structures.ToString());
+            content = content.Replace(@"{$CLASS}", className);
+            content = content.Replace(@"{$NAMESPACE}", nameSpace);
+            content = content.Replace(@"{$XBOXBYTECODE}", XboxEffectCode);
+            content = content.Replace(@"{$WINDOWSBYTECODE}", WindowsEffectCode);
+            content = content.Replace(@"{$VERSION}", GetType().Assembly.GetName().Version.ToString(4));
+            content = content.Replace(@"{$RUNTIMEVERSION}", GetType().Assembly.ImageRuntimeVersion);
+
+            Designer = content;
+        }
+
+        private string GetProperties(string className, string indent, EffectParameterCollection effectParameters)
+        {
+            StringBuilder Apply = new StringBuilder();
+            StringBuilder Clone = new StringBuilder();
+            StringBuilder DirtyFlags = new StringBuilder();
+            StringBuilder Initialize = new StringBuilder();
+            StringBuilder Properties = new StringBuilder();
+
             uint dirtyFlag = 0;
 
             // Create a field and property for each effect parameter
-            for (int i = 0; i < effect.Parameters.Count; i++)
+            for (int i = 0; i < effectParameters.Count; i++)
             {
-                EffectParameter parameter = effect.Parameters[i];
-                Type parameterType;
+                EffectParameter parameter = effectParameters[i];
+                string parameterType;
                 try
                 {
                     parameterType = GetParameterType(parameter);
@@ -116,13 +140,31 @@ namespace Nine.Tools.EffectCustomTool
                 string fieldName = "_" + parameter.Name;
                 string parameterFieldName = "_" + parameter.Name + "Parameter";
                 string propertyName = parameter.Name;
-                string propertyTypeReference = isArray ? GetCSharpTypeName(parameterType) + "[]" : 
-                                                         GetCSharpTypeName(parameterType);
+                string propertyTypeReference = isArray ? parameterType + "[]" : parameterType;
                 string fieldDirtyFlagName = parameter.Name + "DirtyFlag";
 
                 // Initialize
                 Initialize.Append(indent);
-                Initialize.AppendFormat("    this.{0} = cloneSource.Parameters[\"{1}\"];", parameterFieldName, parameter.Name);
+                Initialize.AppendFormat("    this.{0} = cloneSource[\"{1}\"];", parameterFieldName, parameter.Name);
+                if (IsStruct(parameter))
+                {
+                    Initialize.AppendLine();
+                    Initialize.Append(indent);
+                    if (isArray)
+                    {
+                        Initialize.AppendFormat("    this.{0} = new {1}[{2}];", fieldName, parameterType, parameter.Elements.Count);
+                        Initialize.AppendLine();
+                        Initialize.Append(indent);
+                        Initialize.AppendFormat("    for (int i = 0; i < this.{0}.Length; i++)", fieldName);
+                        Initialize.AppendLine();
+                        Initialize.Append(indent);
+                        Initialize.AppendFormat("        this.{0}[i] = new {1}({2}.Elements[i].StructureMembers);", fieldName, parameterType, parameterFieldName);
+                    }
+                    else
+                    {
+                        Initialize.AppendFormat("    this.{0} = new {1}({2});", fieldName, parameterType, parameterFieldName);
+                    }
+                }
                 Initialize.AppendLine();
 
 
@@ -132,15 +174,33 @@ namespace Nine.Tools.EffectCustomTool
                 Clone.AppendFormat(indent + "    this.{0} = cloneSource.{0};", fieldName);
                 Clone.AppendLine();
 
-                Apply.AppendFormat(indent + "    if ((this.dirtyFlag & {0}) != 0)", fieldDirtyFlagName);
-                Apply.AppendLine();
-                Apply.AppendLine(indent + "    {");
-                Apply.AppendFormat(indent + "        this.{0}.SetValue({1});", parameterFieldName, fieldName);
-                Apply.AppendLine();
-                Apply.AppendFormat(indent + "        this.dirtyFlag &= ~{0};", fieldDirtyFlagName);
-                Apply.AppendLine();
-                Apply.AppendLine(indent + "    }");
-
+                if (IsStruct(parameter))
+                {
+                    if (isArray)
+                    {
+                        Apply.Append(indent);
+                        Apply.AppendFormat("    for (int i = 0; i < {0}; i++)", parameter.Elements.Count);
+                        Apply.AppendLine();
+                        Apply.Append(indent);
+                        Apply.AppendFormat("        this.{0}[i].Apply();", fieldName);
+                    }
+                    else
+                    {
+                        Apply.AppendFormat(indent + "    this.{0}.Apply();", fieldName);
+                    }
+                    Apply.AppendLine();
+                }
+                else
+                {
+                    Apply.AppendFormat(indent + "    if ((this.dirtyFlag & {0}) != 0)", fieldDirtyFlagName);
+                    Apply.AppendLine();
+                    Apply.AppendLine(indent + "    {");
+                    Apply.AppendFormat(indent + "        this.{0}.SetValue({1});", parameterFieldName, fieldName);
+                    Apply.AppendLine();
+                    Apply.AppendFormat(indent + "        this.dirtyFlag &= ~{0};", fieldDirtyFlagName);
+                    Apply.AppendLine();
+                    Apply.AppendLine(indent + "    }");
+                }
 
                 // Field
                 Properties.Append(indent);
@@ -165,7 +225,7 @@ namespace Nine.Tools.EffectCustomTool
                     Properties.Append(indent);
                     Properties.AppendLine("/// </summary>");
                 }
-                
+
                 // Property
                 Properties.Append(indent);
                 Properties.Append(isPublic ? "public " : "internal ");
@@ -181,9 +241,19 @@ namespace Nine.Tools.EffectCustomTool
                 Properties.AppendLine();
 
                 // Set method
-                Properties.Append(indent);
-                Properties.AppendFormat(@"    set {{ {0} = value; dirtyFlag |= {1}; }}", fieldName, fieldDirtyFlagName);
-                Properties.AppendLine();
+                if (HasSetMethod(parameter))
+                {
+                    Properties.Append(indent);
+                    if (ShouldCompareValue(parameter))
+                    {
+                        Properties.AppendFormat(@"    set {{ if ({0} != value) {{ {0} = value; dirtyFlag |= {1}; }} }}", fieldName, fieldDirtyFlagName);
+                    }
+                    else
+                    {
+                        Properties.AppendFormat(@"    set {{ {0} = value; dirtyFlag |= {1}; }}", fieldName, fieldDirtyFlagName);
+                    }
+                    Properties.AppendLine();
+                }
                 Properties.Append(indent + "}");
                 Properties.AppendLine();
                 Properties.AppendLine();
@@ -191,22 +261,31 @@ namespace Nine.Tools.EffectCustomTool
                 dirtyFlag++;
             }
 
-
-            string content = Strings.Designer;
-
+            string content = Strings.Body.Replace("        ", indent);
             content = content.Replace(@"{$PROPERTIES}", Properties.ToString());
             content = content.Replace(@"{$INITIALIZE}", Initialize.ToString());
             content = content.Replace(@"{$APPLY}", Apply.ToString());
             content = content.Replace(@"{$CLONE}", Clone.ToString());
-            content = content.Replace(@"{$DIRTYFLAGS}", DirtyFlags.ToString());
             content = content.Replace(@"{$CLASS}", className);
-            content = content.Replace(@"{$NAMESPACE}", nameSpace);
-            content = content.Replace(@"{$XBOXBYTECODE}", XboxEffectCode);
-            content = content.Replace(@"{$WINDOWSBYTECODE}", WindowsEffectCode);
-            content = content.Replace(@"{$VERSION}", GetType().Assembly.GetName().Version.ToString(4));
-            content = content.Replace(@"{$RUNTIMEVERSION}", GetType().Assembly.ImageRuntimeVersion);
+            content = content.Replace(@"{$DIRTYFLAGS}", DirtyFlags.ToString());
+            return content.ToString();
+        }
 
-            Designer = content;
+        private bool IsStruct(EffectParameter parameter)
+        {
+            return parameter.ParameterClass == EffectParameterClass.Struct;
+        }
+
+        private bool HasSetMethod(EffectParameter parameter)
+        {
+            return parameter.ParameterClass != EffectParameterClass.Struct;
+        }
+
+        private bool ShouldCompareValue(EffectParameter parameter)
+        {
+            return !IsArray(parameter) && 
+                   (parameter.ParameterClass == EffectParameterClass.Scalar ||
+                    parameter.ParameterClass == EffectParameterClass.Object);
         }
 
         private static CompiledEffectContent BuildEffect(string sourceFile, TargetPlatform targetPlatform, GraphicsProfile targetProfile)
@@ -249,7 +328,7 @@ namespace Nine.Tools.EffectCustomTool
             return type.Name;
         }
 
-        private static Type GetParameterType(EffectParameter effectParameter)
+        private string GetParameterType(EffectParameter effectParameter)
         {
             bool isArray = IsArray(effectParameter);
 
@@ -257,7 +336,7 @@ namespace Nine.Tools.EffectCustomTool
             {
                 case EffectParameterClass.Matrix:
                     if (effectParameter.ParameterType == EffectParameterType.Single && effectParameter.RowCount == 4 && effectParameter.ColumnCount == 4)
-                        return typeof(Matrix);
+                        return GetCSharpTypeName(typeof(Matrix));
                     break;
 
                 case EffectParameterClass.Object:
@@ -265,40 +344,28 @@ namespace Nine.Tools.EffectCustomTool
                     switch (effectParameter.ParameterType)
                     {
                         case EffectParameterType.String:
-                            return typeof(String);
+                            return GetCSharpTypeName(typeof(String));
 
                         case EffectParameterType.Single:
-                            return typeof(float);
+                            return GetCSharpTypeName(typeof(float));
 
                         case EffectParameterType.Int32:
-                            if (isArray)
-                                throw new NotSupportedException("Array not supported");
-                            return typeof(Int32);
+                            return GetCSharpTypeName(typeof(Int32));
 
                         case EffectParameterType.Bool:
-                            if (isArray)
-                                throw new NotSupportedException("Array not supported");
-                            return typeof(bool);
+                            return GetCSharpTypeName(typeof(bool));
 
-                        case EffectParameterType.Texture:
-                            if (isArray)
-                                throw new NotSupportedException("Array not supported");                         
-                            return typeof(Texture2D);
+                        case EffectParameterType.Texture:                     
+                            return GetCSharpTypeName(typeof(Texture2D));
 
                         case EffectParameterType.Texture2D:
-                            if (isArray)
-                                throw new NotSupportedException("Array not supported");
-                            return typeof(Texture2D);
+                            return GetCSharpTypeName(typeof(Texture2D));
 
                         case EffectParameterType.Texture3D:
-                            if (isArray)
-                                throw new NotSupportedException("Array not supported");
-                            return typeof(Texture3D);
+                            return GetCSharpTypeName(typeof(Texture3D));
 
                         case EffectParameterType.TextureCube:
-                            if (isArray)
-                                throw new NotSupportedException("Array not supported");
-                            return typeof(TextureCube);
+                            return GetCSharpTypeName(typeof(TextureCube));
                     }
                     break;
 
@@ -306,12 +373,19 @@ namespace Nine.Tools.EffectCustomTool
                     switch (effectParameter.ParameterType)
                     {
                         case EffectParameterType.Single:
-                            return typeof(float);
+                            return GetCSharpTypeName(typeof(float));
+                        case EffectParameterType.Int32:
+                            return GetCSharpTypeName(typeof(int));
+                        case EffectParameterType.Bool:
+                            return GetCSharpTypeName(typeof(bool));
                     }
                     break;
 
                 case EffectParameterClass.Struct:
-                    throw new NotSupportedException(""); //TODO: support structs
+                    if (isArray)
+                        return AddStruct(effectParameter.Elements[0]);
+                    return AddStruct(effectParameter);
+                    break;
 
                 case EffectParameterClass.Vector:
 
@@ -321,11 +395,11 @@ namespace Nine.Tools.EffectCustomTool
                             switch (effectParameter.ColumnCount)
                             {
                                 case 2:
-                                    return typeof(Vector2);
+                                    return GetCSharpTypeName(typeof(Vector2));
                                 case 3:
-                                    return typeof(Vector3);
+                                    return GetCSharpTypeName(typeof(Vector3));
                                 case 4:
-                                    return typeof(Vector4);
+                                    return GetCSharpTypeName(typeof(Vector4));
                             }
                             break;
                     }
@@ -335,6 +409,18 @@ namespace Nine.Tools.EffectCustomTool
             throw new NotSupportedException("");
         }
 
+        private string AddStruct(EffectParameter effectParameter)
+        {
+            string className = "Class_" + effectParameter.Name;
+            var body = GetProperties(className, "            ", effectParameter.StructureMembers);
+
+            string content = Strings.Struct;
+            content = content.Replace(@"{$BODY}", body.ToString());
+            content = content.Replace(@"{$CLASS}", className);
+            structures.AppendLine();
+            structures.Append(content);
+            return className;
+        }
 
         private static string ByteArrayToString(byte[] effectCode)
         {
@@ -353,7 +439,7 @@ namespace Nine.Tools.EffectCustomTool
 
         static void Main(string[] args)
         {
-            EffectCompiler compiler = new EffectCompiler("Hi", "NS", @"D:\BasicEffect.fx");
+            EffectCompiler compiler = new EffectCompiler("DirectionalLightEffect", "Nine.Graphics.Effects", @"D:\BasicEffect.fx");
 
             File.WriteAllText(@"D:\BasicEffect.Designer.cs", compiler.Designer);
         }

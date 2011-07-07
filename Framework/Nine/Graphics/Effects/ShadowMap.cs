@@ -26,6 +26,7 @@ namespace Nine.Graphics.Effects
     public class ShadowMap : IDisposable
     {
         bool hasBegin;
+        Effect effect;
         BlurEffect blur;
         RenderTarget2D renderTarget;
         RenderTarget2D depthBlur;
@@ -34,11 +35,6 @@ namespace Nine.Graphics.Effects
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
-
-        /// <summary>
-        /// Gets the effect used to draw models between Begin/End pair.
-        /// </summary>
-        public Effect Effect { get; private set; }
 
         /// <summary>
         /// Gets or sets the size of the shadow map texture.
@@ -62,22 +58,20 @@ namespace Nine.Graphics.Effects
         public bool BlurEnabled { get; set; }
 
         /// <summary>
+        /// Gets the effect used to draw models between Begin/End pair.
+        /// </summary>
+        public Effect Effect 
+        {
+            get { return effect ?? (effect = new DepthEffect(GraphicsDevice)); } 
+        }
+
+        /// <summary>
         /// Gets the underlying blur effect used to blur the final shadow map.
         /// </summary>
         public BlurEffect Blur
         {
-            get
-            {
-                if (blur == null)
-                {
-                    blur = new BlurEffect(GraphicsDevice);
-
-                    // A 3x3 blur core will produce a good result while still retain framerate.
-                    blur.SampleCount = BlurEffect.MinSampleCount;
-                }
-
-                return blur;
-            }
+            get { return blur ?? (blur = new BlurEffect(GraphicsDevice) 
+                { SampleCount = BlurEffect.MinSampleCount }); } 
         }
 
         /// <summary>
@@ -88,7 +82,6 @@ namespace Nine.Graphics.Effects
             GraphicsDevice = graphics;
             Size = size;
             SurfaceFormat = SurfaceFormat.Single;
-            Effect = new DepthEffect(graphics);
         }
 
         /// <summary>

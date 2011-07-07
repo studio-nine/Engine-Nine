@@ -89,7 +89,7 @@
     <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
-    <Compile Include="Animations\IBoneHierarchy.cs" />
+    <Compile Include="Animations\BoneHierarchy.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
@@ -99,7 +99,45 @@
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
+    <Compile Include="Graphics\Lights.cs" />
+    <Compile Include="Graphics\Effects\Deferred\DeferredEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeferredEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffect.cs">
+      <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffectHiDef.cs">
+      <DependentUpon>DirectionalLightEffectHiDef.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffectHiDef.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DirectionalLightEffectHiDef.fx</DependentUpon>
+    </Compile>
+    <Compile Include="UniformGrid.cs" />
+    <Compile Include="NotificationCollection.cs" />
     <Compile Include="Graphics\BlendStateReader.cs" />
+    <None Include="Graphics\Effects\DirectionalLightEffectHiDef.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DirectionalLightEffectHiDef.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\DirectionalLight.fxh" />
+    <None Include="Graphics\Effects\DirectionalLightEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DirectionalLightEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\Deferred\ClearEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ClearEffect.Designer.cs</LastGenOutput>
@@ -152,11 +190,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeferredSpotLight.fx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Graphics\Primitives\Centrum.cs" />
     <Compile Include="Graphics\Primitives\Bezier.cs" />
     <Compile Include="Graphics\Primitives\Cube.cs" />
@@ -174,11 +207,6 @@
       <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\DeferredEffect.cs">
-      <DependentUpon>DeferredEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\Deferred\DeferredEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>DeferredEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\GraphicsBufferEffect.cs">
@@ -426,15 +454,11 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="Curves.cs" />
-    <Compile Include="ZipContentmanager.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumerableCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Graphics\Effects\DepthEffect.cs">
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>

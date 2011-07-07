@@ -1,0 +1,14 @@
+        internal class {$CLASS}
+        {
+            public {$CLASS}(EffectParameterCollection structureMembers)
+            {
+                CacheEffectParameters(structureMembers);
+            }
+
+            public void Apply()
+            {
+                ApplyChanges();
+            }
+
+{$BODY}
+        }

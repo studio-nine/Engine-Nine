@@ -138,7 +138,7 @@ namespace Nine.Animations
             set
             {
                 if (value <= 0)
-                    throw new InvalidOperationException("Speed must be greater then zero.");
+                    throw new InvalidOperationException("Repeat must be greater then zero.");
 
                 repeat = value;
             }

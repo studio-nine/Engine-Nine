@@ -108,11 +108,33 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
-    <Compile Include="Scene.cs" />
-    <Compile Include="Graphics\GraphicsPasses.cs" />
-    <Compile Include="Graphics\DrawEventArgs.cs" />
-    <Compile Include="ExpandableObjectCollection.cs" />
+    <Compile Include="Graphics\GraphicsSettings.cs" />
+    <Compile Include="Graphics\Views\DirectionalLightView.HiDef.cs" />
+    <Compile Include="Graphics\Views\LightView.cs" />
+    <Compile Include="Graphics\Views\DirectionalLightView.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Graphics\LightCollection.cs" />
+    <Compile Include="Graphics\Interface.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="TimeEventArgs.cs" />
+    <Compile Include="TemplateFactory.cs" />
+    <Compile Include="WorldObject.cs" />
+    <Compile Include="FreeObject.cs" />
+    <Compile Include="Graphics\Passes\BasicDrawPass.cs" />
+    <Compile Include="Graphics\Passes\ShadowMapPass.cs" />
+    <Compile Include="Graphics\GraphicsPass.cs" />
+    <Compile Include="Graphics\Renderer.cs" />
+    <Compile Include="Graphics\GraphicsExtensions.cs" />
+    <Compile Include="SerializationExtensions.cs" />
+    <Compile Include="World.cs" />
+    <Compile Include="Graphics\Views\ParticleEffectView.cs" />
+    <Compile Include="Graphics\Views\ViewTemplate.cs" />
+    <Compile Include="Graphics\Views\ModelView.cs" />
+    <Compile Include="Graphics\GraphicsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorldObjectCollection.cs" />
+    <Compile Include="Interface.cs" />
+    <Compile Include="Components\ZipContentmanager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine\Nine.csproj">

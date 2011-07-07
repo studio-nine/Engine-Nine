@@ -143,7 +143,6 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets user data.
         /// </summary>
-        [ContentSerializer(Optional = true, SharedResource=true)]
         public object Tag { get; set; }
 
         /// <summary>

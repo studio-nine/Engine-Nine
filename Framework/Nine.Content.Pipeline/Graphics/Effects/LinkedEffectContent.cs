@@ -67,6 +67,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// Gets or sets the path of the file.
         /// </summary>
+        [ContentSerializerIgnore]
         public string Path { get; set; }
 
         public override string Code { get { return System.IO.File.ReadAllText(Path); } }

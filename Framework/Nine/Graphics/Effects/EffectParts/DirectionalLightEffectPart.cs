@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
     
-    internal class DirectionalLightEffectPart : LinkedEffectPart, IEffectDirectionalLight
+    internal class DirectionalLightEffectPart : LinkedEffectPart, IDirectionalLight
     {
         private uint dirtyMask = 0;
         

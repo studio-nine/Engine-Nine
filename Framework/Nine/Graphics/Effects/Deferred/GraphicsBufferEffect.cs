@@ -62,11 +62,9 @@ namespace Nine.Graphics.Effects.Deferred
         {
             if (shaderIndexNeedsUpdate)
             {
-                int shaderIndex = SkinningEnabled ? 1 : 0;
-                shaderIndex += NormalMappingEnabled ? 2 : 0;
-
-                Parameters["ShaderIndex"].SetValue(shaderIndex);
-
+                int index = SkinningEnabled ? 1 : 0;
+                index += NormalMappingEnabled ? 2 : 0;
+                shaderIndex = index;
                 shaderIndexNeedsUpdate = false;
             }
         }

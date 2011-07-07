@@ -134,23 +134,13 @@ namespace Nine.Graphics.ParticleEffects
     /// Defines a collection of particle controllers.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ParticleControllerCollection : EnumerableCollection<IParticleController> 
+    public class ParticleControllerCollection : NotificationCollection<IParticleController> 
     {
         internal ParticleEffect ParticleEffect;
 
         internal ParticleControllerCollection() { }
 
         protected override void OnAdded(int index, IParticleController value)
-        {
-            if (value == null)
-                throw new ArgumentNullException();
-
-            ParticleController controller = value as ParticleController;
-            if (controller != null && ParticleEffect != null)
-                controller.Initialize(ParticleEffect);
-        }
-
-        protected override void OnChanged(int index, IParticleController value, IParticleController previousValue)
         {
             if (value == null)
                 throw new ArgumentNullException();

@@ -26,7 +26,7 @@ namespace Nine.Graphics
     {
         /// <summary>
         /// Gets the underlying heightmap that contains height, normal, tangent data.
-        /// </summary>
+        /// </summary>        
         public Heightmap Heightmap { get; private set; }
 
         /// <summary>

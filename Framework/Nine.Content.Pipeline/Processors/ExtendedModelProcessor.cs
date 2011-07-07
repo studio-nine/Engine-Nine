@@ -82,7 +82,7 @@ namespace Nine.Content.Pipeline.Processors
 
         private Dictionary<string, string> attachedTextureNames = new Dictionary<string, string>();
         private Dictionary<string, string> attachedTextureProcessors = new Dictionary<string, string>();
-        private List<Dictionary<string, ExternalReference<TextureContent>>> attachedTextures = new List<Dictionary<string, ExternalReference<TextureContent>>>();
+        private List<Dictionary<string, ContentReference<TextureContent>>> attachedTextures = new List<Dictionary<string, ContentReference<TextureContent>>>();
 
         /// <summary>
         /// Creates a new instance of ExtendedModelProcessor.
@@ -240,7 +240,7 @@ namespace Nine.Content.Pipeline.Processors
         protected override MaterialContent ConvertMaterial(MaterialContent material, ContentProcessorContext context)
         {
             ExternalReference<TextureContent> textureContent;
-            Dictionary<string, ExternalReference<TextureContent>> textureDictionary = new Dictionary<string, ExternalReference<TextureContent>>();
+            Dictionary<string, ContentReference<TextureContent>> textureDictionary = new Dictionary<string, ContentReference<TextureContent>>();
 
             if (material.Textures.TryGetValue("Texture", out textureContent))
             {
@@ -258,7 +258,7 @@ namespace Nine.Content.Pipeline.Processors
 
                         ExternalReference<TextureContent> texture = new ExternalReference<TextureContent>(textureFilename);
                         texture = context.BuildAsset<TextureContent, TextureContent>(texture, processor);
-                        textureDictionary.Add(name, texture);
+                        textureDictionary.Add(name, new ContentReference<TextureContent>(texture.Filename));
                     }
                 }
             }

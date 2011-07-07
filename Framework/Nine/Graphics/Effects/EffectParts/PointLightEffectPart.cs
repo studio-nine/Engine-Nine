@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    internal class PointLightEffectPart : LinkedEffectPart, IEffectPointLight
+    internal class PointLightEffectPart : LinkedEffectPart, IPointLight
     {
         private uint dirtyMask = 0;
         

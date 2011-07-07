@@ -26,7 +26,7 @@ using Nine.Graphics.Primitives;
 
 namespace Nine.Graphics.Effects.Deferred
 {
-    public partial class DeferredDirectionalLight : IDeferredLight, IEffectMatrices, IEffectTexture, IEffectDirectionalLight
+    public partial class DeferredDirectionalLight : IDeferredLight, IEffectMatrices, IEffectTexture, IDirectionalLight
     {
         Quad primitive;
 
@@ -92,7 +92,7 @@ namespace Nine.Graphics.Effects.Deferred
             set { }
         }
         
-        Vector3 IEffectDirectionalLight.SpecularColor
+        Vector3 IDirectionalLight.SpecularColor
         {
             get { return Vector3.Zero; }
             set { }

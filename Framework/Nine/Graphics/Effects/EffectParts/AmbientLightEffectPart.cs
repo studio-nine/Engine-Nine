@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    internal class AmbientLightEffectPart : LinkedEffectPart, IEffectAmbientLight
+    internal class AmbientLightEffectPart : LinkedEffectPart, IAmbientLight
     {
         private uint dirtyMask = 0;
         private Vector3 ambientLightColor;

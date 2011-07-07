@@ -20,6 +20,9 @@ using Nine.Graphics.ScreenEffects;
 
 namespace Nine.Graphics.Effects.Deferred
 {
+    /// <summary>
+    /// Defines a light used by deferred rendering.
+    /// </summary>
     public interface IDeferredLight
     {
         /// <summary>

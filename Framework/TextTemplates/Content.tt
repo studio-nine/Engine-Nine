@@ -1,0 +1,169 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension="Generated.cs" #>
+<#@ assembly name="$(SolutionDir)TextTemplates\Microsoft.Cci.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.FxCop.Sdk" #>
+<#+
+        string ContentSerializerAttribute = "Microsoft.Xna.Framework.Content.ContentSerializerAttribute";
+        string ContentSerializerIgnoreAttribute = "Microsoft.Xna.Framework.Content.ContentSerializerIgnoreAttribute";
+        string ICollection = "System.Collections.Generic.ICollection~1<";
+        string IDictionary = "System.Collections.Generic.IDictionary~2<";
+
+        class KnownContentTypes
+        {
+            public static Dictionary<string, string> Mapping = new Dictionary<string, string>();
+            static KnownContentTypes()
+            {
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.Texture3D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture3DContent>");
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.TextureCube", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent>");
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.Texture", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>");
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");
+                Mapping.Add("Microsoft.Xna.Framework.Graphics.Model", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent>");
+                Mapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
+            }
+        }
+
+        IEnumerable<TypeNode> FindContentSerializableTypes(AssemblyNode assembly)
+        {
+            TypeFlags filter = TypeFlags.Interface;
+
+            return from type in assembly.Types
+                   where !type.IsUnmanaged && (type.Flags & filter) == 0 &&
+                          type.Members.Any(member => ((member is PropertyNode) || (member is Field)) &&
+                                                       member.Attributes.Count > 0 &&
+                                                       member.Attributes.Any(a => a.Type.FullName == ContentSerializerAttribute))
+                   select type;
+        }
+
+        IEnumerable<Member> FindContentSerializableMembers(TypeNode type)
+        {
+            return from member in type.Members
+                   where IsContentSerializable(member)
+                   select member;
+        }
+
+        bool IsContentSerializable(Member member)
+        {
+            return IsContentSerializable(member as Field) || IsContentSerializable(member as PropertyNode);
+        }
+
+        bool IsContentSerializable(Field field)
+        {
+            if (field == null)
+                return false;
+            if (field.IsPublic && !HasContentSerializerIgnore(field))
+                return true;
+            return HasContentSerializer(field);
+        }
+
+        bool IsContentSerializable(PropertyNode property)
+        {
+            if (property == null)
+                return false;
+            if (HasContentSerializerIgnore(property))
+                return false;
+            if (property.IsPublic || (!property.IsPublic && HasContentSerializer(property)))
+            {
+                if (property.Getter != null)
+                {
+                    if (property.Setter != null)
+                        return true;
+                    return IsCollection(property.DeclaringType) || IsDictionary(property.DeclaringType);
+                }
+            }
+            return false;
+        }
+
+        bool HasContentSerializer(Member member)
+        {
+            return member.Attributes.Any(a => a.Type.FullName == ContentSerializerAttribute);
+        }
+
+        bool HasContentSerializerIgnore(Member member)
+        {
+            return member.Attributes.Any(a => a.Type.FullName == ContentSerializerIgnoreAttribute);
+        }
+
+        bool IsCollection(TypeNode type)
+        {
+            return type != null && (type.Interfaces.Any(i => i.FullName.StartsWith(ICollection)) || IsCollection(type.BaseType));
+        }
+
+        bool IsDictionary(TypeNode type)
+        {
+            return type != null && (type.Interfaces.Any(i => i.FullName.StartsWith(IDictionary)) || IsDictionary(type.BaseType));
+        }
+
+        string GetContentPipelineNamespace(TypeNode type)
+        {
+            var parts = type.Namespace.Name.Split('.');
+            return parts[0] + ".Content.Pipeline." + string.Join(".", parts.Skip(1));
+        }
+
+        string GetClassName(TypeNode type)
+        {
+            var count = 0;
+            var name = type.Name.Name;
+            var index = name.IndexOf('`');
+            if (index >= 0)
+            {
+                name = name.Remove(index, 1);
+                count = Convert.ToInt32(name[index].ToString());
+                name = name.Remove(index, 1);
+            }
+            name = name + "Content";
+			if (count == 1)
+			{
+				name = name + "<T>";
+			}
+            else if (count > 1)
+            {
+                name += "<";
+                for (var i = 0; i < count; i++)
+                {
+                    name += "T" + (i + 1);
+                    if (i != count - 1)
+                        name += ", ";
+                }
+                name += ">";
+            }
+            return name;
+        }
+
+        string GetClassConstructorName(TypeNode type)
+        {
+            var count = 0;
+            var name = type.Name.Name;
+            var index = name.IndexOf('`');
+            if (index >= 0)
+            {
+                name = name.Remove(index, 1);
+                count = Convert.ToInt32(name[index]);
+                name = name.Remove(index, 1);
+            }
+            return name + "Content";
+        }
+
+        TypeNode GetMemberType(Member member)
+        {
+            if (member is PropertyNode)
+                return ((PropertyNode)member).Type;
+            if (member is Field)
+                return ((Field)member).Type;
+            return null;
+        }
+
+        string GetMemberTypeName(Member member)
+        {
+            var name = GetMemberType(member).FullName;
+            for (int i = 1; i < 5; i++)
+                name = name.Replace("`" + i, "");
+            foreach (var pair in KnownContentTypes.Mapping)
+                name = name.Replace(pair.Key, pair.Value);
+            return name;
+        }
+#>

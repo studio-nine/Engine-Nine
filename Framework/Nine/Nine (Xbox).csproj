@@ -62,9 +62,9 @@
     <Compile Include="Animations\AvatarAnimation.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
     <Compile Include="Animations\BoneAnimationControllers.cs" />
+    <Compile Include="Animations\BoneHierarchy.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
-    <Compile Include="Animations\IBoneHierarchy.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
@@ -134,8 +134,25 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Graphics\Effects\Deferred\IDeferredLight.cs" />
+    <Compile Include="Graphics\Effects\DirectionalLightEffect.cs">
+      <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffect.Designer.cs">
+      <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffectHiDef.cs">
+      <DependentUpon>DirectionalLightEffectHiDef.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\DirectionalLightEffectHiDef.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DirectionalLightEffectHiDef.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
+    <Compile Include="Graphics\Lights.cs" />
     <Compile Include="Graphics\ModelBatchExtensions.cs" />
     <Compile Include="Graphics\ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\Particle.cs" />
@@ -285,7 +302,6 @@
     <Compile Include="InputEventArgs.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="Curves.cs" />
-    <Compile Include="EnumerableCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Graphics\ColorMatrix.cs" />
     <Compile Include="Graphics\Effects\EffectParts\PointLightEffectPart.cs" />
@@ -349,6 +365,7 @@
     <Compile Include="GridObjectManager.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Math2D.cs" />
+    <Compile Include="NotificationCollection.cs" />
     <Compile Include="OcTree.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="QuadTree.cs" />
@@ -375,7 +392,7 @@
     </Compile>
     <Compile Include="Surface.cs" />
     <Compile Include="Triangle.cs" />
-    <Compile Include="ZipContentmanager.cs" />
+    <Compile Include="UniformGrid.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -432,6 +449,15 @@
     <None Include="Graphics\Effects\DecalEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\DirectionalLight.fxh" />
+    <None Include="Graphics\Effects\DirectionalLightEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DirectionalLightEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\DirectionalLightEffectHiDef.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DirectionalLightEffectHiDef.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>

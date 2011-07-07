@@ -13,8 +13,8 @@ namespace Nine.Graphics.ScreenEffects
     {
         public bool HighQuality
         {
-            get { return Parameters["ShaderIndex"].GetValueInt32() == 0; }
-            set { Parameters["ShaderIndex"].SetValue(value ? 1 : 0); }
+            get { return shaderIndex == 0; }
+            set { shaderIndex = value ? 1 : 0; }
         }
 
 		private void OnClone(Adoption cloneSource) { }

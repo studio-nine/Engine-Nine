@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -101,7 +102,9 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Represents a Effect that is linked from LinkedEffectParts.
     /// </summary>
-    public sealed class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial
+    public sealed class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial,
+                                               IEffectLights<IAmbientLight>, IEffectLights<IPointLight>,
+                                               IEffectLights<IDirectionalLight>, IEffectLights<ISpotLight>
     {
         internal static LinkedEffect CurrentEffect;
         internal static string CurrentUniqueName;
@@ -209,6 +212,11 @@ namespace Nine.Graphics.Effects
                 i++;
             }
         }
+
+        private ReadOnlyCollection<IPointLight> pointLights;
+        private ReadOnlyCollection<IAmbientLight> ambientLights;
+        private ReadOnlyCollection<IDirectionalLight> directionalLights;
+        private ReadOnlyCollection<ISpotLight> spotLights;
 
         #region Interfaces
         Matrix projection;
@@ -331,6 +339,26 @@ namespace Nine.Graphics.Effects
                 foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
                     part.SpecularPower = value;
             }
+        }
+
+        ReadOnlyCollection<IPointLight> IEffectLights<IPointLight>.Lights
+        {
+            get { return pointLights ?? (pointLights = new ReadOnlyCollection<IPointLight>(EffectParts.OfType<IPointLight>().ToList())); }
+        }
+
+        ReadOnlyCollection<IDirectionalLight> IEffectLights<IDirectionalLight>.Lights
+        {
+            get { return directionalLights ?? (directionalLights = new ReadOnlyCollection<IDirectionalLight>(EffectParts.OfType<IDirectionalLight>().ToList())); }
+        }
+
+        ReadOnlyCollection<ISpotLight> IEffectLights<ISpotLight>.Lights
+        {
+            get { return spotLights ?? (spotLights = new ReadOnlyCollection<ISpotLight>(EffectParts.OfType<ISpotLight>().ToList())); }
+        }
+
+        ReadOnlyCollection<IAmbientLight> IEffectLights<IAmbientLight>.Lights
+        {
+            get { return ambientLights ?? (ambientLights = new ReadOnlyCollection<IAmbientLight>(EffectParts.OfType<IAmbientLight>().ToList())); }
         }
         #endregion
     }

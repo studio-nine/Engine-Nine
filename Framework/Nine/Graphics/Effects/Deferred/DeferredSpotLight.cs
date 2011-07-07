@@ -25,7 +25,7 @@ using Nine.Graphics.Primitives;
 
 namespace Nine.Graphics.Effects.Deferred
 {
-    public partial class DeferredSpotLight : IDeferredLight, IEffectMatrices, IEffectTexture, IEffectSpotLight
+    public partial class DeferredSpotLight : IDeferredLight, IEffectMatrices, IEffectTexture, ISpotLight
     {
         Centrum primitive;
 
@@ -144,7 +144,7 @@ namespace Nine.Graphics.Effects.Deferred
             set { }
         }
 
-        Vector3 IEffectSpotLight.SpecularColor
+        Vector3 ISpotLight.SpecularColor
         {
             get { return Vector3.Zero; }
             set { }

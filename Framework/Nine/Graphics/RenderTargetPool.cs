@@ -25,7 +25,8 @@ namespace Nine.Graphics
     /// </summary>
     public static class RenderTargetPool
     {
-        private static Dictionary<RenderTargetPoolKey, List<RenderTargetPoolValue>> registry = new Dictionary<RenderTargetPoolKey, List<RenderTargetPoolValue>>();
+        private static Dictionary<RenderTargetPoolKey, List<RenderTargetPoolValue>> registry = new Dictionary<RenderTargetPoolKey, List<RenderTargetPoolValue>>(new RenderTargetPoolKeyEqualityComparer());
+        private static RenderTargetPoolKey key = new RenderTargetPoolKey();
 
         /// <summary>
         /// Acquires a render target with the specified parameter.
@@ -64,8 +65,18 @@ namespace Nine.Graphics
             List<RenderTargetPoolValue> list;
 
             if (!registry.TryGetValue(key, out list))
-                registry.Add(key, list = new List<RenderTargetPoolValue>());
-
+            {
+                RenderTargetPoolKey newKey = new RenderTargetPoolKey();
+                newKey.Graphics = graphics;
+                newKey.Width = width;
+                newKey.Height = height;
+                newKey.Mipmap = mipMap;
+                newKey.SurfaceFormat = surfaceFormat;
+                newKey.DepthFormat = depthFormat;
+                newKey.PreferredMultiSampleCount = preferredMultiSampleCount;
+                newKey.RenderTargetUsage = renderTargetUsage;
+                registry.Add(newKey, list = new List<RenderTargetPoolValue>());
+            }
             if ((renderTarget = FindAvailableRenderTarget(list)) == null)
             {
                 list.Add(renderTarget = new RenderTargetPoolValue()
@@ -215,7 +226,7 @@ namespace Nine.Graphics
         }
     }
 
-    struct RenderTargetPoolKey
+    class RenderTargetPoolKey
     {
         public GraphicsDevice Graphics;
         public int Width;
@@ -225,6 +236,33 @@ namespace Nine.Graphics
         public SurfaceFormat SurfaceFormat;
         public DepthFormat DepthFormat;
         public RenderTargetUsage RenderTargetUsage;
+    }
+
+    class RenderTargetPoolKeyEqualityComparer : IEqualityComparer<RenderTargetPoolKey>
+    {
+        public bool Equals(RenderTargetPoolKey x, RenderTargetPoolKey y)
+        {
+            return x.Graphics == y.Graphics &&
+                   x.Width == y.Width &&
+                   x.Height == y.Height &&
+                   x.Mipmap == y.Mipmap &&
+                   x.PreferredMultiSampleCount == y.PreferredMultiSampleCount &&
+                   x.SurfaceFormat == y.SurfaceFormat &&
+                   x.DepthFormat == y.DepthFormat &&
+                   x.RenderTargetUsage == y.RenderTargetUsage;
+        }
+
+        public int GetHashCode(RenderTargetPoolKey obj)
+        {
+            return obj.Graphics.GetHashCode() +
+                   obj.Width.GetHashCode() +
+                   obj.Height.GetHashCode() +
+                   obj.Mipmap.GetHashCode() +
+                   obj.PreferredMultiSampleCount.GetHashCode() +
+                   obj.SurfaceFormat.GetHashCode() +
+                   obj.DepthFormat.GetHashCode() +
+                   obj.RenderTargetUsage.GetHashCode();
+        }
     }
 
     class RenderTargetPoolValue

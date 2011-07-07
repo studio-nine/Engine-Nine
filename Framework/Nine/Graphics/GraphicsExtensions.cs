@@ -66,7 +66,7 @@ namespace Nine.Graphics
             return GraphicsResources<SpriteBatch>.GetInstance(graphics);
         }
 
-        public static void SetViewport(this IEffectMatrices effect, Rectangle viewport)
+        internal static void SetViewport(this IEffectMatrices effect, Rectangle viewport)
         {
             if (effect != null)
             {

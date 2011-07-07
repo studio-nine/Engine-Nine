@@ -1,0 +1,30 @@
+        private void CacheEffectParameters(EffectParameterCollection cloneSource)
+        {
+{$INITIALIZE}
+        }
+
+        #region Dirty Flags
+
+        uint dirtyFlag = 0;
+
+{$DIRTYFLAGS}
+        #endregion
+
+        #region Properties
+
+{$PROPERTIES}
+        #endregion
+
+        #region Apply
+        private void ApplyChanges()
+        {
+{$APPLY}
+        }
+        #endregion
+
+        #region Clone
+        private void CloneFrom({$CLASS} cloneSource)
+        {
+{$CLONE}
+        }
+        #endregion

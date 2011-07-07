@@ -17,6 +17,8 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Effects;
+using System.Collections.ObjectModel;
 #endregion
 
 namespace Nine.Graphics
@@ -35,6 +37,17 @@ namespace Nine.Graphics
         /// Sets the bones transforms for the skinned effect.
         /// </summary>
         void SetBoneTransforms(Matrix[] boneTransforms);
+    }
+
+    /// <summary>
+    /// Gets or sets lighting parameters for the current effect.
+    /// </summary>
+    public interface IEffectLights<T>
+    {
+        /// <summary>
+        /// Gets a read only collection of lights exposed by this effect.
+        /// </summary>
+        ReadOnlyCollection<T> Lights { get; }
     }
 
     /// <summary>
@@ -186,8 +199,24 @@ namespace Nine.Graphics
     /// Contains extension methods for Effects.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class EffectExtensions
+    internal static class EffectExtensions
     {
+        internal static T As<T>(this Effect effect) where T : class
+        {
+#if WINDOWS_PHONE
+            return effect as T;
+#else
+            LinkedEffect linked;
+            T result = effect as T;
+            if (result != null)
+                return result;
+            linked = effect as LinkedEffect;
+            if (linked != null)
+                result = linked.Find<T>();
+            return result;
+#endif
+        }
+
         internal static void CopyMaterialsFrom(this Effect effect, Effect sourceEffect)
         {
             if (effect == null || sourceEffect == null)

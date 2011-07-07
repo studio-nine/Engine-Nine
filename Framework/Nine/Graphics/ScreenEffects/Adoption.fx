@@ -31,7 +31,7 @@ float4 PS(float2 texCoord : TEXCOORD0, uniform bool accurate) : COLOR0
     return last + (current - last) * min(deltaTime * Speed, 1);
 }
  
-int ShaderIndex = 0;
+int shaderIndex = 0;
 
 PixelShader PSArray[2] =
 {
@@ -44,6 +44,6 @@ Technique Default
 {
 	Pass
 	{
-		PixelShader	 = (PSArray[ShaderIndex]);
+		PixelShader	 = (PSArray[shaderIndex]);
 	}
 }

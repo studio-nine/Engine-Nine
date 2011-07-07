@@ -26,7 +26,7 @@ using Nine.Graphics.Primitives;
 
 namespace Nine.Graphics.Effects.Deferred
 {
-    public partial class DeferredPointLight : IDeferredLight, IEffectMatrices, IEffectTexture, IEffectPointLight
+    public partial class DeferredPointLight : IDeferredLight, IEffectMatrices, IEffectTexture, IPointLight
     {
         Sphere primitive;
 
@@ -102,7 +102,7 @@ namespace Nine.Graphics.Effects.Deferred
             set { }
         }
 
-        Vector3 IEffectPointLight.SpecularColor
+        Vector3 IPointLight.SpecularColor
         {
             get { return Vector3.Zero; }
             set { }

@@ -13,4 +13,10 @@ pushd ..\Framework\Nine.Test\
 popd
 
 
+pushd ..\Studio\UnitTest\
+
+"%VS100COMNTOOLS%..\IDE\mstest.exe" %flags% /testcontainer:"bin\Release\UnitTest.dll"
+
+popd
+
 endlocal

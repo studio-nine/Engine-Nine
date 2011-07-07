@@ -14,31 +14,35 @@ namespace {$NAMESPACE}
 {
 #if !WINDOWS_PHONE
 
-	using Microsoft.Xna.Framework;
-	using Microsoft.Xna.Framework.Graphics;
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
 
+    [System.CodeDom.Compiler.GeneratedCode("Nine.Tools.EffectCustomTool", "{$VERSION}")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class {$CLASS} : Effect
-    {		
-        public {$CLASS}(GraphicsDevice graphics) : base(graphics, effectCode)
-        {
-            CacheEffectParameters(this);
+    {
+        public {$CLASS}(GraphicsDevice graphics) : base(graphics, EffectCode)
+        {{$CHECK}
+            CacheEffectParameters(Parameters);
 
-			OnCreated();
+            OnCreated();
         }
 
         /// <summary>
         /// Creates a new {$CLASS} by cloning parameter settings from an existing instance.
         /// </summary>
-		protected {$CLASS}({$CLASS} cloneSource) : base(cloneSource)
-		{
-            CacheEffectParameters(cloneSource);
+        protected {$CLASS}({$CLASS} cloneSource) : base(cloneSource)
+        {{$CHECK}
+            CacheEffectParameters(cloneSource.Parameters);
 
-			OnCreated();
+            OnCreated();
 
-{$CLONE}
-			
-			OnClone(cloneSource);
-		}
+            CloneFrom(cloneSource);
+
+            OnClone(cloneSource);
+        }
 
         /// <summary>
         /// Creates a clone of the current {$CLASS} instance.
@@ -48,45 +52,33 @@ namespace {$NAMESPACE}
             return new {$CLASS}(this);
         }
 
-        private void CacheEffectParameters(Effect cloneSource)
-        {
-{$INITIALIZE}
-        }
-
-		#region Dirty Flags
-
-		uint dirtyFlag = 0;
-
-{$DIRTYFLAGS}
-		#endregion
-
-		#region Properties
-
-{$PROPERTIES}
-		#endregion
-		
-		#region Apply
         protected override void OnApply()
         {
-			OnApplyChanges();
+            OnApplyChanges();
 
-{$APPLY}
+            ApplyChanges();
+
             base.OnApply();
         }
-		#endregion
+
+{$BODY}
+
+        #region Structures
+{$STRUCTS}
+        #endregion
 
         #region ByteCode
-        static byte[] effectCode = null;
+        internal static byte[] EffectCode = null;
 
         static {$CLASS}()
         {
 #if XBOX360
-            effectCode = new byte[] 
+            EffectCode = new byte[] 
             {
 {$XBOXBYTECODE} 
             };
 #else
-            effectCode = new byte[] 
+            EffectCode = new byte[] 
             {
 {$WINDOWSBYTECODE}  
             };

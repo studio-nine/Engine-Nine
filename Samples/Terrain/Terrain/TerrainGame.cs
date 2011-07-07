@@ -32,8 +32,11 @@ namespace TerrainSample
     {
         TopDownEditorCamera camera;
 
+        ModelBatch modelBatch;
+        PrimitiveBatch primitiveBatch;
         DrawableSurface terrain;
         BasicEffect basicEffect;
+        Vector3 pickedPosition;
 
         public TerrainGame()
         {
@@ -61,6 +64,8 @@ namespace TerrainSample
 
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
+            modelBatch = new ModelBatch(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
 
             // Create a terrain based on the terrain geometry loaded from file
             terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 8);
@@ -87,39 +92,39 @@ namespace TerrainSample
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
+            Vector3 positionWorld;
+            if (terrain.TryPick(GraphicsDevice.Viewport, camera.View, camera.Projection, out positionWorld))
+            {
+                pickedPosition = positionWorld;
+            }
+
             base.Update(gameTime);
         }
-
-
+        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
-            
-            // Initialize render state
-            GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-            GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
-            
+
+            modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);
             foreach (DrawableSurfacePatch patch in terrain.Patches)
             {
                 // Cull patches that are outside the view frustum
                 if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
                 {
-                    // Setup matrices
-                    basicEffect.World = patch.Transform;
-                    basicEffect.View = camera.View;
-                    basicEffect.Projection = camera.Projection;
-
-                    // Draw each path with the specified effect
-                    patch.Draw(basicEffect);
+                    modelBatch.DrawSurface(patch, basicEffect);
                 }
             }
+            modelBatch.End();
+
+            primitiveBatch.Begin(camera.View, camera.Projection);
+            primitiveBatch.DrawSolidSphere(new BoundingSphere(pickedPosition, 1), 10, null, Color.Red);
+            primitiveBatch.End();
 
             base.Draw(gameTime);
         }

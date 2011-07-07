@@ -181,7 +181,7 @@ void PixNormalMapping(
 }
 
 
-int ShaderIndex = 0;
+int shaderIndex = 0;
 
 
 VertexShader VSArray[4] =
@@ -206,7 +206,7 @@ Technique BasicEffect
 {
 	Pass
 	{
-		VertexShader = (VSArray[ShaderIndex]);
-		PixelShader	 = (PSArray[ShaderIndex]);
+		VertexShader = (VSArray[shaderIndex]);
+		PixelShader	 = (PSArray[shaderIndex]);
 	}
 }

@@ -27,8 +27,8 @@ namespace Nine.Graphics.Effects
     {
         public bool SkinningEnabled
         {
-            get { return Parameters["ShaderIndex"].GetValueInt32() == 0; }
-            set { Parameters["ShaderIndex"].SetValue(value ? 1 : 0); }
+            get { return ShaderIndex == 0; }
+            set { ShaderIndex = value ? 1 : 0; }
         }
         
         public Matrix[] GetBoneTransforms(int count)

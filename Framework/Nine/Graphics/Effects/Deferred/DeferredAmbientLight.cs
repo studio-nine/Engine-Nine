@@ -25,7 +25,7 @@ using Nine.Graphics.Primitives;
 
 namespace Nine.Graphics.Effects.Deferred
 {
-    public partial class DeferredAmbientLight : IDeferredLight, IEffectAmbientLight
+    public partial class DeferredAmbientLight : IDeferredLight, IAmbientLight
     {
         Quad primitive;
 

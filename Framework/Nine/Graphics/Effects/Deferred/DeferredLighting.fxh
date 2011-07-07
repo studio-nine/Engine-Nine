@@ -1,6 +1,13 @@
 ﻿
 
 #define MaxSpecular 255
+ 
+float2 PositionToUV(float4 posProjection)
+{
+    posProjection.y = -posProjection.y;
+    return (posProjection.xy / posProjection.w) * 0.5f + 0.5f;
+}
+ 
 
 void Extract(sampler normalBuffer,
              sampler depthBuffer,

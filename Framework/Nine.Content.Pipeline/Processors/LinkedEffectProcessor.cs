@@ -63,12 +63,12 @@ namespace Nine.Content.Pipeline.Processors
 
             StitchedEffectImporter importer = new StitchedEffectImporter();
             StitchedEffectContent stitchedContent = importer.Import(resultStitchupFile, new LinkedEffectContentImporterContext(context));
-
+            
             StitchedEffectProcessor processor = new StitchedEffectProcessor();
             CompiledEffectContent compiledEffect = processor.Process(stitchedContent, context);
 
             List<string> uniqueNames = new List<string>();
-            input.UniqueNames = processor.Symbols.StitchedFragments.Select<StitchedFragmentSymbol, string>(symbol => symbol.UniqueName + "_").ToArray<string>();
+            input.UniqueNames = processor.Symbols.StitchedFragments.Select(symbol => symbol.UniqueName + "_").ToArray();
             input.EffectCode = compiledEffect.GetEffectCode();
 
             Disassemble(resultEffectFile, resultAsmFile, context);

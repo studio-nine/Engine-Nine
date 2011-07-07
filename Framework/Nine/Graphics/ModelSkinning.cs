@@ -25,7 +25,7 @@ namespace Nine.Graphics
     /// This is typically stored in the Tag property of the Model being animated.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal class ModelSkinning
+    public class ModelSkinning
     {
         /// <summary>
         /// Vertex to bonespace transforms for each bone in the skeleton.

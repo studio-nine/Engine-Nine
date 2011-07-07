@@ -71,7 +71,7 @@
     <Compile Include="Graphics\TestGame.cs" />
     <Compile Include="Graphics\DrawableSurfaceTest.cs" />
     <Compile Include="InputTest.cs" />
-    <Compile Include="EnumerableCollectionTest.cs" />
+    <Compile Include="NotificationCollectionTest.cs" />
     <Compile Include="Animations\KeyframeAnimationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Animations\TweenTest.cs" />
