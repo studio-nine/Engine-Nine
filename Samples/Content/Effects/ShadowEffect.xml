@@ -2,18 +2,18 @@
 <XnaContent>
   <Asset Type="Nine.Content.Pipeline.Graphics.Effects.LinkedEffectContent">
     <EffectParts>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionNormalTexture"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransform"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutput"></Item> 
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionNormalTextureEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransformEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutputEffectPartContent"></Item> 
       
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTexture"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLight"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLight"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTextureEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLightEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLightEffectPartContent"></Item>
 
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.ShadowMap"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.ShadowMapEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutputEffectPartContent"></Item>
     </EffectParts>
   </Asset>
 </XnaContent>

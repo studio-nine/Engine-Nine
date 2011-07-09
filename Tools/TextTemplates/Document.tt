@@ -1,0 +1,23 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+        XDocument OpenAssemblyXmlDocument(string filename)
+        {
+            return File.Exists(filename) ? XDocument.Load(filename) : new XDocument();
+        }
+
+        string GetSummary(XDocument doc, string path)
+        {
+            var node = doc.Descendants("member").Where(m => m.Attribute("name").Value.Split(':')[1] == path).FirstOrDefault();
+            if (node == null)
+                return "";
+            var summary = node.Descendants("summary").FirstOrDefault();
+            return summary != null ? summary.Value.Replace("\n", "").Replace("           ", "").Trim() : "";
+        }
+#>

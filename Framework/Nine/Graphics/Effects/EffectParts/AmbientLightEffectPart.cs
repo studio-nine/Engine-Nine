@@ -43,6 +43,11 @@ namespace Nine.Graphics.Effects.EffectParts
             }
         }
 
+        public AmbientLightEffectPart()
+        {
+            AmbientLightColor = Vector3.One * 0.2f;
+        }
+
         protected internal override LinkedEffectPart Clone()
         {
             return new AmbientLightEffectPart()

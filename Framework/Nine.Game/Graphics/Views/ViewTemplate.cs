@@ -26,12 +26,7 @@ namespace Nine.Graphics.Views
         public bool Visible { get; set; }
 
         [ContentSerializer(Optional = true)]
-        private List<object> views
-        {
-            get { throw new NotSupportedException(); }
-            set { Views.Clear(); Views.AddRange(value.Select(x => x as IDrawableView)); }
-        }
-        public List<IDrawableView> Views { get; private set; }
+        public List<IDrawableView> Views { get; internal set; }
 
         public ViewTemplate()
         {

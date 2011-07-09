@@ -73,6 +73,7 @@
       <Name>TerrainEffect</Name>
       <Importer>XmlImporter</Importer>
       <Processor>LinkedEffectProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

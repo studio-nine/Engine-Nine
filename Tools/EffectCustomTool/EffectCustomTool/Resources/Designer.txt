@@ -23,7 +23,9 @@ namespace {$NAMESPACE}
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class {$CLASS} : Effect
     {
-        public {$CLASS}(GraphicsDevice graphics) : base(graphics, EffectCode)
+        public {$CLASS}(GraphicsDevice graphics) 
+            : base(graphics, graphics.GraphicsProfile == GraphicsProfile.Reach ? ReachEffectCode :
+                                                                                 HiDefEffectCode)
         {{$CHECK}
             CacheEffectParameters(Parameters);
 
@@ -68,20 +70,22 @@ namespace {$NAMESPACE}
         #endregion
 
         #region ByteCode
-        internal static byte[] EffectCode = null;
+        internal static byte[] ReachEffectCode = null;
+        internal static byte[] HiDefEffectCode = null;
 
         static {$CLASS}()
         {
 #if XBOX360
-            EffectCode = new byte[] 
+            ReachEffectCode = HiDefEffectCode = new byte[] 
             {
-{$XBOXBYTECODE} 
+{$XBOXBYTECODE}
             };
 #else
-            EffectCode = new byte[] 
+            ReachEffectCode = new byte[] 
             {
-{$WINDOWSBYTECODE}  
+{$WINDOWSBYTECODE}
             };
+            HiDefEffectCode = {$WINDOWSHIDEFBYTECODE};
 #endif
         }
         #endregion

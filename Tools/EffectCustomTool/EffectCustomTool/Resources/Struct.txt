@@ -1,4 +1,4 @@
-        internal class {$CLASS}
+        internal partial class {$CLASS}
         {
             public {$CLASS}(EffectParameterCollection structureMembers)
             {

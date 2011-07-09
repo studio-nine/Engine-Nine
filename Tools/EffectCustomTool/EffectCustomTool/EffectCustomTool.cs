@@ -49,7 +49,7 @@ namespace Nine.Tools.EffectCustomTool
 
             try
             {
-                compiler = new EffectCompiler(name, e.Namespace, e.InputFilePath);
+                compiler = new EffectCompiler(name, e.Namespace, e.InputFilePath, e);
             }
             catch (Exception ex)
             {

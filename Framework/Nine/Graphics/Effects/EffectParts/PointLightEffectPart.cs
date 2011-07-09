@@ -119,6 +119,14 @@ namespace Nine.Graphics.Effects.EffectParts
                 dirtyMask &= ~attenuationDirtyMask;
             }
         }
+        
+        public PointLightEffectPart()
+        {
+            DiffuseColor = Vector3.One;
+            SpecularColor = Vector3.One;
+            Range = 10;
+            Attenuation = 1.0f / MathHelper.E;
+        }
 
         protected internal override LinkedEffectPart Clone()
         {

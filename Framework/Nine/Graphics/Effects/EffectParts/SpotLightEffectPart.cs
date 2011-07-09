@@ -196,6 +196,18 @@ namespace Nine.Graphics.Effects.EffectParts
                 dirtyMask &= ~falloffDirtyMask;
             }
         }
+        
+        public SpotLightEffectPart()
+        {
+            Direction = new Vector3(0, -0.707107f, -0.707107f);
+            DiffuseColor = Vector3.One;
+            SpecularColor = Vector3.One;
+            Range = 100;
+            Attenuation = 1.0f / MathHelper.E;
+            InnerAngle = MathHelper.PiOver4;
+            OuterAngle = MathHelper.PiOver2;
+            Falloff = 1;
+        }
 
         protected internal override LinkedEffectPart Clone()
         {

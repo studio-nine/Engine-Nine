@@ -2,22 +2,22 @@
 <XnaContent xmlns:EffectParts="Nine.Content.Pipeline.Graphics.Effects.EffectParts">
   <Asset Type="Nine.Content.Pipeline.Graphics.Effects.LinkedEffectContent">
     <EffectParts>
-      <Item Type="EffectParts:PositionNormalTexture"></Item>
-      <Item Type="EffectParts:VertexTransform"></Item>
-      <Item Type="EffectParts:VertexShaderOutput"></Item>
-      <Item Type="EffectParts:BasicTexture">
+      <Item Type="EffectParts:PositionNormalTextureEffectPartContent"></Item>
+      <Item Type="EffectParts:VertexTransformEffectPartContent"></Item>
+      <Item Type="EffectParts:VertexShaderOutputEffectPartContent"></Item>
+      <Item Type="EffectParts:BasicTextureEffectPartContent">
         <Texture>Grass</Texture>
       </Item>
-      <Item Type="EffectParts:SplatterTexture">
-        <TextureX>Grass</TextureX>
-        <Splatter>Splat</Splatter>
+      <Item Type="EffectParts:SplatterTextureEffectPartContent">
+        <SplatterTexture>Splat</SplatterTexture>
         <SplatterTextureScale>16 16</SplatterTextureScale>
+        <TextureX>Grass</TextureX>
       </Item>
-      <Item Type="EffectParts:BeginLight"></Item>
-      <Item Type="EffectParts:AmbientLight"></Item>
-      <Item Type="EffectParts:DirectionalLight"></Item>
-      <Item Type="EffectParts:EndLight"></Item>
-      <Item Type="EffectParts:PixelShaderOutput"></Item>
+      <Item Type="EffectParts:BeginLightEffectPartContent"></Item>
+      <Item Type="EffectParts:AmbientLightEffectPartContent"></Item>
+      <Item Type="EffectParts:DirectionalLightEffectPartContent"></Item>
+      <Item Type="EffectParts:EndLightEffectPartContent"></Item>
+      <Item Type="EffectParts:PixelShaderOutputEffectPartContent"></Item>
     </EffectParts>
   </Asset>
 </XnaContent>

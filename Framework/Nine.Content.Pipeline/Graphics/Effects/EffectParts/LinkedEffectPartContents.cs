@@ -21,35 +21,22 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 {
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart, Nine")]
-    public class AmbientLight : LinkedEffectPartContent
+    public partial class AmbientLightEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional=true)]
-        public Vector3 AmbientLightColor { get; set; }
-
-        public AmbientLight()
-        {
-            AmbientLightColor = Vector3.One * 0.2f;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.AmbientLight); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart, Nine")]
-    public class BasicTexture : LinkedEffectPartContent
+    public partial class BasicTextureEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> Texture { get; set; }
-
         public override string Code
         {
             get 
             {
                 string code = Encoding.UTF8.GetString(LinkedEffectParts.BasicTexture);
-                if (Contains(typeof(ScreenEffect)))
+                if (Contains(typeof(ScreenEffectEffectPartContent)))
                 {
                     return code.Replace("{$SAMPLER}", "BasicSampler");
                 }
@@ -58,29 +45,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.LightEffectPart, Nine")]
-    public class BeginLight : LinkedEffectPartContent
+    public partial class BeginLightEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 EmissiveColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float SpecularPower { get; set; }
-
-        public BeginLight()
-        {
-            DiffuseColor = Vector3.One;
-            EmissiveColor = Vector3.Zero;
-            SpecularColor = Vector3.One;
-            SpecularPower = 32;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.BeginLight); }
@@ -88,7 +54,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class EndLight : LinkedEffectPartContent
+    public partial class EndLightEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -96,105 +62,24 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart, Nine")]
-    public class DirectionalLight : LinkedEffectPartContent
+    public partial class DirectionalLightEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public Vector3 Direction { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
-
-        public DirectionalLight()
-        {
-            Direction = new Vector3(0, -0.707107f, -0.707107f);
-            DiffuseColor = Vector3.One;
-            SpecularColor = Vector3.One;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DirectionalLight); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.PointLightEffectPart, Nine")]
-    public class PointLight : LinkedEffectPartContent
+    public partial class PointLightEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public Vector3 Position { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float Range { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float Attenuation { get; set; }
-
-        public PointLight()
-        {
-            DiffuseColor = Vector3.One;
-            SpecularColor = Vector3.One;
-            Range = 10;
-            Attenuation = 1.0f / MathHelper.E;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PointLight); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SpotLightEffectPart, Nine")]
-    public class SpotLight : LinkedEffectPartContent
+    public partial class SpotLightEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public Vector3 Position { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 Direction { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float Range { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float Attenuation { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float InnerAngle { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float OuterAngle { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float Falloff { get; set; }
-
-        public SpotLight()
-        {
-            Direction = new Vector3(0, -0.707107f, -0.707107f);
-            DiffuseColor = Vector3.One;
-            SpecularColor = Vector3.One;
-            Range = 100;
-            Attenuation = 1.0f / MathHelper.E;
-            InnerAngle = MathHelper.PiOver4;
-            OuterAngle = MathHelper.PiOver2;
-            Falloff = 1;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.SpotLight); }
@@ -202,69 +87,24 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DualTextureEffectPart, Nine")]
-    public class DualTexture : LinkedEffectPartContent
+    public partial class DualTextureEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> Texture { get; set; }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DualTexture); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart, Nine")]
-    public class SplatterTexture : LinkedEffectPartContent
+    public partial class SplatterTextureEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> TextureX { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> TextureY { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> TextureZ { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> TextureW { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> Splatter { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector2 SplatterTextureScale { get; set; }
-
-        public SplatterTexture()
-        {
-            SplatterTextureScale = Vector2.One;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.SplatterTexture); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.FogEffectPart, Nine")]
-    public class Fog : LinkedEffectPartContent
+    public partial class FogEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public Vector3 FogColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float FogStart { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float FogEnd { get; set; }
-
-        public Fog()
-        {
-            FogColor = Vector3.One;
-            FogStart = 1;
-            FogEnd = 100;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.Fog); }
@@ -272,12 +112,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart, Nine")]
-    public class OverlayTexture : LinkedEffectPartContent
+    public partial class OverlayTextureEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> Texture { get; set; }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.OverlayTexture); }
@@ -285,7 +121,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class PixelShaderOutput : LinkedEffectPartContent
+    public partial class PixelShaderOutputEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -294,7 +130,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class PositionColor : LinkedEffectPartContent
+    public partial class PositionColorEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -303,7 +139,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class PositionColorNormalTexture : LinkedEffectPartContent
+    public partial class PositionColorNormalTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -312,7 +148,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class PositionColorTexture : LinkedEffectPartContent
+    public partial class PositionColorTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -321,7 +157,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class PositionNormalTexture : LinkedEffectPartContent
+    public partial class PositionNormalTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -330,7 +166,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class PositionTexture : LinkedEffectPartContent
+    public partial class PositionTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -338,38 +174,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart, Nine")]
-    public class SkinTransform : LinkedEffectPartContent
+    public partial class SkinTransformEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional=true)]
-        public int MaxBones { get; set; }
-
-        int weightsPerVertex = 4;
-
-        /// <summary>
-        /// Gets or sets the number of skinning weights to evaluate for each vertex (1, 2, or 4).
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public int WeightsPerVertex
-        {
-            get { return weightsPerVertex; }
-
-            set
-            {
-                if ((value != 1) && (value != 2) && (value != 4))
-                {
-                    throw new ArgumentOutOfRangeException("value");
-                }
-
-                weightsPerVertex = value;
-            }
-        }
-
-        public SkinTransform()
-        {
-            MaxBones = 59;
-        }
-
         public override string Code
         {
             get 
@@ -381,50 +187,24 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.TextureTransform, Nine")]
-    public class TextureTransform : LinkedEffectPartContent
+    public partial class TextureTransformEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public Matrix Transform { get; set; }
-
-        public TextureTransform()
-        {
-            Transform = Matrix.Identity;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.TextureTransform); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart, Nine")]
-    public class ShadowMap : LinkedEffectPartContent
+    public partial class ShadowMapEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public float ShadowIntensity { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public float DepthBias { get; set; }
-
-        public ShadowMap()
-        {
-            ShadowIntensity = 0.5f;
-            DepthBias = 0.0005f;
-        }
-        
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ShadowMap); }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.NormalMapEffectPart, Nine")]
-    public class NormalMap : LinkedEffectPartContent
+    public partial class NormalMapEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional = true)]
-        public ContentReference<Texture2DContent> Texture { get; set; }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.NormalMap); }
@@ -432,7 +212,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class VertexShaderOutput : LinkedEffectPartContent
+    public partial class VertexShaderOutputEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -441,7 +221,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.VertexTransformEffectPart, Nine")]
-    public class VertexTransform : LinkedEffectPartContent
+    public partial class VertexTransformEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
@@ -450,7 +230,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class ScreenEffect : LinkedEffectPartContent
+    public partial class ScreenEffectEffectPartContent : LinkedEffectPartContent
     {
         protected internal override void Validate(ContentProcessorContext context)
         {
@@ -465,14 +245,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
     
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class RadicalBlur : LinkedEffectPartContent
+    public partial class RadicalBlurEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
             get
             {
                 string code = Encoding.UTF8.GetString(LinkedEffectParts.RadicalBlur);
-                if (Contains(typeof(ScreenEffect)))
+                if (Contains(typeof(ScreenEffectEffectPartContent)))
                 {
                     return code.Replace("{$SAMPLER}", "BasicSampler");
                 }
@@ -481,17 +261,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart, Nine")]
-    public class ColorMatrix : LinkedEffectPartContent
+    public partial class ColorMatrixEffectPartContent : LinkedEffectPartContent
     {
-        [ContentSerializer(Optional=true)]
-        public Matrix Transform { get; set; }
-
-        public ColorMatrix()
-        {
-            Transform = Matrix.Identity;
-        }
-
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ColorMatrix); }
@@ -499,7 +270,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
-    public class Threshold : LinkedEffectPartContent
+    public partial class ThresholdEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {

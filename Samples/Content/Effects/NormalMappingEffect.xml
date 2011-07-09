@@ -2,42 +2,42 @@
 <XnaContent>
   <Asset Type="Nine.Content.Pipeline.Graphics.Effects.LinkedEffectContent">
     <EffectParts>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionNormalTexture"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransform"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutput"></Item> 
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PositionNormalTextureEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransformEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutputEffectPartContent"></Item> 
       
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTexture">
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTextureEffectPartContent">
         <Texture>box</Texture>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMap">
-        <Texture>box_n</Texture>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMapEffectPartContent">
+        <NormalMap>box_n</NormalMap>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLight">
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent">
         <SpecularPower>32</SpecularPower>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLight">
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLightEffectPartContent">
         <AmbientLightColor>0.1 0.1 0.1</AmbientLightColor>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLight">
-        <Direction>0 -0.707107 -0.707107</Direction>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent">
         <DiffuseColor>0.1 0.1 0.1</DiffuseColor>
+        <Direction>0 -0.707107 -0.707107</Direction>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PointLight">
-        <Position>2 2 1</Position>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PointLightEffectPartContent">
         <DiffuseColor>1 1 0</DiffuseColor>
+        <Position>2 2 1</Position>
         <Range>5</Range>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SpotLight">
-        <Position>0 0 1</Position>
-        <Direction>-1 0 0</Direction>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SpotLightEffectPartContent">
         <DiffuseColor>1 0 0</DiffuseColor>
-        <Range>16</Range>
+        <Direction>-1 0 0</Direction>
         <Falloff>2</Falloff>
+        <Position>0 0 1</Position>
+        <Range>16</Range>
       </Item>
       <!--
       -->
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLight"></Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutput"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLightEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutputEffectPartContent"></Item>
     </EffectParts>
   </Asset>
 </XnaContent>

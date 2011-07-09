@@ -117,6 +117,12 @@ namespace Nine.Graphics.Effects.EffectParts
                 dirtyMask &= ~shadowMapDirtyMask;
             }
         }
+        
+        public ShadowMapEffectPart()
+        {
+            ShadowIntensity = 0.5f;
+            DepthBias = 0.0005f;
+        }
 
         protected internal override LinkedEffectPart Clone()
         {

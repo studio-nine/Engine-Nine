@@ -79,11 +79,17 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\TextTemplates\Nine.Content.Model.Game.Generated.cs">
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Model.Game.Generated.cs">
       <Link>Nine.Content.Model.Game.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Model.Game.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Writer.Game.Generated.cs">
+      <Link>Nine.Content.Writer.Game.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Content.Writer.Game.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -135,10 +141,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TextTemplates\Nine.Content.Model.Game.tt">
+    <None Include="..\..\Tools\TextTemplates\Nine.Content.Model.Game.tt">
       <Link>Nine.Content.Model.Game.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Content.Model.Game.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="..\..\Tools\TextTemplates\Nine.Content.Writer.Game.tt">
+      <Link>Nine.Content.Writer.Game.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Content.Writer.Game.Generated.cs</LastGenOutput>
     </None>
     <None Include="Nine.snk" />
   </ItemGroup>

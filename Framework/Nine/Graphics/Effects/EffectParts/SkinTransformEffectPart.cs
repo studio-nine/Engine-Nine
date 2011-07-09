@@ -24,10 +24,10 @@ namespace Nine.Graphics.Effects.EffectParts
         EffectParameter bonesParameter;
 
         [ContentSerializer(Optional=true)]
-        public int MaxBones { get; private set; }
+        public int MaxBones { get; internal set; }
 
         [ContentSerializer(Optional = true)]
-        public int WeightsPerVertex { get; private set; }
+        public int WeightsPerVertex { get; internal set; }
 
         public SkinTransformEffectPart()
         {

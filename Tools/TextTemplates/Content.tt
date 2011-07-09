@@ -1,0 +1,422 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension="Generated.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Microsoft.Xna.Framework" #>
+<#@ assembly name="Microsoft.Xna.Framework.Graphics" #>
+<#@ assembly name="System.Windows.Forms" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.ComponentModel" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.Xna.Framework" #>
+<#@ import namespace="Microsoft.Xna.Framework.Content" #>
+<#@ import namespace="Microsoft.Xna.Framework.Graphics" #>
+<#@ import namespace="System.Windows.Forms" #>
+<#+
+        class KnownContentTypes
+        {
+            public static List<string> ExcludedTypes = new List<string>();
+            public static Dictionary<string, string> NamespaceMapping = new Dictionary<string, string>();
+            public static Dictionary<string, string> TypeMapping = new Dictionary<string, string>();
+            static KnownContentTypes()
+            {
+                NamespaceMapping.Add("Microsoft.Xna.Framework", "Microsoft.Xna.Framework.Content.Pipeline");
+                NamespaceMapping.Add("Nine", "Nine.Content.Pipeline");
+
+                ExcludedTypes.Add("Microsoft.Xna.Framework.Graphics.EffectTechnique");
+
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture3D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture3DContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.TextureCube", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Model", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");
+                TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
+                TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
+            }
+        }
+
+        IEnumerable<Type> FindContentSerializableTypes(Assembly assembly)
+        {
+            return from type in assembly.GetTypes()
+                   where HasContentSerializableType(type)
+                   select type;
+        }
+
+        IEnumerable<MemberInfo> FindContentSerializableMembers(Type type)
+        {
+            return (from field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    where IsContentSerializable(field)
+                    select field).Cast<MemberInfo>().Concat(
+                        from publicProperty in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                        where IsContentSerializable(publicProperty)
+                        select publicProperty);
+        }
+
+        bool HasContentSerializableType(Type type)
+        {
+            if (type == null || type.IsAbstract || type.IsInterface)
+                return false;
+            if (type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type))
+                return true;
+            return HasContentSerializerAttribute(type);
+        }
+
+        bool IsContentSerializable(Type type)
+        {
+            if (type == null || type.IsInterface)
+                return false;
+            if (KnownContentTypes.ExcludedTypes.Contains(type.FullName))
+                return false;
+            if (type.IsValueType || type.IsEnum || type == typeof(string) || type.IsPrimitive)
+                return true;
+            if (type.IsArray)
+                return IsContentSerializable(type.GetElementType());
+            return IsKnownType(type) || HasContentSerializerAttribute(type);
+        }
+
+        bool IsContentSerializable(FieldInfo field)
+        {
+            if (field == null || HasContentSerializerIgnoreAttribute(field))
+                return false;
+            if (HasContentSerializerAttribute(field))
+                return true;
+            return field.IsPublic && IsContentSerializable(field.FieldType);
+        }
+
+        bool IsContentSerializable(PropertyInfo property)
+        {
+            if (property == null || HasContentSerializerIgnoreAttribute(property))
+                return false;
+            if (HasContentSerializerAttribute(property))
+                return true;
+            if (property.GetGetMethod() != null)
+            {
+                if (property.GetSetMethod() != null)
+                    return IsContentSerializable(property.PropertyType);
+                return IsCollection(property.PropertyType) || IsDictionary(property.PropertyType);
+            }
+            return false;
+        }
+		
+        bool HasContentSerializerAttribute(Type type)
+        {
+            return type.FindMembers(MemberTypes.Property | MemberTypes.Field,
+                                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
+                   (member, e) => member.GetCustomAttributes(typeof(ContentSerializerAttribute), false).Length > 0, null).Length > 0;
+        }
+
+        bool HasContentSerializerAttribute(MemberInfo member)
+        {
+            return member.IsDefined(typeof(ContentSerializerAttribute), false);
+        }
+
+        bool HasContentSerializerIgnoreAttribute(MemberInfo member)
+        {
+            return member.IsDefined(typeof(ContentSerializerIgnoreAttribute), false);
+        }
+
+        bool IsKnownType(Type type)
+        {
+            return KnownContentTypes.TypeMapping.ContainsKey(type.FullName);
+        }
+
+        bool IsCollection(Type type)
+        {
+            return !(typeof(Array).IsAssignableFrom(type)) && !type.Name.Contains("ReadOnly") &&
+                     type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>), null).Length > 0;
+        }
+
+        Type GetCollectionType(Type type)
+        {
+            var i = type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>), null).FirstOrDefault();
+            if (i == null)
+                return null;
+            return i.GetGenericArguments()[0];
+        }
+
+        bool IsDictionary(Type type)
+        {
+            return type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>), null).Length > 0;
+        }
+
+        Type[] GetDictionaryType(Type type)
+        {
+            var i = type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>), null).FirstOrDefault();
+            if (i == null)
+                return null;
+            return i.GetGenericArguments();
+        }
+
+        string GetContentPipelineNamespace(Type type)
+        {
+            var name = type.Namespace;
+            foreach (var pair in KnownContentTypes.NamespaceMapping)
+                name = name.Replace(pair.Key, pair.Value);
+            return name;
+        }
+
+        string GetClassFullName(Type type)
+        {
+            var count = 0;
+            var name = type.Name;
+            var index = name.IndexOf('`');
+            if (index >= 0)
+            {
+                name = name.Remove(index, 1);
+                count = Convert.ToInt32(name[index].ToString());
+                name = name.Remove(index, 1);
+            }
+            if (type.IsGenericTypeDefinition)
+            {
+                if (count == 1)
+                {
+                    name = name + "<T>";
+                }
+                else if (count > 1)
+                {
+                    name += "<";
+                    for (var i = 0; i < count; i++)
+                    {
+                        name += "T" + (i + 1);
+                        if (i != count - 1)
+                            name += ", ";
+                    }
+                    name += ">";
+                }
+            }
+            else if (type.IsGenericType)
+            {
+                name += "<";
+                for (var i = 0; i < count; i++)
+                {
+                    name += GetClassFullName(type.GetGenericArguments()[i]);
+                    if (i != count - 1)
+                        name += ", ";
+                }
+                name += ">";
+            }
+            return type.Namespace + "." + name;
+        }
+
+        string GetClassName(Type type)
+        {
+            if (type.IsGenericType)
+                return GetClassFullName(type).Split('<')[0].Split('.').Last();
+            return GetClassFullName(type).Split('.').Last();
+        }
+
+        string GetContentClassFullName(Type type)
+        {
+            if (type.IsValueType || type.IsEnum || type.IsPrimitive || type == typeof(string))
+                return GetClassFullName(type);
+            if (IsDictionary(type))
+                return "System.Collections.Generic.Dictionary<" + GetContentClassFullName(GetDictionaryType(type)[0]) + ", "
+                                                                + GetContentClassFullName(GetDictionaryType(type)[1]) + ">";
+            if (IsCollection(type))
+                return "System.Collections.Generic.List<" + GetContentClassFullName(GetCollectionType(type)) + ">";
+            if (KnownContentTypes.TypeMapping.ContainsKey(type.FullName))
+                return KnownContentTypes.TypeMapping[type.FullName];
+            if (!HasContentSerializableType(type))
+                return GetClassFullName(type);
+
+            var count = 0;
+            var name = type.FullName;
+            var index = name.IndexOf('`');
+            if (index >= 0)
+            {
+                name = name.Remove(index, 1);
+                count = Convert.ToInt32(name[index].ToString());
+                name = name.Remove(index, 1);
+            }
+            if (!type.IsGenericType && !IsCollection(type) && !IsDictionary(type))
+                name = name + "Content";
+            if (type.IsGenericTypeDefinition)
+            {
+                if (count == 1)
+                {
+                    name = name + "<T>";
+                }
+                else if (count > 1)
+                {
+                    name += "<";
+                    for (var i = 0; i < count; i++)
+                    {
+                        name += "T" + (i + 1);
+                        if (i != count - 1)
+                            name += ", ";
+                    }
+                    name += ">";
+                }
+            }
+            else if (type.IsGenericType)
+            {
+                name += "<";
+                for (var i = 0; i < count; i++)
+                {
+                    name += GetContentClassFullName(type.GetGenericArguments()[i]);
+                    if (i != count - 1)
+                        name += ", ";
+                }
+                name += ">";
+            }
+            return name.Replace(type.Namespace, GetContentPipelineNamespace(type));
+        }
+
+        string GetContentClassName(Type type)
+        {
+            if (type.IsGenericType)
+                return GetContentClassFullName(type).Split('<')[0].Split('.').Last();
+            return GetContentClassFullName(type).Split('.').Last();
+        }
+
+        string GetContentClassConstructorName(Type type)
+        {
+            var name = type.Name;
+            var index = name.IndexOf('`');
+            if (index >= 0)
+            {
+                name = name.Remove(index, 2);
+            }
+            return name + "Content";
+        }
+
+        Type GetMemberType(MemberInfo member)
+        {
+            if (member is PropertyInfo)
+                return ((PropertyInfo)member).PropertyType;
+            if (member is FieldInfo)
+                return ((FieldInfo)member).FieldType;
+            return null;
+        }
+
+        string GetMemberTypeName(MemberInfo member)
+        {
+            return GetClassFullName(GetMemberType(member));
+        }
+
+        string GetMemberContentTypeName(MemberInfo member)
+        {
+            return GetContentClassFullName(GetMemberType(member));
+        }
+
+        bool CanSetMember(MemberInfo member)
+        {
+            return true;
+            //return member
+        }
+
+        bool HasDefaultValue(MemberInfo member)
+        {
+            var type = GetMemberType(member);
+            if (type == null)
+                return false;
+            return HasDefaultValue(type);
+        }
+
+        bool HasDefaultValue(Type type)
+        {
+            if (type == typeof(string))
+                return true;
+            return TypeDescriptor.GetConverter(type).CanConvertFrom(typeof(string)) &&
+                   TypeDescriptor.GetConverter(type).CanConvertTo(typeof(string));
+        }
+
+        object GetValue(MemberInfo member, object obj)
+        {
+            if (member is PropertyInfo)
+                return ((PropertyInfo)member).GetValue(obj, null);
+            if (member is FieldInfo)
+                return ((FieldInfo)member).GetValue(obj);
+            return null;
+        }
+
+        string TryGetDefaultValue(MemberInfo member)
+        {
+            if (member == null)
+                return null;
+            if (!HasDefaultValue(member))
+                return null;
+            var type = GetMemberType(member);
+            if (type == null)
+                return null;
+            object obj = null;
+            if (HasDefaultGraphicsDeviceConstructor(member.DeclaringType))
+            {
+                try
+                {
+                    obj = Activator.CreateInstance(member.DeclaringType, CreateDummyGraphicsDevice());
+                }
+                catch { }
+            }
+            else if (HasDefaultConstructor(member.DeclaringType))
+            {
+                try
+                {
+                    obj = Activator.CreateInstance(member.DeclaringType);
+                }
+                catch { }
+            }
+            if (obj == null)
+                return null;
+            try
+            {
+                return TypeDescriptor.GetConverter(type).ConvertTo(GetValue(member, obj), typeof(string)).ToString();
+            }
+            catch 
+            {
+                return null; 
+            }
+        }
+
+        bool HasDefaultConstructor(Type type)
+        {
+            return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                                       null, new Type[0], null) != null;
+        }
+
+        bool HasDefaultPublicConstructor(Type type)
+        {
+            return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public,
+                                       null, new Type[0], null) != null;
+        }
+
+        bool HasDefaultGraphicsDeviceConstructor(Type type)
+        {
+            return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, 
+                                       null, new Type[] { typeof(GraphicsDevice) }, null) != null;
+        }
+
+        bool HasDefaultPublicGraphicsDeviceConstructor(Type type)
+        {
+            return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public,
+                                       null, new Type[] { typeof(GraphicsDevice) }, null) != null;
+        }
+
+        GraphicsDevice CreateDummyGraphicsDevice()
+        {
+            if (device == null)
+            {
+                // Create graphics device
+                Form dummy = new Form();
+
+                PresentationParameters parameters = new PresentationParameters();
+                parameters.BackBufferWidth = 1;
+                parameters.BackBufferHeight = 1;
+                parameters.DeviceWindowHandle = dummy.Handle;
+
+                GraphicsAdapter.UseNullDevice = true;
+                device = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, parameters);
+            }
+            return device;
+        }
+        static GraphicsDevice device;
+
+        string GetContentReaderAssemblyQualifiedName(Type type)
+        {
+            var list = type.AssemblyQualifiedName.Split(',').ToList();
+            list[0] = list[0] + "Reader";
+            return string.Join(",", list);
+        }
+#>

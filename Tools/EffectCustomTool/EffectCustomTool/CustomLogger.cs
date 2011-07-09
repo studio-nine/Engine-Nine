@@ -20,12 +20,18 @@ namespace Nine.Tools.EffectCustomTool
     /// </summary>
     class CustomLogger : ContentBuildLogger
     {
+        private GenerationEventArgs e;
+
+        public CustomLogger(GenerationEventArgs e)
+        {
+            this.e = e;
+        }
         /// <summary>
         /// Logs a low priority message.
         /// </summary>
         public override void LogMessage(string message, params object[] messageArgs)
         {
-            Console.WriteLine(message, messageArgs);
+            System.Diagnostics.Trace.WriteLine(string.Format(message, messageArgs));
         }
 
 
@@ -34,7 +40,7 @@ namespace Nine.Tools.EffectCustomTool
         /// </summary>
         public override void LogImportantMessage(string message, params object[] messageArgs)
         {
-            Console.WriteLine(message, messageArgs);
+            System.Diagnostics.Trace.WriteLine(string.Format(message, messageArgs));
         }
 
 
@@ -43,7 +49,8 @@ namespace Nine.Tools.EffectCustomTool
         /// </summary>
         public override void LogWarning(string helpLink, ContentIdentity contentIdentity, string message, params object[] messageArgs)
         {
-            throw new Exception("Warning: " + string.Format(message, messageArgs));
+            if (e != null)
+                e.GenerateWarning(string.Format(message, messageArgs));
         }
     }
 }

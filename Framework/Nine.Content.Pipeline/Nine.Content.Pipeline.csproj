@@ -79,11 +79,17 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\TextTemplates\Nine.Content.Model.Generated.cs">
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Model.Generated.cs">
       <Link>Nine.Content.Model.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Writer.Generated.cs">
+      <Link>Nine.Content.Writer.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="ContentReference.cs" />
     <Compile Include="ReflectionHelper.cs" />
@@ -345,10 +351,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TextTemplates\Nine.Content.Model.tt">
+    <None Include="..\..\Tools\TextTemplates\Nine.Content.Model.tt">
       <Link>Nine.Content.Model.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Content.Model.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="..\..\Tools\TextTemplates\Nine.Content.Writer.tt">
+      <Link>Nine.Content.Writer.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Content.Writer.Generated.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />

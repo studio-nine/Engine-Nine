@@ -24,16 +24,16 @@ namespace Nine.Graphics
     public class Geometry : IGeometry, ISurface
     {
         [ContentSerializer]
-        public BoundingSphere BoundingSphere { get; private set; }
+        public BoundingSphere BoundingSphere { get; internal set; }
 
         [ContentSerializer]
-        public BoundingBox BoundingBox { get; private set; }
+        public BoundingBox BoundingBox { get; internal set; }
 
         [ContentSerializer]
-        public Vector3[] Positions { get; private set; }
+        public Vector3[] Positions { get; internal set; }
         
         [ContentSerializer]
-        public ushort[] Indices { get; private set; }
+        public ushort[] Indices { get; internal set; }
 
 
         IList<Vector3> IGeometry.Positions { get { return Positions; } }

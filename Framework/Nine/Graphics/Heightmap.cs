@@ -29,43 +29,43 @@ namespace Nine.Graphics
         /// Gets the size of the terrain geometry in 3 axis.
         /// </summary>
         [ContentSerializer]
-        public Vector3 Size { get; private set; }
+        public Vector3 Size { get; internal set; }
 
         /// <summary>
         /// Gets the size of the smallest square block that made up the terrain.
         /// </summary>
         [ContentSerializer]
-        public float Step { get; private set; }
+        public float Step { get; internal set; }
 
         /// <summary>
         /// Gets the heights of all terrain points.
         /// </summary>
         [ContentSerializer]
-        public float[] Heights { get; private set; }
+        public float[] Heights { get; internal set; }
 
         /// <summary>
         /// Gets the normals of all terrain points.
         /// </summary>
         [ContentSerializer]
-        public Vector3[] Normals { get; private set; }
+        public Vector3[] Normals { get; internal set; }
 
         /// <summary>
         /// Gets the tangents of all terrain points.
         /// </summary>
         [ContentSerializer]
-        public Vector3[] Tangents { get; private set; }
+        public Vector3[] Tangents { get; internal set; }
 
         /// <summary>
         /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
         /// </summary>
         [ContentSerializer]
-        public int Width { get; private set; }
+        public int Width { get; internal set; }
 
         /// <summary>
         /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
         /// </summary>
         [ContentSerializer]
-        public int Height { get; private set; }
+        public int Height { get; internal set; }
 
         /// <summary>
         /// Gets or sets any user data.
@@ -77,7 +77,7 @@ namespace Nine.Graphics
         /// Gets the axis aligned bounding box of this terrain.
         /// </summary>
         [ContentSerializer]
-        public BoundingBox BoundingBox { get; private set; }
+        public BoundingBox BoundingBox { get; internal set; }
         
         /// <summary>
         /// Occured when the heightmap changed.
@@ -88,7 +88,7 @@ namespace Nine.Graphics
         
         #region Methods
 
-        private Heightmap() { }
+        internal Heightmap() { }
 
 
         /// <summary>

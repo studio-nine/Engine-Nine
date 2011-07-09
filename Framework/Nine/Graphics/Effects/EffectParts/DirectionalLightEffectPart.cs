@@ -81,6 +81,13 @@ namespace Nine.Graphics.Effects.EffectParts
                 dirtyMask &= ~specularColorDirtyMask;
             }
         }
+        
+        public DirectionalLightEffectPart()
+        {
+            Direction = new Vector3(0, -0.707107f, -0.707107f);
+            DiffuseColor = Vector3.One;
+            SpecularColor = Vector3.One;
+        }
 
         protected internal override LinkedEffectPart Clone()
         {

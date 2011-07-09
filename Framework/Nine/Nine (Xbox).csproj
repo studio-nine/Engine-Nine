@@ -138,19 +138,12 @@
       <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\DirectionalLightEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Graphics\Effects\DirectionalLightEffectHiDef.cs">
-      <DependentUpon>DirectionalLightEffectHiDef.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphics\Effects\DirectionalLightEffectHiDef.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DirectionalLightEffectHiDef.fx</DependentUpon>
     </Compile>
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
+    <Compile Include="Graphics\Effects\EffectParts\BeginLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
     <Compile Include="Graphics\Lights.cs" />
     <Compile Include="Graphics\ModelBatchExtensions.cs" />
@@ -331,7 +324,6 @@
     <Compile Include="Graphics\Effects\EffectParts\DirectionalLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\DualTextureEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\FogEffectPart.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\LightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\NormalMapEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\OverlayTextureEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ShadowMapEffectPart.cs" />
@@ -450,14 +442,9 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\DirectionalLight.fxh" />
     <None Include="Graphics\Effects\DirectionalLightEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DirectionalLightEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Graphics\Effects\DirectionalLightEffectHiDef.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DirectionalLightEffectHiDef.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>

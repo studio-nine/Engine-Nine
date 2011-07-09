@@ -8,6 +8,7 @@
 using System;
 using System.IO;
 using System.CodeDom;
+using System.Linq;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,18 +29,23 @@ using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 
 namespace Nine.Tools.EffectCustomTool
 {
-    public class EffectCompiler
+    public class EffectCompiler : IEqualityComparer<EffectParameter>
     {
         public string Designer;
         public string Default;
 
         bool hiDef = false;
-        string WindowsEffectCode;
-        string XboxEffectCode;
-        string lastStructureName;
+        List<string> structNames = new List<string>();
         StringBuilder structures = new StringBuilder();
-        
-        public EffectCompiler(string className, string nameSpace, string sourceFile)
+        private GenerationEventArgs e;
+
+        public EffectCompiler(string className, string nameSpace, string sourceFile, GenerationEventArgs e)
+        {
+            this.e = e;
+            Generate(className, nameSpace, sourceFile);
+        }
+
+        private string Generate(string className, string nameSpace, string sourceFile)
         {
             // Create graphics device
             Form dummy = new Form();
@@ -52,23 +58,32 @@ namespace Nine.Tools.EffectCustomTool
             GraphicsAdapter.UseNullDevice = true;
             GraphicsDevice device = new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, parameters);
 
-            CompiledEffectContent windowsCompiledEffect;
-            CompiledEffectContent xbox360CompiledEffect;
+            CompiledEffectContent windowsCompiledEffect = null;
+            CompiledEffectContent windowsHiDefCompiledEffect = null;
+            CompiledEffectContent xbox360CompiledEffect = null;
 
             byte[] windowsEffectCode = null;
+            byte[] windowsHiDefEffectCode = null;
             byte[] xbox360EffectCode = null;
 
             try
             {
+                hiDef = false;
                 windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.Reach);
+                windowsHiDefCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
                 xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.Reach);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                hiDef = true;
-
-                windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
-                xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
+                if (e != null)
+                    e.GenerateWarning(ex.ToString());
+                if (!hiDef)
+                {
+                    hiDef = true;
+                    windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
+                    xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
+                    windowsHiDefCompiledEffect = windowsCompiledEffect;
+                }
             }
 
             string indent = "        ";
@@ -84,15 +99,20 @@ namespace Nine.Tools.EffectCustomTool
             }
 
             windowsEffectCode = windowsCompiledEffect.GetEffectCode();
+            windowsHiDefEffectCode = windowsHiDefCompiledEffect.GetEffectCode();
             xbox360EffectCode = xbox360CompiledEffect.GetEffectCode();
 
-            WindowsEffectCode = ByteArrayToString(windowsEffectCode);
-            XboxEffectCode = ByteArrayToString(xbox360EffectCode);
+            string WindowsEffectCode = ByteArrayToString(windowsEffectCode);
+            string XboxEffectCode = ByteArrayToString(xbox360EffectCode);
 
             // Initialize parameters
             Effect effect = new Effect(device, windowsEffectCode);
+            Effect effectHiDef = new Effect(device, windowsHiDefEffectCode);
 
-            string body = GetProperties(className, indent, effect.Parameters);
+            string WindowsHiDefEffectCode = (effect.Parameters.Concat(effectHiDef.Parameters).Distinct(this).ToList().Count == effect.Parameters.Count) ?
+                                            "ReachEffectCode" : "new byte[]\r\n{" + ByteArrayToString(windowsHiDefEffectCode) + "\r\n}";
+
+            string body = GetProperties(className, indent, effect.Parameters, effectHiDef.Parameters);
 
             string content = Strings.Designer;
 
@@ -103,13 +123,25 @@ namespace Nine.Tools.EffectCustomTool
             content = content.Replace(@"{$NAMESPACE}", nameSpace);
             content = content.Replace(@"{$XBOXBYTECODE}", XboxEffectCode);
             content = content.Replace(@"{$WINDOWSBYTECODE}", WindowsEffectCode);
+            content = content.Replace(@"{$WINDOWSHIDEFBYTECODE}", WindowsHiDefEffectCode);
             content = content.Replace(@"{$VERSION}", GetType().Assembly.GetName().Version.ToString(4));
             content = content.Replace(@"{$RUNTIMEVERSION}", GetType().Assembly.ImageRuntimeVersion);
 
-            Designer = content;
+            return Designer = content;
         }
 
-        private string GetProperties(string className, string indent, EffectParameterCollection effectParameters)
+        private bool ByteEquals(byte[] a, byte[] b)
+        {
+            if (a.Length != b.Length)
+                return false;
+            for (int i = 0; i < a.Length; i++)
+                if (a[i] != b[i])
+                    return false;
+            return true;
+        }
+
+        private string GetProperties(string className, string indent, EffectParameterCollection effectParametersReach,
+                                                                      EffectParameterCollection effectParametersHiDef)
         {
             StringBuilder Apply = new StringBuilder();
             StringBuilder Clone = new StringBuilder();
@@ -117,12 +149,19 @@ namespace Nine.Tools.EffectCustomTool
             StringBuilder Initialize = new StringBuilder();
             StringBuilder Properties = new StringBuilder();
 
+            List<string> parameterNames = new List<string>();
+
             uint dirtyFlag = 0;
+
+            var effectParameters = effectParametersReach.Concat(effectParametersHiDef).Distinct(this).ToList();
 
             // Create a field and property for each effect parameter
             for (int i = 0; i < effectParameters.Count; i++)
             {
                 EffectParameter parameter = effectParameters[i];
+                EffectParameter parameterReach = FindCorrespondingParameter(effectParametersReach, parameter);
+                EffectParameter parameterHiDef = FindCorrespondingParameter(effectParametersHiDef, parameter);
+
                 string parameterType;
                 try
                 {
@@ -144,121 +183,132 @@ namespace Nine.Tools.EffectCustomTool
                 string fieldDirtyFlagName = parameter.Name + "DirtyFlag";
 
                 // Initialize
-                Initialize.Append(indent);
-                Initialize.AppendFormat("    this.{0} = cloneSource[\"{1}\"];", parameterFieldName, parameter.Name);
-                if (IsStruct(parameter))
+                UseProfileWrapper(parameter, parameterReach, parameterHiDef, Initialize, indent, () =>
                 {
-                    Initialize.AppendLine();
                     Initialize.Append(indent);
-                    if (isArray)
+                    Initialize.AppendFormat("    this.{0} = cloneSource[\"{1}\"];", parameterFieldName, parameter.Name);
+                    if (IsStruct(parameter))
                     {
-                        Initialize.AppendFormat("    this.{0} = new {1}[{2}];", fieldName, parameterType, parameter.Elements.Count);
                         Initialize.AppendLine();
                         Initialize.Append(indent);
-                        Initialize.AppendFormat("    for (int i = 0; i < this.{0}.Length; i++)", fieldName);
-                        Initialize.AppendLine();
-                        Initialize.Append(indent);
-                        Initialize.AppendFormat("        this.{0}[i] = new {1}({2}.Elements[i].StructureMembers);", fieldName, parameterType, parameterFieldName);
+                        if (isArray)
+                        {
+                            Initialize.AppendFormat("    this.{0} = new {1}[{2}];", fieldName, parameterType, parameter.Elements.Count);
+                            Initialize.AppendLine();
+                            Initialize.Append(indent);
+                            Initialize.AppendFormat("    for (int i = 0; i < this.{0}.Length; i++)", fieldName);
+                            Initialize.AppendLine();
+                            Initialize.Append(indent);
+                            Initialize.AppendFormat("        this.{0}[i] = new {1}({2}.Elements[i].StructureMembers);", fieldName, parameterType, parameterFieldName);
+                        }
+                        else
+                        {
+                            Initialize.AppendFormat("    this.{0} = new {1}({2});", fieldName, parameterType, parameterFieldName);
+                        }
                     }
-                    else
-                    {
-                        Initialize.AppendFormat("    this.{0} = new {1}({2});", fieldName, parameterType, parameterFieldName);
-                    }
-                }
+                });
                 Initialize.AppendLine();
 
-
-                DirtyFlags.AppendFormat(indent + "const uint {0} = 1 << {1};", fieldDirtyFlagName, dirtyFlag);
-                DirtyFlags.AppendLine();
-
-                Clone.AppendFormat(indent + "    this.{0} = cloneSource.{0};", fieldName);
-                Clone.AppendLine();
-
-                if (IsStruct(parameter))
+                UseProfileWrapper(parameter, parameterReach, parameterHiDef, Apply, indent, () =>
                 {
-                    if (isArray)
+                    if (IsStruct(parameter))
                     {
-                        Apply.Append(indent);
-                        Apply.AppendFormat("    for (int i = 0; i < {0}; i++)", parameter.Elements.Count);
+                        if (isArray)
+                        {
+                            Apply.Append(indent);
+                            Apply.AppendFormat("    for (int i = 0; i < {0}; i++)", parameter.Elements.Count);
+                            Apply.AppendLine();
+                            Apply.Append(indent);
+                            Apply.AppendFormat("        this.{0}[i].Apply();", fieldName);
+                        }
+                        else
+                        {
+                            Apply.AppendFormat(indent + "    this.{0}.Apply();", fieldName);
+                        }
                         Apply.AppendLine();
-                        Apply.Append(indent);
-                        Apply.AppendFormat("        this.{0}[i].Apply();", fieldName);
                     }
                     else
                     {
-                        Apply.AppendFormat(indent + "    this.{0}.Apply();", fieldName);
+                        Apply.AppendFormat(indent + "    if ((this.dirtyFlag & {0}) != 0)", fieldDirtyFlagName);
+                        Apply.AppendLine();
+                        Apply.AppendLine(indent + "    {");
+                        Apply.AppendFormat(indent + "        this.{0}.SetValue({1});", parameterFieldName, fieldName);
+                        Apply.AppendLine();
+                        Apply.AppendFormat(indent + "        this.dirtyFlag &= ~{0};", fieldDirtyFlagName);
+                        Apply.AppendLine();
+                        Apply.AppendLine(indent + "    }");
                     }
-                    Apply.AppendLine();
-                }
-                else
-                {
-                    Apply.AppendFormat(indent + "    if ((this.dirtyFlag & {0}) != 0)", fieldDirtyFlagName);
-                    Apply.AppendLine();
-                    Apply.AppendLine(indent + "    {");
-                    Apply.AppendFormat(indent + "        this.{0}.SetValue({1});", parameterFieldName, fieldName);
-                    Apply.AppendLine();
-                    Apply.AppendFormat(indent + "        this.dirtyFlag &= ~{0};", fieldDirtyFlagName);
-                    Apply.AppendLine();
-                    Apply.AppendLine(indent + "    }");
-                }
+                });
 
                 // Field
-                Properties.Append(indent);
-                Properties.AppendFormat("private {0} {1};", propertyTypeReference, fieldName);
-                Properties.AppendLine();
-
-                Properties.Append(indent);
-                Properties.Append("private EffectParameter ");
-                Properties.Append(parameterFieldName);
-                Properties.AppendLine(";");
-                Properties.AppendLine();
-
-                // Summary
-                EffectAnnotation sasUiDescriptionAnnotation = parameter.Annotations["SasUiDescription"];
-                if (sasUiDescriptionAnnotation != null)
+                if (!parameterNames.Contains(parameter.Name))
                 {
-                    Properties.Append(indent);
-                    Properties.AppendLine("/// <summary>");
-                    Properties.Append(indent);
-                    Properties.Append("/// ");
-                    Properties.AppendLine(sasUiDescriptionAnnotation.GetValueString());
-                    Properties.Append(indent);
-                    Properties.AppendLine("/// </summary>");
-                }
+                    DirtyFlags.AppendFormat(indent + "const uint {0} = 1 << {1};", fieldDirtyFlagName, dirtyFlag);
+                    DirtyFlags.AppendLine();
 
-                // Property
-                Properties.Append(indent);
-                Properties.Append(isPublic ? "public " : "internal ");
-                Properties.Append(propertyTypeReference);
-                Properties.Append(" ");
-                Properties.AppendLine(propertyName);
-                Properties.Append(indent);
-                Properties.AppendLine("{");
+                    Clone.AppendFormat(indent + "    this.{0} = cloneSource.{0};", fieldName);
+                    Clone.AppendLine();
 
-                // Get method
-                Properties.Append(indent);
-                Properties.AppendFormat("    get {{ return {0}; }}", fieldName);
-                Properties.AppendLine();
-
-                // Set method
-                if (HasSetMethod(parameter))
-                {
                     Properties.Append(indent);
-                    if (ShouldCompareValue(parameter))
-                    {
-                        Properties.AppendFormat(@"    set {{ if ({0} != value) {{ {0} = value; dirtyFlag |= {1}; }} }}", fieldName, fieldDirtyFlagName);
-                    }
-                    else
-                    {
-                        Properties.AppendFormat(@"    set {{ {0} = value; dirtyFlag |= {1}; }}", fieldName, fieldDirtyFlagName);
-                    }
+                    Properties.AppendFormat("private {0} {1};", propertyTypeReference, fieldName);
                     Properties.AppendLine();
-                }
-                Properties.Append(indent + "}");
-                Properties.AppendLine();
-                Properties.AppendLine();
 
-                dirtyFlag++;
+                    Properties.Append(indent);
+                    Properties.Append("private EffectParameter ");
+                    Properties.Append(parameterFieldName);
+                    Properties.AppendLine(";");
+                    Properties.AppendLine();
+
+                    // Summary
+                    EffectAnnotation sasUiDescriptionAnnotation = parameter.Annotations["SasUiDescription"];
+                    if (sasUiDescriptionAnnotation != null)
+                    {
+                        Properties.Append(indent);
+                        Properties.AppendLine("/// <summary>");
+                        Properties.Append(indent);
+                        Properties.Append("/// ");
+                        Properties.AppendLine(sasUiDescriptionAnnotation.GetValueString());
+                        Properties.Append(indent);
+                        Properties.AppendLine("/// </summary>");
+                    }
+
+                    // Property
+                    Properties.Append(indent);
+                    Properties.Append(isPublic ? "public " : "internal ");
+                    Properties.Append(propertyTypeReference);
+                    Properties.Append(" ");
+                    Properties.AppendLine(propertyName);
+                    Properties.Append(indent);
+                    Properties.AppendLine("{");
+
+                    // Get method
+                    Properties.Append(indent);
+                    Properties.AppendFormat("    get {{ return {0}; }}", fieldName);
+                    Properties.AppendLine();
+
+                    // Set method
+                    if (HasSetMethod(parameter))
+                    {
+                        Properties.Append(indent);
+                        if (ShouldCompareValue(parameter))
+                        {
+                            Properties.AppendFormat(@"    set {{ if ({0} != value) {{ {0} = value; dirtyFlag |= {1}; }} }}", fieldName, fieldDirtyFlagName);
+                        }
+                        else
+                        {
+                            Properties.AppendFormat(@"    set {{ {0} = value; dirtyFlag |= {1}; }}", fieldName, fieldDirtyFlagName);
+                        }
+                        Properties.AppendLine();
+                    }
+                    Properties.Append(indent + "}");
+                    Properties.AppendLine();
+                    Properties.AppendLine();
+
+                    dirtyFlag++;
+                }
+
+                if (!parameterNames.Contains(parameter.Name))
+                    parameterNames.Add(parameter.Name);
             }
 
             string content = Strings.Body.Replace("        ", indent);
@@ -269,6 +319,57 @@ namespace Nine.Tools.EffectCustomTool
             content = content.Replace(@"{$CLASS}", className);
             content = content.Replace(@"{$DIRTYFLAGS}", DirtyFlags.ToString());
             return content.ToString();
+        }
+
+        private void UseProfileWrapper(EffectParameter parameter, EffectParameter parameterReach, 
+                                       EffectParameter parameterHiDef, StringBuilder builder, string indent, Action action)
+        {
+            bool hasReach = EffectParameterEquals(parameter, parameterReach);
+            bool hasHiDef = EffectParameterEquals(parameter, parameterHiDef);
+
+            if (!(hasHiDef && hasReach))
+            {
+                if (hasReach)
+                {
+                    builder.Append(indent);
+                    builder.AppendLine(@"    if (GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)");
+                    builder.Append(indent);
+                    builder.AppendLine("    {");
+                    action();
+                    builder.AppendLine();
+                    builder.Append(indent);
+                    builder.AppendLine("    }");
+                }
+                if (hasHiDef)
+                {
+                    builder.Append(indent);
+                    builder.AppendLine(@"    if (GraphicsDevice.GraphicsProfile == GraphicsProfile.HiDef)");
+                    builder.Append(indent);
+                    builder.AppendLine("    {");
+                    action();
+                    builder.AppendLine();
+                    builder.Append(indent);
+                    builder.AppendLine("    }");
+                }
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        private EffectParameter FindCorrespondingParameter(EffectParameterCollection effectParametersHiDef, EffectParameter parameter)
+        {
+            return effectParametersHiDef.FirstOrDefault(p => p.Name == parameter.Name && p.ParameterType == parameter.ParameterType &&
+                                                             p.ParameterClass == parameter.ParameterClass);
+        }
+
+        bool EffectParameterEquals(EffectParameter a, EffectParameter b)
+        {
+            return a != null && b != null && a.Name == b.Name && a.ParameterType == b.ParameterType &&
+                   a.ParameterClass == b.ParameterClass && a.RowCount == b.RowCount && a.ColumnCount == b.ColumnCount &&
+                 ((a.Elements != null && b.Elements != null && a.Elements.Count == b.Elements.Count) ||
+                  (a.Elements == null && b.Elements == null));
         }
 
         private bool IsStruct(EffectParameter parameter)
@@ -288,10 +389,10 @@ namespace Nine.Tools.EffectCustomTool
                     parameter.ParameterClass == EffectParameterClass.Object);
         }
 
-        private static CompiledEffectContent BuildEffect(string sourceFile, TargetPlatform targetPlatform, GraphicsProfile targetProfile)
+        private CompiledEffectContent BuildEffect(string sourceFile, TargetPlatform targetPlatform, GraphicsProfile targetProfile)
         {
             // Compile effect
-            ContentBuildLogger logger = new CustomLogger();
+            ContentBuildLogger logger = new CustomLogger(e);
 
             // Import the effect source code.
             EffectImporter importer = new EffectImporter();
@@ -300,6 +401,10 @@ namespace Nine.Tools.EffectCustomTool
 
             // Compile the effect.
             EffectProcessor processor = new EffectProcessor();
+            processor.DebugMode = EffectProcessorDebugMode.Optimize;
+            processor.Defines = targetProfile == GraphicsProfile.Reach ? "Reach;REACH" : "HiDef;HIDEF";
+            processor.Defines += ";";
+            processor.Defines += targetPlatform == TargetPlatform.Xbox360 ? "Xbox;XBOX;XBOX360" : "Windows;WIN;WINDOWS";
             ContentProcessorContext processorContext = new CustomProcessorContext(targetPlatform, targetProfile, logger);
             return processor.Process(sourceEffect, processorContext);
         }
@@ -412,13 +517,17 @@ namespace Nine.Tools.EffectCustomTool
         private string AddStruct(EffectParameter effectParameter)
         {
             string className = "Class_" + effectParameter.Name;
-            var body = GetProperties(className, "            ", effectParameter.StructureMembers);
-
-            string content = Strings.Struct;
-            content = content.Replace(@"{$BODY}", body.ToString());
-            content = content.Replace(@"{$CLASS}", className);
-            structures.AppendLine();
-            structures.Append(content);
+            if (!structNames.Contains(className))
+            {
+                var body = GetProperties(className, "            ", effectParameter.StructureMembers,
+                                                                    effectParameter.StructureMembers);
+                string content = Strings.Struct;
+                content = content.Replace(@"{$BODY}", body.ToString());
+                content = content.Replace(@"{$CLASS}", className);
+                structures.AppendLine();
+                structures.Append(content);
+                structNames.Add(className);
+            }
             return className;
         }
 
@@ -437,9 +546,19 @@ namespace Nine.Tools.EffectCustomTool
             return builder.ToString();
         }
 
+        public bool Equals(EffectParameter x, EffectParameter y)
+        {
+            return EffectParameterEquals(x, y);
+        }
+
+        public int GetHashCode(EffectParameter obj)
+        {
+            return 0;
+        }
+
         static void Main(string[] args)
         {
-            EffectCompiler compiler = new EffectCompiler("DirectionalLightEffect", "Nine.Graphics.Effects", @"D:\BasicEffect.fx");
+            EffectCompiler compiler = new EffectCompiler("DirectionalLightEffect", "Nine.Graphics.Effects", @"D:\BasicEffect.fx", null);
 
             File.WriteAllText(@"D:\BasicEffect.Designer.cs", compiler.Designer);
         }

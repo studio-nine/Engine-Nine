@@ -31,16 +31,15 @@ namespace Nine.Graphics
         /// Vertex to bonespace transforms for each bone in the skeleton.
         /// </summary>
         [ContentSerializer]
-        public List<Matrix> InverseBindPose { get; private set; }
+        public List<Matrix> InverseBindPose { get; internal set; }
         
         
         /// <summary>
         /// Index of the skeleton root on the parent mesh bone collection.
         /// </summary>
         [ContentSerializer]
-        public int SkeletonIndex { get; private set; }
-
-
+        public int SkeletonIndex { get; internal set; }
+        
         /// <summary>
         /// Constructs a new skinning data object.
         /// </summary>
@@ -56,7 +55,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Private constructor for use by the XNB deserializer.
         /// </summary>
-        private ModelSkinning() { }
+        internal ModelSkinning() { }
 
         
         /// <summary>
