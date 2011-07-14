@@ -120,6 +120,12 @@
   <data name="AlreadyInBeginEndPair" xml:space="preserve">
     <value>Begin cannot be called until End has been successfully called.</value>
   </data>
+  <data name="AvatarNotReady" xml:space="preserve">
+    <value>Cannot perform this operation when the avatar is not loaded.</value>
+  </data>
+  <data name="InvalidateSkeleton" xml:space="preserve">
+    <value>The bone transforms of the input skeleton is not valid.</value>
+  </data>
   <data name="InvalidGraphicsProfile" xml:space="preserve">
     <value>The specified graphics profile is not supported.</value>
   </data>
@@ -134,5 +140,14 @@
   </data>
   <data name="PrimitiveTooLarge" xml:space="preserve">
     <value>The Input primitive is too large for a single draw call. Try increase the capability of PrimitiveBatch.</value>
+  </data>
+  <data name="SkeletonNotSupportSkin" xml:space="preserve">
+    <value>The input skeleton does not support skinning.</value>
+  </data>
+  <data name="CannotDecomposeMatrix" xml:space="preserve">
+    <value>Target matrix cannot be decomposed.</value>
+  </data>
+  <data name="InvalidAvatarAnimationClip" xml:space="preserve">
+    <value>The input animation clip is not a valid avatar animation.</value>
   </data>
 </root>

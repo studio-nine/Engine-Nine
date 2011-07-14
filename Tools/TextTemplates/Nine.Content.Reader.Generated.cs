@@ -129,16 +129,16 @@ namespace Nine.Graphics
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class ModelSkinningReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelSkinning>
+    class ModelSkinningReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelSkeletonData>
     {
-        protected override Nine.Graphics.ModelSkinning Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkinning existingInstance)
+        protected override Nine.Graphics.ModelSkeletonData Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkeletonData existingInstance)
         {
             if (existingInstance == null)
             {
-                existingInstance = new ModelSkinning();
+                existingInstance = new ModelSkeletonData();
             }
-            existingInstance.InverseBindPose = input.ReadObject<System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>>();
-            existingInstance.SkeletonIndex = input.ReadObject<System.Int32>();
+            existingInstance.InverseAbsoluteBindPose = input.ReadObject<System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.SkeletonRoot = input.ReadObject<System.Int32>();
 
             return existingInstance;
         }
@@ -159,7 +159,7 @@ namespace Nine.Graphics
             }
             existingInstance.Animations = input.ReadObject<System.Collections.Generic.Dictionary<System.String, Nine.Animations.BoneAnimationClip>>();
             existingInstance.Collision = input.ReadObject<Nine.Graphics.ModelCollision>();
-            existingInstance.Skinning = input.ReadObject<Nine.Graphics.ModelSkinning>();
+            existingInstance.Skeleton = input.ReadObject<Nine.Graphics.ModelSkeletonData>();
 
             return existingInstance;
         }

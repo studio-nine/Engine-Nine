@@ -56,7 +56,7 @@ void main(INPUT input, inout OUTPUT output)
     }
 
 	diffuse += SpotLightDiffuseColor * dotL * zeroL * fade;
-    specular += SpotLightSpecularColor * pow(max(dotH, 0.000001), specularPower) * fade;
+    specular += SpotLightSpecularColor * zeroL * pow(max(dotH, 0.000001), specularPower) * fade;
     
 	export(float3, LightDiffuse, diffuse);
 	export(float3, LightSpecular, specular);

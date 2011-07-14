@@ -39,7 +39,7 @@ namespace Nine.Animations
     /// <summary>
     /// Basic class for all timeline based animations.
     /// </summary>
-    public abstract class TimelineAnimation : Animation
+    public abstract class TimelineAnimation : Animation, ITimelineAnimation
     {
         /// <summary>
         /// Creates a new instance of <c>TimelineAnimation</c>.
@@ -148,11 +148,6 @@ namespace Nine.Animations
         private TimeSpan targetElapsedTime = TimeSpan.Zero;
 
         /// <summary>
-        /// Occurs when this animation has completely finished playing.
-        /// </summary>
-        public override event EventHandler Completed;
-
-        /// <summary>
         /// Occurs when this animation has reached the end and repeated.
         /// </summary>
         public event EventHandler Repeated;
@@ -195,12 +190,6 @@ namespace Nine.Animations
         {
             if (Repeated != null)
                 Repeated(this, EventArgs.Empty);
-        }
-
-        protected virtual void OnCompleted()
-        {
-            if (Completed != null)
-                Completed(this, EventArgs.Empty);
         }
 
         protected override void OnStarted()

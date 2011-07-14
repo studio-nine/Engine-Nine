@@ -75,11 +75,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeferredLighting (Xbox)", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game\Game.csproj", "{EFC3699A-3D0C-4B4B-9D9D-6BA0B60D14F6}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "GameContent", "Game\GameContent\GameContent.contentproj", "{155BB00D-6EA8-43B6-8A0C-4683B5FD72B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameContent", "Game\GameContent\GameContent.contentproj", "{155BB00D-6EA8-43B6-8A0C-4683B5FD72B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game (Xbox)", "Game\Game\Game (Xbox).csproj", "{40193878-4ABF-473F-A8E0-F356B7892998}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game (Windows Phone)", "Game\Game\Game (Windows Phone).csproj", "{80B2DD8D-4B8F-4E11-BEDF-14CF06E82699}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvatarAnimation", "AvatarAnimation\AvatarAnimation\AvatarAnimation.csproj", "{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvatarAnimationContent", "AvatarAnimation\AvatarAnimationContent\AvatarAnimationContent.contentproj", "{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -721,6 +725,34 @@ Global
 		{80B2DD8D-4B8F-4E11-BEDF-14CF06E82699}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
 		{80B2DD8D-4B8F-4E11-BEDF-14CF06E82699}.Release|x86.ActiveCfg = Release|Windows Phone
 		{80B2DD8D-4B8F-4E11-BEDF-14CF06E82699}.Release|Xbox 360.ActiveCfg = Release|Windows Phone
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Windows Phone.ActiveCfg = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|x86.ActiveCfg = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Any CPU.ActiveCfg = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Mixed Platforms.Deploy.0 = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Windows Phone.ActiveCfg = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|x86.ActiveCfg = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Debug|Windows Phone.ActiveCfg = Debug|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Debug|x86.ActiveCfg = Debug|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|Any CPU.ActiveCfg = Release|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|Windows Phone.ActiveCfg = Release|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|x86.ActiveCfg = Release|Xbox 360
+		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,12 +29,30 @@ namespace Nine.Graphics.Views
         public Matrix Transform { get; set; }
 
         [ContentSerializer(Optional = true)]
-        public Model Model { get; set; }
+        public Model Model
+        {
+            get { return model; }
+            set
+            {
+                if (model != value)
+                {
+                    model = value;
+                    if (model != null)
+                        Skeleton = new ModelSkeleton(model);
+                    else
+                        Skeleton = null;
+                }
+            }
+        }
 
         [ContentSerializer(Optional = true)]
         public Effect Effect { get; set; }
 
         public BoneAnimation Animation { get; private set; }
+
+        public ModelSkeleton Skeleton { get; private set; }
+
+        private Model model;
 
         public ModelView()
         {
@@ -62,7 +80,7 @@ namespace Nine.Graphics.Views
             {
                 if (Model.IsSkinned())
                 {
-                    context.ModelBatch.DrawSkinned(Model, Transform, Animation.GetBoneTransforms(), Effect);
+                    context.ModelBatch.DrawSkinned(Model, Transform, Skeleton.GetSkinTransforms(), Effect);
                 }
                 else
                 {
@@ -71,7 +89,7 @@ namespace Nine.Graphics.Views
                         boneTransforms = new Matrix[Model.Bones.Count];
                     }
 
-                    Animation.CopyAbsoluteBoneTransformsTo(boneTransforms);
+                    Skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
 
                     foreach (var mesh in Model.Meshes)
                     {

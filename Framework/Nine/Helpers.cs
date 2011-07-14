@@ -93,17 +93,6 @@ namespace Nine
             Matrix startRotation, endRotation;
             Matrix returnMatrix;
 
-            /*
-            start.Decompose(out curScale, out qStart, out curTrans);
-            end.Decompose(out nextScale, out qEnd, out nextTrans);
-
-            lerpedScale = Vector3.Lerp(curScale, nextScale, slerpAmount);
-            lerpedTrans = Vector3.Lerp(curTrans, nextTrans, slerpAmount);
-            qResult = Quaternion.Slerp(qStart, qEnd, slerpAmount);
-
-            return Matrix.CreateScale(lerpedScale) * Matrix.CreateFromQuaternion(qResult) * Matrix.CreateTranslation(lerpedTrans);
-            */
-
             // Get rotation components and interpolate (not completely accurate but I don't want 
             // to get into polar decomposition and this seems smooth enough)
             Quaternion.CreateFromRotationMatrix(ref start, out qStart);

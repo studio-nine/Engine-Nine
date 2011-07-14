@@ -76,4 +76,25 @@ namespace Nine.Animations
         /// </summary>
         event EventHandler Completed;
     }
+
+    /// <summary>
+    /// Interface for timeline based animation.
+    /// </summary>
+    public interface ITimelineAnimation : IAnimation
+    {
+        /// <summary>
+        /// Gets the duration of the timeline animation.
+        /// </summary>
+        TimeSpan Duration { get; }
+        
+        /// <summary>
+        /// Gets the elapsed time since the beginning of this animation.
+        /// </summary>
+        TimeSpan Position { get; }
+
+        /// <summary>
+        /// Gets the playing speed of the timeline animation.
+        /// </summary>
+        float Speed { get; set; }
+    }
 }

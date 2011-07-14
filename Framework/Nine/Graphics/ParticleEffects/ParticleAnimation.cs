@@ -81,8 +81,6 @@ namespace Nine.Graphics.ParticleEffects
         /// Gets the parent particle effect used by this trigger.
         /// </summary>
         public ParticleEffect Effect { get; internal set; }
-        
-        public override event EventHandler Completed;
 
         internal ParticleAnimation() 
         {
@@ -98,8 +96,7 @@ namespace Nine.Graphics.ParticleEffects
                 if (currentTime >= Duration)
                 {
                     Stop();
-                    if (Completed != null)
-                        Completed(this, EventArgs.Empty);
+                    OnCompleted();
                 }
             }
         }

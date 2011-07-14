@@ -71,6 +71,7 @@
       <Name>ShadowNormalSkinnedEffect</Name>
       <Importer>XmlImporter</Importer>
       <Processor>LinkedEffectProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

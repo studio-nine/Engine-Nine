@@ -213,14 +213,10 @@ namespace Nine.Animations
 
                 if (Current.State == AnimationState.Stopped)
                 {
-                    if (Completed != null)
-                        Completed(this, EventArgs.Empty);
-
                     Stop();
+                    OnCompleted();
                 }
             }
         }
-
-        public override event EventHandler Completed;
     }
 }

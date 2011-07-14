@@ -75,7 +75,7 @@ namespace Nine.Animations
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public virtual void Update(TimeSpan elapsedTime) { }
+        public abstract void Update(TimeSpan elapsedTime);
 
         /// <summary>
         /// Plays the animation from start.
@@ -113,10 +113,16 @@ namespace Nine.Animations
                 Resumed(this, EventArgs.Empty);
         }
 
+        protected virtual void OnCompleted()
+        {
+            if (Completed != null)
+                Completed(this, EventArgs.Empty);
+        }
+
         /// <summary>
         /// Occurs when this animation has completely finished playing.
         /// </summary>
-        public abstract event EventHandler Completed;
+        public event EventHandler Completed;
 
         /// <summary>
         /// Occurs when this animation has started playing.

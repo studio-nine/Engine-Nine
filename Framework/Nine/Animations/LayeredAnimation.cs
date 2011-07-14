@@ -134,8 +134,6 @@ namespace Nine.Animations
             base.OnResumed();
         }
 
-        public override event EventHandler Completed;
-
         public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing)
@@ -181,14 +179,6 @@ namespace Nine.Animations
                     }
                 }
             }
- 	    
-            base.Update(elapsedTime);
-        }
-
-        protected virtual void OnCompleted()
-        {
-            if (Completed != null)
-                Completed(this, EventArgs.Empty);
         }
 
         protected virtual void OnRepeated()

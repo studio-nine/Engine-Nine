@@ -34,7 +34,7 @@ namespace Nine.Graphics
         /// Gets the skinning data attached to the model.
         /// </summary>
         [ContentSerializer()]
-        internal ModelSkinning Skinning { get; set; }
+        internal ModelSkeletonData Skeleton { get; set; }
 
         /// <summary>
         /// Gets the collision data attached to the model.
@@ -80,14 +80,14 @@ namespace Nine.Graphics
         {
             ModelTag extensions = model.Tag as ModelTag;
 
-            return extensions != null && extensions.Skinning != null;
+            return extensions != null && extensions.Skeleton != null;
         }
 
-        internal static ModelSkinning GetSkinning(this Model model)
+        internal static ModelSkeletonData GetSkeletonData(this Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
-            return extensions != null ? extensions.Skinning : null;
+            return extensions != null ? extensions.Skeleton : null;
         }
 
         /// <summary>

@@ -113,7 +113,8 @@ namespace Nine.Graphics.Effects.EffectParts
                 shadowMapParameter.SetValue(shadowMap);
                 if (shadowMapSizeParameter == null)
                     shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
-                shadowMapSizeParameter.SetValue(new Vector2(1.0f / shadowMap.Width, 1.0f / shadowMap.Height));
+                if (shadowMap != null)
+                    shadowMapSizeParameter.SetValue(new Vector2(1.0f / shadowMap.Width, 1.0f / shadowMap.Height));
                 dirtyMask &= ~shadowMapDirtyMask;
             }
         }

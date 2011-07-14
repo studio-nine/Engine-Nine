@@ -145,7 +145,6 @@ namespace Nine.Content.Pipeline.Processors
             
             FlattenNodeContent(input, nodes);
 
-
             // Process animations
             Dictionary<string, AnimationClip> animations = new Dictionary<string, AnimationClip>();
 

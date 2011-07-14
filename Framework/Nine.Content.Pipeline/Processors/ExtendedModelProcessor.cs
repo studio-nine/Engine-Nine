@@ -103,8 +103,6 @@ namespace Nine.Content.Pipeline.Processors
         /// </summary>
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
-
             ValidateMesh(input, context, null);
 
             ModelTag tag = new ModelTag();
@@ -112,9 +110,9 @@ namespace Nine.Content.Pipeline.Processors
             if (GenerateAnimationData)
             {
                 ModelAnimationProcessor animationProcessor = new ModelAnimationProcessor();
-                ModelSkinningProcessor skinningProcessor = new ModelSkinningProcessor();
+                ModelSkeletonProcessor skeletonProcessor = new ModelSkeletonProcessor();
 
-                tag.Skinning = skinningProcessor.Process(input, context);
+                tag.Skeleton = skeletonProcessor.Process(input, context);
                 tag.Animations = animationProcessor.Process(input, context);
 
                 ClampAnimation(tag);
@@ -134,7 +132,7 @@ namespace Nine.Content.Pipeline.Processors
             }
 
             // Only skinned models need to be baked ???
-            if (tag.Skinning != null)
+            if (tag.Skeleton != null)
                 FlattenTransforms(input);
 
             FormatAttachedTextures();
@@ -151,11 +149,11 @@ namespace Nine.Content.Pipeline.Processors
         
         private void ClampAnimation(ModelTag tag)
         {
-            if (ClampAnimationToSkeleton && tag.Skinning != null)
+            if (ClampAnimationToSkeleton && tag.Skeleton != null)
             {
                 foreach (var animation in tag.Animations.Values)
                 {
-                    for (int i = 0; i < tag.Skinning.SkeletonIndex; i++)
+                    for (int i = 0; i < tag.Skeleton.SkeletonRoot; i++)
                     {
                         if (i < animation.Transforms.Length)
                             animation.Transforms[i] = null;

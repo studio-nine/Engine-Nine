@@ -95,7 +95,6 @@
     <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
-    <Compile Include="Animations\BoneHierarchy.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
@@ -437,7 +436,7 @@
     <Compile Include="Animations\BoneAnimation.cs" />
     <Compile Include="Graphics\ModelBatch.cs" />
     <Compile Include="Graphics\ModelExtensions.cs" />
-    <Compile Include="Graphics\ModelSkinning.cs" />
+    <Compile Include="Graphics\ModelSkeleton.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleEffect.cs" />
     <Compile Include="Graphics\ParticleEffects\ParticleVertex.cs" />

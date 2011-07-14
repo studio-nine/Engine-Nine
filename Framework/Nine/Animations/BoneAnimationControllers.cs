@@ -17,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics;
 #endregion
 
 namespace Nine.Animations
@@ -202,7 +203,7 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the parent animation that this controller is affecting.
         /// </summary>
-        public BoneAnimation ParentAnimation { get; private set; }
+        public IBoneHierarchy Skeleton { get; private set; }
 
         public event EventHandler<EventArgs> TargetSpotted;
         public event EventHandler<EventArgs> TargetLost;
@@ -216,13 +217,13 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new LookAtController.
         /// </summary>
-        public LookAtController(BoneAnimation parentAnimation, Matrix transform, int bone)
+        public LookAtController(IBoneHierarchy skeleton, Matrix transform, int bone)
         {
-            if (parentAnimation == null)
-                throw new ArgumentNullException("parentAnimation");
+            if (skeleton == null)
+                throw new ArgumentNullException("skeleton");
 
             Transform = transform;
-            ParentAnimation = parentAnimation;
+            Skeleton = skeleton;
             RotationSpeed = MathHelper.Pi;
             HorizontalRotation = VerticalRotation = new Range<float>(-MathHelper.Pi, MathHelper.Pi);
             Up = Vector3.Up;
@@ -242,14 +243,14 @@ namespace Nine.Animations
                 // Transform target to the local space of parent bone
                 Matrix parentWorldTransform = Transform;
                 
-                int parentBone = ParentAnimation.GetParentBone(Bone);
+                int parentBone = Skeleton.GetParentBone(Bone);
                 if (parentBone >= 0)
-                    parentWorldTransform = ParentAnimation.GetAbsoluteBoneTransform(parentBone) * Transform;
+                    parentWorldTransform = Skeleton.GetAbsoluteBoneTransform(parentBone) * Transform;
 
                 Vector3 parentLocal = Vector3.Transform(Target.Value, Matrix.Invert(parentWorldTransform));
 
                 // Compute the rotation transform to the target position
-                Matrix boneTransform = ParentAnimation.GetBoneTransform(Bone);
+                Matrix boneTransform = Skeleton.GetBoneTransform(Bone);
                 Vector3 desiredLookAt = Vector3.Normalize(parentLocal - boneTransform.Translation);
 
                 if (desiredLookAt == Vector3.Zero)

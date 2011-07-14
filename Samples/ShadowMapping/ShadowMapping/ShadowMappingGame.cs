@@ -81,7 +81,7 @@ namespace ShadowMapping
             model = Content.Load<Model>("dude");
             terrain = Content.Load<Model>("Terrain");
 
-            animation = new BoneAnimation(model, null, model.GetAnimation(0));
+            animation = new BoneAnimation(new ModelSkeleton(model), model.GetAnimation(0));
             animation.Play();
 
             // Create skybox.
@@ -140,7 +140,7 @@ namespace ShadowMapping
 
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
                 modelBatch.Begin(lightView, lightProjection);
-                modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), shadowMap.Effect);
+                modelBatch.DrawSkinned(model, worldModel, animation.Skeleton.GetSkinTransforms(), shadowMap.Effect);
                 modelBatch.End();
             }
             // We got a shadow map rendered.
@@ -159,7 +159,7 @@ namespace ShadowMapping
             modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection);
             {
                 modelBatch.DrawSkyBox(skyBoxTexture);
-                modelBatch.DrawSkinned(model, worldModel, animation.GetBoneTransforms(), null);
+                modelBatch.DrawSkinned(model, worldModel, animation.Skeleton.GetSkinTransforms(), null);
                 modelBatch.Draw(terrain, worldTerrain, null);
             }
             modelBatch.End();

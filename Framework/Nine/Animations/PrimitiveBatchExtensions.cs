@@ -26,33 +26,34 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PrimitiveBatchExtensions
     {
-        public static void DrawSkeleton(this PrimitiveBatch primitiveBatch, BoneAnimation animation, Matrix? world, Color color)
+        public static void DrawSkeleton(this PrimitiveBatch primitiveBatch, IBoneHierarchy skeleton, Matrix? world, Color color)
         {
             primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
             {
-                DrawSkeleton(primitiveBatch, animation, animation.Model.Root, Matrix.Identity, world, color);
+                float d = DrawSkeleton(primitiveBatch, skeleton, 0, Matrix.Identity, color);
             }
             primitiveBatch.EndPrimitive();
         }
 
-        private static void DrawSkeleton(this PrimitiveBatch primitiveBatch, BoneAnimation animation, ModelBone node, Matrix parentTransform, Matrix? world, Color color)
+        private static float DrawSkeleton(this PrimitiveBatch primitiveBatch, IBoneHierarchy skeleton, int bone, Matrix parentTransform, Color color)
         {
+            float distance = 0;
             Matrix start = parentTransform;
-            Matrix end =  animation.GetBoneTransform(node.Index) * parentTransform;
-            
-            if (node.Parent != null)
+            Matrix end = skeleton.GetBoneTransform(bone) * parentTransform;
+
+            if (Vector3.Subtract(end.Translation, start.Translation).LengthSquared() > 0)
             {
-                if (Vector3.Subtract(end.Translation, start.Translation).LengthSquared() > 0)
-                {
-                    primitiveBatch.AddVertex(start.Translation, color);
-                    primitiveBatch.AddVertex(end.Translation, color);
-                }
+                primitiveBatch.AddVertex(start.Translation, color);
+                primitiveBatch.AddVertex(end.Translation, color);
+
+                distance = Vector3.Subtract(end.Translation, start.Translation).Length();
             }
 
-            foreach (ModelBone child in node.Children)
+            foreach (int child in skeleton.GetChildBones(bone))
             {
-                DrawSkeleton(primitiveBatch, animation, child, end, world, color);
+                distance += DrawSkeleton(primitiveBatch, skeleton, child, end, color);
             }
+            return distance;
         }
     }
 }

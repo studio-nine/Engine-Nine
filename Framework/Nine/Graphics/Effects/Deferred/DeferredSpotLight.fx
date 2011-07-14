@@ -74,7 +74,7 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
     }
 
 	float3 diffuse = DiffuseColor * zeroL * dotL* fade;
-    float specular = pow(max(dotH, 0.000001), specularPower)* fade;
+    float specular = zeroL * zeroL * pow(max(dotH, 0.000001), specularPower)* fade;
     
     Color = float4(diffuse, specular);
 }

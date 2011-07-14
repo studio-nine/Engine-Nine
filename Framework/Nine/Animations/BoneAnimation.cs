@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -47,6 +48,7 @@ namespace Nine.Animations
 
         /// <summary>
         /// Gets all the channels in this animation clip.
+        /// The transform is ordered by bone index then ordered by frame number.
         /// </summary>
         [ContentSerializer]
         public Matrix[][] Transforms { get; internal set; }
@@ -60,49 +62,37 @@ namespace Nine.Animations
     /// </summary>
     public class BoneAnimation : Animation, IBoneAnimationController
     {
-        public BoneAnimation(Model model, object modelInstance)
+        public BoneAnimation(IBoneHierarchy skeleton)
         {
-            if (model == null)
-                throw new ArgumentNullException("model");
+            if (skeleton == null)
+                throw new ArgumentNullException("skeleton");
 
-            if (modelInstance is BoneAnimationClip || modelInstance is IBoneAnimationController)
-                throw new ArgumentException("modelInstance should be anything other then BoneAnimationClip or IBoneAnimatinoController.");
-
-            this.Model = model;
-            this.BlendEnabled = modelInstance != null;
-            this.ModelInstance = modelInstance;
-            this.BlendDuration = TimeSpan.FromSeconds(0.5);
-            this.Controllers = new BoneAnimationControllerCollection(model);
+            BlendEnabled = true;
+            BlendDuration = TimeSpan.FromSeconds(0.5f);
+            Skeleton = skeleton;
+            Controllers = new BoneAnimationControllerCollection(skeleton);
         }
-        
-        public BoneAnimation(Model model, object modelInstance, BoneAnimationClip animation)
+
+        public BoneAnimation(IBoneHierarchy skeleton, BoneAnimationClip animation)
+            : this(skeleton, new BoneAnimationController(animation))
         {
-            if (model == null)
-                throw new ArgumentNullException("model");
 
-            if (modelInstance is BoneAnimationClip || modelInstance is IBoneAnimationController)
-                throw new ArgumentException("modelInstance should be anything other then BoneAnimationClip or IBoneAnimatinoController.");
+        }
 
-            this.Model = model;
-            this.BlendEnabled = modelInstance != null;
-            this.ModelInstance = modelInstance;
-            this.BlendDuration = TimeSpan.FromSeconds(0.5);
-            this.Controllers = new BoneAnimationControllerCollection(model);
-            this.Controllers.Add(new BoneAnimationController(animation));
+        public BoneAnimation(IBoneHierarchy skeleton, IBoneAnimationController animationController)
+            : this(skeleton)
+        {
+            if (animationController == null)
+                throw new ArgumentNullException("animationController");
+
+            this.Controllers.Add(animationController);
         }
         
         /// <summary>
-        /// Gets the model affected by this bone animation.
+        /// Gets the skeleton currently animated by this bone animation.
         /// </summary>
-        public Model Model { get; private set; }
+        public IBoneHierarchy Skeleton { get; private set; }
 
-        /// <summary>
-        /// Gets the object identifying the model instance affected by this
-        /// animation from other model instances.
-        /// This value is required to enabled default blending.
-        /// </summary>
-        public object ModelInstance { get; private set; }
-        
         /// <summary>
         /// Gets all the controllers affecting this BoneAnimation.
         /// </summary>
@@ -121,15 +111,12 @@ namespace Nine.Animations
         /// </summary>
         public TimeSpan BlendDuration { get; set; }
 
-        private Matrix[] blendTarget;
-        private Matrix[] boneTransformPerModelInstance;
-
         /// <summary>
         /// Gets or sets the key animation of this LayeredAnimation.
         /// A LayeredAnimation ends either when the last contained 
         /// animation stops or when the specifed KeyAnimation ends.
         /// </summary>
-        public BoneAnimationController KeyController
+        public ITimelineAnimation KeyController
         {
             get { return keyController; }
             set
@@ -138,7 +125,7 @@ namespace Nine.Animations
                     throw new InvalidOperationException(
                         "Cannot modify the collection when the animation is been played.");
 
-                if (value != null && !Controllers.Contains(value))
+                if (value != null && !Controllers.Any(c => c == value))
                     throw new ArgumentException(
                         "The specified controller must be added to this animation.");
 
@@ -146,7 +133,7 @@ namespace Nine.Animations
             }
         }
 
-        private BoneAnimationController keyController;
+        private ITimelineAnimation keyController;
 
         /// <summary>
         /// Gets or sets a value indicating whether all other animations
@@ -168,62 +155,26 @@ namespace Nine.Animations
 
         private bool isSychronized;
 
-        /// <summary>
-        /// Occurs when this animation has completely finished playing.
-        /// </summary>
-        public override event EventHandler Completed;
-
-        private Matrix[] skinTransforms = null;
-        private Matrix[] boneTransforms = null;
-        private ModelSkinning skinning = null;
         private double blendTimer = 0;
+        private Matrix[] blendTarget;
 
-        private static Matrix[] skinIntermediateTransforms = null;
         private static BoneAnimationItem[,] weightedBones = null;
-        private static Dictionary<object, Matrix[]> boneTransformSnapshots = null;
         
         protected override void OnStarted()
         {
             blendTimer = 0;
 
-            if (BlendEnabled && ModelInstance == null)
+            if (BlendEnabled)
             {
-                throw new InvalidOperationException(
-                    "A valid ModelInstance needs to be set when default blend is enabled.");
+                ValidateBlendTarget();
+                if (blendTarget == null || blendTarget.Length < Skeleton.BoneTransforms.Length)
+                    blendTarget = new Matrix[Skeleton.BoneTransforms.Length];
+                Skeleton.CopyBoneTransformsTo(blendTarget);
             }
 
             if (Controllers.Count > 0 && (weightedBones == null || weightedBones.GetUpperBound(0) < Controllers.Count))
             {
-                weightedBones = new BoneAnimationItem[Controllers.Count, Model.Bones.Count];
-            }
-
-            if (skinTransforms == null && (skinning = Model.GetSkinning()) != null)
-            {
-                skinTransforms = new Matrix[skinning.InverseBindPose.Count];
-            }
-
-            if (boneTransforms == null)
-            {
-                boneTransforms = new Matrix[Model.Bones.Count];
-                Model.CopyBoneTransformsTo(boneTransforms);
-            }
-
-            if (BlendEnabled)
-            {
-                if (boneTransformSnapshots == null)
-                    boneTransformSnapshots = new Dictionary<object, Matrix[]>();
-
-                if (!boneTransformSnapshots.TryGetValue(ModelInstance, out boneTransformPerModelInstance))
-                {
-                    boneTransformPerModelInstance = new Matrix[Model.Bones.Count];
-                    Model.CopyBoneTransformsTo(boneTransformPerModelInstance);
-                    boneTransformSnapshots.Add(ModelInstance, boneTransformPerModelInstance);
-                }
-
-                if (blendTarget == null)
-                    blendTarget = new Matrix[Model.Bones.Count];
-
-                boneTransformPerModelInstance.CopyTo(blendTarget, 0);
+                weightedBones = new BoneAnimationItem[Controllers.Count, Skeleton.BoneTransforms.Length];
             }
 
             SychronizeSpeed();
@@ -236,6 +187,15 @@ namespace Nine.Animations
             }
 
             base.OnStarted();
+        }
+
+        private void ValidateBlendTarget()
+        {
+            if (!(Skeleton.BoneTransforms != null && Skeleton.BoneTransforms.Length > 0 &&
+                  Skeleton.BoneTransforms[Skeleton.SkeletonRoot].M44 != 0))
+            {
+                throw new InvalidOperationException(Strings.InvalidateSkeleton);
+            }
         }
         
         protected override void OnStopped()
@@ -274,19 +234,12 @@ namespace Nine.Animations
             base.OnResumed();
         }
 
-        protected virtual void OnCompleted()
-        {
-            if (Completed != null)
-                Completed(this, EventArgs.Empty);
-        }
-
         public override void Update(TimeSpan elapsedTime)
         {
-            if (State == AnimationState.Playing && Model != null)
+            if (State == AnimationState.Playing && Skeleton != null)
             {
                 UpdateControllers(elapsedTime);
                 UpdateBoneTransforms(elapsedTime);
-                UpdateSkinTransform();
             }
         }
 
@@ -341,7 +294,7 @@ namespace Nine.Animations
                     if (controller == keyController)
                         continue;
 
-                    TimelineAnimation animation = controller as TimelineAnimation;
+                    ITimelineAnimation animation = controller as ITimelineAnimation;
                     if (animation == null)
                         continue;
 
@@ -356,7 +309,7 @@ namespace Nine.Animations
             // Update default blend
             float blendLerp = 0;
 
-            if (BlendEnabled && blendTarget != null)
+            if (BlendEnabled)
             {
                 blendTimer += elapsedTime.TotalSeconds;
                 blendLerp = (float)(blendTimer / BlendDuration.TotalSeconds);
@@ -367,7 +320,7 @@ namespace Nine.Animations
 
             for (int controllerIndex = 0; controllerIndex < Controllers.Count; controllerIndex++)
             {
-                for (int bone = 0; bone < Model.Bones.Count; bone++)
+                for (int bone = 0; bone < Skeleton.BoneTransforms.Length; bone++)
                 {
                     if (Controllers[controllerIndex].Controller.TryGetBoneTransform(
                                             bone, out weightedBones[controllerIndex, bone].Transform,
@@ -385,7 +338,7 @@ namespace Nine.Animations
             }
             
             // Normalize weights
-            for (int bone = 0; bone < Model.Bones.Count; bone++)
+            for (int bone = 0; bone < Skeleton.BoneTransforms.Length; bone++)
             {
                 int firstNonZeroChannel = -1;
                 float totalWeight = 0;
@@ -408,7 +361,7 @@ namespace Nine.Animations
                     if (weightedBones[controllerIndex, bone].BlendWeight <= float.Epsilon)
                         continue;
 
-                    // This is not mathmatically correct, but provides an acceptable result.
+                    // This is not mathmatically correct, but produces an acceptable result.
                     transform = LerpHelper.Slerp(transform,
                                                  weightedBones[controllerIndex, bone].Transform,
                                                  weightedBones[controllerIndex, bone].BlendWeight / totalWeight);
@@ -420,147 +373,19 @@ namespace Nine.Animations
                     transform = LerpHelper.Slerp(blendTarget[bone], transform, MathHelper.SmoothStep(0, 1, blendLerp));
                 }
 
-                if (boneTransformPerModelInstance != null)
-                    boneTransformPerModelInstance[bone] = transform;
-                boneTransforms[bone] = transform;
+                Skeleton.BoneTransforms[bone] = transform;
             }
-        }
-
-        private void UpdateSkinTransform()
-        {
-            if (skinning != null && skinTransforms != null)
-            {
-                if (skinIntermediateTransforms == null || skinIntermediateTransforms.Length < Model.Bones.Count)
-                    skinIntermediateTransforms = new Matrix[Model.Bones.Count];
-
-                CopyAbsoluteBoneTransformsTo(skinIntermediateTransforms);
-
-                for (int i = 0; i < skinning.InverseBindPose.Count; i++)
-                {
-                    // Apply inverse bind pose
-                    skinTransforms[i] = skinning.InverseBindPose[i] * skinIntermediateTransforms[skinning.SkeletonIndex + i];
-                }
-            }
-        }
-
-        public int GetParentBone(int bone)
-        {
-            ModelBone parent = Model.Bones[bone].Parent;
-            return parent != null ? parent.Index : -1;
-        }
-
-        public Matrix[] GetBoneTransforms()
-        {
-            return skinTransforms;
-        }
-
-        /// <summary>
-        /// Gets the aboslute transform of the specified bone.
-        /// </summary>
-        public Matrix GetAbsoluteBoneTransform(int boneIndex)
-        {
-            if (boneTransforms == null)
-                return Model.GetAbsoluteBoneTransform(boneIndex);
-
-            ModelBone bone = Model.Bones[boneIndex];
-            Matrix absoluteTransform = boneTransforms[bone.Index];
-
-            while (bone.Parent != null)
-            {
-                bone = bone.Parent;
-                absoluteTransform = absoluteTransform * boneTransforms[bone.Index];
-            }
-
-            return absoluteTransform;
-        }
-
-        /// <summary>
-        /// Gets the aboslute transform of the specified bone.
-        /// </summary>
-        public Matrix GetAbsoluteBoneTransform(string boneName)
-        {
-            return GetAbsoluteBoneTransform(Model.Bones[boneName].Index);
-        }
-
-        public void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)
-        {
-            if (boneTransforms == null)
-            {
-                Model.CopyAbsoluteBoneTransformsTo(destinationBoneTransforms);
-                return;
-            }
-
-            if (destinationBoneTransforms == null)
-                throw new ArgumentNullException("destinationBoneTransforms");
-
-            if (destinationBoneTransforms.Length < boneTransforms.Length)
-                throw new ArgumentOutOfRangeException("destinationBoneTransforms");
-
-            for (int i = 0; i < boneTransforms.Length; i++)
-            {
-                ModelBone bone = Model.Bones[i];
-                if (bone.Parent == null)
-                {
-                    destinationBoneTransforms[i] = boneTransforms[i];
-                }
-                else
-                {
-                    destinationBoneTransforms[i] = boneTransforms[i] * destinationBoneTransforms[bone.Parent.Index];
-                }
-            }
-        }
-
-        public void CopyBoneTransformsTo(Matrix[] destinationBoneTransforms)
-        {
-            if (boneTransforms == null)
-            {
-                Model.CopyBoneTransformsTo(destinationBoneTransforms);
-                return;
-            }
-
-            if (destinationBoneTransforms == null)
-                throw new ArgumentNullException("destinationBoneTransforms");
-
-            if (destinationBoneTransforms.Length < boneTransforms.Length)
-                throw new ArgumentOutOfRangeException("destinationBoneTransforms");
-
-            for (int i = 0; i < boneTransforms.Length; i++)
-            {
-                destinationBoneTransforms[i] = boneTransforms[i];
-            }
-        }
-
-        /// <summary>
-        /// Gets the local transform of the specified bone.
-        /// </summary>
-        public Matrix GetBoneTransform(int bone)
-        {
-            if (bone >= 0 && bone < boneTransforms.Length)
-            {
-                return boneTransforms[bone];
-            }
-
-            throw new ArgumentOutOfRangeException("bone");
-        }
-        
-        /// <summary>
-        /// Gets the local transform of the specified bone.
-        /// </summary>
-        public Matrix GetBoneTransform(string boneName)
-        {
-            return GetBoneTransform(Model.Bones[boneName].Index);
         }
 
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
             blendWeight = 1;
 
-            if (boneTransforms != null && bone >= 0 && bone < boneTransforms.Length)
+            if (bone >= 0 && bone < Skeleton.BoneTransforms.Length)
             {
-                transform = boneTransforms[bone];
+                transform = Skeleton.BoneTransforms[bone];
                 return true;
             }
-
             transform = Matrix.Identity;
             return false;
         }
@@ -579,7 +404,7 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class WeightedBoneAnimationController
     {
-        internal Model Model;
+        internal IBoneHierarchy Skeleton;
 
         /// <summary>
         /// Gets the inner controller used by this <c>WeightedBoneAnimationController</c>.
@@ -600,16 +425,16 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new instance of WeightedBoneAnimationController.
         /// </summary>
-        internal WeightedBoneAnimationController(Model model, IBoneAnimationController controller)
+        internal WeightedBoneAnimationController(IBoneHierarchy skeleton, IBoneAnimationController controller)
         {
             if (controller == null)
                 throw new ArgumentNullException("controller");
 
-            List<WeightedBoneAnimationControllerBone> bones = new List<WeightedBoneAnimationControllerBone>(model.Bones.Count);
-            for (int i = 0; i < model.Bones.Count; i++)
+            List<WeightedBoneAnimationControllerBone> bones = new List<WeightedBoneAnimationControllerBone>(skeleton.BoneTransforms.Length);
+            for (int i = 0; i < skeleton.BoneTransforms.Length; i++)
                 bones.Add(new WeightedBoneAnimationControllerBone());
 
-            this.Model = model;
+            this.Skeleton = skeleton;
             this.Controller = controller;
             this.BlendWeight = 1;
             this.BoneWeights = new WeightedBoneAnimationControllerBoneCollection(this, bones);
@@ -646,7 +471,7 @@ namespace Nine.Animations
         /// </summary>
         public void Enable(string bone, bool enableChildBones)
         {
-            SetEnabled(Model.Bones[bone].Index, true, enableChildBones);
+            SetEnabled(Skeleton.GetBone(bone), true, enableChildBones);
         }
 
         /// <summary>
@@ -662,7 +487,7 @@ namespace Nine.Animations
         /// </summary>
         public void Disable(string bone, bool disableChildBones)
         {
-            SetEnabled(Model.Bones[bone].Index, false, disableChildBones);
+            SetEnabled(Skeleton.GetBone(bone), false, disableChildBones);
         }
 
         private void SetEnabled(int bone, bool enabled, bool recursive)
@@ -671,9 +496,9 @@ namespace Nine.Animations
 
             if (recursive)
             {
-                foreach (ModelBone child in Model.Bones[bone].Children)
+                foreach (int child in Skeleton.GetChildBones(bone))
                 {
-                    SetEnabled(child.Index, enabled, true);
+                    SetEnabled(child, enabled, true);
                 }
             }
         }
@@ -718,7 +543,7 @@ namespace Nine.Animations
 
         public WeightedBoneAnimationControllerBone this[string name]
         {
-            get { return this[animation.Model.Bones[name].Index]; }
+            get { return this[animation.Skeleton.GetBone(name)]; }
         }
     }
     
@@ -728,12 +553,12 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class BoneAnimationControllerCollection : ICollection<IBoneAnimationController>
     {
-        private Model Model;
+        private IBoneHierarchy Skeleton;
         private List<WeightedBoneAnimationController> controllers = new List<WeightedBoneAnimationController>();
 
-        internal BoneAnimationControllerCollection(Model model)
+        internal BoneAnimationControllerCollection(IBoneHierarchy skeleton)
         {
-            this.Model = model;
+            this.Skeleton = skeleton;
         }
 
         public WeightedBoneAnimationController this[int index]
@@ -759,7 +584,7 @@ namespace Nine.Animations
 
         public void Add(IBoneAnimationController item, float blendWeight)
         {
-            controllers.Add(new WeightedBoneAnimationController(Model, item) { BlendWeight = blendWeight });
+            controllers.Add(new WeightedBoneAnimationController(Skeleton, item) { BlendWeight = blendWeight });
         }
 
         public void Clear()

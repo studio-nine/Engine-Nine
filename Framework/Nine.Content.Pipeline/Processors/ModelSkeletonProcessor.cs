@@ -33,20 +33,14 @@ namespace Nine.Content.Pipeline.Processors
     /// This processor is used by ExtendedModelProcessor,
     /// There is no need to expose it to the xna build.
     ///</remarks>
-    // [ContentProcessor(DisplayName="Model Skinning Processor - Engine Nine")]
-    internal class ModelSkinningProcessor : ContentProcessor<NodeContent, ModelSkinning>
+    // [ContentProcessor(DisplayName="Model Skeleton Processor - Engine Nine")]
+    class ModelSkeletonProcessor : ContentProcessor<NodeContent, ModelSkeletonData>
     {
-        // Maximum number of bone matrices we can render using shader 2.0
-        // in a single pass. If you change this, update SkinnedModel.fx to match.
-        const int MaxBones = 59;
-
-
-        public override ModelSkinning Process(NodeContent input, ContentProcessorContext context)
+        public override ModelSkeletonData Process(NodeContent input, ContentProcessorContext context)
         {
             // Check if the input model is a skinned model.
             if (!IsSkinned(input))
                 return null;
-
 
             // Find the skeleton.
             BoneContent skeleton = MeshHelper.FindSkeleton(input);
@@ -64,13 +58,6 @@ namespace Nine.Content.Pipeline.Processors
 
             // Read the bind pose and skeleton hierarchy data.
             IList<BoneContent> bones = MeshHelper.FlattenSkeleton(skeleton);
-            
-            if (bones.Count > MaxBones)
-            {
-                throw new InvalidContentException(string.Format(
-                    "Skeleton has {0} bones, but the maximum supported is {1}.",
-                    bones.Count, MaxBones));
-            }
 
             List<Matrix> inverseBindPose = new List<Matrix>();
 
@@ -80,7 +67,7 @@ namespace Nine.Content.Pipeline.Processors
             }
             
             // Store our custom animation data in the Tag property of the model.
-            return new ModelSkinning(inverseBindPose, skeletonIndex);
+            return new ModelSkeletonData(inverseBindPose, skeletonIndex);
         }
 
         /// <summary>
