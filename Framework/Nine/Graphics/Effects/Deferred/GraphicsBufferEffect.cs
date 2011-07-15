@@ -50,7 +50,7 @@ namespace Nine.Graphics.Effects.Deferred
 
         private void OnCreated()
         {
-            SpecularPower = 32;
+            SpecularPower = 16;
         }
 
         private void OnClone(GraphicsBufferEffect cloneSource)

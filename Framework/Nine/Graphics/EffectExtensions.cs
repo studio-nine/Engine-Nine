@@ -225,7 +225,7 @@ namespace Nine.Graphics
             Vector3 DiffuseColor = Vector3.One;
             Vector3 SpecularColor = Vector3.Zero;
             Vector3 EmissiveColor = Vector3.Zero;
-            float SpecularPower = 0;
+            float SpecularPower = 16;
 
             Texture2D Texture = sourceEffect.GetTexture();
             if (Texture != null)

@@ -329,7 +329,7 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        float specularPower;
+        float specularPower = 16;
         float IEffectMaterial.SpecularPower
         {
             get { return specularPower; }

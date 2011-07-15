@@ -52,16 +52,17 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
             PosProjection, halfPixel, viewProjectionInverse, 
             normal, position, specularPower);
     
-    float3 positionToEye = eyePosition - position;
-    float3 L = Position - position.xyz;
-    float dotL = dot(normalize(L), normal);
+    float3 positionToEye = normalize(eyePosition - position);
+    float3 positionToVertex = Position - position;
+    float3 L = normalize(positionToVertex);
+    float dotL = dot(L, normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
 	float zeroL = step(0, dotL);
 	
-	float distanceSq = dot(L, L);
+	float distanceSq = dot(positionToVertex, positionToVertex);
 	float distance = sqrt(distanceSq);
     
-	float angle = dot(normalize(L), -Direction);
+	float angle = dot(L, -Direction);
 	float inner = innerAngle;
 	float outer = outerAngle;
 

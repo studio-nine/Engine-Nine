@@ -6,7 +6,7 @@
 fragment BeginLight;
 
 [parameters]
-float SpecularPower = 32;
+float SpecularPower = 16;
 float3 SpecularColor = { 1, 1, 1 };
 float3 DiffuseColor = { 1, 1, 1 };
 float3 EmissiveColor = { 0, 0, 0 };
@@ -21,7 +21,7 @@ void main(INPUT input, inout OUTPUT output)
 	
 	float3 lightDiffuse = 0;
 	float3 lightSpecular = 0;
-	float3 positionToEye = EyePosition - positionWorld.xyz;
+	float3 positionToEye = normalize(EyePosition - positionWorld.xyz);
 
 	export(float3, LightDiffuse, lightDiffuse);
 	export(float3, LightSpecular, lightSpecular);

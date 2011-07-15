@@ -144,6 +144,22 @@
     <Compile Include="Graphics\Effects\EffectInterfaces.cs" />
     <Compile Include="Graphics\Effects\EffectParts\BeginLightEffectPart.cs" />
     <Compile Include="Graphics\Effects\EffectParts\ColorMatrixEffectPart.cs" />
+    <Compile Include="Graphics\Effects\PointLightEffect.cs">
+      <DependentUpon>PointLightEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\PointLightEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PointLightEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SpotLightEffect.cs">
+      <DependentUpon>SpotLightEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\Effects\SpotLightEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpotLightEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Graphics\Lights.cs" />
     <Compile Include="Graphics\ModelBatchExtensions.cs" />
     <Compile Include="Graphics\ModelSkeleton.cs" />
@@ -404,6 +420,10 @@
     <None Include="Diagrams\Navigation.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
+    <None Include="Graphics\Effects\Copy of PointLightEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>Copy of PointLightEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\Deferred\ClearEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ClearEffect.Designer.cs</LastGenOutput>
@@ -445,9 +465,17 @@
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>DirectionalLightEffect.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Graphics\Effects\PointLightEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>PointLightEffect.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Graphics\Effects\SpotLightEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SpotLightEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Graphics\ParticleEffects\ParticleSystemEffect.fx">
       <Generator>EffectCustomTool</Generator>

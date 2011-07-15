@@ -223,33 +223,33 @@ namespace Nine.Content.Pipeline.Graphics
         }
     }
     /// <summary>
-    /// Content model for <c>ModelSkinning</c>.
+    /// Content model for <c>ModelSkeletonData</c>.
     /// Combines all the data needed to render and animate a skinned object. This is typically stored in the Tag property of the Model being animated.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelSkinning, Nine")]
-    public partial class ModelSkinningContent
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelSkeletonData, Nine")]
+    public partial class ModelSkeletonDataContent
     {
         /// <summary>
         /// 
         /// <summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix> InverseBindPose { get; set; }
+        public System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix> InverseAbsoluteBindPose { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 SkeletonIndex { get; set; }
+        public System.Int32 SkeletonRoot { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <c>ModelSkinningContent</c>.
+        /// Initializes a new instance of <c>ModelSkeletonDataContent</c>.
         /// <summary>
-        public ModelSkinningContent()
+        public ModelSkeletonDataContent()
         {
-            InverseBindPose = new System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>();
+            InverseAbsoluteBindPose = new System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>();
         }
     }
     /// <summary>
@@ -278,7 +278,7 @@ namespace Nine.Content.Pipeline.Graphics
         /// 
         /// <summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.Graphics.ModelSkinningContent Skinning { get; set; }
+        public Nine.Content.Pipeline.Graphics.ModelSkeletonDataContent Skeleton { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ModelTagContent</c>.
@@ -410,7 +410,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// <summary>
-        [System.ComponentModel.DefaultValue("0")]
+        [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Single SpecularPower { get; set; }
 
@@ -439,7 +439,78 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         {
             ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
-            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0");
+            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
+        }
+    }
+    /// <summary>
+    /// Content model for <c>PointLightEffect</c>.
+    /// 
+    /// <summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.PointLightEffect, Nine")]
+    public partial class PointLightEffectContent
+    {
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Microsoft.Xna.Framework.Matrix Projection { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [System.ComponentModel.DefaultValue("0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Int32 ShaderIndex { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Boolean SkinningEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [System.ComponentModel.DefaultValue("16")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Single SpecularPower { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Microsoft.Xna.Framework.Matrix View { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Microsoft.Xna.Framework.Matrix World { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>PointLightEffectContent</c>.
+        /// <summary>
+        public PointLightEffectContent()
+        {
+            ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
+            SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
+            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
         }
     }
     /// <summary>
@@ -477,6 +548,77 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public SkyBoxEffectContent()
         {
             Color = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
+        }
+    }
+    /// <summary>
+    /// Content model for <c>SpotLightEffect</c>.
+    /// 
+    /// <summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.SpotLightEffect, Nine")]
+    public partial class SpotLightEffectContent
+    {
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Microsoft.Xna.Framework.Matrix Projection { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [System.ComponentModel.DefaultValue("0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Int32 ShaderIndex { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Boolean SkinningEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [System.ComponentModel.DefaultValue("16")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Single SpecularPower { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Microsoft.Xna.Framework.Matrix View { get; set; }
+
+        /// <summary>
+        /// 
+        /// <summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public Microsoft.Xna.Framework.Matrix World { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>SpotLightEffectContent</c>.
+        /// <summary>
+        public SpotLightEffectContent()
+        {
+            ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
+            SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
+            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
         }
     }
 }
@@ -905,7 +1047,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
         /// <summary>
         /// 
         /// <summary>
-        [System.ComponentModel.DefaultValue("32")]
+        [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Single SpecularPower { get; set; }
 
@@ -928,7 +1070,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
         {
             NormalMappingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("False");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("False");
-            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("32");
+            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
         }
     }
 }
@@ -1017,7 +1159,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// <summary>
         /// 
         /// <summary>
-        [System.ComponentModel.DefaultValue("32")]
+        [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Single SpecularPower { get; set; }
 
@@ -1029,7 +1171,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
-            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("32");
+            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
         }
     }
     /// <summary>

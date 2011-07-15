@@ -31,12 +31,13 @@ void main(INPUT input, inout OUTPUT output)
 	import(PositionToEye, positionToEye = PositionToEye);
 	import(PositionWorld, positionWorld = PositionWorld);
 	
-    float3 L = PointLightPosition - positionWorld.xyz;
-    float dotL = dot(normalize(L), normal);
+    float3 positionToVertex = PointLightPosition - positionWorld.xyz;
+    float3 L = normalize(positionToVertex);
+    float dotL = dot(L, normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
 	float zeroL = step(0, dotL);
 
-	float distanceSq = dot(L, L);
+	float distanceSq = dot(positionToVertex, positionToVertex);
 	float distance = sqrt(distanceSq);
 
     float fade = max(0, (pow(max(Attenuation, 0.000001), 1 - distance / Range) - 1) / (Attenuation - 1));

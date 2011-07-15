@@ -149,28 +149,28 @@ namespace Nine.Content.Pipeline.Graphics
         }
     }
     /// <summary>
-    /// Content writer for <c>ModelSkinning</c>.
+    /// Content writer for <c>ModelSkeletonData</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ModelSkinningContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelSkinningContent>
+    class ModelSkeletonDataContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelSkeletonDataContent>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelSkinningContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelSkeletonDataContent value)
         {
-            output.WriteObject(value.InverseBindPose);
-            output.WriteObject(value.SkeletonIndex);
+            output.WriteObject(value.InverseAbsoluteBindPose);
+            output.WriteObject(value.SkeletonRoot);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.ModelSkinningReader, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ModelSkeletonDataReader, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.ModelSkinning, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ModelSkeletonData, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -186,7 +186,7 @@ namespace Nine.Content.Pipeline.Graphics
         {
             output.WriteObject(value.Animations);
             output.WriteObject(value.Collision);
-            output.WriteObject(value.Skinning);
+            output.WriteObject(value.Skeleton);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)

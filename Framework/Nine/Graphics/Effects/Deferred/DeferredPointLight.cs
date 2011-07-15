@@ -60,7 +60,7 @@ namespace Nine.Graphics.Effects.Deferred
 
             Range = 10;
             Attenuation = 1.0f / MathHelper.E;
-            DiffuseColor = Vector3.One;            
+            DiffuseColor = Vector3.One;
         }
 
         private void OnClone(DeferredPointLight cloneSource)

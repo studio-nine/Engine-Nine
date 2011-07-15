@@ -9,7 +9,7 @@ float4x4 bones[MaxBones];
 float4x4 View;
 float4x4 Projection;
 
-float SpecularPower = 32;
+float SpecularPower = 16;
 
 texture NormalMap;
 sampler NormalSampler = sampler_state

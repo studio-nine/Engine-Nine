@@ -47,7 +47,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameContent", "Game\GameCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvatarAnimation", "AvatarAnimation\AvatarAnimation\AvatarAnimation.csproj", "{FD05ACBA-2292-46B4-8ED7-D1B7270723EE}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "AvatarAnimationContent", "AvatarAnimation\AvatarAnimationContent\AvatarAnimationContent.contentproj", "{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvatarAnimationContent", "AvatarAnimation\AvatarAnimationContent\AvatarAnimationContent.contentproj", "{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiPassLighting (Xbox)", "MultiPassLighting\MultiPassLighting\MultiPassLighting (Xbox).csproj", "{11737BA3-1159-472F-93D0-1ED72786F412}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiPassLightingContent", "MultiPassLighting\MultiPassLightingContent\MultiPassLightingContent.contentproj", "{41439B38-1185-449A-90A3-50A27C588EDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -399,6 +403,34 @@ Global
 		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|Windows Phone.ActiveCfg = Release|Xbox 360
 		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|x86.ActiveCfg = Release|Xbox 360
 		{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Windows Phone.ActiveCfg = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|x86.ActiveCfg = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Any CPU.ActiveCfg = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Mixed Platforms.Deploy.0 = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Windows Phone.ActiveCfg = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|x86.ActiveCfg = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{11737BA3-1159-472F-93D0-1ED72786F412}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Debug|Windows Phone.ActiveCfg = Debug|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Debug|x86.ActiveCfg = Debug|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Release|Any CPU.ActiveCfg = Release|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Release|Windows Phone.ActiveCfg = Release|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Release|x86.ActiveCfg = Release|x86
+		{41439B38-1185-449A-90A3-50A27C588EDA}.Release|Xbox 360.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

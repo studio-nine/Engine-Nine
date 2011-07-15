@@ -43,13 +43,15 @@ namespace Nine.Graphics.Effects
 
         int MaxLights
         {
-            get { return GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach ? 1 : 8; }
+            get { return GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach ? 1 : 4; }
         }
 
         public ReadOnlyCollection<IDirectionalLight> Lights { get; private set; }
 
         private void OnCreated()
         {
+            numLights = MaxLights;
+            SpecularPower = 16;
             Lights = new ReadOnlyCollection<IDirectionalLight>(lights);
         }
 
@@ -68,6 +70,16 @@ namespace Nine.Graphics.Effects
                 viewProjection = view * projection;
                 viewProjectionChanged = false;
             }
+
+            for (int i = 0; i < lights.Length; i++)
+            {
+                if (lights[i].DiffuseColor == Vector3.Zero &&
+                    lights[i].SpecularColor == Vector3.Zero)
+                {
+                    numLights = i;
+                    break;
+                }
+            }
         }
 
         void IEffectTexture.SetTexture(string name, Texture texture)
@@ -78,7 +90,7 @@ namespace Nine.Graphics.Effects
 
         public void SetBoneTransforms(Matrix[] boneTransforms)
         {
-            throw new NotImplementedException();
+            bones = boneTransforms;
         }
 
         partial class Class_lights : IDirectionalLight { }

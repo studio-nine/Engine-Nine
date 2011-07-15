@@ -118,7 +118,7 @@ namespace Nine.Graphics.Effects.EffectParts
             DiffuseColor = Vector3.One;
             EmissiveColor = Vector3.Zero;
             SpecularColor = Vector3.One;
-            SpecularPower = 32;
+            SpecularPower = 16;
         }
 
 

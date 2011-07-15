@@ -34,16 +34,17 @@ void main(INPUT input, inout OUTPUT output)
 	import(Normal, normal = Normal);
 	import(PositionToEye, positionToEye = PositionToEye);
 	import(PositionWorld, positionWorld = PositionWorld);
-
-    float3 L = SpotLightPosition - positionWorld.xyz;
-    float dotL = dot(normalize(L), normal);
+    
+    float3 positionToVertex = SpotLightPosition - positionWorld.xyz;
+    float3 L = normalize(positionToVertex);
+    float dotL = dot(L, normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
 	float zeroL = step(0, dotL);
 	
-	float distanceSq = dot(L, L);
+	float distanceSq = dot(positionToVertex, positionToVertex);
 	float distance = sqrt(distanceSq);
     
-	float angle = dot(normalize(L), -SpotLightDirection);
+	float angle = dot(L, -SpotLightDirection);
 	float inner = InnerAngle;
 	float outer = OuterAngle;
 

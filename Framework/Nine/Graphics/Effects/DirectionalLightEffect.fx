@@ -4,7 +4,7 @@
 #ifdef Reach
 #define MaxLights 1
 #else
-#define MaxLights 8
+#define MaxLights 4
 #endif
 
 
@@ -21,9 +21,9 @@ float4x4 bones[MaxBones];
 float4x4 viewProjection;
 
 float3 eyePosition;
-float SpecularPower = 32;
+float SpecularPower = 16;
 
-int numLights = 1;
+int numLights = MaxLights;
 DirectionLight lights[MaxLights];
 
 texture2D diffuseTexture;
@@ -47,7 +47,7 @@ void VertShadow( float4 Pos      : POSITION,
 {
     //
     // Compute the projected coordinates
-    //
+    //    
     oPosWorld = mul( Pos, World );
     oPos = mul( oPosWorld, viewProjection );
 
@@ -103,7 +103,7 @@ void PixShadow( float2 TexCoord : TEXCOORD0,
                 out float4 Color : COLOR )
 {
     normal = normalize(normal);
-    float3 positionToEye = eyePosition - positionWorld.xyz;
+    float3 positionToEye = normalize(eyePosition - positionWorld.xyz);
     float3 diffuse = 0;
     float3 specular = 0;
     float3 diffuseTextureColor = 1;
@@ -120,7 +120,7 @@ void PixShadow( float2 TexCoord : TEXCOORD0,
         float zeroL = step(0, dotL);
     
         diffuse += lights[i].DiffuseColor * zeroL * dotL;
-        specular += lights[i].SpecularColor * zeroL * pow(max(dotH, 0.000001), SpecularPower);
+        specular += lights[i].SpecularColor * pow(max(dotH, 0.00001) * zeroL, SpecularPower);
     }
     Color = float4(diffuseTextureColor * diffuse + specular, 1);
 }

@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Nine.Animations;
+using Nine.Content.Pipeline.Animations;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -171,7 +172,7 @@ namespace Nine.Content.Pipeline.Processors
 
     #region AvatarAnimationProcessor
     [ContentProcessor(DisplayName = "Avatar Animation Processor - XNA Framework")]
-    public class AvatarAnimationProcessor : ContentProcessor<NodeContent, BoneAnimationClip>
+    public class AvatarAnimationProcessor : ContentProcessor<NodeContent, BoneAnimationClipContent>
     {
         /// <summary>
         /// Stores the model's bind pose
@@ -185,17 +186,17 @@ namespace Nine.Content.Pipeline.Processors
         [Description("File to use for facial animations")]
         public string ExpressionFile
         { get; set; }
-        
 
-        public override BoneAnimationClip Process(NodeContent input, ContentProcessorContext context)
+
+        public override BoneAnimationClipContent Process(NodeContent input, ContentProcessorContext context)
         {
             var data = ProcessAnimationData(input, context);
             return ConvertData(data);
         }
 
-        private BoneAnimationClip ConvertData(AvatarAnimationData data)
+        private BoneAnimationClipContent ConvertData(AvatarAnimationData data)
         {
-            var clip = new BoneAnimationClip();
+            var clip = new BoneAnimationClipContent();
             clip.TotalFrames = Enumerable.Range(0, AvatarRenderer.BoneCount).Max(index => data.Keyframes.Count(f => f.Bone == index));
             clip.FramesPerSecond = (int)(clip.TotalFrames / data.Length.TotalSeconds);
             clip.PreferredEnding = KeyframeEnding.Wrap;

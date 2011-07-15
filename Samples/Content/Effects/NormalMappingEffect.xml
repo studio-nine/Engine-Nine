@@ -12,9 +12,8 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMapEffectPartContent">
         <NormalMap>box_n</NormalMap>
       </Item>
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent">
-        <SpecularPower>32</SpecularPower>
-      </Item>
+      
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLightEffectPartContent">
         <AmbientLightColor>0.1 0.1 0.1</AmbientLightColor>
       </Item>
@@ -33,10 +32,9 @@
         <Falloff>2</Falloff>
         <Position>0 0 1</Position>
         <Range>16</Range>
-      </Item>
-      <!--
-      -->
+      </Item>      
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLightEffectPartContent"></Item>
+      
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutputEffectPartContent"></Item>
     </EffectParts>
   </Asset>

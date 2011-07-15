@@ -74,8 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvatarAnimationContent\AvatarAnimationContent.contentproj">
-      <Name>AvatarAnimationContent</Name>
+      <Name>AvatarAnimationContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{9209B0AD-FCE0-426E-BF44-AB1FDE89F4C8}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

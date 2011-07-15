@@ -44,7 +44,7 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
             PosProjection, halfPixel, viewProjectionInverse, 
             normal, position, specularPower);
     
-    float3 positionToEye = eyePosition - position;
+    float3 positionToEye = normalize(eyePosition - position);
 	float3 L = -Direction; 
     float dotL = dot(L, normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
