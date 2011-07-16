@@ -36,6 +36,7 @@ namespace ShadowMapping
         Model model;
         Model terrain;
         ModelBatch modelBatch;
+        PrimitiveBatch primitiveBatch;
         BoneAnimation animation;
 
         ModelViewerCamera camera;
@@ -71,6 +72,7 @@ namespace ShadowMapping
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
             modelBatch = new ModelBatch(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
 
             // Create a model viewer camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);
@@ -171,6 +173,12 @@ namespace ShadowMapping
                 spriteBatch.Begin(0, null, SamplerState.PointClamp, null, null);
                 spriteBatch.Draw(shadowMap.Texture, Vector2.Zero, Color.White);
                 spriteBatch.End();
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                primitiveBatch.Begin(camera.View, camera.Projection);
+                primitiveBatch.DrawSkeleton(model, worldModel, Color.White);
+                primitiveBatch.End();
             }
 
             base.Draw(gameTime);

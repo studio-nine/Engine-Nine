@@ -26,7 +26,7 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PrimitiveBatchExtensions
     {
-        public static void DrawSkeleton(this PrimitiveBatch primitiveBatch, IBoneHierarchy skeleton, Matrix? world, Color color)
+        public static void DrawSkeleton(this PrimitiveBatch primitiveBatch, Skeleton skeleton, Matrix? world, Color color)
         {
             primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
             {
@@ -35,7 +35,7 @@ namespace Nine.Animations
             primitiveBatch.EndPrimitive();
         }
 
-        private static float DrawSkeleton(this PrimitiveBatch primitiveBatch, IBoneHierarchy skeleton, int bone, Matrix parentTransform, Color color)
+        private static float DrawSkeleton(this PrimitiveBatch primitiveBatch, Skeleton skeleton, int bone, Matrix parentTransform, Color color)
         {
             float distance = 0;
             Matrix start = parentTransform;

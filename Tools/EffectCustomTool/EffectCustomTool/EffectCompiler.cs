@@ -71,7 +71,7 @@ namespace Nine.Tools.EffectCustomTool
                 hiDef = false;
                 windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.Reach);
                 windowsHiDefCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
-                xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.Reach);
+                xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
             }
             catch (Exception ex)
             {
@@ -331,6 +331,7 @@ namespace Nine.Tools.EffectCustomTool
             {
                 if (hasReach)
                 {
+                    builder.AppendLine("#if WINDOWS");
                     builder.Append(indent);
                     builder.AppendLine(@"    if (GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)");
                     builder.Append(indent);
@@ -339,6 +340,7 @@ namespace Nine.Tools.EffectCustomTool
                     builder.AppendLine();
                     builder.Append(indent);
                     builder.AppendLine("    }");
+                    builder.AppendLine("#endif");
                 }
                 if (hasHiDef)
                 {

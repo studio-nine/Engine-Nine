@@ -203,7 +203,7 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the parent animation that this controller is affecting.
         /// </summary>
-        public IBoneHierarchy Skeleton { get; private set; }
+        public Skeleton Skeleton { get; private set; }
 
         public event EventHandler<EventArgs> TargetSpotted;
         public event EventHandler<EventArgs> TargetLost;
@@ -217,7 +217,7 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new LookAtController.
         /// </summary>
-        public LookAtController(IBoneHierarchy skeleton, Matrix transform, int bone)
+        public LookAtController(Skeleton skeleton, Matrix transform, int bone)
         {
             if (skeleton == null)
                 throw new ArgumentNullException("skeleton");

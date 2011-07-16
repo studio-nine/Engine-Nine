@@ -61,6 +61,9 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Game.Generated.cs">
+      <Link>Nine.Content.Reader.Game.Generated.cs</Link>
+    </Compile>
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameConsole.cs" />

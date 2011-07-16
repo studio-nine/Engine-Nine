@@ -25,19 +25,15 @@ namespace Nine.Animations
     /// <summary>
     /// Defines the skeleton for avatar.
     /// </summary>
-    public class AvatarSkeleton : IBoneHierarchy
+    public class AvatarSkeleton : Skeleton
     {
         Matrix[] boneTransforms;
         AvatarRendererState previousState = AvatarRendererState.Loading;
 
-        public int SkeletonRoot { get { return 0; } }
         public AvatarRenderer Renderer { get; private set; }
-        public ReadOnlyCollection<string> BoneNames { get; private set; }
-        public ReadOnlyCollection<int> ParentBones { get { return Renderer.ParentBones; } }
-        public ReadOnlyCollection<Matrix> InverseAbsoluteBindPose { get { return null; } }
         public AvatarRendererState State { get { return Renderer.State; } }
 
-        public Matrix[] BoneTransforms
+        public override Matrix[] BoneTransforms
         {
             get
             {
@@ -46,7 +42,7 @@ namespace Nine.Animations
             }
         }
 
-        internal Matrix[] AnimationBoneTransforms = new Matrix[AvatarRenderer.BoneCount];
+        public override ReadOnlyCollection<int> ParentBones { get { return Renderer.ParentBones; } }
 
         private void ValidateAvatarState()
         {

@@ -62,7 +62,7 @@ namespace Nine.Animations
     /// </summary>
     public class BoneAnimation : Animation, IBoneAnimationController
     {
-        public BoneAnimation(IBoneHierarchy skeleton)
+        public BoneAnimation(Skeleton skeleton)
         {
             if (skeleton == null)
                 throw new ArgumentNullException("skeleton");
@@ -73,13 +73,13 @@ namespace Nine.Animations
             Controllers = new BoneAnimationControllerCollection(skeleton);
         }
 
-        public BoneAnimation(IBoneHierarchy skeleton, BoneAnimationClip animation)
+        public BoneAnimation(Skeleton skeleton, BoneAnimationClip animation)
             : this(skeleton, new BoneAnimationController(animation))
         {
 
         }
 
-        public BoneAnimation(IBoneHierarchy skeleton, IBoneAnimationController animationController)
+        public BoneAnimation(Skeleton skeleton, IBoneAnimationController animationController)
             : this(skeleton)
         {
             if (animationController == null)
@@ -91,7 +91,7 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the skeleton currently animated by this bone animation.
         /// </summary>
-        public IBoneHierarchy Skeleton { get; private set; }
+        public Skeleton Skeleton { get; private set; }
 
         /// <summary>
         /// Gets all the controllers affecting this BoneAnimation.
@@ -164,13 +164,14 @@ namespace Nine.Animations
         {
             blendTimer = 0;
 
-            if (BlendEnabled)
+            if (BlendEnabled && Skeleton.HasAnimated)
             {
                 ValidateBlendTarget();
                 if (blendTarget == null || blendTarget.Length < Skeleton.BoneTransforms.Length)
                     blendTarget = new Matrix[Skeleton.BoneTransforms.Length];
                 Skeleton.CopyBoneTransformsTo(blendTarget);
             }
+            Skeleton.HasAnimated = true;
 
             if (Controllers.Count > 0 && (weightedBones == null || weightedBones.GetUpperBound(0) < Controllers.Count))
             {
@@ -404,7 +405,7 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class WeightedBoneAnimationController
     {
-        internal IBoneHierarchy Skeleton;
+        internal Skeleton Skeleton;
 
         /// <summary>
         /// Gets the inner controller used by this <c>WeightedBoneAnimationController</c>.
@@ -425,7 +426,7 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new instance of WeightedBoneAnimationController.
         /// </summary>
-        internal WeightedBoneAnimationController(IBoneHierarchy skeleton, IBoneAnimationController controller)
+        internal WeightedBoneAnimationController(Skeleton skeleton, IBoneAnimationController controller)
         {
             if (controller == null)
                 throw new ArgumentNullException("controller");
@@ -553,10 +554,10 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class BoneAnimationControllerCollection : ICollection<IBoneAnimationController>
     {
-        private IBoneHierarchy Skeleton;
+        private Skeleton Skeleton;
         private List<WeightedBoneAnimationController> controllers = new List<WeightedBoneAnimationController>();
 
-        internal BoneAnimationControllerCollection(IBoneHierarchy skeleton)
+        internal BoneAnimationControllerCollection(Skeleton skeleton)
         {
             this.Skeleton = skeleton;
         }

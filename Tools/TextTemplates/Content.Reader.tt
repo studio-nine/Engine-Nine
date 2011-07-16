@@ -9,7 +9,7 @@
 <#@ include file="Content.tt" #>
 <#
     var assembly = Assembly.LoadFrom(Host.ResolvePath(assemblyFile));
-	
+
     foreach (var namespaceGroup in FindContentSerializableTypes(assembly).GroupBy(t => t.Namespace)
                                                                          .OrderBy(g => g.Key))
     {
@@ -20,9 +20,17 @@ namespace <#= namespaceGroup.Key #>
 <#
     foreach (var type in namespaceGroup.OrderBy(t => GetContentClassConstructorName(t)))
     {
-		var className = GetClassName(type);
-		var classFullName = GetClassFullName(type);
-		var members = FindContentSerializableMembers(type).OrderBy(m => m.Name).ToArray();
+        var className = GetClassName(type);
+        var classFullName = GetClassFullName(type);
+        var members = FindContentSerializableMembers(type).OrderBy(m => m.Name).ToArray();
+        var notSupportedByWindowsPhone = className.EndsWith("Effect") || className.EndsWith("EffectPart") ||
+                                         className.StartsWith("Deferred");
+        if (notSupportedByWindowsPhone)
+        {
+#>
+#if !WINDOWS_PHONE
+<#
+        }
 #>
     /// <summary>
     /// Content reader for <c><#= type.Name #></c>.
@@ -45,32 +53,38 @@ namespace <#= namespaceGroup.Key #>
                 existingInstance = new <#= className #>(graphicsDeviceService.GraphicsDevice);
             }
 <#
-	}
-	else if (HasDefaultConstructor(type))
-	{
+    }
+    else if (HasDefaultConstructor(type))
+    {
 #>
             if (existingInstance == null)
             {
                 existingInstance = new <#= className #>();
             }
 <#
-	}
+    }
     foreach (var member in members)
     {
-		var memberTypeName = GetMemberTypeName(member);
+        var memberTypeName = GetMemberTypeName(member);
 #>
             existingInstance.<#= member.Name #> = input.ReadObject<<#= memberTypeName #>>();
 <#
-	}
+    }
 #>
 
             return existingInstance;
         }
     }
 <#
-	}
+        if (notSupportedByWindowsPhone)
+        {
+#>
+#endif
+<#
+        }
+    }
 #>
 }
 <#
-	}
+    }
 #>

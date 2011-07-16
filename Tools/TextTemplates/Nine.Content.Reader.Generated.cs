@@ -124,12 +124,12 @@ namespace Nine.Graphics
         }
     }
     /// <summary>
-    /// Content reader for <c>ModelSkinning</c>.
+    /// Content reader for <c>ModelSkeletonData</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class ModelSkinningReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelSkeletonData>
+    class ModelSkeletonDataReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelSkeletonData>
     {
         protected override Nine.Graphics.ModelSkeletonData Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkeletonData existingInstance)
         {
@@ -168,6 +168,7 @@ namespace Nine.Graphics
 
 namespace Nine.Graphics.Effects
 {
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DecalEffect</c>.
     /// <summary>
@@ -197,6 +198,8 @@ namespace Nine.Graphics.Effects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DirectionalLightEffect</c>.
     /// <summary>
@@ -225,6 +228,38 @@ namespace Nine.Graphics.Effects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>PointLightEffect</c>.
+    /// <summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    class PointLightEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.PointLightEffect>
+    {
+        protected override Nine.Graphics.Effects.PointLightEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.PointLightEffect existingInstance)
+        {
+            if (existingInstance == null)
+            {
+                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
+                existingInstance = new PointLightEffect(graphicsDeviceService.GraphicsDevice);
+            }
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Projection = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+            existingInstance.ShaderIndex = input.ReadObject<System.Int32>();
+            existingInstance.SkinningEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.SpecularPower = input.ReadObject<System.Single>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.View = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+            existingInstance.World = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>SkyBoxEffect</c>.
     /// <summary>
@@ -248,10 +283,42 @@ namespace Nine.Graphics.Effects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>SpotLightEffect</c>.
+    /// <summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    class SpotLightEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.SpotLightEffect>
+    {
+        protected override Nine.Graphics.Effects.SpotLightEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.SpotLightEffect existingInstance)
+        {
+            if (existingInstance == null)
+            {
+                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
+                existingInstance = new SpotLightEffect(graphicsDeviceService.GraphicsDevice);
+            }
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Projection = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+            existingInstance.ShaderIndex = input.ReadObject<System.Int32>();
+            existingInstance.SkinningEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.SpecularPower = input.ReadObject<System.Single>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.View = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+            existingInstance.World = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+
+            return existingInstance;
+        }
+    }
+#endif
 }
 
 namespace Nine.Graphics.Effects.Deferred
 {
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DeferredAmbientLight</c>.
     /// <summary>
@@ -274,6 +341,8 @@ namespace Nine.Graphics.Effects.Deferred
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DeferredDirectionalLight</c>.
     /// <summary>
@@ -301,6 +370,8 @@ namespace Nine.Graphics.Effects.Deferred
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DeferredEffect</c>.
     /// <summary>
@@ -332,6 +403,8 @@ namespace Nine.Graphics.Effects.Deferred
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DeferredPointLight</c>.
     /// <summary>
@@ -361,6 +434,8 @@ namespace Nine.Graphics.Effects.Deferred
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DeferredSpotLight</c>.
     /// <summary>
@@ -394,6 +469,8 @@ namespace Nine.Graphics.Effects.Deferred
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>GraphicsBufferEffect</c>.
     /// <summary>
@@ -422,10 +499,12 @@ namespace Nine.Graphics.Effects.Deferred
             return existingInstance;
         }
     }
+#endif
 }
 
 namespace Nine.Graphics.Effects.EffectParts
 {
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>AmbientLightEffectPart</c>.
     /// <summary>
@@ -445,6 +524,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>BasicTextureEffectPart</c>.
     /// <summary>
@@ -464,6 +545,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>BeginLightEffectPart</c>.
     /// <summary>
@@ -486,6 +569,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>ColorMatrixEffectPart</c>.
     /// <summary>
@@ -505,6 +590,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DirectionalLightEffectPart</c>.
     /// <summary>
@@ -526,6 +613,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DualTextureEffectPart</c>.
     /// <summary>
@@ -545,6 +634,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>FogEffectPart</c>.
     /// <summary>
@@ -566,6 +657,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>NormalMapEffectPart</c>.
     /// <summary>
@@ -585,6 +678,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>OverlayTextureEffectPart</c>.
     /// <summary>
@@ -604,6 +699,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>PointLightEffectPart</c>.
     /// <summary>
@@ -627,6 +724,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>ShadowMapEffectPart</c>.
     /// <summary>
@@ -647,6 +746,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>SkinTransformEffectPart</c>.
     /// <summary>
@@ -667,6 +768,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>SplatterTextureEffectPart</c>.
     /// <summary>
@@ -691,6 +794,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>SpotLightEffectPart</c>.
     /// <summary>
@@ -718,6 +823,8 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>TextureTransformEffectPart</c>.
     /// <summary>
@@ -737,6 +844,7 @@ namespace Nine.Graphics.Effects.EffectParts
             return existingInstance;
         }
     }
+#endif
 }
 
 namespace Nine.Graphics.ParticleEffects
@@ -1021,6 +1129,7 @@ namespace Nine.Graphics.ParticleEffects
 
 namespace Nine.Graphics.ScreenEffects
 {
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>AntiAliasEffect</c>.
     /// <summary>
@@ -1045,6 +1154,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>BlurEffect</c>.
     /// <summary>
@@ -1070,6 +1181,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>ColorMatrixEffect</c>.
     /// <summary>
@@ -1092,6 +1205,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>DepthOfFieldEffect</c>.
     /// <summary>
@@ -1118,6 +1233,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>EmbossEffect</c>.
     /// <summary>
@@ -1140,6 +1257,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>LuminanceEffect</c>.
     /// <summary>
@@ -1161,6 +1280,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>NoiseEffect</c>.
     /// <summary>
@@ -1184,6 +1305,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>PixelateEffect</c>.
     /// <summary>
@@ -1207,6 +1330,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>RadialBlurEffect</c>.
     /// <summary>
@@ -1230,6 +1355,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>ScaleEffect</c>.
     /// <summary>
@@ -1251,6 +1378,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>ThresholdEffect</c>.
     /// <summary>
@@ -1273,6 +1402,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>ToneMappingEffect</c>.
     /// <summary>
@@ -1298,6 +1429,8 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
+#if !WINDOWS_PHONE
     /// <summary>
     /// Content reader for <c>WiggleEffect</c>.
     /// <summary>
@@ -1322,4 +1455,5 @@ namespace Nine.Graphics.ScreenEffects
             return existingInstance;
         }
     }
+#endif
 }

@@ -68,6 +68,9 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
+      <Link>Nine.Content.Reader.Generated.cs</Link>
+    </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />

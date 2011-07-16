@@ -22,41 +22,264 @@ using System.Collections.ObjectModel;
 
 namespace Nine.Graphics
 {
-    #region IBoneHierarchy
+    #region Skeleton
     /// <summary>
     /// Represents a bone hierarchy that can be animated by <c>BoneAnimation</c>.
     /// </summary>
-    public interface IBoneHierarchy
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public abstract class Skeleton
     {
         /// <summary>
         /// Gets a fixed sized array of transformation matrices for each bone
         /// according to its parent bone.
         /// </summary>
-        Matrix[] BoneTransforms { get; }
+        public abstract Matrix[] BoneTransforms { get; }
+
+        /// <summary>
+        /// Gets the hierarchical relationship between bones.
+        /// </summary>
+        public abstract ReadOnlyCollection<int> ParentBones { get; }
 
         /// <summary>
         /// Gets a collection of names for each bone.
         /// Return null if the skeleton does not have a name for each bone.
         /// </summary>
-        ReadOnlyCollection<string> BoneNames { get; }
-
-        /// <summary>
-        /// Gets the hierarchical relationship between bones.
-        /// </summary>
-        ReadOnlyCollection<int> ParentBones { get; }
+        public ReadOnlyCollection<string> BoneNames { get; protected set; }
 
         /// <summary>
         /// Gets the index of the root bone of the skeleton.
         /// Return null if the skeleton is not intended for skinned models.
         /// </summary>
-        int SkeletonRoot { get; }
+        public int SkeletonRoot { get; protected set; }
 
         /// <summary>
         /// Gets a collection of inverse transformation matrices for each bone
         /// according to the skeleton root bone.
         /// Return null if the skeleton is not intended for skinned models.
         /// </summary>
-        ReadOnlyCollection<Matrix> InverseAbsoluteBindPose { get; }
+        public ReadOnlyCollection<Matrix> InverseAbsoluteBindPose { get; protected set; }
+
+        /// <summary>
+        /// Keep track of whether this skeleton has been animated.
+        /// We don't perform blending when a skeleton has just been created.
+        /// </summary>
+        internal bool HasAnimated;
+
+        /// <summary>
+        /// Gets the index of the parent bone.
+        /// </summary>
+        public  int GetParentBone(int bone)
+        {
+            return ParentBones[bone];
+        }
+
+        /// <summary>
+        /// Gets all the child bones of the input bone.
+        /// </summary>
+        public  IEnumerable<int> GetChildBones(int bone)
+        {
+            for (int i = bone + 1; i < ParentBones.Count; i++)
+                if (ParentBones[i] == bone)
+                    yield return i;
+        }
+
+        /// <summary>
+        /// Gets the name of the bone.
+        /// </summary>
+        public  string GetBoneName(int bone)
+        {
+            return BoneNames[bone];
+        }
+
+        /// <summary>
+        /// Gets the index of the bone.
+        /// </summary>
+        public  int GetBone(string boneName)
+        {
+            return BoneNames.IndexOf(boneName);
+        }
+
+        /// <summary>
+        /// Gets the aboslute transform of the specified bone.
+        /// </summary>
+        public  Matrix GetAbsoluteBoneTransform(int bone)
+        {
+            Matrix absoluteTransform = BoneTransforms[bone];
+
+            while ((bone = GetParentBone(bone)) >= 0)
+            {
+                absoluteTransform = absoluteTransform * BoneTransforms[bone];
+            }
+
+            return absoluteTransform;
+        }
+
+        /// <summary>
+        /// Gets the aboslute transform of the specified bone.
+        /// </summary>
+        public  Matrix GetAbsoluteBoneTransform(string boneName)
+        {
+            return GetAbsoluteBoneTransform(GetBone(boneName));
+        }
+
+        /// <summary>
+        /// Copies the aboslute transforms of all the bones.
+        /// </summary>
+        public  void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)
+        {
+            if (destinationBoneTransforms == null)
+                throw new ArgumentNullException("destinationBoneTransforms");
+
+            if (destinationBoneTransforms.Length < BoneTransforms.Length)
+                throw new ArgumentOutOfRangeException("destinationBoneTransforms");
+
+            int parent = 0;
+            for (int i = 0; i < BoneTransforms.Length; i++)
+            {
+                if ((parent = GetParentBone(i)) < 0)
+                {
+                    destinationBoneTransforms[i] = BoneTransforms[i];
+                }
+                else
+                {
+                    destinationBoneTransforms[i] = BoneTransforms[i] * destinationBoneTransforms[parent];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copies the local transforms of all the bones.
+        /// </summary>
+        public  void CopyBoneTransformsTo(Matrix[] destinationBoneTransforms)
+        {
+            BoneTransforms.CopyTo(destinationBoneTransforms, 0);
+        }
+
+        /// <summary>
+        /// Gets the local transform of the specified bone.
+        /// </summary>
+        public  Matrix GetBoneTransform(int bone)
+        {
+            return BoneTransforms[bone];
+        }
+
+        /// <summary>
+        /// Gets the local transform of the specified bone.
+        /// </summary>
+        public  Matrix GetBoneTransform(string boneName)
+        {
+            return GetBoneTransform(GetBone(boneName));
+        }
+
+        /// <summary>
+        /// Skin the target model based on the current state of model bone transforms.
+        /// </summary>
+        /// <returns>
+        /// A matrix array used to draw skinned meshes.
+        /// </returns>
+        /// <remarks>
+        /// Whenever the bone or skeleton changes, you should re-skin the model.
+        /// </remarks>
+        public  Matrix[] GetSkinTransforms()
+        {
+            if (InverseAbsoluteBindPose == null)
+                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+
+            Matrix[] skin = new Matrix[InverseAbsoluteBindPose.Count];
+
+            if (bones == null || bones.Length < BoneTransforms.Length)
+                bones = new Matrix[BoneTransforms.Length];
+
+            CopyAbsoluteBoneTransformsTo(bones);
+
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            {
+                // Apply inverse bind pose
+                skin[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i];
+            }
+
+            return skin;
+        }
+
+        /// <summary>
+        /// Skin the target model based on the current state of model bone transforms.
+        /// </summary>
+        /// <param name="world">
+        /// A world matrix that will be applied to the result bone transforms.
+        /// </param>
+        /// <param name="model"></param>
+        /// <returns>
+        /// A matrix array used to draw skinned meshes.
+        /// </returns>
+        /// <remarks>
+        /// Whenever the bone or skeleton changes, you should re-skin the model.
+        /// </remarks>
+        public  Matrix[] GetSkinTransforms(Matrix world)
+        {
+            if (InverseAbsoluteBindPose == null)
+                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+
+            Matrix[] skin = new Matrix[InverseAbsoluteBindPose.Count];
+
+            if (bones == null || bones.Length < BoneTransforms.Length)
+                bones = new Matrix[BoneTransforms.Length];
+
+            CopyAbsoluteBoneTransformsTo(bones);
+
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            {
+                // Apply inverse bind pose
+                skin[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i] * world;
+            }
+
+            return skin;
+        }
+
+        /// <summary>
+        /// Skin the target model based on the current state of model bone transforms.
+        /// </summary>
+        /// <param name="skin">
+        /// A matrix array to hold the result transformations.
+        /// The length must be at least InverseBindPose.Count.
+        /// </param>
+        public  void GetSkinTransforms(Matrix world, Matrix[] skinTransforms)
+        {
+            if (InverseAbsoluteBindPose == null)
+                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+
+            if (bones == null || bones.Length < BoneTransforms.Length)
+                bones = new Matrix[BoneTransforms.Length];
+
+            CopyAbsoluteBoneTransformsTo(bones);
+
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            {
+                // Apply inverse bind pose
+                skinTransforms[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i] * world;
+            }
+        }
+
+        /// <summary>
+        /// Skin the target model based on the current state of model bone transforms.
+        /// </summary>
+        public  void GetSkinTransforms(Matrix[] skinTransforms)
+        {
+            if (InverseAbsoluteBindPose == null)
+                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
+
+            if (bones == null || bones.Length < BoneTransforms.Length)
+                bones = new Matrix[BoneTransforms.Length];
+
+            CopyAbsoluteBoneTransformsTo(bones);
+
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            {
+                // Apply inverse bind pose
+                skinTransforms[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i];
+            }
+        }
+
+        static Matrix[] bones = null;
     }
     #endregion
 
@@ -64,13 +287,21 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a bone hierarchy used by models.
     /// </summary>
-    public class ModelSkeleton : IBoneHierarchy
+    public class ModelSkeleton : Skeleton
     {
-        public int SkeletonRoot { get; private set; }
-        public Matrix[] BoneTransforms { get; private set; }
-        public ReadOnlyCollection<string> BoneNames { get; private set; }
-        public ReadOnlyCollection<int> ParentBones { get; private set; }
-        public ReadOnlyCollection<Matrix> InverseAbsoluteBindPose { get; private set; }
+        Matrix[] boneTransforms;
+        ReadOnlyCollection<int> parentBones;
+
+        /// <summary>
+        /// Gets a fixed sized array of transformation matrices for each bone
+        /// according to its parent bone.
+        /// </summary>
+        public override Matrix[] BoneTransforms { get { return boneTransforms; } }
+
+        /// <summary>
+        /// Gets the hierarchical relationship between bones.
+        /// </summary>
+        public override ReadOnlyCollection<int> ParentBones { get { return parentBones; } }
 
         /// <summary>
         /// Initializes a new instance of <c>ModelSkeleton</c>.
@@ -87,11 +318,10 @@ namespace Nine.Graphics
                 InverseAbsoluteBindPose = new ReadOnlyCollection<Matrix>(skeleton.InverseAbsoluteBindPose);
             }
 
-            var boneTransforms = new Matrix[model.Bones.Count];
+            boneTransforms = new Matrix[model.Bones.Count];
             model.CopyBoneTransformsTo(boneTransforms);
-            BoneTransforms = boneTransforms;
             BoneNames = new ReadOnlyCollection<string>(new BoneNameCollection() { Model = model });
-            ParentBones = new ReadOnlyCollection<int>(new ParentBoneCollection() { Model = model });
+            parentBones = new ReadOnlyCollection<int>(new ParentBoneCollection() { Model = model });
         }
 
         #region Collections
@@ -270,7 +500,7 @@ namespace Nine.Graphics
         internal ModelSkeletonData(List<Matrix> inverseBindPose, int skeleton)
         {
             if (skeleton < 0 || inverseBindPose == null || inverseBindPose.Count <= 0)
-                throw new ArgumentException("Error creating skinner.");
+                throw new ArgumentException("Error creating skeleton data.");
 
             InverseAbsoluteBindPose = inverseBindPose;
             SkeletonRoot = skeleton;
@@ -280,231 +510,6 @@ namespace Nine.Graphics
         /// Private constructor for use by the XNB deserializer.
         /// </summary>
         internal ModelSkeletonData() { }
-    }
-    #endregion
-
-    #region BoneHierarchyExtensions
-    /// <summary>
-    /// Contains extension methods to bone hierarchy.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class BoneHierarchyExtensions
-    {
-        /// <summary>
-        /// Gets the index of the parent bone.
-        /// </summary>
-        public static int GetParentBone(this IBoneHierarchy skeleton, int bone)
-        {
-            return skeleton.ParentBones[bone];
-        }
-
-        /// <summary>
-        /// Gets all the child bones of the input bone.
-        /// </summary>
-        public static IEnumerable<int> GetChildBones(this IBoneHierarchy skeleton, int bone)
-        {
-            for (int i = bone + 1; i < skeleton.ParentBones.Count; i++)
-                if (skeleton.ParentBones[i] == bone)
-                    yield return i;
-        }
-
-        /// <summary>
-        /// Gets the name of the bone.
-        /// </summary>
-        public static string GetBoneName(this IBoneHierarchy skeleton, int bone)
-        {
-            return skeleton.BoneNames[bone];
-        }
-
-        /// <summary>
-        /// Gets the index of the bone.
-        /// </summary>
-        public static int GetBone(this IBoneHierarchy skeleton, string boneName)
-        {
-            return skeleton.BoneNames.IndexOf(boneName);
-        }
-
-        /// <summary>
-        /// Gets the aboslute transform of the specified bone.
-        /// </summary>
-        public static Matrix GetAbsoluteBoneTransform(this IBoneHierarchy skeleton, int bone)
-        {
-            Matrix absoluteTransform = skeleton.BoneTransforms[bone];
-
-            while ((bone = GetParentBone(skeleton, bone)) >= 0)
-            {
-                absoluteTransform = absoluteTransform * skeleton.BoneTransforms[bone];
-            }
-
-            return absoluteTransform;
-        }
-
-        /// <summary>
-        /// Gets the aboslute transform of the specified bone.
-        /// </summary>
-        public static Matrix GetAbsoluteBoneTransform(this IBoneHierarchy skeleton, string boneName)
-        {
-            return GetAbsoluteBoneTransform(skeleton, GetBone(skeleton, boneName));
-        }
-
-        /// <summary>
-        /// Copies the aboslute transforms of all the bones.
-        /// </summary>
-        public static void CopyAbsoluteBoneTransformsTo(this IBoneHierarchy skeleton, Matrix[] destinationBoneTransforms)
-        {
-            if (destinationBoneTransforms == null)
-                throw new ArgumentNullException("destinationBoneTransforms");
-
-            if (destinationBoneTransforms.Length < skeleton.BoneTransforms.Length)
-                throw new ArgumentOutOfRangeException("destinationBoneTransforms");
-
-            int parent = 0;
-            for (int i = 0; i < skeleton.BoneTransforms.Length; i++)
-            {
-                if ((parent = GetParentBone(skeleton, i)) < 0)
-                {
-                    destinationBoneTransforms[i] = skeleton.BoneTransforms[i];
-                }
-                else
-                {
-                    destinationBoneTransforms[i] = skeleton.BoneTransforms[i] * destinationBoneTransforms[parent];
-                }
-            }
-        }
-
-        /// <summary>
-        /// Copies the local transforms of all the bones.
-        /// </summary>
-        public static void CopyBoneTransformsTo(this IBoneHierarchy skeleton, Matrix[] destinationBoneTransforms)
-        {
-            skeleton.BoneTransforms.CopyTo(destinationBoneTransforms, 0);
-        }
-
-        /// <summary>
-        /// Gets the local transform of the specified bone.
-        /// </summary>
-        public static Matrix GetBoneTransform(this IBoneHierarchy skeleton, int bone)
-        {
-            return skeleton.BoneTransforms[bone];
-        }
-
-        /// <summary>
-        /// Gets the local transform of the specified bone.
-        /// </summary>
-        public static Matrix GetBoneTransform(this IBoneHierarchy skeleton, string boneName)
-        {
-            return GetBoneTransform(skeleton, GetBone(skeleton, boneName));
-        }
-
-        /// <summary>
-        /// Skin the target model based on the current state of model bone transforms.
-        /// </summary>
-        /// <returns>
-        /// A matrix array used to draw skinned meshes.
-        /// </returns>
-        /// <remarks>
-        /// Whenever the bone or skeleton changes, you should re-skin the model.
-        /// </remarks>
-        public static Matrix[] GetSkinTransforms(this IBoneHierarchy skeleton)
-        {
-            if (skeleton.InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
-
-            Matrix[] skin = new Matrix[skeleton.InverseAbsoluteBindPose.Count];
-
-            if (bones == null || bones.Length < skeleton.BoneTransforms.Length)
-                bones = new Matrix[skeleton.BoneTransforms.Length];
-
-            skeleton.CopyAbsoluteBoneTransformsTo(bones);
-
-            for (int i = 0; i < skeleton.InverseAbsoluteBindPose.Count; i++)
-            {
-                // Apply inverse bind pose
-                skin[i] = skeleton.InverseAbsoluteBindPose[i] * bones[skeleton.SkeletonRoot + i];
-            }
-
-            return skin;
-        }
-
-        /// <summary>
-        /// Skin the target model based on the current state of model bone transforms.
-        /// </summary>
-        /// <param name="world">
-        /// A world matrix that will be applied to the result bone transforms.
-        /// </param>
-        /// <param name="model"></param>
-        /// <returns>
-        /// A matrix array used to draw skinned meshes.
-        /// </returns>
-        /// <remarks>
-        /// Whenever the bone or skeleton changes, you should re-skin the model.
-        /// </remarks>
-        public static Matrix[] GetSkinTransforms(this IBoneHierarchy skeleton, Matrix world)
-        {
-            if (skeleton.InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
-
-            Matrix[] skin = new Matrix[skeleton.InverseAbsoluteBindPose.Count];
-
-            if (bones == null || bones.Length < skeleton.BoneTransforms.Length)
-                bones = new Matrix[skeleton.BoneTransforms.Length];
-
-            skeleton.CopyAbsoluteBoneTransformsTo(bones);
-
-            for (int i = 0; i < skeleton.InverseAbsoluteBindPose.Count; i++)
-            {
-                // Apply inverse bind pose
-                skin[i] = skeleton.InverseAbsoluteBindPose[i] * bones[skeleton.SkeletonRoot + i] * world;
-            }
-
-            return skin;
-        }
-
-        /// <summary>
-        /// Skin the target model based on the current state of model bone transforms.
-        /// </summary>
-        /// <param name="skin">
-        /// A matrix array to hold the result transformations.
-        /// The length must be at least InverseBindPose.Count.
-        /// </param>
-        public static void GetSkinTransforms(this IBoneHierarchy skeleton, Matrix world, Matrix[] skinTransforms)
-        {
-            if (skeleton.InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
-
-            if (bones == null || bones.Length < skeleton.BoneTransforms.Length)
-                bones = new Matrix[skeleton.BoneTransforms.Length];
-
-            skeleton.CopyAbsoluteBoneTransformsTo(bones);
-
-            for (int i = 0; i < skeleton.InverseAbsoluteBindPose.Count; i++)
-            {
-                // Apply inverse bind pose
-                skinTransforms[i] = skeleton.InverseAbsoluteBindPose[i] * bones[skeleton.SkeletonRoot + i] * world;
-            }
-        }
-
-        /// <summary>
-        /// Skin the target model based on the current state of model bone transforms.
-        /// </summary>
-        public static void GetSkinTransforms(this IBoneHierarchy skeleton, Matrix[] skinTransforms)
-        {
-            if (skeleton.InverseAbsoluteBindPose == null)
-                throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
-
-            if (bones == null || bones.Length < skeleton.BoneTransforms.Length)
-                bones = new Matrix[skeleton.BoneTransforms.Length];
-
-            skeleton.CopyAbsoluteBoneTransformsTo(bones);
-
-            for (int i = 0; i < skeleton.InverseAbsoluteBindPose.Count; i++)
-            {
-                // Apply inverse bind pose
-                skinTransforms[i] = skeleton.InverseAbsoluteBindPose[i] * bones[skeleton.SkeletonRoot + i];
-            }
-        }
-
-        static Matrix[] bones = null;
     }
     #endregion
 }

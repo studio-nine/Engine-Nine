@@ -56,6 +56,9 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
+      <Link>Nine.Content.Reader.Generated.cs</Link>
+    </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
@@ -420,10 +423,6 @@
     <None Include="Diagrams\Navigation.cd" />
     <None Include="Diagrams\Surfaces.cd" />
     <None Include="Diagrams\Vertices.cd" />
-    <None Include="Graphics\Effects\Copy of PointLightEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>Copy of PointLightEffect.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Graphics\Effects\Deferred\ClearEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ClearEffect.Designer.cs</LastGenOutput>

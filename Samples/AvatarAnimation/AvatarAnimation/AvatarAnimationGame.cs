@@ -154,6 +154,10 @@ namespace AvatarAnimationGame
             {
                 PlayAnimation((AvatarAnimationPreset)(random.Next(30)));
             }
+            else if (e.Button == Buttons.X)
+            {
+                PlayLookAt();
+            }
         }
 
         private void PlayAnimation(AvatarAnimationPreset preset)
