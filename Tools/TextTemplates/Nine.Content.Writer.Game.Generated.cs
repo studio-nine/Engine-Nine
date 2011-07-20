@@ -8,18 +8,18 @@
 // -----------------------------------------------------------------------------
 
 
-namespace Nine.Content.Pipeline.Graphics.Views
+namespace Nine.Content.Pipeline.Graphics
 {
     /// <summary>
-    /// Content writer for <c>DirectionalLightView</c>.
+    /// Content writer for <c>DirectionalLight</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DirectionalLightViewContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DirectionalLightViewContent>
+    class DirectionalLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DirectionalLightContent>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightViewContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightContent value)
         {
             output.WriteObject(value.CastShadow);
             output.WriteObject(value.DiffuseColor);
@@ -31,24 +31,24 @@ namespace Nine.Content.Pipeline.Graphics.Views
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.DirectionalLightViewReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.DirectionalLightReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.DirectionalLightView, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.DirectionalLight, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
-    /// Content writer for <c>ModelView</c>.
+    /// Content writer for <c>ModelInstance</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ModelViewContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelViewContent>
+    class ModelInstanceContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelInstanceContent>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelViewContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelInstanceContent value)
         {
             output.WriteObject(value.Effect);
             output.WriteObject(value.Model);
@@ -58,24 +58,24 @@ namespace Nine.Content.Pipeline.Graphics.Views
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.ModelViewReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ModelInstanceReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.ModelView, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ModelInstance, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
-    /// Content writer for <c>ParticleEffectView</c>.
+    /// Content writer for <c>ParticleEffectInstance</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ParticleEffectViewContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ParticleEffectViewContent>
+    class ParticleEffectInstanceContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ParticleEffectInstanceContent>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ParticleEffectViewContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ParticleEffectInstanceContent value)
         {
             output.WriteObject(value.ParticleEffect);
             output.WriteObject(value.Position);
@@ -84,12 +84,12 @@ namespace Nine.Content.Pipeline.Graphics.Views
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.ParticleEffectViewReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ParticleEffectInstanceReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.ParticleEffectView, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ParticleEffectInstance, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -109,12 +109,12 @@ namespace Nine.Content.Pipeline.Graphics.Views
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.ViewTemplateReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ViewTemplateReader, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Views.ViewTemplate, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.ViewTemplate, Nine.Game, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

@@ -26,12 +26,14 @@ namespace Nine.Graphics
         /// <summary>
         /// Represents a right handed coordinate system with X axis pointing right,
         /// Y axis pointing up and Z axis pointing outside the screen.
+        /// The origin of the coordinate system is the center of the screen.
         /// </summary>
         ThreeDimension,
 
         /// <summary>
-        /// Represents a right handed coordinate system with X axis pointing right,
-        /// Y axis pointing down and Z axis pointing into the screen.
+        /// Represents a left handed coordinate system with X axis pointing right,
+        /// Y axis pointing down and Z axis pointing outside the screen.
+        /// The origin of the coordinate system is the top left corner of the screen.
         /// </summary>
         TwoDimension,
     }
@@ -67,7 +69,7 @@ namespace Nine.Graphics
 
         public Matrix View
         {
-            get { return Matrix.CreateTranslation(-X, -Y, -Z); }
+            get { return Matrix.CreateTranslation(PositionOffset.X - X, PositionOffset.Y - Y, -Z); }
         }
 
         public Matrix Projection
@@ -87,6 +89,15 @@ namespace Nine.Graphics
                         -GraphicsDevice.Viewport.Width * scale, GraphicsDevice.Viewport.Width * scale,
                         -GraphicsDevice.Viewport.Height * scale, GraphicsDevice.Viewport.Height * scale, NearClip, FarClip);
                 }
+            }
+        }
+
+        private Vector2 PositionOffset
+        {
+            get
+            {
+                return CoordinateType == ScreenCameraCoordinate.TwoDimension ?
+                    new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2) : Vector2.Zero;
             }
         }
         
@@ -109,12 +120,6 @@ namespace Nine.Graphics
             Sensitivity = 1;
             NearClip = 0;
             FarClip = 10000;
-
-            if (CoordinateType == ScreenCameraCoordinate.TwoDimension)
-            {
-                X = GraphicsDevice.Viewport.Width / 2;
-                Y = GraphicsDevice.Viewport.Height / 2;
-            }
 
             Input = new Input();
 

@@ -64,10 +64,10 @@ namespace Nine.Content.Pipeline.Processors
             List<Vector3> normals = new List<Vector3>();
             List<Vector2> textureCoordinates = new List<Vector2>();
 
-            Matrix transform = Matrix.CreateRotationX(RotationX) *
-                               Matrix.CreateRotationY(RotationY) *
-                               Matrix.CreateRotationZ(RotationZ) *
-                               Matrix.CreateScale(Scale);
+            Matrix transform = Matrix.CreateScale(Scale) * 
+                               Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)) *
+                               Matrix.CreateRotationY(MathHelper.ToRadians(RotationY)) *
+                               Matrix.CreateRotationZ(MathHelper.ToRadians(RotationZ));
 
             ProcessNode(transform, input, positions, indices);
 

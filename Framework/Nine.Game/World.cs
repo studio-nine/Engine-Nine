@@ -26,17 +26,19 @@ namespace Nine
     /// <summary>
     /// Defines a world that contains objects to be updated and rendered.
     /// </summary>
-    public class World : IServiceProvider, IUpdateable, IDrawable
+    public class World : IUpdateable, IDrawable
     {
         /// <summary>
-        /// Gets or sets the template factory of this world.
+        /// Gets the template factory of this world.
         /// </summary>
         [XmlIgnore]
-        public ITemplateFactory Templates
-        {
-            get { return templateFactory ?? (templateFactory = new TemplateFactory(this)); }
-            set { templateFactory = value; }
-        }
+        public ICollection<ITemplateFactory> TemplateFactories { get; private set; }
+
+        /// <summary>
+        /// Gets the services owned by this world.
+        /// </summary>
+        [XmlIgnore]
+        public IServiceProvider Services { get; private set; }
 
         /// <summary>
         /// Gets a collection of world objects managed by this world.
@@ -52,8 +54,6 @@ namespace Nine
         /// </summary>
         internal Renderer Renderer;
 
-        private IServiceProvider services = null;
-        private ITemplateFactory templateFactory = null;
         private TimeEventArgs timeEventArgs = new TimeEventArgs();
         private WorldObjectCollection<object> worldObjects = new WorldObjectCollection<object>();
         
@@ -70,8 +70,31 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of <c>World</c>.
         /// </summary>
+        public World(IServiceProvider services): this()
+        {
+            if (services == null)
+                throw new ArgumentNullException("services");
+
+            this.Services = services;
+
+            var graphicsDeviceService = services.GetService<IGraphicsDeviceService>();
+            if (graphicsDeviceService != null && graphicsDeviceService.GraphicsDevice != null)
+            {
+                this.TemplateFactories.Add(new ContentTemplateFactory(services));
+                this.CreateGraphics(graphicsDeviceService.GraphicsDevice);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <c>World</c>.
+        /// </summary>
         public World(GraphicsDevice graphics) : this()
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            this.Services = new GraphicsDeviceServiceProvider(graphics);
+            this.TemplateFactories.Add(new ContentTemplateFactory(this.Services));
             this.CreateGraphics(graphics);
         }
         
@@ -80,6 +103,9 @@ namespace Nine
         /// </summary>
         public World()
         {
+            Services = new EmptyServiceProvider();
+            TemplateFactories = new List<ITemplateFactory>();
+            TemplateFactories.Add(new ClassTemplateFactory());
             worldObjects.Added += new EventHandler<ItemChangedEventArgs<object>>(OnAdded);
             worldObjects.Removed += new EventHandler<ItemChangedEventArgs<object>>(OnRemoved);
         }
@@ -93,14 +119,6 @@ namespace Nine
         private void OnRemoved(object sender, ItemChangedEventArgs<object> e)
         {
 
-        }
-
-        /// <summary>
-        /// Gets the service object of the specified type.
-        /// </summary>
-        public object GetService(Type serviceType)
-        {
-            return services.GetService(serviceType);
         }
 
         /// <summary>
@@ -127,6 +145,18 @@ namespace Nine
             }
         }
 
+        /// <summary>
+        /// Creates an object from existing template.
+        /// </summary>
+        public object CreateFromTemplate(Template template)
+        {
+            if (template == null)
+                throw new ArgumentNullException("template");
+
+            return template.Value = TemplateFactories.First(f => f.Name == template.FactoryName)
+                                                     .Create(typeof(object), template.Name);
+        }
+
         #region Serialization
         /// <summary>
         /// Gets a collection of known assemblies.
@@ -148,7 +178,11 @@ namespace Nine
         static World()
         {
 #if WINDOWS
-            GetKnownAssemblies(Assembly.GetEntryAssembly(), knownAssemblies);
+            knownAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(
+                assembly =>
+                    !assembly.FullName.StartsWith("Microsoft.Xna.Framework") &&
+                    !assembly.FullName.StartsWith("System") &&
+                    !assembly.FullName.StartsWith("mscorlib")));
 #else
             knownAssemblies.Add(Assembly.GetExecutingAssembly());
 #endif
@@ -256,25 +290,6 @@ namespace Nine
             })).ToArray();
             return extraTypes;
         }
-
-#if WINDOWS
-        private static void GetKnownAssemblies(Assembly assembly, List<Assembly> knownAssemblies)
-        {
-            if (knownAssemblies.Contains(assembly))
-                return;
-
-            knownAssemblies.Add(assembly);
-            foreach (var asm in assembly.GetReferencedAssemblies())
-            {
-                if (!asm.FullName.StartsWith("Microsoft.Xna.Framework") &&
-                    !asm.FullName.StartsWith("System") &&
-                    !asm.FullName.StartsWith("mscorlib"))
-                {
-                    GetKnownAssemblies(Assembly.Load(asm), knownAssemblies);
-                }
-            }
-        }
-#endif
         #endregion
     }
 }

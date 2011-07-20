@@ -2,4 +2,4 @@
     var assemblyFile = @"..\..\References\x86\Nine.Game.dll";
 	var assemblyDocumentFile = @"..\..\References\x86\Nine.Game.xml";
 #>
-<#@ include file="Content.Model.tt" #>
+<#@ include file="Content.Model.tth" #>

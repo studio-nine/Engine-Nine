@@ -8,20 +8,23 @@
 
 #region Using Directives
 using System;
+using System.Text;
+using System.Reflection;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Xml.Serialization;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
-using Nine.Graphics;
-using Nine.Graphics.Views;
-using System.Xml.Serialization;
 using Microsoft.Xna.Framework.Content;
-using System.Text;
+using Nine.Graphics;
+
 #endregion
 
 namespace Nine
 {
+    #region ITemplateFactory
     /// <summary>
     /// Defines a template factory that can create a template of the specified
     /// type based on the name of the template.
@@ -29,18 +32,51 @@ namespace Nine
     public interface ITemplateFactory
     {
         /// <summary>
+        /// Gets the name of this template factory.
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Creates a new instance of the target type using the specified template name.
         /// </summary>
         object Create(Type targetType, string templateName);
     }
+    #endregion
 
+    #region ClassTemplateFactory
     /// <summary>
-    /// Defines a default template factory that can creates a template from
-    /// content pipeline.
+    /// Defines a template factory that can create templates from existing class.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class TemplateFactory : ITemplateFactory
+    public class ClassTemplateFactory : ITemplateFactory
     {
+        /// <summary>
+        /// Gets the name of this template factory.
+        /// </summary>
+        public string Name { get { return "Class"; } }
+
+        /// <summary>
+        /// Creates a new instance of the target type using the specified template name.
+        /// </summary>
+        public virtual object Create(Type targetType, string templateName)
+        {
+            return Activator.CreateInstance(Type.GetType(templateName));
+        }
+    }
+    #endregion
+
+    #region ContentTemplateFactory
+    /// <summary>
+    /// Defines a template factory that can create templates using content pipeline.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class ContentTemplateFactory : ITemplateFactory, IDisposable
+    {
+        /// <summary>
+        /// Gets the name of this template factory.
+        /// </summary>
+        public string Name { get { return "Content"; } }
+
         /// <summary>
         /// Gets the underlying content manager used by this template factory.
         /// </summary>
@@ -49,17 +85,69 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of TemplateFactory.
         /// </summary>
-        public TemplateFactory(IServiceProvider serviceProvider)
+        public ContentTemplateFactory(IServiceProvider serviceProvider)
         {
             Content = new TemplateFactoryContentManager(serviceProvider);
+            Content.RootDirectory = "Content";
         }
+        
+#if !WINDOWS_PHONE
+        /// <summary>
+        /// Initializes a new instance of TemplateFactory.
+        /// </summary>
+        public ContentTemplateFactory(ContentManager contentManager)
+        {
+            if (contentManager == null)
+                throw new ArgumentNullException("contentManager");
+
+            Content = contentManager;
+            needReflection = true;
+        }
+
+        bool needReflection;
+        static Type[] ReadAssetParameterTypes = new Type[] { typeof(string), typeof(Action<IDisposable>) };
+#endif
 
         /// <summary>
         /// Creates a new instance of the target type using the specified template name.
         /// </summary>
         public virtual object Create(Type targetType, string templateName)
         {
-            return null;
+#if WINDOWS_PHONE
+            return Content.Load<object>(templateName);
+#else
+            if (!needReflection)
+            {
+                try
+                {
+                    ((TemplateFactoryContentManager)Content).IsReadAsset = true;
+                    return Content.Load<object>(templateName);
+                }
+                finally
+                {
+                    ((TemplateFactoryContentManager)Content).IsReadAsset = false;
+                }
+            }
+
+            // Hack into ReadAsset using reflection.
+            var readAsset = Content.GetType().GetMethod("ReadAsset", BindingFlags.Instance | BindingFlags.NonPublic, null,
+                                                        ReadAssetParameterTypes, null);
+
+            try
+            {
+                return readAsset.Invoke(Content, new object[] { templateName, null });
+            }
+            catch (TargetInvocationException e)
+            {
+                throw e.InnerException;
+            }
+#endif
+        }
+
+        public void Dispose()
+        {
+            if (Content != null)
+                Content.Dispose();
         }
     }
 
@@ -68,7 +156,7 @@ namespace Nine
     /// </summary>
     class TemplateFactoryContentManager : ContentManager
     {
-        static int Id = 0;
+        internal bool IsReadAsset;
 
         public TemplateFactoryContentManager(IServiceProvider serviceProvider)
             : base(serviceProvider)
@@ -78,12 +166,10 @@ namespace Nine
 
         public override T Load<T>(string assetName)
         {
-            return base.Load<T>(assetName + ":" + Id.ToString());
-        }
-
-        protected override System.IO.Stream OpenStream(string assetName)
-        {
-            return base.OpenStream(assetName.Substring(0, assetName.LastIndexOf(':')));
+            if (IsReadAsset)
+                return base.ReadAsset<T>(assetName, null);
+            return base.Load<T>(assetName);
         }
     }
+    #endregion
 }

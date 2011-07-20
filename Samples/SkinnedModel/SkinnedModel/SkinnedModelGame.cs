@@ -123,7 +123,7 @@ namespace SkinnedModel
             LinkedEffect linkedEffect = Content.Load<LinkedEffect>("SkinnedEffect");
             linkedEffect.EnableDefaultLighting();
             model.ConvertEffectTo(linkedEffect);
-#endif       
+#endif
 
             // Handle animations.
             PlayAttackAndRun();
@@ -167,7 +167,6 @@ namespace SkinnedModel
 
             blended.KeyController = run;
             blended.IsSychronized = true;
-            blended.Play();
 
             animations[2].Play(blended);
         }
@@ -197,7 +196,6 @@ namespace SkinnedModel
 
             blended.KeyController = run;
             blended.IsSychronized = true;
-            blended.Play();
 
             animations[3].Play(blended);
         }
@@ -219,7 +217,7 @@ namespace SkinnedModel
 
             if (!Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection);
+                modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection, null, null, null, RasterizerState.CullNone);
                 {
                     modelBatch.DrawSkinned(model, world1, skeleton1.GetSkinTransforms(), null);
                     modelBatch.DrawSkinned(model, world2, skeleton2.GetSkinTransforms(), null);

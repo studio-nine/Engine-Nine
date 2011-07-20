@@ -26,5 +26,35 @@
       </Item>
       <Item Type="Particles:FadeController"></Item>
     </Controllers>
+    
+    <SiblingEffects>
+      <Item>
+        <ParticleType>ConstrainedBillboard</ParticleType>
+        <Emission>100</Emission>
+        <Duration>
+          <Min>2</Min>
+          <Max>2</Max>
+        </Duration>
+        <Color>FFFFFFFF</Color>
+        <Size>
+          <Min>0.2</Min>
+          <Max>0.2</Max>
+        </Size>
+        <Speed>8</Speed>
+        <Stretch>10</Stretch>
+        <Texture>fire</Texture>
+        <BlendState>Additive</BlendState>
+        <Controllers>
+          <Item Type="Particles:ColorController">
+            <EndColor>
+              <Min>FF00FFFF</Min>
+              <Max>FFFF00FF</Max>
+            </EndColor>
+          </Item>
+          <Item Type="Particles:FadeController"></Item>
+        </Controllers>
+      </Item>
+    </SiblingEffects>
+    
   </Asset>
 </XnaContent>

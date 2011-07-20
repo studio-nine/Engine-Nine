@@ -48,13 +48,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Content\Worlds\BasicModelView.xml">
+    <Compile Include="..\..\Content\Worlds\BasicModelView.xml">
       <Link>BasicModelView.xml</Link>
       <Name>BasicModelView</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Effects\SkinnedEffect.xml">
@@ -76,6 +76,14 @@
     <Compile Include="..\..\Content\Textures\flake.png">
       <Link>flake.png</Link>
       <Name>flake</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Textures\fire.png">
+      <Link>fire.png</Link>
+      <Name>fire</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

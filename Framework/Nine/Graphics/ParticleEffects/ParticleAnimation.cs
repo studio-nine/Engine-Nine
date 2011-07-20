@@ -92,6 +92,8 @@ namespace Nine.Graphics.ParticleEffects
         {
             if (Enabled && State == AnimationState.Playing)
             {
+                Effect.UpdateEmitter(Position, elapsedTime);
+
                 currentTime += elapsedTime;
                 if (currentTime >= Duration)
                 {

@@ -22,6 +22,8 @@ namespace Nine
     /// <summary>
     /// Defines a collection that can have any custom data attached.
     /// </summary>
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView`1, mscorlib")]
     public class WorldObjectCollection<T> : NotificationCollection<T>
     {
         Dictionary<Type, WorldObjectCollectionEntry<T>> extensionDataCollections;

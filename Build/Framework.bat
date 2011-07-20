@@ -11,13 +11,12 @@ pushd ..
 call %msbuild% %flags% Framework\Nine.sln
 
 pushd Tools\TextTemplates
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out Nine.Content.Model.Generated.cs Nine.Content.Model.tt  
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out Nine.Content.Writer.Generated.cs Nine.Content.Writer.tt  
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out Nine.Content.Reader.Generated.cs Nine.Content.Reader.tt  
 
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out Nine.Content.Model.Game.Generated.cs Nine.Content.Model.Game.tt  
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out Nine.Content.Writer.Game.Generated.cs Nine.Content.Writer.Game.tt  
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out Nine.Content.Reader.Game.Generated.cs Nine.Content.Reader.Game.tt  
+for /f "delims=" %%i in ('dir /b /a-d "*.tt"') do (
+"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out %%~ni.Generated.cs %%i
+"%CommonProgramFiles(x86)%\Microsoft Shared\TextTemplating\10.0\texttransform.exe" -out %%~ni.Generated.cs %%i
+)
+
 popd
 
 call %msbuild% %flags% Framework\Nine.sln

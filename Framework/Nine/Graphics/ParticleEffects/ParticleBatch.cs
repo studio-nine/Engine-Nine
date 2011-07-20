@@ -88,6 +88,9 @@ namespace Nine.Graphics.ParticleEffects
             if (particleEffect.Texture != null)
                 batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
 
+            foreach (var siblingEffect in particleEffect.SiblingEffects)
+                Draw(siblingEffect);
+
             foreach (var childEffect in particleEffect.ChildEffects)
                 Draw(childEffect);
 
@@ -158,6 +161,20 @@ namespace Nine.Graphics.ParticleEffects
                 });
             }
             else if (item.Type == ParticleType.ConstrainedBillboardUp)
+            {
+                particleEffect.ForEach(particle =>
+                {
+                    Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+                    primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                                particle.Position - forward,
+                                                particle.Position + forward,
+                                                particle.Size,
+                                                textureTransform, null,
+                                                particle.Color * particle.Alpha);
+                });
+            }
+            else if (item.Type == ParticleType.RibbonTrail)
             {
                 particleEffect.ForEach(particle =>
                 {

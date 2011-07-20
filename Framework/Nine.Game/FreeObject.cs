@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel;
 using Nine.Graphics;
-using Nine.Graphics.Views;
+
 using System.Xml.Serialization;
 #endregion
 
@@ -24,7 +24,7 @@ namespace Nine
     /// Defines an object that has an abitrary transform.
     /// </summary>
     [Serializable]
-    public class FreeObject : IDrawableWorldObject
+    public class FreeObject : IWorldObject
     {
         #region Transform
         public Matrix Transform
@@ -43,14 +43,14 @@ namespace Nine
         #endregion
 
         #region Template
-        public string Template
+        public Template Template
         {
             get { return template; }
             set
             {
                 if (template != value)
                 {
-                    string oldValue = template;
+                    Template oldValue = template;
                     template = value;
                     if (TemplateChanged != null)
                         TemplateChanged(this, EventArgs.Empty);
@@ -58,13 +58,13 @@ namespace Nine
                 }
             }
         }
-        private string template;
+        private Template template;
         #endregion
 
         public event EventHandler<EventArgs> TransformChanged;
         public event EventHandler<EventArgs> TemplateChanged;
 
         protected virtual void OnTransformChanged(Matrix oldValue) { }
-        protected virtual void OnTemplateChanged(string oldValue) { }
+        protected virtual void OnTemplateChanged(Template oldValue) { }
     }
 }

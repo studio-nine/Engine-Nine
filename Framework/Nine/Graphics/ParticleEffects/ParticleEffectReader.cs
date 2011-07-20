@@ -48,6 +48,10 @@ namespace Nine.Graphics.ParticleEffects
 
             count = input.ReadInt32();
             for (int i = 0; i < count; i++)
+                effect.SiblingEffects.Add(input.ReadObject<ParticleEffect>());
+
+            count = input.ReadInt32();
+            for (int i = 0; i < count; i++)
                 effect.ChildEffects.Add(input.ReadObject<ParticleEffect>());
 
             count = input.ReadInt32();

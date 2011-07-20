@@ -1,4 +1,4 @@
 ﻿<#
     var assemblyFile = @"..\..\References\x86\Nine.dll";
 #>
-<#@ include file="Content.Writer.tt" #>
+<#@ include file="Content.Writer.tth" #>

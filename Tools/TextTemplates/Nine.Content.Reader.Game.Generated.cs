@@ -8,23 +8,23 @@
 // -----------------------------------------------------------------------------
 
 
-namespace Nine.Graphics.Views
+namespace Nine.Graphics
 {
     /// <summary>
-    /// Content reader for <c>DirectionalLightView</c>.
+    /// Content reader for <c>DirectionalLight</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class DirectionalLightViewReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Views.DirectionalLightView>
+    class DirectionalLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.DirectionalLight>
     {
-        protected override Nine.Graphics.Views.DirectionalLightView Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Views.DirectionalLightView existingInstance)
+        protected override Nine.Graphics.DirectionalLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.DirectionalLight existingInstance)
         {
             if (existingInstance == null)
             {
                 var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new DirectionalLightView(graphicsDeviceService.GraphicsDevice);
+                existingInstance = new DirectionalLight(graphicsDeviceService.GraphicsDevice);
             }
             existingInstance.CastShadow = input.ReadObject<System.Boolean>();
             existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
@@ -37,18 +37,18 @@ namespace Nine.Graphics.Views
         }
     }
     /// <summary>
-    /// Content reader for <c>ModelView</c>.
+    /// Content reader for <c>ModelInstance</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class ModelViewReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Views.ModelView>
+    class ModelInstanceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelInstance>
     {
-        protected override Nine.Graphics.Views.ModelView Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Views.ModelView existingInstance)
+        protected override Nine.Graphics.ModelInstance Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelInstance existingInstance)
         {
             if (existingInstance == null)
             {
-                existingInstance = new ModelView();
+                existingInstance = new ModelInstance();
             }
             existingInstance.Effect = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
             existingInstance.Model = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
@@ -59,18 +59,18 @@ namespace Nine.Graphics.Views
         }
     }
     /// <summary>
-    /// Content reader for <c>ParticleEffectView</c>.
+    /// Content reader for <c>ParticleEffectInstance</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class ParticleEffectViewReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Views.ParticleEffectView>
+    class ParticleEffectInstanceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffectInstance>
     {
-        protected override Nine.Graphics.Views.ParticleEffectView Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Views.ParticleEffectView existingInstance)
+        protected override Nine.Graphics.ParticleEffectInstance Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffectInstance existingInstance)
         {
             if (existingInstance == null)
             {
-                existingInstance = new ParticleEffectView();
+                existingInstance = new ParticleEffectInstance();
             }
             existingInstance.ParticleEffect = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
             existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
@@ -85,15 +85,15 @@ namespace Nine.Graphics.Views
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class ViewTemplateReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Views.ViewTemplate>
+    class ViewTemplateReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ViewTemplate>
     {
-        protected override Nine.Graphics.Views.ViewTemplate Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Views.ViewTemplate existingInstance)
+        protected override Nine.Graphics.ViewTemplate Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ViewTemplate existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ViewTemplate();
             }
-            existingInstance.Views = input.ReadObject<System.Collections.Generic.List<Nine.Graphics.IDrawableView>>();
+            existingInstance.Views = input.ReadObject<System.Collections.Generic.List<System.Object>>();
             existingInstance.Visible = input.ReadObject<System.Boolean>();
 
             return existingInstance;

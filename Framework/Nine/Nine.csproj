@@ -96,7 +96,6 @@
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
-    <Compile Include="Animations\PrimitiveBatchExtensions.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\LayeredAnimation.cs" />

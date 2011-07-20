@@ -120,6 +120,23 @@ namespace Nine.Content.Pipeline.Processors
         [DisplayName("Animation Frame Rate")]
         public int FramesPerSecond { get; set; }
 
+        [DefaultValue(0f)]
+        public virtual float RotationX { get; set; }
+
+        [DefaultValue(0f)]
+        public virtual float RotationY { get; set; }
+
+        [DefaultValue(0f)]
+        public virtual float RotationZ { get; set; }
+
+        [DefaultValue(1f)]
+        public virtual float Scale { get; set; }
+
+        /// <summary>
+        /// Gets the skeleton data of this animation.
+        /// </summary>
+        internal ModelSkeletonData Skeleton { get; private set; }
+
         ContentProcessorContext context;
 
         /// <summary>
@@ -128,11 +145,20 @@ namespace Nine.Content.Pipeline.Processors
         public ModelAnimationProcessor()
         {
             FramesPerSecond = 60;
+            Scale = 1;
         }
 
         public override Dictionary<string, BoneAnimationClip> Process(NodeContent input, ContentProcessorContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
+            ModelSkeletonProcessor skeletonProcessor = new ModelSkeletonProcessor();
+
+            skeletonProcessor.RotationX = RotationX;
+            skeletonProcessor.RotationY = RotationY;
+            skeletonProcessor.RotationZ = RotationZ;
+            skeletonProcessor.Scale = Scale;
+
+            Skeleton = skeletonProcessor.Process(input, context);
+
             this.context = context;
 
             if (FramesPerSecond <= 0)
@@ -168,6 +194,8 @@ namespace Nine.Content.Pipeline.Processors
             {
                 boneAnimations.Add(key, ConvertAnimationClip(animations[key]));
             }
+
+            ClampAnimationsAndApplyTransform(boneAnimations);
 
             return boneAnimations;
         }
@@ -400,8 +428,6 @@ namespace Nine.Content.Pipeline.Processors
                     maxDifference = difference;
             }
 
-            //context.Logger.LogImportantMessage(maxDifference.ToString());
-
             float thresoldIdentical = 1000;
             float thresoldApproximate = 10000;
 
@@ -425,6 +451,40 @@ namespace Nine.Content.Pipeline.Processors
             Vector3 b2 = Vector3.Transform(v2, b);
 
             return Math.Abs((b1 - a1).Length() + (b2 - a2).Length());
+        }
+
+        private Matrix Transform(Matrix matrix)
+        {
+            return matrix * Matrix.CreateScale(Scale)
+                          * Matrix.CreateRotationX(MathHelper.ToRadians(RotationX))
+                          * Matrix.CreateRotationY(MathHelper.ToRadians(RotationY))
+                          * Matrix.CreateRotationZ(MathHelper.ToRadians(RotationZ));
+        }
+
+        private void ClampAnimationsAndApplyTransform(Dictionary<string, BoneAnimationClip> animations)
+        {
+            if (Skeleton != null)
+            {
+                foreach (var animation in animations.Values)
+                {
+                    for (int i = 0; i < Skeleton.SkeletonRoot; i++)
+                    {
+                        if (i < animation.Transforms.Length)
+                            animation.Transforms[i] = null;
+                    }
+                }
+            }
+
+            // Apply transform to the root bone.
+            int root = Skeleton != null ? Skeleton.SkeletonRoot : 0;
+            foreach (var animation in animations.Values)
+            {
+                if (animation.Transforms[root] != null)
+                {
+                    for (int i = 0; i < animation.Transforms[root].Length; i++)
+                        animation.Transforms[root][i] = Transform(animation.Transforms[root][i]);
+                }
+            }
         }
     }
     #endregion

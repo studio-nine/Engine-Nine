@@ -12,15 +12,14 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
-using System.ComponentModel;
 using Nine.Graphics.Primitives;
 using Nine.Components;
-using Nine.Graphics.Views;
-using System.Xml.Serialization;
 #endregion
 
 namespace Game
@@ -45,7 +44,6 @@ namespace Game
 #endif
 
         World world;
-        Renderer renderer;
 
         public SampleGame()
         {
@@ -73,20 +71,8 @@ namespace Game
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
-            world = new World();
-            world.WorldObjects.Add(1);
-            world.WorldObjects.Add("sss");
-            world.WorldObjects.Add(new FreeObject());
-            world.WorldObjects.Add(new WorldObject());
-            world.Save("SimpleWorld.xml");
-            
-            world = World.FromFile("SimpleWorld.xml");
-
-            renderer = new Renderer(GraphicsDevice);
-            renderer.Camera = new ModelViewerCamera(GraphicsDevice);
-
-            world.WorldObjects.Add(Content.Load<object>("BasicModelView"));
-            world.CreateGraphics(GraphicsDevice);
+            world = new World(GraphicsDevice);
+            world.WorldObjects.Add(new WorldObject() { Template = "BasicModelView" });
 
             base.LoadContent();
         }
@@ -111,8 +97,6 @@ namespace Game
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
             world.Draw(gameTime.ElapsedGameTime);
-
-            //renderer.Draw(gameTime.ElapsedGameTime, world.WorldObjects.Select(x => x as IDrawableView));
 
             base.Draw(gameTime);
         }

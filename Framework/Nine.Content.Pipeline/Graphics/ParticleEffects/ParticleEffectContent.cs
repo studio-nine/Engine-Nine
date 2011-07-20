@@ -140,6 +140,12 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public List<IParticleController> Controllers { get; private set; }
 
         /// <summary>
+        /// Gets a collection of particle effects that is running simultaneously with this effect.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public List<ParticleEffectContent> SiblingEffects { get; private set; }
+
+        /// <summary>
         /// Gets a collection of particle effects that is used as the appareance of each
         /// particle spawned by this particle effect.
         /// </summary>
@@ -175,6 +181,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             BlendState = BlendState.Additive;
             Emitter = new PointEmitter();
             Controllers = new List<IParticleController>();
+            SiblingEffects = new List<ParticleEffectContent>();
             ChildEffects = new List<ParticleEffectContent>();
             EndingEffects = new List<ParticleEffectContent>();
         }
@@ -208,6 +215,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.Write(value.Controllers.Count);
             foreach (IParticleController controller in value.Controllers)
                 output.WriteObject(controller);
+
+            output.Write(value.SiblingEffects.Count);
+            foreach (ParticleEffectContent effect in value.SiblingEffects)
+                output.WriteObject(effect);
 
             output.Write(value.ChildEffects.Count);
             foreach (ParticleEffectContent effect in value.ChildEffects)

@@ -9,70 +9,82 @@
 
 
 
-namespace Nine.Content.Pipeline.Graphics.Views
+namespace Nine.Content.Pipeline.Graphics
 {
     /// <summary>
-    /// Content model for <c>DirectionalLightView</c>.
+    /// Content model for <c>DirectionalLight</c>.
     /// 
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Views.DirectionalLightView, Nine.Game")]
-    public partial class DirectionalLightViewContent
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.DirectionalLight, Nine.Game")]
+    public partial class DirectionalLightContent
     {
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("0, -0.707107, -0.707107")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Single Order { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <c>DirectionalLightViewContent</c>.
+        /// Initializes a new instance of <c>DirectionalLightContent</c>.
         /// <summary>
-        public DirectionalLightViewContent()
+        public DirectionalLightContent()
         {
+            CastShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("False");
+            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
+            Direction = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, -0.707107, -0.707107");
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
+            Order = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0");
+            SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
         }
     }
     /// <summary>
-    /// Content model for <c>ModelView</c>.
-    /// 
+    /// Content model for <c>ModelInstance</c>.
+    /// Defines a view of model with custom effect.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Views.ModelView, Nine.Game")]
-    public partial class ModelViewContent
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelInstance, Nine.Game")]
+    public partial class ModelInstanceContent
     {
         /// <summary>
         /// 
@@ -100,22 +112,23 @@ namespace Nine.Content.Pipeline.Graphics.Views
         public System.Boolean Visible { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <c>ModelViewContent</c>.
+        /// Initializes a new instance of <c>ModelInstanceContent</c>.
         /// <summary>
-        public ModelViewContent()
+        public ModelInstanceContent()
         {
+            Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
     /// <summary>
-    /// Content model for <c>ParticleEffectView</c>.
+    /// Content model for <c>ParticleEffectInstance</c>.
     /// 
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Views.ParticleEffectView, Nine.Game")]
-    public partial class ParticleEffectViewContent
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffectInstance, Nine.Game")]
+    public partial class ParticleEffectInstanceContent
     {
         /// <summary>
         /// 
@@ -138,9 +151,9 @@ namespace Nine.Content.Pipeline.Graphics.Views
         public System.Boolean Visible { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <c>ParticleEffectViewContent</c>.
+        /// Initializes a new instance of <c>ParticleEffectInstanceContent</c>.
         /// <summary>
-        public ParticleEffectViewContent()
+        public ParticleEffectInstanceContent()
         {
             ParticleEffect = new Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>();
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
@@ -149,30 +162,24 @@ namespace Nine.Content.Pipeline.Graphics.Views
     }
     /// <summary>
     /// Content model for <c>ViewTemplate</c>.
-    /// 
+    /// A view template defines the look and feel of an object.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Views.ViewTemplate, Nine.Game")]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ViewTemplate, Nine.Game")]
     public partial class ViewTemplateContent
     {
         /// <summary>
         /// 
         /// <summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.List<System.Object> views { get; set; }
+        public System.Collections.Generic.List<System.Object> Views { get; set; }
 
         /// <summary>
         /// 
         /// <summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.List<Nine.Graphics.IDrawableView> Views { get; set; }
-
-        /// <summary>
-        /// 
-        /// <summary>
-        [System.ComponentModel.DefaultValue("False")]
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Visible { get; set; }
 
@@ -181,9 +188,8 @@ namespace Nine.Content.Pipeline.Graphics.Views
         /// <summary>
         public ViewTemplateContent()
         {
-            views = new System.Collections.Generic.List<System.Object>();
-            Views = new System.Collections.Generic.List<Nine.Graphics.IDrawableView>();
-            Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("False");
+            Views = new System.Collections.Generic.List<System.Object>();
+            Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
 }

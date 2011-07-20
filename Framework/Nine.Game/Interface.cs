@@ -14,16 +14,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel;
 using Nine.Graphics;
-using Nine.Graphics.Views;
 using System.Xml.Serialization;
 #endregion
 
 namespace Nine
 {
     /// <summary>
-    /// Defines an object that can be drawed with a visual template.
+    /// Defines a world object that has a template.
     /// </summary>
-    public interface IDrawableWorldObject
+    public interface IWorldObject
     {
         /// <summary>
         /// Gets the transform of this object.
@@ -33,6 +32,6 @@ namespace Nine
         /// <summary>
         /// Gets the name of the visual template of this object.
         /// </summary>
-        string Template { get; }
+        Template Template { get; }
     }
 }

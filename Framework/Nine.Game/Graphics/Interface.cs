@@ -24,7 +24,14 @@ namespace Nine.Graphics
     /// </summary>
     public interface IDrawableView
     {
+        /// <summary>
+        /// Draws this object using the provided context.
+        /// </summary>
         void Draw(GraphicsContext context);
+
+        /// <summary>
+        /// Draws this object using the designated effect.
+        /// </summary>
         void Draw(GraphicsContext context, Effect effect);
     }
 
@@ -44,11 +51,6 @@ namespace Nine.Graphics
         bool CastShadow { get; }
 
         /// <summary>
-        /// Draws the depth map of the specified drawables.
-        /// </summary>
-        void DrawDepthMap(ISpatialQuery<IDrawableView> drawables);
-
-        /// <summary>
         /// Gets the order of this light when it's been process by the renderer.
         /// Light might be discarded when the max affecting lights are reached.
         /// </summary>
@@ -63,6 +65,11 @@ namespace Nine.Graphics
         /// Lights the specified objects.
         /// </summary>
         void Light(ISpatialQuery<IDrawableView> drawables);
+
+        /// <summary>
+        /// Draws the depth map of the specified drawables.
+        /// </summary>
+        void DrawDepthMap(ISpatialQuery<IDrawableView> drawables);
     }
 
     /// <summary>

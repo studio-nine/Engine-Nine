@@ -36,6 +36,23 @@ namespace Nine.Content.Pipeline.Processors
     // [ContentProcessor(DisplayName="Model Skeleton Processor - Engine Nine")]
     class ModelSkeletonProcessor : ContentProcessor<NodeContent, ModelSkeletonData>
     {
+        [DefaultValue(0f)]
+        public virtual float RotationX { get; set; }
+
+        [DefaultValue(0f)]
+        public virtual float RotationY { get; set; }
+
+        [DefaultValue(0f)]
+        public virtual float RotationZ { get; set; }
+
+        [DefaultValue(1f)]
+        public virtual float Scale { get; set; }
+
+        public ModelSkeletonProcessor()
+        {
+            Scale = 1;
+        }
+
         public override ModelSkeletonData Process(NodeContent input, ContentProcessorContext context)
         {
             // Check if the input model is a skinned model.
@@ -63,7 +80,7 @@ namespace Nine.Content.Pipeline.Processors
 
             foreach (BoneContent bone in bones)
             {
-                inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
+                inverseBindPose.Add(Matrix.Invert(Transform(bone.AbsoluteTransform)));
             }
             
             // Store our custom animation data in the Tag property of the model.
@@ -121,6 +138,14 @@ namespace Nine.Content.Pipeline.Processors
                     return true;
 
             return false;
+        }
+
+        private Matrix Transform(Matrix matrix)
+        {
+            return matrix * Matrix.CreateScale(Scale)
+                          * Matrix.CreateRotationX(MathHelper.ToRadians(RotationX))
+                          * Matrix.CreateRotationY(MathHelper.ToRadians(RotationY))
+                          * Matrix.CreateRotationZ(MathHelper.ToRadians(RotationZ));
         }
     }
 }

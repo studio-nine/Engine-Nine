@@ -65,6 +65,7 @@
       <Name>ShadowEffect</Name>
       <Importer>XmlImporter</Importer>
       <Processor>LinkedEffectProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
     <Compile Include="..\..\Content\Effects\ShadowNormalSkinnedEffect.xml">
       <Link>ShadowNormalSkinnedEffect.xml</Link>

@@ -24,49 +24,46 @@ namespace Nine.Graphics
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class GraphicsExtensions
     {
+        /// <summary>
+        /// Attach graphics information to all the world objects.
+        /// </summary>
         public static Renderer CreateGraphics(this World world, GraphicsDevice graphics)
         {
             if (graphics == null)
             {
                 throw new ArgumentNullException("graphics");
             }
-            if (!world.WorldObjects.IsAttached(typeof(IDrawable)))
+            if (!world.WorldObjects.IsAttached(typeof(IDrawableView)))
             {
                 Renderer renderer = new Renderer(graphics);
                 world.Renderer = renderer;
-                world.WorldObjects.Attach(typeof(IDrawableView), CreateDrawable, renderer);
+                world.WorldObjects.Attach(typeof(IDrawableView), worldObject =>
+                {
+                    var drawable = worldObject as IWorldObject;
+                    if (drawable != null)
+                        return world.CreateFromTemplate(drawable.Template);
+                    return null;
+                }, renderer);
                 world.Drawing += new EventHandler<TimeEventArgs>(Draw);
                 return renderer;
             }
-            return world.WorldObjects.GetAttachedState<IDrawableView, Renderer>();
+            throw new InvalidOperationException("Graphics has already been created.");
         }
 
+        /// <summary>
+        /// Gets the graphics render attached to this world objects.
+        /// </summary>
         public static Renderer GetGraphics(this World world)
         {
             return world.Renderer;
         }
-
-        static object CreateDrawable(object worldObject)
-        {
-            var drawable = worldObject as IDrawableWorldObject;
-            if (drawable != null)
-                return CreateTemplate(drawable.Template) as IDrawableView;
-            return null;
-        }
-
-        private static object CreateTemplate(string templateName)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         static void Draw(object sender, TimeEventArgs e)
         {
-            if (((World)sender).Renderer != null)
+            Renderer renderer = ((World)sender).Renderer;
+            if (renderer != null)
             {
-                foreach (IDrawable drawable in ((World)sender).WorldObjects.GetExtensions(typeof(IDrawable)))
-                {
-                    drawable.Draw(e.ElapsedTime);
-                }
+                renderer.Draw(e.ElapsedTime, ((World)sender).WorldObjects.GetExtensions(typeof(IDrawableView)).OfType<object>());
             }
         }
     }

@@ -53,14 +53,12 @@ namespace Nine.Content.Pipeline.Processors
 
         public override ModelCollision Process(NodeContent input, ContentProcessorContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
-
             List<Vector3> positions = new List<Vector3>();
             List<ushort> indices = new List<ushort>();
 
-            Matrix transform = Matrix.CreateRotationX(RotationX) *
-                               Matrix.CreateRotationY(RotationY) *
-                               Matrix.CreateRotationZ(RotationZ) *
+            Matrix transform = Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)) *
+                               Matrix.CreateRotationY(MathHelper.ToRadians(RotationY)) *
+                               Matrix.CreateRotationZ(MathHelper.ToRadians(RotationZ)) *
                                Matrix.CreateScale(Scale);
 
             ProcessNode(transform, input, positions, indices);

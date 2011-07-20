@@ -367,8 +367,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         {
             Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             Rotation = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0");
             Scale = (Microsoft.Xna.Framework.Vector2)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector2)).ConvertFromString("0, 0");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            World = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -437,9 +440,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         public DirectionalLightEffectContent()
         {
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            World = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -508,9 +514,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         public PointLightEffectContent()
         {
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            World = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -616,9 +625,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         public SpotLightEffectContent()
         {
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            World = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
 }
@@ -717,6 +729,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
         {
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
             Direction = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, -0.707107, -0.707107");
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -807,9 +821,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
         {
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             ShaderIndex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromString("0");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            World = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -888,7 +905,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
             Attenuation = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0.36787945");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("1, 1, 1");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("10");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -999,7 +1018,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
             InnerAngle = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0.7853982");
             OuterAngle = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("1.57079637");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("10");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>
@@ -1069,8 +1090,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.Deferred
         public GraphicsBufferEffectContent()
         {
             NormalMappingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("False");
+            Projection = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("False");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("16");
+            View = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+            World = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
 }
@@ -1195,6 +1219,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// <summary>
         public ColorMatrixEffectPartContent()
         {
+            Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
         }
     }
     /// <summary>
@@ -1636,6 +1661,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// <summary>
         public TextureTransformEffectPartContent()
         {
+            Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
         }
     }
 }
@@ -1655,6 +1681,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -1677,6 +1704,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public AbsorbControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             Force = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
         }
@@ -1739,6 +1767,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -1753,6 +1782,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public ColorControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
     /// <summary>
@@ -1849,6 +1879,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -1857,6 +1888,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public FadeControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
     /// <summary>
@@ -1872,6 +1904,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -1887,6 +1920,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public ForceControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             Force = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, -1");
         }
     }
@@ -1983,6 +2017,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -1997,6 +2032,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public RotationControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
     /// <summary>
@@ -2012,6 +2048,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -2026,6 +2063,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public SizeControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
     /// <summary>
@@ -2041,6 +2079,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -2055,6 +2094,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         public SpeedControllerContent()
         {
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
         }
     }
     /// <summary>
@@ -2142,6 +2182,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// <summary>
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public System.Boolean Enabled { get; set; }
 
@@ -2165,6 +2206,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public TangentForceControllerContent()
         {
             Center = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 0");
+            Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromString("True");
             Force = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromString("0");
             Up = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromString("0, 0, 1");
         }
@@ -2298,6 +2340,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         /// <summary>
         public ColorMatrixEffectContent()
         {
+            Transform = new Microsoft.Xna.Framework.Matrix(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
         }
     }
     /// <summary>

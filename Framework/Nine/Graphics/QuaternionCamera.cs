@@ -9,20 +9,20 @@ namespace Nine.Graphics
     public class QuaternionCamera : ICamera
     {
         // Camera orientation, quaternion style
-        protected Quaternion orientation;
+        private Quaternion orientation;
 
         // Camera position - default (0,0,0)
-        protected Vector3 position;
+        private Vector3 position;
 
         // Field of view
-        protected float fieldOfView;
+        private float fieldOfView;
 
         // Near plane distance
-        protected float nearPlaneDistance;
+        private float nearPlaneDistance;
         // Far plane distance
-        protected float farPlaneDistance;
+        private float farPlaneDistance;
         // Aspect
-        protected float aspect;
+        private float aspect;
 
         // Do we need to update view matrix?
         bool needUpdateViewMatrix;
@@ -31,10 +31,10 @@ namespace Nine.Graphics
         bool needUpdateProjectionMatrix;
 
         // Cached view matrix
-        protected Matrix viewMatrix;
+        private Matrix viewMatrix;
 
         // Cached projection matrix
-        protected Matrix projectionMatrix;
+        private Matrix projectionMatrix;
 
         /// <summary>
         /// Creates a new instance of QuaternionCamera.
@@ -148,19 +148,18 @@ namespace Nine.Graphics
         /// <summary>
         /// Performs update of ViewMatrix.
         /// </summary>
-        protected void UpdateViewMatrix()
+        private void UpdateViewMatrix()
         {
             if (needUpdateViewMatrix)
             {
                 viewMatrix = MakeViewMatrix(position, orientation);
             }
-
         }
 
         /// <summary>
         /// Performs update of ProjectionMatrix.
         /// </summary>
-        protected void UpdateProjectionMatrix()
+        private void UpdateProjectionMatrix()
         {
             if (needUpdateProjectionMatrix)
             {
@@ -177,7 +176,7 @@ namespace Nine.Graphics
         /// <param name="orientation"></param>
         /// <param name="reflectionMatrix"></param>
         /// <returns></returns>
-        public static Matrix MakeViewMatrix(Vector3 position, Quaternion orientation)
+        private static Matrix MakeViewMatrix(Vector3 position, Quaternion orientation)
         {
             Matrix viewMatrix = Matrix.CreateTranslation(-position) * Matrix.CreateFromQuaternion(Quaternion.Inverse(orientation));
 
@@ -191,7 +190,7 @@ namespace Nine.Graphics
         /// <param name="leftQuaterion"></param>
         /// <param name="rightVector"></param>
         /// <returns></returns>
-        public static Vector3 MultiplyQuaternion(Quaternion leftQuaterion, Vector3 rightVector)
+        private static Vector3 MultiplyQuaternion(Quaternion leftQuaterion, Vector3 rightVector)
         {
             // nVidia SDK implementation
             Vector3 uv, uuv;
@@ -244,7 +243,7 @@ namespace Nine.Graphics
         /// <summary>
         /// 
         /// </summary>
-        public float NearPlaneDistance
+        public float NearPlane
         {
             get
             {
@@ -262,7 +261,7 @@ namespace Nine.Graphics
         /// <summary>
         /// 
         /// </summary>
-        public float FarPlaneDistance
+        public float FarPlane
         {
             get
             {

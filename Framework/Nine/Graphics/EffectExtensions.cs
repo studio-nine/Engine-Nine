@@ -104,7 +104,7 @@ namespace Nine.Graphics
         /// <summary>
         /// The texture type name used for detail texture.
         /// </summary>
-        public static readonly string Detail = "Refraction";
+        public static readonly string Detail = "Detail";
 
         /// <summary>
         /// The texture type name used for overlay texture.

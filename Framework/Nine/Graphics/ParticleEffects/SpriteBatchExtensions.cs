@@ -74,7 +74,14 @@ namespace Nine.Graphics.ParticleEffects
                                          particle.Size * scaleFactor, SpriteEffects.None, 0);
                     });
                 }
+                else if (particleEffect.ParticleType == ParticleType.RibbonTrail)
+                {
+                    throw new NotImplementedException();
+                }
             }
+
+            foreach (var siblingEffect in particleEffect.SiblingEffects)
+                DrawParticleEffect(spriteBatch, siblingEffect);
 
             foreach (var childEffect in particleEffect.ChildEffects)
                 DrawParticleEffect(spriteBatch, childEffect);

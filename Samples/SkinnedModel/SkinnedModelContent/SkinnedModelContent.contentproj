@@ -29,7 +29,8 @@
       <Name>Peon</Name>
       <Importer>XImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
-      <ProcessorParameters_SwapWindingOrder>True</ProcessorParameters_SwapWindingOrder>
+      <ProcessorParameters_Scale>0.8</ProcessorParameters_Scale>
+      <ProcessorParameters_RotationY>180</ProcessorParameters_RotationY>
     </Compile>
   </ItemGroup>
   <ItemGroup>

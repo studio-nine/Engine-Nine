@@ -8,14 +8,13 @@
 
 #region Using Directives
 using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
 using Nine.Graphics;
-using Nine.Graphics.Views;
-using System.Xml.Serialization;
 #endregion
 
 namespace Nine
@@ -24,7 +23,7 @@ namespace Nine
     /// Defines an object that has a position, rotation and scale.
     /// </summary>
     [Serializable]
-    public class WorldObject : IDrawableWorldObject
+    public class WorldObject : IWorldObject
     {
         #region Position
         public Vector3 Position
@@ -110,22 +109,22 @@ namespace Nine
         #endregion
 
         #region Template
-        public string Template
+        public Template Template
         {
             get { return template; }
             set
             {
-                if (viewTemplate != value)
+                if (template != value)
                 {
-                    string oldValue = viewTemplate;
-                    viewTemplate = value;
+                    Template oldValue = template;
+                    template = value;
                     if (TemplateChanged != null)
                         TemplateChanged(this, EventArgs.Empty);
                     OnTemplateChanged(oldValue);
                 }
             }
         }
-        private string viewTemplate;
+        private Template template;
         #endregion
 
         public event EventHandler<EventArgs> PositionChanged;
@@ -136,8 +135,6 @@ namespace Nine
         protected virtual void OnPositionChanged(Vector3 oldValue) { }
         protected virtual void OnRotationChanged(float oldValue) { }
         protected virtual void OnScaleChanged(float oldValue) { }
-        protected virtual void OnTemplateChanged(string oldValue) { }
-
-        public string template { get; set; }
+        protected virtual void OnTemplateChanged(Template oldValue) { }
     }
 }

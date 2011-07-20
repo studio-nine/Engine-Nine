@@ -60,13 +60,6 @@ namespace Nine.Content.Pipeline.Processors
         public int CollisionTreeDepth { get; set; }
 
         /// <summary>
-        /// Gets or sets whether animations tracks outside the skeleton will be discarded.
-        /// </summary>
-        [DefaultValue(true)]
-        [DisplayName("Clamp Animation to Skeleton")]
-        public bool ClampAnimationToSkeleton { get; set; }
-
-        /// <summary>
         /// Gets or sets the textures attached to the model.
         /// </summary>
         [DefaultValue(DefaultTextures)]
@@ -91,7 +84,6 @@ namespace Nine.Content.Pipeline.Processors
         {
             GenerateCollisionData = true;
             GenerateAnimationData = true;
-            ClampAnimationToSkeleton = true;
             CollisionTreeDepth = 3;
             Textures = DefaultTextures;
             TextureProcessors = DefaultProcessors;
@@ -110,12 +102,14 @@ namespace Nine.Content.Pipeline.Processors
             if (GenerateAnimationData)
             {
                 ModelAnimationProcessor animationProcessor = new ModelAnimationProcessor();
-                ModelSkeletonProcessor skeletonProcessor = new ModelSkeletonProcessor();
 
-                tag.Skeleton = skeletonProcessor.Process(input, context);
+                animationProcessor.RotationX = RotationX;
+                animationProcessor.RotationY = RotationY;
+                animationProcessor.RotationZ = RotationZ;
+                animationProcessor.Scale = Scale;
+
                 tag.Animations = animationProcessor.Process(input, context);
-
-                ClampAnimation(tag);
+                tag.Skeleton = animationProcessor.Skeleton;
             }
 
             if (GenerateCollisionData)
@@ -134,7 +128,8 @@ namespace Nine.Content.Pipeline.Processors
             // Only skinned models need to be baked ???
             if (tag.Skeleton != null)
                 FlattenTransforms(input);
-
+            
+            // Format textures before processing model.
             FormatAttachedTextures();
 
             ModelContent model = base.Process(input, context);
@@ -145,21 +140,6 @@ namespace Nine.Content.Pipeline.Processors
                 model.Tag = tag;
 
             return model;
-        }
-        
-        private void ClampAnimation(ModelTag tag)
-        {
-            if (ClampAnimationToSkeleton && tag.Skeleton != null)
-            {
-                foreach (var animation in tag.Animations.Values)
-                {
-                    for (int i = 0; i < tag.Skeleton.SkeletonRoot; i++)
-                    {
-                        if (i < animation.Transforms.Length)
-                            animation.Transforms[i] = null;
-                    }
-                }
-            }
         }
 
         /// <summary>

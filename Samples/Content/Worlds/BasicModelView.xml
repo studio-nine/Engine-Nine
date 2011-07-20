@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<XnaContent xmlns:nine="Nine.Content.Pipeline.Graphics.Views">
+<XnaContent xmlns:nine="Nine.Content.Pipeline.Graphics">
   <Asset Type="nine:ViewTemplateContent">
     <Views>
-      <Item Type="nine:ModelViewContent">
+      <Item Type="nine:ModelInstanceContent">
         <Model>Dude</Model>
       </Item>
-      <Item Type="nine:ParticleEffectViewContent">
+      <Item Type="nine:ParticleEffectInstanceContent">
         <ParticleEffect>Galaxy</ParticleEffect>
       </Item>
-      <Item Type="nine:DirectionalLightViewContent">
-        <ParticleEffect>Galaxy</ParticleEffect>
+      <Item Type="nine:DirectionalLightContent">
+        
       </Item>
     </Views>
   </Asset>

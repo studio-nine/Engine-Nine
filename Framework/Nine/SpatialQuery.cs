@@ -40,6 +40,11 @@ namespace Nine
         IEnumerable<T> FindAll(Ray ray);
 
         /// <summary>
+        /// Finds all the objects that intersects with the specified bounding box.
+        /// </summary>
+        IEnumerable<T> FindAll(BoundingBox boundingBox);
+
+        /// <summary>
         /// Finds all the objects resides within the specified bounding frustum.
         /// </summary>
         IEnumerable<T> FindAll(BoundingFrustum frustum);
@@ -58,6 +63,7 @@ namespace Nine
 
         /// <summary>
         /// Gets or sets a predicate that filters the result of the inner query.
+        /// Objects passed the predicated will be included in the query.
         /// </summary>
         public Predicate<TInput> Filter { get; set; }
 
@@ -76,7 +82,7 @@ namespace Nine
 
         private TOutput Convert(TInput input)
         {
-            if (Filter != null && Filter(input))
+            if (Filter != null && !Filter(input))
                 return default(TOutput);
 
             if (Converter != null)
@@ -92,7 +98,7 @@ namespace Nine
         {
             foreach (TInput input in inputs)
             {
-                if (Filter != null && Filter(input))
+                if (Filter != null && !Filter(input))
                     continue;
 
                 if (Converter != null)
@@ -119,6 +125,13 @@ namespace Nine
         {
             foreach (ISpatialQuery<TInput> query in InnerQueries)
                 foreach (TOutput output in Convert(query.FindAll(ray)))
+                    yield return output;
+        }
+
+        public IEnumerable<TOutput> FindAll(BoundingBox boundingBox)
+        {
+            foreach (ISpatialQuery<TInput> query in InnerQueries)
+                foreach (TOutput output in Convert(query.FindAll(boundingBox)))
                     yield return output;
         }
 

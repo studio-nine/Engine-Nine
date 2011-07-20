@@ -226,7 +226,8 @@ namespace Nine.Graphics.ParticleEffects
         {
             Vector3 normal = particle.Position - Center;
             Vector3 force = Vector3.Cross(Up, normal);
-            
+            Vector3.Normalize(ref force, out force);
+
             particle.Velocity += force * (Force * elapsedTime);
         }
     }

@@ -40,6 +40,11 @@ namespace Nine.Graphics.ParticleEffects
         /// by the specified axis while still faces the camera.
         /// </summary>
         ConstrainedBillboardUp,
+
+        /// <summary>
+        /// The particle will be rendered as 3D ribbon trail.
+        /// </summary>
+        RibbonTrail,
     }
 
     /// <summary>
@@ -127,6 +132,11 @@ namespace Nine.Graphics.ParticleEffects
         /// Gets a collection of controllers that defines the visual of this particle effect.
         /// </summary>
         public ParticleControllerCollection Controllers { get; internal set; }
+
+        /// <summary>
+        /// Gets a collection of particle effects that is running simultaneously with this effect.
+        /// </summary>
+        public ParticleEffectCollection SiblingEffects { get; private set; }
 
         /// <summary>
         /// Gets a collection of particle effects that is used as the appareance of each
@@ -220,6 +230,7 @@ namespace Nine.Graphics.ParticleEffects
             Controllers.ParticleEffect = this;
 
             ChildEffects = new ParticleEffectCollection() { EnsureHasTrigger = true };
+            SiblingEffects = new ParticleEffectCollection() { EnsureHasTrigger = true };
             EndingEffects = new ParticleEffectCollection() { ClearTriggerList = true };
 
             particles = new Particle[this.maxParticles = maxParticles];
@@ -298,7 +309,12 @@ namespace Nine.Graphics.ParticleEffects
                 UpdateTriggers(elapsedTime);
             UpdateControllers(elapsedSeconds);
             UpdateParticles(elapsedTime);
-            
+
+            foreach (var siblingEffect in SiblingEffects)
+            {
+                siblingEffect.Update(elapsedTime);
+            }
+
             foreach (var childEffect in ChildEffects)
             {
                 childEffect.Update(elapsedTime, true);
@@ -325,11 +341,10 @@ namespace Nine.Graphics.ParticleEffects
                 }
 
                 anim.Update(elapsedTime);
-                UpdateEmitter(anim.Position, elapsedTime);
             }
         }
 
-        private void UpdateEmitter(Vector3 position, TimeSpan elapsedTime)
+        internal void UpdateEmitter(Vector3 position, TimeSpan elapsedTime)
         {
             // Work out how much time has passed since the previous update.
             float timeBetweenParticles = 1.0f / Emission;

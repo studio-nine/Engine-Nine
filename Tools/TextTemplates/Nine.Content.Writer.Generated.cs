@@ -267,6 +267,37 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
     }
     /// <summary>
+    /// Content writer for <c>PointLightEffect</c>.
+    /// <summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    class PointLightEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointLightEffectContent>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightEffectContent value)
+        {
+            output.WriteObject(value.Name);
+            output.WriteObject(value.Projection);
+            output.WriteObject(value.ShaderIndex);
+            output.WriteObject(value.SkinningEnabled);
+            output.WriteObject(value.SpecularPower);
+            output.WriteObject(value.Texture);
+            output.WriteObject(value.View);
+            output.WriteObject(value.World);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.PointLightEffectReader, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.PointLightEffect, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>SkyBoxEffect</c>.
     /// <summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -290,6 +321,37 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Effects.SkyBoxEffect, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>SpotLightEffect</c>.
+    /// <summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    class SpotLightEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpotLightEffectContent>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightEffectContent value)
+        {
+            output.WriteObject(value.Name);
+            output.WriteObject(value.Projection);
+            output.WriteObject(value.ShaderIndex);
+            output.WriteObject(value.SkinningEnabled);
+            output.WriteObject(value.SpecularPower);
+            output.WriteObject(value.Texture);
+            output.WriteObject(value.View);
+            output.WriteObject(value.World);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.SpotLightEffectReader, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.SpotLightEffect, Nine, Version=1.1.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }
