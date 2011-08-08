@@ -7,6 +7,7 @@
 #endregion
 
 #region Using Directives
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -23,7 +24,6 @@ namespace Nine.Content
         protected override void Write(ContentWriter output, QuadTree<T> value)
         {
             output.Write(value.MaxDepth);
-            output.WriteObject<BoundingRectangle>(value.Bounds);
             output.WriteRawObject<QuadTreeNode<T>>(value.Root, new QuadTreeNodeWriter<T>());
         }
 
@@ -49,7 +49,7 @@ namespace Nine.Content
             output.WriteObject<T>(value.Value);
 
             if (value.HasChildren)
-                output.WriteObject(value.Children);
+                output.WriteObject(value.Children.ToArray());
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
@@ -71,7 +71,6 @@ namespace Nine.Content
         protected override void Write(ContentWriter output, Octree<T> value)
         {
             output.Write(value.MaxDepth);
-            output.WriteObject<BoundingBox>(value.Bounds);
             output.WriteRawObject<OctreeNode<T>>(value.Root, new OctreeNodeWriter<T>());
         }
 
@@ -97,7 +96,7 @@ namespace Nine.Content
             output.WriteObject<T>(value.Value);
 
             if (value.HasChildren)
-                output.WriteObject(value.Children);
+                output.WriteObject(value.Children.ToArray());
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

@@ -217,7 +217,7 @@ namespace SkinnedModel
 
             if (!Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection, null, null, null, RasterizerState.CullNone);
+                modelBatch.Begin(ModelSortMode.Immediate, camera.View, camera.Projection, null, null, null, RasterizerState.CullNone);
                 {
                     modelBatch.DrawSkinned(model, world1, skeleton1.GetSkinTransforms(), null);
                     modelBatch.DrawSkinned(model, world2, skeleton2.GetSkinTransforms(), null);

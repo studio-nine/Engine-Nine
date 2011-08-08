@@ -22,6 +22,10 @@ for /f "delims=" %%i in ('dir /b /a-d /s GameThumbnail.png') do (
 	copy /y ..\Images\GameThumbnail.png "%%i"
 )
 
+for /f "delims=" %%i in ('dir /b /a-d /s PhoneGameThumb.png') do (
+	copy /y ..\Images\PhoneGameThumb.png "%%i"
+)
+
 
 call %msbuild% %flags% Samples.sln
 

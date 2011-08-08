@@ -68,10 +68,34 @@ namespace Nine
             return new Point((int)vector.X, (int)vector.Y);
         }
 
+#if WINDOWS
+        public static string ToContentString(this Matrix matrix)
+        {
+            return string.Join(" ", matrix.M11, matrix.M12, matrix.M13, matrix.M14
+                                  , matrix.M21, matrix.M22, matrix.M23, matrix.M24
+                                  , matrix.M31, matrix.M32, matrix.M33, matrix.M34
+                                  , matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+        }
+#endif
+
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
         {
             foreach (T item in values)
                 collection.Add(item);
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            foreach (T item in collection)
+                action(item);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the target type using the specified template name.
+        /// </summary>
+        public static T Create<T>(this ITemplateFactory factory, string templateName)
+        {
+            return (T)factory.Create(typeof(T), templateName);
         }
     }
 

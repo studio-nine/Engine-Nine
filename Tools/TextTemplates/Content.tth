@@ -1,6 +1,4 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
-<#@ output extension="Generated.cs" #>
-<#@ assembly name="System.Core" #>
+﻿<#@ assembly name="System.Core" #>
 <#@ assembly name="Microsoft.Xna.Framework" #>
 <#@ assembly name="Microsoft.Xna.Framework.Graphics" #>
 <#@ assembly name="System.Windows.Forms" #>
@@ -34,13 +32,15 @@
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
+                TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
+                TypeMapping.Add("Nine.Graphics.IEffectInstance", "System.Object");
             }
         }
 
         IEnumerable<Type> FindContentSerializableTypes(Assembly assembly)
         {
             return from type in assembly.GetTypes()
-                   where HasContentSerializableType(type)
+                   where !HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))
                    select type;
         }
 
@@ -58,9 +58,23 @@
         {
             if (type == null || type.IsAbstract || type.IsInterface)
                 return false;
-            if (type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type))
-                return true;
-            return HasContentSerializerAttribute(type);
+            //if (type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type))
+            //    return true;
+            return MemberHasContentSerializerAttribute(type);
+        }
+
+        bool HasContentSerializableAttribute(Type type)
+        {
+            if (type == null || type.IsInterface)
+                return false;
+            return type.GetCustomAttributes(false).Count(a => a.GetType().FullName == "Nine.ContentSerializableAttribute") > 0;
+        }
+
+        bool HasNotContentSerializableAttribute(Type type)
+        {
+            if (type == null || type.IsInterface)
+                return false;
+            return type.GetCustomAttributes(false).Count(a => a.GetType().FullName == "Nine.NotContentSerializableAttribute") > 0;
         }
 
         bool IsContentSerializable(Type type)
@@ -73,7 +87,7 @@
                 return true;
             if (type.IsArray)
                 return IsContentSerializable(type.GetElementType());
-            return IsKnownType(type) || HasContentSerializerAttribute(type);
+            return IsKnownType(type) || MemberHasContentSerializerAttribute(type);
         }
 
         bool IsContentSerializable(FieldInfo field)
@@ -99,8 +113,8 @@
             }
             return false;
         }
-		
-        bool HasContentSerializerAttribute(Type type)
+
+        bool MemberHasContentSerializerAttribute(Type type)
         {
             return type.FindMembers(MemberTypes.Property | MemberTypes.Field,
                                     BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public,
@@ -218,7 +232,7 @@
                 return "System.Collections.Generic.List<" + GetContentClassFullName(GetCollectionType(type)) + ">";
             if (KnownContentTypes.TypeMapping.ContainsKey(type.FullName))
                 return KnownContentTypes.TypeMapping[type.FullName];
-            if (!HasContentSerializableType(type))
+            if (!(!HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))))
                 return GetClassFullName(type);
 
             var count = 0;
@@ -328,7 +342,9 @@
             {
                 try
                 {
-                    obj = Activator.CreateInstance(declaringType, CreateDummyGraphicsDevice());
+                    var cons = declaringType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
+                                                         new[] { typeof(GraphicsDevice) }, null);
+                    obj = cons.Invoke(new object[1] { CreateDummyGraphicsDevice() });
                 }
                 catch { }
             }
@@ -336,13 +352,22 @@
             {
                 try
                 {
-                    obj = Activator.CreateInstance(declaringType);
+                    var cons = declaringType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
+                                                         new Type[0], null);
+                    obj = cons.Invoke(new object[0]);
                 }
                 catch { }
             }
             if (obj == null)
                 return null;
-            return GetValue(member, obj);
+            try
+            {
+                return GetValue(member, obj);
+            }
+            catch 
+            {
+                return null;
+            }
         }
 
         string TryGetDefaultValueString(Type declaringType, MemberInfo member)
@@ -353,7 +378,7 @@
                 if (type == typeof(string) || (TypeDescriptor.GetConverter(type).CanConvertFrom(typeof(string)) &&
                                                TypeDescriptor.GetConverter(type).CanConvertTo(typeof(string))))
                 {
-                    return TypeDescriptor.GetConverter(type).ConvertTo(TryGetDefaultValue(declaringType, member), typeof(string)).ToString();
+                    return TypeDescriptor.GetConverter(type).ConvertToInvariantString(TryGetDefaultValue(declaringType, member));
                 }
                 return null;
             }
@@ -411,5 +436,21 @@
             var list = type.AssemblyQualifiedName.Split(',').ToList();
             list[0] = list[0] + "Reader";
             return string.Join(",", list);
+        }
+        
+        IEnumerable<Type> FindEffectInstanceTypes(Assembly assembly)
+        {
+            foreach (var t in from type in assembly.GetTypes()
+                              where type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type) &&
+                                    type.FullName.IndexOf("ScreenEffect") < 0
+                              select type)
+            {
+                yield return t;
+            }
+            yield return typeof(BasicEffect);
+            yield return typeof(SkinnedEffect);
+            yield return typeof(EnvironmentMapEffect);
+            yield return typeof(DualTextureEffect);
+            yield return typeof(AlphaTestEffect);
         }
 #>

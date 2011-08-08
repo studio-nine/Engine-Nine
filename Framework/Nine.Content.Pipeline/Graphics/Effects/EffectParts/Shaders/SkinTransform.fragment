@@ -24,8 +24,8 @@ void main(INPUT input, inout OUTPUT output)
     {
 		skinTransform += Bones[input.BoneIndices[i]] * input.BoneWeights[i];
     }
-
-	export(float4x3, WorldTransform, skinTransform);
+    
+    export(float4x3, SkinTransform, skinTransform);
 	
 	float4 position;
 	import(Position, position = Position);

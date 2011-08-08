@@ -45,27 +45,47 @@ namespace Nine.Content.Pipeline.Importers
                 file.Read(bytes, 0, (int)file.Length);
 
 
+                bool bit16 = false;
+
                 // Figure out file size
                 if (Width <= 0 || Height <= 0)
                 {
                     Width = (int)Math.Sqrt(file.Length);
                     Height = (int)(file.Length / Width);
-                }
 
-                if (Width * Height != file.Length)
-                {
-                    throw new FormatException(
-                        "Input texture not a raw grayscale texture, or the specified width and height do not match.");
-                }
+                    if (Width * Height != file.Length)
+                    {
+                        Width = (int)Math.Sqrt(file.Length / 2);
+                        Height = (int)(file.Length / 2 / Width);
 
+                        bit16 = true;
+                    }
+
+                    if (Width * Height * 2 == file.Length)
+                    {
+                        context.Logger.LogWarning(null, new ContentIdentity(filename),
+                            "Input texture not a raw grayscale texture, or the specified width and height do not match.");
+                    }
+                }
 
                 // Create texture
                 int i = 0;
-                PixelBitmapContent<Alpha8> bitmap = new PixelBitmapContent<Alpha8>(Width, Height);
+                PixelBitmapContent<float> bitmap = new PixelBitmapContent<float>(Width, Height);
 
                 for (int y = 0; y < Height; y++)
+                {
                     for (int x = 0; x < Width; x++)
-                        bitmap.SetPixel(x, y, new Alpha8(1.0f * bytes[i++] / byte.MaxValue));
+                    {
+                        if (bit16)
+                        {
+                            bitmap.SetPixel(x, y, 1.0f * (ushort)((bytes[i++] | bytes[i++] << 8)) / ushort.MaxValue);
+                        }
+                        else
+                        {
+                            bitmap.SetPixel(x, y, 1.0f * bytes[i++] / byte.MaxValue);
+                        }
+                    }
+                }
                  
                 Texture2DContent result = new Texture2DContent();
 

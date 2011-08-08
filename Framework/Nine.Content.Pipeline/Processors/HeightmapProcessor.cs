@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.Linq;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +22,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Nine.Graphics;
 #endregion
 
@@ -65,13 +67,12 @@ namespace Nine.Content.Pipeline.Processors
         /// </summary>
         public override Heightmap Process(Texture2DContent input, ContentProcessorContext context)
         {
-            PixelBitmapContent<Alpha8> heightfield;
+            PixelBitmapContent<float> heightfield;
 
             // Convert the input texture to float format, for ease of processing.
-            GrayScaleTextureProcessor grayProcessor = new GrayScaleTextureProcessor();
-            input = grayProcessor.Process(input, context) as Texture2DContent;
+            input.ConvertBitmapType(typeof(PixelBitmapContent<float>));
 
-            heightfield = (PixelBitmapContent<Alpha8>)input.Mipmaps[0];
+            heightfield = (PixelBitmapContent<float>)input.Mipmaps[0];
 
             // Create the terrain vertices.
             int i = 0;
@@ -90,7 +91,7 @@ namespace Nine.Content.Pipeline.Processors
                 for (int x = 0; x < width; x++)
                 {
                     if (x < heightfield.Width && y < heightfield.Height)
-                        heightmap[i++] = heightfield.GetPixel(x, y).ToAlpha() * Height;
+                        heightmap[i++] = heightfield.GetPixel(x, y) * Height;
                     else
                         heightmap[i++] = 0;
                 }

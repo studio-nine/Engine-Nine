@@ -84,7 +84,7 @@ namespace Nine.Test
         ///</summary>
         public void GetEnumeratorTestHelper<T>()
         {
-            IEnumerable target = new NotificationCollection<T>();
+            IEnumerable target = new NotificationCollection<T>() { EnableManipulationWhenEnumerating = true };
             IEnumerator expected = null;
             IEnumerator actual;
             actual = target.GetEnumerator();
@@ -194,6 +194,7 @@ namespace Nine.Test
         public void GetEnumeratorTest1Helper<T>()
         {
             NotificationCollection<T> target = new NotificationCollection<T>();
+            target.EnableManipulationWhenEnumerating = true;
             IEnumerator<T> expected = null;
             IEnumerator<T> actual;
             actual = target.GetEnumerator();
@@ -318,6 +319,7 @@ namespace Nine.Test
             {
                 1, 2, 3, 4, 5, 6, 7
             };
+            target.EnableManipulationWhenEnumerating = true;
             
             foreach (int a in target)
             {

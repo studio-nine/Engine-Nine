@@ -30,6 +30,7 @@ namespace DeferredLighting
     [Description("This sample demenstrates how to use deferred lighting to render many lights.")]
     public class DeferredLightingGame : Microsoft.Xna.Framework.Game
     {
+        Model model;
         ModelViewerCamera camera;
         DrawableSurface surface;
         ModelBatch modelBatch;
@@ -75,15 +76,16 @@ namespace DeferredLighting
 
             graphicsBuffer = new GraphicsBuffer(GraphicsDevice);
             deferredEffect = new DeferredEffect(GraphicsDevice);
+            deferredEffect.SpecularColor = Vector3.One;
             boxTexture = Content.Load<Texture2D>("box");
             boxNormalTexture = Content.Load<Texture2D>("box_n");
 
             // Create lights
             lights = new List<IDeferredLight>();
             lights.Add(new DeferredAmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.1f });
-            lights.Add(new DeferredDirectionalLight(GraphicsDevice) { DiffuseColor = Vector3.One * 0.1f });
-            lights.Add(new DeferredPointLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 1, 0), Position = new Vector3(2, 2, 1f), Range = 5 });
-            lights.Add(new DeferredSpotLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 0, 0), Position = new Vector3(0, 0, 1), Direction = new Vector3(-1, 0, 0), Range = 16, Falloff = 2 });
+            lights.Add(new DeferredDirectionalLight(GraphicsDevice) { DiffuseColor = Vector3.One * 0.1f, SpecularColor = Vector3.Zero });
+            lights.Add(new DeferredPointLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 1, 0), Position = new Vector3(2, 2, 1f), Range = 5, SpecularColor = Vector3.One });
+            lights.Add(new DeferredSpotLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 0, 0), Position = new Vector3(0, 0, 1), Direction = new Vector3(-1, 0, 0), Range = 16, Falloff = 2, SpecularColor = Vector3.One });
         }
 
         private void InitializeSurfaceVertices(int x, int y, ref VertexPositionColorNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
@@ -109,17 +111,13 @@ namespace DeferredLighting
         protected override void Draw(GameTime gameTime)
         {
             // Initialize render state
-            GraphicsDevice.BlendState = BlendState.Opaque;
-            GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-
-            GraphicsDevice.Clear(Color.Black);
 
             // 1. Draw deferred scene with DepthNormalEffect first.
             graphicsBuffer.Begin();
             {
-                graphicsBuffer.Effect.NormalMap = boxNormalTexture;
-                graphicsBuffer.Effect.NormalMappingEnabled = true;
+                //graphicsBuffer.Effect.NormalMap = boxNormalTexture;
+                //graphicsBuffer.Effect.NormalMappingEnabled = true;
                 DrawTerrain(graphicsBuffer.Effect);
             }
             graphicsBuffer.End();

@@ -7,20 +7,20 @@ fragment VertexTransform;
 
 [parameters]
 float4x4 World : WORLD;
-float4x4 ViewProjection : VIEWPROJECTION;
+float4x4 WorldViewProjection : WORLDVIEWPROJECTION;
 
 [vs]
 __hlsl__
 void main(INPUT input, inout OUTPUT output)
 {
-	float4 position;
-	import(Position, position = Position);
+	float4 inPosition;
+	import(Position, inPosition = Position);
 	
-	position = mul(position, World);
-	export(float4, PositionWorld, position);
+	float4 positionWorld = mul(inPosition, World);
+	export(float4, PositionWorld, positionWorld);
 	export(float4x3, WorldTransform, (float4x3)World);
 
-	position = mul(position, ViewProjection);
+	float4 position = mul(inPosition, WorldViewProjection);
 	export(float4, Position, position);
 	
 	float3 normal;

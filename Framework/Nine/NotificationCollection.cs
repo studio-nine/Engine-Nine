@@ -12,15 +12,33 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 #endregion
 
 namespace Nine
 {
     /// <summary>
+    ///  Notifies clients that the collection has changed.
+    /// </summary>
+    public interface INotifyCollectionChanged<T>
+    {
+        /// <summary>
+        /// Raised when a new element is added to the collection.
+        /// </summary>
+        event EventHandler<NotifyCollectionChangedEventArgs<T>> Added;
+
+        /// <summary>
+        /// Raised when an element is removed from the collection.
+        /// </summary>
+        event EventHandler<NotifyCollectionChangedEventArgs<T>> Removed;
+    }
+
+    /// <summary>
     /// Event args for changed an item.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ItemChangedEventArgs<T> : EventArgs
+    public class NotifyCollectionChangedEventArgs<T> : EventArgs
     {
         /// <summary>
         /// Gets the index of the added or removed item.
@@ -32,8 +50,8 @@ namespace Nine
         /// </summary>
         public T Value { get; internal set; }
 
-        public ItemChangedEventArgs() { }
-        public ItemChangedEventArgs(int index, T value)
+        public NotifyCollectionChangedEventArgs() { }
+        public NotifyCollectionChangedEventArgs(int index, T value)
         {
             Index = index;
             Value = value;
@@ -41,29 +59,40 @@ namespace Nine
     }
 
     /// <summary>
-    /// A collection that can be manipulated during enumeration.
+    /// A collection that can notify changes.
     /// </summary>
+    [DebuggerDisplay("Count = {Count}")]
+    [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView`1, mscorlib")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class NotificationCollection<T> : IList<T>
+    public class NotificationCollection<T> : IList<T>, INotifyCollectionChanged<T>
     {
         private bool isDirty = true;
         private List<T> elements = null;
         private List<T> copy = null;
+
+        /// <summary>
+        /// Gets or sets the sender that raise the Added and Removed event.
+        /// </summary>
+        internal object Sender = null;
+        internal bool EnableManipulationWhenEnumerating;
         
         /// <summary>
         /// Creates a new instance of EnumerableCollection.
         /// </summary>
-        public NotificationCollection() { }
+        public NotificationCollection()
+        {
+            Sender = this;
+        }
 
         /// <summary>
         /// Raised when a new element is added to the collection.
         /// </summary>
-        public event EventHandler<ItemChangedEventArgs<T>> Added;
+        public event EventHandler<NotifyCollectionChangedEventArgs<T>> Added;
 
         /// <summary>
         /// Raised when an element is removed from the collection.
         /// </summary>
-        public event EventHandler<ItemChangedEventArgs<T>> Removed;
+        public event EventHandler<NotifyCollectionChangedEventArgs<T>> Removed;
 
         
         /// <summary>
@@ -71,6 +100,9 @@ namespace Nine
         /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
+            if (!EnableManipulationWhenEnumerating)
+                return elements != null ? elements.GetEnumerator() : Enumerable.Empty<T>().GetEnumerator();
+
             // Copy a new list while iterating it
             if (isDirty)
             {
@@ -88,7 +120,7 @@ namespace Nine
                 isDirty = false;
             }
 
-            return new EnumerableCollectionEnumerator<T>() { List = copy, CurrentIndex = -1 };
+            return new NotificationCollectionEnumerator<T>() { List = copy, CurrentIndex = -1 };
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -287,7 +319,7 @@ namespace Nine
         protected virtual void OnAdded(int index, T value)
         {
             if (Added != null)
-                Added(this, new ItemChangedEventArgs<T> { Index = index, Value = value });
+                Added(Sender, new NotifyCollectionChangedEventArgs<T> { Index = index, Value = value });
         }
 
         /// <summary>
@@ -296,11 +328,11 @@ namespace Nine
         protected virtual void OnRemoved(int index, T value)
         {
             if (Removed != null)
-                Removed(this, new ItemChangedEventArgs<T> { Index = index, Value = value });
+                Removed(Sender, new NotifyCollectionChangedEventArgs<T> { Index = index, Value = value });
         }
     }
 
-    internal struct EnumerableCollectionEnumerator<T> : IEnumerator<T>
+    class NotificationCollectionEnumerator<T> : IEnumerator<T>
     {
         internal IList<T> List;
         internal int CurrentIndex;

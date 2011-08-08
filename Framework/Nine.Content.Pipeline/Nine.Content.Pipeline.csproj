@@ -45,7 +45,7 @@
     <RegisterForComInterop>false</RegisterForComInterop>
     <PlatformTarget>x86</PlatformTarget>
     <DocumentationFile>..\..\References\x86\Nine.Content.Pipeline.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>1591,1572,1571,1573,1587,1570</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -56,6 +56,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <DocumentationFile>..\..\References\x86\Nine.Content.Pipeline.XML</DocumentationFile>
+    <NoWarn>1591,1572,1571,1573,1587,1570</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -91,6 +92,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Writer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Model.Generated.cs">
+      <Link>Nine.Graphics.Content.Model.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Graphics.Content.Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.Generated.cs">
+      <Link>Nine.Graphics.Content.Writer.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="ContentReference.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />
@@ -314,6 +327,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
+      <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
+      <Name>Nine.Graphics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine.csproj">
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
       <Name>Nine</Name>
@@ -363,9 +380,21 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Content.Writer.Generated.cs</LastGenOutput>
     </None>
+    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Model.tt">
+      <Link>Nine.Graphics.Content.Model.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Graphics.Content.Model.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.tt">
+      <Link>Nine.Graphics.Content.Writer.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Graphics.Content.Writer.Generated.cs</LastGenOutput>
+    </None>
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\EmissiveMap.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\SpecularMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\SpotLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\PointLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\SplatterTexture.fragment" />

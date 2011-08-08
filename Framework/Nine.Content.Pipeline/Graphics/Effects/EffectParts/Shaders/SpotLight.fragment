@@ -51,13 +51,13 @@ void main(INPUT input, inout OUTPUT output)
 	float fade = 0;
 	if (distance <= Range && angle > outer)
 	{
-        fade = (pow(max(Attenuation, 0.000001), 1 - distance / Range) - 1) / (Attenuation - 1);
+        fade = max(1 - pow(max(distance / Range, 0.000001), Attenuation), 0);
 		if (angle < inner)
 			fade *= pow(max((angle - outer) / (inner - outer), 0.000001), Falloff);
     }
 
 	diffuse += SpotLightDiffuseColor * dotL * zeroL * fade;
-    specular += SpotLightSpecularColor * zeroL * pow(max(dotH, 0.000001), specularPower) * fade;
+    specular += SpotLightSpecularColor * pow(max(dotH, 0.000001) * zeroL, specularPower) * fade;
     
 	export(float3, LightDiffuse, diffuse);
 	export(float3, LightSpecular, specular);

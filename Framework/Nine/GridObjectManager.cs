@@ -21,16 +21,16 @@ namespace Nine
     /// <summary>
     /// Manages a collection of objects using grids.
     /// </summary>
-    public class GridObjectManager<T> : UniformGrid, ICollection<T>, ISpatialQuery<T>
+    public class GridSceneManager<T> : UniformGrid, ISceneManager<T>
     {
         private float rayPickPrecision = float.MaxValue;
 
-        GridObjectManagerEntry<T>[,] Data;
+        GridSceneManagerEntry<T>[,] Data;
 
         /// <summary>
         /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public GridObjectManager(float x, float y, float width, float height, int countX, int countY)
+        public GridSceneManager(float x, float y, float width, float height, int countX, int countY)
             : base(x, y, width, height, countX, countY)
         {
             Position = new Vector2(x, y);
@@ -39,7 +39,7 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public GridObjectManager(BoundingRectangle bounds, int countX, int countY)
+        public GridSceneManager(BoundingRectangle bounds, int countX, int countY)
             : base(bounds, countX, countY)
         {
 
@@ -48,7 +48,7 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of GridObjectManager.
         /// </summary>
-        public GridObjectManager(BoundingBox bounds, int countX, int countY)
+        public GridSceneManager(BoundingBox bounds, int countX, int countY)
             : base(new BoundingRectangle(bounds), countX, countY)
         {
 
@@ -72,7 +72,7 @@ namespace Nine
             foreach (Point grid in Traverse(box))
             {
                 if (Data == null)
-                    Data = new GridObjectManagerEntry<T>[SegmentCountX, SegmentCountY];
+                    Data = new GridSceneManagerEntry<T>[SegmentCountX, SegmentCountY];
 
                 if (Data[grid.X, grid.Y].Objects == null)
                 {
@@ -192,43 +192,6 @@ namespace Nine
                     }
                 }
             }
-        }
-
-        public T Find(Ray ray)
-        {
-            float? currentDistance;
-            float minDistance = float.MaxValue;
-            T result = default(T);
-
-            foreach (Point grid in Traverse(ray, rayPickPrecision))
-            {
-                if (Data != null && Data[grid.X, grid.Y].Objects != null)
-                {
-                    for (int i = 0; i < Data[grid.X, grid.Y].Objects.Count; i++)
-                    {
-                        if (Data[grid.X, grid.Y].Objects[i] is IPickable)
-                        {
-                            currentDistance = ((IPickable)(Data[grid.X, grid.Y].Objects[i])).Intersects(ray);
-                            if (currentDistance.HasValue && currentDistance < minDistance)
-                            {
-                                minDistance = currentDistance.Value;
-                                result = Data[grid.X, grid.Y].Objects[i];
-                            }
-                        }
-                        else
-                        {
-                            currentDistance = Data[grid.X, grid.Y].ObjectBounds[i].Intersects(ray);
-                            if (currentDistance.HasValue && currentDistance < minDistance)
-                            {
-                                minDistance = currentDistance.Value;
-                                result = Data[grid.X, grid.Y].Objects[i];
-                            }
-                        }
-                    }
-                }
-            }
-
-            return result;
         }
 
         public IEnumerable<T> FindAll(BoundingFrustum frustum)
@@ -352,7 +315,7 @@ namespace Nine
         private IEnumerable<T> InternalGetEnumerator()
         {
             if (Data != null)
-                foreach (GridObjectManagerEntry<T> entry in Data)
+                foreach (GridSceneManagerEntry<T> entry in Data)
                     if (entry.Objects != null)
                         foreach (T e in entry.Objects)
                             yield return e;
@@ -370,7 +333,7 @@ namespace Nine
         #endregion
     }
 
-    internal struct GridObjectManagerEntry<T>
+    internal struct GridSceneManagerEntry<T>
     {
         public BoundingBox Bounds;
         public List<T> Objects;

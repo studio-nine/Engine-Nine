@@ -9,6 +9,8 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTextureEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutputEffectPartContent"></Item>
     </EffectParts>

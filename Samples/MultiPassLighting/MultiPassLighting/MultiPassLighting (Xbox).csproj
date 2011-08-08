@@ -116,7 +116,7 @@
     <Reference Include="Microsoft.Xna.Framework.Xact" />
     <Reference Include="mscorlib" />
     <Reference Include="Nine" />
-    <Reference Include="Nine.Game" />
+    <Reference Include="Nine.Graphics" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

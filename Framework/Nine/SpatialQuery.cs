@@ -20,37 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine
 {
     /// <summary>
-    /// Defines Spatial relations between objects.
-    /// </summary>
-    public interface ISpatialQuery<T> : IEnumerable<T>
-    {
-        /// <summary>
-        /// Finds the nearest object intersects with the specified ray.
-        /// </summary>
-        T Find(Ray ray);
-        
-        /// <summary>
-        /// Finds all the objects resides within the specified bounding sphere.
-        /// </summary>
-        IEnumerable<T> FindAll(Vector3 position, float radius);
-
-        /// <summary>
-        /// Finds all the objects that intersects with the specified ray.
-        /// </summary>
-        IEnumerable<T> FindAll(Ray ray);
-
-        /// <summary>
-        /// Finds all the objects that intersects with the specified bounding box.
-        /// </summary>
-        IEnumerable<T> FindAll(BoundingBox boundingBox);
-
-        /// <summary>
-        /// Finds all the objects resides within the specified bounding frustum.
-        /// </summary>
-        IEnumerable<T> FindAll(BoundingFrustum frustum);
-    }
-
-    /// <summary>
     /// Represents an adapter class that filters and converts the result of
     /// an existing <c>SpatialQuery</c>.
     /// </summary>
@@ -77,6 +46,8 @@ namespace Nine
             if (queries == null)
                 throw new ArgumentNullException("query");
 
+            this.Filter = d => d is TOutput;
+            this.Converter = d => (TOutput)(object)d;
             this.InnerQueries = new List<ISpatialQuery<TInput>>(queries);
         }
 
@@ -104,14 +75,9 @@ namespace Nine
                 if (Converter != null)
                     yield return Converter(input);
 
-                if (input is TOutput)
+                else if (input is TOutput)
                     yield return (TOutput)(object)input;
             }
-        }
-        
-        public TOutput Find(Ray ray)
-        {
-            return Convert(InnerQueries[0].Find(ray));
         }
 
         public IEnumerable<TOutput> FindAll(Vector3 position, float radius)
@@ -199,11 +165,6 @@ namespace Nine
         public IEnumerable<T> FindAll(Ray ray)
         {
             return Objects;
-        }
-
-        public T Find(Ray ray)
-        {
-            return Objects.FirstOrDefault();
         }
 
         public IEnumerator<T> GetEnumerator()

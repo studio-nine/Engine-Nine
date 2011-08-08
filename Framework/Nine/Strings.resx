@@ -150,4 +150,16 @@
   <data name="InvalidAvatarAnimationClip" xml:space="preserve">
     <value>The input animation clip is not a valid avatar animation.</value>
   </data>
+  <data name="NodeMustBeAPartOfTheTree" xml:space="preserve">
+    <value>The node must be a child of this tree.</value>
+  </data>
+  <data name="ExcceedsObjectManagerBounds" xml:space="preserve">
+    <value>The input is outside the boundary of this object manager.</value>
+  </data>
+  <data name="AlreadyAddedToASceneManager" xml:space="preserve">
+    <value>The input has already been added to a scene manager.</value>
+  </data>
+  <data name="CircularDependency" xml:space="preserve">
+    <value>Circular dependency has found, the operation cannot continue.</value>
+  </data>
 </root>

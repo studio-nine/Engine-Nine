@@ -1,7 +1,7 @@
-#region Copyright 2008 - 2010 (c) Engine Nine
+#region Copyright 2008 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2008 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -9,6 +9,7 @@
 #region Using Directives
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -93,5 +94,69 @@ namespace Nine
 
             return result;
         }
+
+        /// <summary>
+        /// Creates a merged bounding box from a list of existing bounding boxes.
+        /// </summary>
+        public static BoundingBox CreateMerged(IEnumerable<BoundingBox> boxes)
+        {
+            BoundingBox result = new BoundingBox();
+
+            int iBox = 0;
+            foreach (var box in boxes)
+            {
+                if (iBox == 0)
+                {
+                    result = box;
+                }
+                else
+                {
+                    result = BoundingBox.CreateMerged(result, box);
+                }
+                iBox++;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Compute the axis aligned bounding box from an oriented bounding box.
+        /// </summary>
+        public static BoundingBox CreateAxisAligned(this BoundingBox box, Matrix transform)
+        {
+            const float FloatMax = float.MaxValue;
+
+            // Find the 8 corners
+            Vector3[] corners = box.GetCorners();
+
+            // Compute bounding box
+            Vector3 min = new Vector3(FloatMax, FloatMax, FloatMax);
+            Vector3 max = new Vector3(-FloatMax, -FloatMax, -FloatMax);
+            Vector3 v = new Vector3();
+
+            for (int i = 0; i < corners.Length; i++)
+            {
+                Vector3.Transform(ref corners[i], ref transform, out v);
+
+                if (v.X < min.X)
+                    min.X = v.X;
+                if (v.X > max.X)
+                    max.X = v.X;
+
+                if (v.Y < min.Y)
+                    min.Y = v.Y;
+                if (v.Y > max.Y)
+                    max.Y = v.Y;
+
+                if (v.Z < min.Z)
+                    min.Z = v.Z;
+                if (v.Z > max.Z)
+                    max.Z = v.Z;
+            }
+
+            return new BoundingBox(min, max);
+        }
+
+        public static BoundingBox Max = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);
     }
 }

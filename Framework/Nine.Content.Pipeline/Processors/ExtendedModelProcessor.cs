@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -76,6 +77,7 @@ namespace Nine.Content.Pipeline.Processors
         private Dictionary<string, string> attachedTextureNames = new Dictionary<string, string>();
         private Dictionary<string, string> attachedTextureProcessors = new Dictionary<string, string>();
         private List<Dictionary<string, ContentReference<TextureContent>>> attachedTextures = new List<Dictionary<string, ContentReference<TextureContent>>>();
+        private List<BoundingBox> partBound = new List<BoundingBox>();
 
         /// <summary>
         /// Creates a new instance of ExtendedModelProcessor.
@@ -132,9 +134,12 @@ namespace Nine.Content.Pipeline.Processors
             // Format textures before processing model.
             FormatAttachedTextures();
 
+            // Find model mesh part bounds.
+            FindModelMeshPartBounds(input);
+
             ModelContent model = base.Process(input, context);
 
-            ProcessAttachedTextures(model);
+            ProcessModelMeshParts(model);
 
             if (GenerateAnimationData || GenerateCollisionData)
                 model.Tag = tag;
@@ -245,14 +250,23 @@ namespace Nine.Content.Pipeline.Processors
             return base.ConvertMaterial(material, context);
         }
 
-        private void ProcessAttachedTextures(ModelContent model)
+        private void FindModelMeshPartBounds(NodeContent input)
+        {
+
+        }
+
+        private void ProcessModelMeshParts(ModelContent model)
         {
             int i = 0;
             foreach (ModelMeshContent mesh in model.Meshes)
             {
                 foreach (ModelMeshPartContent part in mesh.MeshParts)
                 {
-                    part.Tag = new ModelMeshPartTagContent() { Textures = attachedTextures[i++] };
+                    part.Tag = new ModelMeshPartTagContent() 
+                    {
+                        Textures = attachedTextures[i++],
+                        BoundingBox = new BoundingBox(),
+                    };
                 }
             }
         }

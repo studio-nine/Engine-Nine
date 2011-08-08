@@ -26,7 +26,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     /// <summary>
     /// A base class for any LinkedEffectPart that can be Linked together.
     /// </summary>
-    [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics")]
     public class ParticleEffectContent
     {
         /// <summary>

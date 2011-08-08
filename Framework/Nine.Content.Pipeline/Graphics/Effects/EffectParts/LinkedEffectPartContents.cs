@@ -1,13 +1,14 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -53,7 +54,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class EndLightEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -99,7 +100,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     {
         public override string Code
         {
-            get { return Encoding.UTF8.GetString(LinkedEffectParts.SplatterTexture); }
+            get 
+            {
+                string operation = EffectParts.Any(p => p != this && p is SplatterTextureEffectPartContent &&
+                                        EffectParts.IndexOf(p) < EffectParts.IndexOf(this)) ? "+" : "*";
+                return Encoding.UTF8.GetString(LinkedEffectParts.SplatterTexture).Replace("{$OPERATION}", operation);
+            }
         }
     }
 
@@ -120,7 +126,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PixelShaderOutputEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -129,7 +135,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionColorEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -138,7 +144,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionColorNormalTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -147,7 +153,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionColorTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -156,7 +162,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionNormalTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -165,7 +171,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionTextureEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -203,15 +209,37 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
+    public partial class EmissiveMapEffectPartContent : LinkedEffectPartContent
+    {
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.EmissiveMap); }
+        }
+    }
+
+    public partial class SpecularMapEffectPartContent : LinkedEffectPartContent
+    {
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.SpecularMap); }
+        }
+    }
+
     public partial class NormalMapEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
-            get { return Encoding.UTF8.GetString(LinkedEffectParts.NormalMap); }
+            get
+            {
+                bool isSkinned = EffectParts.Any(p => p is SkinTransformEffectPartContent);
+                return Encoding.UTF8.GetString(LinkedEffectParts.NormalMap)
+                                    .Replace("{$SKINNED}", isSkinned ? "" : "//")
+                                    .Replace("{$SKINNEDIMPORT}", isSkinned ? "import" : "//");
+            }
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class VertexShaderOutputEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -220,7 +248,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.VertexTransformEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.VertexTransformEffectPart, Nine.Graphics")]
     public partial class VertexTransformEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -229,7 +257,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class ScreenEffectEffectPartContent : LinkedEffectPartContent
     {
         protected internal override void Validate(ContentProcessorContext context)
@@ -244,7 +272,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
     
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class RadicalBlurEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
@@ -269,7 +297,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class ThresholdEffectPartContent : LinkedEffectPartContent
     {
         public override string Code

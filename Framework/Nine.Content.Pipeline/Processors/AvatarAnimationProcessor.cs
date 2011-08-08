@@ -137,9 +137,6 @@ namespace Nine.Content.Pipeline.Processors
         /// <summary>
         /// Constructs a new CustomAvatarAnimationData object.
         /// </summary>
-        /// <param name="name">The name of the animation.</param>
-        /// <param name="length">The length of the animation.</param>
-        /// <param name="keyframes">The keyframes in the animation.</param>
         public AvatarAnimationData(string name, TimeSpan length,
                                          List<AvatarKeyFrame> keyframes,
                                          List<AvatarExpressionKeyFrame> expressionKeyframes)

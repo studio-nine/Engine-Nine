@@ -74,7 +74,6 @@ namespace TerrainSample
             terrain.Position = -terrain.BoundingBox.GetCenter();
             terrain.TextureTransform = TextureTransform.CreateScale(32, 32);
 
-            // Need to call invalidate after changing TextureTransform
             terrain.Invalidate();
 
             // Initialize terrain effects

@@ -136,6 +136,9 @@
   <data name="DualTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\dualtexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="EmissiveMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\emissivemap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="EndLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\endlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -183,6 +186,9 @@
   </data>
   <data name="SkinTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\skintransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SpecularMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\specularmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SplatterTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\splattertexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

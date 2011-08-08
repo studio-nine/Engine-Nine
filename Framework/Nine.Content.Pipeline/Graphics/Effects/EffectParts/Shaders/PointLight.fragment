@@ -40,10 +40,10 @@ void main(INPUT input, inout OUTPUT output)
 	float distanceSq = dot(positionToVertex, positionToVertex);
 	float distance = sqrt(distanceSq);
 
-    float fade = max(0, (pow(max(Attenuation, 0.000001), 1 - distance / Range) - 1) / (Attenuation - 1));
+    float fade = max(1 - pow(max(distance / Range, 0.000001), Attenuation), 0);
     
 	diffuse += PointLightDiffuseColor * zeroL * dotL * fade;
-    specular += PointLightSpecularColor * zeroL * pow(max(dotH, 0.000001), specularPower) * fade;
+    specular += PointLightSpecularColor * pow(max(dotH, 0.000001) * zeroL, specularPower) * fade;
     
 	export(float3, LightDiffuse, diffuse);
 	export(float3, LightSpecular, specular);

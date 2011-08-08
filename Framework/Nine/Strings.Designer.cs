@@ -61,6 +61,15 @@ namespace Nine {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The input has already been added to a scene manager..
+        /// </summary>
+        internal static string AlreadyAddedToASceneManager {
+            get {
+                return ResourceManager.GetString("AlreadyAddedToASceneManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Begin cannot be called until End has been successfully called..
         /// </summary>
         internal static string AlreadyInBeginEndPair {
@@ -84,6 +93,24 @@ namespace Nine {
         internal static string CannotDecomposeMatrix {
             get {
                 return ResourceManager.GetString("CannotDecomposeMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Circular dependency has found, the operation cannot continue..
+        /// </summary>
+        internal static string CircularDependency {
+            get {
+                return ResourceManager.GetString("CircularDependency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The input is outside the boundary of this object manager..
+        /// </summary>
+        internal static string ExcceedsObjectManagerBounds {
+            get {
+                return ResourceManager.GetString("ExcceedsObjectManagerBounds", resourceCulture);
             }
         }
         
@@ -120,6 +147,15 @@ namespace Nine {
         internal static string InvalidPrimitive {
             get {
                 return ResourceManager.GetString("InvalidPrimitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The node must be a child of this tree..
+        /// </summary>
+        internal static string NodeMustBeAPartOfTheTree {
+            get {
+                return ResourceManager.GetString("NodeMustBeAPartOfTheTree", resourceCulture);
             }
         }
         

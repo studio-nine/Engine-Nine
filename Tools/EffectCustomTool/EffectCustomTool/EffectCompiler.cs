@@ -442,8 +442,7 @@ namespace Nine.Tools.EffectCustomTool
             switch (effectParameter.ParameterClass)
             {
                 case EffectParameterClass.Matrix:
-                    if (effectParameter.ParameterType == EffectParameterType.Single && effectParameter.RowCount == 4 && effectParameter.ColumnCount == 4)
-                        return GetCSharpTypeName(typeof(Matrix));
+                    return GetCSharpTypeName(typeof(Matrix));
                     break;
 
                 case EffectParameterClass.Object:

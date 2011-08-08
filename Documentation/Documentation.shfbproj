@@ -123,11 +123,10 @@
     <Preliminary>False</Preliminary>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\References\x86\Nine.Content.Pipeline.dll" />
-      <DocumentationSource sourceFile="..\References\x86\Nine.Content.Pipeline.xml" />
       <DocumentationSource sourceFile="..\References\x86\Nine.dll" />
-      <DocumentationSource sourceFile="..\References\x86\Nine.xml" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="..\References\x86\Nine.Graphics.dll" />
+<DocumentationSource sourceFile="..\References\x86\Nine.Graphics.xml" />
+<DocumentationSource sourceFile="..\References\x86\Nine.xml" /></DocumentationSources>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <RootNamespaceTitle>
     </RootNamespaceTitle>

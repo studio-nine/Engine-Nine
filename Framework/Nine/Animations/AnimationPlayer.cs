@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
@@ -73,6 +74,17 @@ namespace Nine.Animations
             }
         }
 
+        protected override void OnStarted()
+        {
+            if (Current == null)
+            {
+                CurrentName = Animations.Keys.FirstOrDefault();
+                if (CurrentName != null)
+                        Current = Animations[CurrentName];
+            }
+            base.OnStarted();
+        }
+
         public override void Update(TimeSpan elapsedTime)
         {
             base.Update(elapsedTime);
@@ -93,9 +105,9 @@ namespace Nine.Animations
     {
         internal IDictionary<string, IAnimation> animations;
 
-        public string CurrentName { get; private set; }
+        public string CurrentName { get; internal set; }
 
-        public IAnimation Current { get; private set; }
+        public IAnimation Current { get; internal set; }
 
         /// <summary>
         /// Plays the animation with the specified name.

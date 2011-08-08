@@ -101,11 +101,17 @@ namespace Nine.Content.Pipeline.Processors
             {
                 for (int x = 0; x < width; x++)
                 {
-                    bitmap.SetPixel(x, y, new Vector4(
+                    var color = new Vector4(
                         bitmapR != null ? bitmapR.GetPixel(x, y) : 0,
                         bitmapG != null ? bitmapG.GetPixel(x, y) : 0,
                         bitmapB != null ? bitmapB.GetPixel(x, y) : 0,
-                        bitmapA != null ? bitmapA.GetPixel(x, y) : 0));
+                        bitmapA != null ? bitmapA.GetPixel(x, y) : 0);
+
+                    color.Z = Math.Min(color.Z, 1 - color.W);
+                    color.Y = Math.Min(color.Y, 1 - color.W - color.Z);
+                    color.X = Math.Min(color.X, 1 - color.W - color.Z - color.Y);
+
+                    bitmap.SetPixel(x, y, color);
                 }
             }
 

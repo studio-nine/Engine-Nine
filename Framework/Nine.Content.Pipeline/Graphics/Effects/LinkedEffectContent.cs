@@ -23,7 +23,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     /// <summary>
     /// A base class for any LinkedEffectPart that can be Linked together.
     /// </summary>
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public abstract class LinkedEffectPartContent
     {
         /// <summary>
@@ -61,7 +61,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     /// <summary>
     /// Represents a LinkedEffectPartContent loaded from file.
     /// </summary>
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine")]
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public class LinkedEffectPartFileContent : LinkedEffectPartContent
     {
         /// <summary>

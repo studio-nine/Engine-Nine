@@ -88,12 +88,14 @@ namespace ScreenEffects
 #else
             screenEffect = new ScreenEffect(GraphicsDevice);
             //screenEffect.Effects.Add(new AntiAliasEffect(GraphicsDevice));
-            //screenEffect.Effects.Add(new AdoptionEffect(GraphicsDevice) { Speed = 2 });
-            //screenEffect.Effects.Add(new WiggleEffect(GraphicsDevice));
+            screenEffect.Effects.Add(new AdoptionEffect(GraphicsDevice) { Speed = 2 });
+            screenEffect.Effects.Add(new WiggleEffect(GraphicsDevice));
             //screenEffect.Effects.Add(ScreenEffect.CreateBloom(GraphicsDevice, 0.5f, 10.0f));
             //screenEffect.Effects.Add(new ColorMatrixEffect(GraphicsDevice) { Transform = ColorMatrix.CreateBrightness(10f) });
-            screenEffect = ScreenEffect.CreateHighDynamicRange(GraphicsDevice, 0.5f, 1f, 4f, 5f, 1);
-            //screenEffect = ScreenEffect.CreateDepthOfField(GraphicsDevice, 2, 0, 0, 0.16f);
+
+            screenEffect = ScreenEffect.CreateMerged(GraphicsDevice, screenEffect,
+                           ScreenEffect.CreateDepthOfField(GraphicsDevice, 2, 0, 0, 0.16f),
+                           ScreenEffect.CreateHighDynamicRange(GraphicsDevice, 0.5f, 1f, 4f, 5f, 1));
 
             graphicsBuffer = new GraphicsBuffer(GraphicsDevice);
 #endif

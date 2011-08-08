@@ -22,9 +22,18 @@ void main(INPUT input, inout OUTPUT output)
 {
 	float3 tangent = input.Tangent;
 	float3 binormal = input.Binormal;
+    
+    {$SKINNED} float4x3 skinTransform;
+	{$SKINNEDIMPORT}(SkinTransform, skinTransform = SkinTransform);
+    
+    float4x3 worldTransform;
+	import(WorldTransform, worldTransform = WorldTransform);
 
-	import(WorldTransform, tangent = mul(tangent, WorldTransform));
-	import(WorldTransform, binormal = mul(binormal, WorldTransform));
+    {$SKINNED} tangent = mul(tangent, skinTransform);
+    {$SKINNED} binormal = mul(binormal, skinTransform);
+
+    tangent = mul(tangent, worldTransform);
+    binormal = mul(binormal, worldTransform);
 
 	output(Tangent, tangent);
 	output(Binormal, binormal);

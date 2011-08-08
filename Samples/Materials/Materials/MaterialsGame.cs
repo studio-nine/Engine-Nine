@@ -28,10 +28,13 @@ namespace MaterialsSample
     [Description("This sample demenstrates how to use LinkedEffect to create various materials.")]
     public class MaterialsGame : Microsoft.Xna.Framework.Game
     {
+        Model model;
+        ModelBatch modelBatch;
         ModelViewerCamera camera;
         DrawableSurface surface;
         BasicEffect basicEffect;
         LinkedEffect normalMappingEffect;
+        LinkedEffect basicDirectionalLightEffect;
 
         public MaterialsGame()
         {
@@ -57,6 +60,12 @@ namespace MaterialsSample
         {
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
+
+            modelBatch = new ModelBatch(GraphicsDevice);
+            model = Content.Load<Model>("dude");
+            
+            basicDirectionalLightEffect = Content.Load<LinkedEffect>("BasicDirectionalLight");
+            basicDirectionalLightEffect.EnableDefaultLighting();
 
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);
@@ -99,6 +108,8 @@ namespace MaterialsSample
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
+            Matrix world = Matrix.CreateScale(0.27f) * Matrix.CreateTranslation(0, -12f, 0);
+
             // Initialize render state
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -107,20 +118,10 @@ namespace MaterialsSample
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
 
-            foreach (DrawableSurfacePatch patch in surface.Patches)
-            {
-                // Cull patches that are outside the view frustum
-                if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
-                {
-                    // Setup matrices
-                    normalMappingEffect.World = patch.Transform;
-                    normalMappingEffect.View = camera.View;
-                    normalMappingEffect.Projection = camera.Projection;
-
-                    // Draw each path with the specified effect
-                    patch.Draw(normalMappingEffect);
-                }
-            }
+            modelBatch.Begin(camera.View, camera.Projection);
+            modelBatch.Draw(model, world, basicDirectionalLightEffect);
+            modelBatch.DrawSurface(surface, normalMappingEffect);
+            modelBatch.End();
 
             base.Draw(gameTime);
         }

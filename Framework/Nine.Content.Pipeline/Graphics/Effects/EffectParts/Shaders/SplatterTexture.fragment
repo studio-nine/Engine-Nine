@@ -10,11 +10,20 @@ texture2D TextureX;
 texture2D TextureY;
 texture2D TextureZ;
 texture2D TextureW;
-texture2D SplatterTexture;
+
 
 [parameters]
 float2 SplatterTextureScale = 1;
 float4 Mask = 1;
+
+texture2D SplatterTexture;
+sampler SplatterTextureSampler = sampler_state
+{
+    Texture = (SplatterTexture);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+};
 
 [ps]
 __hlsl__
@@ -26,13 +35,13 @@ void main(INPUT input, inout OUTPUT output)
 	float4 color;
 	import(Color, color = Color);
 	
-	float4 splatter = Mask * tex2D(SplatterTexture, uv / SplatterTextureScale);
+	float4 splatter = Mask * tex2D(SplatterTextureSampler, uv / SplatterTextureScale);
 		
-	color = lerp(color, tex2D(TextureX, uv), splatter.x);	
-	color = lerp(color, tex2D(TextureY, uv), splatter.y);
-	color = lerp(color, tex2D(TextureZ, uv), splatter.z);
-	color = lerp(color, tex2D(TextureW, uv), splatter.w);
-	
+	color {$OPERATION}= tex2D(TextureX, uv) * splatter.x;
+    color += tex2D(TextureY, uv) * splatter.y;
+    color += tex2D(TextureZ, uv) * splatter.z;
+    color += tex2D(TextureW, uv) * splatter.w;
+
 	export(float4, Color, color);
 }
 __hlsl__
