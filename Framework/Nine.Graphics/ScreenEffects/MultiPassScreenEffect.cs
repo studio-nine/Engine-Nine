@@ -84,14 +84,14 @@ namespace Nine.Graphics.ScreenEffects
             Passes = new MultiPassScreenEffectPassCollection();
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
             IEffectTexture update = CombineEffect as IEffectTexture;
             if (update != null)
-                update.SetTexture(name, texture);
+                update.SetTexture(usage, texture);
 
             foreach (IEffectTexture pass in Passes)
-                pass.SetTexture(name, texture);
+                pass.SetTexture(usage, texture);
         }
 
         Texture2D IEffectTexture.Texture { get { return null; } set { } }
@@ -152,8 +152,8 @@ namespace Nine.Graphics.ScreenEffects
 
                 if (CombineEffect != null)
                 {
-                    if (CombineEffect is IEffectTexture && !string.IsNullOrEmpty(pass.OutputTextureName))
-                        ((IEffectTexture)CombineEffect).SetTexture(pass.OutputTextureName, texture);
+                    if (CombineEffect is IEffectTexture && pass.TextureUsage != TextureUsage.None)
+                        ((IEffectTexture)CombineEffect).SetTexture(pass.TextureUsage, texture);
                 }
                 else
                 {
@@ -226,12 +226,12 @@ namespace Nine.Graphics.ScreenEffects
         public Color Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the <c>TextureName</c> of the output texture.
+        /// Gets or sets the <c>TextureUsage</c> of the output texture.
         /// The texture produced by this pass will be feed to the <c>CombineEffect</c>
         /// property of the parent <c>MultiPassScreenEffect</c> through
         /// <c>IEffectTexture</c> interface.
         /// </summary>
-        public string OutputTextureName { get; set; }
+        public TextureUsage TextureUsage { get; set; }
 
         /// <summary>
         /// Creates a new instance of <c>ScreenEffectEdge</c>.

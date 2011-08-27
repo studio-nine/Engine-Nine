@@ -91,9 +91,9 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.Diffuse)
+            if (usage == TextureUsage.Diffuse)
                 Texture = texture as Texture2D;
         }
 

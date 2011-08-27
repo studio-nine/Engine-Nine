@@ -20,7 +20,7 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class FogEffectPart : LinkedEffectPart, IEffectMatrices, IEffectFog
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
         
         private Vector3 fogColor;
         private EffectParameter fogColorParameter;
@@ -37,21 +37,21 @@ namespace Nine.Graphics.Effects.EffectParts
         public Vector3 FogColor
         {
             get { return fogColor; }
-            set { fogColor = value; dirtyMask |= fogColorDirtyMask; }
+            set { fogColor = value; DirtyMask |= fogColorDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public float FogStart
         {
             get { return fogStart; }
-            set { fogStart = value; dirtyMask |= fogVectorDirtyMask; }
+            set { if (fogStart != value) { fogStart = value; DirtyMask |= fogVectorDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public float FogEnd
         {
             get { return fogEnd; }
-            set { fogEnd = value; dirtyMask |= fogVectorDirtyMask; }
+            set { if (fogEnd != value) { fogEnd = value; DirtyMask |= fogVectorDirtyMask; } }
         }
 
         public FogEffectPart()
@@ -63,15 +63,15 @@ namespace Nine.Graphics.Effects.EffectParts
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & fogColorDirtyMask) != 0)
+            if ((DirtyMask & fogColorDirtyMask) != 0)
             {
                 if (fogColorParameter == null)
                     fogColorParameter = GetParameter("FogColor");
                 fogColorParameter.SetValue(fogColor);
-                dirtyMask &= ~fogColorDirtyMask;
+                DirtyMask &= ~fogColorDirtyMask;
             }
 
-            if ((dirtyMask & fogVectorDirtyMask) != 0)
+            if ((DirtyMask & fogVectorDirtyMask) != 0)
             {
                 if (fogVectorParameter == null)
                     fogVectorParameter = GetParameter("FogVector");
@@ -79,7 +79,7 @@ namespace Nine.Graphics.Effects.EffectParts
                 Matrix worldView;
                 Matrix.Multiply(ref world, ref view, out worldView);
                 SetFogVector(ref worldView, fogStart, fogEnd, fogVectorParameter);
-                dirtyMask &= ~fogVectorDirtyMask;
+                DirtyMask &= ~fogVectorDirtyMask;
             }
         }
 
@@ -100,14 +100,14 @@ namespace Nine.Graphics.Effects.EffectParts
         Matrix IEffectMatrices.World
         {
             get { return world; }
-            set { world = value; dirtyMask |= fogVectorDirtyMask; }
+            set { world = value; DirtyMask |= fogVectorDirtyMask; }
         }
 
         [ContentSerializerIgnore]
         Matrix IEffectMatrices.View
         {
             get { return view; }
-            set { view = value; dirtyMask |= fogVectorDirtyMask; }
+            set { view = value; DirtyMask |= fogVectorDirtyMask; }
         }
 
         [ContentSerializerIgnore]

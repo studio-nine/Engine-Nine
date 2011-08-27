@@ -254,6 +254,37 @@ namespace Nine
         }
 
         /// <summary>
+        /// Returns an enumeration of grids that floods from the specified position to the outside.
+        /// </summary>
+        public IEnumerable<Point> Traverse(int x, int y)
+        {
+            if (Contains(x, y))
+                yield return new Point(x, y);
+
+            int maxRadius = Math.Max(SegmentCountX, SegmentCountY);
+            for (int r = 1; r < maxRadius; r++)
+            {
+                Point offset = new Point();
+                offset.X = offset.Y = -r;
+                for (int currentDirection = 0; currentDirection < 4; currentDirection++)
+                {
+                    for (int i = 0; i < r * 2; i++)
+                    {
+                        offset.X += Directions[currentDirection].X;
+                        offset.Y += Directions[currentDirection].Y;
+                        if (Contains(x + offset.X, y + offset.Y))
+                            yield return new Point(x + offset.X, y + offset.Y);
+                    }
+                }
+            }
+        }
+
+        static Point[] Directions = new Point[] 
+        {
+            new Point(1, 0), new Point(0, 1), new Point(-1, 0), new Point(0, -1),
+        };
+
+        /// <summary>
         /// Returns an enumeration of grids overlapping the specified line.
         /// </summary>
         public IEnumerable<Point> Traverse(Point begin, Point end)

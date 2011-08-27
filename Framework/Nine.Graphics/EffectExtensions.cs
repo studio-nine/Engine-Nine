@@ -17,7 +17,6 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
 using System.Collections.ObjectModel;
 #endregion
 
@@ -51,10 +50,15 @@ namespace Nine.Graphics
     }
 
     /// <summary>
-    /// Gets or sets material parameters for the current effect.
+    /// Contains commonly used material parameters.
     /// </summary>
     public interface IEffectMaterial
     {
+        /// <summary>
+        /// Gets or sets the opaque of the effect.
+        /// </summary>
+        float Alpha { get; set; }
+
         /// <summary>
         /// Gets or sets the diffuse color of the effect.
         /// </summary>
@@ -77,107 +81,6 @@ namespace Nine.Graphics
     }
 
     /// <summary>
-    /// Contains the names of commonly used texture types.
-    /// </summary>
-    public static class TextureNames
-    {
-        /// <summary>
-        /// The texture type name used for diffuse texture.
-        /// </summary>
-        public static readonly string Diffuse = "Diffuse";
-
-        /// <summary>
-        /// The texture type name used for ambient texture.
-        /// </summary>
-        public static readonly string Ambient = "Ambient";
-
-        /// <summary>
-        /// The texture type name used for emissive texture.
-        /// </summary>
-        public static readonly string Emissive = "Emissive";
-
-        /// <summary>
-        /// The texture type name used for specular texture.
-        /// </summary>
-        public static readonly string Specular = "Specular";
-
-        /// <summary>
-        /// The texture type name used for detail texture.
-        /// </summary>
-        public static readonly string Detail = "Detail";
-
-        /// <summary>
-        /// The texture type name used for overlay texture.
-        /// </summary>
-        public static readonly string Overlay = "Overlay";
-
-        /// <summary>
-        /// The texture type name used for dual texture.
-        /// </summary>
-        public static readonly string Dual = "Dual";
-
-        /// <summary>
-        /// The texture type name used for reflection texture.
-        /// </summary>
-        public static readonly string Reflection = "Reflection";
-
-        /// <summary>
-        /// The texture type name used for refraction texture.
-        /// </summary>
-        public static readonly string Refraction = "Refraction";
-
-        /// <summary>
-        /// The texture type name used for lightmap texture.
-        /// </summary>
-        public static readonly string Lightmap = "Lightmap";
-
-        /// <summary>
-        /// The texture type name used for luminance texture.
-        /// </summary>
-        public static readonly string Luminance = "Luminance";
-
-        /// <summary>
-        /// The texture type name used for bloom texture.
-        /// </summary>
-        public static readonly string Bloom = "Bloom";
-
-        /// <summary>
-        /// The texture type name used for blur texture.
-        /// </summary>
-        public static readonly string Blur = "Blur";
-
-        /// <summary>
-        /// The texture type name used for shadowmap texture.
-        /// </summary>
-        public static readonly string ShadowMap = "ShadowMap";
-
-        /// <summary>
-        /// The texture type name used for normalmap texture.
-        /// </summary>
-        public static readonly string NormalMap = "NormalMap";
-
-        /// <summary>
-        /// The texture type name used for bump texture.
-        /// </summary>
-        public static readonly string BumpMap = "BumpMap";
-
-        /// <summary>
-        /// The texture type name used for DepthMap texture.
-        /// </summary>
-        public static readonly string DepthMap = "DepthMap";
-
-        /// <summary>
-        /// The texture type name used for environment texture.
-        /// </summary>
-        public static readonly string EnvironmentMap = "EnvironmentMap";
-
-        /// <summary>
-        /// The texture type name used for light buffer texture.
-        /// </summary>
-        public static readonly string LightBuffer = "LightBuffer";
-    }
-
-    /// <summary>
     /// Gets or sets texture parameters for the current effect.
     /// </summary>
     public interface IEffectTexture
@@ -188,10 +91,9 @@ namespace Nine.Graphics
         Texture2D Texture { get; set; }
 
         /// <summary>
-        /// Sets the texture with the specified texture type name.
-        /// See <c>TextureNames</c> for a list of predefined names.
+        /// Sets the texture with the specified texture usage.
         /// </summary>
-        void SetTexture(string name, Texture texture);
+        void SetTexture(TextureUsage usage, Texture texture);
     }
 
     
@@ -199,30 +101,39 @@ namespace Nine.Graphics
     /// Contains extension methods for Effects.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static class EffectExtensions
+    public static class EffectExtensions
     {
-        internal static T As<T>(this Effect effect) where T : class
+        public static T As<T>(this Effect effect) where T : class
         {
 #if WINDOWS_PHONE
             return effect as T;
 #else
-            LinkedEffect linked;
             T result = effect as T;
             if (result != null)
                 return result;
-            linked = effect as LinkedEffect;
+            var linked = effect as Nine.Graphics.Effects.LinkedEffect;
             if (linked != null)
                 result = linked.Find<T>();
             return result;
 #endif
         }
 
-        internal static T As<T>(this IEffectInstance effect) where T : class
+        public static T As<T>(this IEffectInstance effect) where T : class
         {
             T result = effect as T;
             if (result != null)
                 return result;
-            return effect.Effect.As<T>();
+
+#if !WINDOWS_PHONE
+            // TODO:
+            // A linked effect may have serveral parts that implements T,
+            // Do we need to aggregate those parts into a single instance that
+            // implements T?
+            var linked = effect as Nine.Graphics.Effects.LinkedMaterial;
+            if (linked != null)
+                return linked.Find<T>();
+#endif
+            return null;
         }
 
         #region Copy Material
@@ -235,6 +146,7 @@ namespace Nine.Graphics
             Vector3 SpecularColor = Vector3.Zero;
             Vector3 EmissiveColor = Vector3.Zero;
             float SpecularPower = 16;
+            float Alpha = 1;
 
             Texture2D Texture = sourceEffect.GetTexture();
             if (Texture != null)
@@ -248,6 +160,7 @@ namespace Nine.Graphics
                 EmissiveColor = source.EmissiveColor;
                 SpecularColor = source.SpecularColor;
                 SpecularPower = source.SpecularPower;
+                Alpha = source.Alpha;
             }
             else if (sourceEffect is BasicEffect)
             {
@@ -256,6 +169,7 @@ namespace Nine.Graphics
                 EmissiveColor = source.EmissiveColor;
                 SpecularColor = source.SpecularColor;
                 SpecularPower = source.SpecularPower;
+                Alpha = source.Alpha;
             }
             else if (sourceEffect is SkinnedEffect)
             {
@@ -264,22 +178,26 @@ namespace Nine.Graphics
                 EmissiveColor = source.EmissiveColor;
                 SpecularColor = source.SpecularColor;
                 SpecularPower = source.SpecularPower;
+                Alpha = source.Alpha;
             }
             else if (sourceEffect is EnvironmentMapEffect)
             {
                 EnvironmentMapEffect source = sourceEffect as EnvironmentMapEffect;
                 DiffuseColor = source.DiffuseColor;
                 EmissiveColor = source.EmissiveColor;
+                Alpha = source.Alpha;
             }
             else if (sourceEffect is DualTextureEffect)
             {
                 DualTextureEffect source = sourceEffect as DualTextureEffect;
                 DiffuseColor = source.DiffuseColor;
+                Alpha = source.Alpha;
             }
             else if (sourceEffect is AlphaTestEffect)
             {
                 AlphaTestEffect source = sourceEffect as AlphaTestEffect;
                 DiffuseColor = source.DiffuseColor;
+                Alpha = source.Alpha;
             }
 
 
@@ -291,6 +209,7 @@ namespace Nine.Graphics
                 target.EmissiveColor = EmissiveColor;
                 target.SpecularColor = SpecularColor;
                 target.SpecularPower = SpecularPower;
+                target.Alpha = Alpha;
             }
             else if (effect is BasicEffect)
             {
@@ -299,6 +218,7 @@ namespace Nine.Graphics
                 target.EmissiveColor = EmissiveColor;
                 target.SpecularColor = SpecularColor;
                 target.SpecularPower = SpecularPower;
+                target.Alpha = Alpha;
             }
             else if (effect is SkinnedEffect)
             {
@@ -307,22 +227,26 @@ namespace Nine.Graphics
                 target.EmissiveColor = EmissiveColor;
                 target.SpecularColor = SpecularColor;
                 target.SpecularPower = SpecularPower;
+                target.Alpha = Alpha;
             }
             else if (effect is EnvironmentMapEffect)
             {
                 EnvironmentMapEffect target = effect as EnvironmentMapEffect;
                 target.DiffuseColor = DiffuseColor;
                 target.EmissiveColor = EmissiveColor;
+                target.Alpha = Alpha;
             }
             else if (effect is DualTextureEffect)
             {
                 DualTextureEffect target = effect as DualTextureEffect;
                 target.DiffuseColor = DiffuseColor;
+                target.Alpha = Alpha;
             }
             else if (effect is AlphaTestEffect)
             {
                 AlphaTestEffect target = effect as AlphaTestEffect;
                 target.DiffuseColor = DiffuseColor;
+                target.Alpha = Alpha;
             }
         }
 

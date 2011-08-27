@@ -75,15 +75,15 @@ namespace Nine.Graphics.Effects.Deferred
             set { }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.NormalMap)
+            if (usage == TextureUsage.NormalMap)
                 NormalMap = texture as Texture2D;
         }
 
         Vector3 IEffectMaterial.DiffuseColor
         {
-            get { return Vector3.Zero; }
+            get { return Vector3.One; }
             set { }
         }
 
@@ -96,6 +96,12 @@ namespace Nine.Graphics.Effects.Deferred
         Vector3 IEffectMaterial.SpecularColor
         {
             get { return Vector3.Zero; }
+            set { }
+        }
+
+        float IEffectMaterial.Alpha
+        {
+            get { return 1; }
             set { }
         }
     }

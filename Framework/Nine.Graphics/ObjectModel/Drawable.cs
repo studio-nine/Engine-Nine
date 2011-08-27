@@ -22,42 +22,41 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Base class for all drawables.
     /// </summary>
-    public abstract class Drawable : Transformable, IUpdateable, IDisposable
+    public abstract class Drawable : Transformable, IDrawableObject, IUpdateable, IDisposable
     {
         /// <summary>
         /// Gets or sets whether the drawable is visible.
         /// </summary>
-        [ContentSerializer(Optional = true)]
+        [ContentSerializer]
         public bool Visible { get; set; }
-
-        /// <summary>
-        /// Gets the passes that is required to render this drawable.
-        /// </summary>
-        [ContentSerializerIgnore]
-        public NotificationCollection<Type> Passes { get; internal set; }
         
         /// <summary>
-        /// Used by the rendering system to keep track of lights affecting this drawable.
+        /// Gets the material used by this drawable.
         /// </summary>
-        internal List<Light> AffectingLights;
-        internal List<Light> MultiPassLights;
+        public Material Material { get { return MaterialValue; } }
 
         /// <summary>
-        /// Initializes a new instance of <c>Drawable</c>.
+        /// When overriden, returns the material used by this drawable.
+        /// </summary>
+        protected virtual Material MaterialValue { get { return null; } }
+
+        /// <summary>
+        /// Gets or sets any user data.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Drawable"/> class.
         /// </summary>
         public Drawable()
         {
             Visible = true;
-            Passes = new NotificationCollection<Type>();
         }
 
         /// <summary>
         /// Updates the internal states of this drawable.
         /// </summary>
-        public virtual void Update(TimeSpan elapsedTime)
-        {
-
-        }
+        public virtual void Update(TimeSpan elapsedTime) { }
 
         /// <summary>
         /// Draws the object using the graphics context.
@@ -68,18 +67,19 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Draws the object with the specified effect.
         /// </summary>
-        public virtual void Draw(GraphicsContext context, Effect effect)
-        {
-
-        }
+        public virtual void Draw(GraphicsContext context, Effect effect) { }
 
         /// <summary>
-        /// Draws the object with the specified pass.
+        /// Perform any updates before this object is rendered.
         /// </summary>
-        public virtual void Draw(GraphicsContext context, GraphicsPass pass)
-        {
+        /// <param name="context"></param>
+        public virtual void BeginDraw(GraphicsContext context) { }
 
-        }
+        /// <summary>
+        /// Perform any updates after this object is rendered.
+        /// </summary>
+        /// <param name="context"></param>
+        public virtual void EndDraw(GraphicsContext context) { }
         
         #region IDisposable
         /// <summary>
@@ -92,6 +92,10 @@ namespace Nine.Graphics.ObjectModel
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing) 
         {
 

@@ -33,7 +33,10 @@
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
                 TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
+                TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart[]", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent[]");
                 TypeMapping.Add("Nine.Graphics.IEffectInstance", "System.Object");
+                TypeMapping.Add("Nine.Graphics.Material", "System.Object");
+                TypeMapping.Add("Nine.Graphics.ObjectModel.DrawableModelPart[]", "Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[]");
             }
         }
 
@@ -313,6 +316,14 @@
         string GetMemberContentTypeName(MemberInfo member)
         {
             return GetContentClassFullName(GetMemberType(member));
+        }        
+
+        string GetMemberFieldName(MemberInfo member)
+        {
+            var attrib = member.GetCustomAttributes(typeof(ContentSerializerAttribute), false).OfType<ContentSerializerAttribute>().FirstOrDefault();
+            if (attrib != null && !string.IsNullOrEmpty(attrib.ElementName))
+                return attrib.ElementName;
+            return member.Name;
         }
 
         bool CanSetMember(MemberInfo member)
@@ -440,6 +451,7 @@
         
         IEnumerable<Type> FindEffectInstanceTypes(Assembly assembly)
         {
+            /*
             foreach (var t in from type in assembly.GetTypes()
                               where type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type) &&
                                     type.FullName.IndexOf("ScreenEffect") < 0
@@ -447,6 +459,7 @@
             {
                 yield return t;
             }
+            */
             yield return typeof(BasicEffect);
             yield return typeof(SkinnedEffect);
             yield return typeof(EnvironmentMapEffect);

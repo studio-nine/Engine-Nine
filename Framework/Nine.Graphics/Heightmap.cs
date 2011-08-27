@@ -23,7 +23,7 @@ namespace Nine.Graphics
     /// The up axis of the terrain is Vector.UnitZ.
     /// </summary>
     [NotContentSerializable]
-    public class Heightmap : ISurface
+    public class Heightmap
     {
         #region Fields
         /// <summary>
@@ -83,7 +83,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Occured when the heightmap changed.
         /// </summary>
-        public event EventHandler Invalidate;
+        public event EventHandler<EventArgs> Invalidate;
 
         #endregion
         
@@ -136,6 +136,30 @@ namespace Nine.Graphics
             result.Z = Heights[GetIndex(x, y)];
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the height of the terrain on given point.
+        /// </summary>
+        public float GetHeight(int x, int y)
+        {
+            return Heights[GetIndex(x, y)];
+        }
+
+        /// <summary>
+        /// Gets the normal of the terrain on given point.
+        /// </summary>
+        public Vector3 GetNormal(int x, int y)
+        {
+            return Normals[GetIndex(x, y)];
+        }
+
+        /// <summary>
+        /// Gets the tangent of the terrain on given point.
+        /// </summary>
+        public Vector3 GetTangent(int x, int y)
+        {
+            return Tangents[GetIndex(x, y)];
         }
 
         /// <summary>
@@ -302,14 +326,9 @@ namespace Nine.Graphics
         public float GetHeight(float x, float y)
         {
             float result;
-            Vector3 position = new Vector3();
             Vector3 normal = new Vector3();
 
-            position.X = x;
-            position.Y = y;
-            position.Z = 0;
-
-            if (TryGetHeightAndNormal(position, out result, out normal))
+            if (TryGetHeightAndNormal(x, y, true, false, out result, out normal))
                 return result;
 
             throw new ArgumentOutOfRangeException();
@@ -322,14 +341,9 @@ namespace Nine.Graphics
         public Vector3 GetNormal(float x, float y)
         {
             float result;
-            Vector3 position = new Vector3();
             Vector3 normal = new Vector3();
 
-            position.X = x;
-            position.Y = y;
-            position.Z = 0;
-
-            if (TryGetHeightAndNormal(position, out result, out normal))
+            if (TryGetHeightAndNormal(x, y, false, true, out result, out normal))
                 return normal;
 
             throw new ArgumentOutOfRangeException();
@@ -339,18 +353,23 @@ namespace Nine.Graphics
         /// Gets the height and normal of the terrain at a given location.
         /// </summary>
         /// <returns>False if the location is outside the boundary of the terrain.</returns>
-        public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
+        public bool TryGetHeightAndNormal(float x, float y, out float height, out Vector3 normal)
+        {
+            return TryGetHeightAndNormal(x, y, true, true, out height, out normal);
+        }
+        
+        private bool TryGetHeightAndNormal(float positionX, float positionY, bool getHeight, bool getNormal, out float height, out Vector3 normal)
         {
             // first we'll figure out where on the heightmap "position" is...
-            if (position.X == Size.X)
-                position.X -= float.Epsilon;
-            if (position.Y == Size.Y)
-                position.Y -= float.Epsilon;
+            if (positionX == Size.X)
+                positionX -= float.Epsilon;
+            if (positionY == Size.Y)
+                positionY -= float.Epsilon;
 
             // ... and then check to see if that value goes outside the bounds of the
             // heightmap.
-            if (!(position.X >= 0 && position.X < Size.X &&
-                  position.Y >= 0 && position.Y < Size.Y))
+            if (!(positionX >= 0 && positionX < Size.X &&
+                  positionY >= 0 && positionY < Size.Y))
             {
                 height = float.MinValue;
                 normal = Vector3.UnitZ;
@@ -362,45 +381,58 @@ namespace Nine.Graphics
             // positionOnHeightmap is. Remember that integer division always rounds
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
-            int left = (int)Math.Floor(position.X * Width / Size.X);
-            int top = (int)Math.Floor(position.Y * Height / Size.Y);
+            int left = (int)Math.Floor(positionX * Width / Size.X);
+            int top = (int)Math.Floor(positionY * Height / Size.Y);
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,
             // which we then divide by terrainScale to normalize 0 to 1.
-            float xNormalized = position.X - left * Size.X / Width;
-            float yNormalized = position.Y - top * Size.Y / Height;
+            float xNormalized = positionX - left * Size.X / Width;
+            float yNormalized = positionY - top * Size.Y / Height;
 
-            // Now that we've calculated the indices of the corners of our cell, and
-            // where we are in that cell, we'll use bilinear interpolation to calculate
-            // our height. This process is best explained with a diagram, so please see
-            // the accompanying doc for more information.
-            // First, calculate the heights on the bottom and top edge of our cell by
-            // interpolating from the left and right sides.
-            float topHeight = MathHelper.Lerp(
-                Heights[GetIndex(left, top)],
-                Heights[GetIndex(left + 1, top)], xNormalized);
+            if (getHeight)
+            {
+                // Now that we've calculated the indices of the corners of our cell, and
+                // where we are in that cell, we'll use bilinear interpolation to calculate
+                // our height. This process is best explained with a diagram, so please see
+                // the accompanying doc for more information.
+                // First, calculate the heights on the bottom and top edge of our cell by
+                // interpolating from the left and right sides.
+                float topHeight = MathHelper.Lerp(
+                    Heights[GetIndex(left, top)],
+                    Heights[GetIndex(left + 1, top)], xNormalized);
 
-            float bottomHeight = MathHelper.Lerp(
-                Heights[GetIndex(left, top + 1)],
-                Heights[GetIndex(left + 1, top + 1)], xNormalized);
+                float bottomHeight = MathHelper.Lerp(
+                    Heights[GetIndex(left, top + 1)],
+                    Heights[GetIndex(left + 1, top + 1)], xNormalized);
 
-            // next, interpolate between those two values to calculate the height at our
-            // position.
-            height = MathHelper.Lerp(topHeight, bottomHeight, yNormalized);
+                // next, interpolate between those two values to calculate the height at our
+                // position.
+                height = MathHelper.Lerp(topHeight, bottomHeight, yNormalized);
+            }
+            else
+            {
+                height = 0;
+            }
 
-            // We'll repeat the same process to calculate the normal.
-            Vector3 topNormal = Vector3.Lerp(
-                Normals[GetIndex(left, top)],
-                Normals[GetIndex(left + 1, top)], xNormalized);
+            if (getNormal)
+            {
+                // We'll repeat the same process to calculate the normal.
+                Vector3 topNormal = Vector3.Lerp(
+                    Normals[GetIndex(left, top)],
+                    Normals[GetIndex(left + 1, top)], xNormalized);
 
-            Vector3 bottomNormal = Vector3.Lerp(
-                Normals[GetIndex(left, top + 1)],
-                Normals[GetIndex(left + 1, top + 1)], xNormalized);
+                Vector3 bottomNormal = Vector3.Lerp(
+                    Normals[GetIndex(left, top + 1)],
+                    Normals[GetIndex(left + 1, top + 1)], xNormalized);
 
-            normal = Vector3.Lerp(topNormal, bottomNormal, yNormalized);
-            normal.Normalize();
-
+                normal = Vector3.Lerp(topNormal, bottomNormal, yNormalized);
+                normal.Normalize();
+            }
+            else
+            {
+                normal = Vector3.UnitZ;
+            }
             return true;
         }
 

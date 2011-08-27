@@ -20,11 +20,11 @@ namespace Nine.Graphics.ScreenEffects
             FocalDistance = 0.5f;
         }
 
-        public void SetTexture(string name, Texture texture)
+        public void SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.Blur)
+            if (usage == TextureUsage.Blur)
                 BlurTexture = texture as Texture2D;
-            else if (name == TextureNames.DepthMap)
+            else if (usage == TextureUsage.DepthBuffer)
                 DepthTexture = texture as Texture2D;
         }
 

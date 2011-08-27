@@ -1,7 +1,7 @@
-#region Copyright 2009 (c) Engine Nine
+#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
@@ -71,6 +72,11 @@ namespace Nine.Components
         public Keys CaptureKey { get; set; }
 
         /// <summary>
+        /// Gets or sets the gamepad button used to capture a screenshot.
+        /// </summary>
+        public Buttons? CaptureButton { get; set; }
+
+        /// <summary>
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
@@ -94,6 +100,7 @@ namespace Nine.Components
             ScreenshotsDirectory = "Screenshots";
             screenshotNum = GetCurrentScreenshotNum();
             CaptureKey = Keys.PrintScreen;
+            CaptureButton = Buttons.LeftTrigger;
         }
         #endregion
 
@@ -183,9 +190,7 @@ namespace Nine.Components
         public string CaptureAndSave()
         {
             string filename = null;
-#if WINDOWS
             Capture(true, out filename);
-#endif
             return filename;
         }
 
@@ -205,11 +210,11 @@ namespace Nine.Components
 
                 screenshot = new Texture2D(GraphicsDevice, width, height);
                 screenshot.SetData<Color>(backbuffer);
-#if WINDOWS
                 screenshotNum++;
                 
                 if (save)
                 {
+#if WINDOWS
                     // Make sure screenshots directory exists
                     if (Directory.Exists(ScreenshotsDirectory) == false)
                         Directory.CreateDirectory(ScreenshotsDirectory);
@@ -218,9 +223,12 @@ namespace Nine.Components
                     {
                         screenshot.SaveAsPng(savedFile, width, height);
                     }
-                    return null;
-                }
+#elif XBOX
+                    // TODO:
 #endif
+                    return null;
+
+                }
                 OnCaptured(new ScreenshotCapturedEventArgs() { Filename = filename, Screenshot = screenshot });
                 return screenshot;
             }
@@ -241,7 +249,8 @@ namespace Nine.Components
 
         public void Draw(TimeSpan elapsedTime)
         {
-            bool pressed = Keyboard.GetState().IsKeyDown(CaptureKey);
+            bool pressed = Keyboard.GetState().IsKeyDown(CaptureKey) ||
+                (CaptureButton.HasValue && GamePad.GetState(PlayerIndex.One).IsButtonDown(CaptureButton.Value));
 
             if (pressedLastFrame && !pressed)
             {

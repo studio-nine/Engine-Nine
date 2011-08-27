@@ -120,7 +120,7 @@ namespace ScreenEffects
             }
             graphicsBuffer.End();
 
-            screenEffect.SetTexture(TextureNames.DepthMap, graphicsBuffer.DepthBuffer);
+            screenEffect.SetTexture(TextureUsage.DepthBuffer, graphicsBuffer.DepthBuffer);
 #endif
 
             // Update the screen effect

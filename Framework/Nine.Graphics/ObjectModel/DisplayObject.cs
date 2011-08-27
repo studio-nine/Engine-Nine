@@ -25,9 +25,9 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     /// <remarks>
     /// This class serves as a container to composite other objects.
-    /// If you wish to create your own display object, derive from <c>Drawable</c> instead.
+    /// If you wish to create your own display object, derive from <c>IGraphicsObject</c> instead.
     /// </remarks>
-    public class DisplayObject : Drawable, IEnumerable<object>, INotifyCollectionChanged<object>
+    public sealed class DisplayObject : Transformable, IEnumerable<object>, INotifyCollectionChanged<object>, IDisposable
     {
         #region Children
         /// <summary>
@@ -49,7 +49,7 @@ namespace Nine.Graphics.ObjectModel
 
         void children_Added(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
-            IBoundable boundable = e.Value as IBoundable;
+            ISpatialQueryable boundable = e.Value as ISpatialQueryable;
             if (boundable != null)
                 boundable.BoundingBoxChanged += new EventHandler<EventArgs>(boundable_BoundingBoxChanged);
 
@@ -64,7 +64,7 @@ namespace Nine.Graphics.ObjectModel
 
         void children_Removed(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
-            IBoundable boundable = e.Value as IBoundable;
+            ISpatialQueryable boundable = e.Value as ISpatialQueryable;
             if (boundable != null)
                 boundable.BoundingBoxChanged -= new EventHandler<EventArgs>(boundable_BoundingBoxChanged);
 
@@ -112,8 +112,6 @@ namespace Nine.Graphics.ObjectModel
             children.Removed += (sender, e) => { if (Removed != null) Removed(sender, e); };
         }
 
-        public override void Draw(GraphicsContext context) { }
-
         #region IEnumerable
         public IEnumerator<object> GetEnumerator()
         {
@@ -127,22 +125,18 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region IDisposable
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if (disposing)
+            foreach (var child in Children)
             {
-                foreach (var child in Children)
-                {
-                    IDisposable disposable = child as IDisposable;
-                    if (disposable != null)
-                        disposable.Dispose();
-                }
+                IDisposable disposable = child as IDisposable;
+                if (disposable != null)
+                    disposable.Dispose();
             }
         }
         #endregion
 
         public event EventHandler<NotifyCollectionChangedEventArgs<object>> Added;
-
         public event EventHandler<NotifyCollectionChangedEventArgs<object>> Removed;
     }
 }

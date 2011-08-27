@@ -70,11 +70,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Graphics.Content.Reader.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.EffectInstance.Generated.cs">
-      <Link>Nine.Graphics.EffectInstance.Generated.cs</Link>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.Generated.cs">
+      <Link>Nine.Graphics.Materials.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.EffectInstance.tt</DependentUpon>
+      <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\AvatarAnimation.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
@@ -84,7 +84,6 @@
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
-    <Compile Include="EffectInstance.cs" />
     <Compile Include="Effects\AmbientLightEffect.cs">
       <DependentUpon>AmbientLightEffect.fx</DependentUpon>
     </Compile>
@@ -93,8 +92,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AmbientLightEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Effects\EffectParts\DeferredLightEffectPart.cs" />
     <Compile Include="Effects\EffectParts\EmissiveMapEffectPart.cs" />
     <Compile Include="Effects\EffectParts\SpecularMapEffectPart.cs" />
+    <Compile Include="Effects\LinkedMaterial.cs" />
+    <Compile Include="Effects\ShadowEffect.cs">
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Effects\ShadowEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShadowEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="Materials.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\AmbientLight.HiDef.cs">
       <DependentUpon>AmbientLight.cs</DependentUpon>
@@ -103,10 +113,21 @@
     <Compile Include="ObjectModel\DirectionalLight.HiDef.cs">
       <DependentUpon>DirectionalLight.cs</DependentUpon>
     </Compile>
+    <Compile Include="ObjectModel\DrawableModel.cs" />
+    <Compile Include="ObjectModel\DrawableModelPart.cs" />
+    <Compile Include="ObjectModel\DrawableParticleEffect.cs" />
+    <Compile Include="ObjectModel\DrawableSurface.cs" />
+    <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
+    <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
+    <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="ObjectModel\LightEngine.cs" />
+    <Compile Include="ObjectModel\ModelBatchExtensions.cs" />
     <Compile Include="ObjectModel\PointLight.cs" />
     <Compile Include="ObjectModel\PointLight.HiDef.cs">
       <DependentUpon>PointLight.cs</DependentUpon>
     </Compile>
+    <Compile Include="ObjectModel\Scene.cs" />
+    <Compile Include="ObjectModel\SceneQuery.cs" />
     <Compile Include="ObjectModel\SpotLight.cs" />
     <Compile Include="ObjectModel\SpotLight.HiDef.cs">
       <DependentUpon>SpotLight.cs</DependentUpon>
@@ -115,16 +136,11 @@
     <Compile Include="ObjectModel\Drawable.cs" />
     <Compile Include="ObjectModel\GraphicsContext.cs" />
     <Compile Include="ObjectModel\GraphicsExtensions.cs" />
-    <Compile Include="ObjectModel\GraphicsPass.cs" />
     <Compile Include="ObjectModel\GraphicsSettings.cs" />
     <Compile Include="ObjectModel\GraphicsStatistics.cs" />
     <Compile Include="ObjectModel\Interface.cs" />
     <Compile Include="ObjectModel\Light.cs" />
-    <Compile Include="ObjectModel\ModelInstance.cs" />
-    <Compile Include="ObjectModel\ParticleEffectInstance.cs" />
-    <Compile Include="ObjectModel\Renderer.cs" />
     <Compile Include="ObjectModel\SkyBox.cs" />
-    <Compile Include="ObjectModel\Terrain.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Effects\Deferred\DeferredPointLight.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -213,10 +229,10 @@
       <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Effects\Deferred\IDeferredLight.cs" />
-    <Compile Include="ModelBatchExtensions.cs" />
     <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.cs" />
+    <Compile Include="TextureUsage.cs" />
     <Compile Include="VertexPositionNormal.cs" />
     <Compile Include="Effects\Deferred\DeferredAmbientLight.cs">
       <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
@@ -396,7 +412,6 @@
     </Compile>
     <Compile Include="ScreenCamera.cs" />
     <Compile Include="VertexPositionColorNormalTexture.cs" />
-    <Compile Include="DrawableSurfaceTriangle.cs" />
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
@@ -435,13 +450,7 @@
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Effects\ShadowMap.cs" />
-    <Compile Include="DrawableSurfacePatchPart.cs" />
-    <Compile Include="DrawableSurfaceCollections.cs" />
-    <Compile Include="DrawableSurface.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="VertexPositionColorNormalTangentTexture.cs" />
-    <Compile Include="DrawableSurfacePatch.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -450,10 +459,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Content.Reader.Generated.cs</LastGenOutput>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.EffectInstance.tt">
-      <Link>Nine.Graphics.EffectInstance.tt</Link>
+    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.tt">
+      <Link>Nine.Graphics.Materials.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.EffectInstance.Generated.cs</LastGenOutput>
+      <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
     <None Include="Effects\AmbientLightEffect.fx">
       <Generator>EffectCustomTool</Generator>
@@ -473,6 +482,7 @@
     </None>
     <None Include="Effects\Deferred\DeferredEffect.fx">
       <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>DeferredEffect1.Designer.cs</LastGenOutput>
     </None>
     <None Include="Effects\Deferred\DeferredLighting.fxh">
       <Generator>EffectCustomTool</Generator>
@@ -496,6 +506,10 @@
     <None Include="Effects\PointLightEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>PointLightEffect1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Effects\ShadowEffect.fx">
+      <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>ShadowEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Effects\SkyBoxEffect.fx">
       <Generator>EffectCustomTool</Generator>

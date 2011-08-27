@@ -1,4 +1,5 @@
 using StitchUp.Content.Pipeline.FragmentLinking.Parser;
+using System.Globalization;
 
 namespace StitchUp.Content.Pipeline.FragmentLinking.CodeModel
 {
@@ -14,7 +15,7 @@ namespace StitchUp.Content.Pipeline.FragmentLinking.CodeModel
 
 		public override string ToString()
 		{
-			return Value.ToString();
+			return Value.ToString(new CultureInfo("en-US"));
 		}
 	}
 }

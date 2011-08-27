@@ -64,6 +64,7 @@ namespace ParticleSystem
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
+            Window.AllowUserResizing = true;
         }
 
 

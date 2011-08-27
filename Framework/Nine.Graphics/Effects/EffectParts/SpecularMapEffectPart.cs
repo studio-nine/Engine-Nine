@@ -20,7 +20,8 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class SpecularMapEffectPart : LinkedEffectPart, IEffectTexture
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
+        
         private Texture2D texture;
         private EffectParameter textureParameter;
         private const uint textureDirtyMask = 1 << 0;
@@ -34,19 +35,25 @@ namespace Nine.Graphics.Effects.EffectParts
         public Texture2D SpecularMap
         {
             get { return texture; }
-            set { texture = value; dirtyMask |= textureDirtyMask; }
+            set { if (texture != value) { texture = value; DirtyMask |= textureDirtyMask; } }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & textureDirtyMask) != 0)
+            if ((DirtyMask & textureDirtyMask) != 0)
             {
                 if (textureParameter != null)
                     textureParameter.SetValue(texture);
-                dirtyMask &= ~textureDirtyMask;
+                DirtyMask &= ~textureDirtyMask;
             }
         }
 
+        protected internal override void OnApply(LinkedEffectPart part)
+        {
+            var effectPart = (SpecularMapEffectPart)part;
+            effectPart.SpecularMap = SpecularMap;
+        }
+        
         protected internal override LinkedEffectPart Clone()
         {
             return new SpecularMapEffectPart()
@@ -55,9 +62,9 @@ namespace Nine.Graphics.Effects.EffectParts
             };
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.Specular)
+            if (usage == TextureUsage.Specular)
                 SpecularMap = texture as Texture2D;
         }
 

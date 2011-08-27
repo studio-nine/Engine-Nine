@@ -21,7 +21,7 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class ShadowMapEffectPart : LinkedEffectPart, IEffectTexture, IEffectShadowMap
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
         
         private float shadowIntensity;
         private EffectParameter shadowIntensityParameter;
@@ -31,10 +31,8 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter depthBiasParameter;
         private const uint depthBiasDirtyMask = 1 << 1;
 
-        private Matrix lightView;
-        private Matrix lightProjection;
+        private Matrix lightViewProjection;
         private EffectParameter lightViewProjectionParameter;
-        private EffectParameter farClipParameter;
         private const uint lightViewProjectionDirtyMask = 1 << 2;
 
         private Texture2D shadowMap;
@@ -46,67 +44,57 @@ namespace Nine.Graphics.Effects.EffectParts
         public float ShadowIntensity
         {
             get { return shadowIntensity; }
-            set { shadowIntensity = value; dirtyMask |= shadowIntensityDirtyMask; }
+            set { if (shadowIntensity != value) { shadowIntensity = value; DirtyMask |= shadowIntensityDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public float DepthBias
         {
             get { return depthBias; }
-            set { depthBias = value; dirtyMask |= depthBiasDirtyMask; }
+            set { if (depthBias != value) { depthBias = value; DirtyMask |= depthBiasDirtyMask; } }
         }
 
         [ContentSerializerIgnore]
-        public Matrix LightView
+        public Matrix LightViewProjection
         {
-            get { return lightView; }
-            set { lightView = value; dirtyMask |= lightViewProjectionDirtyMask; }
+            get { return lightViewProjection; }
+            set { lightViewProjection = value; DirtyMask |= lightViewProjectionDirtyMask; }
         }
-
-        [ContentSerializerIgnore]
-        public Matrix LightProjection
-        {
-            get { return lightProjection; }
-            set { lightProjection = value; dirtyMask |= lightViewProjectionDirtyMask; }
-        }
-
+        
         [ContentSerializerIgnore]
         public Texture2D ShadowMap
         {
             get { return shadowMap; }
-            set { shadowMap = value; dirtyMask |= shadowMapDirtyMask; }
+            set { if (shadowMap != value) { shadowMap = value; DirtyMask |= shadowMapDirtyMask; } }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & shadowIntensityDirtyMask) != 0)
+            if ((DirtyMask & shadowIntensityDirtyMask) != 0)
             {
                 if (shadowIntensityParameter == null)
                     shadowIntensityParameter = GetParameter("ShadowIntensity");
                 shadowIntensityParameter.SetValue(shadowIntensity);
-                dirtyMask &= ~shadowIntensityDirtyMask;
+                DirtyMask &= ~shadowIntensityDirtyMask;
             }
 
-            if ((dirtyMask & depthBiasDirtyMask) != 0)
+            if ((DirtyMask & depthBiasDirtyMask) != 0)
             {
                 if (depthBiasParameter == null)
                     depthBiasParameter = GetParameter("DepthBias");
                 depthBiasParameter.SetValue(depthBias);
-                dirtyMask &= ~depthBiasDirtyMask;
+                DirtyMask &= ~depthBiasDirtyMask;
             }
 
-            if ((dirtyMask & lightViewProjectionDirtyMask) != 0)
+            if ((DirtyMask & lightViewProjectionDirtyMask) != 0)
             {
                 if (lightViewProjectionParameter == null)
                     lightViewProjectionParameter = GetParameter("LightViewProjection");
-                lightViewProjectionParameter.SetValue(lightView * lightProjection);
-                if (farClipParameter == null)
-                    farClipParameter = GetParameter("FarClip");
-                farClipParameter.SetValue(lightProjection.GetFarClip());
-                dirtyMask &= ~lightViewProjectionDirtyMask;
+                lightViewProjectionParameter.SetValue(lightViewProjection);
+                DirtyMask &= ~lightViewProjectionDirtyMask;
             }
 
-            if ((dirtyMask & shadowMapDirtyMask) != 0)
+            if ((DirtyMask & shadowMapDirtyMask) != 0)
             {
                 if (shadowMapParameter == null)
                     shadowMapParameter = GetParameter("ShadowMap");
@@ -115,8 +103,20 @@ namespace Nine.Graphics.Effects.EffectParts
                     shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
                 if (shadowMap != null)
                     shadowMapSizeParameter.SetValue(new Vector2(1.0f / shadowMap.Width, 1.0f / shadowMap.Height));
-                dirtyMask &= ~shadowMapDirtyMask;
+                DirtyMask &= ~shadowMapDirtyMask;
             }
+        }
+
+        protected internal override void OnApply(LinkedEffectPart part)
+        {
+            // Don't apply shadow parameters since it's not per model
+            //
+            //var effectPart = (ShadowMapEffectPart)part;
+            //effectPart.ShadowIntensity = ShadowIntensity;
+            //effectPart.DepthBias = DepthBias;
+            //effectPart.ShadowMap = ShadowMap;
+            //effectPart.LightView = LightView;
+            //effectPart.LightProjection = LightProjection;
         }
         
         public ShadowMapEffectPart()
@@ -132,8 +132,7 @@ namespace Nine.Graphics.Effects.EffectParts
                 DepthBias = this.DepthBias,
                 ShadowIntensity = this.ShadowIntensity,
                 ShadowMap = this.ShadowMap,
-                LightView = this.LightView,
-                LightProjection = this.LightProjection,
+                LightViewProjection = this.LightViewProjection,
             };
         }
 
@@ -143,9 +142,9 @@ namespace Nine.Graphics.Effects.EffectParts
             set { }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.ShadowMap && texture is Texture2D)
+            if (usage == TextureUsage.ShadowMap && texture is Texture2D)
                 ShadowMap = texture as Texture2D;
         }
     }

@@ -23,6 +23,7 @@ namespace Nine.Graphics
     /// <summary>
     /// Represents a pool of render targets.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class RenderTargetPool
     {
         private static Dictionary<RenderTargetPoolKey, List<RenderTargetPoolValue>> registry = new Dictionary<RenderTargetPoolKey, List<RenderTargetPoolValue>>(new RenderTargetPoolKeyEqualityComparer());

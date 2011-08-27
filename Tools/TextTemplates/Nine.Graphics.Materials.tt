@@ -1,0 +1,5 @@
+﻿<#
+    var assemblyFile = @"..\..\References\x86\Nine.Graphics.dll";
+	var assemblyDocumentFile = @"..\..\References\x86\Nine.Graphics.xml";
+#>
+<#@ include file="Materials.tth" #>

@@ -20,11 +20,11 @@ namespace Nine.Graphics.ScreenEffects
             MaxLuminance = 16;
         }
 
-        public void SetTexture(string name, Texture texture)
+        public void SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.Luminance)
+            if (usage == TextureUsage.Luminance)
                 LuminanceTexture = texture as Texture2D;
-            else if (name == TextureNames.Bloom)
+            else if (usage == TextureUsage.Bloom)
                 BloomTexture = texture as Texture2D;
         }
 

@@ -108,11 +108,11 @@ namespace Nine.Graphics.Effects.Deferred
             set { }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.NormalMap)
+            if (usage == TextureUsage.NormalMap)
                 NormalBuffer = texture as Texture2D;
-            else if (name == TextureNames.DepthMap)
+            else if (usage == TextureUsage.DepthBuffer)
                 DepthBuffer = texture as Texture2D;
         }
 

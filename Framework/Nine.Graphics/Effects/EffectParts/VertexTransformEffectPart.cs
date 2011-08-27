@@ -20,7 +20,7 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class VertexTransformEffectPart : LinkedEffectPart, IEffectMatrices
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
         
         private Matrix world;
         private EffectParameter worldParameter;
@@ -35,34 +35,34 @@ namespace Nine.Graphics.Effects.EffectParts
         public Matrix World
         {
             get { return world; }
-            set { world = value; dirtyMask |= worldDirtyMask; dirtyMask |= worldViewProjectionDirtyMask; }
+            set { world = value; DirtyMask |= worldDirtyMask; DirtyMask |= worldViewProjectionDirtyMask; }
         }
 
         [ContentSerializerIgnore]
         public Matrix View
         {
             get { return view; }
-            set { view = value; dirtyMask |= worldViewProjectionDirtyMask; }
+            set { view = value; DirtyMask |= worldViewProjectionDirtyMask; }
         }
 
         [ContentSerializerIgnore]
         public Matrix Projection
         {
             get { return projection; }
-            set { projection = value; dirtyMask |= worldViewProjectionDirtyMask; }
+            set { projection = value; DirtyMask |= worldViewProjectionDirtyMask; }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & worldDirtyMask) != 0)
+            if ((DirtyMask & worldDirtyMask) != 0)
             {
                 if (worldParameter == null)
                     worldParameter = GetParameter("World");
                 worldParameter.SetValue(world);
-                dirtyMask &= ~worldDirtyMask;
+                DirtyMask &= ~worldDirtyMask;
             }
 
-            if ((dirtyMask & worldViewProjectionDirtyMask) != 0)
+            if ((DirtyMask & worldViewProjectionDirtyMask) != 0)
             {
                 if (worldViewProjectionParameter == null)
                     worldViewProjectionParameter = GetParameter("WorldViewProjection");
@@ -72,7 +72,7 @@ namespace Nine.Graphics.Effects.EffectParts
                 Matrix.Multiply(ref wvp, ref projection, out wvp);
 
                 worldViewProjectionParameter.SetValue(wvp);
-                dirtyMask &= ~worldViewProjectionDirtyMask;
+                DirtyMask &= ~worldViewProjectionDirtyMask;
             }
         }
 

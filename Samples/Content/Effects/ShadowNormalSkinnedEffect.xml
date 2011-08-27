@@ -9,6 +9,7 @@
 
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMapEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTextureEffectPartContent"></Item>
+      
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent"></Item>

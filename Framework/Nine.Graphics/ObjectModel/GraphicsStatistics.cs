@@ -27,6 +27,7 @@ namespace Nine.Graphics.ObjectModel
         public int VisibleObjectCount { get; internal set; }
         public int OpaqueObjectCount { get; internal set; }
         public int TransparentObjectCount { get; internal set; }
+        public int CurrentFrame { get; internal set; }
         public int LightCount { get; internal set; }
         public int FrameRate { get; internal set; }
 

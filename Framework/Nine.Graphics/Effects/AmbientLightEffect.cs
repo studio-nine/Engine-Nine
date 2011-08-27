@@ -44,7 +44,13 @@ namespace Nine.Graphics.Effects
 
         private void OnCreated()
         {
-            Lights = new ReadOnlyCollection<IAmbientLight>(new AmbientLight[4]);
+            Lights = new ReadOnlyCollection<IAmbientLight>(new AmbientLight[]
+            {
+                new AmbientLight(),
+                new AmbientLight(),
+                new AmbientLight(),
+                new AmbientLight(),
+            });
         }
 
         private void OnClone(AmbientLightEffect cloneSource)
@@ -76,9 +82,9 @@ namespace Nine.Graphics.Effects
             ambientLightColor = color;
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.Diffuse)
+            if (usage == TextureUsage.Diffuse)
                 Texture = texture as Texture2D;
         }
 

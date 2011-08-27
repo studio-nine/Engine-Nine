@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Graphics.Primitives;
 using Nine.Animations;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -31,12 +32,18 @@ namespace Nine.Graphics.ObjectModel
         public TextureCube Texture { get; internal set; }
 
         public override BoundingBox BoundingBox { get { return boundingBox; } }
+        
+        private Effect effect;
 
         static BoundingBox boundingBox = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);
 
         public override void Draw(GraphicsContext context)
         {
 #if !WINDOWS_PHONE
+            // Keep track of the effect to avoid the effect been constantly garbage collected
+            // since graphics resources uses weak references now.
+            effect = effect ?? GraphicsResources<SkyBoxEffect>.GetInstance(context.GraphicsDevice);
+
             context.ModelBatch.DrawSkyBox(Texture);
 #endif
         }

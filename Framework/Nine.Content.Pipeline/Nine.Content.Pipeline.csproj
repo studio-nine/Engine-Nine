@@ -393,6 +393,7 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLights.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\EmissiveMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\SpecularMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\SpotLight.fragment" />

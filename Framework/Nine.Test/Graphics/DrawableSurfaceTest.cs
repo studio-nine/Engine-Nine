@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Nine.Graphics.ObjectModel;
 
 namespace Nine.Graphics.Test
 {
@@ -69,7 +70,7 @@ namespace Nine.Graphics.Test
             };
             Game.Run();
         }
-
+        /*
         [TestMethod()]
         public void DrawableSurfaceTriangleTest()
         {
@@ -106,5 +107,6 @@ namespace Nine.Graphics.Test
             };
             Game.Run();
         }
+         */
     }
 }

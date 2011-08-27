@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Effects\SkinnedEffect.xml">
-      <Link>SkinnedEffect.xml</Link>
+      <Link>Effects\SkinnedEffect.xml</Link>
       <Name>SkinnedEffect</Name>
       <Importer>XmlImporter</Importer>
       <Processor>LinkedEffectProcessor</Processor>
@@ -80,23 +80,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Worlds\WorldView.xml">
-      <Link>WorldView.xml</Link>
-      <Name>WorldView</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\Terrain\Mountain.png">
-      <Link>Mountain.png</Link>
+      <Link>Terrain\Mountain.png</Link>
       <Name>Mountain</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="..\..\Content\Terrain\MountainHeightmap.bmp">
-      <Link>MountainHeightmap.bmp</Link>
+      <Link>Terrain\MountainHeightmap.bmp</Link>
       <Name>MountainHeightmap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>HeightmapProcessor</Processor>
@@ -105,19 +96,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\2.bmp">
-      <Link>2.bmp</Link>
+      <Link>Terrain\2.bmp</Link>
       <Name>2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="..\..\Content\Terrain\3.bmp">
-      <Link>3.bmp</Link>
+      <Link>Terrain\3.bmp</Link>
       <Name>3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="..\..\Content\Terrain\Splat.xml">
-      <Link>Splat.xml</Link>
+      <Link>Terrain\Splat.xml</Link>
       <Name>Splat</Name>
       <Importer>XmlImporter</Importer>
       <Processor>SplatterTextureProcessor</Processor>
@@ -126,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\TerrainEffect.xml">
-      <Link>TerrainEffect.xml</Link>
+      <Link>Terrain\TerrainEffect.xml</Link>
       <Name>TerrainEffect</Name>
       <Importer>XmlImporter</Importer>
       <Processor>LinkedEffectProcessor</Processor>
@@ -135,7 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\checker.bmp">
-      <Link>checker.bmp</Link>
+      <Link>Terrain\checker.bmp</Link>
       <Name>checker</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -143,13 +134,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\grass.dds">
-      <Link>grass.dds</Link>
+      <Link>Terrain\grass.dds</Link>
       <Name>grass</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="..\..\Content\Terrain\grass_n.dds">
-      <Link>grass_n.dds</Link>
+      <Link>Terrain\grass_n.dds</Link>
       <Name>grass_n</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -157,13 +148,60 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Models\Dude\dude.fbx">
-      <Link>dude.fbx</Link>
+      <Link>Models\dude.fbx</Link>
       <Name>dude</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
       <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
       <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
       <ProcessorParameters_DefaultEffect>SkinnedEffect</ProcessorParameters_DefaultEffect>
+      <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Effects\ShadowNormalSkinnedEffect.xml">
+      <Link>Effects\ShadowNormalSkinnedEffect.xml</Link>
+      <Name>ShadowNormalSkinnedEffect</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>LinkedEffectProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\Peon\Peon.X">
+      <Link>Models\Peon.X</Link>
+      <Name>Peon</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ExtendedModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\..\Content\Worlds\Scene.xml">
+      <Link>Scene.xml</Link>
+      <Name>Scene</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\Palm\AlphaPalm.X">
+      <Link>Models\AlphaPalm.X</Link>
+      <Name>AlphaPalm</Name>
+      <Importer>XImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\Tank\tank.fbx">
+      <Link>Models\tank.fbx</Link>
+      <Name>tank</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_Scale>0.02</ProcessorParameters_Scale>
+      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

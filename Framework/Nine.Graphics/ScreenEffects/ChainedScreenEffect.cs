@@ -57,13 +57,13 @@ namespace Nine.Graphics.ScreenEffects
             }
         }
 
-        public void SetTexture(string name, Texture texture)
+        public void SetTexture(TextureUsage usage, Texture texture)
         {
             for (int i = 0; i < Effects.Count; i++)
             {
                 IEffectTexture update = Effects[i] as IEffectTexture;
                 if (update != null)
-                    update.SetTexture(name, texture);
+                    update.SetTexture(usage, texture);
             }
         }
 

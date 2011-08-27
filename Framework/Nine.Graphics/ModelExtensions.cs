@@ -67,7 +67,7 @@ namespace Nine.Graphics
         /// Gets the additional textures (E.g. normalmap) attached to the ModelMeshPart.
         /// </summary>
         [ContentSerializer()]
-        public Dictionary<string, Texture> Textures { get; internal set; }
+        public Dictionary<TextureUsage, Texture> Textures { get; internal set; }
     }
 
     /// <summary>
@@ -77,6 +77,7 @@ namespace Nine.Graphics
     public static class ModelExtensions
     {
         static List<string> EmptyStringCollection = new List<string>();
+        static List<TextureUsage> EmptyTextureNamesCollection = new List<TextureUsage>();
 
         /// <summary>
         /// Gets whether the specified model has any skinning info attached to it.
@@ -276,7 +277,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets all the texture names attached to the model.
         /// </summary>
-        public static ICollection<string> GetTextures(this ModelMeshPart part)
+        public static ICollection<TextureUsage> GetTextures(this ModelMeshPart part)
         {
             ModelMeshPartTag extensions = part.Tag as ModelMeshPartTag;
 
@@ -284,19 +285,19 @@ namespace Nine.Graphics
             {
                 return extensions.Textures.Keys;
             }
-            return EmptyStringCollection;
+            return EmptyTextureNamesCollection;
         }
 
         /// <summary>
         /// Gets the texture attached to the model with the specified name.
         /// </summary>
-        public static Texture GetTexture(this ModelMeshPart part, string name)
+        public static Texture GetTexture(this ModelMeshPart part, TextureUsage usage)
         {
             Texture result;
             ModelMeshPartTag extensions = part.Tag as ModelMeshPartTag;
 
             if (extensions != null && extensions.Textures != null &&
-                extensions.Textures.TryGetValue(name, out result))
+                extensions.Textures.TryGetValue(usage, out result))
             {
                 return result;
             }
@@ -359,28 +360,37 @@ namespace Nine.Graphics
         /// </remarks>
         public static void ConvertEffectTo(this ModelMeshPart part, Effect effect)
         {
+            ConvertEffectTo(part, effect, false, false);
+        }
+
+        /// <summary>
+        /// Converts the current effect of the ModelMeshPart to a new effect.
+        /// Materials (Diffuse, Emissive, etc) and textures parameters are copied to the new effect.
+        /// </summary>
+        internal static void ConvertEffectTo(this ModelMeshPart part, Effect effect, bool overrideMaterials,
+                                                                                     bool overrideTextures)
+        {
             if (effect == null)
                 throw new ArgumentNullException("effect");
 
-            effect.CopyMaterialsFrom(part.Effect);
-
-            if (effect.GetTexture() != null)
+            if (!overrideMaterials)
             {
-                Texture2D texture = part.Effect.GetTexture();
-
-                if (texture != null)
-                    effect.SetTexture(texture);
+                effect.CopyMaterialsFrom(part.Effect);
             }
 
-            IEffectTexture effectTexture = effect as IEffectTexture;
-            if (effectTexture != null)
+            if (!overrideTextures)
             {
-                foreach (string texture in part.GetTextures())
+                effect.SetTexture(part.Effect.GetTexture());
+
+                IEffectTexture effectTexture = effect as IEffectTexture;
+                if (effectTexture != null)
                 {
-                    effectTexture.SetTexture(texture, part.GetTexture(texture));
+                    foreach (var texture in part.GetTextures())
+                    {
+                        effectTexture.SetTexture(texture, part.GetTexture(texture));
+                    }
                 }
             }
-
             part.Effect = effect;
         }
         
@@ -412,68 +422,53 @@ namespace Nine.Graphics
 
             return result;
         }
+
+        static WeakReference<Vector3[]> WeakVertices = new WeakReference<Vector3[]>(null);
+        static WeakReference<ushort[]> WeakIndices = new WeakReference<ushort[]>(null);
         
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
         private static bool ComputeBoundingBoxFromVertices(this Model model, out BoundingBox boundingBox)
         {
-            boundingBox = new BoundingBox(Vector3.Zero, Vector3.Zero);
             if (null == model || model.Meshes.Count <= 0)
+            {
+                boundingBox = new BoundingBox();
                 return false;
+            }
 
-            const float FloatMax = float.MaxValue;
-
-            // Compute bounding box
-            Vector3 min = new Vector3(FloatMax, FloatMax, FloatMax);
-            Vector3 max = new Vector3(-FloatMax, -FloatMax, -FloatMax);
+            bool first = true;
+            BoundingBox temp = new BoundingBox();
 
             Matrix[] bones = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(bones);
-
-            List<VertexBuffer> usedBuffers = new List<VertexBuffer>();
 
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
                     if (part.VertexBuffer.BufferUsage == BufferUsage.WriteOnly)
-                        return false;
-
-                    if (usedBuffers.Contains(part.VertexBuffer))
-                        continue;
-
-                    int stride = part.VertexBuffer.VertexDeclaration.VertexStride;
-                    int elementCount = part.VertexBuffer.VertexCount;
-                    Vector3[] vertices = new Vector3[elementCount];
-                    part.VertexBuffer.GetData<Vector3>(0, vertices, 0, elementCount, stride);
-
-                    foreach (Vector3 vertex in vertices)
                     {
-                        // Transform vertex
-                        Vector3 v = Vector3.Transform(vertex, bones[mesh.ParentBone.Index]);
-
-                        if (v.X < min.X)
-                            min.X = v.X;
-                        if (v.X > max.X)
-                            max.X = v.X;
-
-                        if (v.Y < min.Y)
-                            min.Y = v.Y;
-                        if (v.Y > max.Y)
-                            max.Y = v.Y;
-
-                        if (v.Z < min.Z)
-                            min.Z = v.Z;
-                        if (v.Z > max.Z)
-                            max.Z = v.Z;
+                        boundingBox = new BoundingBox();
+                        return false;
                     }
 
-                    usedBuffers.Add(part.VertexBuffer);
+                    if (!ComputeBoundingBoxFromVertices(model, mesh, part, bones[mesh.ParentBone.Index], out boundingBox))
+                    {
+                        boundingBox = new BoundingBox();
+                        return false;
+                    }
+
+                    if (first)
+                        temp = boundingBox;
+                    else
+                        BoundingBox.CreateMerged(ref temp, ref boundingBox, out temp);
+
+                    first = false;
                 }
             }
 
-            boundingBox = new BoundingBox(min, max);
+            boundingBox = temp;
             return true;
         }
 
@@ -485,7 +480,7 @@ namespace Nine.Graphics
         {
             // Try to use vertices of the mesh
             BoundingBox result = new BoundingBox();
-            if (ComputeBoundingBoxFromVertices(model, mesh, part, out result))
+            if (ComputeBoundingBoxFromVertices(model, mesh, part, null, out result))
                 return result;
 
             // Now use bounding spheres
@@ -495,7 +490,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
-        private static bool ComputeBoundingBoxFromVertices(this Model model, ModelMesh mesh, ModelMeshPart part, out BoundingBox boundingBox)
+        private static bool ComputeBoundingBoxFromVertices(this Model model, ModelMesh mesh, ModelMeshPart part, Matrix? transform, out BoundingBox boundingBox)
         {
             boundingBox = new BoundingBox();
             if (null == model || model.Meshes.Count <= 0)
@@ -512,17 +507,31 @@ namespace Nine.Graphics
             Vector3 max = new Vector3(-FloatMax, -FloatMax, -FloatMax);
 
             int stride = part.VertexBuffer.VertexDeclaration.VertexStride;
-            int elementCount = part.VertexBuffer.VertexCount;
-            int indexCount = part.IndexBuffer.IndexCount;
-            Vector3[] vertices = new Vector3[elementCount];
-            ushort[] indices = new ushort[indexCount];
-            
-            part.VertexBuffer.GetData<Vector3>(0, vertices, 0, elementCount, stride);
-            part.IndexBuffer.GetData<ushort>(0, indices, part.StartIndex, part.PrimitiveCount * 3);
+            int elementCount = part.NumVertices;
+            int indexCount = part.PrimitiveCount * 3;
+            int indexBytes = part.IndexBuffer.IndexElementSize == IndexElementSize.SixteenBits ? 2 : 4;
 
-            for (int i = part.StartIndex; i < part.StartIndex + part.PrimitiveCount * 3; i++)
+            var Vertices = WeakVertices.Target;
+            var Indices = WeakIndices.Target;
+            if (Vertices == null || Vertices.Length < elementCount)
+                WeakVertices.Target = Vertices = new Vector3[elementCount];
+            if (Indices == null || Indices.Length < indexCount)
+                WeakIndices.Target = Indices = new ushort[indexCount];
+            
+            part.VertexBuffer.GetData<Vector3>(part.VertexOffset * stride, Vertices, 0, elementCount, stride);
+            part.IndexBuffer.GetData<ushort>(part.StartIndex * indexBytes, Indices, 0, indexCount);
+
+            Matrix mx = new Matrix();
+            if (transform != null)
+                mx = transform.Value;
+
+            for (int i = 0; i < indexCount; i++)
             {
-                Vector3 v = vertices[indices[i]];
+                Vector3 v = Vertices[Indices[i]];
+                if (transform != null)
+                {
+                    Vector3.Transform(ref v, ref mx, out v);
+                }
 
                 if (v.X < min.X)
                     min.X = v.X;

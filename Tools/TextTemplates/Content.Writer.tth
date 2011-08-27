@@ -24,7 +24,7 @@ namespace <#= namespaceGroup.Key #>
     {
         var className = GetContentClassName(type);
         var classConstructorName = GetContentClassConstructorName(type);
-        var members = FindContentSerializableMembers(type).OrderBy(m => m.Name).ToArray();
+        var members = FindContentSerializableMembers(type).ToArray();
 #>
     /// <summary>
     /// Content writer for <c><#= type.Name #></c>.
@@ -41,8 +41,9 @@ namespace <#= namespaceGroup.Key #>
     foreach (var member in members)
     {
         var memberTypeName = GetMemberTypeName(member);
+        var memberName = GetMemberFieldName(member);
 #>
-            output.WriteObject(value.<#= member.Name #>);
+            output.WriteObject(value.<#= memberName #>);
 <#
     }
 #>

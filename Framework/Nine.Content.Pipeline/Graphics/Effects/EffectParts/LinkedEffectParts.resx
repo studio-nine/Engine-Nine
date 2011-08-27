@@ -130,6 +130,9 @@
   <data name="ColorMatrix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\colormatrix.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="DeferredLights" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\deferredlights.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="DirectionalLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\directionallight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

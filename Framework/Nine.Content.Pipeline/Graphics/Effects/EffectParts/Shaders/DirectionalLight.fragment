@@ -8,7 +8,7 @@ fragment DirectionalLight;
 [parameters]
 float3 DirLightDirection = { 0, -0.707107, -0.707107 };
 float3 DirLightDiffuseColor = { 1, 1, 1 };
-float3 DirLightSpecularColor = { 1, 1, 1 };
+float3 DirLightSpecularColor = { 0, 0, 0 };
 
 [ps]
 __hlsl__

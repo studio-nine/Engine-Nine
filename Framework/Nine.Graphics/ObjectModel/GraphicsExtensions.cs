@@ -27,7 +27,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Create all the graphics objects in the world.
         /// </summary>
-        public static Renderer CreateGraphics(this World world, GraphicsDevice graphics)
+        public static Scene CreateGraphics(this World world, GraphicsDevice graphics)
         {
             return CreateGraphics(world, graphics, null, null);
         }
@@ -35,7 +35,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Create all the graphics objects in the world.
         /// </summary>
-        public static Renderer CreateGraphics(this World world, GraphicsDevice graphics, GraphicsSettings settings, ISceneManager<ISpatialQueryable> sceneManager)
+        public static Scene CreateGraphics(this World world, GraphicsDevice graphics, GraphicsSettings settings, ISceneManager<ISpatialQueryable> sceneManager)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
@@ -43,7 +43,7 @@ namespace Nine.Graphics.ObjectModel
             if (world.Renderer != null)
                 throw new InvalidOperationException("Graphics has already been created.");
 
-            Renderer renderer = new Renderer(graphics, settings, sceneManager);
+            Scene renderer = new Scene(graphics, settings, sceneManager);
             world.Renderer = renderer; 
             world.TemplateFactories.Add(new ContentTemplateFactory(new GraphicsDeviceServiceProvider(graphics)));
             world.WorldObjects.ForEach(o => renderer.Add(CreateGraphicsObject(world, o)));
@@ -56,19 +56,19 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the graphics render attached to this world objects.
         /// </summary>
-        public static Renderer GetGraphics(this World world)
+        public static Scene GetGraphics(this World world)
         {
-            return (Renderer)world.Renderer;
+            return (Scene)world.Renderer;
         }
 
-        static object CreateGraphicsObject(World world, object obj)
+        static ISpatialQueryable CreateGraphicsObject(World world, object obj)
         {
             IWorldObject worldObject = obj as IWorldObject;
             if (worldObject == null)
-                return obj;
+                return obj as ISpatialQueryable;
             if (worldObject.Template == null)
-                return obj;
-            return world.CreateFromTemplate(worldObject.Template);
+                return obj as ISpatialQueryable;
+            return world.CreateFromTemplate(worldObject.Template) as ISpatialQueryable;
         }
 
         static object GetGraphicsObject(object obj)
@@ -81,7 +81,7 @@ namespace Nine.Graphics.ObjectModel
 
         static void WorldObjects_Added(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
-            Renderer renderer = (Renderer)((World)sender).Renderer;
+            Scene renderer = (Scene)((World)sender).Renderer;
             if (renderer != null)
             {
                 renderer.Add(CreateGraphicsObject((World)sender, e.Value));
@@ -90,16 +90,16 @@ namespace Nine.Graphics.ObjectModel
 
         static void WorldObjects_Removed(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
-            Renderer renderer = (Renderer)((World)sender).Renderer;
+            Scene renderer = (Scene)((World)sender).Renderer;
             if (renderer != null)
             {
-                renderer.Remove(GetGraphicsObject(e.Value));
+                renderer.Remove(GetGraphicsObject(e.Value) as ISpatialQueryable);
             }
         }
         
         static void Draw(object sender, TimeEventArgs e)
         {
-            Renderer renderer = (Renderer)((World)sender).Renderer;
+            Scene renderer = (Scene)((World)sender).Renderer;
             if (renderer != null)
             {
                 renderer.Draw(e.ElapsedTime);

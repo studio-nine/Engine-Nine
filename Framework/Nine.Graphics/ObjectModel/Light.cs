@@ -15,6 +15,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Graphics.ParticleEffects;
+#if !WINDOWS_PHONE
+using Nine.Graphics.Effects;
+#endif
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -31,52 +34,105 @@ namespace Nine.Graphics.ObjectModel
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Gets whether the light should cast a shadow.
+        /// Gets or sets whether the light should cast a shadow.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public bool CastShadow  { get; set; }
 
         /// <summary>
         /// Gets the order of this light when it's been process by the renderer.
         /// Light might be discarded when the max affecting lights are reached.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public float Order { get; set; }
 
         /// <summary>
         /// Gets the multi-pass lighting effect used to draw object.
         /// </summary>
-        public virtual Effect Effect { get { return null; } }
+        public virtual Effect MultiPassEffect { get { return null; } }
+
+        /// <summary>
+        /// Gets the shadow frustum of this light.
+        /// </summary>
+        public BoundingFrustum ShadowFrustum { get; private set; }
 
         /// <summary>
         /// Used by the rendering system to keep track of drawables affect by this light.
         /// </summary>
-        internal List<Drawable> AffectedDrawables;
+        internal List<IDrawableObject> AffectedDrawables;
+
+#if !WINDOWS_PHONE
+        internal ShadowMap ShadowMap;
+#endif
 
         /// <summary>
         /// Finds all the objects affected by this light.
         /// </summary>
-        protected internal abstract IEnumerable<Drawable> FindAffectedDrawables(ISceneManager<Drawable> allDrawables,
-                                                                                IEnumerable<Drawable> drawablesInViewFrustum);
+        protected internal abstract IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
+                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum);
 
         /// <summary>
-        /// TODO: Tracky...
+        /// TODO:
         /// </summary>
         protected internal abstract bool Apply(IEffectInstance effectInstance, int index, bool last);
 
         /// <summary>
         /// Draws the depth map of the specified drawables.
         /// </summary>
-        public void DrawDepthMap(ISpatialQuery<Drawable> drawables) { }
+        public virtual void DrawShadowMap(GraphicsContext context,
+                                          ISpatialQuery<IDrawableObject> drawables, 
+                                          IEnumerable<IDrawableObject> drawablesInLightFrustum,
+                                          IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        {
+#if !WINDOWS_PHONE
+            if (ShadowMap == null || ShadowMap.Size != context.Settings.ShadowMapResolution)
+            {
+                if (ShadowMap != null)
+                    ShadowMap.Dispose();
+                ShadowMap = new ShadowMap(context.GraphicsDevice, context.Settings.ShadowMapResolution);
+            }
+
+            Matrix view = context.View;
+            Matrix projection = context.Projection;
+
+            Matrix shadowFrustum = new Matrix();
+            //GetShadowFrustum(context, drawablesInLightFrustum, drawablesInViewFrustum, out shadowFrustum);
+            ShadowFrustum.Matrix = shadowFrustum;
+
+            ShadowMap.Begin();
+            {
+                context.View = Matrix.Identity;
+                context.Projection = shadowFrustum;
+                context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
+                {
+                    drawables.FindAll(ShadowFrustum).ForEach(d => d.Draw(context, ShadowMap.Effect));
+                }
+                context.End();
+                context.View = view;
+                context.Projection = projection;
+            }
+            ShadowMap.End();
+#endif
+        }
 
         /// <summary>
-        /// Draws the ligth frustum using Settings.Debug.LightFrustumColor.
+        /// Gets the shadow frustum of this light.
+        /// </summary>
+        protected virtual void GetShadowFrustum(GraphicsContext context,
+                                                IEnumerable<IBoundable> drawablesInLightFrustum,
+                                                IEnumerable<IBoundable> drawablesInViewFrustum,
+                                                out Matrix frustumMatrix)
+        {
+            frustumMatrix = context.ViewFrustum.Matrix;
+        }
+
+        /// <summary>
+        /// Draws the light frustum using Settings.Debug.LightFrustumColor.
         /// </summary>
         public virtual void DrawFrustum(GraphicsContext context) { }
 
         public Light()
         {
             Enabled = true;
+            ShadowFrustum = new BoundingFrustum(new Matrix());
         }
     }
 

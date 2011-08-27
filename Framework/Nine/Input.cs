@@ -845,9 +845,10 @@ namespace Nine
         {
             for (int i = 0; i < inputs.Count; i++)
             {
-                if (inputs[i].IsAlive)
+                var input = inputs[i].Target as Input;
+                if (input != null)
                 {
-                    if (action((Input)inputs[i].Target))
+                    if (action(input))
                         break;
                 }
                 else

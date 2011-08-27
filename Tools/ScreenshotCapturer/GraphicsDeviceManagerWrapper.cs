@@ -71,14 +71,14 @@ namespace Nine.Tools.ScreenshotCapturer
 
             game.Services.AddService(typeof(IGraphicsDeviceManager), this);
             game.Services.AddService(typeof(IGraphicsDeviceService), this);
-
-            game.Components.Add(capturer = new Nine.Components.ScreenshotCapturer(GraphicsDevice));
         }
         
         public bool BeginDraw()
         {
             if (frame == 0)
                 SetParameters(game, task);
+            if (capturer == null)
+                game.Components.Add(capturer = new Nine.Components.ScreenshotCapturer(GraphicsDevice));
             return manager.BeginDraw();
         }
 

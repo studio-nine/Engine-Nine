@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using Nine.Content.Pipeline.Properties;
+using System.Globalization;
 
 namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 {
@@ -138,7 +139,7 @@ namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 					if (containsUnderscore)
 						return new IdentifierToken(_value.ToString(), _path, TakePosition());
 					if (containsDot || floatSuffix)
-						return new FloatToken(Convert.ToSingle(_value.ToString()), _path, TakePosition());
+                        return new FloatToken(Convert.ToSingle(_value.ToString(), new CultureInfo("en-US")), _path, TakePosition());
 					return new IntToken(Convert.ToInt32(_value.ToString()), _path, TakePosition());
 				}
 				default :

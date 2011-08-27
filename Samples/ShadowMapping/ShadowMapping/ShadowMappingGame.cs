@@ -44,8 +44,7 @@ namespace ShadowMapping
         TextureCube skyBoxTexture;
         ShadowMap shadowMap;
 
-        Matrix lightView;
-        Matrix lightProjection;
+        Matrix lightViewProjection;
         
         public ShadowMappingGame()
         {
@@ -59,6 +58,7 @@ namespace ShadowMapping
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
+            Window.AllowUserResizing = true;
         }
 
         /// <summary>
@@ -90,8 +90,11 @@ namespace ShadowMapping
             skyBoxTexture = Content.Load<TextureCube>("SkyCubeMap");
 
             // Create lights.
-            lightView = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ);
-            lightProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi / 2.5f, 1, 8.0f, 80.0f);
+            lightViewProjection = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ) *
+                                  Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi / 2.5f, 1, 8.0f, 80.0f);
+
+            lightViewProjection = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ) *
+                                  Matrix.CreateOrthographic(40, 40, 1, 80);
 
             // Create shadow map related effects, depth is used to generate shadow maps,
             // shadow is used to draw a shadow receiver with a shadow map.
@@ -112,8 +115,7 @@ namespace ShadowMapping
 
             // This value needs to be tweaked
             shadowMapEffectPart.DepthBias = 0.005f;
-            shadowMapEffectPart.LightView = lightView;
-            shadowMapEffectPart.LightProjection = lightProjection;
+            shadowMapEffectPart.LightViewProjection = lightViewProjection;
 
             model.ConvertEffectTo(shadow);
         }
@@ -136,12 +138,13 @@ namespace ShadowMapping
 
             // We need to draw the shadow casters on to a render target.
             // ShadowMap.Begin will clear everything to white for us.
+            shadowMap.SurfaceFormat = SurfaceFormat.Color;
             shadowMap.Begin();
             {
                 GraphicsDevice.BlendState = BlendState.Opaque;
 
                 // Draw shadow casters using depth effect with the matrices set to light view and projection.
-                modelBatch.Begin(lightView, lightProjection);
+                modelBatch.Begin(Matrix.Identity, lightViewProjection);
                 modelBatch.DrawSkinned(model, worldModel, animation.Skeleton.GetSkinTransforms(), shadowMap.Effect);
                 modelBatch.End();
             }
@@ -149,10 +152,10 @@ namespace ShadowMapping
             shadowMap.End();
 
             foreach (IEffectTexture effect in model.GetEffects())
-                effect.SetTexture(TextureNames.ShadowMap, shadowMap.Texture);
+                effect.SetTexture(TextureUsage.ShadowMap, shadowMap.Texture);
 
             foreach (IEffectTexture effect in terrain.GetEffects())
-                effect.SetTexture(TextureNames.ShadowMap, shadowMap.Texture);
+                effect.SetTexture(TextureUsage.ShadowMap, shadowMap.Texture);
 
             // Now we begin drawing real scene.
             GraphicsDevice.Clear(Color.DarkSlateGray);
@@ -170,7 +173,7 @@ namespace ShadowMapping
             // Draw shadow map
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
-                spriteBatch.Begin(0, null, SamplerState.PointClamp, null, null);
+                spriteBatch.Begin(0, BlendState.Opaque, SamplerState.PointClamp, null, null);
                 spriteBatch.Draw(shadowMap.Texture, Vector2.Zero, Color.White);
                 spriteBatch.End();
             }

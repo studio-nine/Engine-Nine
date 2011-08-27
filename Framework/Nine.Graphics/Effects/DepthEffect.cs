@@ -52,8 +52,7 @@ namespace Nine.Graphics.Effects
             get { return projection; }
             set { projection = value; dirtyFlag |= worldViewProjectionDirtyFlag; }
         }
-
-        
+                
         public Matrix[] GetBoneTransforms(int count)
         {
             return bones;
@@ -78,11 +77,9 @@ namespace Nine.Graphics.Effects
             if ((dirtyFlag & worldViewProjectionDirtyFlag) != 0)
             {
                 Matrix wvp;
-                Matrix.Multiply(ref world, ref view, out wvp);
-                Matrix.Multiply(ref wvp, ref projection, out wvp);
+                Matrix.Multiply(ref view, ref projection, out wvp);
+                Matrix.Multiply(ref world, ref wvp, out wvp);
                 worldViewProjection = wvp;
-
-                farClip = projection.GetFarClip();
             }
         }
     }

@@ -20,7 +20,8 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class AmbientLightEffectPart : LinkedEffectPart, IAmbientLight
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
+        
         private Vector3 ambientLightColor;
         private EffectParameter ambientLightColorParameter;
         private const uint ambientLightDirtyMask = 1 << 0;
@@ -29,20 +30,20 @@ namespace Nine.Graphics.Effects.EffectParts
         public Vector3 AmbientLightColor 
         {
             get { return ambientLightColor; }
-            set { ambientLightColor = value; dirtyMask |= ambientLightDirtyMask; }
+            set { ambientLightColor = value; DirtyMask |= ambientLightDirtyMask; }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & ambientLightDirtyMask) != 0)
+            if ((DirtyMask & ambientLightDirtyMask) != 0)
             {
                 if (ambientLightColorParameter == null)
                     ambientLightColorParameter = GetParameter("AmbientLightColor");
                 ambientLightColorParameter.SetValue(ambientLightColor);
-                dirtyMask &= ~ambientLightDirtyMask;
+                DirtyMask &= ~ambientLightDirtyMask;
             }
         }
-
+        
         public AmbientLightEffectPart()
         {
             AmbientLightColor = Vector3.One * 0.2f;

@@ -19,6 +19,7 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 using System.ComponentModel;
 using Nine.Components;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace MaterialsSample
@@ -72,6 +73,7 @@ namespace MaterialsSample
 
             // Create a terrain based on the terrain geometry loaded from file
             surface = new DrawableSurface(GraphicsDevice, 1, 32, 32, 8);
+            surface.TextureTransform = TextureTransform.CreateScale(0.25f, 0.25f);
             surface.ConvertVertexType<VertexPositionNormalTangentBinormalTexture>(InitializeSurfaceVertices);
             surface.Position = -surface.BoundingBox.GetCenter();
 

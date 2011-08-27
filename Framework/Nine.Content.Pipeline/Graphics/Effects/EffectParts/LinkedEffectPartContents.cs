@@ -24,6 +24,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 {
     public partial class AmbientLightEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            var i = EffectParts.IndexOf(this);
+            var begin = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is BeginLightEffectPartContent));
+            var end = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is EndLightEffectPartContent));
+            if (begin < 0 || end < 0 || i < begin || i > end)
+            {
+                throw new InvalidContentException("AmbientLightEffectPartContent must be added between BeginLightEffectPartContent and EndLightEffectPartContent.");
+            }
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.AmbientLight); }
@@ -46,8 +57,34 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
+    public partial class DeferredLightsEffectPartContent : LinkedEffectPartContent
+    {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            if (EffectParts.OfType<DeferredLightsEffectPartContent>().Count() != 1)
+                throw new InvalidContentException("Only 1 DeferredLightsEffectPartContent can be specified.");
+
+            if (EffectParts.Any(part => part is BeginLightEffectPartContent))
+                throw new InvalidContentException("Deferred lights and forward lights cannot be used together.");
+        }
+
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredLights); }
+        }
+    }
+
     public partial class BeginLightEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            if (EffectParts.OfType<BeginLightEffectPartContent>().Count() != 1)
+                throw new InvalidContentException("Only 1 BeginLightEffectPartContent can be specified.");
+
+            if (!EffectParts.Any(part => part is EndLightEffectPartContent))
+                throw new InvalidContentException("BeginLightEffectPartContent and EndLightEffectPartContent must be used together in pairs.");
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.BeginLight); }
@@ -65,6 +102,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class DirectionalLightEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            var i = EffectParts.IndexOf(this);
+            var begin = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is BeginLightEffectPartContent));
+            var end = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is EndLightEffectPartContent));
+            if (begin < 0 || end < 0 || i < begin || i > end)
+            {
+                throw new InvalidContentException("DirectionalLightEffectPartContent must be added between BeginLightEffectPartContent and EndLightEffectPartContent.");
+            }
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DirectionalLight); }
@@ -73,6 +121,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class PointLightEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            var i = EffectParts.IndexOf(this);
+            var begin = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is BeginLightEffectPartContent));
+            var end = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is EndLightEffectPartContent));
+            if (begin < 0 || end < 0 || i < begin || i > end)
+            {
+                throw new InvalidContentException("PointLightEffectPartContent must be added between BeginLightEffectPartContent and EndLightEffectPartContent.");
+            }
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PointLight); }
@@ -81,6 +140,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class SpotLightEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            var i = EffectParts.IndexOf(this);
+            var begin = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is BeginLightEffectPartContent));
+            var end = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is EndLightEffectPartContent));
+            if (begin < 0 || end < 0 || i < begin || i > end)
+            {
+                throw new InvalidContentException("SpotLightEffectPartContent must be added between BeginLightEffectPartContent and EndLightEffectPartContent.");
+            }
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.SpotLight); }
@@ -182,6 +252,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class SkinTransformEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            var i = EffectParts.IndexOf(this);
+            var vertexTransform = EffectParts.IndexOf(EffectParts.FirstOrDefault(part => part is VertexTransformEffectPartContent));
+            if (i >= vertexTransform)
+            {
+                throw new InvalidContentException("SkinTransformEffectPartContent must be added before VertexTransformEffectPartContent.");
+            }
+        }
+
         public override string Code
         {
             get 

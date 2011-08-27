@@ -80,6 +80,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="TimeEventArgs.cs" />
     <Compile Include="TemplateFactory.cs" />
+    <Compile Include="WeakReference.cs" />
     <Compile Include="WorldObject.cs" />
     <Compile Include="FreeObject.cs" />
     <Compile Include="World.cs" />

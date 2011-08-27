@@ -21,6 +21,7 @@ using Nine.Graphics.Effects.Deferred;
 using Nine.Graphics.ScreenEffects;
 using System.ComponentModel;
 using Nine.Components;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace DeferredLighting
@@ -71,6 +72,7 @@ namespace DeferredLighting
 
             // Create a terrain based on the terrain geometry loaded from file
             surface = new DrawableSurface(GraphicsDevice, 1, 32, 32, 8);
+            surface.TextureTransform = TextureTransform.CreateScale(0.25f, 0.25f);
             surface.ConvertVertexType<VertexPositionNormalTangentBinormalTexture>(InitializeSurfaceVertices);
             surface.Position = -surface.BoundingBox.GetCenter();
 
@@ -116,8 +118,8 @@ namespace DeferredLighting
             // 1. Draw deferred scene with DepthNormalEffect first.
             graphicsBuffer.Begin();
             {
-                //graphicsBuffer.Effect.NormalMap = boxNormalTexture;
-                //graphicsBuffer.Effect.NormalMappingEnabled = true;
+                graphicsBuffer.Effect.NormalMap = boxNormalTexture;
+                graphicsBuffer.Effect.NormalMappingEnabled = true;
                 DrawTerrain(graphicsBuffer.Effect);
             }
             graphicsBuffer.End();

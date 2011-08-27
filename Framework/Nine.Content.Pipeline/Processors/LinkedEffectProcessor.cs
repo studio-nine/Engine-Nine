@@ -38,8 +38,6 @@ namespace Nine.Content.Pipeline.Processors
     {
         public override LinkedEffectContent Process(LinkedEffectContent input, ContentProcessorContext context)
         {
-            //System.Diagnostics.Debugger.Launch();
-
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
                 return input;
 
@@ -96,7 +94,7 @@ namespace Nine.Content.Pipeline.Processors
         }
     }
 
-    internal class LinkedEffectContentImporterContext : ContentImporterContext
+    class LinkedEffectContentImporterContext : ContentImporterContext
     {
         ContentProcessorContext context;
 

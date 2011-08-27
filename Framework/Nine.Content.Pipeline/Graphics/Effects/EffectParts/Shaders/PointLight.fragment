@@ -8,7 +8,7 @@ fragment PointLight;
 [parameters]
 float3 PointLightPosition = { 0, 0, 0 };
 float3 PointLightDiffuseColor = { 1, 1, 1 };
-float3 PointLightSpecularColor = { 1, 1, 1 };
+float3 PointLightSpecularColor = { 0, 0, 0 };
 
 float Range = 100;
 float Attenuation = 1;

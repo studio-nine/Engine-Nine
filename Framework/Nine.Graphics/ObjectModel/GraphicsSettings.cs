@@ -39,14 +39,34 @@ namespace Nine.Graphics.ObjectModel
         public bool ShadowEnabled { get; set; }
 
         /// <summary>
+        /// Gets or sets whether multi-pass shadow overlays are enabled.
+        /// </summary>
+        public bool MultiPassShadowEnabled { get; set; }
+
+        /// <summary>
         /// Gets or sets whether lights are enabled.
         /// </summary>
-        public bool LightEnabled { get; set; }
+        public bool LightingEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether multi-pass light overlays are enabled.
+        /// </summary>
+        public bool MultiPassLightingEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets whether lights are enabled.
         /// </summary>
         public bool ScreenEffectEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets preferred shadowmap resolution.
+        /// </summary>
+        public int ShadowMapResolution { get; set; }
+
+        /// <summary>
+        /// Gets or sets the depth bias for shadow map. The default value is 0.005f.
+        /// </summary>
+        public float ShadowMapDepthBias { get; set; }
 
         /// <summary>
         /// Gets the debug settings.
@@ -58,11 +78,13 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public GraphicsSettings()
         {
-            LightEnabled = true;
+            LightingEnabled = true;
             ShadowEnabled = true;
             ScreenEffectEnabled = true;
             PreferDeferredLighting = true;
             PreferHighDynamicRangeLighting = true;
+            ShadowMapResolution = 1024;
+            ShadowMapDepthBias = 0.005f;
             Debug = new GraphicsDebugSetting();
         }
     }
@@ -80,15 +102,19 @@ namespace Nine.Graphics.ObjectModel
 
         public bool ShowDepthBuffer { get; set; }
         public bool ShowNormalBuffer { get; set; }
+        
+        public bool ShowShadowMap { get; set; }
 
         public Color BoundingBoxColor { get; set; }
         public Color LightFrustumColor { get; set; }
+        public Color ShadowFrustumColor { get; set; }
         public Color SceneManagerColor { get; set; }
 
         internal GraphicsDebugSetting()
         {
             BoundingBoxColor = Color.Pink;
             LightFrustumColor = Color.Yellow;
+            ShadowFrustumColor = Color.SteelBlue;
             SceneManagerColor = Color.White;
         }
     }

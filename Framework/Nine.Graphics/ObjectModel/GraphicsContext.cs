@@ -34,6 +34,11 @@ namespace Nine.Graphics.ObjectModel
         public GraphicsSettings Settings { get; private set; }
 
         /// <summary>
+        /// Gets the graphics statistics.
+        /// </summary>
+        public GraphicsStatistics Statistics { get; private set; }
+
+        /// <summary>
         /// Gets the lights in the scene.
         /// </summary>
         public ISpatialQuery<Light> Lights { get; internal set; }
@@ -41,7 +46,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the drawables in the scene.
         /// </summary>
-        public ISpatialQuery<Drawable> Drawables { get; internal set; }
+        public ISpatialQuery<IDrawableObject> Drawables { get; internal set; }
 
         /// <summary>
         /// Gets the elapsed time since last update.
@@ -59,7 +64,7 @@ namespace Nine.Graphics.ObjectModel
         public Matrix View
         {
             get { return view; }
-            set { view = value; frustumNeedsUpdate = true; }
+            set { view = value; EyePosition = Matrix.Invert(view).Translation; frustumNeedsUpdate = true; }
         }
 
         /// <summary>
@@ -70,6 +75,11 @@ namespace Nine.Graphics.ObjectModel
             get { return projection; }
             set { projection = value; frustumNeedsUpdate = true; }
         }
+
+        /// <summary>
+        /// Gets the eye position.
+        /// </summary>
+        public Vector3 EyePosition { get; private set; }
 
         /// <summary>
         /// Gets the view frustum for this drawing operation.

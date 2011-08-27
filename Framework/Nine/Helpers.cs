@@ -131,12 +131,17 @@ namespace Nine
             return Matrix.CreateFromAxisAngle(axis, (float)Math.Acos(Vector3.Dot(fromDirection, toDirection)));
         }
 
-        public static float GetFarClip(this Matrix projection)
+        static BoundingFrustum frustum = new BoundingFrustum(Matrix.Identity);
+
+        internal static float GetFarClip(this Matrix projection)
         {
-            return Math.Abs(projection.M43 / (Math.Abs(projection.M33) - 1));
+            frustum.Matrix = projection;
+            return (frustum.Near.Normal * frustum.Near.D - frustum.Far.Normal * frustum.Far.D).Length();
+            //return Math.Abs(projection.M43 / (Math.Abs(projection.M33) - 1));
         }
 
-        public static float GetNearClip(this Matrix projection)
+        [Obsolete]
+        internal static float GetNearClip(this Matrix projection)
         {
             return Math.Abs(projection.M43 / projection.M33);
         }

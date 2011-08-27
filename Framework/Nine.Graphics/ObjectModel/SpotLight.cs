@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,6 +24,8 @@ namespace Nine.Graphics.ObjectModel
 {
     public partial class SpotLight : Light<ISpotLight>
     {
+        const float NearPlane = 0.01f;
+
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         #region BoundingBox
@@ -57,13 +60,11 @@ namespace Nine.Graphics.ObjectModel
             {
                 if (isBoundingFrustumDirty || boundingFrustum == null)
                 {
-                    const float nearPlane = 0.01f;
-
                     Matrix projection = new Matrix();
                     Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);
                     if (float.IsNaN(view.M11))
                         view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitY);
-                    Matrix.CreatePerspectiveFieldOfView(outerAngle, 1, nearPlane, Math.Max(nearPlane, Range + nearPlane), out projection);
+                    Matrix.CreatePerspectiveFieldOfView(outerAngle, 1, NearPlane, Math.Max(NearPlane * 2, Range), out projection);
                     Matrix.Multiply(ref view, ref projection, out projection);
                     if (boundingFrustum == null)
                         boundingFrustum = new BoundingFrustum(projection);
@@ -83,7 +84,7 @@ namespace Nine.Graphics.ObjectModel
             GraphicsDevice = graphics;
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
-            Range = 10;
+            range = 10;
             Attenuation = MathHelper.E;
             InnerAngle = MathHelper.PiOver4;
             OuterAngle = MathHelper.PiOver2;
@@ -98,10 +99,81 @@ namespace Nine.Graphics.ObjectModel
         }
 #endif
 
-        protected internal override IEnumerable<Drawable> FindAffectedDrawables(ISceneManager<Drawable> allDrawables,
-                                                                                IEnumerable<Drawable> drawablesInViewFrustum)
+        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
+                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
         {
             return allDrawables.FindAll(BoundingFrustum);
+        }
+
+        static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
+
+        protected override void GetShadowFrustum(GraphicsContext context,
+                                                IEnumerable<IBoundable> drawablesInLightFrustum,
+                                                IEnumerable<IBoundable> drawablesInViewFrustum,
+                                                out Matrix frustumMatrix)
+        {
+            Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);
+            if (float.IsNaN(view.M11))
+                view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitY);
+
+            Vector3 point;
+            float nearZ = float.MaxValue;
+            float farZ = float.MinValue;
+
+            double left = double.MaxValue;
+            double right = double.MinValue;
+            double bottom = double.MaxValue;
+            double top = double.MinValue;
+
+            bool hasDrawable = false;
+
+            foreach (var drawable in drawablesInLightFrustum)
+            {
+                hasDrawable = true;
+                drawable.BoundingBox.GetCorners(Corners);
+                for (int i = 0; i < BoundingBox.CornerCount; i++)
+                {
+                    Vector3.Transform(ref Corners[i], ref view, out point);
+
+                    float z = -point.Z;
+                    if (z < nearZ)
+                        nearZ = z;
+                    if (z > farZ)
+                        farZ = z;
+                    
+                    left = Math.Min(left, Math.Atan2(point.X, z));
+                    right = Math.Max(right, Math.Atan2(point.X, z));
+                    bottom = Math.Min(bottom, Math.Atan2(point.Y, z));
+                    top = Math.Max(top, Math.Atan2(point.Y, z));
+
+                    Corners[i] = point;
+                }
+            }
+
+            if (!hasDrawable)
+            {
+                frustumMatrix = new Matrix();
+                return;
+            }
+
+            double max = outerAngle * 0.5;
+            if (left < -max)
+                left = -max;
+            if (right > max)
+                right = max;
+            if (bottom < -max)
+                bottom = -max;
+            if (top > max)
+                top = max;
+
+            Matrix projection;
+            Matrix.CreatePerspectiveOffCenter((float)Math.Tan(left) * nearZ,
+                                              (float)Math.Tan(right) * nearZ,
+                                              (float)Math.Tan(bottom) * nearZ,
+                                              (float)Math.Tan(top) * nearZ,
+                                                     Math.Max(NearPlane, nearZ),
+                                                     Math.Max(NearPlane * 2, farZ), out projection);
+            Matrix.Multiply(ref view, ref projection, out frustumMatrix);
         }
 
         public override void DrawFrustum(GraphicsContext context)

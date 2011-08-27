@@ -158,7 +158,9 @@ namespace Nine.Animations
         private double blendTimer = 0;
         private Matrix[] blendTarget;
 
-        private static BoneAnimationItem[,] weightedBones = null;
+        private static int numControllers = 0;
+        private static int numBones = 0;
+        private static BoneAnimationItem[] weightedBones = null;
         
         protected override void OnStarted()
         {
@@ -173,9 +175,13 @@ namespace Nine.Animations
             }
             Skeleton.HasAnimated = true;
 
-            if (Controllers.Count > 0 && (weightedBones == null || weightedBones.GetUpperBound(0) < Controllers.Count))
+            if (Controllers.Count > 0 && weightedBones == null || numControllers < Controllers.Count || 
+                                                                  numBones < Skeleton.BoneTransforms.Length)
             {
-                weightedBones = new BoneAnimationItem[Controllers.Count, Skeleton.BoneTransforms.Length];
+                numControllers = Math.Max(numControllers, Controllers.Count);
+                numBones = Math.Max(numBones, Skeleton.BoneTransforms.Length);
+
+                weightedBones = new BoneAnimationItem[numControllers * numBones];
             }
 
             SychronizeSpeed();
@@ -323,17 +329,18 @@ namespace Nine.Animations
             {
                 for (int bone = 0; bone < Skeleton.BoneTransforms.Length; bone++)
                 {
+                    int index = controllerIndex * numBones + bone;
                     if (Controllers[controllerIndex].Controller.TryGetBoneTransform(
-                                            bone, out weightedBones[controllerIndex, bone].Transform,
-                                                  out weightedBones[controllerIndex, bone].BlendWeight))
+                                            bone, out weightedBones[index].Transform,
+                                                  out weightedBones[index].BlendWeight))
                     {
-                        weightedBones[controllerIndex, bone].BlendWeight *= Controllers[controllerIndex].BlendWeight * (
+                        weightedBones[index].BlendWeight *= Controllers[controllerIndex].BlendWeight * (
                             Controllers[controllerIndex].BoneWeights[bone].Enabled ?
                             Controllers[controllerIndex].BoneWeights[bone].BlendWeight : 0);
                     }
                     else
                     {
-                        weightedBones[controllerIndex, bone].BlendWeight = 0;
+                        weightedBones[index].BlendWeight = 0;
                     }
                 }
             }
@@ -343,29 +350,31 @@ namespace Nine.Animations
             {
                 int firstNonZeroChannel = -1;
                 float totalWeight = 0;
-
+                
                 for (int controllerIndex = 0; controllerIndex < Controllers.Count; controllerIndex++)
                 {
-                    if (firstNonZeroChannel < 0 && weightedBones[controllerIndex, bone].BlendWeight > 0)
+                    int index = controllerIndex * numBones + bone;
+                    if (firstNonZeroChannel < 0 && weightedBones[index].BlendWeight > 0)
                         firstNonZeroChannel = controllerIndex;
 
-                    totalWeight += weightedBones[controllerIndex, bone].BlendWeight;
+                    totalWeight += weightedBones[index].BlendWeight;
                 }
 
                 if (totalWeight <= 0)
                     continue;
 
-                Matrix transform = weightedBones[firstNonZeroChannel, bone].Transform;
+                Matrix transform = weightedBones[firstNonZeroChannel * numBones + bone].Transform;
 
                 for (int controllerIndex = firstNonZeroChannel + 1; controllerIndex < Controllers.Count; controllerIndex++)
                 {
-                    if (weightedBones[controllerIndex, bone].BlendWeight <= float.Epsilon)
+                    int index = controllerIndex * numBones + bone;
+                    if (weightedBones[index].BlendWeight <= float.Epsilon)
                         continue;
 
                     // This is not mathmatically correct, but produces an acceptable result.
                     transform = LerpHelper.Slerp(transform,
-                                                 weightedBones[controllerIndex, bone].Transform,
-                                                 weightedBones[controllerIndex, bone].BlendWeight / totalWeight);
+                                                 weightedBones[index].Transform,
+                                                 weightedBones[index].BlendWeight / totalWeight);
                 }
 
                 // Perform default blend

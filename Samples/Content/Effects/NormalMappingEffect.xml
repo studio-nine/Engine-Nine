@@ -9,6 +9,10 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTextureEffectPartContent">
         <Texture>box</Texture>
       </Item>
+
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMapEffectPartContent">
+        <NormalMap>box_n</NormalMap>
+      </Item>
       
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent">
         <SpecularColor>1 1 1</SpecularColor>

@@ -24,6 +24,7 @@ namespace Nine
     /// Defines a template factory that can create a template of the specified
     /// type based on the name of the template.
     /// </summary>
+    [Serializable]
     public class Template
     {
         /// <summary>

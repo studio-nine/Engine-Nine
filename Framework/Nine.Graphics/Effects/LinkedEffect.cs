@@ -83,6 +83,14 @@ namespace Nine.Graphics.Effects
         }
 
         /// <summary>
+        /// Applies the effect state to another instance of effect part of the same type.
+        /// </summary>
+        protected internal virtual void OnApply(LinkedEffectPart part)
+        {
+
+        }
+
+        /// <summary>
         /// Copies data from an existing object to this object.
         /// </summary>
         protected internal virtual LinkedEffectPart Clone()
@@ -125,12 +133,7 @@ namespace Nine.Graphics.Effects
         /// </summary>
         public T Find<T>() where T :class
         {
-            foreach (LinkedEffectPart part in EffectParts)
-            {
-                if (part is T)
-                    return part as T;
-            }
-            return null;
+            return EffectParts.FirstOrDefault(part => part is T) as T;
         }
 
         /// <summary>
@@ -167,6 +170,7 @@ namespace Nine.Graphics.Effects
                 newPart.Effect = effect;
                 newPart.UniqueName = part.UniqueName;
                 parts.Add(newPart);
+                CurrentUniqueName = null;
             }
             CurrentEffect = null;
 
@@ -298,10 +302,10 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
             foreach (IEffectTexture part in FindAll<IEffectTexture>())
-                part.SetTexture(name, texture);
+                part.SetTexture(usage, texture);
         }
 
         Vector3 diffuseColor;
@@ -352,6 +356,18 @@ namespace Nine.Graphics.Effects
             }
         }
 
+        float alpha = 1;
+        float IEffectMaterial.Alpha
+        {
+            get { return alpha; }
+            set
+            {
+                alpha = value;
+                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
+                    part.Alpha = value;
+            }
+        }
+
         ReadOnlyCollection<IPointLight> IEffectLights<IPointLight>.Lights
         {
             get { return pointLights ?? (pointLights = new ReadOnlyCollection<IPointLight>(EffectParts.OfType<IPointLight>().ToList())); }
@@ -374,35 +390,18 @@ namespace Nine.Graphics.Effects
         #endregion
     }
     #endregion
-    
-    #region LinkedEffectInstance
-    public class LinkedEffectInstance : IEffectInstance
-    {
-        internal LinkedEffectInstance() { }
-
-        [ContentSerializer]
-        public Effect Effect { get; internal set; }
-        public LinkedEffectInstance(LinkedEffect effect)
-        {
-            if (effect == null)
-                throw new ArgumentNullException("effect");
-            this.Effect = effect;
-        }
-        public void Apply() { }
-        public IEffectInstance Clone() { return new LinkedEffectInstance(Effect as LinkedEffect); }
-    }
-    #endregion
 
     #region LinkedEffectReader
     /// <summary>
     /// Content reader for LinkedEffect.
     /// </summary>
-    internal class LinkedEffectReader : ContentTypeReader<LinkedEffect>
+    class LinkedEffectReader : ContentTypeReader<LinkedEffect>
     {
         static Dictionary<LinkedEffectToken, LinkedEffect> Dictionary = new Dictionary<LinkedEffectToken, LinkedEffect>();
 
         protected override LinkedEffect Read(ContentReader input, LinkedEffect existingInstance)
         {
+            // FIXME: Token isn't identical for the same shader.
             byte[] token = input.ReadObject<byte[]>();
             byte[] effectCode = input.ReadObject<byte[]>();
             string[] uniqueNames = input.ReadObject<string[]>();
@@ -440,7 +439,7 @@ namespace Nine.Graphics.Effects
         }
     }
 
-    internal class LinkedEffectToken
+    class LinkedEffectToken
     {
         public byte[] Token;
         public GraphicsDevice Graphics;
@@ -450,13 +449,7 @@ namespace Nine.Graphics.Effects
             if (obj is LinkedEffectToken)
             {
                 LinkedEffectToken token = (LinkedEffectToken)obj;
-                if (token.Graphics == Graphics)
-                {
-                    for (int i = 0; i < Token.Length; i++)
-                        if (Token[i] != token.Token[i])
-                            return false;
-                    return true;
-                }
+                return token.Graphics == Graphics && Enumerable.SequenceEqual(token.Token, Token);
             }
             return false;
         }

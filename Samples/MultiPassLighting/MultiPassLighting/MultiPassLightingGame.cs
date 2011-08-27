@@ -19,6 +19,7 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 using System.ComponentModel;
 using Nine.Components;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace MultiPassLighting

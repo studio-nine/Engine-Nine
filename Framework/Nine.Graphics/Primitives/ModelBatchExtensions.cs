@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+#if !WINDOWS_PHONE
 using Nine.Graphics.Effects;
+#endif
 #endregion
 
 namespace Nine.Graphics.Primitives

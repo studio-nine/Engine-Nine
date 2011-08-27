@@ -1,0 +1,39 @@
+//=============================================================================
+//
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment DeferredLights;
+
+[parameters]
+float2 halfPixel;
+
+float3 SpecularColor = { 0, 0, 0 };
+float3 DiffuseColor = { 1, 1, 1 };
+float3 EmissiveColor = { 0, 0, 0 };
+
+texture LightTexture;
+sampler LightSampler = sampler_state
+{
+    Texture = (LightTexture);
+};
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float4 posProjection;	
+	import(PositionProjection, posProjection = PositionProjection);
+	
+    posProjection.y = -posProjection.y;
+    float2 lightUV = (posProjection.xy / posProjection.w) * 0.5f + 0.5f + halfPixel;
+    float4 light = tex2D(LightSampler, lightUV);
+    
+	float4 color;
+	import(Color, color = Color);
+    
+	color.xyz = color.xyz * DiffuseColor * (light.rgb + EmissiveColor)  + light.a * SpecularColor;
+	export(float4, Color, color);
+
+}
+__hlsl__

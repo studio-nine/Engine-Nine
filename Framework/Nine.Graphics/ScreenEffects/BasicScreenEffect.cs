@@ -66,11 +66,11 @@ namespace Nine.Graphics.ScreenEffects
             RenderTargetScale = 1;
         }
         
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
             IEffectTexture update = Effect as IEffectTexture;
             if (update != null)
-                update.SetTexture(name, texture);
+                update.SetTexture(usage, texture);
         }
 
         Texture2D IEffectTexture.Texture { get { return null; } set { } }

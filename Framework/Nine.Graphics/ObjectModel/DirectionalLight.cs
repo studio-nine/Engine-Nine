@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -37,10 +38,57 @@ namespace Nine.Graphics.ObjectModel
             SpecularColor = Vector3.Zero;
         }
 
-        protected internal override IEnumerable<Drawable> FindAffectedDrawables(ISceneManager<Drawable> allDrawables,
-                                                                                IEnumerable<Drawable> drawablesInViewFrustum)
+        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
+                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
         {
             return drawablesInViewFrustum;
+        }
+
+        static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
+
+        protected override void GetShadowFrustum(GraphicsContext context,
+                                                 IEnumerable<IBoundable> drawablesInLightFrustum,
+                                                 IEnumerable<IBoundable> drawablesInViewFrustum,
+                                                 out Matrix frustumMatrix)
+        {
+            Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitZ);
+            if (float.IsNaN(view.M11))
+                view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitY);
+
+            Vector3 point;
+            float nearZ = float.MaxValue;
+            float farZ = float.MinValue;
+
+            float left = float.MaxValue;
+            float right = float.MinValue;
+            float bottom = float.MaxValue;
+            float top = float.MinValue;
+            
+            foreach (var drawable in drawablesInViewFrustum)
+            {
+                drawable.BoundingBox.GetCorners(Corners);
+                for (int i = 0; i < BoundingBox.CornerCount; i++)
+                {
+                    Vector3.Transform(ref Corners[i], ref view, out point);
+
+                    float z = -point.Z;
+                    if (z < nearZ)
+                        nearZ = z;
+                    if (z > farZ)
+                        farZ = z;
+
+                    left = Math.Min(left, point.X);
+                    right = Math.Max(right, point.X);
+                    bottom = Math.Min(bottom, point.Y);
+                    top = Math.Max(top, point.Y);
+
+                    Corners[i] = point;
+                }
+            }
+
+            Matrix projection;
+            Matrix.CreateOrthographicOffCenter(left, right, bottom, top, nearZ, farZ, out projection);
+            Matrix.Multiply(ref view, ref projection, out frustumMatrix);
         }
 
         protected override void Enable(IDirectionalLight light)

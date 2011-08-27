@@ -159,7 +159,7 @@ namespace Nine.Graphics.ScreenEffects
             brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 });
             brightPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 });
             brightPass.Effects.Add(new ScaleEffect(graphics), 2);
-            brightPass.OutputTextureName = TextureNames.Bloom;
+            brightPass.TextureUsage = TextureUsage.Bloom;
 
             MultiPassScreenEffectPass luminancePass = CreateLuminanceChain(graphics, 4, adoption);
 
@@ -213,7 +213,7 @@ namespace Nine.Graphics.ScreenEffects
 
             luminancePass.RenderTargetSize = Vector2.One;
             luminancePass.SurfaceFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.Vector2;
-            luminancePass.OutputTextureName = TextureNames.Luminance;
+            luminancePass.TextureUsage = TextureUsage.Luminance;
             return luminancePass;
         }
 
@@ -241,7 +241,7 @@ namespace Nine.Graphics.ScreenEffects
             blurPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = 0 });
             blurPass.Effects.Add(new BlurEffect(graphics) { BlurAmount = blurAmount, Direction = MathHelper.PiOver2 });
             blurPass.Effects.Add(new ScaleEffect(graphics), 2);
-            blurPass.OutputTextureName = TextureNames.Blur;
+            blurPass.TextureUsage = TextureUsage.Blur;
 
             MultiPassScreenEffect multipassEffect = new MultiPassScreenEffect(graphics);
             multipassEffect.Passes.Add(basePass);

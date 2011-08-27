@@ -20,7 +20,8 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class DualTextureEffectPart : LinkedEffectPart, IEffectTexture
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
+        
         private Texture2D texture;
         private EffectParameter textureParameter;
         private const uint textureDirtyMask = 1 << 0;
@@ -29,18 +30,24 @@ namespace Nine.Graphics.Effects.EffectParts
         public Texture2D Texture
         {
             get { return texture; }
-            set { texture = value; dirtyMask |= textureDirtyMask; }
+            set { if (texture != value) { texture = value; DirtyMask |= textureDirtyMask; } }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & textureDirtyMask) != 0)
+            if ((DirtyMask & textureDirtyMask) != 0)
             {
                 if (textureParameter == null)
                     textureParameter = GetParameter("Texture");
                 textureParameter.SetValue(texture);
-                dirtyMask &= ~textureDirtyMask;
+                DirtyMask &= ~textureDirtyMask;
             }
+        }
+
+        protected internal override void OnApply(LinkedEffectPart part)
+        {
+            var effectPart = (DualTextureEffectPart)part;
+            effectPart.Texture = Texture;
         }
 
         protected internal override LinkedEffectPart Clone()
@@ -53,9 +60,9 @@ namespace Nine.Graphics.Effects.EffectParts
 
         Texture2D IEffectTexture.Texture { get { return null; } set { } }
 
-        public void SetTexture(string name, Texture texture)
+        public void SetTexture(TextureUsage usage, Texture texture)
         {
-            if (name == TextureNames.Dual)
+            if (usage == TextureUsage.Dual)
                 Texture = texture as Texture2D;
         }
     }

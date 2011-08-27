@@ -20,7 +20,7 @@ namespace Nine.Graphics.Effects.EffectParts
     
     internal class DirectionalLightEffectPart : LinkedEffectPart, IDirectionalLight
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
         
         private Vector3 direction;
         private EffectParameter directionParameter;
@@ -38,47 +38,47 @@ namespace Nine.Graphics.Effects.EffectParts
         public Vector3 Direction
         {
             get { return direction; }
-            set { direction = value; dirtyMask |= directionDirtyMask; }
+            set { direction = value; DirtyMask |= directionDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public Vector3 DiffuseColor
         {
             get { return diffuseColor; }
-            set { diffuseColor = value; dirtyMask |= diffuseColorDirtyMask; }
+            set { diffuseColor = value; DirtyMask |= diffuseColorDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public Vector3 SpecularColor
         {
             get { return specularColor; }
-            set { specularColor = value; dirtyMask |= specularColorDirtyMask; }
+            set { specularColor = value; DirtyMask |= specularColorDirtyMask; }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & directionDirtyMask) != 0)
+            if ((DirtyMask & directionDirtyMask) != 0)
             {
                 if (directionParameter == null)
                     directionParameter = GetParameter("DirLightDirection");
                 directionParameter.SetValue(direction);
-                dirtyMask &= ~directionDirtyMask;
+                DirtyMask &= ~directionDirtyMask;
             }
 
-            if ((dirtyMask & diffuseColorDirtyMask) != 0)
+            if ((DirtyMask & diffuseColorDirtyMask) != 0)
             {
                 if (diffuseColorParameter == null)
                     diffuseColorParameter = GetParameter("DirLightDiffuseColor");
                 diffuseColorParameter.SetValue(diffuseColor);
-                dirtyMask &= ~diffuseColorDirtyMask;
+                DirtyMask &= ~diffuseColorDirtyMask;
             }
 
-            if ((dirtyMask & specularColorDirtyMask) != 0)
+            if ((DirtyMask & specularColorDirtyMask) != 0)
             {
                 if (specularColorParameter == null)
                     specularColorParameter = GetParameter("DirLightSpecularColor");
                 specularColorParameter.SetValue(specularColor);
-                dirtyMask &= ~specularColorDirtyMask;
+                DirtyMask &= ~specularColorDirtyMask;
             }
         }
         

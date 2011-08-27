@@ -46,6 +46,9 @@ namespace Nine.Graphics.ObjectModel
 
         object ISpatialQueryable.SpatialData { get; set; }
 
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
         public event EventHandler<EventArgs> BoundingBoxChanged;
         #endregion
 
@@ -69,12 +72,18 @@ namespace Nine.Graphics.ObjectModel
         }
         private Matrix transform = Matrix.Identity;
 
+        /// <summary>
+        /// Called when transform changed.
+        /// </summary>
         protected virtual void OnTransformChanged()
         {
             if (TransformChanged != null)
                 TransformChanged(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Occurs when transform changed.
+        /// </summary>
         public event EventHandler<EventArgs> TransformChanged;
         
         /// <summary>

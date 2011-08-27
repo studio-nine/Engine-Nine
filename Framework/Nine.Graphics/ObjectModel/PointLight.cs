@@ -58,14 +58,14 @@ namespace Nine.Graphics.ObjectModel
         {
             GraphicsDevice = graphics;
 
-            Range = 10;
+            range = 10;
             Attenuation = MathHelper.E;
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
         }
 
-        protected internal override IEnumerable<Drawable> FindAffectedDrawables(ISceneManager<Drawable> allDrawables,
-                                                                                IEnumerable<Drawable> drawablesInViewFrustum)
+        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
+                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
         {
             return allDrawables.FindAll(Position, Range);
         }
@@ -73,6 +73,11 @@ namespace Nine.Graphics.ObjectModel
         public override void DrawFrustum(GraphicsContext context)
         {
             context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
+        }
+
+        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<IDrawableObject> drawablesInLightFrustum, IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        {
+            throw new NotSupportedException();
         }
 
         protected override void Enable(IPointLight light)

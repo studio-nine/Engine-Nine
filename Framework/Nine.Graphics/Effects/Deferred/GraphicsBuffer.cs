@@ -211,8 +211,8 @@ namespace Nine.Graphics.Effects.Deferred
             IEffectTexture texture = light.Effect as IEffectTexture;
             if (texture != null)
             {
-                texture.SetTexture(TextureNames.NormalMap, normalBuffer);
-                texture.SetTexture(TextureNames.DepthMap, depthBuffer);
+                texture.SetTexture(TextureUsage.NormalMap, normalBuffer);
+                texture.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
             }
 
             IEffectMatrices matrices = light.Effect as IEffectMatrices;

@@ -70,7 +70,7 @@ namespace Nine
     /// Defines a template factory that can create templates using content pipeline.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ContentTemplateFactory : ITemplateFactory, IDisposable
+    public sealed class ContentTemplateFactory : ITemplateFactory, IDisposable
     {
         /// <summary>
         /// Gets the name of this template factory.
@@ -111,7 +111,7 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of the target type using the specified template name.
         /// </summary>
-        public virtual object Create(Type targetType, string templateName)
+        public object Create(Type targetType, string templateName)
         {
 #if WINDOWS_PHONE
             return Content.Load<object>(templateName);

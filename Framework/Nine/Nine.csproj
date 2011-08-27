@@ -32,7 +32,7 @@
     <XnaCompressContent>false</XnaCompressContent>
     <NoWarn>1591,1572,1571,1573,1587,1570</NoWarn>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -97,6 +97,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="TimeEventArgs.cs" />
     <Compile Include="TemplateFactory.cs" />
+    <Compile Include="WeakReference.cs" />
     <Compile Include="WorldObject.cs" />
     <Compile Include="FreeObject.cs" />
     <Compile Include="World.cs" />
@@ -135,8 +136,8 @@
     <None Include="..\..\Tools\TextTemplates\Document.tth">
       <Link>TextTempates\Document.tth</Link>
     </None>
-    <None Include="..\..\Tools\TextTemplates\EffectInstance.tth">
-      <Link>TextTempates\EffectInstance.tth</Link>
+    <None Include="..\..\Tools\TextTemplates\Materials.tth">
+      <Link>TextTempates\Materials.tth</Link>
     </None>
     <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">
       <Link>Nine.Content.Reader.tt</Link>

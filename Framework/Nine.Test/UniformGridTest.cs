@@ -10,8 +10,10 @@ using Nine;
 using Microsoft.Xna.Framework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Nine.Test
 {
@@ -49,6 +51,15 @@ namespace Nine.Test
 
             points = new List<Point>(grid.Traverse(new Ray(Vector3.One * 4.8f, Vector3.UnitX), 1));
             Assert.AreEqual<int>(8, points.Count);
+        }
+
+        [TestMethod()]
+        public void TraverseInnerOutTest()
+        {
+            List<Point> points;
+            UniformGrid grid = new UniformGrid(0, 0, 2, 10, 10);
+
+            var c = grid.Traverse(4, 4).ToList();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Nine.Graphics.ObjectModel
     public partial class AmbientLight : IDeferredLight
     {
         AmbientLightEffect multiPasseffect;
-        public override Effect Effect
+        public override Effect MultiPassEffect
         {
             get { return multiPasseffect ?? (multiPasseffect = GraphicsResources<AmbientLightEffect>.GetInstance(GraphicsDevice)); }
         }

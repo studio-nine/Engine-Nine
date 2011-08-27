@@ -10,6 +10,7 @@ float4 Color : COLOR0;
 float2 TexCoord;
 float3 Normal;
 float4 PositionWorld;
+float4 PositionProjection;
 
 [vs]
 __hlsl__
@@ -32,9 +33,10 @@ void main(INPUT input, inout OUTPUT output)
 	output.position = position;
 
 	float4 positionWorld;
-	import(PositionWorld, positionWorld = PositionWorld);
-	
+	import(PositionWorld, positionWorld = PositionWorld);	
 	output(PositionWorld, positionWorld);	
+    
+	output(PositionProjection, position);	
 }
 __hlsl__
 
@@ -53,5 +55,8 @@ void main(INPUT input, inout OUTPUT output)
 	
 	float4 positionWorld = input.PositionWorld;
 	export(float4, PositionWorld, positionWorld);
+
+	float4 positionProjection = input.PositionProjection;
+	export(float4, PositionProjection, positionProjection);
 }
 __hlsl__

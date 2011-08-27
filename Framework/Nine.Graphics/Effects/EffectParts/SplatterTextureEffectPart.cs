@@ -22,7 +22,7 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class SplatterTextureEffectPart : LinkedEffectPart, IEffectSplatterTexture
     {
-        internal uint dirtyMask = 0;
+        private uint DirtyMask = 0;
 
         private Texture2D textureX;
         private EffectParameter textureXParameter;
@@ -55,100 +55,103 @@ namespace Nine.Graphics.Effects.EffectParts
         public Texture2D TextureX
         {
             get { return textureX; }
-            set { textureX = value; dirtyMask |= textureXDirtyMask; }
+            set { if (textureX != value) { textureX = value; DirtyMask |= textureXDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public Texture2D TextureY
         {
             get { return textureY; }
-            set { textureY = value; dirtyMask |= textureYDirtyMask; }
+            set { if (textureY != value) { textureY = value; DirtyMask |= textureYDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public Texture2D TextureZ
         {
             get { return textureZ; }
-            set { textureZ = value; dirtyMask |= textureZDirtyMask; }
+            set { if (textureZ != value) { textureZ = value; DirtyMask |= textureZDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public Texture2D TextureW
         {
             get { return textureW; }
-            set { textureW = value; dirtyMask |= textureWDirtyMask; }
+            set { if (textureW != value) { textureW = value; DirtyMask |= textureWDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public Texture2D SplatterTexture
         {
             get { return splatterTexture; }
-            set { splatterTexture = value; dirtyMask |= splatterTextureDirtyMask; }
+            set { if (splatterTexture != value) { splatterTexture = value; DirtyMask |= splatterTextureDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
         public Vector2 SplatterTextureScale
         {
             get { return splatterTextureScale; }
-            set { splatterTextureScale = value; dirtyMask |= splatterTextureScaleDirtyMask; }
+            set { splatterTextureScale = value; DirtyMask |= splatterTextureScaleDirtyMask; }
         }
+
+
         public SplatterTextureEffectPart()
         {
-            dirtyMask |= splatterTextureDirtyMask;
-            dirtyMask |= maskDirtyMask;
+            DirtyMask |= splatterTextureDirtyMask;
+            DirtyMask |= maskDirtyMask;
+            SplatterTextureScale = Vector2.One;
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & textureXDirtyMask) != 0)
+            if ((DirtyMask & textureXDirtyMask) != 0)
             {
                 if (textureXParameter == null)
                     textureXParameter = GetParameter("TextureX");
                 textureXParameter.SetValue(textureX);
-                dirtyMask &= ~textureXDirtyMask;
+                DirtyMask &= ~textureXDirtyMask;
             }
 
-            if ((dirtyMask & textureYDirtyMask) != 0)
+            if ((DirtyMask & textureYDirtyMask) != 0)
             {
                 if (textureYParameter == null)
                     textureYParameter = GetParameter("TextureY");
                 textureYParameter.SetValue(textureY);
-                dirtyMask &= ~textureYDirtyMask;
+                DirtyMask &= ~textureYDirtyMask;
             }
 
-            if ((dirtyMask & textureZDirtyMask) != 0)
+            if ((DirtyMask & textureZDirtyMask) != 0)
             {
                 if (textureZParameter == null)
                     textureZParameter = GetParameter("TextureZ");
                 textureZParameter.SetValue(textureZ);
-                dirtyMask &= ~textureZDirtyMask;
+                DirtyMask &= ~textureZDirtyMask;
             }
 
-            if ((dirtyMask & textureWDirtyMask) != 0)
+            if ((DirtyMask & textureWDirtyMask) != 0)
             {
                 if (textureWParameter == null)
                     textureWParameter = GetParameter("TextureW");
                 textureWParameter.SetValue(textureW);
-                dirtyMask &= ~textureWDirtyMask;
+                DirtyMask &= ~textureWDirtyMask;
             }
 
-            if ((dirtyMask & splatterTextureScaleDirtyMask) != 0)
+            if ((DirtyMask & splatterTextureScaleDirtyMask) != 0)
             {
                 if (splatterTextureScaleParameter == null)
                     splatterTextureScaleParameter = GetParameter("SplatterTextureScale");
                 splatterTextureScaleParameter.SetValue(splatterTextureScale);
-                dirtyMask &= ~splatterTextureScaleDirtyMask;
+                DirtyMask &= ~splatterTextureScaleDirtyMask;
             }
 
-            if ((dirtyMask & splatterTextureDirtyMask) != 0)
+            if ((DirtyMask & splatterTextureDirtyMask) != 0)
             {
                 if (splatterTextureParameter == null)
                     splatterTextureParameter = GetParameter("SplatterTexture");
                 splatterTextureParameter.SetValue(splatterTexture);
-                dirtyMask &= ~splatterTextureDirtyMask;
+                DirtyMask &= ~splatterTextureDirtyMask;
             }
 
-            if ((dirtyMask & maskDirtyMask) != 0)
+            if ((DirtyMask & maskDirtyMask) != 0)
             {
                 if (maskParameter == null)
                     maskParameter = GetParameter("Mask");
@@ -160,13 +163,32 @@ namespace Nine.Graphics.Effects.EffectParts
                 mask.W = (TextureW != null ? 1.0f : 0.0f);
                 
                 maskParameter.SetValue(mask);
-                dirtyMask &= ~maskDirtyMask;
+                DirtyMask &= ~maskDirtyMask;
             }
+        }
+
+        protected internal override void OnApply(LinkedEffectPart part)
+        {
+            var effectPart = (SplatterTextureEffectPart)part;
+            effectPart.TextureX = TextureX;
+            effectPart.TextureY = TextureY;
+            effectPart.TextureZ = TextureZ;
+            effectPart.TextureW = TextureW;
+            effectPart.SplatterTexture = SplatterTexture;
+            effectPart.SplatterTextureScale = SplatterTextureScale;            
         }
 
         protected internal override LinkedEffectPart Clone()
         {
-            throw new KeyNotFoundException();
+            return new SplatterTextureEffectPart()
+            {
+                TextureX = TextureX,
+                TextureY = TextureY,
+                TextureZ = TextureZ,
+                TextureW = TextureW,
+                SplatterTexture = SplatterTexture,
+                SplatterTextureScale = SplatterTextureScale,
+            };
         }
     }
 

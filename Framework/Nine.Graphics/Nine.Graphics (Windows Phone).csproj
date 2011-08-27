@@ -77,11 +77,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Graphics.Content.Reader.tt</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.EffectInstance.Generated.cs">
-      <Link>Nine.Graphics.EffectInstance.Generated.cs</Link>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.Generated.cs">
+      <Link>Nine.Graphics.Materials.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.EffectInstance.tt</DependentUpon>
+      <DependentUpon>Nine.Graphics.Materials.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\BoneAnimation.cs" />
     <Compile Include="Animations\BoneAnimationControllers.cs" />
@@ -90,9 +90,20 @@
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
-    <Compile Include="EffectInstance.cs" />
+    <Compile Include="Materials.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
+    <Compile Include="ObjectModel\DrawableModel.cs" />
+    <Compile Include="ObjectModel\DrawableModelPart.cs" />
+    <Compile Include="ObjectModel\DrawableParticleEffect.cs" />
+    <Compile Include="ObjectModel\DrawableSurface.cs" />
+    <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
+    <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
+    <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="ObjectModel\LightEngine.cs" />
+    <Compile Include="ObjectModel\ModelBatchExtensions.cs" />
     <Compile Include="ObjectModel\PointLight.cs" />
+    <Compile Include="ObjectModel\Scene.cs" />
+    <Compile Include="ObjectModel\SceneQuery.cs" />
     <Compile Include="ObjectModel\SpotLight.cs" />
     <Compile Include="ObjectModel\Transformable.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
@@ -100,16 +111,11 @@
     <Compile Include="ObjectModel\Drawable.cs" />
     <Compile Include="ObjectModel\GraphicsContext.cs" />
     <Compile Include="ObjectModel\GraphicsExtensions.cs" />
-    <Compile Include="ObjectModel\GraphicsPass.cs" />
     <Compile Include="ObjectModel\GraphicsSettings.cs" />
     <Compile Include="ObjectModel\GraphicsStatistics.cs" />
     <Compile Include="ObjectModel\Interface.cs" />
     <Compile Include="ObjectModel\Light.cs" />
-    <Compile Include="ObjectModel\ModelInstance.cs" />
-    <Compile Include="ObjectModel\ParticleEffectInstance.cs" />
-    <Compile Include="ObjectModel\Renderer.cs" />
     <Compile Include="ObjectModel\SkyBox.cs" />
-    <Compile Include="ObjectModel\Terrain.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Lights.cs" />
     <Compile Include="BlendStateReader.cs" />
@@ -124,10 +130,10 @@
     <Compile Include="Primitives\Cylinder.cs" />
     <Compile Include="Primitives\Sphere.cs" />
     <Compile Include="Primitives\Quad.cs" />
-    <Compile Include="ModelBatchExtensions.cs" />
     <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.cs" />
+    <Compile Include="TextureUsage.cs" />
     <Compile Include="VertexPositionNormal.cs" />
     <Compile Include="RenderTargetPool.cs" />
     <Compile Include="ParticleEffects\BasicParticleEffect.cs" />
@@ -264,7 +270,6 @@
     </Compile>
     <Compile Include="ScreenCamera.cs" />
     <Compile Include="VertexPositionColorNormalTexture.cs" />
-    <Compile Include="DrawableSurfaceTriangle.cs" />
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
@@ -293,13 +298,7 @@
     <Compile Include="ParticleEffects\ParticleVertex.cs" />
     <Compile Include="VertexPositionNormalDualTexture.cs" />
     <Compile Include="VertexPositionNormalTangentTexture.cs" />
-    <Compile Include="DrawableSurfacePatchPart.cs" />
-    <Compile Include="DrawableSurfaceCollections.cs" />
-    <Compile Include="DrawableSurface.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="VertexPositionColorNormalTangentTexture.cs" />
-    <Compile Include="DrawableSurfacePatch.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -308,10 +307,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Content.Reader.Generated.cs</LastGenOutput>
     </None>
-    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.EffectInstance.tt">
-      <Link>Nine.Graphics.EffectInstance.tt</Link>
+    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Materials.tt">
+      <Link>Nine.Graphics.Materials.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.EffectInstance.Generated.cs</LastGenOutput>
+      <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
     <None Include="Nine.snk" />
     <None Include="ParticleEffects\ParticleSystemEffect.fx">

@@ -39,6 +39,7 @@ namespace Nine.Graphics.ObjectModel.Test
         [TestMethod()]
         public void ApplyLightsTest()
         {
+            /*
             Game.Paint += (gameTime) =>
             {
                 Renderer renderer = new Renderer(GraphicsDevice);
@@ -71,7 +72,8 @@ namespace Nine.Graphics.ObjectModel.Test
 
                 Game.Exit();
             };
-            Game.Run();      
+            Game.Run();    
+             */
         }
     }
 }

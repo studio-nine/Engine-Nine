@@ -20,27 +20,31 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Graphics
 {
-    class GraphicsResources<T>
+    class GraphicsResources<T> where T : class
     {
-        static Dictionary<GraphicsDevice, T> resourceDictionary;
+        static Dictionary<GraphicsDevice, WeakReference<T>> resourceDictionary = new Dictionary<GraphicsDevice, WeakReference<T>>();
 
         public static T GetInstance(GraphicsDevice graphics)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            T value;
-
-            if (resourceDictionary == null)
-                resourceDictionary = new Dictionary<GraphicsDevice, T>();
+            T result;
+            WeakReference<T> value;
 
             if (resourceDictionary.TryGetValue(graphics, out value))
-                return value;
-
-            value = (T)Activator.CreateInstance(typeof(T), graphics);
-            resourceDictionary.Add(graphics, value);
-
-            return value;
+            {
+                result = value.Target;
+                if (result != null)
+                    return result;
+                
+                // Need to remove it from the dictionary
+                resourceDictionary.Remove(graphics);
+            }
+            
+            result = (T)Activator.CreateInstance(typeof(T), graphics);
+            resourceDictionary.Add(graphics, new WeakReference<T>(result));
+            return result;
         }
     }
 }

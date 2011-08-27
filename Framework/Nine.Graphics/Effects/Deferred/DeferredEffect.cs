@@ -46,13 +46,19 @@ namespace Nine.Graphics.Effects.Deferred
 
         float IEffectMaterial.SpecularPower
         {
-            get { return 0; }
+            get { return 16; }
             set { }
         }
 
-        void IEffectTexture.SetTexture(string name, Texture texture)
+        float IEffectMaterial.Alpha
         {
-            if (name == TextureNames.LightBuffer)
+            get { return 1; }
+            set { }
+        }
+
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
+        {
+            if (usage == TextureUsage.LightBuffer)
                 LightTexture = texture as Texture2D;
         }
     }

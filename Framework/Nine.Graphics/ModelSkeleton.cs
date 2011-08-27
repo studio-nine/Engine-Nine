@@ -68,7 +68,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the index of the parent bone.
         /// </summary>
-        public  int GetParentBone(int bone)
+        public int GetParentBone(int bone)
         {
             return ParentBones[bone];
         }
@@ -76,7 +76,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets all the child bones of the input bone.
         /// </summary>
-        public  IEnumerable<int> GetChildBones(int bone)
+        public IEnumerable<int> GetChildBones(int bone)
         {
             for (int i = bone + 1; i < ParentBones.Count; i++)
                 if (ParentBones[i] == bone)
@@ -86,7 +86,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the name of the bone.
         /// </summary>
-        public  string GetBoneName(int bone)
+        public string GetBoneName(int bone)
         {
             return BoneNames[bone];
         }
@@ -94,7 +94,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the index of the bone.
         /// </summary>
-        public  int GetBone(string boneName)
+        public int GetBone(string boneName)
         {
             return BoneNames.IndexOf(boneName);
         }
@@ -102,7 +102,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the aboslute transform of the specified bone.
         /// </summary>
-        public  Matrix GetAbsoluteBoneTransform(int bone)
+        public Matrix GetAbsoluteBoneTransform(int bone)
         {
             Matrix absoluteTransform = BoneTransforms[bone];
 
@@ -117,7 +117,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the aboslute transform of the specified bone.
         /// </summary>
-        public  Matrix GetAbsoluteBoneTransform(string boneName)
+        public Matrix GetAbsoluteBoneTransform(string boneName)
         {
             return GetAbsoluteBoneTransform(GetBone(boneName));
         }
@@ -150,7 +150,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Copies the local transforms of all the bones.
         /// </summary>
-        public  void CopyBoneTransformsTo(Matrix[] destinationBoneTransforms)
+        public void CopyBoneTransformsTo(Matrix[] destinationBoneTransforms)
         {
             BoneTransforms.CopyTo(destinationBoneTransforms, 0);
         }
@@ -158,7 +158,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the local transform of the specified bone.
         /// </summary>
-        public  Matrix GetBoneTransform(int bone)
+        public Matrix GetBoneTransform(int bone)
         {
             return BoneTransforms[bone];
         }
@@ -166,7 +166,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the local transform of the specified bone.
         /// </summary>
-        public  Matrix GetBoneTransform(string boneName)
+        public Matrix GetBoneTransform(string boneName)
         {
             return GetBoneTransform(GetBone(boneName));
         }
@@ -180,7 +180,7 @@ namespace Nine.Graphics
         /// <remarks>
         /// Whenever the bone or skeleton changes, you should re-skin the model.
         /// </remarks>
-        public  Matrix[] GetSkinTransforms()
+        public Matrix[] GetSkinTransforms()
         {
             if (InverseAbsoluteBindPose == null)
                 throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
@@ -213,7 +213,7 @@ namespace Nine.Graphics
         /// <remarks>
         /// Whenever the bone or skeleton changes, you should re-skin the model.
         /// </remarks>
-        public  Matrix[] GetSkinTransforms(Matrix world)
+        public Matrix[] GetSkinTransforms(Matrix world)
         {
             if (InverseAbsoluteBindPose == null)
                 throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
@@ -241,7 +241,7 @@ namespace Nine.Graphics
         /// A matrix array to hold the result transformations.
         /// The length must be at least InverseBindPose.Count.
         /// </param>
-        public  void GetSkinTransforms(Matrix world, Matrix[] skinTransforms)
+        public void GetSkinTransforms(Matrix world, Matrix[] skinTransforms)
         {
             if (InverseAbsoluteBindPose == null)
                 throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
@@ -254,7 +254,9 @@ namespace Nine.Graphics
             for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
             {
                 // Apply inverse bind pose
-                skinTransforms[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i] * world;
+                Matrix inverseAbsoluteBindPose = InverseAbsoluteBindPose[i];
+                Matrix.Multiply(ref inverseAbsoluteBindPose, ref bones[SkeletonRoot + i], out skinTransforms[i]);
+                Matrix.Multiply(ref skinTransforms[i], ref world, out skinTransforms[i]);
             }
         }
 
@@ -274,7 +276,8 @@ namespace Nine.Graphics
             for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
             {
                 // Apply inverse bind pose
-                skinTransforms[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i];
+                Matrix inverseAbsoluteBindPose = InverseAbsoluteBindPose[i];
+                Matrix.Multiply(ref inverseAbsoluteBindPose, ref bones[SkeletonRoot + i], out skinTransforms[i]);
             }
         }
 

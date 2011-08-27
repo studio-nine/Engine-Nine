@@ -5,7 +5,6 @@
 // Input parameters.
 float4x3 bones[MaxBones];
 float4x4 worldViewProjection;
-float    farClip;
 
 
 //-----------------------------------------------------------------------------
@@ -14,7 +13,7 @@ float    farClip;
 //-----------------------------------------------------------------------------
 void VertShadow( float4 Pos : POSITION,
                  out float4 oPos : POSITION,
-                 out float Depth : TEXCOORD0 )
+                 out float2 Depth : TEXCOORD0 )
 {
     //
     // Compute the projected coordinates
@@ -24,7 +23,7 @@ void VertShadow( float4 Pos : POSITION,
     //
     // Store z and w in our spare texcoord
     //
-    Depth = oPos.z / farClip;
+    Depth = oPos.zw;
 }
 
 
@@ -36,7 +35,7 @@ void VertShadowSkinned( float4 Pos : POSITION,
 						float4 BoneIndices : BLENDINDICES0,
 						float4 BoneWeights : BLENDWEIGHT0,
                  out float4 oPos : POSITION,
-                 out float Depth : TEXCOORD0 )
+                 out float2 Depth : TEXCOORD0 )
 {
     // Blend between the weighted bone matrices.
     float4x3 skinTransform = 0;
@@ -55,7 +54,7 @@ void VertShadowSkinned( float4 Pos : POSITION,
     //
     // Store z and w in our spare texcoord
     //
-    Depth = oPos.z / farClip;
+    Depth = oPos.zw;
 }
 
 
@@ -63,13 +62,13 @@ void VertShadowSkinned( float4 Pos : POSITION,
 // Pixel Shader: PixShadow
 // Desc: Process pixel for the shadow map
 //-----------------------------------------------------------------------------
-void PixShadow( float Depth : TEXCOORD0,
+void PixShadow( float2 Depth : TEXCOORD0,
                 out float4 Color : COLOR )
 {
     //
     // Depth is z / w
     //
-    Color = Depth;
+    Color = Depth.x / Depth.y;
 }
 
 int shaderIndex = 0;

@@ -21,6 +21,7 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 #endif
 using Nine.Components;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace TerrainSample
@@ -37,6 +38,7 @@ namespace TerrainSample
         DrawableSurface terrain;
         BasicEffect basicEffect;
         Vector3 pickedPosition;
+        RasterizerState wireframe;
 
         public TerrainGame()
         {
@@ -50,6 +52,7 @@ namespace TerrainSample
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
+            Window.AllowUserResizing = true;
         }
 
 
@@ -61,20 +64,26 @@ namespace TerrainSample
         {
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
+            Components.Add(new ScreenshotCapturer(GraphicsDevice));
 
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
             modelBatch = new ModelBatch(GraphicsDevice);
             primitiveBatch = new PrimitiveBatch(GraphicsDevice);
 
+            wireframe = new RasterizerState() { FillMode = FillMode.WireFrame, CullMode = CullMode.None };
+
             // Create a terrain based on the terrain geometry loaded from file
-            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 8);
+            terrain = new DrawableSurface(GraphicsDevice, Content.Load<Heightmap>("MountainHeightmap"), 32);
+            //terrain = new DrawableSurface(GraphicsDevice, 1, 16, 16, 8);
             
             // Center the terrain to the camera
             terrain.Position = -terrain.BoundingBox.GetCenter();
-            terrain.TextureTransform = TextureTransform.CreateScale(32, 32);
 
-            terrain.Invalidate();
+            // Enable terrain level of detail
+            terrain.LevelOfDetailEnabled = true;
+            terrain.LevelOfDetailStart = 50;
+            terrain.LevelOfDetailEnd = 100;
 
             // Initialize terrain effects
             basicEffect = new BasicEffect(GraphicsDevice);
@@ -96,7 +105,6 @@ namespace TerrainSample
             {
                 pickedPosition = positionWorld;
             }
-
             base.Update(gameTime);
         }
         
@@ -107,16 +115,23 @@ namespace TerrainSample
         {
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
+            // Update terrain level of detail
+            Vector3 eyePosition = Matrix.Invert(camera.View).Translation;
+            terrain.UpdateLevelOfDetail(eyePosition);
+
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
 
-            modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);
-            foreach (DrawableSurfacePatch patch in terrain.Patches)
+            modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection, BlendState.AlphaBlend, SamplerState.LinearWrap, null,
+                Keyboard.GetState().IsKeyDown(Keys.Space) ? wireframe : null);
             {
-                // Cull patches that are outside the view frustum
-                if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
+                foreach (DrawableSurfacePatch patch in terrain.Patches)
                 {
-                    modelBatch.DrawSurface(patch, basicEffect);
+                    // Cull patches that are outside the view frustum
+                    if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
+                    {
+                        modelBatch.DrawSurface(patch, basicEffect);
+                    }
                 }
             }
             modelBatch.End();

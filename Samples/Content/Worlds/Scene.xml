@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent xmlns:nine="Nine.Content.Pipeline.Graphics.ObjectModel"
+            xmlns:gfx="Nine.Content.Pipeline.Graphics">
+  <Asset Type="nine:DisplayObjectContent">
+    <Children>
+      
+      <Item Type="nine:SkyBoxContent">
+        <Texture>SkyCubeMap</Texture>
+      </Item>
+     
+      <Item Type="nine:DrawableSurfaceContent">
+        <Heightmap>Terrain\MountainHeightmap</Heightmap>
+        <LevelOfDetailEnabled>true</LevelOfDetailEnabled>
+        <LevelOfDetailEnd>300</LevelOfDetailEnd>
+        <LevelOfDetailStart>200</LevelOfDetailStart>
+        <Material Type="gfx:BasicMaterialContent">
+          <Texture>Terrain\Mountain</Texture>
+          <TextureEnabled>true</TextureEnabled>
+        </Material>
+        <Position>-50 -50 -20</Position>
+      </Item>
+      
+      
+      <!-- 
+      -->
+      <!--
+      -->
+      
+      <Item Type="nine:DrawableModelContent">
+        <Alpha>0.4</Alpha>
+        <LightingEnabled>true</LightingEnabled>
+        <Material Type="gfx:BasicMaterialContent">
+          <TextureEnabled>true</TextureEnabled>
+        </Material>
+        <Model>Models\Dude</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -10 -10 10 1</Transform>
+      </Item>
+      
+
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:SkinnedMaterialContent">
+          <Alpha>0.9</Alpha>
+        </Material>
+        <Model>Models\Dude</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -5 -10 10 1</Transform>
+      </Item>
+
+
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:EnvironmentMapMaterialContent">
+          <EnvironmentMap>SkyCubeMap</EnvironmentMap>
+          <EnvironmentMapAmount>1</EnvironmentMapAmount>
+          <EnvironmentMapSpecular>0 0 0</EnvironmentMapSpecular>
+          <FresnelFactor>1</FresnelFactor>
+        </Material>
+        <Model>Models\Dude</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 -10 10 1</Transform>
+      </Item>
+
+
+      <Item Type="nine:DrawableModelContent">
+        <Model>Models\Tank</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -10 0 10 1</Transform>
+      </Item>
+      
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:AlphaTestMaterialContent">
+          <AlphaFunction>Greater</AlphaFunction>
+          <ReferenceAlpha>150</ReferenceAlpha>
+        </Material>
+        <Model>Models\AlphaPalm</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 5 -10 10 1</Transform>
+      </Item>
+
+
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:DualTextureMaterialContent">
+          <Texture2>flake</Texture2>
+        </Material>
+        <Model>Models\Dude</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 10 -10 10 1</Transform>
+      </Item>
+
+
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:BasicMaterialContent">
+          <IsTransparent>true</IsTransparent>
+          <TextureEnabled>true</TextureEnabled>
+        </Material>
+        <Model>Models\AlphaPalm</Model>
+        <ModelParts>
+          <Item>
+            <Visible>false</Visible>
+          </Item>
+        </ModelParts>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 5 0 10 1</Transform>
+      </Item>
+
+        <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:Effects.LinkedMaterialContent">
+          <Effect>Effects\SkinnedEffect</Effect>
+          <EffectParts>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Null="true"></Item>
+            <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent">
+              <DiffuseColor>0 0 0</DiffuseColor>
+            </Item>
+            <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent">
+              <DiffuseColor>0 0 0</DiffuseColor>
+            </Item>
+          </EffectParts>
+        </Material>
+        <Model>Models\Dude</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 10 0 10 1</Transform>
+      </Item>
+
+      
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="gfx:Effects.LinkedMaterialContent">
+          <Effect>Effects\ShadowNormalSkinnedEffect</Effect>
+        </Material>
+        <Model>Models\Dude</Model>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 15 0 10 1</Transform>
+      </Item>
+
+      <Item Type="nine:DrawableParticleEffectContent">
+        <ParticleEffect>Galaxy</ParticleEffect>
+      </Item>
+      
+      <!--
+      
+
+      <Item Type="nine:DirectionalLightContent">
+        <DiffuseColor>1 0 0</DiffuseColor>
+      </Item>
+      <Item Type="nine:DirectionalLightContent">
+        <DiffuseColor>0 1 0</DiffuseColor>
+      </Item>
+      <Item Type="nine:DirectionalLightContent">
+        <DiffuseColor>0 0 1</DiffuseColor>
+      </Item>
+      <Item Type="nine:DirectionalLightContent">
+        <DiffuseColor>1 1 1</DiffuseColor>
+      </Item>
+      <Item Type="nine:PointLightContent">
+        <DiffuseColor>1 1 1</DiffuseColor>
+        <Range>100</Range>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 10 1</Transform>
+      </Item>
+      <Item Type="nine:SpotLightContent">
+        <DiffuseColor>1 1 1</DiffuseColor>
+        <Range>10</Range>
+        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 10 10 15 1</Transform>
+      </Item>
+      -->
+      
+    </Children>
+  </Asset>
+</XnaContent>

@@ -27,7 +27,7 @@ namespace Nine.Graphics.ObjectModel
     public partial class SpotLight : IDeferredLight
     {
         SpotLightEffect multiPasseffect;
-        public override Effect Effect
+        public override Effect MultiPassEffect
         {
             get { return multiPasseffect ?? (multiPasseffect = GraphicsResources<SpotLightEffect>.GetInstance(GraphicsDevice)); }
         }

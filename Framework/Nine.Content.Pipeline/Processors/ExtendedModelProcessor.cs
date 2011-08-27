@@ -76,7 +76,7 @@ namespace Nine.Content.Pipeline.Processors
 
         private Dictionary<string, string> attachedTextureNames = new Dictionary<string, string>();
         private Dictionary<string, string> attachedTextureProcessors = new Dictionary<string, string>();
-        private List<Dictionary<string, ContentReference<TextureContent>>> attachedTextures = new List<Dictionary<string, ContentReference<TextureContent>>>();
+        private List<Dictionary<TextureUsage, ContentReference<TextureContent>>> attachedTextures = new List<Dictionary<TextureUsage, ContentReference<TextureContent>>>();
         private List<BoundingBox> partBound = new List<BoundingBox>();
 
         /// <summary>
@@ -223,13 +223,19 @@ namespace Nine.Content.Pipeline.Processors
         protected override MaterialContent ConvertMaterial(MaterialContent material, ContentProcessorContext context)
         {
             ExternalReference<TextureContent> textureContent;
-            Dictionary<string, ContentReference<TextureContent>> textureDictionary = new Dictionary<string, ContentReference<TextureContent>>();
+            Dictionary<TextureUsage, ContentReference<TextureContent>> textureDictionary = new Dictionary<TextureUsage, ContentReference<TextureContent>>();
 
             if (material.Textures.TryGetValue("Texture", out textureContent))
             {
                 string filename = textureContent.Filename;
                 foreach (string name in attachedTextureNames.Keys)
                 {
+                    TextureUsage usage = TextureUsage.None;
+                    if (!Enum.TryParse(name, out usage))
+                    {
+                        throw new InvalidContentException("Unknown texture usage: " + name);
+                    }
+
                     string path = filename.Substring(0, filename.LastIndexOf(Path.GetFileName(filename)));
                     string textureFilename = attachedTextureNames[name].Replace("*", Path.GetFileNameWithoutExtension(filename));
                     textureFilename = Path.Combine(path, textureFilename);
@@ -241,7 +247,7 @@ namespace Nine.Content.Pipeline.Processors
 
                         ExternalReference<TextureContent> texture = new ExternalReference<TextureContent>(textureFilename);
                         texture = context.BuildAsset<TextureContent, TextureContent>(texture, processor);
-                        textureDictionary.Add(name, new ContentReference<TextureContent>(texture.Filename));
+                        textureDictionary.Add(usage, new ContentReference<TextureContent>(texture.Filename));
                     }
                 }
             }

@@ -108,6 +108,7 @@ namespace AvatarAnimationGame
         {
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
+            Components.Add(new ScreenshotCapturer(GraphicsDevice));
 
             // Create a model viewer camera to help us visualize the scene
             camera = new ModelViewerCamera(GraphicsDevice);

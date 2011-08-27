@@ -93,11 +93,12 @@ namespace Nine.Graphics.Effects
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             hasBegin = true;
-            if (renderTarget == null || renderTarget.Width != Size)
+            if (renderTarget == null || renderTarget.IsDisposed || renderTarget.IsContentLost || 
+                renderTarget.Format != SurfaceFormat || renderTarget.Width != Size)
             {
                 if (renderTarget != null)
                     renderTarget.Dispose();
-                renderTarget = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat.Single,
+                renderTarget = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat,
                                                   GraphicsDevice.PresentationParameters.DepthStencilFormat);
             }
             renderTarget.Begin();
@@ -118,7 +119,8 @@ namespace Nine.Graphics.Effects
 
             if (BlurEnabled)
             {
-                if (depthBlur == null || depthBlur.Width != Size)
+                if (depthBlur == null || depthBlur.IsDisposed || depthBlur.IsContentLost ||
+                    depthBlur.Format != SurfaceFormat || depthBlur.Width != Size)
                 {
                     if (depthBlur != null)
                         depthBlur.Dispose();

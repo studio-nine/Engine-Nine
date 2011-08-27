@@ -88,6 +88,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
+        internal static byte[] DeferredLights {
+            get {
+                object obj = ResourceManager.GetObject("DeferredLights", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] DirectionalLight {
             get {
                 object obj = ResourceManager.GetObject("DirectionalLight", resourceCulture);

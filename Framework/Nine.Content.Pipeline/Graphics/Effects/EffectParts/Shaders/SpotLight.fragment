@@ -9,7 +9,7 @@ fragment SpotLight;
 float3 SpotLightPosition = { 0, 0, 0 };
 float3 SpotLightDirection = { 0, -0.707107, -0.707107 };
 float3 SpotLightDiffuseColor = { 1, 1, 1 };
-float3 SpotLightSpecularColor = { 1, 1, 1 };
+float3 SpotLightSpecularColor = { 0, 0, 0 };
 
 float Range = 100;
 float Attenuation = 1;

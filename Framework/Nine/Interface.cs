@@ -68,11 +68,6 @@ namespace Nine
         /// Gets the axis aligned bounding box in world space.
         /// </summary>
         BoundingBox BoundingBox { get; }
-        
-        /// <summary>
-        /// Occurs when the bounding box changed.
-        /// </summary>
-        event EventHandler<EventArgs> BoundingBoxChanged;
     }
 
     /// <summary>
@@ -106,6 +101,11 @@ namespace Nine
     /// </summary>
     public interface ISpatialQueryable : IBoundable
     {
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        event EventHandler<EventArgs> BoundingBoxChanged;
+
         /// <summary>
         /// Gets or sets the data used for spatial query.
         /// </summary>

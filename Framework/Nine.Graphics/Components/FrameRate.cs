@@ -38,6 +38,11 @@ namespace Nine.Components
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="FrameRate"/> is visible.
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
         /// Time needed to calculate FPS.
         /// </summary>
         public TimeSpan UpdateFrequency { get; set; }
@@ -90,6 +95,7 @@ namespace Nine.Components
             this.GraphicsDevice = graphics;
             this.UpdateFrequency = TimeSpan.FromSeconds(1);
             this.Color = Color.Yellow;
+            this.Visible = true;
         }
         
         public void Draw(TimeSpan elapsedTime)
@@ -97,7 +103,7 @@ namespace Nine.Components
             UpdateFPS(elapsedTime);
 
             // Draw FPS text
-            if (Font != null && GraphicsDevice != null)
+            if (Visible && Font != null && GraphicsDevice != null)
             {
                 SpriteBatch spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
 

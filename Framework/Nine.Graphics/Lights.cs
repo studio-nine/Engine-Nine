@@ -17,7 +17,6 @@ using System.Xml.Serialization;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics

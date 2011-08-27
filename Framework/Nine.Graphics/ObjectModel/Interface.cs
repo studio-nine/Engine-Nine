@@ -19,19 +19,41 @@ using Nine.Graphics.ParticleEffects;
 namespace Nine.Graphics.ObjectModel
 {
     /// <summary>
-    /// Defines an interface for material that can be assigned to each drawable view.
+    /// Represents a drawable object that can be rendered using the renderer.
     /// </summary>
-    public interface IMaterial
+    public interface IDrawableObject
     {
         /// <summary>
-        /// Gets whether the drawable is transparent.
+        /// Gets whether this object is visible.
         /// </summary>
-        bool IsTransparent { get; }
-        
+        bool Visible { get; }
+
         /// <summary>
-        /// Gets the effect instance used by this material.
+        /// Gets the material of the object.
+        /// A value of null indicates the object does not have any materials
+        /// for external use.
         /// </summary>
-        IEffectInstance Effect { get; }
+        Material Material { get; }
+
+        /// <summary>
+        /// Perform any updates before this object is drawed.
+        /// </summary>
+        void BeginDraw(GraphicsContext context);
+
+        /// <summary>
+        /// Perform any updates after this object is drawed.
+        /// </summary>
+        void EndDraw(GraphicsContext context);
+
+        /// <summary>
+        /// Draws the object using the graphics context.
+        /// </summary>
+        void Draw(GraphicsContext context);
+
+        /// <summary>
+        /// Draws the object with the specified effect.
+        /// </summary>
+        void Draw(GraphicsContext context, Effect effect);
     }
 
     /// <summary>
@@ -39,6 +61,22 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     public interface ILightable
     {
+        /// <summary>
+        /// Gets whether lighting is enabled on this drawable.
+        /// </summary>
+        bool LightingEnabled { get; }
+
+        /// <summary>
+        /// Gets whether the lighting system should draw multi-pass lighting
+        /// overlays on to this object.
+        /// </summary>
+        bool MultiPassLightingEnabled { get; }
+
+        /// <summary>
+        /// Gets the max number of affecting lights.
+        /// </summary>
+        int MaxAffectingLights { get; }
+
         /// <summary>
         /// Gets whether the drawable casts shadow.
         /// </summary>
@@ -50,8 +88,19 @@ namespace Nine.Graphics.ObjectModel
         bool ReceiveShadow { get; }
 
         /// <summary>
-        /// Gets the max number of affecting lights.
+        /// Gets whether the lighting system should draw multi-pass shadow
+        /// overlays on to this object.
         /// </summary>
-        //int MaxAffectingLights { get; }
+        bool MultiPassShadowEnabled { get; }
+
+        /// <summary>
+        /// Gets the max number of received shadows.
+        /// </summary>
+        int MaxReceivedShadows { get; }
+
+        /// <summary>
+        /// Gets or sets the data used by the lighting and shadowing system.
+        /// </summary>
+        object LightingData { get; set; }
     }
 }

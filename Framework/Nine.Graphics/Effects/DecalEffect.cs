@@ -21,7 +21,7 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Represents an effect for drawing decals.
     /// </summary>
-    public partial class DecalEffect : IEffectMatrices
+    public partial class DecalEffect : IEffectMatrices, IEffectTexture, IBoundable
     {
         private Matrix view;
         private Matrix projection;
@@ -95,6 +95,14 @@ namespace Nine.Graphics.Effects
             Matrix.Multiply(ref matrix, ref rotation, out matrix);
 
             textureTransform = matrix;
+        }
+
+        Texture2D IEffectTexture.Texture { get { return null; } set { } }
+
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
+        {
+            if (usage == TextureUsage.Decal)
+                Texture = texture as Texture2D;
         }
     }
 

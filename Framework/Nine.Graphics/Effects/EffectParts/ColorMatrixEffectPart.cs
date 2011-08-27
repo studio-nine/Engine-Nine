@@ -18,41 +18,48 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    internal class ColorMatrixEffectPart : LinkedEffectPart
+    internal class ColorMatrixEffectPart : LinkedEffectPart, IEffectColorMatrix
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
+        
         private Matrix transform;
         private EffectParameter transformParameter;
         private const uint transformDirtyMask = 1 << 0;
 
         [ContentSerializer(Optional = true)]
-        public Matrix Transform 
+        public Matrix ColorMatrix 
         {
             get { return transform; }
-            set { transform = value; dirtyMask |= transformDirtyMask; }
+            set { transform = value; DirtyMask |= transformDirtyMask; }
         }
 
         public ColorMatrixEffectPart()
         {
-            Transform = Matrix.Identity;
+            ColorMatrix = Matrix.Identity;
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & transformDirtyMask) != 0)
+            if ((DirtyMask & transformDirtyMask) != 0)
             {
                 if (transformParameter == null)
                     transformParameter = GetParameter("Transform");
                 transformParameter.SetValue(transform);
-                dirtyMask &= ~transformDirtyMask;
+                DirtyMask &= ~transformDirtyMask;
             }
+        }
+
+        protected internal override void OnApply(LinkedEffectPart part)
+        {
+            var effectPart = (ColorMatrixEffectPart)part;
+            effectPart.ColorMatrix = ColorMatrix;
         }
 
         protected internal override LinkedEffectPart Clone()
         {
             return new ColorMatrixEffectPart()
             {
-                Transform = this.Transform,
+                ColorMatrix = this.ColorMatrix,
             };
         }
     }

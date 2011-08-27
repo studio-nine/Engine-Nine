@@ -112,7 +112,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
     <Reference Include="mscorlib" />
     <Reference Include="Nine" />
-    <Reference Include="Nine.Graphics" />
+    <Reference Include="Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />

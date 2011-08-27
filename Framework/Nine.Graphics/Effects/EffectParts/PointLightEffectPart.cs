@@ -20,7 +20,7 @@ namespace Nine.Graphics.Effects.EffectParts
 
     internal class PointLightEffectPart : LinkedEffectPart, IPointLight
     {
-        private uint dirtyMask = 0;
+        private uint DirtyMask = 0;
         
         private Vector3 position;
         private EffectParameter positionParameter;
@@ -46,80 +46,80 @@ namespace Nine.Graphics.Effects.EffectParts
         public Vector3 Position
         {
             get { return position; }
-            set { position = value; dirtyMask |= positionDirtyMask; }
+            set { position = value; DirtyMask |= positionDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public Vector3 DiffuseColor
         {
             get { return diffuseColor; }
-            set { diffuseColor = value; dirtyMask |= diffuseColorDirtyMask; }
+            set { diffuseColor = value; DirtyMask |= diffuseColorDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public Vector3 SpecularColor
         {
             get { return specularColor; }
-            set { specularColor = value; dirtyMask |= specularColorDirtyMask; }
+            set { specularColor = value; DirtyMask |= specularColorDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public float Range
         {
             get { return range; }
-            set { range = value; dirtyMask |= rangeDirtyMask; }
+            set { range = value; DirtyMask |= rangeDirtyMask; }
         }
 
         [ContentSerializer(Optional = true)]
         public float Attenuation
         {
             get { return attenuation; }
-            set { attenuation = value; dirtyMask |= attenuationDirtyMask; }
+            set { attenuation = value; DirtyMask |= attenuationDirtyMask; }
         }
 
         protected internal override void OnApply()
         {
-            if ((dirtyMask & positionDirtyMask) != 0)
+            if ((DirtyMask & positionDirtyMask) != 0)
             {
                 if (positionParameter == null)
                     positionParameter = GetParameter("PointLightPosition");
                 positionParameter.SetValue(position);
-                dirtyMask &= ~positionDirtyMask;
+                DirtyMask &= ~positionDirtyMask;
             }
 
-            if ((dirtyMask & diffuseColorDirtyMask) != 0)
+            if ((DirtyMask & diffuseColorDirtyMask) != 0)
             {
                 if (diffuseColorParameter == null)
                     diffuseColorParameter = GetParameter("PointLightDiffuseColor");
                 diffuseColorParameter.SetValue(diffuseColor);
-                dirtyMask &= ~diffuseColorDirtyMask;
+                DirtyMask &= ~diffuseColorDirtyMask;
             }
 
-            if ((dirtyMask & specularColorDirtyMask) != 0)
+            if ((DirtyMask & specularColorDirtyMask) != 0)
             {
                 if (specularColorParameter == null)
                     specularColorParameter = GetParameter("PointLightSpecularColor");
                 specularColorParameter.SetValue(specularColor);
-                dirtyMask &= ~specularColorDirtyMask;
+                DirtyMask &= ~specularColorDirtyMask;
             }
 
-            if ((dirtyMask & rangeDirtyMask) != 0)
+            if ((DirtyMask & rangeDirtyMask) != 0)
             {
                 if (rangeParameter == null)
                     rangeParameter = GetParameter("Range");
                 rangeParameter.SetValue(range);
-                dirtyMask &= ~rangeDirtyMask;
+                DirtyMask &= ~rangeDirtyMask;
             }
 
-            if ((dirtyMask & attenuationDirtyMask) != 0)
+            if ((DirtyMask & attenuationDirtyMask) != 0)
             {
                 if (attenuationParameter == null)
                     attenuationParameter = GetParameter("Attenuation");
                 attenuationParameter.SetValue(attenuation);
-                dirtyMask &= ~attenuationDirtyMask;
+                DirtyMask &= ~attenuationDirtyMask;
             }
         }
-        
+
         public PointLightEffectPart()
         {
             DiffuseColor = Vector3.One;

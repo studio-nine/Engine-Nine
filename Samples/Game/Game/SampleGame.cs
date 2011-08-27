@@ -15,14 +15,14 @@ using System.Text;
 using System.Xml.Serialization;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Primitives;
 using Nine.Graphics.ObjectModel;
 using Nine.Components;
-using Microsoft.Xna.Framework.Input;
-using Nine.Graphics.Effects.Deferred;
+using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
 #endregion
 
 namespace Game
@@ -46,12 +46,12 @@ namespace Game
         private const int BackBufferHeight = 768;
 #endif
 
-        World world;
-        Renderer renderer;
+        Scene scene;
         PointLight pointLight1;
         PointLight pointLight2;
         PointLight pointLight3;
         SpotLight spotLight;
+        DirectionalLight directionalLight;
 
 
         public SampleGame()
@@ -80,32 +80,40 @@ namespace Game
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
-            spotLight = new SpotLight(GraphicsDevice);
+            scene = new Scene(GraphicsDevice);
+            scene.Add(Content.Load<DisplayObject>("Scene"));            
 
-            world = new World();
-            world.WorldObjects.Add(new WorldObject() { Template = "WorldView" });
-            world.WorldObjects.Add(spotLight);
-            //world.WorldObjects.Add(new PointLight(GraphicsDevice));
-            world.WorldObjects.Add(new Nine.Graphics.ObjectModel.AmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.1f });
-            world.WorldObjects.Add(new Nine.Graphics.ObjectModel.DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(0, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 0.4f });
+            scene.Add(new AmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.2f });
+            scene.Add(directionalLight = new DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(-1, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 1 });
 
-            renderer = world.CreateGraphics(GraphicsDevice);
-            //renderer.Camera = new ModelViewerCamera(GraphicsDevice);
+            scene.Add(pointLight1 = new PointLight(GraphicsDevice));
+            scene.Add(pointLight2 = new PointLight(GraphicsDevice));
+            scene.Add(pointLight3 = new PointLight(GraphicsDevice));
 
-            //renderer.Drawables.Remove(renderer.Drawables.First(d => d is Terrain));
+            pointLight1.Range = 4;
+            pointLight2.Range = 4;
+            pointLight3.Range = 4;
+
+            /*
+            scene.Add(spotLight = new SpotLight(GraphicsDevice));
+            //scene.Camera = new ModelViewerCamera(GraphicsDevice);
+
+            //scene.Remove(renderer.Drawables.First(d => d is Terrain));
             
-            renderer.Lights.Add(pointLight1 = new PointLight(GraphicsDevice));
-            renderer.Lights.Add(pointLight2 = new PointLight(GraphicsDevice));
-            renderer.Lights.Add(pointLight3 = new PointLight(GraphicsDevice));
 
-            pointLight1.Range = 20;
-            pointLight2.Range = 20;
-            pointLight3.Range = 20;
+            //pointLight1.Enabled = pointLight2.Enabled = pointLight3.Enabled = false;
+
+            //directionalLight.Transform = Matrix.CreateWorld(Vector3.Zero, -Vector3.UnitZ, Vector3.UnitY);
+            directionalLight.CastShadow = true;
+            //directionalLight.Enabled = false;
             
             spotLight.Range = 50;
-            spotLight.Attenuation = 100;
-            
-            base.LoadContent();
+            //spotLight.Attenuation = 100;
+            //spotLight.Enabled = false;
+            //spotLight.CastShadow = true;
+            scene.Settings.LightingEnabled = false;
+            */
+            base.LoadContent(); 
         }
 
         /// <summary>
@@ -113,25 +121,34 @@ namespace Game
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
-            world.Update(gameTime.ElapsedGameTime);
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
+                Exit();
 
-            //light.Attenuation = (float)(Math.Sin(gameTime.TotalGameTime.TotalSeconds) + 1) * 100f;
-            //light.Range = (float)(Math.Sin(gameTime.TotalGameTime.TotalSeconds) + 1) * 100;
-            pointLight1.Transform = Matrix.CreateTranslation(
-                                     (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds) * 50 + 50,
-                                     (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds) * 50 + 50, 10);
+            double totalSeconds = gameTime.TotalGameTime.TotalSeconds;
 
-            pointLight2.Transform = Matrix.CreateTranslation(
-                                     (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2f) * 50 + 50,
-                                     (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 2f) * 50 + 50, 10);
+            //scene.OfType<DrawableModel>().First().Alpha = (float)Math.Sin(totalSeconds * 4) * 0.5f + 0.5f;
+            //scene.OfType<DrawableModel>().First().DiffuseColor = Vector3.One * ((float)Math.Sin(totalSeconds) * 0.5f + 0.5f);
 
-            pointLight3.Transform = Matrix.CreateTranslation(
-                                     (float)Math.Sin(gameTime.TotalGameTime.TotalSeconds + 10) * 50 + 50,
-                                     (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds + 10) * 50 + 50, 10);
+            if (pointLight1 != null)
+                pointLight1.Transform = Matrix.CreateTranslation(
+                                         (float)Math.Cos(totalSeconds) * 10,
+                                         (float)Math.Sin(totalSeconds) * 10, 0);
 
-            spotLight.Transform = Matrix.CreateRotationX(MathHelper.PiOver2) *
-                                  Matrix.CreateRotationZ(-(float)gameTime.TotalGameTime.TotalSeconds) *
-                                  Matrix.CreateTranslation(50, 50, 10);
+            if (pointLight2 != null)
+                pointLight2.Transform = Matrix.CreateTranslation(
+                                         (float)Math.Sin(totalSeconds * 2f) * 15,
+                                         (float)Math.Cos(totalSeconds * 2f) * 10, 0);
+
+            if (pointLight3 != null)
+                pointLight3.Transform = Matrix.CreateTranslation(
+                                         (float)Math.Sin(totalSeconds + 10) * 10,
+                                         (float)Math.Cos(totalSeconds + 10) * 15, 0);
+
+            if (spotLight != null)
+                spotLight.Transform = Matrix.CreateRotationX(MathHelper.PiOver2) *
+                                      Matrix.CreateRotationZ(-(float)totalSeconds * 1.5f) *
+                    //Matrix.CreateRotationZ(-16.75f) *
+                                      Matrix.CreateTranslation(50, 50, 10);    
 
             base.Update(gameTime);
         }
@@ -145,18 +162,24 @@ namespace Game
 
             var keyboardState = Keyboard.GetState();
             {
-                //renderer.Settings.PreferHighDynamicRangeLighting = keyboardState.IsKeyDown(Keys.H);
-                renderer.Settings.PreferDeferredLighting = keyboardState.IsKeyDown(Keys.D);
-                renderer.Settings.Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.W);
-                renderer.Settings.Debug.ShowBoundingBox = keyboardState.IsKeyDown(Keys.B);
-                renderer.Settings.Debug.ShowLightFrustum = keyboardState.IsKeyDown(Keys.L);
-                renderer.Settings.Debug.ShowSceneManager = keyboardState.IsKeyDown(Keys.S);
+                //scene.Settings.LightingEnabled = false;
+                scene.Settings.MultiPassLightingEnabled = true;
+                scene.Settings.PreferHighDynamicRangeLighting = false;
+                scene.Settings.PreferDeferredLighting = false;
+                scene.Settings.ShadowEnabled = false;
+                //scene.Settings.PreferHighDynamicRangeLighting = keyboardState.IsKeyDown(Keys.H);
+                //scene.Settings.PreferDeferredLighting = keyboardState.IsKeyDown(Keys.D);
+                scene.Settings.Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.W);
+                scene.Settings.Debug.ShowBoundingBox = keyboardState.IsKeyDown(Keys.B);
+                scene.Settings.Debug.ShowLightFrustum = keyboardState.IsKeyDown(Keys.L);
+                scene.Settings.Debug.ShowSceneManager = keyboardState.IsKeyDown(Keys.S);
+                scene.Settings.Debug.ShowShadowMap = keyboardState.IsKeyDown(Keys.M);
 
-                renderer.Settings.Debug.ShowDepthBuffer = keyboardState.IsKeyDown(Keys.Space);
-                renderer.Settings.Debug.ShowNormalBuffer = keyboardState.IsKeyDown(Keys.N);
+                scene.Settings.Debug.ShowDepthBuffer = keyboardState.IsKeyDown(Keys.Space);
+                scene.Settings.Debug.ShowNormalBuffer = keyboardState.IsKeyDown(Keys.N);
             }
 
-            world.Draw(gameTime.ElapsedGameTime);
+            scene.Draw(gameTime.ElapsedGameTime);
 
             base.Draw(gameTime);
         }
