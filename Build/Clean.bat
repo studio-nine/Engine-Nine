@@ -3,7 +3,7 @@
 pushd ..
 
 
-echo Deleting all *.user, *.cachefile, *.suo, *.exe, *.msi files...
+echo Deleting all *.user, *.cachefile, *.suo, *.exe, *.msi, *.chm files...
 
 for /f "delims=" %%i in ('dir /b /a-d /s "*.user"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.user"') do (del /ah /s "%%i")
@@ -13,6 +13,7 @@ for /f "delims=" %%i in ('dir /b /a-d /s "*.suo"') do (del /ah /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.suo"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.exe"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.msi"') do (del /s "%%i")
+for /f "delims=" %%i in ('dir /b /a-d /s "*.chm"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.vsp"') do (del /s "%%i")
 
 

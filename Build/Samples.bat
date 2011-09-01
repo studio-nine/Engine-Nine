@@ -29,6 +29,9 @@ for /f "delims=" %%i in ('dir /b /a-d /s PhoneGameThumb.png') do (
 
 call %msbuild% %flags% Samples.sln
 
+
+..\Build\samples.exe "." "..\Bin"
+
 popd
 
 

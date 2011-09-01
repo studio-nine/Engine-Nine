@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<?include "Config.wxi"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+
+    <DirectoryRef Id="ProductDir">
+      <Directory Id="Bin" Name="Bin">
+        <Component Id="EffectCustomTool" Guid="FA353E83-79DE-4269-B25B-0C238EB07619" DiskId="1">
+          <File Id="Nine.dll" Name="Nine.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.dll" />
+          <File Id="Nine.Graphics.dll" Name="Nine.Graphics.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Graphics.dll" />
+          <!--
+          <File Id="Nine.Tools.EffectCustomTool.dll" KeyPath="yes" Name="Nine.Tools.EffectCustomTool.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Tools.EffectCustomTool.dll" />
+          -->
+          <File Id="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" Name="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" />
+          <File Id="ScreenshotCapturer.exe" Name="ScreenshotCapturer.exe" Source="$(sys.SOURCEFILEDIR)../../Bin/ScreenshotCapturer.exe" />
+        </Component>
+
+        <Component Id="EffectCustomToolVPDRegistry" Guid="2841C602-F52D-4099-A94C-3DE414E9AB50" DiskId="1">
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VPDExpress\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Value="Effect Custom Tool for Visual Studio" Type="string"/>
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VPDExpress\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Name="CLSID" Value="{72C1F067-C0D6-4263-8279-65A8786C628F}" Type="string"/>
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VPDExpress\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Name="GeneratesDesignTimeSource" Value="1" Type="integer"/>
+        </Component>
+
+        <Component Id="EffectCustomToolVSRegistry" Guid="83D25CA9-5DFE-4A09-969D-E09F62E54F72" DiskId="1">
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Value="Effect Custom Tool for Visual Studio" Type="string"/>
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Name="CLSID" Value="{72C1F067-C0D6-4263-8279-65A8786C628F}" Type="string"/>
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Name="GeneratesDesignTimeSource" Value="1" Type="integer"/>
+        </Component>
+
+        <Component Id="EffectCustomToolVCSRegistry" Guid="49F7A95A-BC0A-4A62-9112-E216B3BE5787" DiskId="1">
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VCSExpress\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Value="Effect Custom Tool for Visual Studio" Type="string"/>
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VCSExpress\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Name="CLSID" Value="{72C1F067-C0D6-4263-8279-65A8786C628F}" Type="string"/>
+          <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\VCSExpress\10.0\Generators\{FAE04EC1-301F-11d3-BF4B-00C04F79EFBC}\EffectCustomTool" Name="GeneratesDesignTimeSource" Value="1" Type="integer"/>
+        </Component>
+
+      </Directory>
+    </DirectoryRef>
+
+    <ComponentGroup Id="ToolsComponent" >
+      <ComponentRef Id="EffectCustomTool" />
+      <ComponentGroupRef Id="EffectCustomToolRegister" />
+      <ComponentRef Id="EffectCustomToolVPDRegistry" />
+      <ComponentRef Id="EffectCustomToolVSRegistry" />
+      <ComponentRef Id="EffectCustomToolVCSRegistry" />
+    </ComponentGroup>
+
+  </Fragment>
+</Wix>

@@ -7,7 +7,11 @@ set flags=/p:Configuration=Release /p:Platform=x86
 
 pushd ..
 
+copy /y "Images\EngineNine.300.png" "C:\Nine.Logo.png"
+
 call %msbuild% %flags% Documentation\Documentation.shfbproj
+
+del /s "C:\Nine.Logo.png"
 copy /y "Documentation\Help\Engine Nine Documentation.chm" "Documentation.chm"
 
 popd

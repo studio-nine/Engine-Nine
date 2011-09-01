@@ -10,5 +10,6 @@ call Samples
 call Tools
 call Test
 call Documentation
+call Installer
 
 endlocal

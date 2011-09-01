@@ -11,6 +11,9 @@ pushd ..
 
 call %msbuild% %flags% Tools\EffectCustomTool\EffectCustomTool\EffectCustomTool.csproj
 call %msbuild% %flags% Tools\ScreenshotCapturer\ScreenshotCapturer.sln
+call %msbuild% %flags% Tools\ProcessSamples\ProcessSamples.sln
+
+Bin\Samples.exe "Samples" "Bin"
 
 pushd Bin
 
@@ -18,7 +21,7 @@ echo.
 echo.
 echo Registering Effect Custom Tool...
 
-call %regasm% Nine.Tools.EffectCustomTool.dll /ur
+call %regasm% Nine.Tools.EffectCustomTool.dll /unregister
 call %regasm% Nine.Tools.EffectCustomTool.dll /codebase
 
 if %PROCESSOR_ARCHITECTURE% == x86 goto regx86

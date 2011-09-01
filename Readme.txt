@@ -8,7 +8,13 @@ These are the steps needed to use Engine Nine:
 
 2. Run Build/Build.bat as administrator
 
+- You might experence some errors since the full build requires Wix and SandCastle
+
 3. In your Xna project, you can now add Nine.dll/Nine.Content.dll to your project using Add Reference -> .NET
 
 
-Documentation.chm contains class references for Engine Nine. If you can not see the content of that file, right click Documentation.chm, select Properties, then click Unlock.
+
+Special thanks to:
+
+- StitchUp (http://www.roastedamoeba.com/) by Tim Jones 
+- WixXna (http://xnainstaller.codeplex.com/) by Cygon
