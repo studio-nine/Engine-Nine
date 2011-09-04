@@ -1759,6 +1759,13 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("32")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public System.Int32 PatchSegmentCount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public Microsoft.Xna.Framework.Vector3 Position { get; set; }
@@ -1793,6 +1800,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             LevelOfDetailEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("200");
             LevelOfDetailStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
             LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            PatchSegmentCount = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("32");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             ReceiveShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             TextureTransform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);

@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Graphics;
+using System.ComponentModel;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -31,6 +32,19 @@ namespace Nine.Content.Pipeline.Processors
     [ContentProcessor(DisplayName="Splatter Texture Processor - Engine Nine")]
     public class SplatterTextureProcessor : ContentProcessor<string[], TextureContent>
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether a base layer should be generated.
+        /// </summary>
+        [DefaultValue(true)]
+        [Description(
+            "Determines if a base layer should be generated automatically if the first layer is not specified.")]
+        public bool GenerateBaseLayer { get; set; }
+
+        public SplatterTextureProcessor()
+        {
+            GenerateBaseLayer = true;
+        }
+
         public override TextureContent Process(string[] input, ContentProcessorContext context)
         {
             if (input.Length > 4)
@@ -45,7 +59,6 @@ namespace Nine.Content.Pipeline.Processors
             PixelBitmapContent<float> bitmapG = null;
             PixelBitmapContent<float> bitmapB = null;
             PixelBitmapContent<float> bitmapA = null;
-
 
             if (!string.IsNullOrEmpty(input[0]))
             {
@@ -102,7 +115,7 @@ namespace Nine.Content.Pipeline.Processors
                 for (int x = 0; x < width; x++)
                 {
                     var color = new Vector4(
-                        bitmapR != null ? bitmapR.GetPixel(x, y) : 0,
+                        bitmapR != null ? bitmapR.GetPixel(x, y) : GenerateBaseLayer ? 1 : 0,
                         bitmapG != null ? bitmapG.GetPixel(x, y) : 0,
                         bitmapB != null ? bitmapB.GetPixel(x, y) : 0,
                         bitmapA != null ? bitmapA.GetPixel(x, y) : 0);

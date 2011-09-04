@@ -63,6 +63,11 @@ namespace Nine.Components
         public Vector2 Position { get; set; }
 
         /// <summary>
+        /// Gets or sets the scale.
+        /// </summary>
+        public float Scale { get; set; }
+
+        /// <summary>
         /// Gets the total number of frames since profiler started
         /// </summary>
         public int CurrentFrame
@@ -96,6 +101,7 @@ namespace Nine.Components
             this.UpdateFrequency = TimeSpan.FromSeconds(1);
             this.Color = Color.Yellow;
             this.Visible = true;
+            this.Scale = 1;
         }
         
         public void Draw(TimeSpan elapsedTime)
@@ -108,7 +114,7 @@ namespace Nine.Components
                 SpriteBatch spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
 
                 spriteBatch.Begin();
-                spriteBatch.DrawString(Font, string.Format("FPS: {0:00.00}", fps), Position, Color);
+                spriteBatch.DrawString(Font, string.Format("FPS: {0:00.00}", fps), Position, Color, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
                 spriteBatch.End();
 
                 GraphicsDevice.DepthStencilState = DepthStencilState.Default;

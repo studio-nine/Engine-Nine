@@ -1003,6 +1003,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfaceContent value)
         {
+            output.WriteObject(value.PatchSegmentCount);
             output.WriteObject(value.Name);
             output.WriteObject(value.TextureTransform);
             output.WriteObject(value.Heightmap);

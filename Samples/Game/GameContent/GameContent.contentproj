@@ -175,7 +175,14 @@
       <Processor>ExtendedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\..\Content\Terrain\RF1.bmp">
+      <Link>Terrain\RF1.bmp</Link>
+      <Name>RF1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>HeightmapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Worlds\Scene.xml">
       <Link>Scene.xml</Link>
@@ -202,6 +209,23 @@
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_Scale>0.02</ProcessorParameters_Scale>
       <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\Terrain\TerrainTex.png">
+      <Link>Terrain\TerrainTex.png</Link>
+      <Name>TerrainTex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Textures\box.dds">
+      <Link>Terrain\box.dds</Link>
+      <Name>box</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

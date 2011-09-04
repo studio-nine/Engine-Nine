@@ -36,13 +36,12 @@ namespace Nine.Graphics.ObjectModel
             AmbientLightColor = Vector3.One * 0.2f;
         }
 
-        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
-                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
         {
-            return drawablesInViewFrustum;
+            return objectsInViewFrustum;
         }
 
-        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<IDrawableObject> drawablesInLightFrustum, IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<ISpatialQueryable> drawablesInLightFrustum, IEnumerable<ISpatialQueryable> drawablesInViewFrustum)
         {
             throw new NotSupportedException();
         }

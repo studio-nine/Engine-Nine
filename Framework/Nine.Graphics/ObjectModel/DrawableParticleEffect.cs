@@ -55,7 +55,7 @@ namespace Nine.Graphics.ObjectModel
         public override void Draw(GraphicsContext context)
         {
             if (ParticleEffect == null || Visible)
-            {   
+            {
                 context.ParticleBatch.Draw(ParticleEffect);
             }
         }

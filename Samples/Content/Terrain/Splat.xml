@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent>
   <Asset Type="System.String[]">
+    <Item></Item>
     <Item>../../Content/Terrain/2.bmp</Item>
     <Item>../../Content/Terrain/3.bmp</Item>
-    <Item></Item>
     <Item></Item>
   </Asset>
 </XnaContent>

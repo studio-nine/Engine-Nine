@@ -89,14 +89,6 @@ namespace Nine
             foreach (T item in collection)
                 action(item);
         }
-
-        /// <summary>
-        /// Creates a new instance of the target type using the specified template name.
-        /// </summary>
-        public static T Create<T>(this ITemplateFactory factory, string templateName)
-        {
-            return (T)factory.Create(typeof(T), templateName);
-        }
     }
 
 

@@ -83,6 +83,9 @@ namespace Nine.Graphics
         private Matrix view;
         private Matrix projection;
 
+        internal int VertexCount { get; private set; }
+        internal int PrimitiveCount { get; private set; }
+
         /// <summary>
         /// Gets the underlying graphics device used by this PrimitiveBatch.
         /// </summary>
@@ -143,6 +146,9 @@ namespace Nine.Graphics
             this.sort = sortMode;
             this.hasBegin = true;
             this.cameraPosition = null;
+
+            this.VertexCount = 0;
+            this.PrimitiveCount = 0;
             
             this.blendState = blendState != null ? blendState : BlendState.AlphaBlend;
             this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
@@ -647,14 +653,22 @@ namespace Nine.Graphics
 
             if (entry.IndexCount > 0)
             {
+                var primitiveCount = GetPrimitiveCount(entry.PrimitiveType, entry.IndexCount);
                 indexBuffer.SetData(indexData, indexSegments[entry.Segment], indexSegments[entry.Segment + 1] - indexSegments[entry.Segment], SetDataOptions.Discard);
                 GraphicsDevice.Indices = indexBuffer;
-                GraphicsDevice.DrawIndexedPrimitives(entry.PrimitiveType, 0, entry.StartVertex, entry.VertexCount, entry.StartIndex, GetPrimitiveCount(entry.PrimitiveType, entry.IndexCount));
+                GraphicsDevice.DrawIndexedPrimitives(entry.PrimitiveType, 0, entry.StartVertex, entry.VertexCount, entry.StartIndex, primitiveCount);
                 GraphicsDevice.Indices = null;
+
+                VertexCount += entry.VertexCount;
+                PrimitiveCount = primitiveCount;
             }
             else
             {
-                GraphicsDevice.DrawPrimitives(entry.PrimitiveType, entry.StartVertex, GetPrimitiveCount(entry.PrimitiveType, entry.VertexCount));
+                var primitiveCount = GetPrimitiveCount(entry.PrimitiveType, entry.VertexCount);
+                GraphicsDevice.DrawPrimitives(entry.PrimitiveType, entry.StartVertex, primitiveCount);
+
+                VertexCount += entry.VertexCount;
+                PrimitiveCount = primitiveCount;
             }
 
             GraphicsDevice.SetVertexBuffer(null);

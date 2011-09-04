@@ -5,13 +5,6 @@
 //=============================================================================
 fragment SplatterTexture;
 
-[textures]
-texture2D TextureX;
-texture2D TextureY;
-texture2D TextureZ;
-texture2D TextureW;
-
-
 [parameters]
 float2 SplatterTextureScale = 1;
 float4 Mask = 1;
@@ -23,6 +16,50 @@ sampler SplatterTextureSampler = sampler_state
     MipFilter = Linear;
     MagFilter = Linear;
     MinFilter = Linear;
+};
+
+texture2D TextureX;
+sampler TextureXSampler = sampler_state
+{
+    Texture = (TextureX);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D TextureY;
+sampler TextureYSampler = sampler_state
+{
+    Texture = (TextureY);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D TextureZ;
+sampler TextureZSampler = sampler_state
+{
+    Texture = (TextureZ);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D TextureW;
+sampler TextureWSampler = sampler_state
+{
+    Texture = (TextureW);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
 };
 
 [ps]
@@ -37,10 +74,10 @@ void main(INPUT input, inout OUTPUT output)
 	
 	float4 splatter = Mask * tex2D(SplatterTextureSampler, uv / SplatterTextureScale);
 		
-	color {$OPERATION}= tex2D(TextureX, uv) * splatter.x;
-    color += tex2D(TextureY, uv) * splatter.y;
-    color += tex2D(TextureZ, uv) * splatter.z;
-    color += tex2D(TextureW, uv) * splatter.w;
+	color {$OPERATION}= tex2D(TextureXSampler, uv) * splatter.x;
+    color += tex2D(TextureYSampler, uv) * splatter.y;
+    color += tex2D(TextureZSampler, uv) * splatter.z;
+    color += tex2D(TextureWSampler, uv) * splatter.w;
 
 	export(float4, Color, color);
 }

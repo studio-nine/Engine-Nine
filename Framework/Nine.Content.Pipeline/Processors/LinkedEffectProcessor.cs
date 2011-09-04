@@ -40,7 +40,7 @@ namespace Nine.Content.Pipeline.Processors
         {
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
                 return input;
-
+            
             StringBuilder content = new StringBuilder();
 
             foreach (LinkedEffectPartContent part in input.EffectParts)

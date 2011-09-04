@@ -93,12 +93,12 @@ namespace ShadowMapping
             lightViewProjection = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ) *
                                   Matrix.CreatePerspectiveFieldOfView(MathHelper.Pi / 2.5f, 1, 8.0f, 80.0f);
 
-            lightViewProjection = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ) *
-                                  Matrix.CreateOrthographic(40, 40, 1, 80);
+            //lightViewProjection = Matrix.CreateLookAt(new Vector3(10, 10, 30), Vector3.Zero, Vector3.UnitZ) *
+            //                      Matrix.CreateOrthographic(40, 40, 1, 80);
 
             // Create shadow map related effects, depth is used to generate shadow maps,
             // shadow is used to draw a shadow receiver with a shadow map.
-            shadowMap = new ShadowMap(GraphicsDevice, 512);
+            shadowMap = new ShadowMap(GraphicsDevice, 1024);
             
             LoadShadowEffect(terrain, "ShadowEffect");
             LoadShadowEffect(model, "ShadowNormalSkinnedEffect");

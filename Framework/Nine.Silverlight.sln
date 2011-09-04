@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine (Silverlight)", "Nine\Nine (Silverlight).csproj", "{2D576B2B-312E-4D94-BCD2-68E9010B3A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Graphics (Silverlight)", "Nine.Graphics\Nine.Graphics (Silverlight).csproj", "{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|Windows Phone = Debug|Windows Phone
+		Debug|x86 = Debug|x86
+		Debug|Xbox 360 = Debug|Xbox 360
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|Windows Phone = Release|Windows Phone
+		Release|x86 = Release|x86
+		Release|Xbox 360 = Release|Xbox 360
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Win32.ActiveCfg = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|x86.ActiveCfg = Release|Any CPU
+		{2D576B2B-312E-4D94-BCD2-68E9010B3A07}.Release|Xbox 360.ActiveCfg = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Win32.ActiveCfg = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|x86.ActiveCfg = Release|Any CPU
+		{E84878E1-CFCB-43B0-BA3E-79CBF6DC3422}.Release|Xbox 360.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SharpSetup) = preSolution
+		Version = 1.2
+	EndGlobalSection
+EndGlobal

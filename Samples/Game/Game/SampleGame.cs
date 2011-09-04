@@ -58,7 +58,7 @@ namespace Game
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.SynchronizeWithVerticalRetrace = true;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
 
@@ -77,13 +77,14 @@ namespace Game
         /// </summary>
         protected override void LoadContent()
         {
-            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
+            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")) { Position = new Vector2(100, 100), Scale = 5, Color = Color.Black });
             Components.Add(new InputComponent(Window.Handle));
 
             scene = new Scene(GraphicsDevice);
-            scene.Add(Content.Load<DisplayObject>("Scene"));            
+            scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            scene.Add(Content.Load<DisplayObject>("Scene"));
 
-            scene.Add(new AmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.2f });
+            /*
             scene.Add(directionalLight = new DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(-1, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 1 });
 
             scene.Add(pointLight1 = new PointLight(GraphicsDevice));
@@ -94,11 +95,8 @@ namespace Game
             pointLight2.Range = 4;
             pointLight3.Range = 4;
 
-            /*
             scene.Add(spotLight = new SpotLight(GraphicsDevice));
             //scene.Camera = new ModelViewerCamera(GraphicsDevice);
-
-            //scene.Remove(renderer.Drawables.First(d => d is Terrain));
             
 
             //pointLight1.Enabled = pointLight2.Enabled = pointLight3.Enabled = false;
@@ -166,7 +164,6 @@ namespace Game
                 scene.Settings.MultiPassLightingEnabled = true;
                 scene.Settings.PreferHighDynamicRangeLighting = false;
                 scene.Settings.PreferDeferredLighting = false;
-                scene.Settings.ShadowEnabled = false;
                 //scene.Settings.PreferHighDynamicRangeLighting = keyboardState.IsKeyDown(Keys.H);
                 //scene.Settings.PreferDeferredLighting = keyboardState.IsKeyDown(Keys.D);
                 scene.Settings.Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.W);
@@ -174,7 +171,7 @@ namespace Game
                 scene.Settings.Debug.ShowLightFrustum = keyboardState.IsKeyDown(Keys.L);
                 scene.Settings.Debug.ShowSceneManager = keyboardState.IsKeyDown(Keys.S);
                 scene.Settings.Debug.ShowShadowMap = keyboardState.IsKeyDown(Keys.M);
-
+                scene.Settings.Debug.ShowStatistics = keyboardState.IsKeyDown(Keys.F);
                 scene.Settings.Debug.ShowDepthBuffer = keyboardState.IsKeyDown(Keys.Space);
                 scene.Settings.Debug.ShowNormalBuffer = keyboardState.IsKeyDown(Keys.N);
             }

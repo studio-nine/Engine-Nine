@@ -112,6 +112,9 @@ namespace Nine.Graphics
         private BasicEffect basicEffect;
         private SkinnedEffect skinnedEffect;
 
+        internal int VertexCount { get; private set; }
+        internal int PrimitiveCount { get; private set; }
+
         /// <summary>
         /// Gets the underlying graphics device used by this ModelBatch.
         /// </summary>
@@ -160,6 +163,8 @@ namespace Nine.Graphics
             if (hasBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
+            this.VertexCount = 0;
+            this.PrimitiveCount = 0;
             this.BlendState = blendState != null ? blendState : BlendState.Opaque;
             this.SamplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
             this.DepthStencilState = depthStencilState != null ? depthStencilState : DepthStencilState.Default;
@@ -368,6 +373,9 @@ namespace Nine.Graphics
             foreach (EffectPass pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
+
+                VertexCount += numVertices;
+                PrimitiveCount += primitiveCount;
 
                 GraphicsDevice.Indices = indexBuffer;
                 GraphicsDevice.SetVertexBuffer(vertexBuffer, vertexOffset);

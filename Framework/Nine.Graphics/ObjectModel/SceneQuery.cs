@@ -28,7 +28,8 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Querys all drawables from a scene of ISpatialQueryable.
     /// This class checks each returned object to see if it implements
-    /// T or IEnumerable.
+    /// T or IEnumerable. If the returned object implements IEnumerable, it
+    /// will try to cast and return each enumerated value to T.
     /// </summary>
     class SceneQuery<T> : ISpatialQuery<T> where T : class
     {
@@ -71,24 +72,31 @@ namespace Nine.Graphics.ObjectModel
             return GetEnumerator();
         }
 
-        private IEnumerable<T> Enumerate(IEnumerable iEnumerable, bool ignoreSpatialQueryables)
+        public static IEnumerable<T> Enumerate(IEnumerable iEnumerable)
         {
-            foreach (var item in iEnumerable)
+            return Enumerate(iEnumerable, true);
+        }
+
+        private static IEnumerable<T> Enumerate(IEnumerable iEnumerable, bool ignoreSpatialQueryable)
+        {
+            if (iEnumerable != null)
             {
-                if (ignoreSpatialQueryables && item is ISpatialQueryable)
-                    continue;
-
-                T obj = item as T;
-                if (obj != null)
-                    yield return obj;
-
-                IEnumerable enumerable = item as IEnumerable;
-                if (enumerable != null)
+                foreach (var item in iEnumerable)
                 {
                     // Ignore ISpatialQueryable since they are explicitly
                     // added to the scene manager.
-                    foreach (var result in Enumerate(enumerable, true))
-                        yield return result;
+                    if (ignoreSpatialQueryable && item is ISpatialQueryable)
+                        continue;
+
+                    if (item is T)
+                        yield return (T)item;
+
+                    IEnumerable enumerable = item as IEnumerable;
+                    if (enumerable != null)
+                    {
+                        foreach (var result in Enumerate(enumerable, true))
+                            yield return result;
+                    }
                 }
             }
         }

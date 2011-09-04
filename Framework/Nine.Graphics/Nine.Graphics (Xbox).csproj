@@ -81,7 +81,6 @@
     <Compile Include="Animations\BoneAnimationControllers.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
-    <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Effects\AmbientLightEffect.cs">

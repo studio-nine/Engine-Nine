@@ -8,6 +8,8 @@
         <Texture>SkyCubeMap</Texture>
       </Item>
      
+      <!-- 
+      -->
       <Item Type="nine:DrawableSurfaceContent">
         <Heightmap>Terrain\MountainHeightmap</Heightmap>
         <LevelOfDetailEnabled>true</LevelOfDetailEnabled>
@@ -17,14 +19,24 @@
           <Texture>Terrain\Mountain</Texture>
           <TextureEnabled>true</TextureEnabled>
         </Material>
-        <Position>-50 -50 -20</Position>
+        <Position>-290 -100 -10</Position>
+      </Item>
+
+
+      <Item Type="nine:DrawableSurfaceContent">
+        <Heightmap>Terrain\RF1</Heightmap>
+        <LevelOfDetailEnabled>true</LevelOfDetailEnabled>
+        <LevelOfDetailEnd>300</LevelOfDetailEnd>
+        <LevelOfDetailStart>200</LevelOfDetailStart>
+        <Material Type="gfx:Effects.LinkedMaterialContent">
+          <Effect>Terrain\TerrainEffect</Effect>
+        </Material>
+        <PatchSegmentCount>8</PatchSegmentCount>
+        <Position>-30 -80 0</Position>
+        <TextureTransform>8 0 0 0 0 8 0 0 0 0 1 0 0 0 0 1</TextureTransform>
       </Item>
       
       
-      <!-- 
-      -->
-      <!--
-      -->
       
       <Item Type="nine:DrawableModelContent">
         <Alpha>0.4</Alpha>
@@ -35,7 +47,6 @@
         <Model>Models\Dude</Model>
         <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -10 -10 10 1</Transform>
       </Item>
-      
 
       <Item Type="nine:DrawableModelContent">
         <Material Type="gfx:SkinnedMaterialContent">
@@ -129,16 +140,23 @@
         <Transform>1 0 0 0 0 1 0 0 0 0 1 0 15 0 10 1</Transform>
       </Item>
 
+      
       <Item Type="nine:DrawableParticleEffectContent">
         <ParticleEffect>Galaxy</ParticleEffect>
       </Item>
-      
-      <!--
-      
 
-      <Item Type="nine:DirectionalLightContent">
-        <DiffuseColor>1 0 0</DiffuseColor>
+      <Item Type="nine:AmbientLightContent">
+        <AmbientLightColor>0.3 0.3 0.3</AmbientLightColor>
       </Item>
+
+      <!--
+      -->
+      <Item Type="nine:DirectionalLightContent">
+        <CastShadow>true</CastShadow>
+        <DiffuseColor>0.8 0.8 0.8</DiffuseColor>
+      </Item>
+
+      <!--
       <Item Type="nine:DirectionalLightContent">
         <DiffuseColor>0 1 0</DiffuseColor>
       </Item>

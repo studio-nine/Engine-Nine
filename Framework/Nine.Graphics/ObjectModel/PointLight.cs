@@ -64,10 +64,9 @@ namespace Nine.Graphics.ObjectModel
             SpecularColor = Vector3.Zero;
         }
 
-        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
-                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
         {
-            return allDrawables.FindAll(Position, Range);
+            return allObjects.FindAll(Position, Range);
         }
 
         public override void DrawFrustum(GraphicsContext context)
@@ -75,7 +74,7 @@ namespace Nine.Graphics.ObjectModel
             context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
         }
 
-        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<IDrawableObject> drawablesInLightFrustum, IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<ISpatialQueryable> drawablesInLightFrustum, IEnumerable<ISpatialQueryable> drawablesInViewFrustum)
         {
             throw new NotSupportedException();
         }

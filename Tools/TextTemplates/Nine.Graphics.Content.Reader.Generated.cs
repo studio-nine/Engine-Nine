@@ -884,6 +884,7 @@ namespace Nine.Graphics.ObjectModel
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new DrawableSurface(graphicsDeviceService.GraphicsDevice);
             }
+            existingInstance.PatchSegmentCount = input.ReadObject<System.Int32>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.TextureTransform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();

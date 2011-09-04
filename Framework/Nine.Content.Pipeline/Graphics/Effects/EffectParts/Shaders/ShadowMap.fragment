@@ -9,7 +9,7 @@ fragment ShadowMap;
 [parameters]
 matrix	LightViewProjection;
 float 	ShadowIntensity = 0.5;
-float	DepthBias = 0.0005f;
+float	DepthBias = 0.005f;
 float2  ShadowMapTexelSize = float2(0.0009765625f, 0.0009765625f); // 1.0f/1024
 
 // Poison filter pseudo random filter positions for PCF with 10 samples

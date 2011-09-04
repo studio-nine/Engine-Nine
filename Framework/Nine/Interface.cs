@@ -73,7 +73,11 @@ namespace Nine
     /// <summary>
     /// Defines Spatial relations between objects.
     /// </summary>
+#if WINDOWS
+    public interface ISpatialQuery<out T> : IEnumerable<T>
+#else
     public interface ISpatialQuery<T> : IEnumerable<T>
+#endif
     {
         /// <summary>
         /// Finds all the objects resides within the specified bounding sphere.
@@ -119,21 +123,5 @@ namespace Nine
     public interface ISceneManager<T> : ICollection<T>, ISpatialQuery<T>
     {
 
-    }
-
-    /// <summary>
-    /// Defines a world object that has a template.
-    /// </summary>
-    public interface IWorldObject
-    {
-        /// <summary>
-        /// Gets the transform of this object.
-        /// </summary>
-        Matrix Transform { get; }
-
-        /// <summary>
-        /// Gets the name of the visual template of this object.
-        /// </summary>
-        Template Template { get; }
     }
 }

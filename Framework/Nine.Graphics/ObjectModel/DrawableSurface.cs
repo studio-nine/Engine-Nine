@@ -40,7 +40,8 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the number of segments of each patch.
         /// </summary>
-        public int PatchSegmentCount { get; private set; }
+        [ContentSerializer]
+        public int PatchSegmentCount { get; internal set; }
         
         /// <summary>
         /// Gets the count of patches along the x axis.

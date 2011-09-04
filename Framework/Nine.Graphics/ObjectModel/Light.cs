@@ -58,16 +58,25 @@ namespace Nine.Graphics.ObjectModel
         /// Used by the rendering system to keep track of drawables affect by this light.
         /// </summary>
         internal List<IDrawableObject> AffectedDrawables;
+        internal List<ISpatialQueryable> AffectedBoundables;
 
 #if !WINDOWS_PHONE
         internal ShadowMap ShadowMap;
 #endif
 
         /// <summary>
+        /// For now we don't allow custom light types.
+        /// </summary>
+        internal Light()
+        {
+            Enabled = true;
+            ShadowFrustum = new BoundingFrustum(new Matrix());
+        }
+
+        /// <summary>
         /// Finds all the objects affected by this light.
         /// </summary>
-        protected internal abstract IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
-                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum);
+        protected internal abstract IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum);
 
         /// <summary>
         /// TODO:
@@ -79,8 +88,8 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public virtual void DrawShadowMap(GraphicsContext context,
                                           ISpatialQuery<IDrawableObject> drawables, 
-                                          IEnumerable<IDrawableObject> drawablesInLightFrustum,
-                                          IEnumerable<IDrawableObject> drawablesInViewFrustum)
+                                          IEnumerable<ISpatialQueryable> objectsInLightFrustum,
+                                          IEnumerable<ISpatialQueryable> objectsInViewFrustum)
         {
 #if !WINDOWS_PHONE
             if (ShadowMap == null || ShadowMap.Size != context.Settings.ShadowMapResolution)
@@ -94,7 +103,7 @@ namespace Nine.Graphics.ObjectModel
             Matrix projection = context.Projection;
 
             Matrix shadowFrustum = new Matrix();
-            //GetShadowFrustum(context, drawablesInLightFrustum, drawablesInViewFrustum, out shadowFrustum);
+            GetShadowFrustum(context, objectsInLightFrustum, objectsInViewFrustum, out shadowFrustum);
             ShadowFrustum.Matrix = shadowFrustum;
 
             ShadowMap.Begin();
@@ -117,8 +126,8 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the shadow frustum of this light.
         /// </summary>
         protected virtual void GetShadowFrustum(GraphicsContext context,
-                                                IEnumerable<IBoundable> drawablesInLightFrustum,
-                                                IEnumerable<IBoundable> drawablesInViewFrustum,
+                                                IEnumerable<ISpatialQueryable> drawablesInLightFrustum,
+                                                IEnumerable<ISpatialQueryable> drawablesInViewFrustum,
                                                 out Matrix frustumMatrix)
         {
             frustumMatrix = context.ViewFrustum.Matrix;
@@ -128,12 +137,6 @@ namespace Nine.Graphics.ObjectModel
         /// Draws the light frustum using Settings.Debug.LightFrustumColor.
         /// </summary>
         public virtual void DrawFrustum(GraphicsContext context) { }
-
-        public Light()
-        {
-            Enabled = true;
-            ShadowFrustum = new BoundingFrustum(new Matrix());
-        }
     }
 
     /// <summary>

@@ -24,6 +24,22 @@ using System.Reflection;
 namespace Nine
 {
     /// <summary>
+    /// Defines a world object that has a template.
+    /// </summary>
+    public interface IWorldObject
+    {
+        /// <summary>
+        /// Gets the transform of this object.
+        /// </summary>
+        Matrix Transform { get; }
+
+        /// <summary>
+        /// Gets the name of the visual template of this object.
+        /// </summary>
+        Template Template { get; }
+    }
+
+    /// <summary>
     /// Defines a world that contains objects to be updated and rendered.
     /// </summary>
     public class World : IUpdateable, IDrawable

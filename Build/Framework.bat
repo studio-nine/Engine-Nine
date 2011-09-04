@@ -32,6 +32,7 @@ for /f "delims=" %%i in ('dir /b /a-d "*.tt"') do (
 popd
 
 call %msbuild% %flags% Framework\Nine.sln
+call %msbuild% %flags% Framework\Nine.Silverlight.sln
 
 echo.
 echo.
@@ -45,12 +46,14 @@ if %PROCESSOR_ARCHITECTURE% == AMD64 goto regx64
 reg add "HKLM\SOFTWARE\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\x86"
 reg add "HKLM\SOFTWARE\Microsoft\XNA\AssemblyFolders\v4.0\Xbox 360\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\Xbox 360"
 reg add "HKLM\SOFTWARE\Microsoft\XNA\AssemblyFolders\v4.0\Windows Phone\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\Windows Phone"
+reg add "HKLM\SOFTWARE\Microsoft\Microsoft SDKs\Silverlight\v5.0\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\Silverlight"
 goto endreg
 
 :regx64
 reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\x86"
 reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\XNA\AssemblyFolders\v4.0\Xbox 360\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\Xbox 360"
 reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\XNA\AssemblyFolders\v4.0\Windows Phone\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\Windows Phone"
+reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Silverlight\v5.0\AssemblyFoldersEx\Engine Nine" /f /ve /d "%CD%\References\Silverlight"
 goto endreg
 
 :endreg

@@ -39,16 +39,6 @@ namespace Nine.Graphics.ObjectModel
         public GraphicsStatistics Statistics { get; private set; }
 
         /// <summary>
-        /// Gets the lights in the scene.
-        /// </summary>
-        public ISpatialQuery<Light> Lights { get; internal set; }
-
-        /// <summary>
-        /// Gets the drawables in the scene.
-        /// </summary>
-        public ISpatialQuery<IDrawableObject> Drawables { get; internal set; }
-
-        /// <summary>
         /// Gets the elapsed time since last update.
         /// </summary>
         public TimeSpan ElapsedTime { get; internal set; }
@@ -144,15 +134,18 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Initializes a new instance of <c>GraphicsContext</c>.
         /// </summary>
-        protected internal GraphicsContext(GraphicsDevice graphics, GraphicsSettings settings)
+        protected internal GraphicsContext(GraphicsDevice graphics, GraphicsSettings settings, GraphicsStatistics statistics)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
             if (settings == null)
                 throw new ArgumentNullException("settings");
+            if (statistics == null)
+                throw new ArgumentNullException("statistics");
 
             Settings = settings;
             GraphicsDevice = graphics;
+            Statistics = statistics;
         }
 
         public void Begin()
@@ -189,6 +182,9 @@ namespace Nine.Graphics.ObjectModel
             PrimitiveBatch.End();
             ParticleBatch.End();
             SpriteBatch.End();
+
+            Statistics.VertexCount += (ModelBatch.VertexCount + PrimitiveBatch.VertexCount + ParticleBatch.VertexCount);
+            Statistics.PrimitiveCount += (ModelBatch.PrimitiveCount + PrimitiveBatch.PrimitiveCount + ParticleBatch.PrimitiveCount);
         }
     }
 }

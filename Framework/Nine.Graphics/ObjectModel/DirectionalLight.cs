@@ -37,18 +37,17 @@ namespace Nine.Graphics.ObjectModel
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
         }
-
-        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
-                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        
+        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
         {
-            return drawablesInViewFrustum;
+            return objectsInViewFrustum;
         }
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
         protected override void GetShadowFrustum(GraphicsContext context,
-                                                 IEnumerable<IBoundable> drawablesInLightFrustum,
-                                                 IEnumerable<IBoundable> drawablesInViewFrustum,
+                                                 IEnumerable<ISpatialQueryable> drawablesInLightFrustum,
+                                                 IEnumerable<ISpatialQueryable> drawablesInViewFrustum,
                                                  out Matrix frustumMatrix)
         {
             Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitZ);

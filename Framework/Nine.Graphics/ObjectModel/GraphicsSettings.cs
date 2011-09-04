@@ -69,6 +69,11 @@ namespace Nine.Graphics.ObjectModel
         public float ShadowMapDepthBias { get; set; }
 
         /// <summary>
+        /// Gets or sets the default font.
+        /// </summary>
+        public SpriteFont DefaultFont { get; set; }
+
+        /// <summary>
         /// Gets the debug settings.
         /// </summary>
         public GraphicsDebugSetting Debug { get; private set; }
@@ -102,13 +107,15 @@ namespace Nine.Graphics.ObjectModel
 
         public bool ShowDepthBuffer { get; set; }
         public bool ShowNormalBuffer { get; set; }
-        
         public bool ShowShadowMap { get; set; }
+
+        public bool ShowStatistics { get; set; }
 
         public Color BoundingBoxColor { get; set; }
         public Color LightFrustumColor { get; set; }
         public Color ShadowFrustumColor { get; set; }
         public Color SceneManagerColor { get; set; }
+        public Color StatisticsColor { get; set; }
 
         internal GraphicsDebugSetting()
         {
@@ -116,6 +123,7 @@ namespace Nine.Graphics.ObjectModel
             LightFrustumColor = Color.Yellow;
             ShadowFrustumColor = Color.SteelBlue;
             SceneManagerColor = Color.White;
+            StatisticsColor = Color.WhiteSmoke;
         }
     }
 }

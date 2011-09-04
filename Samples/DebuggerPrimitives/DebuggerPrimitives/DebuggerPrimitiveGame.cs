@@ -51,6 +51,7 @@ namespace DebuggerPrimitives
         BasicEffect primitiveEffect;
         List<ICustomPrimitive> primitives;
 
+#if !SILVERLIGHT
         public DebuggerPrimitiveGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -66,6 +67,7 @@ namespace DebuggerPrimitives
             IsMouseVisible = true;
             IsFixedTimeStep = false;
         }
+#endif
 
 
         /// <summary>

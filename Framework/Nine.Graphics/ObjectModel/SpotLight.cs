@@ -99,17 +99,16 @@ namespace Nine.Graphics.ObjectModel
         }
 #endif
 
-        protected internal override IEnumerable<IDrawableObject> FindAffectedDrawables(ISpatialQuery<IDrawableObject> allDrawables,
-                                                                                IEnumerable<IDrawableObject> drawablesInViewFrustum)
+        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
         {
-            return allDrawables.FindAll(BoundingFrustum);
+            return allObjects.FindAll(BoundingFrustum);
         }
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
         protected override void GetShadowFrustum(GraphicsContext context,
-                                                IEnumerable<IBoundable> drawablesInLightFrustum,
-                                                IEnumerable<IBoundable> drawablesInViewFrustum,
+                                                IEnumerable<ISpatialQueryable> drawablesInLightFrustum,
+                                                IEnumerable<ISpatialQueryable> drawablesInViewFrustum,
                                                 out Matrix frustumMatrix)
         {
             Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);

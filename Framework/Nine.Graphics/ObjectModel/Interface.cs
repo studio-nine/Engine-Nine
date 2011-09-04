@@ -41,11 +41,6 @@ namespace Nine.Graphics.ObjectModel
         void BeginDraw(GraphicsContext context);
 
         /// <summary>
-        /// Perform any updates after this object is drawed.
-        /// </summary>
-        void EndDraw(GraphicsContext context);
-
-        /// <summary>
         /// Draws the object using the graphics context.
         /// </summary>
         void Draw(GraphicsContext context);
@@ -54,6 +49,11 @@ namespace Nine.Graphics.ObjectModel
         /// Draws the object with the specified effect.
         /// </summary>
         void Draw(GraphicsContext context, Effect effect);
+
+        /// <summary>
+        /// Perform any updates after this object is drawed.
+        /// </summary>
+        void EndDraw(GraphicsContext context);
     }
 
     /// <summary>

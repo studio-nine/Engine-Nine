@@ -104,9 +104,10 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public void GetLevel(int level, int left, int right, int bottom, int top, out int startIndex, out int primitiveCount)
         {
+#if DEBUG
             if (left - level > 1 || right - level > 1 || bottom - level > 1 || top - level > 1)
                 throw new InvalidOperationException("Level of detail between adjacent patches must not excceed 1.");
-
+#endif
             GetLevel(level, left > level, right > level, bottom > level, top > level, out startIndex, out primitiveCount);
         }
 

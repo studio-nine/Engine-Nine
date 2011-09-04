@@ -42,6 +42,9 @@ namespace Nine.Graphics.ParticleEffects
 
         private Matrix view;
         private Matrix projection;
+
+        internal int VertexCount { get; private set; }
+        internal int PrimitiveCount { get; private set; }
         
 #if WINDOWS_PHONE
         public ParticleBatch(GraphicsDevice graphics) : this(graphics, 2048)
@@ -78,6 +81,8 @@ namespace Nine.Graphics.ParticleEffects
             this.depthStencilState = depthStencilState;
             this.rasterizerState = rasterizerState;
             this.hasBegin = true;
+            this.VertexCount = 0;
+            this.PrimitiveCount = 0;
         }
 
         public void Draw(ParticleEffect particleEffect)
@@ -123,6 +128,9 @@ namespace Nine.Graphics.ParticleEffects
 
             batches.Clear();
             hasBegin = false;
+
+            PrimitiveCount += primitiveBatch.PrimitiveCount;
+            VertexCount += primitiveBatch.VertexCount;
         }
 
         private void Draw(ParticleBatchItem item)

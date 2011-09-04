@@ -111,12 +111,11 @@ namespace Nine.Graphics.Effects.EffectParts
         {
             // Don't apply shadow parameters since it's not per model
             //
-            //var effectPart = (ShadowMapEffectPart)part;
-            //effectPart.ShadowIntensity = ShadowIntensity;
-            //effectPart.DepthBias = DepthBias;
-            //effectPart.ShadowMap = ShadowMap;
-            //effectPart.LightView = LightView;
-            //effectPart.LightProjection = LightProjection;
+            var effectPart = (ShadowMapEffectPart)part;
+            effectPart.ShadowIntensity = ShadowIntensity;
+            effectPart.DepthBias = DepthBias;
+            effectPart.ShadowMap = ShadowMap;
+            effectPart.LightViewProjection = LightViewProjection;
         }
         
         public ShadowMapEffectPart()

@@ -6,14 +6,19 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexTransformEffectPartContent"/>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutputEffectPartContent"/>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.SplatterTextureEffectPartContent">
-        <SplatterTexture>Splatter</SplatterTexture>
-        <SplatterTextureScale>64 64</SplatterTextureScale>
-        <TextureX>bb</TextureX>
-        <TextureY>aa</TextureY>
+        <SplatterTexture>Splat</SplatterTexture>
+        <SplatterTextureScale>8 8</SplatterTextureScale>
+        <TextureX>TerrainTex</TextureX>
+        <TextureY>box</TextureY>
+        <TextureZ>grass</TextureZ>
       </Item>
+      
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"/>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.DirectionalLightEffectPartContent"/>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.EndLightEffectPartContent"/>
+
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.ShadowMapEffectPartContent"/>
+      
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.PixelShaderOutputEffectPartContent"/>
     </EffectParts>
   </Asset>
