@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Security;
 
 namespace Nine
 {
@@ -21,6 +22,10 @@ namespace Nine
     [Serializable]
     public class WeakReference<T> : System.WeakReference where T : class
     {
+#if WINDOWS_PHONE
+        [SecuritySafeCritical]
+        protected WeakReference() { }
+#endif
         /// <summary>
         /// Initializes a new instance of the <see cref="WeakReference&lt;T&gt;"/> class.
         /// </summary>

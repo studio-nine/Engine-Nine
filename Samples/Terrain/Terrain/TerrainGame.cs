@@ -64,7 +64,9 @@ namespace TerrainSample
         {
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
+#if !WINDOWS_PHONE
             Components.Add(new ScreenshotCapturer(GraphicsDevice));
+#endif
 
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
@@ -137,7 +139,7 @@ namespace TerrainSample
             modelBatch.End();
 
             primitiveBatch.Begin(camera.View, camera.Projection);
-            primitiveBatch.DrawSolidSphere(new BoundingSphere(pickedPosition, 1), 10, null, Color.Red);
+            primitiveBatch.DrawSolidSphere(new BoundingSphere(pickedPosition, 1), 5, null, Color.Red);
             primitiveBatch.End();
 
             base.Draw(gameTime);
