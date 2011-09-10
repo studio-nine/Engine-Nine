@@ -106,6 +106,7 @@
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Graphics\ParticleEffects\MergedParticleEffectContent.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Graphics\BlendStateSerializer.cs" />

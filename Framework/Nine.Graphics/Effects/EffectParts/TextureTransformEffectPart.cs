@@ -27,6 +27,8 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter textureTransformParameter;
         private const uint textureTransformDirtyMask = 1 << 0;
 
+        public override bool IsMaterial { get { return true; } }
+
         [ContentSerializer(Optional=true)]
         public Matrix TextureTransform
         {

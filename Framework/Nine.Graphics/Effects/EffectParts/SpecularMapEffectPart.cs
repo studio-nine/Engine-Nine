@@ -26,6 +26,8 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter textureParameter;
         private const uint textureDirtyMask = 1 << 0;
 
+        public override bool IsMaterial { get { return true; } }
+
         public SpecularMapEffectPart()
         {
             textureParameter = GetParameter("Texture");

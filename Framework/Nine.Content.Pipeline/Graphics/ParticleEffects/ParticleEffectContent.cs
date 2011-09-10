@@ -24,7 +24,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     using Nine.Graphics.ParticleEffects;
 
     /// <summary>
-    /// A base class for any LinkedEffectPart that can be Linked together.
+    /// Content model for particle effects.
     /// </summary>
     [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics")]
     public class ParticleEffectContent
@@ -40,7 +40,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// Gets or sets the max particle count of the particle effect.
         /// </summary>
         [ContentSerializer(Optional = true)]
-        public int MaxParticles { get; set; }
+        public int MaxParticleCount { get; set; }
 
         /// <summary>
         /// Gets or sets the type of each particle.
@@ -59,6 +59,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [ContentSerializer(Optional = true)]
         public float Lifetime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of particles emitted when triggered.
+        /// When this value is greater then zero, the Lifetime attribute is ignored.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public int TriggerCount { get; set; }
 
         /// <summary>
         /// Gets or sets the number of particles emitted per second.
@@ -140,12 +147,6 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public List<IParticleController> Controllers { get; private set; }
 
         /// <summary>
-        /// Gets a collection of particle effects that is running simultaneously with this effect.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public List<ParticleEffectContent> SiblingEffects { get; private set; }
-
-        /// <summary>
         /// Gets a collection of particle effects that is used as the appareance of each
         /// particle spawned by this particle effect.
         /// </summary>
@@ -171,8 +172,8 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public ParticleEffectContent()
         {
             Up = Vector3.UnitZ;
-            TriggerOnStartup = true;
-            MaxParticles = 1024;
+            TriggerOnStartup = false;
+            MaxParticleCount = 1024;
             Lifetime = (float)(TimeSpan.MaxValue.TotalSeconds * 0.5);
             Enabled = true;
             Stretch = 1;
@@ -181,7 +182,6 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             BlendState = BlendState.Additive;
             Emitter = new PointEmitter();
             Controllers = new List<IParticleController>();
-            SiblingEffects = new List<ParticleEffectContent>();
             ChildEffects = new List<ParticleEffectContent>();
             EndingEffects = new List<ParticleEffectContent>();
         }
@@ -193,10 +193,16 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     {
         protected override void Write(ContentWriter output, ParticleEffectContent value)
         {
+            InternalWrite(output, value);
+        }
+
+        internal void InternalWrite(ContentWriter output, ParticleEffectContent value)
+        {
             output.Write(value.TriggerOnStartup);
-            output.Write(value.MaxParticles);
+            output.Write(value.MaxParticleCount);
             output.Write((byte)value.ParticleType);
             output.Write(value.Lifetime);
+            output.Write(value.TriggerCount);
             output.WriteObject(value.Texture);
             output.WriteObject(value.BlendState);
             output.WriteObject(value.Color);
@@ -215,11 +221,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.Write(value.Controllers.Count);
             foreach (IParticleController controller in value.Controllers)
                 output.WriteObject(controller);
-
-            output.Write(value.SiblingEffects.Count);
-            foreach (ParticleEffectContent effect in value.SiblingEffects)
-                output.WriteObject(effect);
-
+            
             output.Write(value.ChildEffects.Count);
             foreach (ParticleEffectContent effect in value.ChildEffects)
                 output.WriteObject(effect);

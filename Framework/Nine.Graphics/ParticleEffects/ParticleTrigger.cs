@@ -21,9 +21,9 @@ namespace Nine.Graphics.ParticleEffects
     using Nine.Animations;
 
     /// <summary>
-    /// Represents a triggered animation instance of the particle effect.
+    /// Represents a triggered instance of the particle effect.
     /// </summary>
-    public class ParticleAnimation : Animation
+    public class ParticleTrigger : Animation
     {
         /// <summary>
         /// Gets or sets whether this particle effect is enabled.
@@ -39,6 +39,16 @@ namespace Nine.Graphics.ParticleEffects
         /// Gets or sets the duration of this animation.
         /// </summary>
         public TimeSpan Duration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delay before the particle is triggered.
+        /// </summary>
+        public TimeSpan Delay { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of particles emitted when triggered.
+        /// </summary>
+        public int TriggerCount { get; set; }
 
         /// <summary>
         /// Gets the approximate bounds of this particle effect trigger.
@@ -82,7 +92,7 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public ParticleEffect Effect { get; internal set; }
 
-        internal ParticleAnimation() 
+        internal ParticleTrigger() 
         {
             Enabled = true;
             Duration = TimeSpan.MaxValue;
@@ -92,13 +102,40 @@ namespace Nine.Graphics.ParticleEffects
         {
             if (Enabled && State == AnimationState.Playing)
             {
-                Effect.UpdateEmitter(Position, elapsedTime);
+                if (Delay > Duration)
+                {
+                    throw new InvalidOperationException("Delay must be smaller then or equal to Duration");
+                }
 
                 currentTime += elapsedTime;
-                if (currentTime >= Duration)
+                if (currentTime >= Delay)
                 {
-                    Stop();
-                    OnCompleted();
+                    if (TriggerCount > 0)
+                    {
+                        for (int i = 0; i < TriggerCount; i++)
+                        {
+                            if (!Effect.EmitNewParticle(Position, 0))
+                                break;
+                        }
+
+                        Stop();
+                        OnCompleted();
+                    }
+                    else
+                    {
+                        if (emitFirstParticle)
+                        {
+                            emitFirstParticle = false;
+                            Effect.EmitNewParticle(Position, 0);
+                        }
+                        Effect.UpdateEmitter(Position, elapsedTime);
+
+                        if (currentTime >= Duration)
+                        {
+                            Stop();
+                            OnCompleted();
+                        }
+                    }
                 }
             }
         }
@@ -106,9 +143,11 @@ namespace Nine.Graphics.ParticleEffects
         protected override void OnStarted()
         {
             currentTime = TimeSpan.Zero;
+            emitFirstParticle = true;
             base.OnStarted();
         }
 
         TimeSpan currentTime;
+        bool emitFirstParticle = false;
     }
 }

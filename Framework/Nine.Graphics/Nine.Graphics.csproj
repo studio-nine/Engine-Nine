@@ -365,7 +365,7 @@
     <Compile Include="Effects\EffectParts\ColorMatrixEffectPart.cs" />
     <Compile Include="ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="ParticleEffects\ParticleEffectReader.cs" />
-    <Compile Include="ParticleEffects\ParticleAnimation.cs" />
+    <Compile Include="ParticleEffects\ParticleTrigger.cs" />
     <Compile Include="ParticleEffects\ParticleEffectCollection.cs" />
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />

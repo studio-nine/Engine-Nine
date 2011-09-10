@@ -178,6 +178,15 @@ namespace Nine {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The input particle effect has already been triggerd..
+        /// </summary>
+        internal static string ParticleEffectAlreadyTriggered {
+            get {
+                return ResourceManager.GetString("ParticleEffectAlreadyTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Input primitive is too large for a single draw call. Try increase the capability of PrimitiveBatch..
         /// </summary>
         internal static string PrimitiveTooLarge {

@@ -95,6 +95,8 @@ namespace ParticleSystem
             // Advanced particle effects can be composed through ChildEffects
             // and EndingEffects property.
             fireworks = Content.Load<ParticleEffect>("Fireworks");
+            fireworks.Trigger();
+            //fireworks.Trigger(-Vector3.One * 2, 5);
         }
 
         private ParticleEffect CreateParticleEffect()
@@ -137,11 +139,9 @@ namespace ParticleSystem
             GraphicsDevice.BlendState = BlendState.Additive;
             GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
             
-
             // Update effects
             fireworks.Update(gameTime.ElapsedGameTime);
             galaxy.Update(gameTime.ElapsedGameTime);
-
 
             // Draw particle system using ParticleBatch
             particlePatch.Begin(camera.View, camera.Projection);

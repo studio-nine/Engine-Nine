@@ -38,6 +38,9 @@ namespace Nine.Graphics.Effects
         internal LinkedEffect Effect;
         internal string UniqueName;
 
+        /// <summary>
+        /// Gets the graphics device.
+        /// </summary>
         public GraphicsDevice GraphicsDevice
         {
             get
@@ -46,6 +49,17 @@ namespace Nine.Graphics.Effects
                 return effect.GraphicsDevice;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this LinkedEffectPart shall be copied to the
+        /// LinkedMaterial.
+        /// If this value is true, you must override OnApply(LinkedEffectPart part) to 
+        /// push all the parameters to the target part.
+        /// The default value is false.
+        /// </summary>
+        /// 
+        /// TODO: Pick a better name?
+        public virtual bool IsMaterial { get { return false; } }
 
         /// <summary>
         /// Gets the EffectParameter with the name from the fragment parameter name.

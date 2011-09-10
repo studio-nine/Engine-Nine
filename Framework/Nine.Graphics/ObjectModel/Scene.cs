@@ -86,7 +86,7 @@ namespace Nine.Graphics.ObjectModel
         private List<Light> appliedMultiPassLights = new List<Light>();
         private List<Light> unAppliedMultiPassLights = new List<Light>();
         
-        private EffectInstance cachedEffectInstance;
+        private EffectMaterial cachedEffectMaterial;
         private BitArray lightUsed;
 
 #if !WINDOWS_PHONE
@@ -795,40 +795,39 @@ namespace Nine.Graphics.ObjectModel
             }
         }
 
-        private void ClearLights(IEffectInstance effect)
+        private void ClearLights(Material material)
         {
-            if (effect == null)
+            if (material == null)
                 return;
 
-            var ambientLights = effect.As<IEffectLights<IAmbientLight>>();
+            var ambientLights = material.As<IEffectLights<IAmbientLight>>();
             if (ambientLights != null)
                 ambientLights.Lights.ForEach(light => light.AmbientLightColor = Vector3.Zero);
 
-            var directionalLights = effect.As<IEffectLights<IDirectionalLight>>();
+            var directionalLights = material.As<IEffectLights<IDirectionalLight>>();
             if (directionalLights != null)
                 directionalLights.Lights.ForEach(light => light.DiffuseColor = Vector3.Zero);
 
-            var pointLights = effect.As<IEffectLights<IPointLight>>();
+            var pointLights = material.As<IEffectLights<IPointLight>>();
             if (pointLights != null)
                 pointLights.Lights.ForEach(light => light.DiffuseColor = Vector3.Zero);
 
-            var spotLights = effect.As<IEffectLights<ISpotLight>>();
+            var spotLights = material.As<IEffectLights<ISpotLight>>();
             if (spotLights != null)
                 spotLights.Lights.ForEach(light => light.DiffuseColor = Vector3.Zero);
         }
 
         private void ApplyLights(IList<Light> sourceLights, Effect effect, Action<Light> onLightNotUsed)
         {
-            if (cachedEffectInstance == null)
-                cachedEffectInstance = new EffectInstance() { Effect = effect };
-            else
-                cachedEffectInstance.Effect = effect;
-            ApplyLights(sourceLights, cachedEffectInstance, onLightNotUsed);
+            if (cachedEffectMaterial == null)
+                cachedEffectMaterial = new EffectMaterial();
+            cachedEffectMaterial.SetEffect(effect);
+            ApplyLights(sourceLights, cachedEffectMaterial, onLightNotUsed);
         }
 
-        private void ApplyLights(IList<Light> sourceLights, IEffectInstance effect, Action<Light> onLightNotUsed)
+        private void ApplyLights(IList<Light> sourceLights, Material material, Action<Light> onLightNotUsed)
         {
-            if (sourceLights == null || effect == null)
+            if (sourceLights == null || material == null)
                 return;
 
             int lightCount = sourceLights.Count;
@@ -843,7 +842,7 @@ namespace Nine.Graphics.ObjectModel
 
                 var iLight = 0;
                 var light = sourceLights[i];
-                if (!light.Apply(effect, iLight++, IsLastLightOfType(sourceLights, i)))
+                if (!light.Apply(material, iLight++, IsLastLightOfType(sourceLights, i)))
                 {
                     if (onLightNotUsed != null)
                         onLightNotUsed(light);
@@ -858,7 +857,7 @@ namespace Nine.Graphics.ObjectModel
                         continue;
 
                     lightUsed[j] = true;
-                    if (failed || !light2.Apply(effect, iLight++, IsLastLightOfType(sourceLights, j)))
+                    if (failed || !light2.Apply(material, iLight++, IsLastLightOfType(sourceLights, j)))
                     {
                         if (onLightNotUsed != null)
                             onLightNotUsed(light2);
@@ -911,9 +910,9 @@ namespace Nine.Graphics.ObjectModel
         }
 
 #if !WINDOWS_PHONE
-        private void ApplyShadowMap(IList<Light> sourceLights, IEffectInstance effect, Action<Light> onLightNotUsed)
+        private void ApplyShadowMap(IList<Light> sourceLights, Material material, Action<Light> onLightNotUsed)
         {
-            var effectShadowMap = effect.As<IEffectShadowMap>();
+            var effectShadowMap = material.As<IEffectShadowMap>();
 
             foreach (var light in sourceLights)
             {

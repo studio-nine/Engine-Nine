@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <XnaContent xmlns:Particles="Nine.Graphics.ParticleEffects">
   <Asset Type="Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent">
-    <Emission>1</Emission>
+    <Emission>10</Emission>
     <Duration>
       <Min>1.8</Min>
       <Max>2</Max>
@@ -64,8 +64,8 @@
     
     <EndingEffects>
       <Item>
-        <Lifetime>0.1</Lifetime>
-        <Emission>500</Emission>
+        <MaxParticleCount>4096</MaxParticleCount>
+        <TriggerCount>100</TriggerCount>
         <Duration>
           <Min>0.5</Min>
           <Max>1</Max>

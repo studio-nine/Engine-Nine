@@ -76,6 +76,9 @@ namespace Nine.Graphics
             this.VertexColorEnabled = effect.VertexColorEnabled;
         }
         
+        partial void OnApply();
+        partial void OnClone(AlphaTestMaterial cloned);
+
         /// <summary>
         /// Applys the parameter values to the underlying AlphaTestMaterial.
         /// </summary>
@@ -93,7 +96,8 @@ namespace Nine.Graphics
                 this.effect.Texture = this.Texture;
             if (this.effect.VertexColorEnabled != this.VertexColorEnabled)
                 this.effect.VertexColorEnabled = this.VertexColorEnabled;
-      }
+      
+        }
         
         /// <summary>
         /// Clones the parameter values to a new instance of AlphaTestMaterial.
@@ -197,6 +201,9 @@ namespace Nine.Graphics
             this.VertexColorEnabled = effect.VertexColorEnabled;
         }
         
+        partial void OnApply();
+        partial void OnClone(BasicMaterial cloned);
+
         /// <summary>
         /// Applys the parameter values to the underlying BasicMaterial.
         /// </summary>
@@ -222,7 +229,8 @@ namespace Nine.Graphics
                 this.effect.TextureEnabled = this.TextureEnabled;
             if (this.effect.VertexColorEnabled != this.VertexColorEnabled)
                 this.effect.VertexColorEnabled = this.VertexColorEnabled;
-      }
+      
+        }
         
         /// <summary>
         /// Clones the parameter values to a new instance of BasicMaterial.
@@ -305,6 +313,9 @@ namespace Nine.Graphics
             this.VertexColorEnabled = effect.VertexColorEnabled;
         }
         
+        partial void OnApply();
+        partial void OnClone(DualTextureMaterial cloned);
+
         /// <summary>
         /// Applys the parameter values to the underlying DualTextureMaterial.
         /// </summary>
@@ -320,7 +331,8 @@ namespace Nine.Graphics
                 this.effect.Texture2 = this.Texture2;
             if (this.effect.VertexColorEnabled != this.VertexColorEnabled)
                 this.effect.VertexColorEnabled = this.VertexColorEnabled;
-      }
+      
+        }
         
         /// <summary>
         /// Clones the parameter values to a new instance of DualTextureMaterial.
@@ -413,6 +425,9 @@ namespace Nine.Graphics
             this.Texture = effect.Texture;
         }
         
+        partial void OnApply();
+        partial void OnClone(EnvironmentMapMaterial cloned);
+
         /// <summary>
         /// Applys the parameter values to the underlying EnvironmentMapMaterial.
         /// </summary>
@@ -434,7 +449,8 @@ namespace Nine.Graphics
                 this.effect.FresnelFactor = this.FresnelFactor;
             if (this.effect.Texture != this.Texture)
                 this.effect.Texture = this.Texture;
-      }
+      
+        }
         
         /// <summary>
         /// Clones the parameter values to a new instance of EnvironmentMapMaterial.
@@ -530,6 +546,9 @@ namespace Nine.Graphics
             this.WeightsPerVertex = effect.WeightsPerVertex;
         }
         
+        partial void OnApply();
+        partial void OnClone(SkinnedMaterial cloned);
+
         /// <summary>
         /// Applys the parameter values to the underlying SkinnedMaterial.
         /// </summary>
@@ -551,7 +570,8 @@ namespace Nine.Graphics
                 this.effect.Texture = this.Texture;
             if (this.effect.WeightsPerVertex != this.WeightsPerVertex)
                 this.effect.WeightsPerVertex = this.WeightsPerVertex;
-      }
+      
+        }
         
         /// <summary>
         /// Clones the parameter values to a new instance of SkinnedMaterial.

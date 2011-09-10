@@ -81,7 +81,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// TODO:
         /// </summary>
-        protected internal abstract bool Apply(IEffectInstance effectInstance, int index, bool last);
+        protected internal abstract bool Apply(Material material, int index, bool last);
 
         /// <summary>
         /// Draws the depth map of the specified drawables.
@@ -145,9 +145,9 @@ namespace Nine.Graphics.ObjectModel
     [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class Light<T> : Light where T : class
     {
-        protected internal sealed override bool Apply(IEffectInstance effectInstance, int index, bool last)
+        protected internal sealed override bool Apply(Material material, int index, bool last)
         {
-            IEffectLights<T> lightables = effectInstance.As<IEffectLights<T>>();
+            IEffectLights<T> lightables = material.As<IEffectLights<T>>();
             if (lightables == null || lightables.Lights == null || index >= lightables.Lights.Count)
                 return false;
             Enable(lightables.Lights[index]);

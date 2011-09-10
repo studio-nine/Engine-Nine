@@ -39,7 +39,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Texture coordinates
         /// </summary>
-        public Vector2 TextureCoordinate0;
+        public Vector2 TextureCoordinate;
         /// <summary>
         /// Tangent
         /// </summary>
@@ -63,11 +63,11 @@ namespace Nine.Graphics
         public VertexPositionNormalDualTexture(
             Vector3 position,
             Vector3 normal,
-            Vector2 uv0,
+            Vector2 uv,
             Vector2 uv1)
         {
             Position = position;
-            TextureCoordinate0 = uv0;
+            TextureCoordinate = uv;
             TextureCoordinate1 = uv1;
             Normal = normal;
         }

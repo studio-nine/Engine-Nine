@@ -8,10 +8,11 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -48,6 +49,23 @@ namespace Nine.Graphics.ParticleEffects
     }
 
     /// <summary>
+    /// Event args for ParticleEffect.ParticleEnds.
+    /// </summary>
+    public class ParticleEndsEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Gets the particle that is going to die.
+        /// </summary>
+        public Particle Particle { get; internal set; }
+    }
+
+    /// <summary>
+    /// Action for particles.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public delegate void ParticleAction(ref Particle particle);
+
+    /// <summary>
     /// Defines a special visual effect made up of particles.
     /// </summary>
     public class ParticleEffect : IDisposable
@@ -63,7 +81,14 @@ namespace Nine.Graphics.ParticleEffects
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the lifetime or duration of this particle effect.
+        /// Gets or sets the number of particles emitted when triggered.
+        /// When this value is greater then zero, the Lifetime and Emission attribute is ignored.
+        /// </summary>
+        public int TriggerCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total lifetime of this particle effect when triggered.
+        /// The default value is forever.
         /// </summary>
         public TimeSpan Lifetime { get; set; }
 
@@ -134,11 +159,6 @@ namespace Nine.Graphics.ParticleEffects
         public ParticleControllerCollection Controllers { get; internal set; }
 
         /// <summary>
-        /// Gets a collection of particle effects that is running simultaneously with this effect.
-        /// </summary>
-        public ParticleEffectCollection SiblingEffects { get; private set; }
-
-        /// <summary>
         /// Gets a collection of particle effects that is used as the appareance of each
         /// particle spawned by this particle effect.
         /// </summary>
@@ -156,12 +176,9 @@ namespace Nine.Graphics.ParticleEffects
         public object Tag { get; set; }
 
         /// <summary>
-        /// Gets the current active particle count
+        /// Gets the max particle count.
         /// </summary>
-        public int ParticleCount
-        {
-            get { return (lastParticle + maxParticles) % maxParticles - firstParticle; }
-        }        
+        public int MaxParticleCount { get; private set; }
 
         /// <summary>
         /// Gets the approximate bounds of all triggered effects.
@@ -185,22 +202,29 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets a list of triggers owned by this <c>ParticleEffect</c>.
         /// </summary>
-        public IList<ParticleAnimation> Triggers { get; private set; }
+        public IList<ParticleTrigger> Triggers { get; private set; }
+
+        /// <summary>
+        /// Occurs when a particle is about to die.
+        /// </summary>
+        public event EventHandler<ParticleEndsEventArgs> ParticleEnds;
 
         // An array of particles, treated as a circular queue.
-        internal Particle[] particles;
-        internal int firstParticle = 0;
-        internal int lastParticle = 0;
-        internal int currentParticle = 0;
-        internal int maxParticles;
+        private Particle[] particles;
+        private int particleCount;
+        private int firstParticle = 0;
+        private int lastParticle = 0;
+        internal int CurrentParticle = 0;
 
         private Random random = new Random();
         private float timeLeftOver = 0;
+        private bool triggerOnStartup = false;
+        private ParticleEndsEventArgs endsEventArgs = new ParticleEndsEventArgs();
 
         /// <summary>
         /// Creates a new particle effect.
         /// </summary>
-        public ParticleEffect() : this(true, 1024)
+        public ParticleEffect() : this(false, 1024)
         {
 
         }
@@ -208,7 +232,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Creates a new particle effect.
         /// </summary>
-        public ParticleEffect(int maxParticles) : this(true, maxParticles)
+        public ParticleEffect(int maxParticles) : this(false, maxParticles)
         {
             // TODO: Add array dynamic expanding to eliminate maxParticles.
         }
@@ -218,78 +242,140 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public ParticleEffect(bool triggerOnStartup, int maxParticles)
         {
-            Up = Vector3.UnitZ;
-            Lifetime = TimeSpan.MaxValue;
-            Enabled = true;
-            Stretch = 1;
-            Duration = 2;
-            BlendState = BlendState.Additive;
-            Emitter = new PointEmitter();
-            Triggers = new List<ParticleAnimation>();
+            this.Up = Vector3.UnitZ;
+            this.Lifetime = TimeSpan.MaxValue;
+            this.Enabled = true;
+            this.Stretch = 1;
+            this.Duration = 2;
+            this.triggerOnStartup = triggerOnStartup;
+            this.BlendState = BlendState.Additive;
+            this.Emitter = new PointEmitter();
+            this.Triggers = new List<ParticleTrigger>();
 
-            Controllers = new ParticleControllerCollection();
-            Controllers.ParticleEffect = this;
+            this.Controllers = new ParticleControllerCollection();
+            this.Controllers.ParticleEffect = this;
 
-            ChildEffects = new ParticleEffectCollection() { EnsureHasTrigger = true };
-            SiblingEffects = new ParticleEffectCollection() { EnsureHasTrigger = true };
-            EndingEffects = new ParticleEffectCollection() { ClearTriggerList = true };
+            this.ChildEffects = new ParticleEffectCollection();
+            this.EndingEffects = new ParticleEffectCollection();
 
-            particles = new Particle[this.maxParticles = maxParticles];
-            if (triggerOnStartup)
-                Trigger();
+            this.particles = new Particle[this.MaxParticleCount = maxParticles];
+        }
+
+        /// <summary>
+        /// Creates a merged effect from serveral input particle effects.
+        /// See http://nine.codeplex.com/discussions/272121
+        /// </summary>
+        public static ParticleEffect CreateMerged(IEnumerable<ParticleEffect> effects)
+        {
+            if (effects == null)
+                throw new ArgumentNullException("effects");
+
+            var root = new ParticleEffect(16);
+            root.TriggerCount = 1;
+            root.Emission = 1;
+            root.Duration = float.MaxValue;
+            foreach (var effect in effects)
+            {
+                if (effect != null)
+                    root.ChildEffects.Add(effect);
+            }
+            return root;
         }
 
         /// <summary>
         /// Creates an ever lasting the particle effect.
         /// </summary>
-        public ParticleAnimation Trigger()
+        public ParticleTrigger Trigger()
         {
-            return Trigger(Vector3.Zero, Lifetime);
+            return Trigger(Vector3.Zero, Lifetime, TimeSpan.Zero);
         }
 
         /// <summary>
         /// Creates the particle effect at the specified position that last forever.
         /// </summary>
-        public ParticleAnimation Trigger(Vector3 position)
+        public ParticleTrigger Trigger(Vector3 position)
         {
-            return Trigger(position, Lifetime);
+            return Trigger(position, Lifetime, TimeSpan.Zero);
         }
 
         /// <summary>
         /// Creates the particle effect at the specified position that
         /// lasts for the given amount of time.
         /// </summary>
-        public ParticleAnimation Trigger(Vector3 position, TimeSpan lifetime)
+        public ParticleTrigger Trigger(Vector3 position, TimeSpan lifetime, TimeSpan delay)
         {
-            ParticleAnimation result = new ParticleAnimation() { Position = position, Duration = lifetime };
-            Triggers.Add(result);
-            result.Effect = this;
-            result.Play();
-            return result;
+            return Trigger(position, lifetime, TriggerCount, delay);
         }
 
         /// <summary>
         /// Creates an impulse of particles at the specified position.
         /// </summary>
-        public void Trigger(Vector3 position, int particleCount)
+        public ParticleTrigger Trigger(Vector3 position, int triggerCount)
         {
-            for (int i = 0; i < particleCount; i++)
+            return Trigger(position, triggerCount, TimeSpan.Zero);
+        }
+
+        /// <summary>
+        /// Creates an impulse of particles at the specified position.
+        /// </summary>
+        public ParticleTrigger Trigger(Vector3 position, int triggerCount, TimeSpan delay)
+        {
+            return Trigger(position, Lifetime, triggerCount, delay);
+        }
+
+        private ParticleTrigger Trigger(Vector3 position, TimeSpan lifetime, int triggerCount, TimeSpan delay)
+        {
+            EnsureChildEffectHasTrigger();
+
+            ParticleTrigger result = new ParticleTrigger();
+            Triggers.Add(result);
+            result.Position = position;
+            result.Delay = delay;
+            result.TriggerCount = triggerCount;
+            result.Duration = lifetime + delay;
+            result.Effect = this;
+            result.Play();
+            return result;
+        }
+
+        private void EnsureChildEffectHasTrigger()
+        {
+            foreach (var child in ChildEffects)
             {
-                if (!EmitNewParticle(position, 0))
-                    break;
+                if (child.Triggers.Count <= 0)
+                    child.Trigger();
             }
         }
 
         /// <summary>
         /// Traverses all active particles.
         /// </summary>
-        public void ForEach(Action<Particle> action)
+        public void ForEach(ParticleAction action)
         {
-            for (int currentParticle = firstParticle; currentParticle != lastParticle;  currentParticle = (currentParticle + 1) % maxParticles)
+            ForEachInternal((ref Particle particle) =>
             {
-                if (particles[currentParticle].Age <= 1)
+                if (particle.Age <= 1)
+                    action(ref particles[CurrentParticle]);
+            });
+        }
+
+        private void ForEachInternal(ParticleAction action)
+        {
+            if (particleCount > 0)
+            {
+                if (firstParticle < lastParticle)
                 {
-                    action(particles[currentParticle]);
+                    // ParticleConstroller<T>.Update requires the CurrentParticle to be the correct index.
+                    for (CurrentParticle = firstParticle; CurrentParticle < lastParticle; CurrentParticle++)
+                        action(ref particles[CurrentParticle]);
+                }
+                else
+                {
+                    // UpdateParticles requires the enumeration to always start from firstParticle.
+                    for (CurrentParticle = firstParticle; CurrentParticle < MaxParticleCount; CurrentParticle++)
+                        action(ref particles[CurrentParticle]);
+                    for (CurrentParticle = 0; CurrentParticle < lastParticle; CurrentParticle++)
+                        action(ref particles[CurrentParticle]);
                 }
             }
         }
@@ -299,10 +385,15 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public void Update(TimeSpan time)
         {
+            if (triggerOnStartup && Triggers.Count <= 0)
+            {
+                Trigger();
+                triggerOnStartup = false;
+            }
             Update(time, false);
         }
 
-        public void Update(TimeSpan elapsedTime, bool ignoreTrigger)
+        internal void Update(TimeSpan elapsedTime, bool ignoreTrigger)
         {
             float elapsedSeconds = (float)elapsedTime.TotalSeconds;
 
@@ -310,11 +401,6 @@ namespace Nine.Graphics.ParticleEffects
                 UpdateTriggers(elapsedTime);
             UpdateControllers(elapsedSeconds);
             UpdateParticles(elapsedTime);
-
-            foreach (var siblingEffect in SiblingEffects)
-            {
-                siblingEffect.Update(elapsedTime);
-            }
 
             foreach (var childEffect in ChildEffects)
             {
@@ -334,7 +420,7 @@ namespace Nine.Graphics.ParticleEffects
 
             for (int i = 0; i < Triggers.Count; i++)
             {
-                ParticleAnimation anim = Triggers[i];
+                ParticleTrigger anim = Triggers[i];
                 if (anim.State == Animations.AnimationState.Stopped)
                 {
                     Triggers.RemoveAt(i);
@@ -380,49 +466,55 @@ namespace Nine.Graphics.ParticleEffects
             }
         }
 
-        private bool EmitNewParticle(Vector3 position, float mu)
+        internal bool EmitNewParticle(Vector3 position, float mu)
         {
             if (Emitter == null)
                 return false;
 
             // Don't add new particles when the queue is full.
-            currentParticle = lastParticle;
-            int nextParticle = (currentParticle + 1) % maxParticles;
-            if (nextParticle == firstParticle - 1)
+            if (particleCount >= MaxParticleCount)
                 return false;
-            lastParticle = nextParticle;
+            CurrentParticle = lastParticle;
 
-            Emitter.Emit(mu, ref particles[currentParticle].Position, ref particles[currentParticle].Velocity);
+            Emitter.Emit(mu, ref particles[CurrentParticle].Position, ref particles[CurrentParticle].Velocity);
 
-            particles[currentParticle].Age = 0;
-            particles[currentParticle].Alpha = 1;
-            particles[currentParticle].ElapsedTime = 0;
-            particles[currentParticle].Position += position;
-            particles[currentParticle].Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min); ;
-            particles[currentParticle].Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
-            particles[currentParticle].Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
-            particles[currentParticle].Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
-            particles[currentParticle].Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
+            ResetParticle(ref particles[CurrentParticle], ref position);
+
+            particleCount++;
+            lastParticle = (lastParticle + 1) % MaxParticleCount;
+            return true;
+        }
+
+        private void ResetParticle(ref Particle particle, ref Vector3 offset)
+        {
+            particle.Age = 0;
+            particle.Alpha = 1;
+            particle.ElapsedTime = 0;
+            particle.Rotation = Rotation.Min + (float)random.NextDouble() * (Rotation.Max - Rotation.Min); ;
+            particle.Duration = Duration.Min + (float)random.NextDouble() * (Duration.Max - Duration.Min);
+            particle.Velocity *= Speed.Min + (float)random.NextDouble() * (Speed.Max - Speed.Min);
+            particle.Size = Size.Min + (float)random.NextDouble() * (Size.Max - Size.Min);
+            particle.Color = Microsoft.Xna.Framework.Color.Lerp(Color.Min, Color.Max, (float)random.NextDouble());
+            
+            Vector3.Add(ref particle.Position, ref offset, out particle.Position);
 
             for (int currentController = 0; currentController < Controllers.Count; currentController++)
             {
-                Controllers[currentController].Reset(ref particles[currentParticle]);
+                Controllers[currentController].Reset(ref particle);
             }
-            return true;
         }
 
         private void UpdateControllers(float elapsedTime)
         {   
-            if (firstParticle == lastParticle)
+            if (particleCount <= 0)
                 return;
 
             for (int currentController = 0; currentController < Controllers.Count; currentController++)
             {
-                for (currentParticle = firstParticle; currentParticle != lastParticle;
-                                                      currentParticle = (currentParticle + 1) % maxParticles)
+                ForEachInternal((ref Particle particle) =>
                 {
-                    Controllers[currentController].Update(elapsedTime, ref particles[currentParticle]);
-                }
+                    Controllers[currentController].Update(elapsedTime, ref particle);
+                });
             }
         }
 
@@ -430,40 +522,53 @@ namespace Nine.Graphics.ParticleEffects
         {
             float elapsedSeconds = (float)elapsedTime.TotalSeconds;
 
+            bool hasParticleEndsEvent = ParticleEnds != null;
             bool hasEndingEffects = EndingEffects.Count > 0;
             bool hasChildEffects = ChildEffects.Count > 0;
+            bool hasAliveParticle = false;
 
-            for (currentParticle = firstParticle; currentParticle != lastParticle;
-                                                  currentParticle = (currentParticle + 1) % maxParticles)
+            ForEachInternal((ref Particle particle) =>
             {
-                particles[currentParticle].Update(elapsedSeconds);
+                particle.Update(elapsedSeconds);
 
                 if (hasChildEffects)
                 {
                     foreach (var childEffect in ChildEffects)
                     {
                         foreach (var trigger in childEffect.Triggers)
-                            trigger.Position = particles[currentParticle].Position;
+                            trigger.Position = particle.Position;
                         childEffect.UpdateTriggers(elapsedTime);
                     }
                 }
 
-                if (particles[currentParticle].Age >= 1)
+                if (particle.Age < 1)
                 {
-                    if (currentParticle == firstParticle)
+                    hasAliveParticle = true;
+                }
+                else
+                {
+                    if (particleCount > 0 && !hasAliveParticle)
                     {
-                        firstParticle = (firstParticle + 1) % maxParticles;
+                        firstParticle = (firstParticle + 1) % MaxParticleCount;
+                        particleCount--;
                     }
 
-                    if (hasEndingEffects && particles[currentParticle].Age < float.MaxValue)
+                    if ((hasEndingEffects || hasParticleEndsEvent) && particle.Age < float.MaxValue)
                     {
-                        foreach (var endingEffect in EndingEffects)
-                            endingEffect.Trigger(particles[currentParticle].Position);
-
-                        particles[currentParticle].Age = float.MaxValue;
+                        if (hasEndingEffects)
+                        {
+                            foreach (var endingEffect in EndingEffects)
+                                endingEffect.Trigger(particle.Position);
+                        }
+                        if (hasParticleEndsEvent)
+                        {
+                            endsEventArgs.Particle = particle;
+                            ParticleEnds(this, endsEventArgs);
+                        }
+                        particle.Age = float.MaxValue;
                     }
                 }
-            }
+            });
         }
 
         public void Dispose()

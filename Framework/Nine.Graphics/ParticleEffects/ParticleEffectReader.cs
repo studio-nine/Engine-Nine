@@ -27,6 +27,7 @@ namespace Nine.Graphics.ParticleEffects
 
             effect.ParticleType = (ParticleType)input.ReadByte();
             effect.Lifetime = TimeSpan.FromSeconds(input.ReadSingle());
+            effect.TriggerCount = input.ReadInt32();
             effect.Texture = input.ReadObject<Texture2D>();
             effect.BlendState = input.ReadObject<BlendState>();
             effect.Color = input.ReadObject<Range<Color>>();
@@ -45,10 +46,6 @@ namespace Nine.Graphics.ParticleEffects
             int count = input.ReadInt32();
             for (int i = 0; i < count; i++)
                 effect.Controllers.Add(input.ReadObject<IParticleController>());
-
-            count = input.ReadInt32();
-            for (int i = 0; i < count; i++)
-                effect.SiblingEffects.Add(input.ReadObject<ParticleEffect>());
 
             count = input.ReadInt32();
             for (int i = 0; i < count; i++)

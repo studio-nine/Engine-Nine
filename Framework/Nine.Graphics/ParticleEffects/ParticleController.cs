@@ -109,7 +109,7 @@ namespace Nine.Graphics.ParticleEffects
         internal sealed override void Initialize(ParticleEffect particleEffect)
         {
             if (tags == null)
-                tags = new T[particleEffect.maxParticles];
+                tags = new T[particleEffect.MaxParticleCount];
             
             base.Initialize(particleEffect);
         }
@@ -118,12 +118,12 @@ namespace Nine.Graphics.ParticleEffects
 
         protected override sealed void OnReset(ref Particle particle)
         {
-            OnReset(ref particle, ref tags[ParticleEffect.currentParticle]);
+            OnReset(ref particle, ref tags[ParticleEffect.CurrentParticle]);
         }
 
         protected override sealed void OnUpdate(float elapsedTime, ref Particle particle)
         {
-            OnUpdate(elapsedTime, ref particle, ref tags[ParticleEffect.currentParticle]);
+            OnUpdate(elapsedTime, ref particle, ref tags[ParticleEffect.CurrentParticle]);
         }
 
         protected abstract void OnReset(ref Particle particle, ref T tag);

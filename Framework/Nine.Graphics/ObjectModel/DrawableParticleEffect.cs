@@ -56,6 +56,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (ParticleEffect == null || Visible)
             {
+                // FIXME: We might be drawing it twice if 2 DrawableParticleEffect share the same ParticleEffect !!!
                 context.ParticleBatch.Draw(ParticleEffect);
             }
         }

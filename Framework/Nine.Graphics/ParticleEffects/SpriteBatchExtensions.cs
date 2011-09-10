@@ -35,7 +35,7 @@ namespace Nine.Graphics.ParticleEffects
 
                 if (particleEffect.ParticleType == ParticleType.Billboard)
                 {
-                    particleEffect.ForEach(particle =>
+                    particleEffect.ForEach((ref Particle particle) =>
                     {
                         spriteBatch.Draw(particleEffect.Texture, 
                                          new Vector2(particle.Position.X, particle.Position.Y), 
@@ -48,7 +48,7 @@ namespace Nine.Graphics.ParticleEffects
                 {
                     scaleFactor.X *= particleEffect.Stretch;
 
-                    particleEffect.ForEach(particle =>
+                    particleEffect.ForEach((ref Particle particle) =>
                     {
                         float rotation = (float)Math.Atan2(particle.Velocity.Y, particle.Velocity.X);
 
@@ -64,7 +64,7 @@ namespace Nine.Graphics.ParticleEffects
                     scaleFactor.X *= particleEffect.Stretch;
                     float rotation = (float)Math.Atan2(particleEffect.Up.Y, particleEffect.Up.X);
 
-                    particleEffect.ForEach(particle =>
+                    particleEffect.ForEach((ref Particle particle) =>
                     {
 
                         spriteBatch.Draw(particleEffect.Texture,
@@ -79,9 +79,6 @@ namespace Nine.Graphics.ParticleEffects
                     throw new NotImplementedException();
                 }
             }
-
-            foreach (var siblingEffect in particleEffect.SiblingEffects)
-                DrawParticleEffect(spriteBatch, siblingEffect);
 
             foreach (var childEffect in particleEffect.ChildEffects)
                 DrawParticleEffect(spriteBatch, childEffect);

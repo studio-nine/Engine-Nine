@@ -76,7 +76,10 @@ namespace Nine.Graphics.ParticleEffects
         {
             ElapsedTime += elapsedTime;
             Age = ElapsedTime / Duration;
-            Position += Velocity * elapsedTime;
+
+            Position.X += Velocity.X * elapsedTime;
+            Position.Y += Velocity.Y * elapsedTime;
+            Position.Z += Velocity.Z * elapsedTime;
         }
 
         public override string ToString()

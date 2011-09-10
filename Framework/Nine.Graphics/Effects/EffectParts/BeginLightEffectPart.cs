@@ -76,6 +76,8 @@ namespace Nine.Graphics.Effects.EffectParts
             set { }
         }
 
+        public override bool IsMaterial { get { return true; } }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & specularPowerDirtyMask) != 0)

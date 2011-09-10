@@ -41,15 +41,6 @@ namespace Nine.Graphics
         /// </summary>
         void Apply();
     }
-
-    /// <summary>
-    /// An effect instance for internal use only.
-    /// </summary>
-    class EffectInstance : IEffectInstance
-    {
-        public Effect Effect { get; set; }
-        public void Apply() { }
-    }
     #endregion
 
     #region Material
@@ -69,6 +60,11 @@ namespace Nine.Graphics
         /// </summary>
         protected virtual bool IsTransparentValue { get { return false; } }
 
+        public virtual T As<T>() where T : class
+        {
+            return this as T;
+        }
+
         /// <summary>
         /// Gets the underlying effect.
         /// </summary>
@@ -84,6 +80,15 @@ namespace Nine.Graphics
         /// </summary>
         /// <returns></returns>
         public abstract Material Clone();
+    }
+
+    class EffectMaterial : Material
+    {
+        Effect effect;
+        public override Effect Effect { get { return effect; } }
+        public void SetEffect(Effect effect) { this.effect = effect; }
+        public override void Apply() { }
+        public override Material Clone() { throw new NotSupportedException(); }
     }
     #endregion
 
@@ -110,7 +115,7 @@ namespace Nine.Graphics
             get { return IsTransparent || Alpha < 1; }
         }
 
-        private void OnClone(BasicMaterial cloned)
+        partial void OnClone(BasicMaterial cloned)
         {
             cloned.IsTransparent = this.IsTransparent;
         }
@@ -178,7 +183,7 @@ namespace Nine.Graphics
             get { return IsTransparent || Alpha < 1; }
         }
 
-        private void OnClone(EnvironmentMapMaterial cloned)
+        partial void OnClone(EnvironmentMapMaterial cloned)
         {
             cloned.IsTransparent = this.IsTransparent;
         }
@@ -247,7 +252,7 @@ namespace Nine.Graphics
             get { return IsTransparent || Alpha < 1; }
         }
 
-        private void OnClone(SkinnedMaterial cloned)
+        partial void OnClone(SkinnedMaterial cloned)
         {
             cloned.IsTransparent = this.IsTransparent;
         }
@@ -312,7 +317,7 @@ namespace Nine.Graphics
         /// </summary>
         public new bool IsTransparent { get; set; }
 
-        private void OnClone(DualTextureMaterial cloned)
+        partial void OnClone(DualTextureMaterial cloned)
         {
             cloned.IsTransparent = this.IsTransparent;
         }
@@ -346,7 +351,7 @@ namespace Nine.Graphics
             get { return false; }
         }
 
-        private void OnClone(AlphaTestMaterial cloned) { }
+        partial void OnClone(AlphaTestMaterial cloned) { }
 
         void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {

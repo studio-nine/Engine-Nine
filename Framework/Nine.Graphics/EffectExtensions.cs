@@ -118,24 +118,6 @@ namespace Nine.Graphics
 #endif
         }
 
-        public static T As<T>(this IEffectInstance effect) where T : class
-        {
-            T result = effect as T;
-            if (result != null)
-                return result;
-
-#if !WINDOWS_PHONE
-            // TODO:
-            // A linked effect may have serveral parts that implements T,
-            // Do we need to aggregate those parts into a single instance that
-            // implements T?
-            var linked = effect as Nine.Graphics.Effects.LinkedMaterial;
-            if (linked != null)
-                return linked.Find<T>();
-#endif
-            return null;
-        }
-
         #region Copy Material
         internal static void CopyMaterialsFrom(this Effect effect, Effect sourceEffect)
         {

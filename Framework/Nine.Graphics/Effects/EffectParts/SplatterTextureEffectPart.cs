@@ -93,6 +93,7 @@ namespace Nine.Graphics.Effects.EffectParts
             set { splatterTextureScale = value; DirtyMask |= splatterTextureScaleDirtyMask; }
         }
 
+        public override bool IsMaterial { get { return true; } }
 
         public SplatterTextureEffectPart()
         {

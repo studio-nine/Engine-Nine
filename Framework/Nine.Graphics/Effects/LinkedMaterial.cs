@@ -67,6 +67,11 @@ namespace Nine.Graphics.Effects
             get { return effect; }
         }
 
+        public override T As<T>()
+        {
+            return base.As<T>() ?? Find<T>() ?? effect.Find<T>();
+        }
+
         /// <summary>
         /// Finds the first accurance of LinkedEffectPart that is of type T.
         /// </summary>
@@ -104,7 +109,7 @@ namespace Nine.Graphics.Effects
                     var part = effect.EffectParts[i];
 
                     // LinkedEffectPart contains nothing useful to clone.
-                    if (part.GetType() == typeof(LinkedEffectPart))
+                    if (part.GetType() == typeof(LinkedEffectPart) || !part.IsMaterial)
                         continue;
 
                     LinkedEffect.CurrentUniqueName = part.UniqueName;

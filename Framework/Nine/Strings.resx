@@ -162,4 +162,7 @@
   <data name="CircularDependency" xml:space="preserve">
     <value>Circular dependency has found, the operation cannot continue.</value>
   </data>
+  <data name="ParticleEffectAlreadyTriggered" xml:space="preserve">
+    <value>The input particle effect has already been triggerd.</value>
+  </data>
 </root>

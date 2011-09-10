@@ -92,10 +92,7 @@ namespace Nine.Graphics.ParticleEffects
 
             if (particleEffect.Texture != null)
                 batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
-
-            foreach (var siblingEffect in particleEffect.SiblingEffects)
-                Draw(siblingEffect);
-
+            
             foreach (var childEffect in particleEffect.ChildEffects)
                 Draw(childEffect);
 
@@ -143,7 +140,7 @@ namespace Nine.Graphics.ParticleEffects
 
             if (item.Type == ParticleType.Billboard)
             {
-                particleEffect.ForEach(particle =>
+                particleEffect.ForEach((ref Particle particle) =>
                 {
                     primitiveBatch.DrawBillboard(particleEffect.Texture,
                                                 particle.Position,
@@ -155,7 +152,7 @@ namespace Nine.Graphics.ParticleEffects
             }
             else if (item.Type == ParticleType.ConstrainedBillboard)
             {
-                particleEffect.ForEach(particle =>
+                particleEffect.ForEach((ref Particle particle) =>
                 {
                     Vector3 forward = Vector3.Normalize(particle.Velocity);
                     forward *= 0.5f * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
@@ -170,7 +167,7 @@ namespace Nine.Graphics.ParticleEffects
             }
             else if (item.Type == ParticleType.ConstrainedBillboardUp)
             {
-                particleEffect.ForEach(particle =>
+                particleEffect.ForEach((ref Particle particle) =>
                 {
                     Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
 
@@ -184,7 +181,7 @@ namespace Nine.Graphics.ParticleEffects
             }
             else if (item.Type == ParticleType.RibbonTrail)
             {
-                particleEffect.ForEach(particle =>
+                particleEffect.ForEach((ref Particle particle) =>
                 {
                     Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
 

@@ -86,6 +86,8 @@ namespace Nine.Graphics.Effects.EffectParts
             set { }
         }
 
+        public override bool IsMaterial { get { return true; } }
+
         void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
             if (usage == TextureUsage.LightBuffer)

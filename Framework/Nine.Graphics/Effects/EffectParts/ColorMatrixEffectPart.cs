@@ -33,6 +33,8 @@ namespace Nine.Graphics.Effects.EffectParts
             set { transform = value; DirtyMask |= transformDirtyMask; }
         }
 
+        public override bool IsMaterial { get { return true; } }
+
         public ColorMatrixEffectPart()
         {
             ColorMatrix = Matrix.Identity;
