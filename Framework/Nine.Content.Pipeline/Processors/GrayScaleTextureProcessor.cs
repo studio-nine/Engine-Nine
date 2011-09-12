@@ -28,7 +28,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// This processor gray scales the input texture and produces an output texture with 8bit per pixel.
     /// </summary>
-    [ContentProcessor(DisplayName="Gray Scale Texture Processor - Engine Nine")]
+    [ContentProcessor(DisplayName="Gray Scale Texture - Engine Nine")]
     public class GrayScaleTextureProcessor : ContentProcessor<TextureContent, TextureContent>
     {
         /// <summary>

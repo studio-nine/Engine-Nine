@@ -336,7 +336,7 @@ namespace Nine.Graphics.ObjectModel
             return (number > 0) && (number & (number - 1)) == 0;
         }
 
-        private static int UpperPowerOfTwo(int v)
+        private static int AlignToPowerOfTwo(int v)
         {
             v--;
             v |= v >> 1;

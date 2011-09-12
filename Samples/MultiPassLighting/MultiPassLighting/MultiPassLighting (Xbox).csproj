@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{11737ba3-1159-472f-93d0-1ed72786f412}</ProjectGuid>
+    <ProjectGuid>{11737BA3-1159-472F-93D0-1ED72786F412}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">Xbox 360</Platform>
@@ -59,8 +59,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MultiPassLightingContent\MultiPassLightingContent.contentproj">
-      <Name>MultiPassLightingContent</Name>
+      <Name>MultiPassLightingContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{41439B38-1185-449A-90A3-50A27C588EDA}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -91,9 +91,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AmbientLightEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="Effects\CustomEffect.cs" />
+    <Compile Include="Effects\CustomMaterial.cs" />
+    <Compile Include="Effects\EffectAnnotations.cs" />
     <Compile Include="Effects\EffectParts\DeferredLightEffectPart.cs" />
     <Compile Include="Effects\EffectParts\EmissiveMapEffectPart.cs" />
     <Compile Include="Effects\EffectParts\SpecularMapEffectPart.cs" />
+    <Compile Include="Effects\EffectSemantics.cs" />
     <Compile Include="Effects\LinkedMaterial.cs" />
     <Compile Include="Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>

@@ -113,7 +113,7 @@ namespace Nine.Content.Pipeline.Processors
     /// Custom processor extends the builtin framework ModelProcessor class,
     /// adding animation support.
     /// </summary>
-    [ContentProcessor(DisplayName="Model Animation Processor - Engine Nine")]
+    [ContentProcessor(DisplayName="Model Animation - Engine Nine")]
     public class ModelAnimationProcessor : ContentProcessor<NodeContent, Dictionary<string, BoneAnimationClip>>
     {
         [DefaultValue(60)]

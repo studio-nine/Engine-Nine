@@ -33,7 +33,7 @@ namespace Nine.Content.Pipeline.Processors
     /// This processor is used by ExtendedModelProcessor,
     /// There is no need to expose it to the xna build.
     ///</remarks>
-    // [ContentProcessor(DisplayName="Model Skeleton Processor - Engine Nine")]
+    // [ContentProcessor(DisplayName="Model Skeleton - Engine Nine")]
     class ModelSkeletonProcessor : ContentProcessor<NodeContent, ModelSkeletonData>
     {
         [DefaultValue(0f)]

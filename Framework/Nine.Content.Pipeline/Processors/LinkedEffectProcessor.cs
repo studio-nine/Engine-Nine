@@ -33,7 +33,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Processes the input LinkedEffectContent.
     /// </summary>
-    [ContentProcessor(DisplayName = "Linked Effect Processor - Engine Nine")]
+    [ContentProcessor(DisplayName = "Linked Effect - Engine Nine")]
     public class LinkedEffectProcessor : ContentProcessor<LinkedEffectContent, LinkedEffectContent>
     {
         public override LinkedEffectContent Process(LinkedEffectContent input, ContentProcessorContext context)

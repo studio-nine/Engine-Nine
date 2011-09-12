@@ -5,8 +5,9 @@ These are the steps needed to use Engine Nine:
 
 - Visual Studio 2010 (or Visual C# Express 2010)
 - Xna Game Studio 4.0 (Aka, Windows Phone Developer Tools)
+- Managed DirectX (included in Installer\Redist)
 
-2. Run Build/Build.bat as administrator
+2. Run Build/Build.bat as administrator or Build Framework\Nine.sln directly.
 
 - You might experence some errors since the full build requires Wix and SandCastle
 

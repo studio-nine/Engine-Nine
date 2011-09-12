@@ -29,7 +29,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Imports grid based image list
     /// </summary>
-    [ContentProcessor(DisplayName = "Texture List Processor - Engine Nine")]
+    [ContentProcessor(DisplayName = "Texture List - Engine Nine")]
     public class GridTextureListProcessor : ContentProcessor<Texture2DContent, TextureListContent>
     {
         [DefaultValue(1)]

@@ -168,7 +168,7 @@ namespace Nine.Content.Pipeline.Processors
     #endregion
 
     #region AvatarAnimationProcessor
-    [ContentProcessor(DisplayName = "Avatar Animation Processor - XNA Framework")]
+    [ContentProcessor(DisplayName = "Avatar Animation - XNA Framework")]
     public class AvatarAnimationProcessor : ContentProcessor<NodeContent, BoneAnimationClipContent>
     {
         /// <summary>

@@ -79,6 +79,7 @@ namespace Game
         {
             //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")) { Position = new Vector2(100, 100), Scale = 5, Color = Color.Black });
             Components.Add(new InputComponent(Window.Handle));
+            
 
             scene = new Scene(GraphicsDevice);
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");

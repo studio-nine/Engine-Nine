@@ -1,0 +1,21 @@
+using System;
+
+namespace CustomEffects
+{
+#if WINDOWS || XBOX
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        static void Main(string[] args)
+        {
+            using (CustomEffectGame game = new CustomEffectGame())
+            {
+                game.Run();
+            }
+        }
+    }
+#endif
+}
+

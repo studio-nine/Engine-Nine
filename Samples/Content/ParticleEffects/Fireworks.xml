@@ -16,6 +16,7 @@
     
     <ChildEffects>      
       <Item>
+        <MaxParticleCount>2048</MaxParticleCount>
         <Emission>100</Emission>
         <Duration>
           <Min>0.5</Min>

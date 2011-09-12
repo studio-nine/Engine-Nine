@@ -31,7 +31,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Turns a heightmap into a terrain geometry.
     /// </summary>
-    [ContentProcessor(DisplayName = "Heightmap Processor - Engine Nine")]
+    [ContentProcessor(DisplayName = "Heightmap - Engine Nine")]
     public class HeightmapProcessor : ContentProcessor<Texture2DContent, Heightmap>
     {
         /// <summary>

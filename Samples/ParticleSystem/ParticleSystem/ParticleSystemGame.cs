@@ -149,7 +149,6 @@ namespace ParticleSystem
             particlePatch.Draw(galaxy);
             particlePatch.End();
 
-
             // Use SpriteBatch to draw 2D particles
             // Scale up the effect since it's too small
             spriteBatch.Begin(0, null, null, null, null, null, Matrix.CreateScale(20, 20, 1) * Matrix.CreateTranslation(100, 100, 0));

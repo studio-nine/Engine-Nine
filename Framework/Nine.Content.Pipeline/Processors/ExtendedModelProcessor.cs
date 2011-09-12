@@ -33,7 +33,7 @@ namespace Nine.Content.Pipeline.Processors
     /// Custom processor extends the builtin framework ModelProcessor class,
     /// adding animation support.
     /// </summary>
-    [ContentProcessor(DisplayName = "Model Processor - Engine Nine")]
+    [ContentProcessor(DisplayName = "Model - Engine Nine")]
     public class ExtendedModelProcessor : ModelProcessor
     {
         const string DefaultTextures = "NormalMap|*_n.dds|BumpMap|*_b.dds|Diffuse|*_d.dds|Specular|*_s.dds";
@@ -52,6 +52,13 @@ namespace Nine.Content.Pipeline.Processors
         [DefaultValue(true)]
         [DisplayName("Generate Collision Data")]
         public bool GenerateCollisionData { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether vertex color channel will be generated.
+        /// </summary>
+        [DefaultValue(false)]
+        [DisplayName("Generate Vertex Color")]
+        public bool GenerateVertexColor { get; set; }
 
         /// <summary>
         /// Gets or sets the depth of the collision tree.
@@ -76,7 +83,6 @@ namespace Nine.Content.Pipeline.Processors
 
         private Dictionary<string, string> attachedTextureNames = new Dictionary<string, string>();
         private Dictionary<string, string> attachedTextureProcessors = new Dictionary<string, string>();
-        private List<Dictionary<TextureUsage, ContentReference<TextureContent>>> attachedTextures = new List<Dictionary<TextureUsage, ContentReference<TextureContent>>>();
         private List<BoundingBox> partBound = new List<BoundingBox>();
 
         /// <summary>
@@ -136,6 +142,8 @@ namespace Nine.Content.Pipeline.Processors
 
             // Find model mesh part bounds.
             FindModelMeshPartBounds(input);
+
+            GenerateVertexColorChannel(input);
 
             ModelContent model = base.Process(input, context);
 
@@ -252,7 +260,7 @@ namespace Nine.Content.Pipeline.Processors
                 }
             }
 
-            attachedTextures.Add(textureDictionary.Count > 0 ? textureDictionary : null);
+            material.OpaqueData.Add("AttachedTextures", textureDictionary);
             return base.ConvertMaterial(material, context);
         }
 
@@ -270,11 +278,33 @@ namespace Nine.Content.Pipeline.Processors
                 {
                     part.Tag = new ModelMeshPartTagContent() 
                     {
-                        Textures = attachedTextures[i++],
+                        Textures = part.Material.OpaqueData["AttachedTextures"] as Dictionary<TextureUsage, ContentReference<TextureContent>>,
                         BoundingBox = new BoundingBox(),
                     };
                 }
             }
+        }
+
+        private void GenerateVertexColorChannel(NodeContent node)
+        {
+            MeshContent mesh = node as MeshContent;
+            
+            if (mesh != null)
+            {
+                foreach (var geometry in mesh.Geometry)
+                {
+                    if (!geometry.Vertices.Channels.Contains(VertexChannelNames.Color(0)))
+                    {
+                        geometry.Vertices.Channels.Add<Color>(VertexChannelNames.Color(0), 
+                            Enumerable.Range(0, geometry.Vertices.VertexCount).Select(i => Color.White));
+                    }
+                }
+            }
+
+            // Recurse (iterating over a copy of the child collection,
+            // because validating children may delete some of them).
+            foreach (NodeContent child in node.Children)
+                GenerateVertexColorChannel(child);
         }
     }
 }

@@ -181,6 +181,11 @@ namespace Nine.Graphics.ParticleEffects
         public int MaxParticleCount { get; private set; }
 
         /// <summary>
+        /// Gets the approximate particle count.
+        /// </summary>
+        public int ParticleCount { get; private set; }
+
+        /// <summary>
         /// Gets the approximate bounds of all triggered effects.
         /// Use <c>ParticleAnimation.BoundingBox</c> to get the bounds of each triggered effects.
         /// </summary>
@@ -211,7 +216,6 @@ namespace Nine.Graphics.ParticleEffects
 
         // An array of particles, treated as a circular queue.
         private Particle[] particles;
-        private int particleCount;
         private int firstParticle = 0;
         private int lastParticle = 0;
         internal int CurrentParticle = 0;
@@ -361,7 +365,7 @@ namespace Nine.Graphics.ParticleEffects
 
         private void ForEachInternal(ParticleAction action)
         {
-            if (particleCount > 0)
+            if (ParticleCount > 0)
             {
                 if (firstParticle < lastParticle)
                 {
@@ -472,7 +476,7 @@ namespace Nine.Graphics.ParticleEffects
                 return false;
 
             // Don't add new particles when the queue is full.
-            if (particleCount >= MaxParticleCount)
+            if (ParticleCount >= MaxParticleCount)
                 return false;
             CurrentParticle = lastParticle;
 
@@ -480,7 +484,7 @@ namespace Nine.Graphics.ParticleEffects
 
             ResetParticle(ref particles[CurrentParticle], ref position);
 
-            particleCount++;
+            ParticleCount++;
             lastParticle = (lastParticle + 1) % MaxParticleCount;
             return true;
         }
@@ -506,7 +510,7 @@ namespace Nine.Graphics.ParticleEffects
 
         private void UpdateControllers(float elapsedTime)
         {   
-            if (particleCount <= 0)
+            if (ParticleCount <= 0)
                 return;
 
             for (int currentController = 0; currentController < Controllers.Count; currentController++)
@@ -547,10 +551,10 @@ namespace Nine.Graphics.ParticleEffects
                 }
                 else
                 {
-                    if (particleCount > 0 && !hasAliveParticle)
+                    if (ParticleCount > 0 && !hasAliveParticle)
                     {
                         firstParticle = (firstParticle + 1) % MaxParticleCount;
-                        particleCount--;
+                        ParticleCount--;
                     }
 
                     if ((hasEndingEffects || hasParticleEndsEvent) && particle.Age < float.MaxValue)

@@ -113,7 +113,11 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
+    <Compile Include="Effects\EffectAnnotations.cs" />
+    <Compile Include="Effects\CustomMaterial.cs" />
+    <Compile Include="Effects\CustomEffect.cs" />
     <Compile Include="Effects\EffectParts\DeferredLightEffectPart.cs" />
+    <Compile Include="Effects\EffectSemantics.cs" />
     <Compile Include="Effects\LinkedMaterial.cs" />
     <Compile Include="Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>

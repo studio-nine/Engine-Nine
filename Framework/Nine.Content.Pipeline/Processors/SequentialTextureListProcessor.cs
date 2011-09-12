@@ -30,7 +30,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Processes image sequential
     /// </summary>
-    [ContentProcessor(DisplayName = "Sequential Texture List Processor - Engine Nine")]
+    [ContentProcessor(DisplayName = "Sequential Texture List - Engine Nine")]
     public class SequentialTextureListProcessor : ContentProcessor<string[], TextureListContent>
     {
         [DefaultValue(true)]

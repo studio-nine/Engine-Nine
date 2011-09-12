@@ -29,7 +29,7 @@ namespace Nine.Content.Pipeline.Processors
     /// <summary>
     /// Processes texture splatter used for terrain rendering.
     /// </summary>
-    [ContentProcessor(DisplayName="Splatter Texture Processor - Engine Nine")]
+    [ContentProcessor(DisplayName="Splatter Texture - Engine Nine")]
     public class SplatterTextureProcessor : ContentProcessor<string[], TextureContent>
     {
         /// <summary>
