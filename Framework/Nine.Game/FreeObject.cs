@@ -21,7 +21,7 @@ namespace Nine
     /// Defines an object that has an abitrary transform.
     /// </summary>
     [Serializable]
-    public class FreeObject : IWorldObject
+    public class FreeObject : GameObjectContainer
     {
         #region Transform
         public Matrix Transform
@@ -37,31 +37,9 @@ namespace Nine
             }
         }
         private Matrix transform;
-        #endregion
-
-        #region Template
-        public Template Template
-        {
-            get { return template; }
-            set
-            {
-                if (template != value)
-                {
-                    Template oldValue = template;
-                    template = value;
-                    if (TemplateChanged != null)
-                        TemplateChanged(this, EventArgs.Empty);
-                    OnTemplateChanged(oldValue);
-                }
-            }
-        }
-        private Template template;
-        #endregion
 
         public event EventHandler<EventArgs> TransformChanged;
-        public event EventHandler<EventArgs> TemplateChanged;
-
         protected virtual void OnTransformChanged(Matrix oldValue) { }
-        protected virtual void OnTemplateChanged(Template oldValue) { }
+        #endregion
     }
 }

@@ -31,7 +31,7 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Enables automatic custom effect parameter binding using DirectX Standard Annotation and Semantic.
     /// </summary>
-    sealed class CustomEffect : Effect, IEffectMatrices, IEffectMaterial, IEffectTexture, IUpdateable
+    public sealed class CustomEffect : Effect, IEffectMatrices, IEffectMaterial, IEffectTexture, IUpdateable
     {
         #region IEffectMatrices
         private uint DirtyMask = 0;
@@ -401,50 +401,8 @@ namespace Nine.Graphics.Effects
             var parameters = input.ReadObject<Dictionary<string, object>>();
             if (parameters != null)
                 foreach (var pair in parameters)
-                    SetValue(effect, pair.Key, pair.Value);
+                    effect.Parameters[pair.Key].SetValue(pair.Value);
             return effect;
-        }
-
-        private static void SetValue(Effect effect, string parameter, object value)
-        {
-            if (value is Texture)
-                effect.Parameters[parameter].SetValue((Texture)value);
-            else if (value is string)
-                effect.Parameters[parameter].SetValue((string)value);
-            else if (value is float)
-                effect.Parameters[parameter].SetValue((float)value);
-            else if (value is float[])
-                effect.Parameters[parameter].SetValue((float[])value);
-            else if (value is int)
-                effect.Parameters[parameter].SetValue((int)value);
-            else if (value is int[])
-                effect.Parameters[parameter].SetValue((int[])value);
-            else if (value is bool)
-                effect.Parameters[parameter].SetValue((bool)value);
-            else if (value is bool[])
-                effect.Parameters[parameter].SetValue((bool[])value);
-            else if (value is Quaternion)
-                effect.Parameters[parameter].SetValue((Quaternion)value);
-            else if (value is Quaternion[])
-                effect.Parameters[parameter].SetValue((Quaternion[])value);
-            else if (value is Matrix)
-                effect.Parameters[parameter].SetValue((Matrix)value);
-            else if (value is Matrix[])
-                effect.Parameters[parameter].SetValue((Matrix[])value);
-            else if (value is Vector2)
-                effect.Parameters[parameter].SetValue((Vector2)value);
-            else if (value is Vector2[])
-                effect.Parameters[parameter].SetValue((Vector2[])value);
-            else if (value is Vector3)
-                effect.Parameters[parameter].SetValue((Vector3)value);
-            else if (value is Vector3[])
-                effect.Parameters[parameter].SetValue((Vector3[])value);
-            else if (value is Vector4)
-                effect.Parameters[parameter].SetValue((Vector4)value);
-            else if (value is Vector4[])
-                effect.Parameters[parameter].SetValue((Vector4[])value);
-            else
-                throw new InvalidOperationException("Unexpected effect parameter type: " + value.GetType());
         }
     }
     #endregion

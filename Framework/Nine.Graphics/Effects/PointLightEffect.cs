@@ -18,7 +18,7 @@ namespace Nine.Graphics.Effects
 
         public bool SkinningEnabled
         {
-            get { return shaderIndex == 0; }
+            get { return shaderIndex == 1; }
             set { shaderIndex = value ? 1 : 0; }
         }
 

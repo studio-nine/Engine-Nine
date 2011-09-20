@@ -90,18 +90,10 @@
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
+    <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Components\ZipContentmanager.cs" />
-    <Compile Include="SerializationExtensions.cs" />
-    <Compile Include="Template.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Sprite.cs" />
-    <Compile Include="TimeEventArgs.cs" />
-    <Compile Include="TemplateFactory.cs" />
     <Compile Include="WeakReference.cs" />
-    <Compile Include="WorldObject.cs" />
-    <Compile Include="FreeObject.cs" />
-    <Compile Include="World.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />

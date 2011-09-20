@@ -15,9 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Graphics.ParticleEffects;
-#if !WINDOWS_PHONE
 using Nine.Graphics.Effects;
-#endif
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -112,7 +110,12 @@ namespace Nine.Graphics.ObjectModel
                 context.Projection = shadowFrustum;
                 context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
                 {
-                    drawables.FindAll(ShadowFrustum).ForEach(d => d.Draw(context, ShadowMap.Effect));
+                    DepthEffect depthEffect = (DepthEffect)ShadowMap.Effect;
+                    foreach (var drawable in drawables.FindAll(ShadowFrustum))
+                    {
+                        depthEffect.TextureEnabled = drawable.Material != null && drawable.Material.DepthAlphaEnabled;
+                        drawable.Draw(context, depthEffect);
+                    }
                 }
                 context.End();
                 context.View = view;

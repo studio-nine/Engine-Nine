@@ -34,23 +34,23 @@ namespace Nine.Content.Pipeline.Processors
     [ContentProcessor(DisplayName = "Custom Effect - Engine Nine")]
     public class CustomEffectProcessor : ContentProcessor<EffectContent, CustomEffectContent>
     {
+        public const string PrecedualTextureDirectory = "Textures\\Precedual";
+
         public virtual EffectProcessorDebugMode DebugMode { get; set; }
         public virtual string Defines { get; set; }
-
         public virtual string ResourceDirectory { get; set; }
-
-        [DefaultValue("Textures")]
-        public virtual string PrecedualTextureDirectory { get; set; }
-
-        public CustomEffectProcessor()
-        {
-            PrecedualTextureDirectory = "Textures";
-        }
 
         public override CustomEffectContent Process(EffectContent input, ContentProcessorContext context)
         {
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
-                throw new NotSupportedException();
+            {
+                context.Logger.LogWarning(null, null, Strings.CustomEffectNotSupported);
+                return new CustomEffectContent
+                {
+                     EffectCode = new byte[0],
+                     Parameters = new Dictionary<string,object>(),
+                };
+            }
 
             var effectProcessor = new EffectProcessor
             {
@@ -129,6 +129,7 @@ namespace Nine.Content.Pipeline.Processors
                             }
                         }
                     }
+#if MDX
                     else if (a.Key == EffectAnnotations.Function)
                     {
                         if (a.Value.ParameterType != EffectParameterType.String)
@@ -165,6 +166,7 @@ namespace Nine.Content.Pipeline.Processors
                             throw new InvalidContentException("Error generating precedual texture from shader " + functionName + "\n" + e);
                         }
                     }
+#endif
                 }
             }
             return opaqueData;

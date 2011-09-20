@@ -9,7 +9,7 @@
 
 
 #if !TEXT_TEMPLATE
-namespace Nine.Graphics
+namespace Nine.Graphics.Effects
 {
     /// <summary>
     /// Effect instance for <c>AlphaTestEffect</c>.
@@ -19,7 +19,7 @@ namespace Nine.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public partial class AlphaTestMaterial : Nine.Graphics.Material
+    public partial class AlphaTestMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
         /// Gets the underlying AlphaTestMaterial.
@@ -59,7 +59,7 @@ namespace Nine.Graphics
         public AlphaTestMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.AlphaTestEffect>.GetInstance(graphics))
         {
-            
+            OnCreate();
         }
 
         /// <summary>
@@ -77,6 +77,7 @@ namespace Nine.Graphics
         }
         
         partial void OnApply();
+        partial void OnCreate();
         partial void OnClone(AlphaTestMaterial cloned);
 
         /// <summary>
@@ -102,10 +103,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Clones the parameter values to a new instance of AlphaTestMaterial.
         /// </summary>
-        public override Material Clone()
+        public override Nine.Graphics.Effects.Material Clone()
         {
             var cloned = new AlphaTestMaterial();
             cloned.effect = this.effect;
+            cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
             cloned.Alpha = this.Alpha;
             cloned.AlphaFunction = this.AlphaFunction;
             cloned.DiffuseColor = this.DiffuseColor;
@@ -124,7 +126,7 @@ namespace Nine.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public partial class BasicMaterial : Nine.Graphics.Material
+    public partial class BasicMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
         /// Gets the underlying BasicMaterial.
@@ -180,7 +182,7 @@ namespace Nine.Graphics
         public BasicMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.BasicEffect>.GetInstance(graphics))
         {
-            
+            OnCreate();
         }
 
         /// <summary>
@@ -202,6 +204,7 @@ namespace Nine.Graphics
         }
         
         partial void OnApply();
+        partial void OnCreate();
         partial void OnClone(BasicMaterial cloned);
 
         /// <summary>
@@ -235,10 +238,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Clones the parameter values to a new instance of BasicMaterial.
         /// </summary>
-        public override Material Clone()
+        public override Nine.Graphics.Effects.Material Clone()
         {
             var cloned = new BasicMaterial();
             cloned.effect = this.effect;
+            cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
             cloned.Alpha = this.Alpha;
             cloned.DiffuseColor = this.DiffuseColor;
             cloned.EmissiveColor = this.EmissiveColor;
@@ -261,7 +265,7 @@ namespace Nine.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public partial class DualTextureMaterial : Nine.Graphics.Material
+    public partial class DualTextureMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
         /// Gets the underlying DualTextureMaterial.
@@ -297,7 +301,7 @@ namespace Nine.Graphics
         public DualTextureMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.DualTextureEffect>.GetInstance(graphics))
         {
-            
+            OnCreate();
         }
 
         /// <summary>
@@ -314,6 +318,7 @@ namespace Nine.Graphics
         }
         
         partial void OnApply();
+        partial void OnCreate();
         partial void OnClone(DualTextureMaterial cloned);
 
         /// <summary>
@@ -337,10 +342,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Clones the parameter values to a new instance of DualTextureMaterial.
         /// </summary>
-        public override Material Clone()
+        public override Nine.Graphics.Effects.Material Clone()
         {
             var cloned = new DualTextureMaterial();
             cloned.effect = this.effect;
+            cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
             cloned.Alpha = this.Alpha;
             cloned.DiffuseColor = this.DiffuseColor;
             cloned.Texture = this.Texture;
@@ -358,7 +364,7 @@ namespace Nine.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public partial class EnvironmentMapMaterial : Nine.Graphics.Material
+    public partial class EnvironmentMapMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
         /// Gets the underlying EnvironmentMapMaterial.
@@ -406,7 +412,7 @@ namespace Nine.Graphics
         public EnvironmentMapMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect>.GetInstance(graphics))
         {
-            
+            OnCreate();
         }
 
         /// <summary>
@@ -426,6 +432,7 @@ namespace Nine.Graphics
         }
         
         partial void OnApply();
+        partial void OnCreate();
         partial void OnClone(EnvironmentMapMaterial cloned);
 
         /// <summary>
@@ -455,10 +462,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Clones the parameter values to a new instance of EnvironmentMapMaterial.
         /// </summary>
-        public override Material Clone()
+        public override Nine.Graphics.Effects.Material Clone()
         {
             var cloned = new EnvironmentMapMaterial();
             cloned.effect = this.effect;
+            cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
             cloned.Alpha = this.Alpha;
             cloned.DiffuseColor = this.DiffuseColor;
             cloned.EmissiveColor = this.EmissiveColor;
@@ -479,7 +487,7 @@ namespace Nine.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public partial class SkinnedMaterial : Nine.Graphics.Material
+    public partial class SkinnedMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
         /// Gets the underlying SkinnedMaterial.
@@ -527,7 +535,7 @@ namespace Nine.Graphics
         public SkinnedMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.SkinnedEffect>.GetInstance(graphics))
         {
-            
+            OnCreate();
         }
 
         /// <summary>
@@ -547,6 +555,7 @@ namespace Nine.Graphics
         }
         
         partial void OnApply();
+        partial void OnCreate();
         partial void OnClone(SkinnedMaterial cloned);
 
         /// <summary>
@@ -576,10 +585,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Clones the parameter values to a new instance of SkinnedMaterial.
         /// </summary>
-        public override Material Clone()
+        public override Nine.Graphics.Effects.Material Clone()
         {
             var cloned = new SkinnedMaterial();
             cloned.effect = this.effect;
+            cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
             cloned.Alpha = this.Alpha;
             cloned.DiffuseColor = this.DiffuseColor;
             cloned.EmissiveColor = this.EmissiveColor;

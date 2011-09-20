@@ -152,7 +152,7 @@ namespace Nine.Graphics.Effects.Deferred
         }
 
         /// <summary>
-        /// Ends the rendering of the scene and generates DepthNormalTexture.
+        /// Ends the rendering of the scene and generates DepthNormalMap.
         /// </summary>
         public void End()
         {

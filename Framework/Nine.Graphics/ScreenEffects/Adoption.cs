@@ -13,7 +13,7 @@ namespace Nine.Graphics.ScreenEffects
     {
         public bool HighQuality
         {
-            get { return shaderIndex == 0; }
+            get { return shaderIndex == 1; }
             set { shaderIndex = value ? 1 : 0; }
         }
 

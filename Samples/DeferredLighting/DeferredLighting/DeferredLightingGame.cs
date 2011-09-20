@@ -90,7 +90,7 @@ namespace DeferredLighting
             lights.Add(new DeferredSpotLight(GraphicsDevice) { DiffuseColor = new Vector3(1, 0, 0), Position = new Vector3(0, 0, 1), Direction = new Vector3(-1, 0, 0), Range = 16, Falloff = 2, SpecularColor = Vector3.One });
         }
 
-        private void InitializeSurfaceVertices(int x, int y, ref VertexPositionColorNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
+        private void InitializeSurfaceVertices(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
         {
             output.Position = input.Position;
             output.Normal = input.Normal;

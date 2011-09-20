@@ -13,6 +13,7 @@ using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -68,6 +69,7 @@ namespace Nine.Content.Pipeline.Processors
             List<string> uniqueNames = new List<string>();
             input.UniqueNames = processor.Symbols.StitchedFragments.Select(symbol => symbol.UniqueName + "_").ToArray();
             input.EffectCode = compiledEffect.GetEffectCode();
+            input.Token = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(processor.EffectCode.ToString()));
 
             Disassemble(resultEffectFile, resultAsmFile, context);
 

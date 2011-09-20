@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -355,14 +356,14 @@ namespace Nine.Graphics.ObjectModel
 
             // Fill vertices
             int i = 0;
-            for (int y = Y * SegmentCount; y <= (Y + 1) * SegmentCount; y++)
+            VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
+            for (int y = 0; y <= SegmentCount; y++)
             {
-                for (int x = X * SegmentCount; x <= (X + 1) * SegmentCount; x++)
+                for (int x = 0; x <= SegmentCount; x++)
                 {
-                    VertexPositionColorNormalTexture vertex = new VertexPositionColorNormalTexture();
-                    Surface.PopulateVertex(x, y, ref vertex, ref vertex);
+                    Surface.PopulateVertex(X, Y, x, y, ref vertex, ref vertex);
                     if (FillVertex != null)
-                        FillVertex(x, y, ref vertex, ref vertices[i]);
+                        FillVertex(X, Y, x, y, ref vertex, ref vertices[i]);
                     i++;
                 }
             }

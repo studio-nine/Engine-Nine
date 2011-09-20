@@ -32,6 +32,17 @@ namespace Nine.Content.Pipeline
 
         public ContentReference() { }
         public ContentReference(string filename) { Filename = filename; }
+        public ContentReference(ExternalReference<T> externalReference) { Filename = externalReference.Filename; }
+        
+        public static implicit operator ContentReference<T>(string value)
+        {
+            return new ContentReference<T>(value);
+        }
+
+        public static implicit operator ContentReference<T>(ExternalReference<T> value)
+        {
+            return new ContentReference<T>(value);
+        }
     }
 
     [ContentTypeWriter]

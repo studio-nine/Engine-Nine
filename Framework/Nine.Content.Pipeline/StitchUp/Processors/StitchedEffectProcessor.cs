@@ -16,6 +16,7 @@ namespace StitchUp.Content.Pipeline.Processors
 	[ContentProcessor(DisplayName = "Stitched Effect - StitchUp")]
 	internal class StitchedEffectProcessor : ContentProcessor<StitchedEffectContent, CompiledEffectContent>
     {
+        public string EffectCode;
         public StitchedEffectSymbol Symbols;
 
 		public override CompiledEffectContent Process(StitchedEffectContent input, ContentProcessorContext context)
@@ -32,7 +33,7 @@ namespace StitchUp.Content.Pipeline.Processors
                     continue;
 
                 CompiledEffectContent compiledEffect;
-                if (AttemptEffectCompilation(context, input, stitchedEffect, shaderProfile, out compiledEffect))
+                if (AttemptEffectCompilation(context, input, stitchedEffect, shaderProfile, out compiledEffect, out EffectCode))
                     return compiledEffect;
             }
 
@@ -44,16 +45,16 @@ namespace StitchUp.Content.Pipeline.Processors
         private static bool AttemptEffectCompilation(
             ContentProcessorContext context, StitchedEffectContent input,
             StitchedEffectSymbol stitchedEffect, ShaderProfile shaderProfile,
-            out CompiledEffectContent compiledEffect)
+            out CompiledEffectContent compiledEffect, out string effectCode)
         {
             // Generate effect code.
         	StringWriter writer = new StringWriter();
 			EffectCodeGenerator codeGenerator = new EffectCodeGenerator(stitchedEffect, shaderProfile, writer);
             codeGenerator.GenerateCode();
-        	string effectCode = writer.ToString();
+        	effectCode = writer.ToString();
 
             // Save effect code so that if there are errors, we'll be able to view the generated .fx file.
-            string tempEffectFile = GetTempEffectFileName(input);
+            string tempEffectFile = GetTempEffectFileName(context, input);
             File.WriteAllText(tempEffectFile, effectCode, Encoding.GetEncoding(1252));
 
             // Process effect code.
@@ -102,9 +103,9 @@ namespace StitchUp.Content.Pipeline.Processors
 		// Use a semi-unique filename so that multiple stitched effects can be worked on and the resulting
 		// effect files opened simultaneously. This does mean you'll end up with several of the resulting
 		// effect files in your temp folder, but they're quite small files.
-		private static string GetTempEffectFileName(StitchedEffectContent input)
+		private static string GetTempEffectFileName(ContentProcessorContext context, StitchedEffectContent input)
 		{
-			return Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetFileName(input.Identity.SourceFilename), ".fx"));
+			return Path.Combine(context.IntermediateDirectory, Path.ChangeExtension(Path.GetFileName(input.Identity.SourceFilename), ".fx"));
 		}
 
 		private static ShaderProfile GetMinimumTargetShaderProfile(StitchedEffectSymbol stitchedEffect)

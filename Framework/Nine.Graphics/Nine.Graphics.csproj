@@ -113,9 +113,15 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
+    <Compile Include="Effects\DepthEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DepthEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Effects\EffectAnnotations.cs" />
     <Compile Include="Effects\CustomMaterial.cs" />
     <Compile Include="Effects\CustomEffect.cs" />
+    <Compile Include="Effects\EffectParts\DetailTextureEffectPart.cs" />
     <Compile Include="Effects\EffectParts\DeferredLightEffectPart.cs" />
     <Compile Include="Effects\EffectSemantics.cs" />
     <Compile Include="Effects\LinkedMaterial.cs" />
@@ -127,6 +133,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="GraphicsExtensions.cs" />
+    <Compile Include="ObjectModel\Fog.cs" />
     <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
     <Compile Include="ObjectModel\SceneQuery.cs" />
     <Compile Include="ObjectModel\LightEngine.cs" />
@@ -182,11 +190,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Effects\DepthEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DepthEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Effects\DirectionalLightEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,7 +212,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SpotLightEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Materials.cs" />
+    <Compile Include="Effects\Materials.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\AmbientLight.HiDef.cs">
       <DependentUpon>AmbientLight.cs</DependentUpon>
@@ -230,7 +233,6 @@
     <Compile Include="ObjectModel\DisplayObject.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />
     <Compile Include="ObjectModel\GraphicsContext.cs" />
-    <Compile Include="ObjectModel\GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\GraphicsSettings.cs" />
     <Compile Include="ObjectModel\GraphicsStatistics.cs" />
     <Compile Include="ObjectModel\Interface.cs" />
@@ -239,7 +241,6 @@
     <Compile Include="ObjectModel\DrawableParticleEffect.cs" />
     <Compile Include="ObjectModel\Scene.cs" />
     <Compile Include="ObjectModel\SkyBox.cs" />
-    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Effects\DirectionalLightEffect.cs">
       <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
     </Compile>
@@ -475,7 +476,6 @@
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
     <Compile Include="ParticleEffects\ParticleVertex.cs" />
     <Compile Include="VertexPositionNormalDualTexture.cs" />
-    <Compile Include="VertexPositionNormalTangentTexture.cs" />
     <Compile Include="Effects\DepthEffect.cs">
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
@@ -484,7 +484,6 @@
     <Compile Include="ObjectModel\DrawableSurface.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VertexPositionColorNormalTangentTexture.cs" />
     <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
   </ItemGroup>
   <ItemGroup>

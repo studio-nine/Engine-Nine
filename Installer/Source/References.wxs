@@ -39,6 +39,7 @@
           </Component>
         </Directory>
 
+	  <!--
         <Directory Id="Silverlight" Name="Silverlight">
           <Component Id="SilverlightComponent" Guid="31123E61-55F8-4B11-B027-088D777E1DD8" DiskId="1">
             <File Id="Silverlight.Nine.dll" Name="Nine.dll" KeyPath="yes" Source="$(sys.SOURCEFILEDIR)../../References/Silverlight/Nine.dll" />
@@ -48,6 +49,7 @@
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SDKs\Silverlight\v5.0\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\Silverlight" Type="string"/>
           </Component>
         </Directory>
+	  -->
         
       </Directory>
     </DirectoryRef>
@@ -57,7 +59,9 @@
       <ComponentRef Id="x86Component" />
       <ComponentRef Id="WindowsPhoneComponent" />
       <ComponentRef Id="XboxComponent" />
+	  <!--
       <ComponentRef Id="SilverlightComponent" />
+	  -->
     </ComponentGroup>
     
   </Fragment>

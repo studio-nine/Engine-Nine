@@ -79,7 +79,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             particleEffect.TriggerOnStartup = mergedParticleEffect.TriggerOnStartup;
             particleEffect.ChildEffects.AddRange(mergedParticleEffect.ParticleEffects);
 
-            writer.InternalWrite(output, particleEffect);
+            output.WriteRawObject<ParticleEffectContent>(particleEffect, writer);
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)

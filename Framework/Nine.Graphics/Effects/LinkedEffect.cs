@@ -127,7 +127,7 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Represents a Effect that is linked from LinkedEffectParts.
     /// </summary>
-    public sealed class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial,
+    public sealed class LinkedEffect : Effect, IEffectMatrices, IEffectSkinned, IEffectTexture, IEffectMaterial, IEffectFog,
                                                IEffectLights<IAmbientLight>, IEffectLights<IPointLight>,
                                                IEffectLights<IDirectionalLight>, IEffectLights<ISpotLight>
     {
@@ -284,7 +284,7 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        bool IEffectSkinned.SkinningEnabled
+        public bool SkinningEnabled
         {
             get
             {
@@ -298,14 +298,14 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        void IEffectSkinned.SetBoneTransforms(Matrix[] boneTransforms)
+        public void SetBoneTransforms(Matrix[] boneTransforms)
         {
             foreach (IEffectSkinned part in FindAll<IEffectSkinned>())
                 part.SetBoneTransforms(boneTransforms);
         }
 
         Texture2D texture;
-        Texture2D IEffectTexture.Texture
+        public Texture2D Texture
         {
             get { return texture; }
             set
@@ -316,14 +316,14 @@ namespace Nine.Graphics.Effects
             }
         }
 
-        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
+        public void SetTexture(TextureUsage usage, Texture texture)
         {
             foreach (IEffectTexture part in FindAll<IEffectTexture>())
                 part.SetTexture(usage, texture);
         }
 
         Vector3 diffuseColor;
-        Vector3 IEffectMaterial.DiffuseColor
+        public Vector3 DiffuseColor
         {
             get { return diffuseColor; }
             set
@@ -335,7 +335,7 @@ namespace Nine.Graphics.Effects
         }
 
         Vector3 emissiveColor;
-        Vector3 IEffectMaterial.EmissiveColor
+        public Vector3 EmissiveColor
         {
             get { return emissiveColor; }
             set
@@ -347,7 +347,7 @@ namespace Nine.Graphics.Effects
         }
 
         Vector3 specularColor;
-        Vector3 IEffectMaterial.SpecularColor
+        public Vector3 SpecularColor
         {
             get { return specularColor; }
             set
@@ -359,7 +359,7 @@ namespace Nine.Graphics.Effects
         }
 
         float specularPower = 16;
-        float IEffectMaterial.SpecularPower
+        public float SpecularPower
         {
             get { return specularPower; }
             set
@@ -371,7 +371,7 @@ namespace Nine.Graphics.Effects
         }
 
         float alpha = 1;
-        float IEffectMaterial.Alpha
+        public float Alpha
         {
             get { return alpha; }
             set
@@ -380,6 +380,30 @@ namespace Nine.Graphics.Effects
                 foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
                     part.Alpha = value;
             }
+        }
+
+        public Vector3 FogColor
+        {
+            get { return Vector3.One; }
+            set { foreach (IEffectFog part in FindAll<IEffectFog>()) part.FogColor = value; }
+        }
+
+        public bool FogEnabled
+        {
+            get { return false; }
+            set { foreach (IEffectFog part in FindAll<IEffectFog>()) part.FogEnabled = value; }
+        }
+
+        public float FogEnd
+        {
+            get { return 0; }
+            set { foreach (IEffectFog part in FindAll<IEffectFog>()) part.FogEnd = value; }
+        }
+
+        public float FogStart
+        {
+            get { return 0; }
+            set { foreach (IEffectFog part in FindAll<IEffectFog>()) part.FogStart = value; }
         }
 
         ReadOnlyCollection<IPointLight> IEffectLights<IPointLight>.Lights
@@ -400,7 +424,7 @@ namespace Nine.Graphics.Effects
         ReadOnlyCollection<IAmbientLight> IEffectLights<IAmbientLight>.Lights
         {
             get { return ambientLights ?? (ambientLights = new ReadOnlyCollection<IAmbientLight>(EffectParts.OfType<IAmbientLight>().ToList())); }
-        }
+        }        
         #endregion
     }
     #endregion

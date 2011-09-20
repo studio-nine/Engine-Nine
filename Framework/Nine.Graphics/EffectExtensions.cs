@@ -96,6 +96,24 @@ namespace Nine.Graphics
         void SetTexture(TextureUsage usage, Texture texture);
     }
 
+    /// <summary>
+    /// Defines a wrapper around effect. Each effect instance stores
+    /// a local copy of effect parameter values, this values are pushed to
+    /// the underlying effect when Apply is called.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public interface IEffectInstance
+    {
+        /// <summary>
+        /// Gets the underlying effect.
+        /// </summary>
+        Effect Effect { get; }
+
+        /// <summary>
+        /// Applys the parameter values.
+        /// </summary>
+        void Apply();
+    }
     
     /// <summary>
     /// Contains extension methods for Effects.
@@ -302,6 +320,50 @@ namespace Nine.Graphics
             }
 
             return texture;
+        }
+        #endregion
+
+        #region SetValue
+        public static void SetValue(this EffectParameter parameter, object value)
+        {
+            if (value is Texture)
+                parameter.SetValue((Texture)value);
+            else if (value is string)
+                parameter.SetValue((string)value);
+            else if (value is float)
+                parameter.SetValue((float)value);
+            else if (value is float[])
+                parameter.SetValue((float[])value);
+            else if (value is int)
+                parameter.SetValue((int)value);
+            else if (value is int[])
+                parameter.SetValue((int[])value);
+            else if (value is bool)
+                parameter.SetValue((bool)value);
+            else if (value is bool[])
+                parameter.SetValue((bool[])value);
+            else if (value is Quaternion)
+                parameter.SetValue((Quaternion)value);
+            else if (value is Quaternion[])
+                parameter.SetValue((Quaternion[])value);
+            else if (value is Matrix)
+                parameter.SetValue((Matrix)value);
+            else if (value is Matrix[])
+                parameter.SetValue((Matrix[])value);
+            else if (value is Vector2)
+                parameter.SetValue((Vector2)value);
+            else if (value is Vector2[])
+                parameter.SetValue((Vector2[])value);
+            else if (value is Vector3)
+                parameter.SetValue((Vector3)value);
+            else if (value is Vector3[])
+                parameter.SetValue((Vector3[])value);
+            else if (value is Vector4)
+                parameter.SetValue((Vector4)value);
+            else if (value is Vector4[])
+                parameter.SetValue((Vector4[])value);
+            else
+                throw new InvalidOperationException("Unexpected effect parameter type: " + value.GetType());
         }
         #endregion
     }

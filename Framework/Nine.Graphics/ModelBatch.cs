@@ -265,7 +265,7 @@ namespace Nine.Graphics
             if (boundingSphere == null && (sort == ModelSortMode.BackToFront || sort == ModelSortMode.FrontToBack))
                 throw new ArgumentNullException("boundingSphere must not be null when you specify ModelSortMode.BackToFront or ModelSortMode.FrontToBack.");
 
-            if (effect == null)
+            if (effect == null && effectInstance != null)
                 effect = effectInstance.Effect;
 
             effect = ApplyDefaultEffectWhenNull(boneTransforms, effect);

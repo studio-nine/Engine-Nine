@@ -54,42 +54,6 @@ namespace Nine.Graphics.Effects
     }
 
     /// <summary>
-    /// Defines an interface for effects that supports terrain texture splat.
-    /// </summary>
-    public interface IEffectSplatterTexture
-    {
-        /// <summary>
-        /// Gets or sets the texture that uses the X (R) channel of the splatter texture.
-        /// </summary>
-        Texture2D TextureX { get; }
-
-        /// <summary>
-        /// Gets or sets the texture that uses the Y (G) channel of the splatter texture.
-        /// </summary>
-        Texture2D TextureY { get; }
-
-        /// <summary>
-        /// Gets or sets the texture that uses the Z (B) channel of the splatter texture.
-        /// </summary>
-        Texture2D TextureZ { get; }
-
-        /// <summary>
-        /// Gets or sets the texture that uses the W (A) channel of the splatter texture.
-        /// </summary>
-        Texture2D TextureW { get; }
-
-        /// <summary>
-        /// Gets or sets the splatter texture that determines the intensity of each channel.
-        /// </summary>
-        Texture2D SplatterTexture { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scale of the splatter texture.
-        /// </summary>
-        Vector2 SplatterTextureScale { get; set; }
-    }
-
-    /// <summary>
     /// Defines an interface for effects that supports arbitrary texture transform.
     /// </summary>
     public interface IEffectTextureTransform

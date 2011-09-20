@@ -165,4 +165,10 @@
   <data name="ParticleEffectAlreadyTriggered" xml:space="preserve">
     <value>The input particle effect has already been triggerd.</value>
   </data>
+  <data name="CustomEffectNotSupported" xml:space="preserve">
+    <value>Custom effect is not supported on Windows Phone.</value>
+  </data>
+  <data name="LinkedEffectNotSupported" xml:space="preserve">
+    <value>Linked effect is not supported on Windows Phone.</value>
+  </data>
 </root>

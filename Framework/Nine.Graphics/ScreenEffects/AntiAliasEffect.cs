@@ -28,7 +28,7 @@ namespace Nine.Graphics.ScreenEffects
         public void SetTexture(TextureUsage usage, Texture texture)
         {
             if (usage == TextureUsage.NormalMap)
-                NormalTexture = texture as Texture2D;
+                NormalMap = texture as Texture2D;
         }
     }	
 

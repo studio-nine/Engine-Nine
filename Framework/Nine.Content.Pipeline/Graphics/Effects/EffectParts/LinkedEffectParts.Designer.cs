@@ -95,6 +95,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
+        internal static byte[] DetailTexture {
+            get {
+                object obj = ResourceManager.GetObject("DetailTexture", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] DirectionalLight {
             get {
                 object obj = ResourceManager.GetObject("DirectionalLight", resourceCulture);
@@ -140,6 +147,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
         internal static byte[] NormalMap {
             get {
                 object obj = ResourceManager.GetObject("NormalMap", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] NormalMappedSplatterTexture {
+            get {
+                object obj = ResourceManager.GetObject("NormalMappedSplatterTexture", resourceCulture);
                 return ((byte[])(obj));
             }
         }

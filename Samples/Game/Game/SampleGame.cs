@@ -22,6 +22,7 @@ using Nine.Graphics;
 using Nine.Graphics.Primitives;
 using Nine.Graphics.ObjectModel;
 using Nine.Components;
+using Nine.Graphics.Effects;
 using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
 #endregion
 
@@ -67,7 +68,7 @@ namespace Game
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-            IsFixedTimeStep = false;
+            IsFixedTimeStep = false;            
             Window.AllowUserResizing = true;
         }
 
@@ -82,8 +83,13 @@ namespace Game
             
 
             scene = new Scene(GraphicsDevice);
+            scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(-10, -30, 10));
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+#if WINDOWS_PHONE
+            scene.Add(Content.Load<DisplayObject>("Scene.WindowsPhone"));
+#else
             scene.Add(Content.Load<DisplayObject>("Scene"));
+#endif
 
             /*
             scene.Add(directionalLight = new DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(-1, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 1 });
@@ -164,13 +170,12 @@ namespace Game
                 //scene.Settings.LightingEnabled = false;
                 scene.Settings.MultiPassLightingEnabled = true;
                 scene.Settings.PreferHighDynamicRangeLighting = false;
-                scene.Settings.PreferDeferredLighting = false;
                 //scene.Settings.PreferHighDynamicRangeLighting = keyboardState.IsKeyDown(Keys.H);
                 //scene.Settings.PreferDeferredLighting = keyboardState.IsKeyDown(Keys.D);
-                scene.Settings.Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.W);
+                scene.Settings.Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.V);
                 scene.Settings.Debug.ShowBoundingBox = keyboardState.IsKeyDown(Keys.B);
                 scene.Settings.Debug.ShowLightFrustum = keyboardState.IsKeyDown(Keys.L);
-                scene.Settings.Debug.ShowSceneManager = keyboardState.IsKeyDown(Keys.S);
+                scene.Settings.Debug.ShowSceneManager = keyboardState.IsKeyDown(Keys.C);
                 scene.Settings.Debug.ShowShadowMap = keyboardState.IsKeyDown(Keys.M);
                 scene.Settings.Debug.ShowStatistics = keyboardState.IsKeyDown(Keys.F);
                 scene.Settings.Debug.ShowDepthBuffer = keyboardState.IsKeyDown(Keys.Space);

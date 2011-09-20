@@ -106,6 +106,15 @@ namespace Nine {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Custom effect is not supported on Windows Phone..
+        /// </summary>
+        internal static string CustomEffectNotSupported {
+            get {
+                return ResourceManager.GetString("CustomEffectNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The input is outside the boundary of this object manager..
         /// </summary>
         internal static string ExcceedsObjectManagerBounds {
@@ -147,6 +156,15 @@ namespace Nine {
         internal static string InvalidPrimitive {
             get {
                 return ResourceManager.GetString("InvalidPrimitive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Linked effect is not supported on Windows Phone..
+        /// </summary>
+        internal static string LinkedEffectNotSupported {
+            get {
+                return ResourceManager.GetString("LinkedEffectNotSupported", resourceCulture);
             }
         }
         

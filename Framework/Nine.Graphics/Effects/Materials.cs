@@ -20,29 +20,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine.Graphics
+namespace Nine.Graphics.Effects
 {
-    #region IEffectInstance
-    /// <summary>
-    /// Defines a wrapper around effect. Each effect instance stores
-    /// a local copy of effect parameter values, this values are pushed to
-    /// the underlying effect when Apply is called.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IEffectInstance
-    {
-        /// <summary>
-        /// Gets the underlying effect.
-        /// </summary>
-        Effect Effect { get; }
-
-        /// <summary>
-        /// Applys the parameter values.
-        /// </summary>
-        void Apply();
-    }
-    #endregion
-
     #region Material
     /// <summary>
     /// Represents a local copy of settings of the specified effect.
@@ -60,6 +39,21 @@ namespace Nine.Graphics
         /// </summary>
         protected virtual bool IsTransparentValue { get { return false; } }
 
+        /// <summary>
+        /// Gets a value indicating whether this material is deferred.
+        /// </summary>
+        public virtual bool IsDeferred { get { return false; } }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether texture alpha test is enabled when
+        /// generating depth info. This value is usually used to generate shadow maps.
+        /// </summary>
+        /// TODO: Pick a better name?
+        public bool DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// Queries the material for the specified interface T.
+        /// </summary>
         public virtual T As<T>() where T : class
         {
             return this as T;
@@ -94,7 +88,7 @@ namespace Nine.Graphics
 
     #region Stock Materials
 #if !TEXT_TEMPLATE
-    public partial class BasicMaterial : IEffectLights<IDirectionalLight>, IEffectLights<IAmbientLight>, IAmbientLight, IEffectMaterial, IEffectTexture
+    public partial class BasicMaterial : IEffectLights<IDirectionalLight>, IEffectLights<IAmbientLight>, IAmbientLight, IEffectMaterial, IEffectTexture, IEffectFog
     {
         /// <summary>
         /// Gets or sets whether this material is transparent.
@@ -165,9 +159,33 @@ namespace Nine.Graphics
             if (usage == TextureUsage.Diffuse)
                 Texture = texture as Texture2D;
         }
+
+        Vector3 IEffectFog.FogColor
+        {
+            get { return effect.FogColor; }
+            set { effect.FogColor = value; }
+        }
+
+        bool IEffectFog.FogEnabled
+        {
+            get { return effect.FogEnabled; }
+            set { effect.FogEnabled = value; }
+        }
+
+        float IEffectFog.FogEnd
+        {
+            get { return effect.FogEnd; }
+            set { effect.FogEnd = value; }
+        }
+
+        float IEffectFog.FogStart
+        {
+            get { return effect.FogStart; }
+            set { effect.FogStart = value; }
+        }
     }
 
-    public partial class EnvironmentMapMaterial : IEffectLights<IDirectionalLight>, IEffectLights<IAmbientLight>, IAmbientLight, IEffectMaterial, IEffectTexture
+    public partial class EnvironmentMapMaterial : IEffectLights<IDirectionalLight>, IEffectLights<IAmbientLight>, IAmbientLight, IEffectMaterial, IEffectTexture, IEffectFog
     {
         /// <summary>
         /// Gets whether this material is transparent.
@@ -234,9 +252,33 @@ namespace Nine.Graphics
 
         Vector3 IEffectMaterial.SpecularColor { get { return Vector3.Zero; } set { } }
         float IEffectMaterial.SpecularPower { get { return 0; } set { } }
+        
+        Vector3 IEffectFog.FogColor
+        {
+            get { return effect.FogColor; }
+            set { effect.FogColor = value; }
+        }
+
+        bool IEffectFog.FogEnabled
+        {
+            get { return effect.FogEnabled; }
+            set { effect.FogEnabled = value; }
+        }
+
+        float IEffectFog.FogEnd
+        {
+            get { return effect.FogEnd; }
+            set { effect.FogEnd = value; }
+        }
+
+        float IEffectFog.FogStart
+        {
+            get { return effect.FogStart; }
+            set { effect.FogStart = value; }
+        }
     }
 
-    public partial class SkinnedMaterial : IEffectLights<IDirectionalLight>, IEffectLights<IAmbientLight>, IAmbientLight, IEffectMaterial, IEffectTexture, IEffectSkinned
+    public partial class SkinnedMaterial : IEffectLights<IDirectionalLight>, IEffectLights<IAmbientLight>, IAmbientLight, IEffectMaterial, IEffectTexture, IEffectSkinned, IEffectFog
     {
         /// <summary>
         /// Gets whether this material is transparent.
@@ -308,9 +350,33 @@ namespace Nine.Graphics
         {
             effect.SetBoneTransforms(boneTransforms);
         }
+
+        Vector3 IEffectFog.FogColor
+        {
+            get { return effect.FogColor; }
+            set { effect.FogColor = value; }
+        }
+
+        bool IEffectFog.FogEnabled
+        {
+            get { return effect.FogEnabled; }
+            set { effect.FogEnabled = value; }
+        }
+
+        float IEffectFog.FogEnd
+        {
+            get { return effect.FogEnd; }
+            set { effect.FogEnd = value; }
+        }
+
+        float IEffectFog.FogStart
+        {
+            get { return effect.FogStart; }
+            set { effect.FogStart = value; }
+        }
     }
 
-    public partial class DualTextureMaterial : IEffectTexture
+    public partial class DualTextureMaterial : IEffectTexture, IEffectFog
     {
         /// <summary>
         /// Gets whether this material is transparent.
@@ -338,9 +404,33 @@ namespace Nine.Graphics
             else if (usage == TextureUsage.Dual)
                 Texture2 = texture as Texture2D;
         }
+
+        Vector3 IEffectFog.FogColor
+        {
+            get { return effect.FogColor; }
+            set { effect.FogColor = value; }
+        }
+
+        bool IEffectFog.FogEnabled
+        {
+            get { return effect.FogEnabled; }
+            set { effect.FogEnabled = value; }
+        }
+
+        float IEffectFog.FogEnd
+        {
+            get { return effect.FogEnd; }
+            set { effect.FogEnd = value; }
+        }
+
+        float IEffectFog.FogStart
+        {
+            get { return effect.FogStart; }
+            set { effect.FogStart = value; }
+        }
     }
 
-    public partial class AlphaTestMaterial : IEffectTexture
+    public partial class AlphaTestMaterial : IEffectTexture, IEffectFog
     {
         /// <summary>
         /// When overriden, returns whether the rendered object is transparent under
@@ -352,11 +442,36 @@ namespace Nine.Graphics
         }
 
         partial void OnClone(AlphaTestMaterial cloned) { }
+        partial void OnCreate() { DepthAlphaEnabled = true; }
 
         void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
         {
             if (usage == TextureUsage.Diffuse)
                 Texture = texture as Texture2D;
+        }
+
+        Vector3 IEffectFog.FogColor
+        {
+            get { return effect.FogColor; }
+            set { effect.FogColor = value; }
+        }
+
+        bool IEffectFog.FogEnabled
+        {
+            get { return effect.FogEnabled; }
+            set { effect.FogEnabled = value; }
+        }
+
+        float IEffectFog.FogEnd
+        {
+            get { return effect.FogEnd; }
+            set { effect.FogEnd = value; }
+        }
+
+        float IEffectFog.FogStart
+        {
+            get { return effect.FogStart; }
+            set { effect.FogStart = value; }
         }
     }
 

@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -69,11 +70,6 @@ namespace Nine.Graphics.ObjectModel
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets the current vertex type used by this surface.
-        /// </summary>
-        public Type VertexType { get; private set; }
-
-        /// <summary>
         /// Gets the size of the surface geometry in 3 axis.
         /// </summary>
         public Vector3 Size { get { return heightmap.Size; } }
@@ -110,6 +106,54 @@ namespace Nine.Graphics.ObjectModel
             }
         }
         Heightmap heightmap;
+        
+        /// <summary>
+        /// Gets the current vertex type used by this surface.
+        /// </summary>
+        [ContentSerializerIgnore]
+        public Type VertexType
+        {
+            get { return vertexType; }
+            set
+            {
+                if (vertexType != value)
+                {
+                    if (value == null || value == typeof(VertexPositionNormalTexture))
+                        ConvertVertexType<VertexPositionNormalTexture>(PopulateVertex);
+                    else if (value == typeof(VertexPositionColor))
+                        ConvertVertexType<VertexPositionColor>(PopulateVertex);
+                    else if (value == typeof(VertexPositionTexture))
+                        ConvertVertexType<VertexPositionTexture>(PopulateVertex);
+                    else if (value == typeof(VertexPositionNormal))
+                        ConvertVertexType<VertexPositionNormal>(PopulateVertex);
+                    else if (value == typeof(VertexPositionNormalDualTexture))
+                        ConvertVertexType<VertexPositionNormalDualTexture>(PopulateVertex);
+                    else if (value == typeof(VertexPositionNormalTangentBinormalTexture))
+                        ConvertVertexType<VertexPositionNormalTangentBinormalTexture>(PopulateVertex);
+                    else if (value == typeof(VertexPositionColorNormalTexture))
+                        ConvertVertexType<VertexPositionColorNormalTexture>(PopulateVertex);
+                    else
+                        throw new NotSupportedException("Vertex type not supported. Try using DrawableSurface.ConvertVertexType<T> instead.");
+                    vertexType = value;
+                }
+            }
+        }
+        private Type vertexType = typeof(VertexPositionNormalTexture);
+
+        [ContentSerializer(ElementName = "VertexType")]
+        internal string VertexTypeSerializer
+        {
+            get { return vertexType.AssemblyQualifiedName; }
+            set 
+            {
+                var type = Type.GetType(value) ?? 
+                           Type.GetType(string.Format("Nine.Graphics.{0}, Nine.Graphics", value)) ?? 
+                           Type.GetType(string.Format("Microsoft.Xna.Framework.Graphics.{0}, Microsoft.Xna.Framework.Graphics", value));
+                if (type == null)
+                    throw new InvalidOperationException("Unknown vertex type " + value);
+                VertexType = type;
+            }
+        }
 
         /// <summary>
         /// Gets the max level of detail of this surface.
@@ -312,6 +356,23 @@ namespace Nine.Graphics.ObjectModel
             Heightmap = heightmap;
         }
 
+        /// <summary>
+        /// Creates a new instance of Surface.
+        /// The default vertex format is VertexPositionColorNormalTexture.
+        /// </summary>
+        /// <param name="graphics">Graphics device.</param>
+        /// <param name="heightmap">The heightmap geometry to create from.</param>
+        /// <param name="patchSegmentCount">Number of the smallest square block that made up the surface patch.</param>
+        public DrawableSurface(GraphicsDevice graphics, Heightmap heightmap, int patchSegmentCount, Type vertexType)
+            : this(graphics)
+        {
+            if (heightmap == null)
+                throw new ArgumentNullException("heightmap");
+
+            PatchSegmentCount = patchSegmentCount;
+            Heightmap = heightmap;
+        }
+
         private void UpdateHeightmap()
         {
             if (PatchSegmentCount < 2 || PatchSegmentCount % 2 != 0 ||
@@ -335,7 +396,7 @@ namespace Nine.Graphics.ObjectModel
             SegmentCountX = Heightmap.Width;
             SegmentCountY = Heightmap.Height;
             
-            ConvertVertexType<VertexPositionColorNormalTexture>(PopulateVertex);
+            ConvertVertexType<VertexPositionNormalTexture>(PopulateVertex);
         }
 
         /// <summary>
@@ -348,9 +409,9 @@ namespace Nine.Graphics.ObjectModel
             if (fillVertex == null)
                 throw new ArgumentNullException("fillVertex");
 
-            if (VertexType != typeof(T))
+            if (vertexType != typeof(T) || Patches == null)
             {
-                VertexType = typeof(T);
+                vertexType = typeof(T);
 
                 if (Patches != null)
                 {
@@ -396,18 +457,67 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Populates a single vertex using default settings.
         /// </summary>
-        internal void PopulateVertex(int x, int y, ref VertexPositionColorNormalTexture input,  ref VertexPositionColorNormalTexture vertex)
+        internal void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTexture vertex)
         {
             Vector2 uv = new Vector2();
 
-            // Texture will map to the whole surface by default.
-            uv.X = 1.0f * x / SegmentCountX;
-            uv.Y = 1.0f * y / SegmentCountY;
+            int xSurface = (x + (xPatch * PatchSegmentCount));
+            int ySurface = (y + (yPatch * PatchSegmentCount));
 
-            vertex.Color = Color.White;
-            vertex.Position = Heightmap.GetPosition(x, y);
-            vertex.Normal = Heightmap.Normals[Heightmap.GetIndex(x, y)];
+            // Texture will map to the whole surface by default.
+            uv.X = 1.0f * xSurface / SegmentCountX;
+            uv.Y = 1.0f * ySurface / SegmentCountY;
+
+            vertex.Position = Heightmap.GetPosition(xSurface, ySurface);
+            vertex.Normal = Heightmap.GetNormal(xSurface, ySurface);
             vertex.TextureCoordinate = Nine.Graphics.TextureTransform.Transform(TextureTransform, uv);
+        }
+
+        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionColor vertex)
+        {
+            vertex.Position = input.Position;
+            vertex.Color = Color.White;
+        }
+
+        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormal vertex)
+        {
+            vertex.Position = input.Position;
+            vertex.Normal = input.Normal;
+        }
+
+        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionTexture vertex)
+        {
+            vertex.Position = input.Position;
+            vertex.TextureCoordinate = input.TextureCoordinate;
+        }
+
+        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalDualTexture vertex)
+        {
+            vertex.Position = input.Position;
+            vertex.Normal = input.Normal;
+            vertex.TextureCoordinate = input.TextureCoordinate;
+            vertex.TextureCoordinate1 = input.TextureCoordinate;
+        }
+
+        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTangentBinormalTexture vertex)
+        {
+            int xSurface = (x + (xPatch * PatchSegmentCount));
+            int ySurface = (y + (yPatch * PatchSegmentCount));
+
+            vertex.Position = input.Position;
+            vertex.TextureCoordinate = input.TextureCoordinate;
+            vertex.Normal = input.Normal;
+            vertex.Tangent = Heightmap.GetTangent(xSurface, ySurface);
+
+            Vector3.Cross(ref vertex.Normal, ref vertex.Tangent, out vertex.Binormal);
+        }
+
+        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionColorNormalTexture vertex)
+        {
+            vertex.Position = input.Position;
+            vertex.Normal = input.Normal;
+            vertex.Color = Color.White;
+            vertex.TextureCoordinate = input.TextureCoordinate;
         }
         #endregion
 
@@ -634,10 +744,17 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
     }
-    
+
     /// <summary>
     /// Fills a vertex data in a drawable surface.
     /// </summary>
+    /// <typeparam name="T">The target vertex type.</typeparam>
+    /// <param name="x">The x index of the vertex on the target patch, ranged from 0 to PatchSegmentCount inclusive.</param>
+    /// <param name="y">The y index of the vertex on the target patch, ranged from 0 to PatchSegmentCount inclusive.</param>
+    /// <param name="xPatch">The x index of the target patch.</param>
+    /// <param name="yPatch">The y index of the target patch.</param>
+    /// <param name="input">The input vertex contains the default position, normal and texture coordinates for the target vertex.</param>
+    /// <param name="output">The output vertex to be set.</param>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public delegate void DrawSurfaceVertexConverter<T>(int x, int y, ref VertexPositionColorNormalTexture input, ref T output);
+    public delegate void DrawSurfaceVertexConverter<T>(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref T output);
 }

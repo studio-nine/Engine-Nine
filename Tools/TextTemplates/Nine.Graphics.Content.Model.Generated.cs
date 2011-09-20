@@ -26,27 +26,27 @@ namespace Nine.Content.Pipeline.Animations
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 FramesPerSecond { get; set; }
+        public virtual System.Int32 FramesPerSecond { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("Clamp")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Animations.KeyframeEnding PreferredEnding { get; set; }
+        public virtual Nine.Animations.KeyframeEnding PreferredEnding { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 TotalFrames { get; set; }
+        public virtual System.Int32 TotalFrames { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix[][] Transforms { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix[][] Transforms { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>BoneAnimationClipContent</c>.
@@ -56,323 +56,14 @@ namespace Nine.Content.Pipeline.Animations
             FramesPerSecond = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
             PreferredEnding = (Nine.Animations.KeyframeEnding)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.KeyframeEnding)).ConvertFromInvariantString("Clamp");
             TotalFrames = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
 }
 namespace Nine.Content.Pipeline.Graphics
 {
-    /// <summary>
-    /// Content model for <c>AlphaTestMaterial</c>.
-    /// Effect instance for AlphaTestEffect.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.AlphaTestMaterial, Nine.Graphics")]
-    public partial class AlphaTestMaterialContent
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Alpha { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("Greater")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Graphics.CompareFunction AlphaFunction { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1, 1, 1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("0")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 ReferenceAlpha { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean VertexColorEnabled { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of <c>AlphaTestMaterialContent</c>.
-        /// </summary>
-        public AlphaTestMaterialContent()
-        {
-            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            AlphaFunction = (Microsoft.Xna.Framework.Graphics.CompareFunction)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Graphics.CompareFunction)).ConvertFromInvariantString("Greater");
-            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            ReferenceAlpha = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
-            VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-        }
-    }
-    /// <summary>
-    /// Content model for <c>BasicMaterial</c>.
-    /// Effect instance for BasicEffect.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.BasicMaterial, Nine.Graphics")]
-    public partial class BasicMaterialContent
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Alpha { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1, 1, 1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean IsTransparent { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean LightingEnabled { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean PreferPerPixelLighting { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1, 1, 1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("16")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single SpecularPower { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean TextureEnabled { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean VertexColorEnabled { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of <c>BasicMaterialContent</c>.
-        /// </summary>
-        public BasicMaterialContent()
-        {
-            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
-            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
-            TextureEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-        }
-    }
-    /// <summary>
-    /// Content model for <c>DualTextureMaterial</c>.
-    /// Effect instance for DualTextureEffect.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.DualTextureMaterial, Nine.Graphics")]
-    public partial class DualTextureMaterialContent
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Alpha { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1, 1, 1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean IsTransparent { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture2 { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean VertexColorEnabled { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of <c>DualTextureMaterialContent</c>.
-        /// </summary>
-        public DualTextureMaterialContent()
-        {
-            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-        }
-    }
-    /// <summary>
-    /// Content model for <c>EnvironmentMapMaterial</c>.
-    /// Effect instance for EnvironmentMapEffect.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.EnvironmentMapMaterial, Nine.Graphics")]
-    public partial class EnvironmentMapMaterialContent
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Alpha { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1, 1, 1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent> EnvironmentMap { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single EnvironmentMapAmount { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 EnvironmentMapSpecular { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single FresnelFactor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean IsTransparent { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of <c>EnvironmentMapMaterialContent</c>.
-        /// </summary>
-        public EnvironmentMapMaterialContent()
-        {
-            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
-            EnvironmentMapAmount = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            EnvironmentMapSpecular = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
-            FresnelFactor = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-        }
-    }
     /// <summary>
     /// Content model for <c>Geometry</c>.
     /// Geometric representation of a model.
@@ -387,32 +78,35 @@ namespace Nine.Content.Pipeline.Graphics
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.BoundingBox BoundingBox { get; set; }
+        public virtual Microsoft.Xna.Framework.BoundingBox BoundingBox { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.BoundingSphere BoundingSphere { get; set; }
+        public virtual Microsoft.Xna.Framework.BoundingSphere BoundingSphere { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.UInt16[] Indices { get; set; }
+        public virtual System.UInt16[] Indices { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3[] Positions { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3[] Positions { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>GeometryContent</c>.
         /// </summary>
         public GeometryContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ModelCollision</c>.
@@ -428,14 +122,17 @@ namespace Nine.Content.Pipeline.Graphics
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Octree<System.Boolean> CollisionTree { get; set; }
+        public virtual Nine.Octree<System.Boolean> CollisionTree { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ModelCollisionContent</c>.
         /// </summary>
         public ModelCollisionContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ModelMeshPartTag</c>.
@@ -451,13 +148,13 @@ namespace Nine.Content.Pipeline.Graphics
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.BoundingBox BoundingBox { get; set; }
+        public virtual Microsoft.Xna.Framework.BoundingBox BoundingBox { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.Dictionary<Nine.Graphics.TextureUsage, Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>> Textures { get; set; }
+        public virtual System.Collections.Generic.Dictionary<Nine.Graphics.TextureUsage, Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>> Textures { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ModelMeshPartTagContent</c>.
@@ -465,7 +162,10 @@ namespace Nine.Content.Pipeline.Graphics
         public ModelMeshPartTagContent()
         {
             Textures = new System.Collections.Generic.Dictionary<Nine.Graphics.TextureUsage, Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>>();
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ModelSkeletonData</c>.
@@ -481,14 +181,14 @@ namespace Nine.Content.Pipeline.Graphics
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix> InverseAbsoluteBindPose { get; set; }
+        public virtual System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix> InverseAbsoluteBindPose { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 SkeletonRoot { get; set; }
+        public virtual System.Int32 SkeletonRoot { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ModelSkeletonDataContent</c>.
@@ -497,7 +197,10 @@ namespace Nine.Content.Pipeline.Graphics
         {
             InverseAbsoluteBindPose = new System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>();
             SkeletonRoot = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ModelTag</c>.
@@ -513,19 +216,19 @@ namespace Nine.Content.Pipeline.Graphics
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.Dictionary<System.String, Nine.Content.Pipeline.Animations.BoneAnimationClipContent> Animations { get; set; }
+        public virtual System.Collections.Generic.Dictionary<System.String, Nine.Content.Pipeline.Animations.BoneAnimationClipContent> Animations { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.Graphics.ModelCollisionContent Collision { get; set; }
+        public virtual Nine.Content.Pipeline.Graphics.ModelCollisionContent Collision { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.Graphics.ModelSkeletonDataContent Skeleton { get; set; }
+        public virtual Nine.Content.Pipeline.Graphics.ModelSkeletonDataContent Skeleton { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ModelTagContent</c>.
@@ -533,106 +236,419 @@ namespace Nine.Content.Pipeline.Graphics
         public ModelTagContent()
         {
             Animations = new System.Collections.Generic.Dictionary<System.String, Nine.Content.Pipeline.Animations.BoneAnimationClipContent>();
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
+}
+namespace Nine.Content.Pipeline.Graphics.Effects
+{
     /// <summary>
-    /// Content model for <c>SkinnedMaterial</c>.
-    /// Effect instance for SkinnedEffect.
+    /// Content model for <c>AlphaTestMaterial</c>.
+    /// Effect instance for AlphaTestEffect.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.SkinnedMaterial, Nine.Graphics")]
-    public partial class SkinnedMaterialContent
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.AlphaTestMaterial, Nine.Graphics")]
+    public partial class AlphaTestMaterialContent
     {
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Alpha { get; set; }
+        public virtual System.Single Alpha { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [System.ComponentModel.DefaultValue("Greater")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean IsTransparent { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean PreferPerPixelLighting { get; set; }
+        public virtual Microsoft.Xna.Framework.Graphics.CompareFunction AlphaFunction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean SkinningEnabled { get; set; }
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 ReferenceAlpha { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean VertexColorEnabled { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>AlphaTestMaterialContent</c>.
+        /// </summary>
+        public AlphaTestMaterialContent()
+        {
+            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            AlphaFunction = (Microsoft.Xna.Framework.Graphics.CompareFunction)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Graphics.CompareFunction)).ConvertFromInvariantString("Greater");
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
+            ReferenceAlpha = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
+            VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>BasicMaterial</c>.
+    /// Effect instance for BasicEffect.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.BasicMaterial, Nine.Graphics")]
+    public partial class BasicMaterialContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Alpha { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean IsTransparent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean LightingEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean PreferPerPixelLighting { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single SpecularPower { get; set; }
+        public virtual System.Single SpecularPower { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("4")]
+        [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 WeightsPerVertex { get; set; }
+        public virtual System.Boolean TextureEnabled { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of <c>SkinnedMaterialContent</c>.
+        /// 
         /// </summary>
-        public SkinnedMaterialContent()
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean VertexColorEnabled { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>BasicMaterialContent</c>.
+        /// </summary>
+        public BasicMaterialContent()
         {
             Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
-            WeightsPerVertex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("4");
+            TextureEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
-}
-namespace Nine.Content.Pipeline.Graphics.Effects
-{
+    /// <summary>
+    /// Content model for <c>CustomMaterial</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.CustomMaterial, Nine.Graphics")]
+    public partial class CustomMaterialContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent> Effect { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean IsTransparent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.Dictionary<System.String, System.Object> Parameters { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>CustomMaterialContent</c>.
+        /// </summary>
+        public CustomMaterialContent()
+        {
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            Parameters = new System.Collections.Generic.Dictionary<System.String, System.Object>();
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>DualTextureMaterial</c>.
+    /// Effect instance for DualTextureEffect.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.DualTextureMaterial, Nine.Graphics")]
+    public partial class DualTextureMaterialContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Alpha { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean IsTransparent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture2 { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean VertexColorEnabled { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>DualTextureMaterialContent</c>.
+        /// </summary>
+        public DualTextureMaterialContent()
+        {
+            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
+            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>EnvironmentMapMaterial</c>.
+    /// Effect instance for EnvironmentMapEffect.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EnvironmentMapMaterial, Nine.Graphics")]
+    public partial class EnvironmentMapMaterialContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Alpha { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent> EnvironmentMap { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single EnvironmentMapAmount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 EnvironmentMapSpecular { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single FresnelFactor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean IsTransparent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>EnvironmentMapMaterialContent</c>.
+        /// </summary>
+        public EnvironmentMapMaterialContent()
+        {
+            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
+            EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            EnvironmentMapAmount = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            EnvironmentMapSpecular = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            FresnelFactor = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
     /// <summary>
     /// Content model for <c>LinkedMaterial</c>.
     /// Defines a material for linked effects.
@@ -646,29 +662,146 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent> Effect { get; set; }
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent[] EffectParts { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent> Effect { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent[] EffectParts { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean IsTransparent { get; set; }
+        public virtual System.Boolean IsTransparent { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>LinkedMaterialContent</c>.
         /// </summary>
         public LinkedMaterialContent()
         {
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            OnCreate();
         }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>SkinnedMaterial</c>.
+    /// Effect instance for SkinnedEffect.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.SkinnedMaterial, Nine.Graphics")]
+    public partial class SkinnedMaterialContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Alpha { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean IsTransparent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean PreferPerPixelLighting { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("True")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean SkinningEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("16")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single SpecularPower { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("4")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 WeightsPerVertex { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>SkinnedMaterialContent</c>.
+        /// </summary>
+        public SkinnedMaterialContent()
+        {
+            Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
+            EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
+            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
+            WeightsPerVertex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("4");
+            OnCreate();
+        }
+
+        partial void OnCreate();
     }
 }
 namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
@@ -688,7 +821,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("0.2, 0.2, 0.2")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 AmbientLightColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 AmbientLightColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>AmbientLightEffectPartContent</c>.
@@ -696,7 +829,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public AmbientLightEffectPartContent()
         {
             AmbientLightColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0.2, 0.2, 0.2");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>BasicTextureEffectPart</c>.
@@ -712,14 +848,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>BasicTextureEffectPartContent</c>.
         /// </summary>
         public BasicTextureEffectPartContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>BeginLightEffectPart</c>.
@@ -736,28 +875,28 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single SpecularPower { get; set; }
+        public virtual System.Single SpecularPower { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>BeginLightEffectPartContent</c>.
@@ -768,7 +907,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ColorMatrixEffectPart</c>.
@@ -784,7 +926,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix ColorMatrix { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix ColorMatrix { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ColorMatrixEffectPartContent</c>.
@@ -792,7 +934,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public ColorMatrixEffectPartContent()
         {
             ColorMatrix = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DeferredLightsEffectPart</c>.
@@ -809,21 +954,21 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DeferredLightsEffectPartContent</c>.
@@ -833,7 +978,44 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            OnCreate();
         }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>DetailTextureEffectPart</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart, Nine.Graphics")]
+    public partial class DetailTextureEffectPartContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> DetailTexture { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector2 DetailTextureScale { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>DetailTextureEffectPartContent</c>.
+        /// </summary>
+        public DetailTextureEffectPartContent()
+        {
+            DetailTextureScale = (Microsoft.Xna.Framework.Vector2)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector2)).ConvertFromInvariantString("0, 0");
+            OnCreate();
+        }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DirectionalLightEffectPart</c>.
@@ -850,21 +1032,21 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, -0.707107, -0.707107")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DirectionalLightEffectPartContent</c>.
@@ -874,7 +1056,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             Direction = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, -0.707107, -0.707107");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DualTextureEffectPart</c>.
@@ -890,14 +1075,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DualTextureEffectPartContent</c>.
         /// </summary>
         public DualTextureEffectPartContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>EmissiveMapEffectPart</c>.
@@ -913,14 +1101,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> EmissiveMap { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> EmissiveMap { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>EmissiveMapEffectPartContent</c>.
         /// </summary>
         public EmissiveMapEffectPartContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>FogEffectPart</c>.
@@ -937,21 +1128,21 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 FogColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 FogColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("100")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single FogEnd { get; set; }
+        public virtual System.Single FogEnd { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single FogStart { get; set; }
+        public virtual System.Single FogStart { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>FogEffectPartContent</c>.
@@ -961,7 +1152,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             FogColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             FogEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
             FogStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>NormalMapEffectPart</c>.
@@ -977,14 +1171,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> NormalMap { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> NormalMap { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>NormalMapEffectPartContent</c>.
         /// </summary>
         public NormalMapEffectPartContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>OverlayTextureEffectPart</c>.
@@ -1000,14 +1197,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>OverlayTextureEffectPartContent</c>.
         /// </summary>
         public OverlayTextureEffectPartContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>PointLightEffectPart</c>.
@@ -1024,35 +1224,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("2.71828175")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Attenuation { get; set; }
+        public virtual System.Single Attenuation { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("10")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Range { get; set; }
+        public virtual System.Single Range { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>PointLightEffectPartContent</c>.
@@ -1064,7 +1264,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("10");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ShadowMapEffectPart</c>.
@@ -1081,14 +1284,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("0.0005")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single DepthBias { get; set; }
+        public virtual System.Single DepthBias { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0.5")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single ShadowIntensity { get; set; }
+        public virtual System.Single ShadowIntensity { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ShadowMapEffectPartContent</c>.
@@ -1097,7 +1300,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             DepthBias = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0.0005");
             ShadowIntensity = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0.5");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SkinTransformEffectPart</c>.
@@ -1114,14 +1320,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("72")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 MaxBones { get; set; }
+        public virtual System.Int32 MaxBones { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("4")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 WeightsPerVertex { get; set; }
+        public virtual System.Int32 WeightsPerVertex { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SkinTransformEffectPartContent</c>.
@@ -1130,7 +1336,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             MaxBones = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("72");
             WeightsPerVertex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("4");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SpecularMapEffectPart</c>.
@@ -1146,14 +1355,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> SpecularMap { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> SpecularMap { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SpecularMapEffectPartContent</c>.
         /// </summary>
         public SpecularMapEffectPartContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SplatterTextureEffectPart</c>.
@@ -1169,38 +1381,62 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> SplatterTexture { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> NormalMapW { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> NormalMapX { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> NormalMapY { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> NormalMapZ { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> SplatterTexture { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector2 SplatterTextureScale { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector2 SplatterTextureScale { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureW { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureW { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureX { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureX { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureY { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureY { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureZ { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> TextureZ { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SplatterTextureEffectPartContent</c>.
@@ -1208,7 +1444,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public SplatterTextureEffectPartContent()
         {
             SplatterTextureScale = (Microsoft.Xna.Framework.Vector2)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector2)).ConvertFromInvariantString("1, 1");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SpotLightEffectPart</c>.
@@ -1225,63 +1464,63 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         [System.ComponentModel.DefaultValue("2.71828175")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Attenuation { get; set; }
+        public virtual System.Single Attenuation { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, -0.707107, -0.707107")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Falloff { get; set; }
+        public virtual System.Single Falloff { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0.7853982")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single InnerAngle { get; set; }
+        public virtual System.Single InnerAngle { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1.57079637")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single OuterAngle { get; set; }
+        public virtual System.Single OuterAngle { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("100")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Range { get; set; }
+        public virtual System.Single Range { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SpotLightEffectPartContent</c>.
@@ -1297,7 +1536,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>TextureTransformEffectPart</c>.
@@ -1313,7 +1555,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix TextureTransform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix TextureTransform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>TextureTransformEffectPartContent</c>.
@@ -1321,7 +1563,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public TextureTransformEffectPartContent()
         {
             TextureTransform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
 }
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
@@ -1341,34 +1586,34 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [System.ComponentModel.DefaultValue("0.2, 0.2, 0.2")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 AmbientLightColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 AmbientLightColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean CastShadow { get; set; }
+        public virtual System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Order { get; set; }
+        public virtual System.Single Order { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>AmbientLightContent</c>.
@@ -1380,7 +1625,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             Order = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DirectionalLight</c>.
@@ -1397,41 +1645,41 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean CastShadow { get; set; }
+        public virtual System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Order { get; set; }
+        public virtual System.Single Order { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DirectionalLightContent</c>.
@@ -1444,7 +1692,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Order = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DisplayObject</c>.
@@ -1460,13 +1711,13 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.List<System.Object> Children { get; set; }
+        public virtual System.Collections.Generic.List<System.Object> Children { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DisplayObjectContent</c>.
@@ -1475,7 +1726,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         {
             Children = new System.Collections.Generic.List<System.Object>();
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DrawableModel</c>.
@@ -1492,108 +1746,108 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Alpha { get; set; }
+        public virtual System.Single Alpha { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean CastShadow { get; set; }
+        public virtual System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean LightingEnabled { get; set; }
+        public virtual System.Boolean LightingEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Object Material { get; set; }
+        public virtual System.Object Material { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("4")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 MaxAffectingLights { get; set; }
+        public virtual System.Int32 MaxAffectingLights { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 MaxReceivedShadows { get; set; }
+        public virtual System.Int32 MaxReceivedShadows { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent> Model { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent> Model { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[] ModelParts { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean MultiPassLightingEnabled { get; set; }
+        public virtual Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[] ModelParts { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean MultiPassShadowEnabled { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("True")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean OverrideModelColors { get; set; }
+        public virtual System.Boolean MultiPassLightingEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean OverrideModelTextures { get; set; }
+        public virtual System.Boolean MultiPassShadowEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean ReceiveShadow { get; set; }
+        public virtual System.Boolean OverrideModelColors { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual System.Boolean OverrideModelTextures { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Visible { get; set; }
+        public virtual System.Boolean ReceiveShadow { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("True")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean Visible { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DrawableModelContent</c>.
@@ -1613,7 +1867,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             ReceiveShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DrawableModelPart</c>.
@@ -1629,22 +1886,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Object Material { get; set; }
+        public virtual System.Object Material { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Visible { get; set; }
+        public virtual System.Boolean Visible { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DrawableModelPartContent</c>.
         /// </summary>
         public DrawableModelPartContent()
         {
-            Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DrawableParticleEffect</c>.
@@ -1660,27 +1920,27 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent> ParticleEffect { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent> ParticleEffect { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Visible { get; set; }
+        public virtual System.Boolean Visible { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DrawableParticleEffectContent</c>.
@@ -1691,7 +1951,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DrawableSurface</c>.
@@ -1708,87 +1971,94 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean CastShadow { get; set; }
+        public virtual System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap> Heightmap { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap> Heightmap { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean LevelOfDetailEnabled { get; set; }
+        public virtual System.Boolean LevelOfDetailEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("200")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single LevelOfDetailEnd { get; set; }
+        public virtual System.Single LevelOfDetailEnd { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("100")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single LevelOfDetailStart { get; set; }
+        public virtual System.Single LevelOfDetailStart { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean LightingEnabled { get; set; }
+        public virtual System.Boolean LightingEnabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Object Material { get; set; }
+        public virtual System.Object Material { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.String Name { get; set; }
+        public virtual System.String Name { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("32")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Int32 PatchSegmentCount { get; set; }
+        public virtual System.Int32 PatchSegmentCount { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean ReceiveShadow { get; set; }
+        public virtual System.Boolean ReceiveShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix TextureTransform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix TextureTransform { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture, Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String VertexType { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Visible { get; set; }
+        public virtual System.Boolean Visible { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DrawableSurfaceContent</c>.
@@ -1804,8 +2074,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             ReceiveShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             TextureTransform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            VertexType = (System.String)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.String)).ConvertFromInvariantString("Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture, Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553");
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>DrawableSurfacePatch</c>.
@@ -1821,14 +2095,75 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Visible { get; set; }
+        public virtual System.Boolean Visible { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DrawableSurfacePatchContent</c>.
         /// </summary>
         public DrawableSurfacePatchContent()
         {
+            OnCreate();
         }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>Fog</c>.
+    /// Defines an area of fog.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Fog, Nine.Graphics")]
+    public partial class FogContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.BoundingBox BoundingBox { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1, 1, 1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 FogColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("True")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean FogEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("10000")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single FogEnd { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1000")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single FogStart { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>FogContent</c>.
+        /// </summary>
+        public FogContent()
+        {
+            FogColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
+            FogEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            FogEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("10000");
+            FogStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1000");
+            OnCreate();
+        }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>PointLight</c>.
@@ -1845,55 +2180,55 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [System.ComponentModel.DefaultValue("2.71828175")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Attenuation { get; set; }
+        public virtual System.Single Attenuation { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean CastShadow { get; set; }
+        public virtual System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Order { get; set; }
+        public virtual System.Single Order { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("10")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Range { get; set; }
+        public virtual System.Single Range { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>PointLightContent</c>.
@@ -1908,7 +2243,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("10");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SkyBox</c>.
@@ -1924,20 +2262,20 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent> Texture { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent> Texture { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Visible { get; set; }
+        public virtual System.Boolean Visible { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SkyBoxContent</c>.
@@ -1946,7 +2284,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         {
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SpotLight</c>.
@@ -1963,76 +2304,76 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [System.ComponentModel.DefaultValue("2.71828175")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Attenuation { get; set; }
+        public virtual System.Single Attenuation { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean CastShadow { get; set; }
+        public virtual System.Boolean CastShadow { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1, 1, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 DiffuseColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Falloff { get; set; }
+        public virtual System.Single Falloff { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0.7853982")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single InnerAngle { get; set; }
+        public virtual System.Single InnerAngle { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Order { get; set; }
+        public virtual System.Single Order { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("1.57079637")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single OuterAngle { get; set; }
+        public virtual System.Single OuterAngle { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("10")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Range { get; set; }
+        public virtual System.Single Range { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 SpecularColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Matrix Transform { get; set; }
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SpotLightContent</c>.
@@ -2050,7 +2391,10 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("10");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
 }
 namespace Nine.Content.Pipeline.Graphics.ParticleEffects
@@ -2070,21 +2414,21 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Force { get; set; }
+        public virtual System.Single Force { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>AbsorbControllerContent</c>.
@@ -2094,7 +2438,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             Force = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>BoxEmitter</c>.
@@ -2110,27 +2457,27 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.BoundingBox Box { get; set; }
+        public virtual Microsoft.Xna.Framework.BoundingBox Box { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("3.14159274")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Spread { get; set; }
+        public virtual System.Single Spread { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Nullable<Microsoft.Xna.Framework.Matrix> Transform { get; set; }
+        public virtual System.Nullable<Microsoft.Xna.Framework.Matrix> Transform { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>BoxEmitterContent</c>.
@@ -2139,7 +2486,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         {
             Direction = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 1");
             Spread = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("3.14159274");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ColorController</c>.
@@ -2156,13 +2506,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Range<Microsoft.Xna.Framework.Color> EndColor { get; set; }
+        public virtual Nine.Range<Microsoft.Xna.Framework.Color> EndColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ColorControllerContent</c>.
@@ -2170,7 +2520,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public ColorControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>CylinderEmitter</c>.
@@ -2187,56 +2540,56 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Center { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Center { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("100")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Height { get; set; }
+        public virtual System.Single Height { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Radiate { get; set; }
+        public virtual System.Boolean Radiate { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("100")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Radius { get; set; }
+        public virtual System.Single Radius { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Shell { get; set; }
+        public virtual System.Boolean Shell { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("3.14159274")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Spread { get; set; }
+        public virtual System.Single Spread { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Up { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Up { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>CylinderEmitterContent</c>.
@@ -2251,7 +2604,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             Shell = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Spread = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("3.14159274");
             Up = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 1");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>FadeController</c>.
@@ -2268,7 +2624,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>FadeControllerContent</c>.
@@ -2276,7 +2632,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public FadeControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>ForceController</c>.
@@ -2293,14 +2652,14 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, -1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Force { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Force { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>ForceControllerContent</c>.
@@ -2309,7 +2668,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             Force = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, -1");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>LineEmitter</c>.
@@ -2326,20 +2688,20 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Collections.Generic.IEnumerable<Microsoft.Xna.Framework.Vector3> LineList { get; set; }
+        public virtual System.Collections.Generic.IEnumerable<Microsoft.Xna.Framework.Vector3> LineList { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("3.14159274")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Spread { get; set; }
+        public virtual System.Single Spread { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>LineEmitterContent</c>.
@@ -2348,7 +2710,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         {
             Direction = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 1");
             Spread = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("3.14159274");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>PointEmitter</c>.
@@ -2365,21 +2730,21 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("3.14159274")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Spread { get; set; }
+        public virtual System.Single Spread { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>PointEmitterContent</c>.
@@ -2389,7 +2754,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             Direction = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 1");
             Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Spread = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("3.14159274");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>RotationController</c>.
@@ -2406,13 +2774,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Range<System.Single> EndRotation { get; set; }
+        public virtual Nine.Range<System.Single> EndRotation { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>RotationControllerContent</c>.
@@ -2420,7 +2788,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public RotationControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SizeController</c>.
@@ -2437,13 +2808,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Range<System.Single> EndSize { get; set; }
+        public virtual Nine.Range<System.Single> EndSize { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SizeControllerContent</c>.
@@ -2451,7 +2822,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public SizeControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SpeedController</c>.
@@ -2468,13 +2842,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Nine.Range<System.Single> EndSpeed { get; set; }
+        public virtual Nine.Range<System.Single> EndSpeed { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SpeedControllerContent</c>.
@@ -2482,7 +2856,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public SpeedControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>SphereEmitter</c>.
@@ -2499,42 +2876,42 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Center { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Center { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Direction { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Direction { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Radiate { get; set; }
+        public virtual System.Boolean Radiate { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("100")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Radius { get; set; }
+        public virtual System.Single Radius { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Shell { get; set; }
+        public virtual System.Boolean Shell { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("3.14159274")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Spread { get; set; }
+        public virtual System.Single Spread { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>SphereEmitterContent</c>.
@@ -2547,7 +2924,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             Radius = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
             Shell = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Spread = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("3.14159274");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
     /// <summary>
     /// Content model for <c>TangentForceController</c>.
@@ -2564,28 +2944,28 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Center { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Center { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Boolean Enabled { get; set; }
+        public virtual System.Boolean Enabled { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public System.Single Force { get; set; }
+        public virtual System.Single Force { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public Microsoft.Xna.Framework.Vector3 Up { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Up { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>TangentForceControllerContent</c>.
@@ -2596,7 +2976,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             Force = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0");
             Up = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 1");
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
 }
 #endif

@@ -35,7 +35,7 @@
                 TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
                 TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart[]", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent[]");
                 TypeMapping.Add("Nine.Graphics.IEffectInstance", "System.Object");
-                TypeMapping.Add("Nine.Graphics.Material", "System.Object");
+                TypeMapping.Add("Nine.Graphics.Effects.Material", "System.Object");
                 TypeMapping.Add("Nine.Graphics.ObjectModel.DrawableModelPart[]", "Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[]");
             }
         }

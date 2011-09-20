@@ -19,8 +19,9 @@ using Nine.Graphics.ParticleEffects;
 using Nine.Graphics.ScreenEffects;
 #if !WINDOWS_PHONE
 using Nine.Graphics.Effects.Deferred;
-using Nine.Graphics.Effects;
 #endif
+using Nine.Graphics.Effects;
+using EffectMaterial = Nine.Graphics.Effects.EffectMaterial;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -347,6 +348,11 @@ namespace Nine.Graphics.ObjectModel
             GraphicsContext.ElapsedTime = elapsedTime;
             
             BeginDraw();
+
+            if (Settings.FogEnable)
+            {
+                UpdateFog();
+            }
             
 #if !WINDOWS_PHONE
             if (Settings.ShadowEnabled)
@@ -371,12 +377,6 @@ namespace Nine.Graphics.ObjectModel
                 DrawUsingForwardLighting(transparentDrawablesInViewFrustum);
                 GraphicsContext.End();
 #else
-                if (Settings.PreferDeferredLighting && GraphicsDevice.GraphicsProfile == GraphicsProfile.HiDef)
-                {
-                    // TODO: Drawables with custom shaders cannot be rendered using deferred shading.
-                    DrawUsingDeferredLighting(opaqueDrawablesInViewFrustum, lightsInViewFrustum);
-                }
-                else
                 {
                     ClearLights(opaqueDrawablesInViewFrustum);
 
@@ -495,6 +495,10 @@ namespace Nine.Graphics.ObjectModel
 
         private void BeginDraw()
         {
+            // Xna might complain about floating point texture requires texture filter to be point.
+            for (int i = 0; i < 16; i++)
+                GraphicsDevice.Textures[i] = null;
+
             for (int i = 0; i < drawablesInViewFrustum.Count; i++)
             {
                 drawablesInViewFrustum[i].BeginDraw(GraphicsContext);
@@ -933,6 +937,38 @@ namespace Nine.Graphics.ObjectModel
             }
         }
 #endif
+        #endregion
+
+        #region Fog
+        private void UpdateFog()
+        {
+            var firstFog = objectsInViewFrustum.OfType<IEffectFog>().FirstOrDefault();
+            if (firstFog != null)
+            {
+                foreach (var drawable in drawablesInViewFrustum)
+                {
+                    ApplyFog(firstFog, drawable.Material);
+                }
+            }
+        }
+
+        private void ApplyFog(IEffectFog sourceFog, Material material)
+        {
+            if (material != null)
+            {
+                IEffectFog target = material.As<IEffectFog>();
+                if (target != null)
+                {
+                    target.FogEnabled = sourceFog.FogEnabled;
+                    if (sourceFog.FogEnabled)
+                    {
+                        target.FogColor = sourceFog.FogColor;
+                        target.FogStart = sourceFog.FogStart;
+                        target.FogEnd = sourceFog.FogEnd;
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Material

@@ -193,11 +193,6 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     {
         protected override void Write(ContentWriter output, ParticleEffectContent value)
         {
-            InternalWrite(output, value);
-        }
-
-        internal void InternalWrite(ContentWriter output, ParticleEffectContent value)
-        {
             output.Write(value.TriggerOnStartup);
             output.Write(value.MaxParticleCount);
             output.Write((byte)value.ParticleType);

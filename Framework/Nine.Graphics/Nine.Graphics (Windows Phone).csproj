@@ -89,7 +89,8 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
-    <Compile Include="Materials.cs" />
+    <Compile Include="Effects\Materials.cs" />
+    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\DrawableModel.cs" />
     <Compile Include="ObjectModel\DrawableModelPart.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
     <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
     <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="ObjectModel\Fog.cs" />
     <Compile Include="ObjectModel\LightEngine.cs" />
     <Compile Include="ObjectModel\ModelBatchExtensions.cs" />
     <Compile Include="ObjectModel\PointLight.cs" />
@@ -109,13 +111,11 @@
     <Compile Include="ObjectModel\DisplayObject.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />
     <Compile Include="ObjectModel\GraphicsContext.cs" />
-    <Compile Include="ObjectModel\GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\GraphicsSettings.cs" />
     <Compile Include="ObjectModel\GraphicsStatistics.cs" />
     <Compile Include="ObjectModel\Interface.cs" />
     <Compile Include="ObjectModel\Light.cs" />
     <Compile Include="ObjectModel\SkyBox.cs" />
-    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Lights.cs" />
     <Compile Include="BlendStateReader.cs" />
     <Compile Include="ParticleEffects\ParticleTrigger.cs" />
@@ -257,7 +257,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WiggleEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="PrimitiveBatchExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
     <Compile Include="PrimitiveBatch.cs" />
@@ -296,8 +295,9 @@
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
     <Compile Include="ParticleEffects\ParticleVertex.cs" />
     <Compile Include="VertexPositionNormalDualTexture.cs" />
-    <Compile Include="VertexPositionNormalTangentTexture.cs" />
-    <Compile Include="VertexPositionColorNormalTangentTexture.cs" />
+    <Compile Include="VertexPositionNormalTangentBinormalTexture.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

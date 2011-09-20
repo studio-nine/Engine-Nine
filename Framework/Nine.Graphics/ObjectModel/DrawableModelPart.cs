@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Animations;
-using Nine.Graphics.ParticleEffects;
+using Nine.Graphics.Effects;
 #if !WINDOWS_PHONE
 using Nine.Graphics.Effects.Deferred;
 #endif
@@ -96,7 +96,10 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// For content serializer.
         /// </summary>
-        internal DrawableModelPart() { }
+        internal DrawableModelPart() 
+        {
+            this.Visible = true;
+        }
         
         /// <summary>
         /// DrawableModelPart should only be created by DrawableModel.

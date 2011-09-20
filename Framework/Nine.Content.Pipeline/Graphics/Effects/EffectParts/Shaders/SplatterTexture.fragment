@@ -74,10 +74,12 @@ void main(INPUT input, inout OUTPUT output)
 	
 	float4 splatter = Mask * tex2D(SplatterTextureSampler, uv / SplatterTextureScale);
 		
-	color {$OPERATION}= tex2D(TextureXSampler, uv) * splatter.x;
-    color += tex2D(TextureYSampler, uv) * splatter.y;
-    color += tex2D(TextureZSampler, uv) * splatter.z;
-    color += tex2D(TextureWSampler, uv) * splatter.w;
+    float4 diffuse = 0;
+	{$HASX}diffuse += tex2D(TextureXSampler, uv) * splatter.x;
+    {$HASY}diffuse += tex2D(TextureYSampler, uv) * splatter.y;
+    {$HASZ}diffuse += tex2D(TextureZSampler, uv) * splatter.z;
+    {$HASW}diffuse += tex2D(TextureWSampler, uv) * splatter.w;
+    color *= diffuse;
 
 	export(float4, Color, color);
 }

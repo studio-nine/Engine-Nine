@@ -145,8 +145,8 @@ namespace MultiPassLighting
             spotLightEffect.Lights[2].DiffuseColor = Vector3.Zero;
             spotLightEffect.Lights[3].DiffuseColor = Vector3.Zero;
         }
-
-        private void InitializeSurfaceVertices(int x, int y, ref VertexPositionColorNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
+        
+        private void InitializeSurfaceVertices(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
         {
             output.Position = input.Position;
             output.Normal = input.Normal;

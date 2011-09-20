@@ -133,6 +133,9 @@
   <data name="DeferredLights" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\deferredlights.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="DetailTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\detailtexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="DirectionalLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\directionallight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -153,6 +156,9 @@
   </data>
   <data name="NormalMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\normalmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NormalMappedSplatterTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\normalmappedsplattertexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="OverlayTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\overlaytexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

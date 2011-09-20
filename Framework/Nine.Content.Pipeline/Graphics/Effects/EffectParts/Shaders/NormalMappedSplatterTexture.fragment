@@ -1,0 +1,177 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment SplatterTexture;
+
+[parameters]
+float2 SplatterTextureScale = 1;
+float4 Mask = 1;
+
+texture2D SplatterTexture;
+sampler SplatterTextureSampler = sampler_state
+{
+    Texture = (SplatterTexture);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+};
+
+texture2D TextureX;
+sampler TextureXSampler = sampler_state
+{
+    Texture = (TextureX);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D TextureY;
+sampler TextureYSampler = sampler_state
+{
+    Texture = (TextureY);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D TextureZ;
+sampler TextureZSampler = sampler_state
+{
+    Texture = (TextureZ);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D TextureW;
+sampler TextureWSampler = sampler_state
+{
+    Texture = (TextureW);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+
+texture2D NormalMapX;
+sampler NormalMapXSampler = sampler_state
+{
+    Texture = (NormalMapX);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D NormalMapY;
+sampler NormalMapYSampler = sampler_state
+{
+    Texture = (NormalMapY);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D NormalMapZ;
+sampler NormalMapZSampler = sampler_state
+{
+    Texture = (NormalMapZ);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+texture2D NormalMapW;
+sampler NormalMapWSampler = sampler_state
+{
+    Texture = (NormalMapW);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+
+[vertex]
+float3 Binormal	: BINORMAL0;
+float3 Tangent	: TANGENT0;
+
+[interpolators]
+float3 Tangent;
+float3 Binormal;
+
+[vs]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float3 tangent = input.Tangent;
+	float3 binormal = input.Binormal;
+    
+    float4x3 worldTransform;
+	import(WorldTransform, worldTransform = WorldTransform);
+
+    tangent = mul(tangent, worldTransform);
+    binormal = mul(binormal, worldTransform);
+
+	output(Tangent, tangent);
+	output(Binormal, binormal);
+}
+__hlsl__
+
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+	
+	float4 splatter = Mask * tex2D(SplatterTextureSampler, uv / SplatterTextureScale);
+		
+    float4 diffuse = 0;
+	{$HASX}diffuse += tex2D(TextureXSampler, uv) * splatter.x;
+    {$HASY}diffuse += tex2D(TextureYSampler, uv) * splatter.y;
+    {$HASZ}diffuse += tex2D(TextureZSampler, uv) * splatter.z;
+    {$HASW}diffuse += tex2D(TextureWSampler, uv) * splatter.w;
+    color *= diffuse;
+    
+	float3 normal;
+	import(Normal, normal = Normal);
+
+	float3x3 tangentTransform;
+	tangentTransform[0] = input.Tangent;
+	tangentTransform[1] = input.Binormal;
+	tangentTransform[2] = normal;
+
+    float3 normalFromMap = 0;
+    {$HASNORMALX}normalFromMap += (tex2D(NormalMapXSampler, uv).xyz * 2 - 1) * splatter.x;
+    {$HASNORMALY}normalFromMap += (tex2D(NormalMapYSampler, uv).xyz * 2 - 1) * splatter.y;
+    {$HASNORMALZ}normalFromMap += (tex2D(NormalMapZSampler, uv).xyz * 2 - 1) * splatter.z;
+    {$HASNORMALW}normalFromMap += (tex2D(NormalMapWSampler, uv).xyz * 2 - 1) * splatter.w;
+    float len = length(normalFromMap);
+    normalFromMap = lerp(normal, normalFromMap, len);
+    normalFromMap = mul(normalFromMap, tangentTransform);
+	
+	export(float3, Normal, normalFromMap);
+	export(float4, Color, color);
+}
+__hlsl__

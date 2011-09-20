@@ -13,13 +13,17 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+#if MDX
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX;
+#endif
 using Color = Microsoft.Xna.Framework.Color;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics
 {
+#if MDX
+
     class ProceduralTextureGenerator
     {
         public string CreateTextureContentFromShader(string effectFilename, string functionName, int width, int height, string outputPath)
@@ -74,4 +78,6 @@ namespace Nine.Content.Pipeline.Graphics
             return new Device(0, DeviceType.Hardware, dummy.Handle, CreateFlags.HardwareVertexProcessing | CreateFlags.PureDevice, parameters);
         }
     }
+
+#endif
 }

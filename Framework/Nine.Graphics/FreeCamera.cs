@@ -31,10 +31,11 @@ namespace Nine.Graphics
     /// <summary>
     /// A first person free camera.
     /// </summary>
-    public class FreeCamera : ICamera
+    public class FreeCamera : ICamera, IUpdateable
     {
         Vector3 angle;
         Vector3 position;
+        Vector2 mouseDown;
 
         public Vector3 Angle { get { return angle; } set { angle = value; } }
         public float Speed { get; set; }
@@ -61,24 +62,24 @@ namespace Nine.Graphics
         public Matrix View { get; private set; }
         public Matrix Projection { get; private set; }
 
+        public GraphicsDevice GraphicsDevice { get; private set; }
 
-        public FreeCamera() : this(Vector3.Zero, 1.0f, 90f) { }
-
-        public FreeCamera(Vector3 position, float speed, float turnSpeed)
+        public FreeCamera(GraphicsDevice graphics) : this(graphics, Vector3.Zero, 30.0f, 20f) { }
+        public FreeCamera(GraphicsDevice graphics, Vector3 position) : this(graphics, position, 30.0f, 20f) { }
+        public FreeCamera(GraphicsDevice graphics, Vector3 position, float speed, float turnSpeed)
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
             this.Speed = speed;
             this.TurnSpeed = turnSpeed;
             Position = position;
-                
-            Projection = Matrix.CreatePerspectiveFieldOfView(
-                    MathHelper.PiOver4, 4.0f / 3.0f, 1, 1000);
+            GraphicsDevice = graphics;
         }
 
 
         public void Update(TimeSpan elapsedTime)
         {
             // Assume screen size always greater then 100
-            int center = 100;
             float delta = (float)elapsedTime.TotalSeconds;
             GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
             Vector3 forward;
@@ -106,16 +107,23 @@ namespace Nine.Graphics
                 KeyboardState keyboard = Keyboard.GetState();
                 MouseState mouse = Mouse.GetState();
 
-                int centerX = center;
-                int centerY = center;
+                float centerX = mouseDown.X;
+                float centerY = mouseDown.Y;
 
-                Mouse.SetPosition(centerX, centerY);
+                if (mouse.RightButton == ButtonState.Pressed)
+                {
+                    angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * 0.01f); // pitch
+                    angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * 0.01f); // yaw
+                }
 
-                angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * 0.01f); // pitch
-                angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * 0.01f); // yaw
+                mouseDown.X = mouse.X;
+                mouseDown.Y = mouse.Y;
 
                 forward = Vector3.Normalize(new Vector3((float)Math.Sin(-angle.Y), (float)Math.Sin(angle.X), (float)Math.Cos(-angle.Y)));
                 left = Vector3.Normalize(new Vector3((float)Math.Cos(angle.Y), 0f, (float)Math.Sin(angle.Y)));
+
+                if (keyboard.IsKeyDown(Keys.LeftShift))
+                    delta /= 3;
 
                 if (keyboard.IsKeyDown(Keys.W))
                     position -= forward * Speed * delta;
@@ -140,6 +148,8 @@ namespace Nine.Graphics
                 View *= Matrix.CreateRotationZ(Angle.Z);
                 View *= Matrix.CreateRotationY(Angle.Y);
                 View *= Matrix.CreateRotationX(Angle.X);
+
+                Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 1, 1000);
             }
         }
     }

@@ -78,8 +78,19 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     /// </summary>
     public class LinkedEffectContent
     {
+        internal byte[] Token;
         internal byte[] EffectCode;
         internal string[] UniqueNames;
+
+        public LinkedEffectContent()
+        {
+            EffectParts = new List<LinkedEffectPartContent>();
+        }
+
+        public LinkedEffectContent(IEnumerable<LinkedEffectPartContent> parts)
+        {
+            EffectParts = new List<LinkedEffectPartContent>(parts);
+        }
 
         /// <summary>
         /// Gets all the content representations for LinkedEffectParts.
@@ -100,12 +111,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             if (output.TargetPlatform == TargetPlatform.WindowsPhone)
                 return;
 
-            if (value.EffectCode == null || value.UniqueNames == null)
+            if (value.EffectCode == null || value.UniqueNames == null || value.Token == null)
                 throw new InvalidContentException("LinkedEffectContent must be processed with LinkedEffectProcessor.");
 
-            byte[] token = MD5.Create().ComputeHash(value.EffectCode);
-
-            output.WriteObject<byte[]>(token);
+            output.WriteObject<byte[]>(value.Token);
             output.WriteObject<byte[]>(value.EffectCode);
             output.WriteObject<string[]>(value.UniqueNames);
             output.Write(value.EffectParts.Count);

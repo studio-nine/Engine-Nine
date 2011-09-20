@@ -27,28 +27,16 @@ namespace Nine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ServiceProviderExtensions
     {
-        public static T GetService<T>(this IServiceProvider provider) where T : class
+        public static T GetService<T>(this IServiceProvider provider)
         {
-            return provider.GetService(typeof(T)) as T;
+            var result = provider.GetService(typeof(T));
+            return result is T ? (T)result : default(T);
         }
 
-        public static K GetService<T, K>(this IServiceProvider provider)
-            where T : class, K
-            where K : class
+        public static K GetService<T, K>(this IServiceProvider provider) where T : K
         {
-            return provider.GetService(typeof(T)) as K;
-        }
-
-        public static K GetService<K>(this IServiceProvider provider, Type type)
-            where K : class
-        {
-            return provider.GetService(type) as K;
-        }
-
-        public static K GetService<K>(this IServiceProvider provider, string type)
-            where K : class
-        {
-            return provider.GetService(Type.GetType(type)) as K;
+            var result = provider.GetService(typeof(T));
+            return result is K ? (K)result : default(K);
         }
     }
 
@@ -111,4 +99,11 @@ namespace Nine
         public string DisplayName { get; set; }
     }
 #endif
+    
+
+#if WINDOWS_PHONE || XBOX
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Delegate, Inherited = false)]
+    public class SerializableAttribute : Attribute { }
+#endif
+
 }

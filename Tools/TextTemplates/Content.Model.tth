@@ -54,7 +54,7 @@ namespace <#= namespaceGroup.Key #>
         [System.ComponentModel.DefaultValue("<#= defaultValueString #>")]
 <# } #>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public <#= memberTypeName #> <#= memberName #> { get; <# if (!CanSetMember(member)) { #> internal <# } #>set; }
+        public virtual <#= memberTypeName #> <#= memberName #> { get; <# if (!CanSetMember(member)) { #> internal <# } #>set; }
 
 <#
     }
@@ -93,7 +93,10 @@ namespace <#= namespaceGroup.Key #>
         }
     }
 #>
+            OnCreate();
         }
+
+        partial void OnCreate();
     }
 <#
     }

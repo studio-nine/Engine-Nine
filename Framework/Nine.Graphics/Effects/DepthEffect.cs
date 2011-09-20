@@ -23,7 +23,7 @@ namespace Nine.Graphics.Effects
     /// Represents an effect for drawing geometry depth.
     /// This effect is usually used to generate shadow map depth values.
     /// </summary>
-    partial class DepthEffect : IEffectMatrices, IEffectSkinned
+    partial class DepthEffect : IEffectMatrices, IEffectSkinned, IEffectTexture
     {
         private Matrix world;
         private Matrix view;
@@ -31,8 +31,22 @@ namespace Nine.Graphics.Effects
 
         public bool SkinningEnabled
         {
-            get { return shaderIndex == 0; }
-            set { shaderIndex = value ? 1 : 0; }
+            get { return skinningEnabled; }
+            set { skinningEnabled = value; UpdateShaderIndex(); }
+        }
+        bool skinningEnabled;
+
+        public bool TextureEnabled
+        {
+            get { return textureEnabled; }
+            set { textureEnabled = value; UpdateShaderIndex(); }
+        }
+        bool textureEnabled;
+
+        public float ReferenceAlpha
+        {
+            get { return referenceAlpha * 255; }
+            set { referenceAlpha = value / 255; }
         }
 
         public Matrix World
@@ -52,6 +66,12 @@ namespace Nine.Graphics.Effects
             get { return projection; }
             set { projection = value; dirtyFlag |= worldViewProjectionDirtyFlag; }
         }
+
+        private void UpdateShaderIndex()
+        {
+            shaderIndex = skinningEnabled ? (textureEnabled ? 3 : 1) :
+                                            (textureEnabled ? 2 : 0);
+        }
                 
         public Matrix[] GetBoneTransforms(int count)
         {
@@ -65,6 +85,7 @@ namespace Nine.Graphics.Effects
 
         private void OnCreated() 
         {
+            referenceAlpha = 0.5f;
         }
 
         private void OnClone(DepthEffect cloneSource) 
@@ -82,6 +103,8 @@ namespace Nine.Graphics.Effects
                 worldViewProjection = wvp;
             }
         }
+
+        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture) { }
     }
 
 #endif

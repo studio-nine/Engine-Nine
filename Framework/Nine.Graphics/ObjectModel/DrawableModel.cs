@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Animations;
-using Nine.Graphics.ParticleEffects;
+using Nine.Graphics.Effects;
 #if !WINDOWS_PHONE
 using Nine.Graphics.Effects.Deferred;
 #endif
@@ -267,7 +267,7 @@ namespace Nine.Graphics.ObjectModel
                         if (i < modelParts.Length && value[i] != null)
                         {
                             if (value[i].Material != null)
-                                modelParts[i].Material = value[i].Material;
+                                modelParts[i].Material = CreateMaterial(value[i].Material, modelParts[i].ModelMeshPart);
                             modelParts[i].Visible = value[i].Visible;
                         }
                     }
@@ -402,7 +402,7 @@ namespace Nine.Graphics.ObjectModel
 
         internal void UpdateMaterials()
         {
-            if (model == null || !materialNeedsUpdate)
+            if (model == null || material == null || !materialNeedsUpdate)
                 return;
 
             if (material != null)
@@ -425,23 +425,8 @@ namespace Nine.Graphics.ObjectModel
 
         private Material CreateMaterial(Material material, ModelMeshPart part)
         {
-            Material sourceMaterial = null;
-            var effect = part.Effect;
-
-#if !TEXT_TEMPLATE
-            if (effect is BasicEffect)
-                sourceMaterial = new BasicMaterial(effect as BasicEffect);
-            if (effect is SkinnedEffect)
-                sourceMaterial = new SkinnedMaterial(effect as SkinnedEffect);
-            if (effect is EnvironmentMapEffect)
-                sourceMaterial = new EnvironmentMapMaterial(effect as EnvironmentMapEffect);
-            if (effect is DualTextureEffect)
-                sourceMaterial = new DualTextureMaterial(effect as DualTextureEffect);
-            if (effect is AlphaTestEffect)
-                sourceMaterial = new AlphaTestMaterial(effect as AlphaTestEffect);
-#endif
             if (material == null)
-                return sourceMaterial;
+                return null;
 
             material.Apply();
             var clonedMaterial = material.Clone();
@@ -461,7 +446,7 @@ namespace Nine.Graphics.ObjectModel
 
             if (!overrideModelColors)
             {
-                IEffectMaterial source = sourceMaterial.As<IEffectMaterial>();
+                IEffectMaterial source = part.Effect.As<IEffectMaterial>();
                 IEffectMaterial target = clonedMaterial.As<IEffectMaterial>();
                 
                 if (source != null && target != null)

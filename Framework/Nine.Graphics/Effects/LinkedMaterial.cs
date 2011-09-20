@@ -33,7 +33,7 @@ namespace Nine.Graphics.Effects
     /// Defines a material for linked effects.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class LinkedMaterial : Material, IEffectTexture, IEffectMaterial,
+    public sealed class LinkedMaterial : Material, IEffectTexture, IEffectMaterial, IEffectFog,
                                                    IEffectLights<IAmbientLight>, IEffectLights<IPointLight>,
                                                    IEffectLights<IDirectionalLight>, IEffectLights<ISpotLight>
     {
@@ -53,6 +53,9 @@ namespace Nine.Graphics.Effects
         {
             get { return IsTransparent; }
         }
+
+        public override bool IsDeferred { get { return isDeferred; } }
+        private bool isDeferred;
 
         /// <summary>
         /// For content serialization.
@@ -141,6 +144,9 @@ namespace Nine.Graphics.Effects
                 {
                     for (int i = 0; i < value.Length; i++)
                     {
+                        if (value[i] is DeferredLightsEffectPart)
+                            isDeferred = true;
+
                         if (i < parts.Length && value[i] != null && parts[i] != null)
                         {
                             if (value[i].GetType() != parts[i].GetType())
@@ -175,7 +181,12 @@ namespace Nine.Graphics.Effects
 
         public override Material Clone()
         {
-            return new LinkedMaterial(effect);
+            return new LinkedMaterial(effect)
+            {
+                IsTransparent = IsTransparent,
+                DepthAlphaEnabled = DepthAlphaEnabled,
+                EffectPartsSerializer = parts,
+            };
         }
 
         Texture2D texture;
@@ -274,6 +285,30 @@ namespace Nine.Graphics.Effects
         ReadOnlyCollection<ISpotLight> IEffectLights<ISpotLight>.Lights
         {
             get { return ((IEffectLights<ISpotLight>)effect).Lights; }
+        }
+        
+        Vector3 IEffectFog.FogColor
+        {
+            get { return effect.FogColor; }
+            set { effect.FogColor = value; }
+        }
+
+        bool IEffectFog.FogEnabled
+        {
+            get { return effect.FogEnabled; }
+            set { effect.FogEnabled = value; }
+        }
+
+        float IEffectFog.FogEnd
+        {
+            get { return effect.FogEnd; }
+            set { effect.FogEnd = value; }
+        }
+
+        float IEffectFog.FogStart
+        {
+            get { return effect.FogStart; }
+            set { effect.FogStart = value; }
         }
     }
 

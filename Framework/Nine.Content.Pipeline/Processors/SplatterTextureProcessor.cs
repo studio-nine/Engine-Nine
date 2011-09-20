@@ -30,7 +30,7 @@ namespace Nine.Content.Pipeline.Processors
     /// Processes texture splatter used for terrain rendering.
     /// </summary>
     [ContentProcessor(DisplayName="Splatter Texture - Engine Nine")]
-    public class SplatterTextureProcessor : ContentProcessor<string[], TextureContent>
+    public class SplatterTextureProcessor : ContentProcessor<string[], Texture2DContent>
     {
         /// <summary>
         /// Gets or sets a value indicating whether a base layer should be generated.
@@ -45,10 +45,12 @@ namespace Nine.Content.Pipeline.Processors
             GenerateBaseLayer = true;
         }
 
-        public override TextureContent Process(string[] input, ContentProcessorContext context)
+        public override Texture2DContent Process(string[] input, ContentProcessorContext context)
         {
             if (input.Length > 4)
-                throw new ArgumentOutOfRangeException("SplatterTextureProcessor supports at most 4 textures.");
+            {
+                context.Logger.LogWarning(null, null, "SplatterTextureProcessor supports at most 4 textures. Additional textures will be discarded");
+            }
 
             int width = 0;
             int height = 0;
@@ -60,7 +62,7 @@ namespace Nine.Content.Pipeline.Processors
             PixelBitmapContent<float> bitmapB = null;
             PixelBitmapContent<float> bitmapA = null;
 
-            if (!string.IsNullOrEmpty(input[0]))
+            if (input.Length > 0 && !string.IsNullOrEmpty(input[0]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
                     new ExternalReference<TextureContent>(input[0]), null);
@@ -72,7 +74,7 @@ namespace Nine.Content.Pipeline.Processors
                 height = bitmapR.Height;
             }
 
-            if (!string.IsNullOrEmpty(input[1]))
+            if (input.Length > 1 && !string.IsNullOrEmpty(input[1]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
                     new ExternalReference<TextureContent>(input[1]), null);
@@ -84,7 +86,7 @@ namespace Nine.Content.Pipeline.Processors
                 height = bitmapG.Height;
             }
 
-            if (!string.IsNullOrEmpty(input[2]))
+            if (input.Length > 2 && !string.IsNullOrEmpty(input[2]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
                     new ExternalReference<TextureContent>(input[2]), null);
@@ -96,7 +98,7 @@ namespace Nine.Content.Pipeline.Processors
                 height = bitmapB.Height;
             }
 
-            if (!string.IsNullOrEmpty(input[3]))
+            if (input.Length > 3 && !string.IsNullOrEmpty(input[3]))
             {
                 texture = context.BuildAndLoadAsset<TextureContent, Texture2DContent>(
                     new ExternalReference<TextureContent>(input[3]), null);

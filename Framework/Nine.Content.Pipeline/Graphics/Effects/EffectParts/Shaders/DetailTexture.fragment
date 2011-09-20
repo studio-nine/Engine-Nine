@@ -1,0 +1,35 @@
+//=============================================================================
+//
+//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment DualTexture;
+
+[parameters]
+float2 DetailTextureScale = 1;
+texture2D Texture : DETAILTEXTURE;
+sampler BasicSampler = sampler_state
+{
+    Texture = (Texture);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+	
+	color *= tex2D(BasicSampler, uv * DetailTextureScale) * 2;
+	export(float4, Color, color);
+}
+__hlsl__

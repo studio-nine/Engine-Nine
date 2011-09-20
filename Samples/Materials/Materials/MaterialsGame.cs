@@ -72,8 +72,8 @@ namespace MaterialsSample
             camera = new ModelViewerCamera(GraphicsDevice);
 
             // Create a terrain based on the terrain geometry loaded from file
-            surface = new DrawableSurface(GraphicsDevice, 1, 32, 32, 8);
-            surface.TextureTransform = TextureTransform.CreateScale(0.25f, 0.25f);
+            surface = new DrawableSurface(GraphicsDevice, 1, 32, 32, 16);
+            surface.TextureTransform = TextureTransform.CreateScale(0.5f, 0.5f);
             surface.ConvertVertexType<VertexPositionNormalTangentBinormalTexture>(InitializeSurfaceVertices);
             surface.Position = -surface.BoundingBox.GetCenter();
 
@@ -86,11 +86,12 @@ namespace MaterialsSample
             basicEffect.AmbientLightColor = Vector3.Zero;
         }
 
-        private void InitializeSurfaceVertices(int x, int y, ref VertexPositionColorNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
+        private void InitializeSurfaceVertices(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTangentBinormalTexture output)
         {
             output.Position = input.Position;
-            output.Normal = input.Normal;
+            output.Normal = input.Normal; 
             output.TextureCoordinate = input.TextureCoordinate;
+            //output.TextureCoordinate = new Vector2(x * 1.0f / surface.PatchSegmentCount, y * 1.0f / surface.PatchSegmentCount);
             output.Tangent = Vector3.UnitX;
             output.Binormal = Vector3.UnitY;
         }

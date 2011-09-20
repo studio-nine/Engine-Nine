@@ -68,7 +68,7 @@ namespace Nine.Graphics.ScreenEffects
             this._WeightParameter = cloneSource["Weight"];
             this._pixelSizeParameter = cloneSource["pixelSize"];
             this._deltaParameter = cloneSource["delta"];
-            this._NormalTextureParameter = cloneSource["NormalTexture"];
+            this._NormalMapParameter = cloneSource["NormalMap"];
 
         }
 
@@ -79,7 +79,7 @@ namespace Nine.Graphics.ScreenEffects
         const uint WeightDirtyFlag = 1 << 0;
         const uint pixelSizeDirtyFlag = 1 << 1;
         const uint deltaDirtyFlag = 1 << 2;
-        const uint NormalTextureDirtyFlag = 1 << 3;
+        const uint NormalMapDirtyFlag = 1 << 3;
 
         #endregion
 
@@ -112,13 +112,13 @@ namespace Nine.Graphics.ScreenEffects
             set { _delta = value; dirtyFlag |= deltaDirtyFlag; }
         }
 
-        private Texture2D _NormalTexture;
-        private EffectParameter _NormalTextureParameter;
+        private Texture2D _NormalMap;
+        private EffectParameter _NormalMapParameter;
 
-        public Texture2D NormalTexture
+        public Texture2D NormalMap
         {
-            get { return _NormalTexture; }
-            set { if (_NormalTexture != value) { _NormalTexture = value; dirtyFlag |= NormalTextureDirtyFlag; } }
+            get { return _NormalMap; }
+            set { if (_NormalMap != value) { _NormalMap = value; dirtyFlag |= NormalMapDirtyFlag; } }
         }
 
 
@@ -142,10 +142,10 @@ namespace Nine.Graphics.ScreenEffects
                 this._deltaParameter.SetValue(_delta);
                 this.dirtyFlag &= ~deltaDirtyFlag;
             }
-            if ((this.dirtyFlag & NormalTextureDirtyFlag) != 0)
+            if ((this.dirtyFlag & NormalMapDirtyFlag) != 0)
             {
-                this._NormalTextureParameter.SetValue(_NormalTexture);
-                this.dirtyFlag &= ~NormalTextureDirtyFlag;
+                this._NormalMapParameter.SetValue(_NormalMap);
+                this.dirtyFlag &= ~NormalMapDirtyFlag;
             }
 
         }
@@ -157,7 +157,7 @@ namespace Nine.Graphics.ScreenEffects
             this._Weight = cloneSource._Weight;
             this._pixelSize = cloneSource._pixelSize;
             this._delta = cloneSource._delta;
-            this._NormalTexture = cloneSource._NormalTexture;
+            this._NormalMap = cloneSource._NormalMap;
 
         }
         #endregion

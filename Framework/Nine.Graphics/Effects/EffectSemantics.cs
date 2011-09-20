@@ -48,7 +48,7 @@ namespace Nine.Graphics.Effects
         Opacity,
         Environment,
         EnvironmentNormal,
-
+        
         Normal,
         Height,
 

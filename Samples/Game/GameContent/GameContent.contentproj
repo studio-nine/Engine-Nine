@@ -39,15 +39,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Effects\SkinnedEffect.xml">
-      <Link>Effects\SkinnedEffect.xml</Link>
-      <Name>SkinnedEffect</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>LinkedEffectProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\ParticleEffects\Galaxy.xml">
       <Link>Galaxy.xml</Link>
       <Name>Galaxy</Name>
@@ -95,53 +86,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Terrain\2.bmp">
-      <Link>Terrain\2.bmp</Link>
-      <Name>2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="..\..\Content\Terrain\3.bmp">
-      <Link>Terrain\3.bmp</Link>
-      <Name>3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="..\..\Content\Terrain\Splat.xml">
-      <Link>Terrain\Splat.xml</Link>
-      <Name>Splat</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>SplatterTextureProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Content\Terrain\TerrainEffect.xml">
-      <Link>Terrain\TerrainEffect.xml</Link>
-      <Name>TerrainEffect</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>LinkedEffectProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\Terrain\checker.bmp">
       <Link>Terrain\checker.bmp</Link>
       <Name>checker</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Content\Terrain\grass.dds">
-      <Link>Terrain\grass.dds</Link>
-      <Name>grass</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="..\..\Content\Terrain\grass_n.dds">
-      <Link>Terrain\grass_n.dds</Link>
-      <Name>grass_n</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -156,15 +103,6 @@
       <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
       <ProcessorParameters_DefaultEffect>SkinnedEffect</ProcessorParameters_DefaultEffect>
       <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Content\Effects\ShadowNormalSkinnedEffect.xml">
-      <Link>Effects\ShadowNormalSkinnedEffect.xml</Link>
-      <Name>ShadowNormalSkinnedEffect</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>LinkedEffectProcessor</Processor>
-      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +126,7 @@
       <Link>Scene.xml</Link>
       <Name>Scene</Name>
       <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
+      <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
@@ -212,20 +150,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Models\Terrain\TerrainTex.png">
-      <Link>Terrain\TerrainTex.png</Link>
-      <Name>TerrainTex</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
+    <Compile Include="..\..\Content\Shaders\cage.fx">
+      <Link>cage.fx</Link>
+      <Name>cage</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>CustomEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Textures\box.dds">
-      <Link>Terrain\box.dds</Link>
-      <Name>box</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+    <Compile Include="..\..\Content\Worlds\Scene.WindowsPhone.xml">
+      <Link>Scene.WindowsPhone.xml</Link>
+      <Name>Scene.WindowsPhone</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

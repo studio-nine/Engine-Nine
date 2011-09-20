@@ -57,6 +57,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
+    public partial class DetailTextureEffectPartContent : LinkedEffectPartContent
+    {
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.DetailTexture); }
+        }
+    }
+
     public partial class DeferredLightsEffectPartContent : LinkedEffectPartContent
     {
         protected internal override void Validate(ContentProcessorContext context)
@@ -168,13 +176,52 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class SplatterTextureEffectPartContent : LinkedEffectPartContent
     {
+        [ContentSerializer(Optional=true)]
+        public bool TextureXEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool TextureYEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool TextureZEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool TextureWEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool NormalMapXEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool NormalMapYEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool NormalMapZEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool NormalMapWEnabled { get; set; }
+
+        partial void OnCreate()
+        {
+            TextureXEnabled = true;
+            TextureYEnabled = true;
+            TextureZEnabled = true;
+            TextureWEnabled = true;
+        }
+        
         public override string Code
         {
             get 
             {
-                string operation = EffectParts.Any(p => p != this && p is SplatterTextureEffectPartContent &&
-                                        EffectParts.IndexOf(p) < EffectParts.IndexOf(this)) ? "+" : "*";
-                return Encoding.UTF8.GetString(LinkedEffectParts.SplatterTexture).Replace("{$OPERATION}", operation);
+                bool normalMapped = NormalMapXEnabled || NormalMapYEnabled || NormalMapZEnabled || NormalMapWEnabled;
+                return Encoding.UTF8.GetString(normalMapped ? LinkedEffectParts.NormalMappedSplatterTexture : LinkedEffectParts.SplatterTexture)
+                               .Replace("{$HASX}", TextureXEnabled ? "" : "//")
+                               .Replace("{$HASY}", TextureYEnabled ? "" : "//")
+                               .Replace("{$HASZ}", TextureZEnabled ? "" : "//")
+                               .Replace("{$HASW}", TextureWEnabled ? "" : "//")
+                               .Replace("{$HASNORMALX}", NormalMapXEnabled ? "" : "//")
+                               .Replace("{$HASNORMALY}", NormalMapYEnabled ? "" : "//")
+                               .Replace("{$HASNORMALZ}", NormalMapZEnabled ? "" : "//")
+                               .Replace("{$HASNORMALW}", NormalMapWEnabled ? "" : "//");
             }
         }
     }

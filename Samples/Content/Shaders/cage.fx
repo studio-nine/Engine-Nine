@@ -148,7 +148,7 @@ technique wires <
     > {        
         VertexShader = compile vs_2_0 mainVS();
         ZEnable = true;
-        ZWriteEnable = true;
+        ZWriteEnable = false;
         CullMode = CW;
 		AlphaBlendEnable = true;
 		SrcBlend = One;
@@ -160,7 +160,7 @@ technique wires <
     > {        
         VertexShader = compile vs_2_0 mainVS();
         ZEnable = true;
-        ZWriteEnable = true;
+        ZWriteEnable = false;
         CullMode = CCW;
 		AlphaBlendEnable = true;
 		SrcBlend = One;

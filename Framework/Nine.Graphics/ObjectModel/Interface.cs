@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ParticleEffects;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics.ObjectModel

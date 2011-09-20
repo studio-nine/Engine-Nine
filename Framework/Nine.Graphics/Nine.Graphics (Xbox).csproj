@@ -95,10 +95,12 @@
     <Compile Include="Effects\CustomMaterial.cs" />
     <Compile Include="Effects\EffectAnnotations.cs" />
     <Compile Include="Effects\EffectParts\DeferredLightEffectPart.cs" />
+    <Compile Include="Effects\EffectParts\DetailTextureEffectPart.cs" />
     <Compile Include="Effects\EffectParts\EmissiveMapEffectPart.cs" />
     <Compile Include="Effects\EffectParts\SpecularMapEffectPart.cs" />
     <Compile Include="Effects\EffectSemantics.cs" />
     <Compile Include="Effects\LinkedMaterial.cs" />
+    <Compile Include="Effects\Materials.cs" />
     <Compile Include="Effects\ShadowEffect.cs">
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
@@ -107,7 +109,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="Materials.cs" />
+    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\AmbientLight.HiDef.cs">
       <DependentUpon>AmbientLight.cs</DependentUpon>
@@ -123,6 +125,7 @@
     <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
     <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
     <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="ObjectModel\Fog.cs" />
     <Compile Include="ObjectModel\LightEngine.cs" />
     <Compile Include="ObjectModel\ModelBatchExtensions.cs" />
     <Compile Include="ObjectModel\PointLight.cs" />
@@ -138,13 +141,11 @@
     <Compile Include="ObjectModel\DisplayObject.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />
     <Compile Include="ObjectModel\GraphicsContext.cs" />
-    <Compile Include="ObjectModel\GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\GraphicsSettings.cs" />
     <Compile Include="ObjectModel\GraphicsStatistics.cs" />
     <Compile Include="ObjectModel\Interface.cs" />
     <Compile Include="ObjectModel\Light.cs" />
     <Compile Include="ObjectModel\SkyBox.cs" />
-    <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Effects\Deferred\DeferredPointLight.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -448,12 +449,10 @@
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
     <Compile Include="ParticleEffects\ParticleVertex.cs" />
     <Compile Include="VertexPositionNormalDualTexture.cs" />
-    <Compile Include="VertexPositionNormalTangentTexture.cs" />
     <Compile Include="Effects\DepthEffect.cs">
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Effects\ShadowMap.cs" />
-    <Compile Include="VertexPositionColorNormalTangentTexture.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

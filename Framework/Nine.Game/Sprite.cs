@@ -8,10 +8,10 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
@@ -19,13 +19,13 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine
 {
     /// <summary>
-    /// Defines an object that has a position, rotation and scale.
+    /// Defines an 2D sprite that has a position, rotation and scale.
     /// </summary>
     [Serializable]
-    public class WorldObject : IWorldObject
+    public class Sprite : GameObjectContainer
     {
         #region Position
-        public Vector3 Position
+        public Vector2 Position
         {
             get { return position; }
             set 
@@ -33,7 +33,7 @@ namespace Nine
                 if (position != value)
                 {
                     transformNeedsUpdate = true;
-                    Vector3 oldValue = position;
+                    Vector2 oldValue = position;
                     position = value;
                     if (PositionChanged != null)
                         PositionChanged(this, EventArgs.Empty);
@@ -41,7 +41,10 @@ namespace Nine
                 }
             }
         }
-        private Vector3 position;
+        private Vector2 position;
+
+        public event EventHandler<EventArgs> PositionChanged;
+        protected virtual void OnPositionChanged(Vector2 oldValue) { }
         #endregion
 
         #region Rotation
@@ -62,6 +65,9 @@ namespace Nine
             }
         }
         private float rotation;
+
+        public event EventHandler<EventArgs> RotationChanged;
+        protected virtual void OnRotationChanged(float oldValue) { }
         #endregion
 
         #region Scale
@@ -82,6 +88,9 @@ namespace Nine
             }
         }
         private float scale = 1;
+
+        public event EventHandler<EventArgs> ScaleChanged;
+        protected virtual void OnScaleChanged(float oldValue) { }
         #endregion
 
         #region Transform
@@ -97,7 +106,6 @@ namespace Nine
                     Matrix.Multiply(ref transform, ref temp, out transform);
                     transform.M41 = position.X;
                     transform.M42 = position.Y;
-                    transform.M43 = position.Z;
                     transformNeedsUpdate = false;
                 }
                 return transform;
@@ -106,34 +114,5 @@ namespace Nine
         private Matrix transform = Matrix.Identity;
         private bool transformNeedsUpdate = false;
         #endregion
-
-        #region Template
-        public Template Template
-        {
-            get { return template; }
-            set
-            {
-                if (template != value)
-                {
-                    Template oldValue = template;
-                    template = value;
-                    if (TemplateChanged != null)
-                        TemplateChanged(this, EventArgs.Empty);
-                    OnTemplateChanged(oldValue);
-                }
-            }
-        }
-        private Template template;
-        #endregion
-
-        public event EventHandler<EventArgs> PositionChanged;
-        public event EventHandler<EventArgs> RotationChanged;
-        public event EventHandler<EventArgs> ScaleChanged;
-        public event EventHandler<EventArgs> TemplateChanged;        
-
-        protected virtual void OnPositionChanged(Vector3 oldValue) { }
-        protected virtual void OnRotationChanged(float oldValue) { }
-        protected virtual void OnScaleChanged(float oldValue) { }
-        protected virtual void OnTemplateChanged(Template oldValue) { }
     }
 }

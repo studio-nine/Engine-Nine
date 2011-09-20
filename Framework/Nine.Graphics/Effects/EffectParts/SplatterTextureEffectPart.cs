@@ -20,7 +20,7 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    internal class SplatterTextureEffectPart : LinkedEffectPart, IEffectSplatterTexture
+    internal class SplatterTextureEffectPart : LinkedEffectPart
     {
         private uint DirtyMask = 0;
 
@@ -51,6 +51,22 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter maskParameter;
         internal const uint maskDirtyMask = 1 << 6;
 
+        private Texture2D normalTextureX;
+        private EffectParameter normalTextureXParameter;
+        private const uint normalTextureXDirtyMask = 1 << 7;
+
+        private Texture2D normalTextureY;
+        private EffectParameter normalTextureYParameter;
+        private const uint normalTextureYDirtyMask = 1 << 8;
+
+        private Texture2D normalTextureZ;
+        private EffectParameter normalTextureZParameter;
+        private const uint normalTextureZDirtyMask = 1 << 9;
+
+        private Texture2D normalTextureW;
+        private EffectParameter normalTextureWParameter;
+        private const uint normalTextureWDirtyMask = 1 << 10;
+
         [ContentSerializer(Optional = true)]
         public Texture2D TextureX
         {
@@ -77,6 +93,34 @@ namespace Nine.Graphics.Effects.EffectParts
         {
             get { return textureW; }
             set { if (textureW != value) { textureW = value; DirtyMask |= textureWDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public  Texture2D  NormalMapX
+        {
+            get { return normalTextureX; }
+            set { if (normalTextureX != value) { normalTextureX = value; DirtyMask |= normalTextureXDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public  Texture2D  NormalMapY
+        {
+            get { return normalTextureY; }
+            set { if (normalTextureY != value) { normalTextureY = value; DirtyMask |= normalTextureYDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public  Texture2D  NormalMapZ
+        {
+            get { return normalTextureZ; }
+            set { if (normalTextureZ != value) { normalTextureZ = value; DirtyMask |= normalTextureZDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public  Texture2D  NormalMapW
+        {
+            get { return normalTextureW; }
+            set { if (normalTextureW != value) { normalTextureW = value; DirtyMask |= normalTextureWDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
@@ -136,6 +180,38 @@ namespace Nine.Graphics.Effects.EffectParts
                 DirtyMask &= ~textureWDirtyMask;
             }
 
+            if ((DirtyMask & normalTextureXDirtyMask) != 0)
+            {
+                if (normalTextureXParameter == null)
+                    normalTextureXParameter = GetParameter("NormalMapX");
+                normalTextureXParameter.SetValue(normalTextureX);
+                DirtyMask &= ~normalTextureXDirtyMask;
+            }
+
+            if ((DirtyMask & normalTextureYDirtyMask) != 0)
+            {
+                if (normalTextureYParameter == null)
+                    normalTextureYParameter = GetParameter("NormalMapY");
+                normalTextureYParameter.SetValue(normalTextureY);
+                DirtyMask &= ~normalTextureYDirtyMask;
+            }
+
+            if ((DirtyMask & normalTextureZDirtyMask) != 0)
+            {
+                if (normalTextureZParameter == null)
+                    normalTextureZParameter = GetParameter("NormalMapZ");
+                normalTextureZParameter.SetValue(normalTextureZ);
+                DirtyMask &= ~normalTextureZDirtyMask;
+            }
+
+            if ((DirtyMask & normalTextureWDirtyMask) != 0)
+            {
+                if (normalTextureWParameter == null)
+                    normalTextureWParameter = GetParameter("NormalMapW");
+                normalTextureWParameter.SetValue(normalTextureW);
+                DirtyMask &= ~normalTextureWDirtyMask;
+            }
+
             if ((DirtyMask & splatterTextureScaleDirtyMask) != 0)
             {
                 if (splatterTextureScaleParameter == null)
@@ -175,6 +251,10 @@ namespace Nine.Graphics.Effects.EffectParts
             effectPart.TextureY = TextureY;
             effectPart.TextureZ = TextureZ;
             effectPart.TextureW = TextureW;
+            effectPart.NormalMapX = NormalMapX;
+            effectPart.NormalMapY = NormalMapY;
+            effectPart.NormalMapZ = NormalMapZ;
+            effectPart.NormalMapW = NormalMapW;
             effectPart.SplatterTexture = SplatterTexture;
             effectPart.SplatterTextureScale = SplatterTextureScale;            
         }
@@ -187,6 +267,10 @@ namespace Nine.Graphics.Effects.EffectParts
                 TextureY = TextureY,
                 TextureZ = TextureZ,
                 TextureW = TextureW,
+                NormalMapX = NormalMapX,
+                NormalMapY = NormalMapY,
+                NormalMapZ = NormalMapZ,
+                NormalMapW = NormalMapW,
                 SplatterTexture = SplatterTexture,
                 SplatterTextureScale = SplatterTextureScale,
             };
