@@ -445,7 +445,14 @@ namespace Nine
     /// </summary>
     public class InputComponent : IUpdateable
     {
+        public enum RaiseStrategy
+        {
+            Tunneling,
+            Bubbling
+        }
+
         #region Field
+
         internal List<WeakReference> inputs = new List<WeakReference>();
 
         /// <summary>
@@ -496,6 +503,8 @@ namespace Nine
         /// </summary>
         private const float DoubleClickInterval = 0.25f;
 
+        public RaiseStrategy RaisingStrategy { get; set; }
+
 #if WINDOWS
         private bool leftDown = false;
         private bool rightDown = false;
@@ -527,6 +536,7 @@ namespace Nine
         public InputComponent()
         {
             Current = this;
+            RaisingStrategy = RaiseStrategy.Tunneling;
         }
 
         /// <summary>
@@ -536,6 +546,7 @@ namespace Nine
         public InputComponent(IntPtr handle)
         {
             Current = this;
+            RaisingStrategy = RaiseStrategy.Tunneling;
 #if WINDOWS
             Mouse.WindowHandle = handle;
             control = Form.FromHandle(handle);
@@ -843,18 +854,38 @@ namespace Nine
         #region Raise Events
         private void ForEach(Predicate<Input> action)
         {
-            for (int i = 0; i < inputs.Count; i++)
+            if (RaisingStrategy == RaiseStrategy.Tunneling)
             {
-                var input = inputs[i].Target as Input;
-                if (input != null)
+                for (int i = 0; i < inputs.Count; i++)
                 {
-                    if (action(input))
-                        break;
+                    var input = inputs[i].Target as Input;
+                    if (input != null)
+                    {
+                        if (action(input))
+                            break;
+                    }
+                    else
+                    {
+                        inputs.RemoveAt(i);
+                        i--;
+                    }
                 }
-                else
+            }
+            else
+            {
+                for (int i = inputs.Count - 1; i >= 0; i--)
                 {
-                    inputs.RemoveAt(i);
-                    i--;
+                    var input = inputs[i].Target as Input;
+                    if (input != null)
+                    {
+                        if (action(input))
+                            break;
+                    }
+                    else
+                    {
+                        inputs.RemoveAt(i);
+                        i++;
+                    }
                 }
             }
         }
