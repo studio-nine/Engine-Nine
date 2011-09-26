@@ -21,36 +21,42 @@ using Nine.Content.Pipeline.Processors;
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
 {
-    partial class DrawableSurfaceContent
+    partial class DrawableModelContent
     {
         [ContentSerializer(Optional = true)]
         public virtual Vector3 Position
         {
             get { return position; }
-            set { position = value; Transform = Matrix.CreateTranslation(value); }
+            set { position = value; UpdateTransform(); }
         }
         Vector3 position;
 
+        /// <summary>
+        /// Gets or sets the eular rotation in degrees.
+        /// </summary>
         [ContentSerializer(Optional = true)]
-        public virtual Vector2 TextureScale
+        public virtual Vector3 Rotation
         {
-            get { return textureScale; }
-            set { textureScale = value; UpdateTextureTransform(); }
+            get { return rotation; }
+            set { rotation = value; }     
         }
-        Vector2 textureScale = Vector2.One;
+        Vector3 rotation;
 
         [ContentSerializer(Optional = true)]
-        public virtual Vector2 TextureOffset
+        public virtual Vector3 Scale
         {
-            get { return textureOffset; }
-            set { textureOffset = value; UpdateTextureTransform(); }
+            get { return scale; }
+            set { scale = value; }
         }
-        Vector2 textureOffset = Vector2.Zero;
-        
-        private void UpdateTextureTransform()
+        Vector3 scale = Vector3.One;
+                
+        private void UpdateTransform()
         {
-            TextureTransform = Nine.Graphics.TextureTransform.CreateScale(textureScale.X, textureScale.Y) *
-                               Nine.Graphics.TextureTransform.CreateTranslation(textureOffset.X, textureOffset.Y);
+            Transform = Matrix.CreateScale(scale) *
+                        Matrix.CreateRotationX(MathHelper.ToRadians(rotation.X)) *
+                        Matrix.CreateRotationY(MathHelper.ToRadians(rotation.Y)) *
+                        Matrix.CreateRotationZ(MathHelper.ToRadians(rotation.Z)) *
+                        Matrix.CreateTranslation(position);
         }
     }
 }

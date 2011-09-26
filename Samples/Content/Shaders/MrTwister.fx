@@ -173,7 +173,7 @@ technique ps11 <
 	pass p0 <
 	string Script = "Draw=geometry;";
 > {		
-		VertexShader = compile vs_1_1 MrWiggleVS();
+		VertexShader = compile vs_2_0 MrWiggleVS();
 		ZEnable = true;
 		ZWriteEnable = true;
 		CullMode = None;

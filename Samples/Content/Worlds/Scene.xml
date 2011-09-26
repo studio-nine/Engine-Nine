@@ -51,10 +51,11 @@
             </Item>
           </Layers>
         </Material>
+        <Name>Terrain</Name>
         <PatchSegmentCount>8</PatchSegmentCount>
-        <Position>-30 -80 0</Position>
-        <TextureTransform>8 0 0 0 0 8 0 0 0 0 1 0 0 0 0 1</TextureTransform>
         <VertexType>VertexPositionNormalTangentBinormalTexture</VertexType>
+        <Position>-30 -80 0</Position>
+        <TextureScale>0.125 0.125</TextureScale>
       </Item>
       
       
@@ -66,7 +67,7 @@
           <TextureEnabled>true</TextureEnabled>
         </Material>
         <Model>Models\Dude</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -10 -10 10 1</Transform>
+        <Position>-10 -10 10</Position>
       </Item>
 
       <Item Type="nine:DrawableModelContent">
@@ -74,7 +75,7 @@
           <Alpha>0.9</Alpha>
         </Material>
         <Model>Models\Dude</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -5 -10 10 1</Transform>
+        <Position>-5 -10 10</Position>
       </Item>
 
 
@@ -86,22 +87,23 @@
           <FresnelFactor>1</FresnelFactor>
         </Material>
         <Model>Models\Dude</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 -10 10 1</Transform>
+        <Position>0 -10 10</Position>
+        <Scale>1.2 1.2 1.2</Scale>
       </Item>
 
 
       <Item Type="nine:DrawableModelContent">
         <Model>Models\Tank</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 -10 0 10 1</Transform>
+        <Position>-10 0 10</Position>
       </Item>
-      
+
       <Item Type="nine:DrawableModelContent">
         <Material Type="fx:AlphaTestMaterialContent">
           <AlphaFunction>Greater</AlphaFunction>
           <ReferenceAlpha>128</ReferenceAlpha>
         </Material>
         <Model>Models\AlphaPalm</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 5 -10 10 1</Transform>
+        <Position>5 -10 10</Position>
       </Item>
 
 
@@ -110,7 +112,8 @@
           <Texture2>flake</Texture2>
         </Material>
         <Model>Models\Dude</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 10 -10 10 1</Transform>
+        <Position>10 -10 10</Position>
+        <Rotation>0 0 90</Rotation>
       </Item>
 
 
@@ -131,7 +134,7 @@
             </Material>
           </Item>
         </ModelParts>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 5 0 10 1</Transform>
+        <Position>5 0 10</Position>
       </Item>
       
       <Item Type="nine:DrawableModelContent">
@@ -142,7 +145,7 @@
           <SkinningEnabled>true</SkinningEnabled>
         </Material>
         <Model>Models\Dude</Model>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 15 0 10 1</Transform>
+        <Position>15 0 10</Position>
       </Item>
 
       
@@ -159,6 +162,7 @@
       <Item Type="nine:DirectionalLightContent">
         <CastShadow>true</CastShadow>
         <DiffuseColor>0.8 0.8 0.8</DiffuseColor>
+        <Direction>-1 -1 -1</Direction>
       </Item>
 
       <!--
@@ -174,12 +178,12 @@
       <Item Type="nine:PointLightContent">
         <DiffuseColor>1 1 1</DiffuseColor>
         <Range>100</Range>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 0 0 10 1</Transform>
+        <Position>0 0 10</Position>
       </Item>
       <Item Type="nine:SpotLightContent">
         <DiffuseColor>1 1 1</DiffuseColor>
         <Range>10</Range>
-        <Transform>1 0 0 0 0 1 0 0 0 0 1 0 10 10 15 1</Transform>
+        <Position>0 0 10</Position>
       </Item>
       -->
       

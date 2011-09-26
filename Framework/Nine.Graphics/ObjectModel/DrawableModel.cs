@@ -320,11 +320,6 @@ namespace Nine.Graphics.ObjectModel
         /// 	<c>true</c> if this instance is animated; otherwise, <c>false</c>.
         /// </value>
         public bool IsAnimated { get; private set; }
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
         #endregion
 
         #region Initialization

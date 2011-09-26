@@ -795,6 +795,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Enabled = input.ReadObject<System.Boolean>();
             existingInstance.CastShadow = input.ReadObject<System.Boolean>();
             existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -821,6 +822,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Enabled = input.ReadObject<System.Boolean>();
             existingInstance.CastShadow = input.ReadObject<System.Boolean>();
             existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -841,6 +843,7 @@ namespace Nine.Graphics.ObjectModel
                 existingInstance = new DisplayObject();
             }
             existingInstance.Children = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -875,6 +878,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.MaxReceivedShadows = input.ReadObject<System.Int32>();
             existingInstance.MultiPassShadowEnabled = input.ReadObject<System.Boolean>();
             existingInstance.modelPartsSerializer = input.ReadObject<Nine.Graphics.ObjectModel.DrawableModelPart[]>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -917,6 +921,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
             existingInstance.ParticleEffect = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
             existingInstance.Visible = input.ReadObject<System.Boolean>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -939,7 +944,6 @@ namespace Nine.Graphics.ObjectModel
                 existingInstance = new DrawableSurface(graphicsDeviceService.GraphicsDevice);
             }
             existingInstance.PatchSegmentCount = input.ReadObject<System.Int32>();
-            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.TextureTransform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
             existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
@@ -951,7 +955,8 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.LightingEnabled = input.ReadObject<System.Boolean>();
             existingInstance.CastShadow = input.ReadObject<System.Boolean>();
             existingInstance.ReceiveShadow = input.ReadObject<System.Boolean>();
-            existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
         }
@@ -1017,6 +1022,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Enabled = input.ReadObject<System.Boolean>();
             existingInstance.CastShadow = input.ReadObject<System.Boolean>();
             existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -1038,6 +1044,7 @@ namespace Nine.Graphics.ObjectModel
             }
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
             existingInstance.Visible = input.ReadObject<System.Boolean>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;
@@ -1069,6 +1076,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Enabled = input.ReadObject<System.Boolean>();
             existingInstance.CastShadow = input.ReadObject<System.Boolean>();
             existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
 
             return existingInstance;

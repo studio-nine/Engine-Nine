@@ -24,10 +24,22 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     public abstract class Transformable : ISpatialQueryable
     {
+        #region Properties
         /// <summary>
         /// Gets the parent of this object.
         /// </summary>
         public Transformable Parent { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the name of this transformable.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets any custom data.
+        /// </summary>
+        public object Tag { get; set; }
+        #endregion
 
         #region BoundingBox
         /// <summary>
@@ -64,10 +76,9 @@ namespace Nine.Graphics.ObjectModel
             {
                 Matrix oldValue = transform;
                 transform = value;
+                MarkAbsoluteTransformsDirty();
                 OnTransformChanged();
                 OnBoundingBoxChanged();
-                absoluteTransform = transform;
-                MarkChildrenAbsoluteTransformsDirty();
             }
         }
         private Matrix transform = Matrix.Identity;
@@ -97,8 +108,9 @@ namespace Nine.Graphics.ObjectModel
                 if (isAbsoluteTransformDirty)
                 {
                     if (Parent == null)
-                        throw new InvalidOperationException();
-                    absoluteTransform = transform * Parent.AbsoluteTransform;
+                        absoluteTransform = transform;
+                    else
+                        absoluteTransform = transform * Parent.AbsoluteTransform;
                 }
                 return absoluteTransform; 
             } 
@@ -106,8 +118,9 @@ namespace Nine.Graphics.ObjectModel
         private Matrix absoluteTransform = Matrix.Identity;
         private bool isAbsoluteTransformDirty = false; 
 
-        private void MarkChildrenAbsoluteTransformsDirty()
+        private void MarkAbsoluteTransformsDirty()
         {
+            isAbsoluteTransformDirty = true;
             System.Collections.IEnumerable enumerable = this as System.Collections.IEnumerable;
             if (enumerable != null)
             {
@@ -117,7 +130,7 @@ namespace Nine.Graphics.ObjectModel
                     if (transformable != null)
                     {
                         transformable.isAbsoluteTransformDirty = true;
-                        transformable.MarkChildrenAbsoluteTransformsDirty();
+                        transformable.MarkAbsoluteTransformsDirty();
                     }
                 }
             }

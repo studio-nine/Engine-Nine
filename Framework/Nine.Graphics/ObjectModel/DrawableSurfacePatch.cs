@@ -102,7 +102,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the transform matrix used to draw the patch.
         /// </summary>
-        public Matrix Transform { get { return Matrix.CreateTranslation(Surface.Position); } }
+        public Matrix Transform { get { return Matrix.CreateTranslation(Surface.AbsolutePosition); } }
 
         /// <summary>
         /// Gets the parent surface.
@@ -198,8 +198,8 @@ namespace Nine.Graphics.ObjectModel
         {
             BoundingBox box;
 
-            box.Min = baseBounds.Min + Surface.Position;
-            box.Max = baseBounds.Max + Surface.Position;
+            box.Min = baseBounds.Min + Surface.AbsolutePosition;
+            box.Max = baseBounds.Max + Surface.AbsolutePosition;
 
             BoundingBox = box;
             
@@ -208,7 +208,7 @@ namespace Nine.Graphics.ObjectModel
             offset.Y = Y * Surface.Step * SegmentCount;
             offset.Z = 0;
 
-            Position = Surface.Position + offset;
+            Position = Surface.AbsolutePosition + offset;
             
             offset.X = 0.5f * Surface.Step * SegmentCount;
             offset.Y = 0.5f * Surface.Step * SegmentCount;

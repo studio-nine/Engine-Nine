@@ -26,7 +26,7 @@ namespace Nine.Graphics.ObjectModel
     {
         /// <summary>
         /// Gets or sets whether the drawable is visible.
-        /// </summary>
+        /// </summary>s
         [ContentSerializer]
         public bool Visible { get; set; }
         
@@ -39,11 +39,6 @@ namespace Nine.Graphics.ObjectModel
         /// When overriden, returns the material used by this drawable.
         /// </summary>
         protected virtual Material MaterialValue { get { return null; } }
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Drawable"/> class.

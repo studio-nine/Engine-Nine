@@ -21,36 +21,30 @@ using Nine.Content.Pipeline.Processors;
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
 {
-    partial class DrawableSurfaceContent
+    partial class SpotLightContent
     {
         [ContentSerializer(Optional = true)]
         public virtual Vector3 Position
         {
             get { return position; }
-            set { position = value; Transform = Matrix.CreateTranslation(value); }
+            set { position = value; UpdateTransform(); }
         }
         Vector3 position;
 
         [ContentSerializer(Optional = true)]
-        public virtual Vector2 TextureScale
+        public virtual Vector3 Direction
         {
-            get { return textureScale; }
-            set { textureScale = value; UpdateTextureTransform(); }
+            get { return direction; }
+            set { direction = value; }
         }
-        Vector2 textureScale = Vector2.One;
+        Vector3 direction = Vector3.Forward;
 
-        [ContentSerializer(Optional = true)]
-        public virtual Vector2 TextureOffset
+        private void UpdateTransform()
         {
-            get { return textureOffset; }
-            set { textureOffset = value; UpdateTextureTransform(); }
-        }
-        Vector2 textureOffset = Vector2.Zero;
-        
-        private void UpdateTextureTransform()
-        {
-            TextureTransform = Nine.Graphics.TextureTransform.CreateScale(textureScale.X, textureScale.Y) *
-                               Nine.Graphics.TextureTransform.CreateTranslation(textureOffset.X, textureOffset.Y);
+            if (direction.X == 0 && direction.Y == 0)
+                Transform = Matrix.CreateLookAt(position, position + direction, Vector3.Up);
+            else
+                Transform = Matrix.CreateLookAt(position, position + direction, Vector3.UnitZ);
         }
     }
 }

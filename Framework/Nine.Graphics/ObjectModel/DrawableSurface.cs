@@ -24,7 +24,7 @@ namespace Nine.Graphics.ObjectModel
     /// The up axis of the surface is Vector.UnitZ.
     /// </summary>
     [ContentSerializable]
-    public class DrawableSurface : ISpatialQueryable, IDrawableObject, ISurface, IPickable, IDisposable, IEnumerable<DrawableSurfacePatch>
+    public class DrawableSurface : Transformable, IDrawableObject, ISurface, IPickable, IDisposable, IEnumerable<DrawableSurfacePatch>
     {
         #region Properties
         /// <summary>
@@ -63,11 +63,6 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
         /// </summary>
         public int SegmentCountY { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the name of the surface.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets the size of the surface geometry in 3 axis.
@@ -224,62 +219,50 @@ namespace Nine.Graphics.ObjectModel
         ///   <c>true</c> if this model casts shadow; otherwise, <c>false</c>.
         /// </value>
         public bool ReceiveShadow { get; set; }
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
         #endregion
         
         #region ISpatialQueryable
         /// <summary>
-        /// Gets or sets the bottom left position of the surface.
+        /// Gets or sets the local bottom left position of the surface.
         /// </summary>
+        [ContentSerializerIgnore]
         public Vector3 Position
         {
-            get { return position; }
-            set
-            {
-                position = value;
-                Center = position + new Vector3(Size.X * 0.5f, Size.Y * 0.5f, 0);
-                for (int i = 0; i < Patches.Count; i++)
-                    Patches[i].UpdatePosition();
-                if (BoundingBoxChanged != null)
-                    BoundingBoxChanged(this, EventArgs.Empty);
-            }
+            get { return Transform.Translation; }
+            set { Transform = Matrix.CreateTranslation(value); }
         }
 
-        private Vector3 position;
-
         /// <summary>
-        /// Gets or sets the center position of the surface
+        /// Gets the absolute bottom left position of the surface.
         /// </summary>
-        public Vector3 Center { get; private set; }
+        public Vector3 AbsolutePosition
+        {
+            get { return AbsoluteTransform.Translation; }
+        }
+
+        protected override void OnTransformChanged()
+        {
+            for (int i = 0; i < Patches.Count; i++)
+                Patches[i].UpdatePosition();
+            base.OnTransformChanged();
+        }
 
         /// <summary>
         /// Gets the axis aligned bounding box of this surface.
         /// </summary>
-        public BoundingBox BoundingBox
+        public override BoundingBox BoundingBox
         {
             get
             {
                 BoundingBox box;
 
-                box.Min = boundingBox.Min + position;
-                box.Max = boundingBox.Max + position;
+                box.Min = boundingBox.Min + AbsolutePosition;
+                box.Max = boundingBox.Max + AbsolutePosition;
 
                 return box;
             }
         }
-
         private BoundingBox boundingBox;
-
-        /// <summary>
-        /// Occurs when the bounding box changed.
-        /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
-
-        object ISpatialQueryable.SpatialData { get; set; }
         #endregion
 
         #region Members
@@ -445,8 +428,7 @@ namespace Nine.Graphics.ObjectModel
         private void Invalidate()
         {
             boundingBox = Heightmap.BoundingBox;
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
+            OnBoundingBoxChanged();
 
             foreach (DrawableSurfacePatch patch in Patches)
             {
@@ -575,7 +557,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public float GetHeight(float x, float y)
         {
-            return Position.Z + Heightmap.GetHeight(x - Position.X, y - Position.Y);
+            return AbsolutePosition.Z + Heightmap.GetHeight(x - AbsolutePosition.X, y - AbsolutePosition.Y);
         }
 
         /// <summary>
@@ -591,7 +573,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public Vector3 GetNormal(float x, float y)
         {
-            return Heightmap.GetNormal(x - Position.X, y - Position.Y);
+            return Heightmap.GetNormal(x - AbsolutePosition.X, y - AbsolutePosition.Y);
         }
 
         /// <summary>
@@ -610,9 +592,9 @@ namespace Nine.Graphics.ObjectModel
         public bool TryGetHeightAndNormal(float x, float y, out float height, out Vector3 normal)
         {
             float baseHeight;
-            if (Heightmap.TryGetHeightAndNormal(x - Position.X, y - Position.Y, out baseHeight, out normal))
+            if (Heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, y - AbsolutePosition.Y, out baseHeight, out normal))
             {
-                height = baseHeight + Position.Z;
+                height = baseHeight + AbsolutePosition.Z;
                 return true;
             }
 

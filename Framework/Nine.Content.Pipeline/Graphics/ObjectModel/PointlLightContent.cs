@@ -21,7 +21,7 @@ using Nine.Content.Pipeline.Processors;
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
 {
-    partial class DrawableSurfaceContent
+    partial class PointLightContent
     {
         [ContentSerializer(Optional = true)]
         public virtual Vector3 Position
@@ -30,27 +30,5 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             set { position = value; Transform = Matrix.CreateTranslation(value); }
         }
         Vector3 position;
-
-        [ContentSerializer(Optional = true)]
-        public virtual Vector2 TextureScale
-        {
-            get { return textureScale; }
-            set { textureScale = value; UpdateTextureTransform(); }
-        }
-        Vector2 textureScale = Vector2.One;
-
-        [ContentSerializer(Optional = true)]
-        public virtual Vector2 TextureOffset
-        {
-            get { return textureOffset; }
-            set { textureOffset = value; UpdateTextureTransform(); }
-        }
-        Vector2 textureOffset = Vector2.Zero;
-        
-        private void UpdateTextureTransform()
-        {
-            TextureTransform = Nine.Graphics.TextureTransform.CreateScale(textureScale.X, textureScale.Y) *
-                               Nine.Graphics.TextureTransform.CreateTranslation(textureOffset.X, textureOffset.Y);
-        }
     }
 }

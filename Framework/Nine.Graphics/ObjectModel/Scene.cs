@@ -78,6 +78,7 @@ namespace Nine.Graphics.ObjectModel
         private SpatialQuery<object, IDrawableObject> shadowQuery;
         private SceneQuery<object> sceneQuery;
 
+        private List<ISpatialQueryable> objects = new List<ISpatialQueryable>();
         private List<ISpatialQueryable> objectsInViewFrustum = new List<ISpatialQueryable>();
         private List<IDrawableObject> drawablesInViewFrustum = new List<IDrawableObject>();
         private List<IDrawableObject> opaqueDrawablesInViewFrustum = new List<IDrawableObject>();
@@ -137,6 +138,7 @@ namespace Nine.Graphics.ObjectModel
             if (item == null)
                 throw new ArgumentNullException("item");
             sceneManager.Add(item);
+            objects.Add(item);
         }
 
         /// <summary>
@@ -146,7 +148,8 @@ namespace Nine.Graphics.ObjectModel
         {
             if (item == null)
                 throw new ArgumentNullException("item");
-            return sceneManager.Remove(item);
+            sceneManager.Remove(item);
+            return objects.Remove(item);
         }
 
         protected virtual void OnAdded(object sender, NotifyCollectionChangedEventArgs<ISpatialQueryable> e)
@@ -252,6 +255,7 @@ namespace Nine.Graphics.ObjectModel
         public void Clear()
         {
             sceneManager.Clear();
+            objects.Clear();
         }
 
         /// <summary>
@@ -259,12 +263,12 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public bool Contains(ISpatialQueryable item)
         {
-            return sceneManager.Contains(item);
+            return objects.Contains(item);
         }
 
         void ICollection<ISpatialQueryable>.CopyTo(ISpatialQueryable[] array, int arrayIndex)
         {
-            sceneManager.CopyTo(array, arrayIndex);
+            objects.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -272,22 +276,22 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public int Count 
         {
-            get { return sceneManager.Count; } 
+            get { return objects.Count; } 
         }
 
         bool ICollection<ISpatialQueryable>.IsReadOnly
         {
-            get { return sceneManager.IsReadOnly; } 
+            get { return false; } 
         }
 
         IEnumerator<ISpatialQueryable> IEnumerable<ISpatialQueryable>.GetEnumerator()
         {
-            return sceneManager.GetEnumerator();
+            return objects.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return sceneManager.GetEnumerator();
+            return objects.GetEnumerator();
         }
 
         public IEnumerable<ISpatialQueryable> FindAll(Vector3 position, float radius)
@@ -308,6 +312,23 @@ namespace Nine.Graphics.ObjectModel
         public IEnumerable<ISpatialQueryable> FindAll(BoundingFrustum frustum)
         {
             return sceneManager.FindAll(frustum);
+        }
+
+        public T Find<T>(string name)
+        {
+            var result = objects.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
+            if (result is T)
+                return (T)(object)result;
+            return default(T);
+        }
+
+        public IEnumerable<T> FindAll<T>(string name)
+        {
+            foreach (var result in objects.OfType<Transformable>().Where(t => t.Name == name))
+            {
+                if (result is T)
+                    yield return (T)(object)result;
+            }
         }
 
         public IEnumerable<T> FindAll<T>(Vector3 position, float radius)

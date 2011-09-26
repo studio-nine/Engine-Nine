@@ -129,6 +129,10 @@
     <Compile Include="Graphics\Effects\LinkedEffectBuilder.cs" />
     <Compile Include="Graphics\Effects\ModelMaterialContent.cs" />
     <Compile Include="Graphics\Effects\TerrainMaterialContent.cs" />
+    <Compile Include="Graphics\ObjectModel\SpotLightContent.cs" />
+    <Compile Include="Graphics\ObjectModel\PointlLightContent.cs" />
+    <Compile Include="Graphics\ObjectModel\DirectionalLightContent.cs" />
+    <Compile Include="Graphics\ObjectModel\DrawableModelContent.cs" />
     <Compile Include="Graphics\ObjectModel\FogContent.cs" />
     <Compile Include="Graphics\ObjectModel\DrawableSurfaceContent.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />

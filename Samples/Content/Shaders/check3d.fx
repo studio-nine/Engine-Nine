@@ -215,7 +215,7 @@ technique ps2_numeric <
 	pass p0  <
 		string Script = "Draw=geometry;";
 	> {		
-		VertexShader = compile vs_2_0 mainVS();
+		VertexShader = compile vs_3_0 mainVS();
 		ZEnable = true;
 		ZWriteEnable = true;
 		CullMode = None;

@@ -1605,6 +1605,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single Order { get; set; }
@@ -1664,6 +1670,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single Order { get; set; }
@@ -1712,6 +1724,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Collections.Generic.List<System.Object> Children { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
 
         /// <summary>
         /// 
@@ -1818,6 +1836,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean OverrideModelColors { get; set; }
@@ -1916,6 +1940,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableParticleEffect, Nine.Graphics")]
     public partial class DrawableParticleEffectContent
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -2029,13 +2059,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean ReceiveShadow { get; set; }
@@ -2045,6 +2068,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Microsoft.Xna.Framework.Matrix TextureTransform { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
         /// 
@@ -2071,9 +2100,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             LevelOfDetailStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
             LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             PatchSegmentCount = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("32");
-            Position = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             ReceiveShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             TextureTransform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             VertexType = (System.String)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.String)).ConvertFromInvariantString("Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture, Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553");
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             OnCreate();
@@ -2206,6 +2235,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single Order { get; set; }
@@ -2258,6 +2293,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.SkyBox, Nine.Graphics")]
     public partial class SkyBoxContent
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
@@ -2340,6 +2381,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         [System.ComponentModel.DefaultValue("0.7853982")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single InnerAngle { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
 
         /// <summary>
         /// 

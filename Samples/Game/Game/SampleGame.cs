@@ -90,6 +90,7 @@ namespace Game
 #else
             scene.Add(Content.Load<DisplayObject>("Scene"));
 #endif
+            var terrain = scene.Find<DrawableSurface>("Terrain");
 
             /*
             scene.Add(directionalLight = new DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(-1, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 1 });

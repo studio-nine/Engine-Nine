@@ -896,6 +896,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.Enabled);
             output.WriteObject(value.CastShadow);
             output.WriteObject(value.Order);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -925,6 +926,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.Enabled);
             output.WriteObject(value.CastShadow);
             output.WriteObject(value.Order);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -950,6 +952,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DisplayObjectContent value)
         {
             output.WriteObject(value.Children);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -989,6 +992,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.MaxReceivedShadows);
             output.WriteObject(value.MultiPassShadowEnabled);
             output.WriteObject(value.ModelParts);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -1041,6 +1045,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.Position);
             output.WriteObject(value.ParticleEffect);
             output.WriteObject(value.Visible);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -1066,7 +1071,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfaceContent value)
         {
             output.WriteObject(value.PatchSegmentCount);
-            output.WriteObject(value.Name);
             output.WriteObject(value.TextureTransform);
             output.WriteObject(value.Heightmap);
             output.WriteObject(value.VertexType);
@@ -1078,7 +1082,8 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.LightingEnabled);
             output.WriteObject(value.CastShadow);
             output.WriteObject(value.ReceiveShadow);
-            output.WriteObject(value.Position);
+            output.WriteObject(value.Name);
+            output.WriteObject(value.Transform);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1161,6 +1166,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.Enabled);
             output.WriteObject(value.CastShadow);
             output.WriteObject(value.Order);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -1187,6 +1193,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         {
             output.WriteObject(value.Texture);
             output.WriteObject(value.Visible);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 
@@ -1221,6 +1228,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.Enabled);
             output.WriteObject(value.CastShadow);
             output.WriteObject(value.Order);
+            output.WriteObject(value.Name);
             output.WriteObject(value.Transform);
         }
 

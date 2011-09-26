@@ -39,6 +39,7 @@ namespace Nine.Navigation
         private SeparationBehavior separation;
         private SteerableAvoidanceBehavior steerableAvoidance;
         private WallAvoidanceBehavior wallAvoidance;
+        private Queue<Vector3> waypoints;
 
         private ISpatialQuery<Navigator> myFriends;
         private ISpatialQuery<Navigator> myOpponents;
@@ -247,6 +248,7 @@ namespace Nine.Navigation
             steerable.Behaviors.Add(steerableAvoidance = new SteerableAvoidanceBehavior() { Enabled = false });
             steerable.Behaviors.Add(separation = new SeparationBehavior() { Enabled = false });
             steerable.Behaviors.Add(arrive = new ArriveBehavior() { Enabled = false });
+            waypoints = new Queue<Vector3>();
         }
 
         /// <summary>
@@ -274,7 +276,13 @@ namespace Nine.Navigation
         /// </summary>
         public void MoveAlong(IEnumerable<Vector3> wayPoints)
         {
-            throw new NotImplementedException();
+            this.waypoints.Clear();
+
+            foreach(Vector3 waypoint in wayPoints)
+                waypoints.Enqueue(waypoint);
+
+            if (this.waypoints.Count > 0)
+                MoveTo(waypoints.Dequeue());
         }
 
         /// <summary>
@@ -318,7 +326,13 @@ namespace Nine.Navigation
             if (steerable.Speed <= 0 && steerable.Force == Vector2.Zero)
             {
                 if (state == NavigatorState.Moving)
-                    Stop();
+                {
+                    if (waypoints.Count > 0)
+                        MoveTo(waypoints.Dequeue());
+                    else
+                        Stop();
+                }
+                    
                 return;
             }
 
