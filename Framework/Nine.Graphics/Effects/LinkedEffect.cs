@@ -138,6 +138,11 @@ namespace Nine.Graphics.Effects
         internal LinkedEffect(Effect cloneSource) : base(cloneSource) { }
 
         /// <summary>
+        /// Gets the linked effect used to render the graphics buffer in deferred lighting.
+        /// </summary>
+        public LinkedEffect DeferredEffect { get; internal set; }
+
+        /// <summary>
         /// Gets all the LinkedEffectPart that makes up this LinkedEffect.
         /// </summary>
         public LinkedEffectPartCollection EffectParts { get; internal set; }
@@ -439,7 +444,6 @@ namespace Nine.Graphics.Effects
 
         protected override LinkedEffect Read(ContentReader input, LinkedEffect existingInstance)
         {
-            // FIXME: Token isn't identical for the same shader.
             byte[] token = input.ReadObject<byte[]>();
             byte[] effectCode = input.ReadObject<byte[]>();
             string[] uniqueNames = input.ReadObject<string[]>();
@@ -473,6 +477,7 @@ namespace Nine.Graphics.Effects
             LinkedEffect.CurrentEffect = null;
 
             effect.EffectParts = new LinkedEffectPartCollection(parts);
+            effect.DeferredEffect = input.ReadObject<LinkedEffect>();
             return effect;
         }
     }

@@ -126,6 +126,7 @@
     <Compile Include="Graphics\ContentGraphics.cs" />
     <Compile Include="DefaultProcessorAttribute.cs" />
     <Compile Include="Graphics\Effects\BasicLinkedMaterialContent.cs" />
+    <Compile Include="Graphics\Effects\LinkedMaterialContent.cs" />
     <Compile Include="Graphics\Effects\LinkedEffectBuilder.cs" />
     <Compile Include="Graphics\Effects\ModelMaterialContent.cs" />
     <Compile Include="Graphics\Effects\TerrainMaterialContent.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Importers\ManifestImporter.cs" />
     <Compile Include="ContentProcessorContextExtensions.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />
+    <Compile Include="Processors\BasicLinkedMaterialProcessor.cs" />
     <Compile Include="Processors\ModelMaterialProcessor.cs" />
     <Compile Include="Processors\DefaultContentProcessor.cs" />
     <Compile Include="Processors\TerrainMaterialProcessor.cs" />
@@ -432,6 +434,9 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\Material.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredNormalMap.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredPixelShaderOutput.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\NormalMappedSplatterTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DetailTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLights.fragment" />

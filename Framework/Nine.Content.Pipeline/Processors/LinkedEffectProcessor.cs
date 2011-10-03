@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Content.Pipeline.Graphics.Effects;
+using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -42,7 +43,29 @@ namespace Nine.Content.Pipeline.Processors
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
                 return input;
             
+            // Process standard effect
+            Process(input, context, false);
+
+            // Process the deferred effect
+            var deferred = new LinkedEffectContent();
+            deferred.EffectParts.AddRange(input.EffectParts);
+            if (deferred.EffectParts.Any(part => part is DeferredLightsEffectPartContent))
+            {
+                Process(deferred, context, true);
+                input.DeferredEffect = deferred;
+            }
+            return input;
+        }
+
+        private void Process(LinkedEffectContent input, ContentProcessorContext context, bool deferred)
+        {
             StringBuilder content = new StringBuilder();
+
+            input.EffectParts.RemoveAll(part =>
+            {
+                part.EffectParts = input.EffectParts;
+                return deferred ? string.IsNullOrEmpty(part.DeferredCode) : string.IsNullOrEmpty(part.Code);
+            });
 
             foreach (LinkedEffectPartContent part in input.EffectParts)
             {
@@ -51,7 +74,7 @@ namespace Nine.Content.Pipeline.Processors
 
                 string filename = Path.Combine(context.IntermediateDirectory, Path.GetRandomFileName() + ".Fragment");
                 content.AppendLine(filename);
-                File.WriteAllText(filename, part.Code);
+                File.WriteAllText(filename, deferred ? part.DeferredCode : part.Code);
             }
 
             string identity = Path.GetRandomFileName();
@@ -62,7 +85,7 @@ namespace Nine.Content.Pipeline.Processors
 
             StitchedEffectImporter importer = new StitchedEffectImporter();
             StitchedEffectContent stitchedContent = importer.Import(resultStitchupFile, new LinkedEffectContentImporterContext(context));
-            
+
             StitchedEffectProcessor processor = new StitchedEffectProcessor();
             CompiledEffectContent compiledEffect = processor.Process(stitchedContent, context);
 
@@ -72,8 +95,6 @@ namespace Nine.Content.Pipeline.Processors
             input.Token = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(processor.EffectCode.ToString()));
 
             Disassemble(resultEffectFile, resultAsmFile, context);
-
-            return input;
         }
 
         private void Disassemble(string effectFile, string asmFile, ContentProcessorContext context)

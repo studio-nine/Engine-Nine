@@ -281,8 +281,8 @@ namespace Nine.Graphics
                         Vector3.Cross(edge4, edge3) +
                         Vector3.Cross(edge1, edge4));
 
-                    // Step 4: Set tangent data, just use edge1
-                    tangents[x + y * w] = Vector3.Normalize(edge1);
+                    // Step 4: Set tangent data
+                    tangents[x + y * w] = Vector3.Normalize(edge4);
                 }
             #endregion
 

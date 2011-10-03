@@ -86,4 +86,11 @@ namespace Nine.Graphics.Primitives
         }
     }
 
+    class CentrumInvert : Centrum
+    {
+        public CentrumInvert(GraphicsDevice graphics) : base(graphics)
+        {
+            InvertWindingOrder = true;
+        }
+    }
 }

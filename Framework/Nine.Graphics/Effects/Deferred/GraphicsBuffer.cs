@@ -33,12 +33,14 @@ namespace Nine.Graphics.Effects.Deferred
         RenderTarget2D depthBuffer;
         RenderTarget2D lightBuffer;
 
+        DepthStencilState greaterDepth;
+
         ClearEffect clearEffect;
         Quad clearQuad;
 
         Matrix view;
         Matrix projection;
-        Vector3 eyePosition;
+        BoundingFrustum viewFrustum;
         
         /// <summary>
         /// Gets the graphics device used by this effect.
@@ -132,6 +134,9 @@ namespace Nine.Graphics.Effects.Deferred
             this.NormalBufferFormat = SurfaceFormat.Color;
             this.DepthBufferFormat = SurfaceFormat.Single;
             this.LightBufferFormat = SurfaceFormat.Color;
+            this.viewFrustum = new BoundingFrustum(Matrix.Identity);
+
+            this.greaterDepth = new DepthStencilState { DepthBufferEnable = true, DepthBufferFunction = CompareFunction.Greater, DepthBufferWriteEnable = false };
         }
 
         /// <summary>
@@ -186,7 +191,7 @@ namespace Nine.Graphics.Effects.Deferred
 
             this.view = view;
             this.projection = projection;
-            this.eyePosition = Matrix.Invert(view).Translation;
+            this.viewFrustum.Matrix = view * projection;
 
             CreateLightBuffer();
 
@@ -207,7 +212,7 @@ namespace Nine.Graphics.Effects.Deferred
         {
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
-
+            
             IEffectTexture texture = light.Effect as IEffectTexture;
             if (texture != null)
             {
@@ -221,31 +226,27 @@ namespace Nine.Graphics.Effects.Deferred
                 matrices.View = view;
                 matrices.Projection = projection;
             }
+
+            light.Effect.CurrentTechnique.Passes[0].Apply();
             
             // Set our vertex declaration, vertex buffer, and index buffer.
             GraphicsDevice.SetVertexBuffer(light.VertexBuffer);
             GraphicsDevice.Indices = light.IndexBuffer;
-
+            
             // Draw the model, using the specified effect.
-            foreach (EffectPass effectPass in light.Effect.CurrentTechnique.Passes)
-            {
-                effectPass.Apply();
+            // Setup correct cull mode so that each pixel is rendered only once.
+            //
+            // NOTE: Setup cullmode after applying effect so that the world matrix of
+            //       DeferredSpotLight is alway updated before calling Contains.
+            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+            GraphicsDevice.DepthStencilState = greaterDepth;
 
-                // Setup correct cull mode so that each pixel is rendered only once.
-                //
-                // NOTE: Setup cullmode after applying effect so that the world matrix of
-                //       DeferredSpotLight is alway updated before calling Contains.
-                //
-                // FIXME: Testing against eye position is not accurate at all ???
-                //
-                // TODO: Test against near clip plane
-                GraphicsDevice.RasterizerState = light.Contains(eyePosition) ? RasterizerState.CullClockwise :
-                                                                               RasterizerState.CullCounterClockwise;
+            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, light.VertexBuffer.VertexCount, 0, light.IndexBuffer.IndexCount / 3);
+        }
 
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                                                     light.VertexBuffer.VertexCount, 0, 
-                                                     light.IndexBuffer.IndexCount / 3);
-            }
+        internal static BoundingBox BoxFromPlane(Vector3[] plane)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -354,7 +355,7 @@ namespace Nine.Graphics.Effects.Deferred
                     lightBuffer = null;
                 }
             }
-        }
+        }        
 
         ~GraphicsBuffer()
         {

@@ -20,6 +20,9 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
+    /// <summary>
+    /// FIXME: This is an internal class, how to change these textures at runtime.
+    /// </summary>
     internal class SplatterTextureEffectPart : LinkedEffectPart
     {
         private uint DirtyMask = 0;
@@ -66,6 +69,54 @@ namespace Nine.Graphics.Effects.EffectParts
         private Texture2D normalTextureW;
         private EffectParameter normalTextureWParameter;
         private const uint normalTextureWDirtyMask = 1 << 10;
+        
+        private Vector3 diffuseColorX;
+        private EffectParameter diffuseColorXParameter;
+        private const uint diffuseColorXDirtyMask = 1 << 11;
+
+        private Vector3 diffuseColorY;
+        private EffectParameter diffuseColorYParameter;
+        private const uint diffuseColorYDirtyMask = 1 << 12;
+
+        private Vector3 diffuseColorZ;
+        private EffectParameter diffuseColorZParameter;
+        private const uint diffuseColorZDirtyMask = 1 << 13;
+
+        private Vector3 diffuseColorW;
+        private EffectParameter diffuseColorWParameter;
+        private const uint diffuseColorWDirtyMask = 1 << 14;
+        
+        private Vector3 specularColorX;
+        private EffectParameter specularColorXParameter;
+        private const uint specularColorXDirtyMask = 1 << 15;
+
+        private Vector3 specularColorY;
+        private EffectParameter specularColorYParameter;
+        private const uint specularColorYDirtyMask = 1 << 16;
+
+        private Vector3 specularColorZ;
+        private EffectParameter specularColorZParameter;
+        private const uint specularColorZDirtyMask = 1 << 17;
+
+        private Vector3 specularColorW;
+        private EffectParameter specularColorWParameter;
+        private const uint specularColorWDirtyMask = 1 << 18;
+
+        private float specularPowerX;
+        private EffectParameter specularPowerXParameter;
+        private const uint specularPowerXDirtyMask = 1 << 19;
+
+        private float specularPowerY;
+        private EffectParameter specularPowerYParameter;
+        private const uint specularPowerYDirtyMask = 1 << 20;
+
+        private float specularPowerZ;
+        private EffectParameter specularPowerZParameter;
+        private const uint specularPowerZDirtyMask = 1 << 21;
+
+        private float specularPowerW;
+        private EffectParameter specularPowerWParameter;
+        private const uint specularPowerWDirtyMask = 1 << 22;
 
         [ContentSerializer(Optional = true)]
         public Texture2D TextureX
@@ -124,6 +175,90 @@ namespace Nine.Graphics.Effects.EffectParts
         }
 
         [ContentSerializer(Optional = true)]
+        public Vector3 DiffuseColorX
+        {
+            get { return diffuseColorX; }
+            set { if (diffuseColorX != value) { diffuseColorX = value; DirtyMask |= diffuseColorXDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 DiffuseColorY
+        {
+            get { return diffuseColorY; }
+            set { if (diffuseColorY != value) { diffuseColorY = value; DirtyMask |= diffuseColorYDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 DiffuseColorZ
+        {
+            get { return diffuseColorZ; }
+            set { if (diffuseColorZ != value) { diffuseColorZ = value; DirtyMask |= diffuseColorZDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 DiffuseColorW
+        {
+            get { return diffuseColorW; }
+            set { if (diffuseColorW != value) { diffuseColorW = value; DirtyMask |= diffuseColorWDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 SpecularColorX
+        {
+            get { return specularColorX; }
+            set { if (specularColorX != value) { specularColorX = value; DirtyMask |= specularColorXDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 SpecularColorY
+        {
+            get { return specularColorY; }
+            set { if (specularColorY != value) { specularColorY = value; DirtyMask |= specularColorYDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 SpecularColorZ
+        {
+            get { return specularColorZ; }
+            set { if (specularColorZ != value) { specularColorZ = value; DirtyMask |= specularColorZDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 SpecularColorW
+        {
+            get { return specularColorW; }
+            set { if (specularColorW != value) { specularColorW = value; DirtyMask |= specularColorWDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public float SpecularPowerX
+        {
+            get { return specularPowerX; }
+            set { if (specularPowerX != value) { specularPowerX = value; DirtyMask |= specularPowerXDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public float SpecularPowerY
+        {
+            get { return specularPowerY; }
+            set { if (specularPowerY != value) { specularPowerY = value; DirtyMask |= specularPowerYDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public float SpecularPowerZ
+        {
+            get { return specularPowerZ; }
+            set { if (specularPowerZ != value) { specularPowerZ = value; DirtyMask |= specularPowerZDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public float SpecularPowerW
+        {
+            get { return specularPowerW; }
+            set { if (specularPowerW != value) { specularPowerW = value; DirtyMask |= specularPowerWDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
         public Texture2D SplatterTexture
         {
             get { return splatterTexture; }
@@ -144,6 +279,7 @@ namespace Nine.Graphics.Effects.EffectParts
             DirtyMask |= splatterTextureDirtyMask;
             DirtyMask |= maskDirtyMask;
             SplatterTextureScale = Vector2.One;
+            DiffuseColorX = DiffuseColorY = DiffuseColorZ = DiffuseColorW = Vector3.One;
         }
 
         protected internal override void OnApply()
@@ -228,6 +364,104 @@ namespace Nine.Graphics.Effects.EffectParts
                 DirtyMask &= ~splatterTextureDirtyMask;
             }
 
+            if ((DirtyMask & diffuseColorXDirtyMask) != 0)
+            {
+                if (diffuseColorXParameter == null)
+                    diffuseColorXParameter = GetParameter("DiffuseColorX");
+                diffuseColorXParameter.SetValue(diffuseColorX);
+                DirtyMask &= ~diffuseColorXDirtyMask;
+            }
+
+            if ((DirtyMask & diffuseColorYDirtyMask) != 0)
+            {
+                if (diffuseColorYParameter == null)
+                    diffuseColorYParameter = GetParameter("DiffuseColorY");
+                diffuseColorYParameter.SetValue(diffuseColorY);
+                DirtyMask &= ~diffuseColorYDirtyMask;
+            }
+
+            if ((DirtyMask & diffuseColorZDirtyMask) != 0)
+            {
+                if (diffuseColorZParameter == null)
+                    diffuseColorZParameter = GetParameter("DiffuseColorZ");
+                diffuseColorZParameter.SetValue(diffuseColorZ);
+                DirtyMask &= ~diffuseColorZDirtyMask;
+            }
+
+            if ((DirtyMask & diffuseColorWDirtyMask) != 0)
+            {
+                if (diffuseColorWParameter == null)
+                    diffuseColorWParameter = GetParameter("DiffuseColorW");
+                diffuseColorWParameter.SetValue(diffuseColorW);
+                DirtyMask &= ~diffuseColorWDirtyMask;
+            }
+        
+            if ((DirtyMask & specularColorXDirtyMask) != 0)
+            {
+                if (specularColorXParameter == null)
+                    specularColorXParameter = GetParameter("SpecularColorX");
+                specularColorXParameter.SetValue(specularColorX);
+                DirtyMask &= ~specularColorXDirtyMask;
+            }
+
+            if ((DirtyMask & specularColorYDirtyMask) != 0)
+            {
+                if (specularColorYParameter == null)
+                    specularColorYParameter = GetParameter("SpecularColorY");
+                specularColorYParameter.SetValue(specularColorY);
+                DirtyMask &= ~specularColorYDirtyMask;
+            }
+
+            if ((DirtyMask & specularColorZDirtyMask) != 0)
+            {
+                if (specularColorZParameter == null)
+                    specularColorZParameter = GetParameter("SpecularColorZ");
+                specularColorZParameter.SetValue(specularColorZ);
+                DirtyMask &= ~specularColorZDirtyMask;
+            }
+
+            if ((DirtyMask & specularColorWDirtyMask) != 0)
+            {
+                if (specularColorWParameter == null)
+                    specularColorWParameter = GetParameter("SpecularColorW");
+                specularColorWParameter.SetValue(specularColorW);
+                DirtyMask &= ~specularColorWDirtyMask;
+            }
+
+
+
+            if ((DirtyMask & specularPowerXDirtyMask) != 0)
+            {
+                if (specularPowerXParameter == null)
+                    specularPowerXParameter = GetParameter("SpecularPowerX");
+                specularPowerXParameter.SetValue(specularPowerX);
+                DirtyMask &= ~specularPowerXDirtyMask;
+            }
+
+            if ((DirtyMask & specularPowerYDirtyMask) != 0)
+            {
+                if (specularPowerYParameter == null)
+                    specularPowerYParameter = GetParameter("SpecularPowerY");
+                specularPowerYParameter.SetValue(specularPowerY);
+                DirtyMask &= ~specularPowerYDirtyMask;
+            }
+
+            if ((DirtyMask & specularPowerZDirtyMask) != 0)
+            {
+                if (specularPowerZParameter == null)
+                    specularPowerZParameter = GetParameter("SpecularPowerZ");
+                specularPowerZParameter.SetValue(specularPowerZ);
+                DirtyMask &= ~specularPowerZDirtyMask;
+            }
+
+            if ((DirtyMask & specularPowerWDirtyMask) != 0)
+            {
+                if (specularPowerWParameter == null)
+                    specularPowerWParameter = GetParameter("SpecularPowerW");
+                specularPowerWParameter.SetValue(specularPowerW);
+                DirtyMask &= ~specularPowerWDirtyMask;
+            }
+
             if ((DirtyMask & maskDirtyMask) != 0)
             {
                 if (maskParameter == null)
@@ -255,6 +489,18 @@ namespace Nine.Graphics.Effects.EffectParts
             effectPart.NormalMapY = NormalMapY;
             effectPart.NormalMapZ = NormalMapZ;
             effectPart.NormalMapW = NormalMapW;
+            effectPart.DiffuseColorX = DiffuseColorX;
+            effectPart.DiffuseColorY = DiffuseColorY;
+            effectPart.DiffuseColorZ = DiffuseColorZ;
+            effectPart.DiffuseColorW = DiffuseColorW;
+            effectPart.SpecularColorX = SpecularColorX;
+            effectPart.SpecularColorY = SpecularColorY;
+            effectPart.SpecularColorZ = SpecularColorZ;
+            effectPart.SpecularColorW = SpecularColorW;
+            effectPart.SpecularPowerX = SpecularPowerX;
+            effectPart.SpecularPowerY = SpecularPowerY;
+            effectPart.SpecularPowerZ = SpecularPowerZ;
+            effectPart.SpecularPowerW = SpecularPowerW;
             effectPart.SplatterTexture = SplatterTexture;
             effectPart.SplatterTextureScale = SplatterTextureScale;            
         }
@@ -271,6 +517,18 @@ namespace Nine.Graphics.Effects.EffectParts
                 NormalMapY = NormalMapY,
                 NormalMapZ = NormalMapZ,
                 NormalMapW = NormalMapW,
+                DiffuseColorX = DiffuseColorX,
+                DiffuseColorY = DiffuseColorY,
+                DiffuseColorZ = DiffuseColorZ,
+                DiffuseColorW = DiffuseColorW,
+                SpecularColorX = SpecularColorX,
+                SpecularColorY = SpecularColorY,
+                SpecularColorZ = SpecularColorZ,
+                SpecularColorW = SpecularColorW,
+                SpecularPowerX = SpecularPowerX,
+                SpecularPowerY = SpecularPowerY,
+                SpecularPowerZ = SpecularPowerZ,
+                SpecularPowerW = SpecularPowerW,
                 SplatterTexture = SplatterTexture,
                 SplatterTextureScale = SplatterTextureScale,
             };

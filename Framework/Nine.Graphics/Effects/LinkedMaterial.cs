@@ -38,6 +38,7 @@ namespace Nine.Graphics.Effects
                                                    IEffectLights<IDirectionalLight>, IEffectLights<ISpotLight>
     {
         LinkedEffect effect;
+        LinkedEffect deferredEffect;
         LinkedEffectPart[] parts;
 
         /// <summary>
@@ -68,6 +69,14 @@ namespace Nine.Graphics.Effects
         public override Effect Effect
         {
             get { return effect; }
+        }
+
+        /// <summary>
+        /// Gets the deferred effect used to generate the graphics buffer.
+        /// </summary>
+        public override Effect DeferredEffect
+        {
+            get { return deferredEffect; }
         }
 
         public override T As<T>()
@@ -135,14 +144,14 @@ namespace Nine.Graphics.Effects
         public ReadOnlyCollection<LinkedEffectPart> EffectParts { get; private set; }
         
         [ContentSerializer(ElementName = "EffectParts")]
-        internal LinkedEffectPart[] EffectPartsSerializer
+        internal IList<LinkedEffectPart> EffectPartsSerializer
         {
-            get { return parts; }
+            get { return parts.ToList(); }
             set
             {
                 if (value != null)
                 {
-                    for (int i = 0; i < value.Length; i++)
+                    for (int i = 0; i < value.Count; i++)
                     {
                         if (value[i] is DeferredLightsEffectPart)
                             isDeferred = true;

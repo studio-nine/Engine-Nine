@@ -1,6 +1,6 @@
 //=============================================================================
 //
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 fragment SplatterTexture;
@@ -8,6 +8,21 @@ fragment SplatterTexture;
 [parameters]
 float2 SplatterTextureScale = 1;
 float4 Mask = 1;
+
+float3 DiffuseColorX = 1;
+float3 DiffuseColorY = 1;
+float3 DiffuseColorZ = 1;
+float3 DiffuseColorW = 1;
+
+float3 SpecularColorX;
+float3 SpecularColorY;
+float3 SpecularColorZ;
+float3 SpecularColorW;
+
+float SpecularPowerX = 16;
+float SpecularPowerY = 16;
+float SpecularPowerZ = 16;
+float SpecularPowerW = 16;
 
 texture2D SplatterTexture;
 sampler SplatterTextureSampler = sampler_state
@@ -143,16 +158,33 @@ void main(INPUT input, inout OUTPUT output)
 	import(TexCoord, uv = TexCoord);
 
 	float4 color;
-	import(Color, color = Color);
+	float3 specularColor;
+    float  specularPower;
+	import(Color, color = Color);    
+	import(SpecularColor, specularColor = SpecularColor);
+	import(SpecularPower, specularPower = SpecularPower);
 	
 	float4 splatter = Mask * tex2D(SplatterTextureSampler, uv / SplatterTextureScale);
 		
-    float4 diffuse = 0;
-	{$HASX}diffuse += tex2D(TextureXSampler, uv) * splatter.x;
-    {$HASY}diffuse += tex2D(TextureYSampler, uv) * splatter.y;
-    {$HASZ}diffuse += tex2D(TextureZSampler, uv) * splatter.z;
-    {$HASW}diffuse += tex2D(TextureWSampler, uv) * splatter.w;
-    color *= diffuse;
+    float3 diffuse = 0;
+	{$HASX}diffuse += tex2D(TextureXSampler, uv) * DiffuseColorX * splatter.x;
+    {$HASY}diffuse += tex2D(TextureYSampler, uv) * DiffuseColorY * splatter.y;
+    {$HASZ}diffuse += tex2D(TextureZSampler, uv) * DiffuseColorZ * splatter.z;
+    {$HASW}diffuse += tex2D(TextureWSampler, uv) * DiffuseColorW * splatter.w;
+    color.xyz *= diffuse;
+
+    float3 specular = 0;
+	{$HASSPECULARX}{$HASX}specular += SpecularColorX * splatter.x;
+    {$HASSPECULARY}{$HASY}specular += SpecularColorY * splatter.y;
+    {$HASSPECULARZ}{$HASZ}specular += SpecularColorZ * splatter.z;
+    {$HASSPECULARW}{$HASW}specular += SpecularColorW * splatter.w;
+    specularColor *= specular;
+    
+    specularPower = 0;
+	{$HASSPECULARX}{$HASX}specularPower += SpecularPowerX * splatter.x;
+    {$HASSPECULARY}{$HASY}specularPower += SpecularPowerY * splatter.y;
+    {$HASSPECULARZ}{$HASZ}specularPower += SpecularPowerZ * splatter.z;
+    {$HASSPECULARW}{$HASW}specularPower += SpecularPowerW * splatter.w;
     
 	float3 normal;
 	import(Normal, normal = Normal);
@@ -167,11 +199,13 @@ void main(INPUT input, inout OUTPUT output)
     {$HASNORMALY}normalFromMap += (tex2D(NormalMapYSampler, uv).xyz * 2 - 1) * splatter.y;
     {$HASNORMALZ}normalFromMap += (tex2D(NormalMapZSampler, uv).xyz * 2 - 1) * splatter.z;
     {$HASNORMALW}normalFromMap += (tex2D(NormalMapWSampler, uv).xyz * 2 - 1) * splatter.w;
-    float len = length(normalFromMap);
-    normalFromMap = lerp(normal, normalFromMap, len);
+
     normalFromMap = mul(normalFromMap, tangentTransform);
+    normalFromMap = normalize(lerp(normal, normalFromMap, length(normalFromMap)));
 	
 	export(float3, Normal, normalFromMap);
+	export(float3, SpecularColor, specularColor);
+	export(float, SpecularPower, specularPower);
 	export(float4, Color, color);
 }
 __hlsl__

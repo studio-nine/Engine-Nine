@@ -39,10 +39,5 @@ namespace Nine.Graphics.Effects.Deferred
         /// Gets the index buffer of the light geometry.
         /// </summary>
         IndexBuffer IndexBuffer { get; }
-
-        /// <summary>
-        /// Gets whether the light frustum contains the point exactly.
-        /// </summary>
-        bool Contains(Vector3 point);
     }
 }

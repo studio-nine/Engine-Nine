@@ -12,20 +12,21 @@
         <FogStart>50</FogStart>
       </Item>
      
-      <!-- 
-      -->
       <Item Type="nine:DrawableSurfaceContent">
         <Heightmap>Terrain\MountainHeightmap</Heightmap>
         <LevelOfDetailEnabled>true</LevelOfDetailEnabled>
         <LevelOfDetailEnd>300</LevelOfDetailEnd>
         <LevelOfDetailStart>200</LevelOfDetailStart>
         <Material Type="fx:BasicMaterialContent">
+          <SpecularColor>1 1 1</SpecularColor>
           <Texture>Terrain\Mountain</Texture>
           <TextureEnabled>true</TextureEnabled>
         </Material>
         <Position>-290 -100 -10</Position>
       </Item>
 
+      <!-- 
+      -->
 
       <Item Type="nine:DrawableSurfaceContent">
         <Heightmap>Terrain\RF1</Heightmap>
@@ -34,6 +35,7 @@
         <LevelOfDetailStart>200</LevelOfDetailStart>
         <Material Type="fx:TerrainMaterialContent">
           <FogEnabled>true</FogEnabled>
+          <PreferDeferredLighting>false</PreferDeferredLighting>
           <SplatterTextureScale>8 8</SplatterTextureScale>
           <Layers>
             <Item>
@@ -43,11 +45,16 @@
               <Alpha>../../Content/Terrain/2.bmp</Alpha>
               <Texture>../../Content/Textures/box.dds</Texture>
               <NormalMap>../../Content/Textures/box_n.dds</NormalMap>
+              <DiffuseColor>1 1 1</DiffuseColor>
+              <SpecularColor>1 1 1</SpecularColor>
+              <SpecularPower>64</SpecularPower>
             </Item>
             <Item>
               <Alpha>../../Content/Terrain/3.bmp</Alpha>
               <Texture>../../Content/Terrain/grass.dds</Texture>
               <NormalMap>../../Content/Terrain/grass_n.dds</NormalMap>
+              <!--
+              -->
             </Item>
           </Layers>
         </Material>
@@ -57,7 +64,6 @@
         <Position>-30 -80 0</Position>
         <TextureScale>0.125 0.125</TextureScale>
       </Item>
-      
       
       
       <Item Type="nine:DrawableModelContent">
@@ -143,6 +149,7 @@
           <ShadowEnabled>true</ShadowEnabled>
           <NormalMappingEnabled>true</NormalMappingEnabled> 
           <SkinningEnabled>true</SkinningEnabled>
+          <SpecularColor>1 1 1</SpecularColor>
         </Material>
         <Model>Models\Dude</Model>
         <Position>15 0 10</Position>
@@ -156,12 +163,12 @@
       <Item Type="nine:AmbientLightContent">
         <AmbientLightColor>0.3 0.3 0.3</AmbientLightColor>
       </Item>
-
       <!--
       -->
       <Item Type="nine:DirectionalLightContent">
         <CastShadow>true</CastShadow>
         <DiffuseColor>0.8 0.8 0.8</DiffuseColor>
+        <SpecularColor>1 1 1</SpecularColor>
         <Direction>-1 -1 -1</Direction>
       </Item>
 

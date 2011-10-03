@@ -56,10 +56,5 @@ namespace Nine.Graphics.Effects.Deferred
         {
             get { return this; }
         }
-
-        bool IDeferredLight.Contains(Vector3 point)
-        {
-            return false;
-        }
     }
 }

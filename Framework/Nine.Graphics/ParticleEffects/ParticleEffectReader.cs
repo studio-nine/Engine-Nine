@@ -41,6 +41,8 @@ namespace Nine.Graphics.ParticleEffects
             effect.Speed = input.ReadObject<Range<float>>();
             effect.Stretch = input.ReadSingle();
             effect.Up = input.ReadVector3();
+            effect.DepthSortEnabled = input.ReadBoolean();
+            effect.ReferenceAlpha = (int)input.ReadByte();
             effect.Tag = input.ReadObject<object>();
 
             int count = input.ReadInt32();

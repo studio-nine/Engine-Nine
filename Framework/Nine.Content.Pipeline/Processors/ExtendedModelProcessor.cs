@@ -271,7 +271,6 @@ namespace Nine.Content.Pipeline.Processors
 
         private void ProcessModelMeshParts(ModelContent model)
         {
-            int i = 0;
             foreach (ModelMeshContent mesh in model.Meshes)
             {
                 foreach (ModelMeshPartContent part in mesh.MeshParts)

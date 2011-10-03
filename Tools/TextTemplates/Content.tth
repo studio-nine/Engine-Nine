@@ -33,6 +33,7 @@
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
                 TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
+                TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent");
                 TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart[]", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent[]");
                 TypeMapping.Add("Nine.Graphics.IEffectInstance", "System.Object");
                 TypeMapping.Add("Nine.Graphics.Effects.Material", "System.Object");

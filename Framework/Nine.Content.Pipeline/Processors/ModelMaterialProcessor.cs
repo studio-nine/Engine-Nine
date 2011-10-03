@@ -34,15 +34,44 @@ namespace Nine.Content.Pipeline.Processors
     /// </summary>
     [DesignTimeVisible(false)]
     [ContentProcessor(DisplayName="Model Material - Engine Nine")]
-    public class ModelMaterialProcessor : ContentProcessor<ModelMaterialContent, LinkedMaterialContent>
+    public class ModelMaterialProcessor : BasicLinkedMaterialProcessor<ModelMaterialContent>
     {
         public override LinkedMaterialContent Process(ModelMaterialContent input, ContentProcessorContext context)
         {
-            var material = new LinkedMaterialContent();
+            var material = base.Process(input, context);
             material.DepthAlphaEnabled = input.DepthAlphaEnabled;
             material.IsTransparent = input.IsTransparent;
-            material.Effect = new ContentReference<CompiledEffectContent>(input.Build(context).Filename);
             return material;
+        }
+
+        protected override void PreVertexTransform(ModelMaterialContent input, LinkedEffectContent effect, LinkedMaterialContent material, ContentProcessorContext context)
+        {
+            if (input.SkinningEnabled)
+                effect.EffectParts.Add(new SkinTransformEffectPartContent());
+        }
+
+        protected override void PreLighting(ModelMaterialContent input, LinkedEffectContent effect, LinkedMaterialContent material, ContentProcessorContext context)
+        {
+            if (input.NormalMappingEnabled)
+                effect.EffectParts.Add(new NormalMapEffectPartContent());
+            if (input.TextureEnabled)
+                effect.EffectParts.Add(new BasicTextureEffectPartContent());
+            if (input.SpecularMappingEnabled)
+                effect.EffectParts.Add(new SpecularMapEffectPartContent());
+            if (input.EmissiveMappingEnabled)
+                effect.EffectParts.Add(new EmissiveMapEffectPartContent());
+            
+            Flush(effect, material);
+
+            effect.EffectParts.Add(new MaterialEffectPartContent());
+            material.EffectParts.Add(new MaterialEffectPartContent() 
+            {
+                Alpha = input.Alpha,
+                DiffuseColor = input.DiffuseColor, 
+                EmissiveColor = input.EmissiveColor,
+                SpecularColor = input.SpecularColor,
+                SpecularPower = input.SpecularPower 
+            });
         }
     }
 }

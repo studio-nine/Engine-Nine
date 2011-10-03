@@ -32,12 +32,12 @@ namespace Nine.Graphics.ParticleEffects
         public object Tag { get; set; }
 
         private bool hasBegin = false;
+        private AlphaTestEffect alphaTestEffect;
         private PrimitiveBatch primitiveBatch;
         private List<ParticleBatchItem> batches;
         private ParticleBatchSortComparer comparer = new ParticleBatchSortComparer();
 
         private SamplerState samplerState;
-        private DepthStencilState depthStencilState;
         private RasterizerState rasterizerState;
 
         private Matrix view;
@@ -58,6 +58,8 @@ namespace Nine.Graphics.ParticleEffects
         {
             primitiveBatch = new PrimitiveBatch(graphics, capacity);
             batches = new List<ParticleBatchItem>();
+            alphaTestEffect = (AlphaTestEffect)GraphicsResources<AlphaTestEffect>.GetInstance(graphics).Clone();
+            alphaTestEffect.VertexColorEnabled = true;
         }
 
         public void Begin()
@@ -67,10 +69,10 @@ namespace Nine.Graphics.ParticleEffects
 
         public void Begin(Matrix view, Matrix projection)
         {
-            Begin(view, projection, null, null, null);
+            Begin(view, projection, null, null);
         }
 
-        public void Begin(Matrix view, Matrix projection, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
+        public void Begin(Matrix view, Matrix projection, SamplerState samplerState, RasterizerState rasterizerState)
         {
             if (hasBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
@@ -78,7 +80,6 @@ namespace Nine.Graphics.ParticleEffects
             this.view = view;
             this.projection = projection;
             this.samplerState = samplerState;
-            this.depthStencilState = depthStencilState;
             this.rasterizerState = rasterizerState;
             this.hasBegin = true;
             this.VertexCount = 0;
@@ -108,19 +109,8 @@ namespace Nine.Graphics.ParticleEffects
             if (batches.Count > 0)
             {
                 batches.Sort(comparer);
-                BlendState blendState = batches[0].ParticleEffect.BlendState;
-                primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState);
-                for (int i = 0; i < batches.Count; i++)
-                {
-                    if (batches[i].ParticleEffect.BlendState != blendState)
-                    {
-                        primitiveBatch.End();
-                        blendState = batches[i].ParticleEffect.BlendState;
-                        primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState);
-                    }
-                    Draw(batches[i]);
-                }
-                primitiveBatch.End();
+                DrawBatches(DepthStencilState.Default, alphaTestEffect, true);
+                DrawBatches(DepthStencilState.DepthRead, null, false);
             }
 
             batches.Clear();
@@ -128,6 +118,30 @@ namespace Nine.Graphics.ParticleEffects
 
             PrimitiveCount += primitiveBatch.PrimitiveCount;
             VertexCount += primitiveBatch.VertexCount;
+        }
+
+        private void DrawBatches(DepthStencilState depthStencilState, Effect effect, bool depthSort)
+        {
+            var blendState = batches[0].ParticleEffect.BlendState;
+
+            primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState, effect);
+            for (int i = 0; i < batches.Count; i++)
+            {
+                if (depthSort)
+                {
+                    if (!batches[i].ParticleEffect.DepthSortEnabled)
+                        continue;
+                    alphaTestEffect.ReferenceAlpha = batches[i].ParticleEffect.ReferenceAlpha;
+                }
+                if (batches[i].ParticleEffect.BlendState != blendState)
+                {
+                    primitiveBatch.End();
+                    blendState = batches[i].ParticleEffect.BlendState;
+                    primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState, effect);
+                }
+                Draw(batches[i]);
+            }
+            primitiveBatch.End();
         }
 
         private void Draw(ParticleBatchItem item)

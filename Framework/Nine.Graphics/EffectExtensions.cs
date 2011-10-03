@@ -261,6 +261,7 @@ namespace Nine.Graphics
             {
                 BasicEffect source = effect as BasicEffect;
                 source.Texture = texture;
+                source.TextureEnabled = texture != null;
             }
             else if (effect is SkinnedEffect)
             {

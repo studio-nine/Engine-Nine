@@ -105,19 +105,19 @@ namespace Nine.Graphics.ObjectModel
         /// power settings.
         /// The default behavior is to override.
         /// </summary>
-        public bool OverrideModelColors
+        public bool OverrideModelMaterial
         {
-            get { return overrideModelColors; }
+            get { return overrideModelMaterial; }
             set
             {
-                if (overrideModelColors != value)
+                if (overrideModelMaterial != value)
                 {
-                    overrideModelColors = value;
+                    overrideModelMaterial = value;
                     materialNeedsUpdate = true;
                 }
             }
         }
-        bool overrideModelColors;
+        bool overrideModelMaterial;
 
         /// <summary>
         /// Gets or sets the alpha of this model.
@@ -331,7 +331,7 @@ namespace Nine.Graphics.ObjectModel
             LightingEnabled = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;
-            overrideModelColors = true;
+            overrideModelMaterial = true;
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace Nine.Graphics.ObjectModel
                 }
             }
 
-            if (!overrideModelColors)
+            if (!overrideModelMaterial)
             {
                 IEffectMaterial source = part.Effect.As<IEffectMaterial>();
                 IEffectMaterial target = clonedMaterial.As<IEffectMaterial>();

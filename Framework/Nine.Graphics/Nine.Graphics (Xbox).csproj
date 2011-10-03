@@ -94,9 +94,11 @@
     <Compile Include="Effects\CustomEffect.cs" />
     <Compile Include="Effects\CustomMaterial.cs" />
     <Compile Include="Effects\EffectAnnotations.cs" />
-    <Compile Include="Effects\EffectParts\DeferredLightEffectPart.cs" />
+    <Compile Include="Effects\EffectParts\DeferredLightsEffectPart.cs" />
     <Compile Include="Effects\EffectParts\DetailTextureEffectPart.cs" />
     <Compile Include="Effects\EffectParts\EmissiveMapEffectPart.cs" />
+    <Compile Include="Effects\EffectParts\MaterialEffectPart.cs" />
+    <Compile Include="Effects\EffectParts\PixelShaderOutputEffectPart.cs" />
     <Compile Include="Effects\EffectParts\SpecularMapEffectPart.cs" />
     <Compile Include="Effects\EffectSemantics.cs" />
     <Compile Include="Effects\LinkedMaterial.cs" />

@@ -11,6 +11,7 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.VertexShaderOutputEffectPartContent"></Item> 
       
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BasicTextureEffectPartContent"></Item>
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.MaterialEffectPartContent"></Item>
       
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLightEffectPartContent"></Item>

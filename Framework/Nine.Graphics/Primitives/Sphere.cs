@@ -76,8 +76,8 @@ namespace Nine.Graphics.Primitives
             for (int i = 0; i < horizontalSegments; i++)
             {
                 AddIndex(0);
-                AddIndex(1 + (i + 1) % horizontalSegments);
                 AddIndex(1 + i);
+                AddIndex(1 + (i + 1) % horizontalSegments);
             }
 
             // Fill the sphere body with triangles joining each pair of latitude rings.
@@ -89,12 +89,12 @@ namespace Nine.Graphics.Primitives
                     int nextJ = (j + 1) % horizontalSegments;
 
                     AddIndex(1 + i * horizontalSegments + j);
-                    AddIndex(1 + i * horizontalSegments + nextJ);
                     AddIndex(1 + nextI * horizontalSegments + j);
+                    AddIndex(1 + i * horizontalSegments + nextJ);
 
                     AddIndex(1 + i * horizontalSegments + nextJ);
-                    AddIndex(1 + nextI * horizontalSegments + nextJ);
                     AddIndex(1 + nextI * horizontalSegments + j);
+                    AddIndex(1 + nextI * horizontalSegments + nextJ);
                 }
             }
 
@@ -102,8 +102,8 @@ namespace Nine.Graphics.Primitives
             for (int i = 0; i < horizontalSegments; i++)
             {
                 AddIndex(CurrentVertex - 1);
-                AddIndex(CurrentVertex - 2 - (i + 1) % horizontalSegments);
                 AddIndex(CurrentVertex - 2 - i);
+                AddIndex(CurrentVertex - 2 - (i + 1) % horizontalSegments);
             }
 
             InitializePrimitive(graphicsDevice);
@@ -112,6 +112,14 @@ namespace Nine.Graphics.Primitives
         private void AddVertex(Vector3 position, Vector3 normal)
         {
             AddVertex(position, new VertexPositionNormal() { Position = position, Normal = normal });
+        }
+    }
+
+    class SphereInvert : Sphere 
+    {
+        public SphereInvert(GraphicsDevice graphics) : base(graphics)
+        {
+            InvertWindingOrder = true;
         }
     }
 }

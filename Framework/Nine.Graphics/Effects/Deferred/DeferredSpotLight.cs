@@ -27,9 +27,10 @@ namespace Nine.Graphics.Effects.Deferred
 {
     public partial class DeferredSpotLight : IDeferredLight, IEffectMatrices, IEffectTexture, ISpotLight
     {
-        Centrum primitive;
+        const float NearPlane = 0.01f;
 
-        Matrix worldInverse;
+        CentrumInvert primitive;
+
         bool viewProjectionChanged;
 
         public Matrix View
@@ -78,7 +79,7 @@ namespace Nine.Graphics.Effects.Deferred
 
         private void OnCreated()
         {
-            primitive = GraphicsResources<Centrum>.GetInstance(GraphicsDevice);
+            primitive = GraphicsResources<CentrumInvert>.GetInstance(GraphicsDevice);
 
             Direction = new Vector3(0, -0.707107f, -0.707107f);
             DiffuseColor = Vector3.One;
@@ -104,7 +105,7 @@ namespace Nine.Graphics.Effects.Deferred
                 eyePosition = Matrix.Invert(view).Translation;
                 viewProjectionChanged = false;
             }
-
+            
             // Update world only when position/range/outer angle changed.
             if ((this.dirtyFlag & PositionDirtyFlag) != 0 ||
                 (this.dirtyFlag & RangeDirtyFlag) != 0 ||
@@ -115,9 +116,6 @@ namespace Nine.Graphics.Effects.Deferred
                         Matrix.CreateTranslation(0, 0, -Range) *
                         MatrixHelper.CreateRotation(Vector3.UnitZ, -Direction) *
                         Matrix.CreateTranslation(Position);
-                
-                // Compute invert for bounding test
-                worldInverse = Matrix.Invert(world);
             }
 
             halfPixel = new Vector2(0.5f / GraphicsDevice.Viewport.Width, 0.5f / GraphicsDevice.Viewport.Height);
@@ -156,15 +154,6 @@ namespace Nine.Graphics.Effects.Deferred
                 NormalBuffer = texture as Texture2D;
             else if (usage == TextureUsage.DepthBuffer)
                 DepthBuffer = texture as Texture2D;
-        }
-
-        bool IDeferredLight.Contains(Vector3 point)
-        {
-            Vector3 local = Vector3.Transform(point, worldInverse);
-            if (local.Z < 0 || local.Z > 1)
-                return false;
-
-            return local.X * local.X + local.Y * local.Y <= (1 - local.Z) * (1 - local.Z);
         }
     }
 }

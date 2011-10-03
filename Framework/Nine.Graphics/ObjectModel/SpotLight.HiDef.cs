@@ -38,11 +38,6 @@ namespace Nine.Graphics.ObjectModel
             return deferredLight ?? (deferredLight = GraphicsResources<DeferredSpotLight>.GetInstance(GraphicsDevice));
         }
 
-        bool IDeferredLight.Contains(Vector3 point)
-        {
-            return ((IDeferredLight)GetDeferredLight()).Contains(point);
-        }
-
         Effect IDeferredLight.Effect
         {
             get

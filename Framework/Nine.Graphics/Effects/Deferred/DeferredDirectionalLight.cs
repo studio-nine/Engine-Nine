@@ -105,10 +105,5 @@ namespace Nine.Graphics.Effects.Deferred
             else if (usage == TextureUsage.DepthBuffer)
                 DepthBuffer = texture as Texture2D;
         }
-
-        bool IDeferredLight.Contains(Vector3 point)
-        {
-            return false;
-        }
     }
 }

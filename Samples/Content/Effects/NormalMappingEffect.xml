@@ -13,10 +13,12 @@
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.NormalMapEffectPartContent">
         <NormalMap>box_n</NormalMap>
       </Item>
-      
-      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent">
+
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.MaterialEffectPartContent">
         <SpecularColor>1 1 1</SpecularColor>
       </Item>
+      
+      <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.BeginLightEffectPartContent"></Item>
       <Item Type="Nine.Content.Pipeline.Graphics.Effects.EffectParts.AmbientLightEffectPartContent">
         <AmbientLightColor>0.1 0.1 0.1</AmbientLightColor>
       </Item>

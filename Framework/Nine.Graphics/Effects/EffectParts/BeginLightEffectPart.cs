@@ -18,76 +18,17 @@ namespace Nine.Graphics.Effects.EffectParts
 {
 #if !WINDOWS_PHONE
 
-    internal class BeginLightEffectPart : LinkedEffectPart, IEffectMatrices, IEffectMaterial
+    [ContentSerializable]
+    class BeginLightEffectPart : LinkedEffectPart, IEffectMatrices
     {
         private uint DirtyMask = 0;
-        
-        private float specularPower;
-        private EffectParameter specularPowerParameter;
-        private const uint specularPowerDirtyMask = 1 << 0;
 
         private Matrix view;
         private EffectParameter eyePositionParameter;
         private const uint eyePositionDirtyMask = 1 << 1;
 
-        private Vector3 diffuseColor;
-        private EffectParameter diffuseColorParameter;
-        private const uint diffuseColorDirtyMask = 1 << 2;
-
-        private Vector3 emissiveColor;
-        private EffectParameter emissiveColorParameter;
-        private const uint emissiveColorDirtyMask = 1 << 3;
-
-        private Vector3 specularColor;
-        private EffectParameter specularColorParameter;
-        private const uint specularColorDirtyMask = 1 << 4;
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor
-        {
-            get { return diffuseColor; }
-            set { diffuseColor = value; DirtyMask |= diffuseColorDirtyMask; }
-        }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 EmissiveColor
-        {
-            get { return emissiveColor; }
-            set { emissiveColor = value; DirtyMask |= emissiveColorDirtyMask; }
-        }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor
-        {
-            get { return specularColor; }
-            set { specularColor = value; DirtyMask |= specularColorDirtyMask; }
-        }
-
-        [ContentSerializer(Optional = true)]
-        public float SpecularPower
-        {
-            get { return specularPower; }
-            set { specularPower = value; DirtyMask |= specularPowerDirtyMask; }
-        }
-
-        float IEffectMaterial.Alpha
-        {
-            get { return 1; }
-            set { }
-        }
-
-        public override bool IsMaterial { get { return true; } }
-
         protected internal override void OnApply()
         {
-            if ((DirtyMask & specularPowerDirtyMask) != 0)
-            {
-                if (specularPowerParameter == null)
-                    specularPowerParameter = GetParameter("SpecularPower");
-                specularPowerParameter.SetValue(specularPower);
-                DirtyMask &= ~specularPowerDirtyMask;
-            }
-
             if ((DirtyMask & eyePositionDirtyMask) != 0)
             {
                 if (eyePositionParameter == null)
@@ -95,59 +36,11 @@ namespace Nine.Graphics.Effects.EffectParts
                 eyePositionParameter.SetValue(Matrix.Invert(view).Translation);
                 DirtyMask &= ~eyePositionDirtyMask;
             }
-
-            if ((DirtyMask & diffuseColorDirtyMask) != 0)
-            {
-                if (diffuseColorParameter == null)
-                    diffuseColorParameter = GetParameter("DiffuseColor");
-                diffuseColorParameter.SetValue(diffuseColor);
-                DirtyMask &= ~diffuseColorDirtyMask;
-            }
-
-            if ((DirtyMask & emissiveColorDirtyMask) != 0)
-            {
-                if (emissiveColorParameter == null)
-                    emissiveColorParameter = GetParameter("EmissiveColor");
-                emissiveColorParameter.SetValue(emissiveColor);
-                DirtyMask &= ~emissiveColorDirtyMask;
-            }
-
-            if ((DirtyMask & specularColorDirtyMask) != 0)
-            {
-                if (specularColorParameter == null)
-                    specularColorParameter = GetParameter("SpecularColor");
-                specularColorParameter.SetValue(specularColor);
-                DirtyMask &= ~specularColorDirtyMask;
-            }
         }
-
-        protected internal override void OnApply(LinkedEffectPart part)
-        {
-            var effectPart = (BeginLightEffectPart)part;
-            effectPart.DiffuseColor = DiffuseColor;
-            effectPart.EmissiveColor = EmissiveColor;
-            effectPart.SpecularColor = SpecularColor;
-            effectPart.SpecularPower = SpecularPower;
-        }
-        
-        public BeginLightEffectPart()
-        {
-            DiffuseColor = Vector3.One;
-            EmissiveColor = Vector3.Zero;
-            SpecularColor = Vector3.Zero;
-            SpecularPower = 16;
-        }
-
 
         protected internal override LinkedEffectPart Clone()
         {
-            return new BeginLightEffectPart()
-            {
-                DiffuseColor = this.DiffuseColor,
-                EmissiveColor = this.EmissiveColor,
-                SpecularColor = this.SpecularColor,
-                SpecularPower = this.SpecularPower,
-            };
+            return new BeginLightEffectPart();
         }
 
         [ContentSerializerIgnore]

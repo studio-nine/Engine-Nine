@@ -50,6 +50,7 @@ namespace Nine.Graphics
         private int VertexBufferSize;
         private int IndexBufferSize;
 
+        private Effect effect;
         private BasicEffect basicEffect;
         private PrimitiveSortMode sort;
         private bool hasBegin = false;
@@ -138,6 +139,11 @@ namespace Nine.Graphics
 
         public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
         {
+            Begin(sortMode, view, projection, blendState, samplerState, depthStencilState, rasterizerState, null);
+        }
+
+        public void Begin(PrimitiveSortMode sortMode, Matrix view, Matrix projection, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect)
+        {
             if (hasBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
@@ -146,7 +152,7 @@ namespace Nine.Graphics
             this.sort = sortMode;
             this.hasBegin = true;
             this.cameraPosition = null;
-
+            this.effect = effect ?? basicEffect;
             this.VertexCount = 0;
             this.PrimitiveCount = 0;
             
@@ -157,9 +163,13 @@ namespace Nine.Graphics
             
             Flush();
 
-            basicEffect.World = Matrix.Identity;
-            basicEffect.View = view;
-            basicEffect.Projection = projection;
+            var matrices = this.effect as IEffectMatrices;
+            if (matrices != null)
+            {
+                matrices.World = Matrix.Identity;
+                matrices.View = view;
+                matrices.Projection = projection;
+            }
         }
 
         public void DrawBillboard(Texture2D texture, Vector3 position, float size, Color color)
@@ -628,18 +638,12 @@ namespace Nine.Graphics
             if (entry.VertexCount <= 0 && entry.IndexCount <= 0)
                 return;
 
-            if (entry.Texture != null)
-            {
-                basicEffect.TextureEnabled = true;
-                basicEffect.Texture = entry.Texture;
-            }
-            else
-            {
-                basicEffect.TextureEnabled = false;
-            }
+            var matrices = effect as IEffectMatrices;
+            if (matrices != null)
+                matrices.World = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
 
-            basicEffect.World = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
-            basicEffect.CurrentTechnique.Passes[0].Apply();
+            effect.SetTexture(entry.Texture);
+            effect.CurrentTechnique.Passes[0].Apply();
 
             // Setup state
             GraphicsDevice.BlendState = blendState;

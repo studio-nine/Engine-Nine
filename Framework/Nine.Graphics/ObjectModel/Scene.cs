@@ -553,12 +553,18 @@ namespace Nine.Graphics.ObjectModel
             else
                 graphicsBuffer.LightBufferFormat = SurfaceFormat.Color;
 
-            var lightables = drawables.Where(d => d is ILightable);
+            var lightables = drawables.Where(d => d is ILightable && d.Material != null && d.Material.IsDeferred);
 
             // Draw deferred scene with DepthNormalEffect first.
             graphicsBuffer.Begin();
                 GraphicsContext.Begin();
-                    lightables.ForEach(d => d.Draw(GraphicsContext, graphicsBuffer.Effect));
+                    lightables.ForEach(d =>
+                    {
+                        if (d.Material != null && d.Material.DeferredEffect != null)
+                            d.Draw(GraphicsContext, d.Material.DeferredEffect);
+                        else
+                            d.Draw(GraphicsContext, graphicsBuffer.Effect);
+                    });
                 GraphicsContext.End();
             graphicsBuffer.End();
             

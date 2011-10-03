@@ -58,7 +58,7 @@ namespace Nine.Graphics.Primitives
 
             // Create flat triangle fan caps to seal the top and bottom.
             CreateCap(tessellation, height, radius, Vector3.UnitZ);
-            CreateCap(tessellation, height, radius, Vector3.Zero);
+            CreateCap(tessellation, height, radius, -Vector3.UnitZ);
 
             InitializePrimitive(graphicsDevice);
         }
@@ -72,25 +72,26 @@ namespace Nine.Graphics.Primitives
             // Create cap indices.
             for (int i = 0; i < tessellation - 2; i++)
             {
-                if (normal.Y > 0)
+                if (normal.Z > 0)
                 {
                     AddIndex(CurrentVertex);
-                    AddIndex(CurrentVertex + (i + 1) % tessellation);
                     AddIndex(CurrentVertex + (i + 2) % tessellation);
+                    AddIndex(CurrentVertex + (i + 1) % tessellation);
                 }
                 else
                 {
                     AddIndex(CurrentVertex);
-                    AddIndex(CurrentVertex + (i + 2) % tessellation);
                     AddIndex(CurrentVertex + (i + 1) % tessellation);
+                    AddIndex(CurrentVertex + (i + 2) % tessellation);
                 }
             }
 
             // Create cap vertices.
             for (int i = 0; i < tessellation; i++)
             {
-                Vector3 position = GetCircleVector(i, tessellation) * radius +
-                                   normal * height;
+                Vector3 position = GetCircleVector(i, tessellation) * radius;
+                if (normal.Z > 0)
+                    position += normal * height;
 
                 AddVertex(position, normal);
             }

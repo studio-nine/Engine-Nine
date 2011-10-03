@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -56,6 +57,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// Gets the code fragment for this LinkedEffectPartContent.
         /// </summary>
         public abstract string Code { get; }
+
+        /// <summary>
+        /// Gets the code fragment used to draw the graphics buffer.
+        /// </summary>
+        public virtual string DeferredCode { get { return null; } }
     }
 
     /// <summary>
@@ -67,10 +73,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// Gets or sets the path of the file.
         /// </summary>
-        [ContentSerializerIgnore]
+        [ContentSerializer(Optional=true)]
         public string Path { get; set; }
 
-        public override string Code { get { return System.IO.File.ReadAllText(Path); } }
+        /// <summary>
+        /// Gets or sets the path of the deferred file.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public string DeferredPath { get; set; }
+
+        public override string Code { get { return File.ReadAllText(Path); } }
+        public override string DeferredCode { get { return string.IsNullOrEmpty(DeferredPath) ? null : File.ReadAllText(DeferredPath); } }
     }
 
     /// <summary>
@@ -97,6 +110,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// </summary>
         [ContentSerializer]
         public List<LinkedEffectPartContent> EffectParts { get; private set; }
+
+        /// <summary>
+        /// Gets the linked effect content for the coorsponding effect used to generate
+        /// graphics buffer in deferred lighting.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public LinkedEffectContent DeferredEffect { get; internal set; }
     }
 
     /// <summary>
@@ -121,6 +141,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
             foreach (LinkedEffectPartContent part in value.EffectParts)
                 output.WriteObject<LinkedEffectPartContent>(part);
+
+            output.WriteObject<LinkedEffectContent>(value.DeferredEffect);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

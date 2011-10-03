@@ -135,6 +135,19 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public BlendState BlendState { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether two pass rendering technique is used to sort each particle based on depth.
+        /// The default value is false.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public bool DepthSortEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference alpha value used in two pass rendering.
+        /// </summary>
+        [ContentSerializer(Optional = true)]
+        public int ReferenceAlpha { get; set; }
+
+        /// <summary>
         /// Gets or sets the emitter of this particle effect.
         /// </summary>
         [ContentSerializer(Optional = true)]
@@ -171,6 +184,8 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         public ParticleEffectContent()
         {
+            DepthSortEnabled = false;
+            ReferenceAlpha = 128;
             Up = Vector3.UnitZ;
             TriggerOnStartup = false;
             MaxParticleCount = 1024;
@@ -211,6 +226,8 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.WriteObject(value.Speed);
             output.Write(value.Stretch);
             output.Write(value.Up);
+            output.Write(value.DepthSortEnabled);
+            output.Write((byte)(value.ReferenceAlpha));
             output.WriteObject(value.Tag);
 
             output.Write(value.Controllers.Count);

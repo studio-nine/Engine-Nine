@@ -27,6 +27,9 @@ namespace Nine.Graphics.ParticleEffects
     {
         public static void DrawParticleEffect(this SpriteBatch spriteBatch, ParticleEffect particleEffect)
         {
+            if (particleEffect == null)
+                throw new ArgumentNullException("particleEffect");
+
             // TODO: Use Vector2 for size (both width and height)?
             if (particleEffect.Texture != null)
             {

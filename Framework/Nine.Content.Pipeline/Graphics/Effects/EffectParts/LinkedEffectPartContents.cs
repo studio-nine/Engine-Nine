@@ -200,6 +200,18 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         [ContentSerializer(Optional = true)]
         public bool NormalMapWEnabled { get; set; }
 
+        [ContentSerializer(Optional = true)]
+        public bool SpecularXEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool SpecularYEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool SpecularZEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public bool SpecularWEnabled { get; set; }
+
         partial void OnCreate()
         {
             TextureXEnabled = true;
@@ -221,7 +233,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                                .Replace("{$HASNORMALX}", NormalMapXEnabled ? "" : "//")
                                .Replace("{$HASNORMALY}", NormalMapYEnabled ? "" : "//")
                                .Replace("{$HASNORMALZ}", NormalMapZEnabled ? "" : "//")
-                               .Replace("{$HASNORMALW}", NormalMapWEnabled ? "" : "//");
+                               .Replace("{$HASNORMALW}", NormalMapWEnabled ? "" : "//")
+                               .Replace("{$HASSPECULARX}", SpecularXEnabled ? "" : "//")
+                               .Replace("{$HASSPECULARY}", SpecularYEnabled ? "" : "//")
+                               .Replace("{$HASSPECULARZ}", SpecularZEnabled ? "" : "//")
+                               .Replace("{$HASSPECULARW}", SpecularWEnabled ? "" : "//");
             }
         }
     }
@@ -243,12 +259,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
-    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PixelShaderOutputEffectPartContent : LinkedEffectPartContent
     {
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PixelShaderOutput); }
+        }
+
+        public override string DeferredCode
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredPixelShaderOutput); }
         }
     }
 
@@ -259,6 +279,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionColor); }
         }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
+        }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
@@ -267,6 +292,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionColorNormalTexture); }
+        }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
         }
     }
 
@@ -277,6 +307,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionColorTexture); }
         }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
+        }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
@@ -286,6 +321,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionNormalTexture); }
         }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
+        }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
@@ -294,6 +334,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionTexture); }
+        }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
         }
     }
 
@@ -317,6 +362,19 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                     .Replace("{$MAXBONES}", MaxBones.ToString())
                     .Replace("{$BONECOUNT}", WeightsPerVertex.ToString()); 
             }
+        }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
+        }
+    }
+
+    public partial class MaterialEffectPartContent : LinkedEffectPartContent
+    {
+        public override string Code
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.Material); }
         }
     }
 
@@ -373,6 +431,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.VertexShaderOutput); }
         }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
+        }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.VertexTransformEffectPart, Nine.Graphics")]
@@ -381,6 +444,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.VertexTransform); }
+        }
+
+        public override string DeferredCode
+        {
+            get { return Code; }
         }
     }
 

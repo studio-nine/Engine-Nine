@@ -21,7 +21,7 @@ namespace Nine.Graphics.ParticleEffects
     /// <summary>
     /// Defines a special type of basic particle effect that is hardware accelerated.
     /// </summary>
-    public class BasicParticleEffect : ParticleEffect
+    internal class BasicParticleEffect : ParticleEffect
     {
         public BasicParticleEffect() : base(0) { }
     }

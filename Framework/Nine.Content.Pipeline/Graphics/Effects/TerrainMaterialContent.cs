@@ -35,6 +35,23 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
         [ContentSerializer(Optional = true)]
         public virtual ContentReference<Texture2DContent> NormalMap { get; set; }
+
+        [DefaultValue("1, 1, 1")]
+        [ContentSerializer(Optional = true)]
+        public virtual Vector3 DiffuseColor { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public virtual Vector3 SpecularColor { get; set; }
+
+        [DefaultValue("16")]
+        [ContentSerializer(Optional = true)]
+        public virtual float SpecularPower { get; set; }
+
+        public TerrainLayerContent()
+        {
+            DiffuseColor = Vector3.One;
+            SpecularPower = 16;
+        }
     }
 
     /// <summary>
@@ -64,31 +81,5 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
         [ContentSerializer]
         public virtual List<TerrainLayerContent> Layers { get; set; }
-
-        internal int SplatEffectPartIndex = -1;
-        internal int DetailEffectPartIndex = -1;
-
-        protected override void PreLighting(LinkedEffectContent effect, ContentProcessorContext context)
-        {
-            SplatEffectPartIndex = effect.EffectParts.Count;
-            effect.EffectParts.Add(new SplatterTextureEffectPartContent()
-            {
-                TextureXEnabled = Layers != null && Layers.Count > 0 && Layers[0].Texture != null && !string.IsNullOrEmpty(Layers[0].Texture.Filename),
-                TextureYEnabled = Layers != null && Layers.Count > 1 && Layers[1].Texture != null && !string.IsNullOrEmpty(Layers[1].Texture.Filename),
-                TextureZEnabled = Layers != null && Layers.Count > 2 && Layers[2].Texture != null && !string.IsNullOrEmpty(Layers[2].Texture.Filename),
-                TextureWEnabled = Layers != null && Layers.Count > 3 && Layers[3].Texture != null && !string.IsNullOrEmpty(Layers[3].Texture.Filename),
-
-                NormalMapXEnabled = Layers != null && Layers.Count > 0 && Layers[0].NormalMap != null && !string.IsNullOrEmpty(Layers[0].NormalMap.Filename),
-                NormalMapYEnabled = Layers != null && Layers.Count > 1 && Layers[1].NormalMap != null && !string.IsNullOrEmpty(Layers[1].NormalMap.Filename),
-                NormalMapZEnabled = Layers != null && Layers.Count > 2 && Layers[2].NormalMap != null && !string.IsNullOrEmpty(Layers[2].NormalMap.Filename),
-                NormalMapWEnabled = Layers != null && Layers.Count > 3 && Layers[3].NormalMap != null && !string.IsNullOrEmpty(Layers[3].NormalMap.Filename),
-            });
-
-            if (DetailTexture != null && !string.IsNullOrEmpty(DetailTexture.Filename))
-            {
-                DetailEffectPartIndex = effect.EffectParts.Count;
-                effect.EffectParts.Add(new DetailTextureEffectPartContent());
-            }
-        }
     }
 }

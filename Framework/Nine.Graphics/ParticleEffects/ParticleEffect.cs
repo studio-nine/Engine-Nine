@@ -171,6 +171,25 @@ namespace Nine.Graphics.ParticleEffects
         public ParticleEffectCollection EndingEffects { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether two pass rendering technique is used to sort each particle based on depth.
+        /// The default value is false. This flag is only available when you are drawing using ParticleBatch.
+        /// </summary>
+        /// <remarks>
+        /// When depth sort is enabled, particles are not sorted based on their distance to the camera. Instead, a two pass
+        /// rendering technique is used to eliminate depth order problems.
+        /// During the first pass, depth stencial state is set to Default and alpha test is turned on, so the opaque part of the
+        /// particles are ordered using the depth buffer.
+        /// The second pass draws the particles with depth stencial state set to DepthRead and alpha blend is turned on, so the
+        /// transparent part of the particles are rendered.
+        /// </remarks>
+        public bool DepthSortEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference alpha value used in two pass rendering.
+        /// </summary>
+        public int ReferenceAlpha { get; set; }
+
+        /// <summary>
         /// Gets or sets user data.
         /// </summary>
         public object Tag { get; set; }
@@ -251,6 +270,7 @@ namespace Nine.Graphics.ParticleEffects
             this.Enabled = true;
             this.Stretch = 1;
             this.Duration = 2;
+            this.ReferenceAlpha = 128;
             this.triggerOnStartup = triggerOnStartup;
             this.BlendState = BlendState.Additive;
             this.Emitter = new PointEmitter();

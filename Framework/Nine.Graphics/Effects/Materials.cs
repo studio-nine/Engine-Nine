@@ -48,8 +48,13 @@ namespace Nine.Graphics.Effects
         /// Gets or sets a value indicating whether texture alpha test is enabled when
         /// generating depth info. This value is usually used to generate shadow maps.
         /// </summary>
-        /// TODO: Pick a better name?
         public bool DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the underlying mesh rendered using
+        /// this material is double sided.
+        /// </summary>
+        public bool DoubleSided { get; set; }
 
         /// <summary>
         /// Queries the material for the specified interface T.
@@ -63,6 +68,12 @@ namespace Nine.Graphics.Effects
         /// Gets the underlying effect.
         /// </summary>
         public abstract Effect Effect { get; }
+
+        /// <summary>
+        /// Gets the deferred effect used to generate the graphics buffer.
+        /// If null is returned, the default graphics buffer effect is used.
+        /// </summary>
+        public virtual Effect DeferredEffect { get { return null; } }
 
         /// <summary>
         /// Applys the parameter values.

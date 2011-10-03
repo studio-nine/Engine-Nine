@@ -1,16 +1,26 @@
 ﻿//=============================================================================
 //
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
-fragment PixelColorOutput;
+fragment DeferredPixelColorOutput;
+
+[parameters]
+float SpecularPower = 16;
+
+[pixeloutputs]
+float4 depth;
 
 [ps]
 __hlsl__
 void main(INPUT input, inout OUTPUT output)
 {
+	// Add light colors together.
 	float4 color;
 	import(Color, color = Color);
-    output.color = color;
+    color.a = SpecularPower / 255;
+	output.color = color;
+    
+    export(float, depth, 1);
 }
 __hlsl__

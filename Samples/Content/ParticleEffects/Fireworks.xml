@@ -29,6 +29,7 @@
         <Speed>0.5</Speed>
         <Texture>smoke</Texture>
         <BlendState>AlphaBlend</BlendState>
+        <DepthSortEnabled>true</DepthSortEnabled>
         <Controllers>
           <Item Type="Particles:SizeController">
             <EndSize>0.5</EndSize>

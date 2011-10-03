@@ -158,7 +158,7 @@ namespace Nine.Graphics.ObjectModel
 
             ModelBatch.Begin(ModelSortMode.Immediate, view, projection, null, null, null, rasterizeState);
             PrimitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, null, null, null, rasterizeState);
-            ParticleBatch.Begin(view, projection, null, null, rasterizeState);
+            ParticleBatch.Begin(view, projection, null, rasterizeState);
             SpriteBatch.Begin();
         }
 
@@ -172,7 +172,7 @@ namespace Nine.Graphics.ObjectModel
 
             ModelBatch.Begin(ModelSortMode.Immediate, view, projection, blendState, samplerState, depthStencilState, rasterizeState);
             PrimitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizeState);
-            ParticleBatch.Begin(view, projection, samplerState, depthStencilState, rasterizeState);
+            ParticleBatch.Begin(view, projection, samplerState, rasterizeState);
             SpriteBatch.Begin();
         }
 

@@ -165,6 +165,7 @@ namespace Nine.Graphics.Effects
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.VertexColorEnabled = input.ReadObject<System.Boolean>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -197,6 +198,7 @@ namespace Nine.Graphics.Effects
             existingInstance.VertexColorEnabled = input.ReadObject<System.Boolean>();
             existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -220,6 +222,7 @@ namespace Nine.Graphics.Effects
             existingInstance.EffectSerializer = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
             existingInstance.ParametersSerializer = input.ReadObject<System.Collections.Generic.Dictionary<System.String, System.Object>>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -248,6 +251,7 @@ namespace Nine.Graphics.Effects
             existingInstance.VertexColorEnabled = input.ReadObject<System.Boolean>();
             existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -278,6 +282,7 @@ namespace Nine.Graphics.Effects
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -299,8 +304,9 @@ namespace Nine.Graphics.Effects
             }
             existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
             existingInstance.EffectSerializer = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
-            existingInstance.EffectPartsSerializer = input.ReadObject<Nine.Graphics.Effects.LinkedEffectPart[]>();
+            existingInstance.EffectPartsSerializer = input.ReadObject<System.Collections.Generic.IList<Nine.Graphics.Effects.LinkedEffectPart>>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -333,6 +339,7 @@ namespace Nine.Graphics.Effects
             existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
             existingInstance.SkinningEnabled = input.ReadObject<System.Boolean>();
             existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
 
             return existingInstance;
         }
@@ -397,10 +404,6 @@ namespace Nine.Graphics.Effects.EffectParts
             {
                 existingInstance = new BeginLightEffectPart();
             }
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularPower = input.ReadObject<System.Single>();
 
             return existingInstance;
         }
@@ -562,6 +565,31 @@ namespace Nine.Graphics.Effects.EffectParts
 #endif
 #if !WINDOWS_PHONE
     /// <summary>
+    /// Content reader for <c>MaterialEffectPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    class MaterialEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.MaterialEffectPart>
+    {
+        protected override Nine.Graphics.Effects.EffectParts.MaterialEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.MaterialEffectPart existingInstance)
+        {
+            if (existingInstance == null)
+            {
+                existingInstance = new MaterialEffectPart();
+            }
+            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularPower = input.ReadObject<System.Single>();
+            existingInstance.Alpha = input.ReadObject<System.Single>();
+
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
     /// Content reader for <c>NormalMapEffectPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -597,6 +625,27 @@ namespace Nine.Graphics.Effects.EffectParts
                 existingInstance = new OverlayTextureEffectPart();
             }
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>PixelShaderOutputEffectPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    class PixelShaderOutputEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart>
+    {
+        protected override Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart existingInstance)
+        {
+            if (existingInstance == null)
+            {
+                existingInstance = new PixelShaderOutputEffectPart();
+            }
+            existingInstance.SpecularPower = input.ReadObject<System.Single>();
 
             return existingInstance;
         }
@@ -715,6 +764,18 @@ namespace Nine.Graphics.Effects.EffectParts
             existingInstance.NormalMapY = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.NormalMapZ = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.NormalMapW = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.DiffuseColorX = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.DiffuseColorY = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.DiffuseColorZ = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.DiffuseColorW = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularColorX = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularColorY = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularColorZ = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularColorW = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.SpecularPowerX = input.ReadObject<System.Single>();
+            existingInstance.SpecularPowerY = input.ReadObject<System.Single>();
+            existingInstance.SpecularPowerZ = input.ReadObject<System.Single>();
+            existingInstance.SpecularPowerW = input.ReadObject<System.Single>();
             existingInstance.SplatterTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SplatterTextureScale = input.ReadObject<Microsoft.Xna.Framework.Vector2>();
 
@@ -866,7 +927,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Model = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
             existingInstance.OverrideModelTextures = input.ReadObject<System.Boolean>();
-            existingInstance.OverrideModelColors = input.ReadObject<System.Boolean>();
+            existingInstance.OverrideModelMaterial = input.ReadObject<System.Boolean>();
             existingInstance.Alpha = input.ReadObject<System.Single>();
             existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
             existingInstance.Visible = input.ReadObject<System.Boolean>();

@@ -95,6 +95,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
+        internal static byte[] DeferredPixelShaderOutput {
+            get {
+                object obj = ResourceManager.GetObject("DeferredPixelShaderOutput", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] DetailTexture {
             get {
                 object obj = ResourceManager.GetObject("DetailTexture", resourceCulture);
@@ -140,6 +147,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
         internal static byte[] Fog {
             get {
                 object obj = ResourceManager.GetObject("Fog", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] Material {
+            get {
+                object obj = ResourceManager.GetObject("Material", resourceCulture);
                 return ((byte[])(obj));
             }
         }

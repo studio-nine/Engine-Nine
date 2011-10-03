@@ -7,7 +7,7 @@ namespace StitchUp.Content.Pipeline.FragmentLinking.Generator
 	internal static class StructGenerator
 	{
 		#region Pixel output
-
+        
 		public static void WriteAllPixelOutputStructs(EffectCodeGenerator generator, StitchedEffectSymbol stitchedEffect)
 		{
 			generator.ForEachPass(WritePixelOutputStructs);

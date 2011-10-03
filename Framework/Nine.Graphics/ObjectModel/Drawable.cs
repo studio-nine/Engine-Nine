@@ -26,7 +26,7 @@ namespace Nine.Graphics.ObjectModel
     {
         /// <summary>
         /// Gets or sets whether the drawable is visible.
-        /// </summary>s
+        /// </summary>
         [ContentSerializer]
         public bool Visible { get; set; }
         
