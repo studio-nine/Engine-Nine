@@ -439,18 +439,22 @@ namespace Nine
     }
     #endregion
 
+    #region InputRaiseStrategy
+
+    public enum InputRaiseStrategy
+    {
+        Tunneling,
+        Bubbling
+    }
+
+    #endregion
+
     #region InputComponent
     /// <summary>
     /// An input component that manages a set of <c>Input</c> instances based on push model.
     /// </summary>
     public class InputComponent : IUpdateable
     {
-        public enum RaiseStrategy
-        {
-            Tunneling,
-            Bubbling
-        }
-
         #region Field
 
         internal List<WeakReference> inputs = new List<WeakReference>();
@@ -503,7 +507,7 @@ namespace Nine
         /// </summary>
         private const float DoubleClickInterval = 0.25f;
 
-        public RaiseStrategy RaisingStrategy { get; set; }
+        public InputRaiseStrategy RaiseStrategy { get; set; }
 
 #if WINDOWS
         private bool leftDown = false;
@@ -536,7 +540,7 @@ namespace Nine
         public InputComponent()
         {
             Current = this;
-            RaisingStrategy = RaiseStrategy.Tunneling;
+            RaiseStrategy = InputRaiseStrategy.Tunneling;
         }
 
         /// <summary>
@@ -546,7 +550,7 @@ namespace Nine
         public InputComponent(IntPtr handle)
         {
             Current = this;
-            RaisingStrategy = RaiseStrategy.Tunneling;
+            RaiseStrategy = InputRaiseStrategy.Tunneling;
 #if WINDOWS
             Mouse.WindowHandle = handle;
             control = Form.FromHandle(handle);
@@ -854,7 +858,7 @@ namespace Nine
         #region Raise Events
         private void ForEach(Predicate<Input> action)
         {
-            if (RaisingStrategy == RaiseStrategy.Tunneling)
+            if (RaiseStrategy == InputRaiseStrategy.Tunneling)
             {
                 for (int i = 0; i < inputs.Count; i++)
                 {
@@ -992,4 +996,5 @@ namespace Nine
         #endregion
     }
     #endregion
+
 }

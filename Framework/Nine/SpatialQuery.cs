@@ -45,8 +45,9 @@ namespace Nine
         {
             if (queries == null)
                 throw new ArgumentNullException("query");
-
-            this.Filter = d => d is TOutput;
+            //TODO In current composition model for Navigator->Steerable, we cant directly cast TInput to TOutput. Thus all the steerables are filtered out and no collision ever occur.
+            //Changed the filter to TInput in order for the steerables to work at all. Yufeih, you know better what is going on here. So take a look in free time. :)
+            this.Filter = d => d is TInput;
             this.Converter = d => (TOutput)(object)d;
             this.InnerQueries = new List<ISpatialQuery<TInput>>(queries);
         }
