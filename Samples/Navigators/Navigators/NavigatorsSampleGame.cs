@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Nine.Graphics.ObjectModel;
 using Nine.Graphics;
+using Nine.Components;
 using Nine;
 
 namespace Navigators
@@ -36,9 +37,6 @@ namespace Navigators
         Scene scene;
         Model peonModel;
         NavigatedModel[] bots;
-#if WINDOWS_PHONE
-        InputComponent input;
-#endif
 
         public NavigatorsSampleGame()
         {
@@ -64,13 +62,14 @@ namespace Navigators
         /// </summary>
         protected override void LoadContent()
         {
+            Components.Add(new InputComponent(Window.Handle));
+
             scene = new Scene(GraphicsDevice);
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
 
             peonModel = Content.Load<Model>("Models/Peon");
 
 #if WINDOWS_PHONE
-            input = new InputComponent(this.Window.Handle);
             scene.Camera = new TopDownEditorCamera(GraphicsDevice) { Pitch = MathHelper.ToRadians(30), Yaw=1.6f, Radius = 20f};
 #else
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(190, 30, 20));
@@ -136,9 +135,6 @@ namespace Navigators
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-#if WINDOWS_PHONE
-            input.Update(gameTime.ElapsedGameTime);
-#endif
             base.Update(gameTime);
         }
 

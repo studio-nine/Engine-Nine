@@ -320,6 +320,6 @@ namespace Nine.Graphics.Effects
             set { effect.FogStart = value; }
         }
     }
-
+    
 #endif
 }

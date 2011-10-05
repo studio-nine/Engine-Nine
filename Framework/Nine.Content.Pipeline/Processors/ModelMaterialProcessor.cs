@@ -54,8 +54,21 @@ namespace Nine.Content.Pipeline.Processors
         {
             if (input.NormalMappingEnabled)
                 effect.EffectParts.Add(new NormalMapEffectPartContent());
+
             if (input.TextureEnabled)
-                effect.EffectParts.Add(new BasicTextureEffectPartContent());
+            {
+                Flush(effect, material);
+                effect.EffectParts.Add(new BasicTextureEffectPartContent()
+                {
+                    TextureAlphaUsage = input.TextureAlphaUsage,
+                });
+                material.EffectParts.Add(new BasicTextureEffectPartContent()
+                {
+                    TextureAlphaUsage = input.TextureAlphaUsage,
+                    OverlayColor = input.OverlayColor,
+                });
+            }
+
             if (input.SpecularMappingEnabled)
                 effect.EffectParts.Add(new SpecularMapEffectPartContent());
             if (input.EmissiveMappingEnabled)

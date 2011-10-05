@@ -47,27 +47,24 @@ namespace Nine.Graphics.ObjectModel
         public int Y { get; private set; }
 
         /// <summary>
-        /// Gets or sets the level of detail of this surface patch.
+        /// Gets the level of detail of this surface patch.
         /// </summary>
-        /// <value>
-        /// The level of detail.
-        /// </value>
-        public int LevelOfDetail
+        public int DetailLevel
         {
-            get { return levelOfDetail; }
+            get { return detailLevel; }
 
             // Do not allow set by externals since we need to make sure
             // lod difference between adjacent patches do not exceed 1.
             internal set 
             {
-                if (levelOfDetail != value)
+                if (detailLevel != value)
                 {
-                    levelOfDetail = value;
+                    detailLevel = value;
                     UpdateLevelOfDetail();
                 } 
             }
         }
-        private int levelOfDetail = 0;
+        private int detailLevel = 0;
 
         /// <summary>
         /// Gets vertex buffer of this patch.
@@ -232,7 +229,7 @@ namespace Nine.Graphics.ObjectModel
         {
             int startIndex, primitiveCount;
             {
-                Surface.Geometry.GetLevel(LevelOfDetail,
+                Surface.Geometry.GetLevel(DetailLevel,
                     GetLevelOfDetail(X - 1, Y), GetLevelOfDetail(X + 1, Y),
                     GetLevelOfDetail(X, Y - 1), GetLevelOfDetail(X, Y + 1), out startIndex, out primitiveCount);
             }
@@ -245,7 +242,7 @@ namespace Nine.Graphics.ObjectModel
         private int GetLevelOfDetail(int x, int y)
         {
             var patch = Surface.Patches[x, y];
-            return patch != null ? patch.LevelOfDetail : LevelOfDetail;
+            return patch != null ? patch.DetailLevel : DetailLevel;
         }
         #endregion
 

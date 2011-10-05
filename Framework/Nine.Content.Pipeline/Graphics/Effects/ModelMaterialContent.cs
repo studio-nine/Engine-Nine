@@ -33,14 +33,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         Opaque,
 
         /// <summary>
-        /// The alpha channel will be replaced with the specified team color.
+        /// The alpha channel will be replaced with the specified overlay color.
         /// </summary>
-        TeamColor,
+        Overlay,
 
         /// <summary>
         /// The alpha channle will be used as the specular map.
         /// </summary>
-        SpecularColor,
+        Specular,
     }
 
     /// <summary>
@@ -73,6 +73,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         [ContentSerializer(Optional = true)]
         public virtual bool NormalMappingEnabled { get; set; }
 
+        [DefaultValue("1, 1, 1")]
+        [ContentSerializer(Optional = true)]
+        public virtual Vector3 OverlayColor { get; set; }
+
         [ContentSerializer(Optional = true)]
         public virtual bool ParallaxMappingEnabled { get; set; }
 
@@ -97,14 +101,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         [ContentSerializer(Optional = true)]
         public virtual TextureAlphaUsage TextureAlphaUsage { get; set; }
 
-        [DefaultValue("1, 1, 1")]
-        [ContentSerializer(Optional = true)]
-        public virtual Vector3 TeamColor { get; set; }
-
         public ModelMaterialContent()
         {
             TextureEnabled = true;
-            TeamColor = Vector3.One;
+            OverlayColor = Vector3.One;
             DiffuseColor = Vector3.One;
             SpecularPower = 16;
             Alpha = 1;

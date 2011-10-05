@@ -240,6 +240,22 @@ namespace Nine.Graphics.ObjectModel
             get { return AbsoluteTransform.Translation; }
         }
 
+        /// <summary>
+        /// Gets the local center position of the surface.
+        /// </summary>
+        public Vector3 Center
+        {
+            get { return Position + Size * 0.5f; }
+        }
+
+        /// <summary>
+        /// Gets the absolute center position of the surface.
+        /// </summary>
+        public Vector3 AbsoluteCenter
+        {
+            get { return AbsolutePosition + Size * 0.5f; }
+        }
+
         protected override void OnTransformChanged()
         {
             for (int i = 0; i < Patches.Count; i++)
@@ -533,7 +549,7 @@ namespace Nine.Graphics.ObjectModel
                 else if (patchLod > MaxLevelOfDetail)
                     patchLod = MaxLevelOfDetail;
                 
-                Patches[i].LevelOfDetail = patchLod;
+                Patches[i].DetailLevel = patchLod;
             }
 
             for (int i = 0; i < Patches.Count; i++)
@@ -613,7 +629,7 @@ namespace Nine.Graphics.ObjectModel
         /// </returns>
         public bool IsAbove(Vector3 point)
         {
-            return GetHeight(point.X, point.Y) < point.Z;
+            return GetHeight(point.X, point.Y) <= point.Z;
         }
 
         /// <summary>
@@ -639,15 +655,10 @@ namespace Nine.Graphics.ObjectModel
                     return GetHeight(ray.Position.X, ray.Position.Y);
 
                 bool? isAboveLastTime = null;
-                start += ray.Direction * (intersection.Value + Step);
+                start += ray.Direction * intersection.Value;
                 while (true)
                 {
-                    ContainmentType containment;
-                    BoundingBox.Contains(ref start, out containment);
-                    if (containment == ContainmentType.Disjoint)
-                        break;
-
-                    bool isAbove = (GetHeight(start.X, start.Y) < start.Z);
+                    bool isAbove = (GetHeight(start.X, start.Y) <= start.Z);
                     if (isAboveLastTime == null)
                     {
                         if (!isAbove)

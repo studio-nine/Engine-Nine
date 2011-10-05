@@ -1,0 +1,31 @@
+//=============================================================================
+//
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment BasicTextureAlphaSpecular;
+
+[textures]
+texture2D Texture : TEXTURE;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+
+	float3 specular;
+	import(SpecularColor, specular = SpecularColor);
+	
+    float4 tex = tex2D({$SAMPLER}, uv);
+	color.rgb *= tex.rgb;
+	
+	specular = tex.a;
+	export(float3, SpecularColor, specular);
+	export(float4, Color, color);
+}
+__hlsl__

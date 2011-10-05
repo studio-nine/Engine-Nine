@@ -80,7 +80,7 @@ namespace TerrainSample
             //terrain = new DrawableSurface(GraphicsDevice, 1, 16, 16, 8);
             
             // Center the terrain to the camera
-            terrain.Position = -terrain.BoundingBox.GetCenter();
+            terrain.Position = -terrain.Center;
 
             // Enable terrain level of detail
             terrain.LevelOfDetailEnabled = true;

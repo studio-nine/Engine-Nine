@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
+#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -36,7 +36,7 @@ namespace Nine.Content.Pipeline.Processors
     [ContentProcessor(DisplayName = "Model - Engine Nine")]
     public class ExtendedModelProcessor : ModelProcessor
     {
-        const string DefaultTextures = "NormalMap|*_n.dds|BumpMap|*_b.dds|Diffuse|*_d.dds|Specular|*_s.dds";
+        const string DefaultTextures = "NormalMap|*_n.dds|Specular|*_s.dds|Emissive|*_e.dds";
         const string DefaultProcessors = "NormalMap|NormalTextureProcessor";
 
         /// <summary>
@@ -256,6 +256,8 @@ namespace Nine.Content.Pipeline.Processors
                         ExternalReference<TextureContent> texture = new ExternalReference<TextureContent>(textureFilename);
                         texture = context.BuildAsset<TextureContent, TextureContent>(texture, processor);
                         textureDictionary.Add(usage, new ContentReference<TextureContent>(texture.Filename));
+
+                        context.AddDependency(textureFilename);
                     }
                 }
             }

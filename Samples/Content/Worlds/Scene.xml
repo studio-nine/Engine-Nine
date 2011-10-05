@@ -11,6 +11,7 @@
         <FogEnd>500</FogEnd>
         <FogStart>50</FogStart>
       </Item>
+
      
       <Item Type="nine:DrawableSurfaceContent">
         <Heightmap>Terrain\MountainHeightmap</Heightmap>
@@ -25,8 +26,6 @@
         <Position>-290 -100 -10</Position>
       </Item>
 
-      <!-- 
-      -->
 
       <Item Type="nine:DrawableSurfaceContent">
         <Heightmap>Terrain\RF1</Heightmap>
@@ -53,8 +52,6 @@
               <Alpha>../../Content/Terrain/3.bmp</Alpha>
               <Texture>../../Content/Terrain/grass.dds</Texture>
               <NormalMap>../../Content/Terrain/grass_n.dds</NormalMap>
-              <!--
-              -->
             </Item>
           </Layers>
         </Material>
@@ -64,7 +61,6 @@
         <Position>-30 -80 0</Position>
         <TextureScale>0.125 0.125</TextureScale>
       </Item>
-      
       
       <Item Type="nine:DrawableModelContent">
         <Alpha>0.4</Alpha>
@@ -101,6 +97,17 @@
       <Item Type="nine:DrawableModelContent">
         <Model>Models\Tank</Model>
         <Position>-10 0 10</Position>
+      </Item>
+
+      <Item Type="nine:DrawableModelContent">
+        <Material Type="fx:ModelMaterialContent">
+          <FogEnabled>true</FogEnabled>
+          <ShadowEnabled>true</ShadowEnabled>
+          <OverlayColor>1 1 0</OverlayColor>
+          <TextureAlphaUsage>Overlay</TextureAlphaUsage>
+        </Material>
+        <Model>Models\Tank</Model>
+        <Position>-30 0 10</Position>
       </Item>
 
       <Item Type="nine:DrawableModelContent">
@@ -142,6 +149,9 @@
         </ModelParts>
         <Position>5 0 10</Position>
       </Item>
+
+      <!-- 
+      -->
       
       <Item Type="nine:DrawableModelContent">
         <Material Type="fx:ModelMaterialContent">
@@ -150,12 +160,16 @@
           <NormalMappingEnabled>true</NormalMappingEnabled> 
           <SkinningEnabled>true</SkinningEnabled>
           <SpecularColor>1 1 1</SpecularColor>
+          <SpecularMappingEnabled>true</SpecularMappingEnabled>
+          <SpecularPower>128</SpecularPower>
         </Material>
         <Model>Models\Dude</Model>
         <Position>15 0 10</Position>
       </Item>
 
       
+      <!--
+      -->
       <Item Type="nine:DrawableParticleEffectContent">
         <ParticleEffect>Galaxy</ParticleEffect>
       </Item>
@@ -163,8 +177,6 @@
       <Item Type="nine:AmbientLightContent">
         <AmbientLightColor>0.3 0.3 0.3</AmbientLightColor>
       </Item>
-      <!--
-      -->
       <Item Type="nine:DirectionalLightContent">
         <CastShadow>true</CastShadow>
         <DiffuseColor>0.8 0.8 0.8</DiffuseColor>

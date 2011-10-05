@@ -432,6 +432,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicTextureEffectPartContent value)
         {
             output.WriteObject(value.Texture);
+            output.WriteObject(value.OverlayColor);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)

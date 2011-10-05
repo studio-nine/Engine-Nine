@@ -43,11 +43,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class BasicTextureEffectPartContent : LinkedEffectPartContent
     {
+        [ContentSerializer(Optional= true)]
+        public virtual TextureAlphaUsage TextureAlphaUsage { get; set; }
+
         public override string Code
         {
             get 
             {
-                string code = Encoding.UTF8.GetString(LinkedEffectParts.BasicTexture);
+                string code = Encoding.UTF8.GetString(
+                    TextureAlphaUsage == Effects.TextureAlphaUsage.Opaque ? LinkedEffectParts.BasicTexture : (
+                    TextureAlphaUsage == Effects.TextureAlphaUsage.Overlay ? LinkedEffectParts.BasicTextureAlphaOverlay :
+                                                                                  LinkedEffectParts.BasicTextureAlphaSpecular));
                 if (Contains(typeof(ScreenEffectEffectPartContent)))
                 {
                     return code.Replace("{$SAMPLER}", "BasicSampler");
@@ -404,6 +410,15 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class SpecularMapEffectPartContent : LinkedEffectPartContent
     {
+        protected internal override void Validate(ContentProcessorContext context)
+        {
+            var basicTexture = EffectParts.OfType<BasicTextureEffectPartContent>().FirstOrDefault();
+            if (basicTexture != null && basicTexture.TextureAlphaUsage == TextureAlphaUsage.Specular)
+            {
+                throw new InvalidContentException("Cannot mix using SpecularMapEffectPartContent and TextureAlphaUsage.Specular.");
+            }
+        }
+
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.SpecularMap); }

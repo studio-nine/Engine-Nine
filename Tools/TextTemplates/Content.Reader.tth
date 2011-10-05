@@ -45,8 +45,11 @@ namespace <#= namespaceGroup.Key #>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    class <#= className #>Reader : Microsoft.Xna.Framework.Content.ContentTypeReader<<#= classFullName #>>
+    partial class <#= className #>Reader : Microsoft.Xna.Framework.Content.ContentTypeReader<<#= classFullName #>>
     {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, <#= classFullName #> instance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, <#= classFullName #> instance);
+
         protected override <#= classFullName #> Read(Microsoft.Xna.Framework.Content.ContentReader input, <#= classFullName #> existingInstance)
         {
 <#
@@ -59,6 +62,7 @@ namespace <#= namespaceGroup.Key #>
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new <#= className #>(graphicsDeviceService.GraphicsDevice);
             }
+            BeginRead(input, existingInstance);
 <#
     }
     else if (HasDefaultConstructor(type))
@@ -68,6 +72,7 @@ namespace <#= namespaceGroup.Key #>
             {
                 existingInstance = new <#= className #>();
             }
+            BeginRead(input, existingInstance);
 <#
     }
     foreach (var member in members)
@@ -91,7 +96,7 @@ namespace <#= namespaceGroup.Key #>
         }
     }
 #>
-
+            EndRead(input, existingInstance);
             return existingInstance;
         }
     }

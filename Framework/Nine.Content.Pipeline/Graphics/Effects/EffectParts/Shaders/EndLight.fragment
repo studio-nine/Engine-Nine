@@ -1,6 +1,6 @@
 //=============================================================================
 //
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 fragment EndLight;
@@ -21,6 +21,7 @@ void main(INPUT input, inout OUTPUT output)
 	import(EmissiveColor, emissiveColor = EmissiveColor);
 	import(Color, color = Color);
 
+    // TODO: Saturate light specular ??
 	color.xyz = color.xyz * (lightDiffuse + emissiveColor)  + lightSpecular * specularColor;
 	export(float4, Color, color);
 }

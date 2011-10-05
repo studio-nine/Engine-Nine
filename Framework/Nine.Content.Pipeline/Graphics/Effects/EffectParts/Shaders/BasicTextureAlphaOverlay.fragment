@@ -1,0 +1,30 @@
+//=============================================================================
+//
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+fragment BasicTextureAlphaOverlay;
+
+[parameters]
+float3 OverlayColor : OVERLAYCOLOR;
+
+[textures]
+texture2D Texture : TEXTURE;
+
+[ps]
+__hlsl__
+void main(INPUT input, inout OUTPUT output)
+{
+	float2 uv;
+	import(TexCoord, uv = TexCoord);
+
+	float4 color;
+	import(Color, color = Color);
+	
+    float4 tex = tex2D({$SAMPLER}, uv);
+    tex.rgb = lerp(tex.rgb, OverlayColor, tex.a);
+	color.rgb *= tex.rgb;
+
+	export(float4, Color, color);
+}
+__hlsl__

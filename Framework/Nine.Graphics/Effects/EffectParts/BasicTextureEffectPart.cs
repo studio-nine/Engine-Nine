@@ -26,18 +26,30 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter textureParameter;
         private const uint textureDirtyMask = 1 << 0;
 
-        public override bool IsMaterial { get { return true; } }
-
-        public BasicTextureEffectPart()
-        {
-            textureParameter = GetParameter("Texture");
-        }
+        private Vector3 overlayColor;
+        private EffectParameter overlayColorParameter;
+        private const uint overlayColorDirtyMask = 1 << 1;
 
         [ContentSerializer(Optional = true)]
         public Texture2D Texture
         {
             get { return texture; }
             set { if (texture != value) { texture = value; DirtyMask |= textureDirtyMask; } }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 OverlayColor
+        {
+            get { return overlayColor; }
+            set { overlayColor = value; DirtyMask |= overlayColorDirtyMask; }
+        }
+
+        public override bool IsMaterial { get { return true; } }
+
+        public BasicTextureEffectPart()
+        {
+            textureParameter = GetParameter("Texture");
+            overlayColorParameter = GetParameter("OverlayColor");
         }
 
         protected internal override void OnApply()
@@ -48,11 +60,20 @@ namespace Nine.Graphics.Effects.EffectParts
                     textureParameter.SetValue(texture);
                 DirtyMask &= ~textureDirtyMask;
             }
+
+            if ((DirtyMask & overlayColorDirtyMask) != 0)
+            {
+                if (overlayColorParameter != null)
+                    overlayColorParameter.SetValue(overlayColor);
+                DirtyMask &= ~overlayColorDirtyMask;
+            }
         }
 
         protected internal override void OnApply(LinkedEffectPart part)
         {
-            ((BasicTextureEffectPart)part).Texture = Texture;
+            var effectPart = (BasicTextureEffectPart)part;
+            effectPart.Texture = Texture;
+            effectPart.OverlayColor = OverlayColor;
         }
 
         protected internal override LinkedEffectPart Clone()
@@ -60,6 +81,7 @@ namespace Nine.Graphics.Effects.EffectParts
             return new BasicTextureEffectPart()
             {
                 Texture = this.Texture,
+                OverlayColor = this.OverlayColor,
             };
         }
 

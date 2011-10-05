@@ -89,7 +89,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>HeightmapProcessor</Processor>
       <ProcessorParameters_Step>0.4</ProcessorParameters_Step>
-      <ProcessorParameters_Height>25</ProcessorParameters_Height>
     </Compile>
   </ItemGroup>
   <ItemGroup>

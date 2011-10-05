@@ -904,6 +904,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector3 OverlayColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
@@ -912,6 +919,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         /// </summary>
         public BasicTextureEffectPartContent()
         {
+            OverlayColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             OnCreate();
         }
 

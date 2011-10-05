@@ -46,7 +46,7 @@ namespace Nine.Graphics.Effects
             get
             {
                 Effect effect = Effect != null ? Effect : LinkedEffect.CurrentEffect;
-                return effect.GraphicsDevice;
+                return effect != null ? effect.GraphicsDevice : null;
             }
         }
 
@@ -69,7 +69,7 @@ namespace Nine.Graphics.Effects
             Effect effect = Effect != null ? Effect : LinkedEffect.CurrentEffect;
             string uniqueName = UniqueName != null ? UniqueName : LinkedEffect.CurrentUniqueName;
 
-            return effect.Parameters[uniqueName + name];
+            return effect != null && uniqueName != null ? effect.Parameters[uniqueName + name] : null;
         }
 
         /// <summary>
@@ -79,6 +79,9 @@ namespace Nine.Graphics.Effects
         {
             Effect effect = Effect != null ? Effect : LinkedEffect.CurrentEffect;
             string uniqueName = UniqueName != null ? UniqueName : LinkedEffect.CurrentUniqueName;
+            
+            if (effect == null || uniqueName == null)
+                return null;
 
             foreach (EffectParameter parameter in effect.Parameters)
             {
