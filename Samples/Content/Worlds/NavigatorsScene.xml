@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent xmlns:nine="Nine.Content.Pipeline.Graphics.ObjectModel" xmlns:fx="Nine.Content.Pipeline.Graphics.Effects">
+  <Asset Type="nine:DisplayObjectContent">
+    <Children>
+      
+      <Item Type="nine:FogContent">
+        <FogEnd>500</FogEnd>
+        <FogStart>50</FogStart>
+      </Item>
+     
+      <Item Type="nine:DrawableSurfaceContent">
+        <Heightmap>Terrain\MountainHeightmap</Heightmap>
+        <LevelOfDetailEnabled>true</LevelOfDetailEnabled>
+        <LevelOfDetailEnd>300</LevelOfDetailEnd>
+        <LevelOfDetailStart>200</LevelOfDetailStart>
+        <Material Type="fx:BasicMaterialContent">
+          <SpecularColor>1 1 1</SpecularColor>
+          <Texture>Terrain\Mountain</Texture>
+          <TextureEnabled>true</TextureEnabled>
+        </Material>
+        <Name>Terrain</Name>
+        <Position>-150 -100 -10</Position>
+      </Item>
+
+      <Item Type="nine:AmbientLightContent">
+        <AmbientLightColor>0.9 0.9 0.9</AmbientLightColor>
+      </Item>
+      
+    </Children>
+  </Asset>
+</XnaContent>
