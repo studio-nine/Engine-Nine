@@ -1303,34 +1303,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         partial void OnCreate();
     }
     /// <summary>
-    /// Content model for <c>PixelShaderOutputEffectPart</c>.
-    /// 
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart, Nine.Graphics")]
-    public partial class PixelShaderOutputEffectPartContent
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("16")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Single SpecularPower { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of <c>PixelShaderOutputEffectPartContent</c>.
-        /// </summary>
-        public PixelShaderOutputEffectPartContent()
-        {
-            SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
-            OnCreate();
-        }
-
-        partial void OnCreate();
-    }
-    /// <summary>
     /// Content model for <c>PointLightEffectPart</c>.
     /// 
     /// </summary>

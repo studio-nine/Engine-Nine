@@ -436,6 +436,7 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaOverlay.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaSpecular.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLightBuffer.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\Material.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredNormalMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredPixelShaderOutput.fragment" />

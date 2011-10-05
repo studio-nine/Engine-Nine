@@ -102,6 +102,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
+        internal static byte[] DeferredLightBuffer {
+            get {
+                object obj = ResourceManager.GetObject("DeferredLightBuffer", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] DeferredLights {
             get {
                 object obj = ResourceManager.GetObject("DeferredLights", resourceCulture);

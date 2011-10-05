@@ -40,6 +40,10 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter specularColorParameter;
         private const uint specularColorDirtyMask = 1 << 4;
 
+        private float specularPower;
+        private EffectParameter specularPowerParameter;
+        private const uint specularPowerDirtyMask = 1 << 4;
+
         [ContentSerializer(Optional = true)]
         public Vector3 DiffuseColor
         {
@@ -68,15 +72,16 @@ namespace Nine.Graphics.Effects.EffectParts
             set { if (lightTexture != value) { lightTexture = value; DirtyMask |= lightTextureDirtyMask; } }
         }
 
+        [ContentSerializerIgnore]
+        public float SpecularPower
+        {
+            get { return specularPower; }
+            set { if (specularPower != value) { specularPower = value; DirtyMask |= specularPowerDirtyMask; } }
+        }
+
         float IEffectMaterial.Alpha
         {
             get { return 1; }
-            set { }
-        }
-
-        float IEffectMaterial.SpecularPower
-        {
-            get { return 16; }
             set { }
         }
 
@@ -94,43 +99,60 @@ namespace Nine.Graphics.Effects.EffectParts
                 LightTexture = texture as Texture2D;
         }
 
+        public DeferredLightsEffectPart()
+        {
+            DiffuseColor = Vector3.One;
+            EmissiveColor = Vector3.Zero;
+            SpecularColor = Vector3.Zero;
+            SpecularPower = 16;
+
+            diffuseColorParameter = GetParameter("DiffuseColor");
+            emissiveColorParameter = GetParameter("EmissiveColor");
+            specularColorParameter = GetParameter("SpecularColor");
+            specularPowerParameter = GetParameter("SpecularPower");
+            lightTextureParameter = GetParameter("LightTexture");
+            halfPixelParameter = GetParameter("halfPixel");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & diffuseColorDirtyMask) != 0)
             {
-                if (diffuseColorParameter == null)
-                    diffuseColorParameter = GetParameter("DiffuseColor");
-                diffuseColorParameter.SetValue(diffuseColor);
+                if (diffuseColorParameter != null)
+                    diffuseColorParameter.SetValue(diffuseColor);
                 DirtyMask &= ~diffuseColorDirtyMask;
             }
 
             if ((DirtyMask & emissiveColorDirtyMask) != 0)
             {
-                if (emissiveColorParameter == null)
-                    emissiveColorParameter = GetParameter("EmissiveColor");
-                emissiveColorParameter.SetValue(emissiveColor);
+                if (emissiveColorParameter != null)
+                    emissiveColorParameter.SetValue(emissiveColor);
                 DirtyMask &= ~emissiveColorDirtyMask;
             }
 
             if ((DirtyMask & specularColorDirtyMask) != 0)
             {
-                if (specularColorParameter == null)
-                    specularColorParameter = GetParameter("SpecularColor");
-                specularColorParameter.SetValue(specularColor);
+                if (specularColorParameter != null)
+                    specularColorParameter.SetValue(specularColor);
                 DirtyMask &= ~specularColorDirtyMask;
+            }
+
+            if ((DirtyMask & specularPowerDirtyMask) != 0)
+            {
+                if (specularPowerParameter != null)
+                    specularPowerParameter.SetValue(specularPower);
+                DirtyMask &= ~specularPowerDirtyMask;
             }
 
             if ((DirtyMask & lightTextureDirtyMask) != 0)
             {
-                if (lightTextureParameter == null)
-                    lightTextureParameter = GetParameter("LightTexture");
-                lightTextureParameter.SetValue(lightTexture);
+                if (lightTextureParameter != null)
+                    lightTextureParameter.SetValue(lightTexture);
                 DirtyMask &= ~lightTextureDirtyMask;
             }
-            
-            if (halfPixelParameter == null)
-                halfPixelParameter = GetParameter("halfPixel");
-            halfPixelParameter.SetValue(new Vector2(0.5f / GraphicsDevice.Viewport.Width, 0.5f / GraphicsDevice.Viewport.Height));
+
+            if (halfPixelParameter != null)
+                halfPixelParameter.SetValue(new Vector2(0.5f / GraphicsDevice.Viewport.Width, 0.5f / GraphicsDevice.Viewport.Height));
         }
 
         protected internal override void OnApply(LinkedEffectPart part)
@@ -140,13 +162,7 @@ namespace Nine.Graphics.Effects.EffectParts
             effectPart.EmissiveColor = EmissiveColor;
             effectPart.SpecularColor = SpecularColor;
             effectPart.LightTexture = LightTexture;
-        }
-
-        public DeferredLightsEffectPart()
-        {
-            DiffuseColor = Vector3.One;
-            EmissiveColor = Vector3.Zero;
-            SpecularColor = Vector3.Zero;            
+            effectPart.SpecularPower = SpecularPower;
         }
 
         protected internal override LinkedEffectPart Clone()
@@ -157,6 +173,7 @@ namespace Nine.Graphics.Effects.EffectParts
                 EmissiveColor = this.EmissiveColor,
                 SpecularColor = this.SpecularColor,
                 LightTexture = this.LightTexture,
+                SpecularPower = this.SpecularPower,
             };
         }
     }

@@ -28,9 +28,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     public enum TextureAlphaUsage
     {
         /// <summary>
-        /// The alpha channel will determine the opaque of the object.
+        /// The alpha channel will determine the opacity of the object.
         /// </summary>
-        Opaque,
+        Opacity,
 
         /// <summary>
         /// The alpha channel will be replaced with the specified overlay color.

@@ -51,7 +51,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             get 
             {
                 string code = Encoding.UTF8.GetString(
-                    TextureAlphaUsage == Effects.TextureAlphaUsage.Opaque ? LinkedEffectParts.BasicTexture : (
+                    TextureAlphaUsage == Effects.TextureAlphaUsage.Opacity ? LinkedEffectParts.BasicTexture : (
                     TextureAlphaUsage == Effects.TextureAlphaUsage.Overlay ? LinkedEffectParts.BasicTextureAlphaOverlay :
                                                                                   LinkedEffectParts.BasicTextureAlphaSpecular));
                 if (Contains(typeof(ScreenEffectEffectPartContent)))
@@ -85,6 +85,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         public override string Code
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredLights); }
+        }
+
+        public override string DeferredCode
+        {
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredLightBuffer); }
         }
     }
 
@@ -265,6 +270,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
     }
 
+    [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PixelShaderOutputEffectPartContent : LinkedEffectPartContent
     {
         public override string Code

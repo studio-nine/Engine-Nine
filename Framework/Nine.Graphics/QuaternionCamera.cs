@@ -195,7 +195,7 @@ namespace Nine.Graphics
             uuv = Vector3.Cross(qvec, uv);
             uv *= (2.0f * leftQuaterion.W);
             uuv *= 2.0f;
-
+            
             return rightVector + uv + uuv;
 
         }

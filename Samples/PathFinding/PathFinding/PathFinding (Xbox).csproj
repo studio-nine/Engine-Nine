@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectGuid>{103389e2-8f99-4ce6-85ff-bb74373d3ed4}</ProjectGuid>
+    <ProjectGuid>{103389E2-8F99-4CE6-85FF-BB74373D3ED4}</ProjectGuid>
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">Xbox 360</Platform>
@@ -80,6 +80,8 @@
     <Reference Include="Nine">
       <HintPath>..\..\..\References\Xbox 360\Nine.dll</HintPath>
     </Reference>
+    <Reference Include="Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
+    <Reference Include="Nine.Navigation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Private>False</Private>
     </Reference>

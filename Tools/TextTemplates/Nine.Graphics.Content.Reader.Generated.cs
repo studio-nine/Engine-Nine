@@ -737,31 +737,6 @@ namespace Nine.Graphics.Effects.EffectParts
 #endif
 #if !WINDOWS_PHONE
     /// <summary>
-    /// Content reader for <c>PixelShaderOutputEffectPart</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class PixelShaderOutputEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart>
-    {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart instance);
-
-        protected override Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PixelShaderOutputEffectPart existingInstance)
-        {
-            if (existingInstance == null)
-            {
-                existingInstance = new PixelShaderOutputEffectPart();
-            }
-            BeginRead(input, existingInstance);
-            existingInstance.SpecularPower = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
-            return existingInstance;
-        }
-    }
-#endif
-#if !WINDOWS_PHONE
-    /// <summary>
     /// Content reader for <c>PointLightEffectPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]

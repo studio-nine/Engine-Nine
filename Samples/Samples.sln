@@ -1050,7 +1050,6 @@ Global
 		{F7E56EE9-663A-4E55-A956-7FA724793BA8}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
 		{F7E56EE9-663A-4E55-A956-7FA724793BA8}.Release|x86.ActiveCfg = Release|Windows Phone
 		{F7E56EE9-663A-4E55-A956-7FA724793BA8}.Release|Xbox 360.ActiveCfg = Release|Windows Phone
-
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
