@@ -1,0 +1,92 @@
+﻿<DisplayObjectContent 
+    xmlns="clr-namespace:Nine.Content.Pipeline.Graphics.ObjectModel;assembly=Nine.Content.Pipeline"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:fx="clr-namespace:Nine.Content.Pipeline.Graphics.Effects;assembly=Nine.Content.Pipeline"
+    Name="Scene">
+    
+    <SkyBoxContent Texture="SkyCubeMap" />
+    <FogContent FogStart="50" FogEnd="500" />
+    <AmbientLightContent AmbientLightColor="0.3, 0.3, 0.3" />
+    <DirectionalLightContent CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+    
+    <DrawableSurfaceContent Position="-290, -100, -10" Heightmap="Terrain\MountainHeightmap" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300">
+        <DrawableSurfaceContent.Material>
+            <fx:BasicMaterialContent SpecularColor="1, 1, 1" Texture="Terrain\Mountain" TextureEnabled="True" />
+        </DrawableSurfaceContent.Material>
+    </DrawableSurfaceContent>
+    
+    <DrawableSurfaceContent Name="Terrain" Position="-30, -80, 0" Heightmap="Terrain\RF1" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300"
+                              TextureScale="0.125, 0.125" PatchSegmentCount="8" VertexType="VertexPositionNormalTangentBinormalTexture">
+        <DrawableSurfaceContent.Material>
+            <fx:TerrainMaterialContent FogEnabled="True" PreferDeferredLighting="False" SplatterTextureScale="8, 8">
+                <fx:TerrainLayerContent Texture="../../Content/Models/Terrain/TerrainTex.png" />
+                <fx:TerrainLayerContent Texture="../../Content/Textures/box.dds" Alpha="../../Content/Terrain/2.bmp" NormalMap="../../Content/Textures/box_n.dds" DiffuseColor="1, 1, 1" SpecularColor="1, 1, 1" SpecularPower="64"/>
+                <fx:TerrainLayerContent Texture="../../Content/Terrain/grass.dds" Alpha="../../Content/Terrain/3.bmp" NormalMap="../../Content/Terrain/grass_n.dds" />
+            </fx:TerrainMaterialContent>
+        </DrawableSurfaceContent.Material>
+    </DrawableSurfaceContent>
+    
+    <DrawableModelContent Model="Models\Tank" Position="-10, 0, 10" />
+    
+    <DrawableModelContent Alpha="0.4" LightingEnabled="True" Model="Models\Dude" Position="-10, -10, 10">
+        <DrawableModelContent.Material>
+            <fx:BasicMaterialContent TextureEnabled="True" />
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="Models\Dude" Position="-5, -10, 10">
+        <DrawableModelContent.Material>
+            <fx:SkinnedMaterialContent Alpha="0.9"/>
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="Models\Dude" Position="0, -10, 10" Scale="1.2, 1.2, 1.2">
+        <DrawableModelContent.Material>
+            <fx:EnvironmentMapMaterialContent EnvironmentMap="SkyCubeMap" EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="Models\Tank" Position="-30, -0, 10">
+        <DrawableModelContent.Material>
+            <fx:ModelMaterialContent FogEnabled="True" ShadowEnabled="True" OverlayColor="1, 1, 0" TextureAlphaUsage="Overlay" />
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="Models\AlphaPalm" Position="5, -10, 10">
+        <DrawableModelContent.Material>
+            <fx:AlphaTestMaterialContent AlphaFunction="Greater" ReferenceAlpha="128" />
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="Models\Dude" Position="10, -10, 10" Rotation="0, 0, 90">
+        <DrawableModelContent.Material>
+            <fx:DualTextureMaterialContent Texture2="flake" />
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+    
+    <DrawableModelContent Model="Models\AlphaPalm" Position="5, 0, 10">
+        <DrawableModelContent.ModelParts>
+            <x:Array Type="DrawableModelPartContent">
+                <DrawableModelPartContent>
+                    <DrawableModelPartContent.Material>
+                        <fx:CustomMaterialContent Effect="cage" IsTransparent="True" />
+                    </DrawableModelPartContent.Material>
+                </DrawableModelPartContent>
+                <DrawableModelPartContent>
+                    <DrawableModelPartContent.Material>
+                        <fx:BasicMaterialContent DepthAlphaEnabled="True" IsTransparent="True" TextureEnabled="True" />
+                    </DrawableModelPartContent.Material>
+                </DrawableModelPartContent>
+            </x:Array>
+        </DrawableModelContent.ModelParts>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="Models\Dude" Position="15, 0, 10">
+        <DrawableModelContent.Material>
+            <fx:ModelMaterialContent FogEnabled="True" ShadowEnabled="True" NormalMappingEnabled="True" SkinningEnabled="True" SpecularColor="1, 1, 1" SpecularMappingEnabled="True" SpecularPower="128" />
+        </DrawableModelContent.Material>
+    </DrawableModelContent>
+    
+    <DrawableParticleEffectContent ParticleEffect="Galaxy" />
+    
+</DisplayObjectContent>

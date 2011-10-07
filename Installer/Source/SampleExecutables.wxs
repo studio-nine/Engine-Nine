@@ -7,742 +7,754 @@
     </Fragment>
     <Fragment>
         <ComponentGroup Id="SampleExecutables">
-            <Component Id="cmpA3CBFCCF35CC80872500EC7671CBC212" Directory="dir4268DA91D53F8A48E3F86149716D52F6" Guid="{A91E6FFB-24A5-4D58-8D33-DA2623032A3E}">
+            <Component Id="cmpA3CBFCCF35CC80872500EC7671CBC212" Directory="dir4268DA91D53F8A48E3F86149716D52F6" Guid="{99AA0777-6C05-4621-BC82-83C7C1278509}">
                 <File Id="fil329E73724E6804743E6725732188AFEB" KeyPath="yes" Source="$(var.SamplesSourceDir)\Sources.zip" />
             </Component>
-            <Component Id="cmpAE078003D6DA101391A22BBA448CD62E" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{7D02560D-49FB-4866-A747-7D09386E1AA3}">
+            <Component Id="cmpAE078003D6DA101391A22BBA448CD62E" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{598ED0E1-B4F5-4EA4-81FB-73D71682B964}">
                 <File Id="fil402BC61187C8586712870E95289531F4" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\DebuggerPrimitives.xap" />
             </Component>
-            <Component Id="cmp046AB197B2F6AF588C005036CE40B0C1" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{BD669CC2-525F-46A7-973C-6B5F748CAA63}">
+            <Component Id="cmpDB36C4834A0B0D57241A45B5E5DCCFD5" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{17A02D82-446F-4F03-A598-0CFDF2D22110}">
+                <File Id="fil95949D3193E2553125919C758FB2F2EA" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\FlockingBehaviors.xap" />
+            </Component>
+            <Component Id="cmp046AB197B2F6AF588C005036CE40B0C1" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{6CC14DA3-16B1-4817-AB34-AB86D855E457}">
                 <File Id="fil241C18346B46FBD71C8110D037B9E3D4" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\Game.xap" />
             </Component>
-            <Component Id="cmpF9D8D76AF44CDE9D5925E1C7DEA869C9" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{2FE23347-7FCF-4842-BE28-598DA24E6FBB}">
-                <File Id="filAE1BACC4C08A006FFEA9AF3B72958EAD" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\Navigators (Windows Phone).xap" />
+            <Component Id="cmp8695CFCB0BE250D76D9387F9E89C87F1" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{056E6F9C-37D9-4354-A032-AFBEE0E5F3FD}">
+                <File Id="fil1A973A2C295A86547312718B7C6875C2" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\Navigators.xap" />
             </Component>
-            <Component Id="cmp0A8202E5FD0088860078E3B227EADB35" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{E1826437-6535-4845-871E-83875F1A30BA}">
+            <Component Id="cmp0A8202E5FD0088860078E3B227EADB35" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{34759356-F14C-4D91-9CEA-85881EADF235}">
                 <File Id="fil50E6F16E9D4B37DC7F98A6947E6DF6DB" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\ParticleSystem.xap" />
             </Component>
-            <Component Id="cmpFE77B386F74F4ED6E9064DC9470C1B63" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{987864EF-5752-4598-97B5-9ED848D74874}">
+            <Component Id="cmp8F46192AF6D160502C0B469969529189" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{86CDE6B7-67F3-4391-9A17-D55BDD1B0290}">
+                <File Id="filAA31BBB2EBEED22098C5598044E67D26" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\PathFinding.xap" />
+            </Component>
+            <Component Id="cmpFE77B386F74F4ED6E9064DC9470C1B63" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{82F5E173-5D87-4A4E-BE8D-71366125AD5D}">
                 <File Id="fil6E377AF24B37D9F5D4E5DDC65EFDA7EC" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\ScreenEffects.xap" />
             </Component>
-            <Component Id="cmpD54992E4A137BC86B73CA140DDC0CC63" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{2D6C9A65-117E-42A9-8205-9D3B372047C8}">
+            <Component Id="cmpD54992E4A137BC86B73CA140DDC0CC63" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{0E163AE7-C6E7-4576-A499-00A2929C26B1}">
                 <File Id="filA93B9E36AC4A3AD00A2556307920BBE0" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\SkinnedModel.xap" />
             </Component>
-            <Component Id="cmpF830E4E6309ABB7CFE8B3FF1A77E9865" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{C8CABE80-4B0B-433F-8BD3-BED928E2E25B}">
+            <Component Id="cmpF830E4E6309ABB7CFE8B3FF1A77E9865" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{5D9CA41D-B13E-4082-B2AB-21CB0B2FAC8B}">
                 <File Id="filB1B6EA1CA04CB3C7525E3D8D5B0BE5EB" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\Terrain.xap" />
             </Component>
-            <Component Id="cmpE3F43E4B62E1B7511E7083B76EF0C035" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{AA40A0E8-A607-4758-82F9-EE7CAF2F118E}">
+            <Component Id="cmpE3F43E4B62E1B7511E7083B76EF0C035" Directory="dir05B165EED75C1ABBEE134E5F44492400" Guid="{FCD24F97-99FF-453D-B2FD-CD451638F067}">
                 <File Id="fil3DC3A55FB141C0929F967E13CEC7FED9" KeyPath="yes" Source="$(var.SamplesSourceDir)\Windows Phone\Transitions.xap" />
             </Component>
-            <Component Id="cmpDF027446F136D86CC9AC4D34D43DA30D" Directory="dir2912870AC82EC86A2E852959FB0B714E" Guid="{A88AC55E-F27B-4FE9-B22B-316834FA7E8B}">
+            <Component Id="cmpDF027446F136D86CC9AC4D34D43DA30D" Directory="dir2912870AC82EC86A2E852959FB0B714E" Guid="{D3C8DFB5-E409-41C4-876C-4579B216D636}">
                 <File Id="fil0B29B639042BC7ECD6A019096718007A" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\CustomEffects.exe" />
             </Component>
-            <Component Id="cmp3F7FFF9D33F0CC4104FB7FB077D7119B" Directory="dir2912870AC82EC86A2E852959FB0B714E" Guid="{937C8A3B-5ACA-4ABD-A80A-03A0FC760CAF}">
+            <Component Id="cmp3F7FFF9D33F0CC4104FB7FB077D7119B" Directory="dir2912870AC82EC86A2E852959FB0B714E" Guid="{9AD7E6F2-D393-4495-9DCD-EF679A7A276D}">
                 <File Id="fil5D567D9A515141475948C60369A6F1ED" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Nine.dll" />
             </Component>
-            <Component Id="cmp23CA23C59D673A66F25E44428C369625" Directory="dir2912870AC82EC86A2E852959FB0B714E" Guid="{932171AA-8D0E-4111-8788-6DA415E317F0}">
+            <Component Id="cmp23CA23C59D673A66F25E44428C369625" Directory="dir2912870AC82EC86A2E852959FB0B714E" Guid="{03735BA3-57A7-443E-9F2C-F101A79C887D}">
                 <File Id="filA29F4E77C6E14B7D88680D3690989258" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp894AAA3D8D6C1270484168A63340C2DC" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{625B57DF-1EB0-406E-9D79-E0E1B97BA651}">
+            <Component Id="cmp894AAA3D8D6C1270484168A63340C2DC" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{448C4812-7106-4D50-B6C1-7E51888DB2A2}">
                 <File Id="fil282E0250DFA5EA4C3B914B08FBD91C70" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp425C4DAE5FAA820E847A22B92190641D" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{852CD4D7-E0E8-47AA-9171-1D4B8FF620B4}">
+            <Component Id="cmp425C4DAE5FAA820E847A22B92190641D" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{7A050DF4-6AF0-433B-B147-58C66D54323B}">
                 <File Id="filBC0100A1E30DD0FF1D5F0658CA042D15" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\engine_diff_tex_0.xnb" />
             </Component>
-            <Component Id="cmpA15214FF463C98D3FBDA45BE1E19AA10" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{A72538FC-B88B-4EFF-AF19-ABE81F83C674}">
+            <Component Id="cmpA15214FF463C98D3FBDA45BE1E19AA10" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{29444EAA-EFC7-45C7-8A2A-2CE62F944DE8}">
                 <File Id="fil49D6839A7A105261A4757765221B253F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\tank.xnb" />
             </Component>
-            <Component Id="cmpCE60CC201CC37DCF4F42AFCE9F9F855B" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{5554DF8C-15E3-4A22-A6C1-582D440F3653}">
+            <Component Id="cmpCE60CC201CC37DCF4F42AFCE9F9F855B" Directory="dir27E1F5C1F947D661F40020828656B806" Guid="{57F9A3A0-A80E-44EF-AB91-3369C629AA59}">
                 <File Id="fil0DEDF160883C3E8F65719120432EA9CA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\turret_alt_diff_tex_0.xnb" />
             </Component>
-            <Component Id="cmp22083EF317E5720B4E0FCB0018BB0E67" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{55C1AD04-AE92-4BE6-9C58-21E2F7F0FFDB}">
+            <Component Id="cmp22083EF317E5720B4E0FCB0018BB0E67" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{74875732-E55B-4D3B-A12A-CDB9AD2D86CD}">
                 <File Id="fil7F9E2D796DC24349E755ACDE68B2D73E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\cage.xnb" />
             </Component>
-            <Component Id="cmpFF538E7487FA09A248840AB119CE12BE" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{7007E077-BD02-420E-B928-53A647EB5A79}">
+            <Component Id="cmpFF538E7487FA09A248840AB119CE12BE" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{013D7FD9-A224-490D-9E39-4AAA8CEB6186}">
                 <File Id="filB5E182FBB180DB0B4016E6D9DB349702" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\Cartoon.xnb" />
             </Component>
-            <Component Id="cmp077B04ECE075E000B400B285752AFE29" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{E62F0CA5-40F2-41B1-B35C-81477FBC2892}">
+            <Component Id="cmp077B04ECE075E000B400B285752AFE29" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{F019E308-618A-4383-B6F9-11502D794621}">
                 <File Id="fil32ABFFEDF35573F657D055471A290AFD" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\check3d.xnb" />
             </Component>
-            <Component Id="cmp54895080599EDEA20FFC275B72D4C07D" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{08964D0D-7204-4F96-9927-3F50E64120AC}">
+            <Component Id="cmp54895080599EDEA20FFC275B72D4C07D" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{E550A4E3-4039-4B33-B046-B26C5D36F3E6}">
                 <File Id="filC53364147C66B3A0E31D627E63C1DE6A" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\goochy_HLSL.xnb" />
             </Component>
-            <Component Id="cmpC94F3AD0F8BA39F6F7197864E6F0B0F4" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{AF31B1D3-68EB-4096-AB1A-37779F81D023}">
+            <Component Id="cmpC94F3AD0F8BA39F6F7197864E6F0B0F4" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{02C02DF2-C675-42E1-8A86-E1765B54B915}">
                 <File Id="fil93E8BB941098E591AF82A1834F1D42DC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\MrTwister.xnb" />
             </Component>
-            <Component Id="cmp4FFC659DDB92D5E19C2A18E3858C0C44" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{22BAA1E4-5C19-4C51-99E0-FA854908BBF0}">
+            <Component Id="cmp4FFC659DDB92D5E19C2A18E3858C0C44" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{043DE190-49A2-4809-A9FC-FAE3CEB98108}">
                 <File Id="fil3119F5C370B785597260374F344BAE02" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\MrWiggle.xnb" />
             </Component>
-            <Component Id="cmpD94E4CED32EE6CA1AEEB020C564B0780" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{D1147DEB-0336-420C-9BF3-D13D404D4E0A}">
+            <Component Id="cmpD94E4CED32EE6CA1AEEB020C564B0780" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{CF54FFD9-EACE-4912-8357-EE29CA1DE38D}">
                 <File Id="fil22DCA7A6694DE2585B2B56337EA8BCC7" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\Shaders.xnb" />
             </Component>
-            <Component Id="cmp0B6540405833AC1096C8C96D9109C156" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{8A8BE891-1026-4B65-9FAA-268E9137E9DA}">
+            <Component Id="cmp0B6540405833AC1096C8C96D9109C156" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{8872C374-B678-440A-836E-5F375BD4EA1B}">
                 <File Id="fil0CC1B6A7124141F178967C9370E880F3" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\showUV.xnb" />
             </Component>
-            <Component Id="cmp786908E6618D508BCA58762DB08E36E3" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{B87A44DD-2FC4-4DB8-AA51-FA0A57C63ACC}">
+            <Component Id="cmp786908E6618D508BCA58762DB08E36E3" Directory="dir404A7814AE221DF0826488F4D1FC1149" Guid="{16B97665-74F9-4454-A928-3A23551DA9E5}">
                 <File Id="fil235EBD940484868DF51B18796F0F5FBF" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Shaders\vnoise.xnb" />
             </Component>
-            <Component Id="cmp6972BD8257E2C4747DDCAC25D1F9A29A" Directory="dir95D361FE45217A613FBCA928F112896B" Guid="{4C888448-1633-4EBB-9B24-807F73951E83}">
+            <Component Id="cmp6972BD8257E2C4747DDCAC25D1F9A29A" Directory="dir95D361FE45217A613FBCA928F112896B" Guid="{56D7EFEC-18F6-40CC-93D2-B786E0D88D11}">
                 <File Id="fil7C5A077C89FDD73EC57DBB16DD464B48" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Textures\Precedual\cage.MakeStripe.xnb" />
             </Component>
-            <Component Id="cmp47BF8D04CA1B7A63BD796DD4E55A814C" Directory="dir95D361FE45217A613FBCA928F112896B" Guid="{1BAC4616-0AC6-4D64-A650-2B67336A76EE}">
+            <Component Id="cmp47BF8D04CA1B7A63BD796DD4E55A814C" Directory="dir95D361FE45217A613FBCA928F112896B" Guid="{F7B2083E-5E8D-40E1-AE02-B39114CEDEEB}">
                 <File Id="filBC81397A671F11F3D9A11B2A2560AF35" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\CustomEffects\Content\Textures\Precedual\Cartoon.create_toon_map.xnb" />
             </Component>
-            <Component Id="cmp006E975A70D65DC66868875B44AA09E3" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{11CDF046-0B05-4173-94E0-FEFC0AE9FE24}">
+            <Component Id="cmp006E975A70D65DC66868875B44AA09E3" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{07C78EA1-C337-4455-895C-241DF22D503E}">
                 <File Id="filD09FA6F2F449842D9AC2CD62D81D2FE1" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\DebuggerPrimitives.exe" />
             </Component>
-            <Component Id="cmp6BBAD7D3F9E8FF456BE556A9418FED1F" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{A1C1479A-1A80-4D80-BF3F-4732EA70DCDE}">
+            <Component Id="cmp6BBAD7D3F9E8FF456BE556A9418FED1F" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{1B9DB28F-CAA4-40D4-A9F4-5E93058E8131}">
                 <File Id="fil830EB744AAC5DC5890F783DC69431E0E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\DebuggerPrimitives.exe.config" />
             </Component>
-            <Component Id="cmp7AA37255BF63D26B445DE431EFFF7E5A" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{1E98C653-D34A-440F-84E7-3572BA85D45B}">
+            <Component Id="cmp7AA37255BF63D26B445DE431EFFF7E5A" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{E9F34A1B-3FDE-462F-9DB2-7BB8C0F339FB}">
                 <File Id="fil51C1E5278AB04A4F63162C8E9D0A660F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\GameThumbnail.png" />
             </Component>
-            <Component Id="cmpF033C2F98B93AE0CA90CEC2400703A9D" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{697E49C9-4710-4B4A-B676-67546543C75D}">
+            <Component Id="cmpF033C2F98B93AE0CA90CEC2400703A9D" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{2DA69AF0-90C0-42A8-8FFA-2522568756FC}">
                 <File Id="fil93A870BECBA2B20A28D44A3086A528A0" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\Nine.dll" />
             </Component>
-            <Component Id="cmp45238A158C86E0CF3789F762E273F503" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{545CB64F-F9B6-4724-943C-36F83D871A87}">
+            <Component Id="cmp45238A158C86E0CF3789F762E273F503" Directory="dir054A3C8085B8AAD442F5EDF93E7E30A9" Guid="{F9A4C284-8106-49D3-AE22-D50DD27EE7CC}">
                 <File Id="fil676CC7034656C5352823848FDBAE7667" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp259387A7A2194B05EB83EF26381D8D8D" Directory="dir488910F271A459276879351F6D9858A5" Guid="{FCE8F6FC-5C96-4B29-B41C-F17E318C99F5}">
+            <Component Id="cmp259387A7A2194B05EB83EF26381D8D8D" Directory="dir488910F271A459276879351F6D9858A5" Guid="{093F881B-467D-4F0A-B740-159035D0D9F3}">
                 <File Id="fil890D82CF02826C1E2872BB4DF263487D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\Content\Butterfly.xnb" />
             </Component>
-            <Component Id="cmpDB7418EE3B0FFC1B60AC327689A22FD4" Directory="dir488910F271A459276879351F6D9858A5" Guid="{603D8B3D-78C1-4C7F-B286-B7C36AEA7A80}">
+            <Component Id="cmpDB7418EE3B0FFC1B60AC327689A22FD4" Directory="dir488910F271A459276879351F6D9858A5" Guid="{2EABD355-6678-418D-B3A8-05782B6A545C}">
                 <File Id="fil064CE713F13F4FA0829903707CD619A7" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmpFBE26514698E97F2A0FAD73778824E60" Directory="dir488910F271A459276879351F6D9858A5" Guid="{794846A5-DA48-4AD4-B82C-733DC11B67DB}">
+            <Component Id="cmpFBE26514698E97F2A0FAD73778824E60" Directory="dir488910F271A459276879351F6D9858A5" Guid="{795ED8B2-CE8C-4C05-97AF-A6E8C08D7A2D}">
                 <File Id="filD8446360E9414171446F9804A878DE31" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\Content\lightning.xnb" />
             </Component>
-            <Component Id="cmpFEB5F6BC20B3E1CE7EB84E0892A7868B" Directory="dir488910F271A459276879351F6D9858A5" Guid="{7DB397B5-E80C-4CCD-81A3-AC2A8D815A68}">
+            <Component Id="cmpFEB5F6BC20B3E1CE7EB84E0892A7868B" Directory="dir488910F271A459276879351F6D9858A5" Guid="{A9089066-6207-4965-84B1-0B3DAEC48A5D}">
                 <File Id="filA6CAE4A3EA2978E3E54A1AA046349CB2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DebuggerPrimitives\Content\Peon.xnb" />
             </Component>
-            <Component Id="cmpAEB232A0389E864636F322880C672432" Directory="dirC4578FBADE7675F22E725A666BBAF968" Guid="{77E282A9-6E72-4365-8A7F-A39BFAE4D1EB}">
+            <Component Id="cmpAEB232A0389E864636F322880C672432" Directory="dirC4578FBADE7675F22E725A666BBAF968" Guid="{674A92F9-528C-43FD-A838-7916258ECFC4}">
                 <File Id="filCC29B78056D58EADA8984592023191A4" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DeferredLighting\DeferredLighting.exe" />
             </Component>
-            <Component Id="cmpFB61D439B1319F8880F5F06EAE8254F6" Directory="dirC4578FBADE7675F22E725A666BBAF968" Guid="{0F4D09AF-027A-4425-A48E-1DD69B108011}">
+            <Component Id="cmpFB61D439B1319F8880F5F06EAE8254F6" Directory="dirC4578FBADE7675F22E725A666BBAF968" Guid="{427E258D-A18E-448F-B408-FEF0B30B7679}">
                 <File Id="fil1CC515349126F1545D5039C460B72B40" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DeferredLighting\Nine.dll" />
             </Component>
-            <Component Id="cmp39A965E557ED5B2D95090ECB98F001AA" Directory="dirC4578FBADE7675F22E725A666BBAF968" Guid="{153EED45-CDA3-4CA2-964F-7C59D35133FC}">
+            <Component Id="cmp39A965E557ED5B2D95090ECB98F001AA" Directory="dirC4578FBADE7675F22E725A666BBAF968" Guid="{38AD5D7D-04FE-476D-9275-8E5AE9F3B136}">
                 <File Id="filE7D3ECCB95DFE227871D6789746FD747" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DeferredLighting\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpFC5F593FF19EFED9B5EBD0E07240C65C" Directory="dir64C4A968CD06B8B6FFCDCBB744AC1540" Guid="{CFFE185C-2003-4114-A497-C293E8A157B0}">
+            <Component Id="cmpFC5F593FF19EFED9B5EBD0E07240C65C" Directory="dir64C4A968CD06B8B6FFCDCBB744AC1540" Guid="{60910AB0-262D-4E5F-9B0A-0FC29EDDB88D}">
                 <File Id="filD326AC9176E44375941DE1E880217066" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DeferredLighting\Content\box.xnb" />
             </Component>
-            <Component Id="cmp7C8734CD21904180C753BD989B1A9F5E" Directory="dir64C4A968CD06B8B6FFCDCBB744AC1540" Guid="{A58507A3-866A-4032-A0C9-EB0748375602}">
+            <Component Id="cmp7C8734CD21904180C753BD989B1A9F5E" Directory="dir64C4A968CD06B8B6FFCDCBB744AC1540" Guid="{8F9DEDBE-48F1-4040-AA68-FBD1D9F06530}">
                 <File Id="fil62726B5E1DA1429CFE8E40EC10BE86AB" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DeferredLighting\Content\box_n.xnb" />
             </Component>
-            <Component Id="cmp3AA6B89A7E5A186E8C1A5A066ABBA6B1" Directory="dir64C4A968CD06B8B6FFCDCBB744AC1540" Guid="{1CBA259A-B39A-416E-8E40-58EA667194AB}">
+            <Component Id="cmp3AA6B89A7E5A186E8C1A5A066ABBA6B1" Directory="dir64C4A968CD06B8B6FFCDCBB744AC1540" Guid="{62ECB340-42E1-4312-B029-A513FAD6B1B2}">
                 <File Id="fil00B05CA3A761829C073284624AD91B75" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\DeferredLighting\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp8A3109CD5AF7CF73FDF58AAEE03FC328" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{79655D42-C881-4AA4-9935-32155B9F1650}">
+            <Component Id="cmp8A3109CD5AF7CF73FDF58AAEE03FC328" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{B301662C-5381-4CD1-87B5-02F80265B278}">
                 <File Id="filA0E0B542C1122FCAD9D79626A0151562" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\FlockingBehaviors.exe" />
             </Component>
-            <Component Id="cmp428E395B51F97770D129E368BB6CB40A" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{A94907A5-1A31-4F7F-BE04-D802A049DA42}">
+            <Component Id="cmp428E395B51F97770D129E368BB6CB40A" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{6192479A-E8D3-4B03-8AAF-FAE15FBE78BD}">
                 <File Id="fil7876F2BC8A9F05209612BEEECCE3AB3B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\FlockingBehaviors.exe.config" />
             </Component>
-            <Component Id="cmp9AFF33A3426DC9168B000E3C3A94CD7F" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{A83E7B20-D7ED-441C-895F-B94DC5FA4ED5}">
+            <Component Id="cmp9AFF33A3426DC9168B000E3C3A94CD7F" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{2C2D70B2-00F4-46D7-98FF-C7B7BA2A2118}">
                 <File Id="fil32F2A7057D110ADCD154A55F38BBCC2F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp60D90629D72BFE586CA62AC5B9BE2B80" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{50428B9D-8BD1-429B-A5C9-0E384D842A08}">
+            <Component Id="cmp60D90629D72BFE586CA62AC5B9BE2B80" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{7CD26C62-3182-4FC4-B6C6-9D90E3CAB9F5}">
                 <File Id="filA034C5D59B66240EADFE6AE5E8EE0DFA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\Nine.dll" />
             </Component>
-            <Component Id="cmp8FE80D9CC4EF0C5E2DAFA85F635BB650" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{CB9D98C5-24FC-49F9-B369-74923901FE11}">
+            <Component Id="cmp8FE80D9CC4EF0C5E2DAFA85F635BB650" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{7E26992F-31C2-472D-B802-800D88B3D015}">
                 <File Id="filE49DBB2DA4231AFB5497F97668D2C2E3" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp92BB2970CE6F7A5E3DC29A72839B815A" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{8C8B5F54-B399-4175-BEF1-7C04ADB8A669}">
+            <Component Id="cmp92BB2970CE6F7A5E3DC29A72839B815A" Directory="dirCFDF51B0FE0B1907B7AE8725451B6144" Guid="{4319435B-ECA9-4F43-BA80-6A86279974CA}">
                 <File Id="fil5CA27F041ACDD0624D7F7E48BC0D75FE" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\Nine.Navigation.dll" />
             </Component>
-            <Component Id="cmpA099EE641EF8042074226D8CC1BDA844" Directory="dir2003706DDEB09918E70D921A09809CC3" Guid="{23C78952-E569-4735-874F-09A5EAAB3DA8}">
+            <Component Id="cmpA099EE641EF8042074226D8CC1BDA844" Directory="dir2003706DDEB09918E70D921A09809CC3" Guid="{927B01B1-7821-48E0-9754-79D6A446C6AF}">
                 <File Id="fil510680E70780D7E23C9555608CBBDF6D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\Content\Butterfly.xnb" />
             </Component>
-            <Component Id="cmpE37EB6E3F1D74C4A29D2BBBB58661E9A" Directory="dir2003706DDEB09918E70D921A09809CC3" Guid="{7AC1E866-1BC4-44CE-A262-BEBA6B97C001}">
+            <Component Id="cmpE37EB6E3F1D74C4A29D2BBBB58661E9A" Directory="dir2003706DDEB09918E70D921A09809CC3" Guid="{752B50B8-C553-4978-BBC7-6E3946D48C78}">
                 <File Id="filBDD3FD71C181002A472C68DEC6F16448" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\FlockingBehaviors\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp9859D18F0BAECA55D6F12DA905F28805" Directory="dirCA3EE4B2A897637AD5EDAB18A9A00825" Guid="{8412E00A-CCF7-4926-B547-3419384B866D}">
+            <Component Id="cmp9859D18F0BAECA55D6F12DA905F28805" Directory="dirCA3EE4B2A897637AD5EDAB18A9A00825" Guid="{1732AA84-0644-4B79-ACAF-8CCFCD8F74DD}">
                 <File Id="filF2BBF389D566BDBBDA2978FD62F409DC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Game.exe" />
             </Component>
-            <Component Id="cmp564780354D8AFD3573FCEE6F6870F04C" Directory="dirCA3EE4B2A897637AD5EDAB18A9A00825" Guid="{54269BBB-8571-4A87-82FB-6F71E32B4C7C}">
+            <Component Id="cmp564780354D8AFD3573FCEE6F6870F04C" Directory="dirCA3EE4B2A897637AD5EDAB18A9A00825" Guid="{9A8A78BF-BABA-4C70-8BB0-61C7F7669450}">
                 <File Id="fil7E41709EA91C229C56ED2453C0B2C0C0" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Nine.dll" />
             </Component>
-            <Component Id="cmpBEAC0EB320301AE4DD0EFF513ECB82ED" Directory="dirCA3EE4B2A897637AD5EDAB18A9A00825" Guid="{A731FAED-86E9-4CEA-90E3-1180B6CD1681}">
+            <Component Id="cmpBEAC0EB320301AE4DD0EFF513ECB82ED" Directory="dirCA3EE4B2A897637AD5EDAB18A9A00825" Guid="{A83C372C-D023-47D8-94AA-A711950918BA}">
                 <File Id="fil2302CC98EF7367E0E4266B645CAE928F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpB0CF585F7098445D3CA3834283E05684" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{9A5777E9-7F48-43DF-9966-BEA14ED61E09}">
+            <Component Id="cmpB0CF585F7098445D3CA3834283E05684" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{01A2BE44-EDBC-4EC6-9859-E2449F2F1D82}">
                 <File Id="fil7D9B06DF907CD37DAD4A984B4FCD4CE7" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\box_0.xnb" />
             </Component>
-            <Component Id="cmp0DC1229ED804DA0FAFC1522F6CC85E27" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{DF7E22FD-C322-4B57-BC58-AED9EF36ACB0}">
+            <Component Id="cmp0DC1229ED804DA0FAFC1522F6CC85E27" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{D73FC064-D484-4E8E-AEF1-BF46242FA688}">
                 <File Id="fil3918376CC80EE32E3F5E83A8B93D942C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\box_n_0.xnb" />
             </Component>
-            <Component Id="cmp438DCAD086D35E4508BFE7A5E596FFD0" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{E2325220-417F-4AD8-930F-FE32E559EF5C}">
+            <Component Id="cmp438DCAD086D35E4508BFE7A5E596FFD0" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{903AF595-1B6B-46F2-BD96-999D9333EBE2}">
                 <File Id="filC6519661B15D904CEF792CC674FF9A66" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\cage.xnb" />
             </Component>
-            <Component Id="cmp4D2FAACFF85CDEA781FEFB68B14981A0" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{C1D005E9-D4C0-452C-9D71-6802CC3B793F}">
+            <Component Id="cmp4D2FAACFF85CDEA781FEFB68B14981A0" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{01239A29-5620-4067-A045-949DD9BDAA3C}">
                 <File Id="fil8444C505449EBF92223F0966BCC622B7" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp65EBB6C62F6874E26066E644E93B2F1E" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{1E5867CD-1C62-429F-ACC8-983D926CE62B}">
+            <Component Id="cmp65EBB6C62F6874E26066E644E93B2F1E" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{76F3C7B0-53E7-42AF-9FF8-26A721145104}">
                 <File Id="fil2BF5053CFA792DA73FCA3DB63275B336" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\engine_diff_tex_0.xnb" />
             </Component>
-            <Component Id="cmp8E9F383BDA2CD932CEE89E1C61CBCD51" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{82DFC978-2C7D-4E14-9326-51C96DE0E3DD}">
+            <Component Id="cmp8E9F383BDA2CD932CEE89E1C61CBCD51" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{47E93A49-2B1C-446C-99D1-E4B4A09D3B2E}">
                 <File Id="fil91C2D110BAE953FA891034498CF134F2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\fire.xnb" />
             </Component>
-            <Component Id="cmpC254B57853786A42469C19EEF4683063" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{E2727361-77C2-4F02-B866-0E90719A4BA5}">
+            <Component Id="cmpC254B57853786A42469C19EEF4683063" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{EECE276E-3ABF-4AD0-BF18-0A4585848022}">
                 <File Id="fil2DDCA5C1E5C9F3592554C48E976CC48A" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\flake.xnb" />
             </Component>
-            <Component Id="cmp7554481A2DC0EA65F072D256E3464ECC" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{86FC52E1-7DF0-419B-8000-6C6E9AC8F0E0}">
+            <Component Id="cmp7554481A2DC0EA65F072D256E3464ECC" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{7AC5B4CA-7DA4-4933-978D-1A8F642955C8}">
                 <File Id="filF267C642BFC10607692D4E2985702E5C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Galaxy.xnb" />
             </Component>
-            <Component Id="cmp4034FCA0EED55807C1CB4FBA832C5C85" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{1E43ADDA-566F-4227-B2CB-04A23667446C}">
+            <Component Id="cmp4034FCA0EED55807C1CB4FBA832C5C85" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{C9125BBC-3A87-485D-81D1-6B6EB31E3CA0}">
                 <File Id="fil3AB38356824FDB3C73C3DA5A5D87B4AA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\grass_0.xnb" />
             </Component>
-            <Component Id="cmpAFBB318E7B5203DE862D8A7DA05DD012" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{83292E9D-A010-4D49-BF08-E27BA6B25BBF}">
+            <Component Id="cmpAFBB318E7B5203DE862D8A7DA05DD012" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{CBBDB0A3-2047-48C1-AB8E-73AC05319768}">
                 <File Id="fil766776E6D630D1651C603B884521F74B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\grass_n_0.xnb" />
             </Component>
-            <Component Id="cmpE2258FCA3D801C0FD242A1D09758BB62" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{69B579E0-54E6-49C1-93B4-A2BEB0B0EA7D}">
+            <Component Id="cmpE2258FCA3D801C0FD242A1D09758BB62" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{E74C37E5-7300-4A89-8599-BB56BCB340F6}">
                 <File Id="fil46EFB2362F1CA76606D51900DD38FDAE" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\head_0.xnb" />
             </Component>
-            <Component Id="cmp2871B859040333960BD8D1BCB3667D62" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{6F77407E-35D3-43D6-B04A-40765E789C6E}">
+            <Component Id="cmp2871B859040333960BD8D1BCB3667D62" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{9617D9EE-5AE7-4E6C-8B63-27D94511DB63}">
                 <File Id="filFAD70720DACE5A61E8494A0D898CC7B1" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\head_n_0.xnb" />
             </Component>
-            <Component Id="cmp5DC0F4CE18A5818F2760393F99E36CD3" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{BF89AAE2-E885-46FD-83D4-4793C303166F}">
+            <Component Id="cmp5DC0F4CE18A5818F2760393F99E36CD3" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{EAD4FFA2-4A6F-43C3-997B-51D98E07F137}">
                 <File Id="fil26AF13299EA96B0891452720414D4177" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\jacket_0.xnb" />
             </Component>
-            <Component Id="cmp238A3D5A35702559EA6C61FA5D2D2D1F" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{41D33B48-F94B-46E8-9B75-E83A874A6150}">
+            <Component Id="cmp238A3D5A35702559EA6C61FA5D2D2D1F" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{A05DF3FC-BCD9-4475-A2E4-12E0B43A398E}">
                 <File Id="fil7602825127B98B3259D4E1BF2A1AD6DA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\jacket_n_0.xnb" />
             </Component>
-            <Component Id="cmpA1177236FC2119D8F82439D0CB41E7A6" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{929A69AA-794C-4E00-8EAB-0FDAEB5B419B}">
+            <Component Id="cmpA1177236FC2119D8F82439D0CB41E7A6" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{43AD28A7-25F4-4FCA-9A6B-E107D559766C}">
                 <File Id="fil9E3E991CAB1D3B5AC675794DD13C5A26" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\jacket_s_0.xnb" />
             </Component>
-            <Component Id="cmp2F2F559E1EB5091FAA66EA0EA53377FF" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{6AF890BC-E82F-4C5D-90F5-07616094EEFD}">
+            <Component Id="cmp2F2F559E1EB5091FAA66EA0EA53377FF" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{DE63BD93-41AA-4D79-99AE-67541242BB16}">
                 <File Id="fil29CF27430B392139CEC3606FF2BB2203" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\palmleave_0.xnb" />
             </Component>
-            <Component Id="cmp87D93E386E31097815A9C0A209050247" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{FC01DC67-F17E-4CB5-BFB6-A8E418EA4535}">
+            <Component Id="cmp87D93E386E31097815A9C0A209050247" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{81B42F61-17A3-47A6-AE94-1CD084D16737}">
                 <File Id="fil4D5B2650FA01D1372CD91034A65DB9FD" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\palm_0.xnb" />
             </Component>
-            <Component Id="cmp54FB0A30916E432C8A48239C838DC826" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{4032CE53-FDCD-495A-AA61-FD2DCD45973C}">
+            <Component Id="cmp54FB0A30916E432C8A48239C838DC826" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{DDC75683-248C-4CFF-8495-EE790106D595}">
                 <File Id="filEAF7DB260C363CAE92287B74740038FA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\pants_0.xnb" />
             </Component>
-            <Component Id="cmp683991806208D014688C904FA59DA363" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{55B12F4A-52A6-4700-A1FF-B23B25AC7A55}">
+            <Component Id="cmp683991806208D014688C904FA59DA363" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{92B24179-81B1-4017-815E-B95C16062E36}">
                 <File Id="fil818D48F1BF4487288D74C02E6C99727D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\pants_n_0.xnb" />
             </Component>
-            <Component Id="cmp1513B63430F8B324A37CDF9F26D3596B" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{7821A154-96DD-49BB-8B8D-DC5E1C628CA9}">
+            <Component Id="cmp1513B63430F8B324A37CDF9F26D3596B" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{C8C7CF86-462A-4138-A669-AC81ED54A9B1}">
                 <File Id="filB1AD939EB50841B131AF37279D5C837D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\pants_s_0.xnb" />
             </Component>
-            <Component Id="cmpE2BAEF133B0BF9500DB848273598BD70" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{473A3FD0-C6AD-45AB-B6E7-A8DF3ED5D4B8}">
+            <Component Id="cmpE2BAEF133B0BF9500DB848273598BD70" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{FF0A0E14-8F1B-4EB1-95F9-DB7586F951CF}">
                 <File Id="fil044CA8573D806FD83420F4C8B420D91B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Scene.WindowsPhone.xnb" />
             </Component>
-            <Component Id="cmp20042A6EBB0799AB893D8BA8529D0557" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{5AB74BFD-9A64-416B-A6CE-E0BE6402A7CC}">
+            <Component Id="cmp20042A6EBB0799AB893D8BA8529D0557" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{72C4BD0E-79A1-4F1B-9E83-C8571666A943}">
                 <File Id="fil3F5358B86FD680119A5D2C02EE3BB8D2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Scene.xnb" />
             </Component>
-            <Component Id="cmp739AC58A5DB1D564296C673EB5155057" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{6AFBFACB-97CE-4335-A3FA-684231210D97}">
+            <Component Id="cmp739AC58A5DB1D564296C673EB5155057" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{9F2C6C70-8041-43E6-9FFA-89138F9BE35C}">
                 <File Id="fil37902EF3ACB93F711D56BE551F13A604" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\SkyCubeMap.xnb" />
             </Component>
-            <Component Id="cmpB8DB26865BDED6CCE7C945E08D7422D7" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{31585149-EE08-4E77-BC5B-B94740155ABD}">
+            <Component Id="cmpB8DB26865BDED6CCE7C945E08D7422D7" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{8CFA835D-D721-42B7-8F41-99141C0B301B}">
                 <File Id="filE05B10A249C3BD67C646C9B27A03BE25" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\TerrainTex_0.xnb" />
             </Component>
-            <Component Id="cmpA9AF6FB09AD767985D09F1508FCD5341" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{3DA69495-EA76-4413-8E1E-081AF5B926DD}">
+            <Component Id="cmpA9AF6FB09AD767985D09F1508FCD5341" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{1526F5B0-60A0-42D7-AE2F-3ACE7410D20E}">
                 <File Id="filD2EA89B83745A79E26F0FC42B4BB97B0" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\tietu_nongmin_0.xnb" />
             </Component>
-            <Component Id="cmpACCC5E034E90DD6AD95754CE21171B9D" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{9B9D38AE-01F8-446A-9E4D-C80995BBC4CC}">
+            <Component Id="cmpACCC5E034E90DD6AD95754CE21171B9D" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{462EF436-1782-41C6-905C-B7A75F71718E}">
                 <File Id="filF3B2596300AE0885CF49B42836FB8CBC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\turret_alt_diff_tex_0.xnb" />
             </Component>
-            <Component Id="cmp7B294A870CC6B7B2D91A77FD22B90502" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{4BF43516-3AE7-4308-8DF9-5B036107820B}">
+            <Component Id="cmp7B294A870CC6B7B2D91A77FD22B90502" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{46379126-77D8-4D2B-B032-95E8A181D92F}">
                 <File Id="fil5E45A6B98E221B5C9E9D81182CA2E363" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\upBodyC_0.xnb" />
             </Component>
-            <Component Id="cmp4215233C19E201A50D23B3DC63248264" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{B6D4ABE3-0E0C-4E0F-AEE9-586725BE5733}">
+            <Component Id="cmp4215233C19E201A50D23B3DC63248264" Directory="dir36588BF6EBBA1B9FBA8527DE5B2998C2" Guid="{4E890AE0-0FF7-4462-81FC-FD412C1DB57C}">
                 <File Id="fil2F3294F14F8DFFEB2FE055E2746DF4CC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\upBodyC_n_0.xnb" />
             </Component>
-            <Component Id="cmp4338C8DB5C0C3B288C8F1B6071F53024" Directory="dir5374469D4BF12F75C6A1E5CFD8B7975D" Guid="{7B69AF4F-C873-4153-94A3-110047ECEAC7}">
+            <Component Id="cmp4338C8DB5C0C3B288C8F1B6071F53024" Directory="dir5374469D4BF12F75C6A1E5CFD8B7975D" Guid="{0E41A6C2-8064-4EEA-86BE-1491B1E66084}">
                 <File Id="fil038E621E23A82FF527BD8601ACB61454" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Effects\Library\51bc585539588ed05fd21db25c6009da.xnb" />
             </Component>
-            <Component Id="cmpA8DDE1CACE36A61FC925C9724795A616" Directory="dir5374469D4BF12F75C6A1E5CFD8B7975D" Guid="{17E627F9-5EAA-4884-BDCA-60CC6503DE19}">
+            <Component Id="cmpA8DDE1CACE36A61FC925C9724795A616" Directory="dir5374469D4BF12F75C6A1E5CFD8B7975D" Guid="{4CD67129-A3C5-45A6-ACF7-AE4E126997B8}">
                 <File Id="fil6CDB132158711DD12D43991CAA354802" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Effects\Library\8efe1e0762f2e14ace35eba0aa64552c.xnb" />
             </Component>
-            <Component Id="cmp361AB6DF9A28299B32A25659E374ECBC" Directory="dir5374469D4BF12F75C6A1E5CFD8B7975D" Guid="{D0E41E23-472D-4B55-92F7-55DCF1B9B790}">
+            <Component Id="cmp361AB6DF9A28299B32A25659E374ECBC" Directory="dir5374469D4BF12F75C6A1E5CFD8B7975D" Guid="{57F44C8E-E37D-4CE2-8986-8259A9BB2185}">
                 <File Id="filF7D1A2CDF0582AD16096334EA5AC47FF" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Effects\Library\c3c96b5b4e346747a48e0d98f91a37e5.xnb" />
             </Component>
-            <Component Id="cmp541ABD0F95E4FF588FAB023630B5AB1C" Directory="dir22ECA8FA4FC17B77EC0EFD6D976053FC" Guid="{1140B5E9-551D-4CDF-B93A-1579EB5F502A}">
-                <File Id="filDB65F9DA3B84286689159B1BDB1E1233" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Misc\Build\fe61a4fd6b894f0c868d9cfd32b6a1c4.xnb" />
+            <Component Id="cmp0ED2C1670970C4A133747092D0A85E05" Directory="dir22ECA8FA4FC17B77EC0EFD6D976053FC" Guid="{2AEA8A17-B603-4DBB-9697-F5FACE2B55AC}">
+                <File Id="fil6811EF420EEE50B5E2171BDE95442231" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Misc\Build\c24192b704c84857a5d092dc9f5cc118.xnb" />
             </Component>
-            <Component Id="cmpA80C1722D459F1D190C619385E3D2399" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{E297266A-DB70-47FD-AB82-A68809CD91A4}">
+            <Component Id="cmpA80C1722D459F1D190C619385E3D2399" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{18BA8A8C-10BF-4C11-A9BC-C39FE6DC5871}">
                 <File Id="fil4C71610271216D90B83BA71E98A70AE4" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Models\AlphaPalm.xnb" />
             </Component>
-            <Component Id="cmp5F0418BC5F9890115EB9213EB0BF5081" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{FCF1AC46-BC0F-4D37-9EF3-4075D8725E79}">
+            <Component Id="cmp5F0418BC5F9890115EB9213EB0BF5081" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{198C6388-5A36-4267-A10F-15CE5E1866ED}">
                 <File Id="filBC2A4A911EDF713C373A8A34691B3013" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Models\dude.xnb" />
             </Component>
-            <Component Id="cmp5C67E31D511BC4D986C0ADFF9DFE90B6" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{651E3174-32C1-4441-ABD5-BD1048C66268}">
+            <Component Id="cmp5C67E31D511BC4D986C0ADFF9DFE90B6" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{D852C6B9-7E2A-4B16-88B6-00979C9050E3}">
                 <File Id="filD38F19BBC357AA548F40D203385995D6" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Models\Peon.xnb" />
             </Component>
-            <Component Id="cmp7D05D87A9A37C9F90BCCC94A36527E24" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{0222C3CB-F703-49A9-841E-DAF1A2A241A4}">
+            <Component Id="cmp7D05D87A9A37C9F90BCCC94A36527E24" Directory="dirC5B9D7AB8EA9E7C82B6A87229AEF6D79" Guid="{973E5273-2D99-4332-A713-1650E02EC828}">
                 <File Id="filEA868ACF22F346BC552C583700650452" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Models\tank.xnb" />
             </Component>
-            <Component Id="cmpE08BE502A2F75480FF6BFD32621182B3" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{D38331C0-28A7-49E3-A062-59D669C2BEFD}">
+            <Component Id="cmpE08BE502A2F75480FF6BFD32621182B3" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{1D478FF6-8C5A-4722-A635-5BF060D7176B}">
                 <File Id="fil8B0F2EF0008F4B0222BE20FC0EC5E5B4" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Terrain\checker.xnb" />
             </Component>
-            <Component Id="cmp073BFC1322EF6D5C3B1C9D1A9D649207" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{D9517F34-775E-418B-A96D-658BD4B9C483}">
+            <Component Id="cmp073BFC1322EF6D5C3B1C9D1A9D649207" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{98F117F3-B13B-4397-AC93-ABE088AD3091}">
                 <File Id="filFEA87DAA68E9CD933B124823D0AB6C45" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Terrain\Mountain.xnb" />
             </Component>
-            <Component Id="cmpA9E9D5B2AD77B9186D63E236D8D2D51E" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{6C3F9485-1B9E-454F-A07C-C8DF871538B1}">
+            <Component Id="cmpA9E9D5B2AD77B9186D63E236D8D2D51E" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{2D24E1AF-B3B6-4776-B0CB-34267854CCF7}">
                 <File Id="filC68716C13DE966A34774019677FBF952" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Terrain\MountainHeightmap.xnb" />
             </Component>
-            <Component Id="cmp5701B1BE0730FD64C93940B006C17F3D" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{6CB8B745-BB7C-461B-A84B-73D51C0879F9}">
+            <Component Id="cmp5701B1BE0730FD64C93940B006C17F3D" Directory="dir0C0536A1166B48AD66C98A1F5CDBC46F" Guid="{3E967B06-56D5-4E0A-B11B-9EA03DF5CC78}">
                 <File Id="fil0968095A42CF5643CAE4CA545BE420D8" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Terrain\RF1.xnb" />
             </Component>
-            <Component Id="cmp8EB2AF911AF0DA3225CB005BFB6B6744" Directory="dir2D9258D497531DCB0FF45B7BA8E47F65" Guid="{7D6D4409-C13F-41CA-A004-51632E0C6BE1}">
+            <Component Id="cmp8EB2AF911AF0DA3225CB005BFB6B6744" Directory="dir2D9258D497531DCB0FF45B7BA8E47F65" Guid="{B1BFA2A9-0D81-4D03-BE2A-755BDC24278D}">
                 <File Id="fil1128010326F3D2FDE1C01FBEA0E69D15" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Game\Content\Textures\Precedual\cage.MakeStripe.xnb" />
             </Component>
-            <Component Id="cmp35BCCD1219E1547F435CB2D5A13DD18C" Directory="dirD5AEF2C5631E1B21B5B15D674E68156D" Guid="{F64FB523-B922-4743-8EC7-100C27443A05}">
+            <Component Id="cmp35BCCD1219E1547F435CB2D5A13DD18C" Directory="dirD5AEF2C5631E1B21B5B15D674E68156D" Guid="{66BC7B2B-C1F4-4AD9-B802-EB486ED4389B}">
                 <File Id="fil732CA7B0906D71710DB7A1B3440B201F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Materials.exe" />
             </Component>
-            <Component Id="cmp0204BD51E28449E2250C1494B8C48A63" Directory="dirD5AEF2C5631E1B21B5B15D674E68156D" Guid="{00F358D0-9B46-4691-BF84-754B7252FF00}">
+            <Component Id="cmp0204BD51E28449E2250C1494B8C48A63" Directory="dirD5AEF2C5631E1B21B5B15D674E68156D" Guid="{625E2CC5-C048-4211-8C74-1E2AA7AE7094}">
                 <File Id="filEE2B5ABE65EFFCF470D32643667F7B21" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Nine.dll" />
             </Component>
-            <Component Id="cmpD613E99C4EE317A7B175492691B767DA" Directory="dirD5AEF2C5631E1B21B5B15D674E68156D" Guid="{99C34704-28A0-4124-A64B-72DAA4FC4889}">
+            <Component Id="cmpD613E99C4EE317A7B175492691B767DA" Directory="dirD5AEF2C5631E1B21B5B15D674E68156D" Guid="{B86C37AA-D49C-4533-AC14-00B0A8B601F5}">
                 <File Id="fil0587F2549C8BD1E1AC7F5836C2EBABAF" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp175BADA3DD70F24EAE99323519E132F2" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{A4EEEA95-F4A1-46C8-ADB5-7FD7F9ADE19D}">
+            <Component Id="cmp175BADA3DD70F24EAE99323519E132F2" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{1FF836AE-EE21-4BA9-8B06-09A28B9C8FC1}">
                 <File Id="fil40F7FD9C89174DF88AA6DD42422239EA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\BasicDirectionalLight.xnb" />
             </Component>
-            <Component Id="cmp3676841336B022F0B0F115350666D6EE" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{353BF3D6-F706-485E-8AC2-7D3D08262650}">
+            <Component Id="cmp3676841336B022F0B0F115350666D6EE" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{614199CB-4D59-429E-9536-969F53A461A1}">
                 <File Id="filAB1F55DE26CD2FECBEA9444325C949B6" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\box.xnb" />
             </Component>
-            <Component Id="cmpB86D4B4188D3577CB15F973A219C4BBA" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{91D424DA-C70B-4654-9F5E-3A7CD90C9E66}">
+            <Component Id="cmpB86D4B4188D3577CB15F973A219C4BBA" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{F5FA8170-8721-4E58-BC12-AE9DB3382619}">
                 <File Id="fil065ACB2169D74DBCEA6A9BAFE7A55E0B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\box_n.xnb" />
             </Component>
-            <Component Id="cmp243B53CAB2517197B7906490781E6DA7" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{BA9CCE43-B7AB-40EC-9FBE-903FCF37BC39}">
+            <Component Id="cmp243B53CAB2517197B7906490781E6DA7" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{52883B1D-0A96-489F-B6D9-AB2025684A22}">
                 <File Id="fil972893D5C13104238B035232DC8C39C7" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmpFC3252808CB043D84827111D12D88F74" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{695B326F-A232-4A25-90D6-100022036970}">
+            <Component Id="cmpFC3252808CB043D84827111D12D88F74" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{F17A7B47-365C-4F3E-B814-7F0329C11BCA}">
                 <File Id="fil81EC7C94C6CE042158138F4AD5DC94ED" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\dude.xnb" />
             </Component>
-            <Component Id="cmpE5C7BB80C7721A49B828EBE6105A53BA" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{DEC4D68D-1904-4D1B-99A3-623A05896F55}">
+            <Component Id="cmpE5C7BB80C7721A49B828EBE6105A53BA" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{DBE45614-60F8-4FEC-AF22-5A61676AFB54}">
                 <File Id="fil8F70EAABE652884F33ED0E52888A67EA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\head_0.xnb" />
             </Component>
-            <Component Id="cmp9FBC92CEC2A1254603EC2192BFD04F51" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{92BC88BC-17FD-4881-A388-DDF1FF3E99C7}">
+            <Component Id="cmp9FBC92CEC2A1254603EC2192BFD04F51" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{46FBF0D1-415F-49DE-BDB8-F176AD7B1070}">
                 <File Id="filF1CE5EB28A0A349DD1A906D1D9807DE8" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\jacket_0.xnb" />
             </Component>
-            <Component Id="cmpB5B3D24BB770A385F8E797FA4AEEB013" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{569692E5-A8B4-48E9-A530-B517A7548902}">
+            <Component Id="cmpB5B3D24BB770A385F8E797FA4AEEB013" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{49F6C199-D1C2-49DF-8EA5-8E74A8AA91F9}">
                 <File Id="fil1D53E425D8E0CAFAA58586D3CCFC2D38" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\NormalMappingEffect.xnb" />
             </Component>
-            <Component Id="cmpFB3620A7D56BF7BBF952789825A114C4" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{57193225-77EF-45F5-A016-AFE7DD10D2D2}">
+            <Component Id="cmpFB3620A7D56BF7BBF952789825A114C4" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{F3926997-38C6-4F09-924E-346DA73241A0}">
                 <File Id="fil40465B4C0E9529857F9D1B948D250FFD" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\pants_0.xnb" />
             </Component>
-            <Component Id="cmpE38F5B7F2A6A18DBFA3DD942CC4C5418" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{5DBBD75F-ADD7-4D76-A14E-676A9CF452D0}">
+            <Component Id="cmpE38F5B7F2A6A18DBFA3DD942CC4C5418" Directory="dir56757C15613C5FB327285813536C87FC" Guid="{CFAD5015-24AF-4BD0-ABE2-B6976B21F74A}">
                 <File Id="filD6A4E7180DA732386AB76480066AE412" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Materials\Content\upBodyC_0.xnb" />
             </Component>
-            <Component Id="cmpA0F928321761CF402D69948E48226D69" Directory="dir0E65453812064621169D3E34881255CA" Guid="{485373ED-6889-4B04-BA48-AC0333046807}">
+            <Component Id="cmpA0F928321761CF402D69948E48226D69" Directory="dir0E65453812064621169D3E34881255CA" Guid="{81928814-5D8B-41E6-B0D8-5B8A9EE18F32}">
                 <File Id="filBADA7A84453A01262525BC56D442D487" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\MultiPassLighting.exe" />
             </Component>
-            <Component Id="cmpBB1A81FE3F262C2825083446CF51AAE9" Directory="dir0E65453812064621169D3E34881255CA" Guid="{6E9026F9-730F-40AB-846D-8E5FCC70BE98}">
+            <Component Id="cmpBB1A81FE3F262C2825083446CF51AAE9" Directory="dir0E65453812064621169D3E34881255CA" Guid="{5D35EB26-7876-40FA-B9B3-FA3D74659069}">
                 <File Id="filBDBD7E052E43087DEE1D17F71FA70C4A" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Nine.dll" />
             </Component>
-            <Component Id="cmp04B4E36892064E25EADBDBC7BA087BE6" Directory="dir0E65453812064621169D3E34881255CA" Guid="{B06144AE-F92A-4CB2-9CD8-B6D77978D326}">
+            <Component Id="cmp04B4E36892064E25EADBDBC7BA087BE6" Directory="dir0E65453812064621169D3E34881255CA" Guid="{D58AFF78-9BED-4BFF-B2CD-E3099E0EF5E6}">
                 <File Id="filDB2D7B0ED136E19232BFB2F50482B2DA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpC4016244BDAD167E11FE2B1BB4D8A5E3" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{7211DF39-6A51-48F8-B28E-57BA5FBAA705}">
+            <Component Id="cmpC4016244BDAD167E11FE2B1BB4D8A5E3" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{CC8530D1-0B0E-4830-8F75-A5893F3C5D85}">
                 <File Id="fil0ACF5EFB241086C6666AD89A0E4C417B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\box.xnb" />
             </Component>
-            <Component Id="cmp4101DF494CE47506C2E5372118DEB14A" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{855C4CEE-72C6-47B6-9E54-9F3FC6234C98}">
+            <Component Id="cmp4101DF494CE47506C2E5372118DEB14A" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{83C6418B-9650-43D7-A71B-8BF95C8B248E}">
                 <File Id="fil53BB8A46F8D8CC6C356D0C2407392AC2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp3B5D29F3E670DECCBB564BDB6FD8B437" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{AAF471A8-22A5-4E1C-870E-887678658810}">
+            <Component Id="cmp3B5D29F3E670DECCBB564BDB6FD8B437" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{67040196-25AE-4959-BD43-C2024E2CDAE6}">
                 <File Id="fil6349630D814FBCF73F7A3C87A9C773B0" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\dude.xnb" />
             </Component>
-            <Component Id="cmpDC9128187B31E87DDCF905D5BB22AE92" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{94B66B39-C99D-4E37-8673-A9CC714176DF}">
+            <Component Id="cmpDC9128187B31E87DDCF905D5BB22AE92" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{080E3BB1-B3EC-424A-AC58-5CE68068BDC7}">
                 <File Id="fil1C83E08C5ABA2DBA326A40FB537F9485" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\head_0.xnb" />
             </Component>
-            <Component Id="cmpEFF4E2B18A83F741F9BCC4C7756D711B" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{5C1522FD-F7B3-462B-AE32-7E76695F17CE}">
+            <Component Id="cmpEFF4E2B18A83F741F9BCC4C7756D711B" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{A92B6342-E518-477D-8398-17F17590FCBF}">
                 <File Id="filA5506043C3448B48D50563C162FE76D7" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\jacket_0.xnb" />
             </Component>
-            <Component Id="cmp017C546051D317ED72A0A18015B4BB9D" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{30660ECB-6834-44C4-A1FF-478BB60EFBB0}">
+            <Component Id="cmp017C546051D317ED72A0A18015B4BB9D" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{BC0CE4D9-9619-4B84-8181-FC0A1C590A74}">
                 <File Id="fil8AC3A371EB639A3D2AC8812B2DA07E37" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\pants_0.xnb" />
             </Component>
-            <Component Id="cmp1BBF7699A5FCBA0CA5FF0B1F6952A4BF" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{C7F2AAFD-0796-4D79-A621-A74CE7FC4A96}">
+            <Component Id="cmp1BBF7699A5FCBA0CA5FF0B1F6952A4BF" Directory="dir6841AE0636F69282D5579ECED8C23FB9" Guid="{1D3EBF48-9EF5-446E-976C-4D2943FBAEA0}">
                 <File Id="fil52AC4E902E2ABC99284EF6280EBF5312" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\MultiPassLighting\Content\upBodyC_0.xnb" />
             </Component>
-            <Component Id="cmpE29775195160E5EC746D4C79AACBB495" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{C6E5B733-B8B5-4ACD-BC9D-0CE1F5DC5CBD}">
+            <Component Id="cmpE29775195160E5EC746D4C79AACBB495" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{9D5842A0-E038-4E27-AF55-25A39E489156}">
                 <File Id="filCCAB7C8FE11FFD231208AD923B9F9570" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Navigation.exe" />
             </Component>
-            <Component Id="cmp7139962B67908A215D8E0997484CCAE9" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{34E05EA6-8355-4F12-BC0E-0C822310ECFE}">
+            <Component Id="cmp7139962B67908A215D8E0997484CCAE9" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{3276E026-F3CB-4D20-A5B3-A842A749D998}">
                 <File Id="fil43331B1AF756FE9139F4A385A8B0297C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Nine.dll" />
             </Component>
-            <Component Id="cmp9DA8EA08FF4A387104BD85F5612B2327" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{11E23F59-BE16-413E-90E4-C4449501588E}">
+            <Component Id="cmp9DA8EA08FF4A387104BD85F5612B2327" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{54EE4A28-ECBB-4022-8EC0-BC22483A18B1}">
                 <File Id="fil4F927B0FCB5B9540F6E88AD19DADEF2B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpAAB12527CC185D8F7803EC802E7FB365" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{207F6779-9CC7-4F29-9AEE-713C89CD6BD6}">
+            <Component Id="cmpAAB12527CC185D8F7803EC802E7FB365" Directory="dirEF9F77FEFFCD5251D068ECC7B3E78EB1" Guid="{358CDAE6-6675-4659-B832-8E6225BC32E6}">
                 <File Id="filF08BB9F19A82FB008995444ECB190088" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Nine.Navigation.dll" />
             </Component>
-            <Component Id="cmp1246BFED5B333D5FDD39FD6F2176F280" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{6A09CCF3-840D-4D87-A076-6B0F7A7A167C}">
+            <Component Id="cmp1246BFED5B333D5FDD39FD6F2176F280" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{08178DC1-FEE4-4F60-8A38-D7A72A4C4425}">
                 <File Id="filB02CD6646F8561542F7392740BBC82E1" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Content\checker.xnb" />
             </Component>
-            <Component Id="cmp6FED00DC78985934A66358977E6BDBB5" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{CBFB6DB3-9B6B-4FA3-9398-2F38EE41C901}">
+            <Component Id="cmp6FED00DC78985934A66358977E6BDBB5" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{82DCDDE3-594B-449A-8BFC-14ACCA79678C}">
                 <File Id="filA0CA25154721A2D1A8198077EE623A46" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp1766531169B4F2F4E8C6876EE376569E" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{3DBDD3F0-0DD3-4D5D-B5FF-FA70C737435A}">
+            <Component Id="cmp1766531169B4F2F4E8C6876EE376569E" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{D99494C0-0410-428A-9BE9-6F43050E0052}">
                 <File Id="filB00BBBEAD14A384DD47BADD0545C86A6" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Content\MountainHeightmap.xnb" />
             </Component>
-            <Component Id="cmp648BA843971AE5640B92FCB7D08078A0" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{1A91EF8C-E65A-4344-B7EC-289ECB6ED92B}">
+            <Component Id="cmp648BA843971AE5640B92FCB7D08078A0" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{BD69607F-03BF-4F4A-AC15-C6CCC404299F}">
                 <File Id="fil2423EC18092653E684CF1BEEB5462F59" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Content\Peon.xnb" />
             </Component>
-            <Component Id="cmpC23D37BBDCF4F78BCCA6780865BA96A5" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{D621A5F2-C051-4120-A3BA-4E5116472779}">
+            <Component Id="cmpC23D37BBDCF4F78BCCA6780865BA96A5" Directory="dirE20C50D45C4D2ACD23A66771CF1E9C09" Guid="{26B57063-A3DA-4943-B44B-5A570055204A}">
                 <File Id="fil2BC9403B85E73F7852DF3BF940987912" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigation\Content\tietu_nongmin_0.xnb" />
             </Component>
-            <Component Id="cmp6A574D9C9FF16BDC219CDBCC310619AC" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{208C0E1F-182D-4AC9-9A6A-5E876DA73850}">
+            <Component Id="cmp6A574D9C9FF16BDC219CDBCC310619AC" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{94E5AC26-382B-44FA-BCF2-84DEC016F2B7}">
                 <File Id="fil5453056F9D58A0C7B95C79AFE0CF8A1E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Navigators.exe" />
             </Component>
-            <Component Id="cmpCDB77EBC06C720692EAA8EA52518AE0A" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{63CA5956-AFD2-4514-A4F9-6E2CE7ED07F8}">
+            <Component Id="cmpCDB77EBC06C720692EAA8EA52518AE0A" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{28C0FE25-C906-40E0-914D-0614E600DED5}">
                 <File Id="fil8BFC6E5BA7D5C4DA2AFBBD6AA38450CB" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Nine.dll" />
             </Component>
-            <Component Id="cmp533A0618EB79F16892F3BE9E059AE66B" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{04A159BC-A942-4C27-9997-DB335E4B6173}">
+            <Component Id="cmp533A0618EB79F16892F3BE9E059AE66B" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{4749D71A-27D6-4A69-B554-4BB445C58A2F}">
                 <File Id="filDE685C3B36BD3679A7FAA106C6CACCAB" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp17BBB237DD3C510EFE6AFBEECB60177A" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{DE4C066F-0760-478A-93A1-0F0DAFC8AEA0}">
+            <Component Id="cmp17BBB237DD3C510EFE6AFBEECB60177A" Directory="dir9A5CF47F4907F49930FB18DDB651F54C" Guid="{62B0C9A2-68E5-4B6B-B771-A8F763872FEA}">
                 <File Id="fil86AD13F606413743D182B328CBBF2DED" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Nine.Navigation.dll" />
             </Component>
-            <Component Id="cmpCF1DFA607CE37D81913FBF407336B3B0" Directory="dir1C58C5001E268BA53504E599B754F600" Guid="{39EC9063-BF5F-4428-AD86-A929EF4D951E}">
+            <Component Id="cmpCF1DFA607CE37D81913FBF407336B3B0" Directory="dir1C58C5001E268BA53504E599B754F600" Guid="{E5AA48E2-28BA-4468-BB37-911FDDBE3442}">
                 <File Id="filA8B2832E62C5F66FD6FE0A55816EA21C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp71F6AF6B2A27D3ECB53980692DBAC6C7" Directory="dir1C58C5001E268BA53504E599B754F600" Guid="{44759E92-0AEF-43BA-A2EC-728B5E59A5D0}">
+            <Component Id="cmp71F6AF6B2A27D3ECB53980692DBAC6C7" Directory="dir1C58C5001E268BA53504E599B754F600" Guid="{FD347430-10DC-4E63-8093-445D389EE6F1}">
                 <File Id="fil1A9114ACD69897866C348AC8F26E4F16" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Content\NavigatorsScene.xnb" />
             </Component>
-            <Component Id="cmp3CA8B7E937C19D49FDAF4314FC942A30" Directory="dir1C58C5001E268BA53504E599B754F600" Guid="{7C49202D-A449-4DCB-977E-1B64DD15288F}">
+            <Component Id="cmp3CA8B7E937C19D49FDAF4314FC942A30" Directory="dir1C58C5001E268BA53504E599B754F600" Guid="{9B653A72-1875-44F9-87F5-D2D5D00FF74C}">
                 <File Id="fil7B017F5EDE81B9DDB58ACF58D9059BFC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Content\tietu_nongmin_0.xnb" />
             </Component>
-            <Component Id="cmpAD708BB32BE91666E5CAEC8C869C9DAB" Directory="dir00E80DD4E750ED9875F9DBE0CC5ECB33" Guid="{BDDB4152-08CC-4951-8E38-AAC536FDAF52}">
+            <Component Id="cmpAD708BB32BE91666E5CAEC8C869C9DAB" Directory="dir00E80DD4E750ED9875F9DBE0CC5ECB33" Guid="{6F9943D5-E732-491A-B188-C16E3F443527}">
                 <File Id="filB525E4CA7CF820ACAD7DFD2BC2DE61F8" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Content\Models\Peon.xnb" />
             </Component>
-            <Component Id="cmpAE340F7534CE6A562B8A0CAE5EAB9AE0" Directory="dir0BFD7D583B13C8ACAE503A0B39AB7206" Guid="{77DFA1A8-72DA-4A62-A1B4-2FF1979C256A}">
+            <Component Id="cmpAE340F7534CE6A562B8A0CAE5EAB9AE0" Directory="dir0BFD7D583B13C8ACAE503A0B39AB7206" Guid="{9064F210-AFA6-4327-8992-C34974787976}">
                 <File Id="fil12B7A678FBAAA4B268662612B992F29F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Content\Terrain\Mountain.xnb" />
             </Component>
-            <Component Id="cmp754F8C236B46D08E09CB25C7386C9289" Directory="dir0BFD7D583B13C8ACAE503A0B39AB7206" Guid="{775F162E-56B0-4110-AD30-03FCFA306BF2}">
+            <Component Id="cmp754F8C236B46D08E09CB25C7386C9289" Directory="dir0BFD7D583B13C8ACAE503A0B39AB7206" Guid="{63604142-EBA5-4781-86A2-76E51E9A5E96}">
                 <File Id="fil7C4731CE906A8D1FC2069C3A41D3DB74" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Navigators\Content\Terrain\MountainHeightmap.xnb" />
             </Component>
-            <Component Id="cmpD0B8F23F3798C232674145C6CC9B4806" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{B8E72CA5-EB00-4170-A4FE-64ED16C262AA}">
+            <Component Id="cmpD0B8F23F3798C232674145C6CC9B4806" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{7DFD60F6-1E57-4B6E-A053-6CAEE99C1522}">
                 <File Id="filCB0C525C02A0C47294F35D9B52B04749" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp8D23D31B35C1DA8E9CCF3014F8C49081" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{EFF76FEF-B5CB-4BDB-BA00-184D48151523}">
+            <Component Id="cmp8D23D31B35C1DA8E9CCF3014F8C49081" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{6171F3ED-1851-4DFF-B79A-C5F19D2CB076}">
                 <File Id="fil18C7B56C38E8D2E58E9E2200F87110F1" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Nine.dll" />
             </Component>
-            <Component Id="cmp18FCA67AD96AE804B631B00E51376688" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{A3E7BC46-08E9-43F9-AFB6-70C1EF2E8F47}">
+            <Component Id="cmp18FCA67AD96AE804B631B00E51376688" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{BB8D6D34-3036-4D1A-9B57-64F637B25774}">
                 <File Id="filEDCEF15B9FE64C79B550BC5F8F24503B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp55419FA1499C583C5F7107F750D45148" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{F6131D3F-22FA-47E1-BB14-341CA60F6ABB}">
+            <Component Id="cmp55419FA1499C583C5F7107F750D45148" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{897C11B1-C68A-48A5-A98D-A4623828B59E}">
                 <File Id="fil776C4FADE5496D593367E4868C8515DE" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\ParticleSystem.exe" />
             </Component>
-            <Component Id="cmp76861A60A61E718D129BD688D25EB15F" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{158105E9-1FBC-4A29-8035-4194449B17F5}">
+            <Component Id="cmp76861A60A61E718D129BD688D25EB15F" Directory="dir6A606DB0FA7EDC1BA0786DFDEF204F77" Guid="{07C2CE4A-E9EF-4F29-A4A2-64A93356837C}">
                 <File Id="fil5722F92589395737A36CDDE0572D623F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\ParticleSystem.exe.config" />
             </Component>
-            <Component Id="cmp9EB93F9A48B6A6D3F7D485D14771D704" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{46BE629A-5895-4EF3-888F-651A31C38E08}">
+            <Component Id="cmp9EB93F9A48B6A6D3F7D485D14771D704" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{54DCCDD2-2D00-4D27-B84B-8774C1D91CD9}">
                 <File Id="fil139D02B646E0C4D022C1CE4249A32252" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp6C346BA8B8A86D3C7420B3D083B6533E" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{91D939D8-78EA-454F-A33A-041060E2B1D4}">
+            <Component Id="cmp6C346BA8B8A86D3C7420B3D083B6533E" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{D16119C2-955D-4A02-9499-43B0EF41BA44}">
                 <File Id="filA5AE87504052354EC09010A9CC87BA30" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\fire.xnb" />
             </Component>
-            <Component Id="cmp0A9E9190FC2811E9262B9654FAC901A1" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{42F67091-B891-4933-BE2A-4B45BE1ACD0A}">
+            <Component Id="cmp0A9E9190FC2811E9262B9654FAC901A1" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{A0F4697D-3B53-402F-8FE2-3A76EE18C452}">
                 <File Id="fil7D35107F6C136725A046C03C4F069ABE" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\fireball.xnb" />
             </Component>
-            <Component Id="cmpB033D811494E76C031EE2B75182C03B7" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{A5265CC2-9677-4B49-A3B2-F717AF65DC5E}">
+            <Component Id="cmpB033D811494E76C031EE2B75182C03B7" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{58171E1C-175B-4C04-A9A7-762F42FA3A99}">
                 <File Id="filFF6BE0026B00148B2468560A6964038E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\Fireworks.xnb" />
             </Component>
-            <Component Id="cmp6BEA1CE11E6EE797645CA292A79A7F4A" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{02E6F999-E23F-4ADE-8FA7-8179AC54A515}">
+            <Component Id="cmp6BEA1CE11E6EE797645CA292A79A7F4A" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{71746808-B4C3-4412-882A-A2F68D269222}">
                 <File Id="fil8849FE71CE40DDF6706938BF039F5E94" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\flake.xnb" />
             </Component>
-            <Component Id="cmpAB4C007129D783D7ABA375F297AFF51F" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{421F222B-0929-4122-80A5-78A0063E77C3}">
+            <Component Id="cmpAB4C007129D783D7ABA375F297AFF51F" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{41DF61EA-F595-4B26-86F0-707E221FCE9B}">
                 <File Id="fil3F82712EA50AFBB4C91B53BFEDDA8818" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\Galaxy.xnb" />
             </Component>
-            <Component Id="cmp520C328CBB86976AB45781E502E8E444" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{8CDC2FC8-62A6-48AC-8772-0CAB40F72714}">
+            <Component Id="cmp520C328CBB86976AB45781E502E8E444" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{E36DA5E6-190A-42E8-98B0-920F07E1AA99}">
                 <File Id="fil61451947EAC21DF2882A5BAAECEFF526" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\lightning.xnb" />
             </Component>
-            <Component Id="cmp4C11040D2639FA88C6DF9927DC2A203D" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{E5B0C104-E247-4E3A-AB38-BA9B57D5D965}">
+            <Component Id="cmp4C11040D2639FA88C6DF9927DC2A203D" Directory="dir478A3B346632CCE585AF5177A868E138" Guid="{E8CB1671-F60C-47D9-AF7C-06BAD337CA6E}">
                 <File Id="fil923AEE2B8C360ED23BB3CF73C62E52FA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ParticleSystem\Content\smoke.xnb" />
             </Component>
-            <Component Id="cmp814AAD279BA70167C3A6F9793643569B" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{5BA0833E-5BBB-415C-AF6F-71C9E55D69AC}">
+            <Component Id="cmp814AAD279BA70167C3A6F9793643569B" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{3198C2DC-B095-4F07-9435-71F93E44CA09}">
                 <File Id="fil4177365D0BC591E366E86C7CC4316B9E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp91C5903E0D40F21DF1C35A8BF6ACB26C" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{10DFB82C-A1EE-4164-9DCE-5D9337E06BA2}">
+            <Component Id="cmp91C5903E0D40F21DF1C35A8BF6ACB26C" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{57CD0CA6-A2CF-4207-895A-A0989CE093EF}">
                 <File Id="fil99160C20A8A5F831ECFF9B835E24D760" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\Nine.dll" />
             </Component>
-            <Component Id="cmp349EBE51D984012C995F89B5267ACC58" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{4FEDDB0C-BA22-49CD-8907-89D84CD1E2CE}">
+            <Component Id="cmp349EBE51D984012C995F89B5267ACC58" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{E7FE02EC-A764-4FD8-8C8D-F1785AD5974C}">
                 <File Id="fil12A17F2CC5F7FD9F609D393D032B3467" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp23665C27FDE92F70E8B36C3A13CDA30F" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{14710F62-842A-4C66-9409-7B7D55C81515}">
+            <Component Id="cmp23665C27FDE92F70E8B36C3A13CDA30F" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{29680C41-64A0-45C4-B016-C6B436DC52B4}">
                 <File Id="filE77E61AAD1AE1F8255C2063C5680C1F5" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\Nine.Navigation.dll" />
             </Component>
-            <Component Id="cmp29893817AC666145E2D4E655284CD2BB" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{BB708B31-C07B-4E27-A63A-4B9F30CC459D}">
+            <Component Id="cmp29893817AC666145E2D4E655284CD2BB" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{1D7FA406-4F35-4F40-BA4B-08D8156D4CB7}">
                 <File Id="fil1900814CC7F73330D8C7F3921BAE10CE" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\PathFinding.exe" />
             </Component>
-            <Component Id="cmp71E359B1E8B3D09489C550624AF5E608" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{9F752088-9CA1-438A-9294-95385206A81F}">
+            <Component Id="cmp71E359B1E8B3D09489C550624AF5E608" Directory="dirD5585092E41EBA92AA68AAC1C95BE69B" Guid="{04608F23-5AFE-41AE-A5CF-8113AE8C704E}">
                 <File Id="filA698762ADEFF412CEC8F3BFDFA8D32BA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\PathFinding.exe.config" />
             </Component>
-            <Component Id="cmpE43C2024086273D81D0851D5478AC2A6" Directory="dir326DCD4CFE561A10D24EFB25538FDAC8" Guid="{9F537F30-F693-456B-96BD-6461C91265BB}">
+            <Component Id="cmpE43C2024086273D81D0851D5478AC2A6" Directory="dir326DCD4CFE561A10D24EFB25538FDAC8" Guid="{D045A1E5-C978-44E9-9438-C90982FC85E8}">
                 <File Id="fil82F572BE0CB32A7EE121A28232575CFF" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\PathFinding\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp34184F3698086BE3B86319056C51D814" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{2D5E08F6-905D-486D-9CE6-3C3C116A2669}">
+            <Component Id="cmp34184F3698086BE3B86319056C51D814" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{53926718-91E2-4866-BBD9-10BEC64B5B14}">
                 <File Id="filB83DD16EF2B4290964019C5C022A8072" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp4468E208C163220B0715EF05F5D81394" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{30EC0762-EF39-485D-901B-E48F777A14A6}">
+            <Component Id="cmp4468E208C163220B0715EF05F5D81394" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{FD715288-3352-454E-A7E9-CFFAA54C9B38}">
                 <File Id="fil0FA38D80C9D753226D553D8D72118CA0" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Nine.dll" />
             </Component>
-            <Component Id="cmp637F4D6CE9F35BBC6114C1C8DF63BD66" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{9BCD15FB-135D-4494-81E9-DCCB6548CE29}">
+            <Component Id="cmp637F4D6CE9F35BBC6114C1C8DF63BD66" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{DC7CFFE3-419E-4F87-8AA6-0B2FEB7541B7}">
                 <File Id="fil915C3E8F095F03511D497E4215845DC4" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp715344BF9535875BDAE7AAAF57603E0F" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{7512CF0C-6D21-4AD4-96C7-E313FA13955B}">
+            <Component Id="cmp715344BF9535875BDAE7AAAF57603E0F" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{36E27ECE-CAC4-482C-8E3E-CB6241E0734A}">
                 <File Id="fil8D567F4E45EBAA235E6E2FEDCA584418" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\ScreenEffects.exe" />
             </Component>
-            <Component Id="cmp4649C6DAA9BCA54892EBE8E9D5D676C4" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{2F064A0E-D96A-4B43-8DE3-68ED0158B1C6}">
+            <Component Id="cmp4649C6DAA9BCA54892EBE8E9D5D676C4" Directory="dir1FC54C51856E295642D0143DCEE1EDAB" Guid="{60684203-2A27-4D2E-AE48-609819812569}">
                 <File Id="fil44BF2C010225759D6204302ED660C88B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\ScreenEffects.exe.config" />
             </Component>
-            <Component Id="cmp8BA6FD44918AA348B9C1282A03500B35" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{C5448E63-6820-4305-9977-099A6056AB4D}">
+            <Component Id="cmp8BA6FD44918AA348B9C1282A03500B35" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{7AB7576F-DE75-4CBB-B16B-C3CFA4B894D6}">
                 <File Id="fil0557B6E5298A8D8697428DFE660C528F" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmpF1C7569594FDDE5B2E3F0C4E8065443E" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{523BF343-8CAF-41A9-8D31-7B7ABF39555C}">
+            <Component Id="cmpF1C7569594FDDE5B2E3F0C4E8065443E" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{CACC05CA-4D1B-406F-AF90-D7BDC4F13824}">
                 <File Id="filDEE6BCE2E1FCD54B9AE71DA83DB496E4" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\dude.xnb" />
             </Component>
-            <Component Id="cmpCB7C598A51B87D97DF276B2F6A89236F" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{551D4058-7BD0-4135-88F6-9D1B182F58E2}">
+            <Component Id="cmpCB7C598A51B87D97DF276B2F6A89236F" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{6DD55FC2-BC88-41F5-89BC-FC9F24385322}">
                 <File Id="filDBBA828761E9F1A9A1B115FEC31AD98C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\glacier.xnb" />
             </Component>
-            <Component Id="cmp85CA5AF491AF6CE61CC51949CFB76DC7" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{91797D02-E30D-4748-9D14-7B77CFAA33E5}">
+            <Component Id="cmp85CA5AF491AF6CE61CC51949CFB76DC7" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{D75401A8-2F0C-4CD3-810E-D2615DCB46EE}">
                 <File Id="filEB2E6FF297AF9303E8755DD28E876A62" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\head_0.xnb" />
             </Component>
-            <Component Id="cmp1DEB652CEEC6A9357B6F518D019B8300" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{08E13BA7-33AE-469C-AE81-27575E856CDF}">
+            <Component Id="cmp1DEB652CEEC6A9357B6F518D019B8300" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{0DCD1371-9531-427A-9C66-6EBE625F0C7E}">
                 <File Id="fil383916FA063847E2A432AEFAA76615C2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\jacket_0.xnb" />
             </Component>
-            <Component Id="cmp733B98DF83A5783A2FA4042700E569F3" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{821CD36E-2E39-4D53-8E8A-CA406C7F409F}">
+            <Component Id="cmp733B98DF83A5783A2FA4042700E569F3" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{5E01B0A6-F869-45EC-8AD8-DC86731502DD}">
                 <File Id="fil1F46DF985CA4EEBFB5F8721A73407269" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\pants_0.xnb" />
             </Component>
-            <Component Id="cmp1CE7EF0770E3752DF9A9785B498D7310" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{F1C327BA-96FC-4D2F-9B71-1D0FF3D690F2}">
+            <Component Id="cmp1CE7EF0770E3752DF9A9785B498D7310" Directory="dir70F1C0EF94FC640680819E7742EB9CD1" Guid="{024F8355-7CF6-424E-AEEE-B6B5A2C2DC27}">
                 <File Id="fil5FC047B46E17E9C3E89F5AB55A290313" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ScreenEffects\Content\upBodyC_0.xnb" />
             </Component>
-            <Component Id="cmp087F6615CBC286CB7DDBE07EC293C676" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{46E95756-E808-4AE5-9140-7D938D63EBBB}">
+            <Component Id="cmp087F6615CBC286CB7DDBE07EC293C676" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{0307F720-7398-45F1-A898-657B168A9F9C}">
                 <File Id="filC23986065B19BC34B9B9AF6A0A8DF3BA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp9D66AC9DC8BCBBF3F0F9C39C05CD326E" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{CFF2E036-159A-48A9-BA20-A8277FFFD174}">
+            <Component Id="cmp9D66AC9DC8BCBBF3F0F9C39C05CD326E" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{1A79767E-71C4-40EA-9B37-0794049AD612}">
                 <File Id="filCDE0FE968CFCCE2A41C6108CDF504DF2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Nine.dll" />
             </Component>
-            <Component Id="cmp38BBF8F1F4AEB19FF057E45AA89B0E5C" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{0F265564-4774-448E-B87B-7C8E1F2EE7B9}">
+            <Component Id="cmp38BBF8F1F4AEB19FF057E45AA89B0E5C" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{B981C6E1-D0FA-46A6-97D5-C6E2DC0389C8}">
                 <File Id="filB96AE4C70D9A75FBB586F26DB0CEBC9A" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpB63A9EBD0C2092F7D4E1EB4520D34BE7" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{2374638C-7EEC-46E4-B786-517C20FA1342}">
+            <Component Id="cmpB63A9EBD0C2092F7D4E1EB4520D34BE7" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{23AD3AC1-48B6-41D0-9C98-A2AD08E0F57B}">
                 <File Id="fil62AFFD525FF8B950E1AEB80005476100" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\ShadowMapping.exe" />
             </Component>
-            <Component Id="cmp5FAACB9523324A4A3EB428E4550473E2" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{5E7D58FA-1C82-4275-A819-CE38964BAB1D}">
+            <Component Id="cmp5FAACB9523324A4A3EB428E4550473E2" Directory="dir2EE7979D68E2CA8CF4EB4F2A306B2A79" Guid="{CCB40E06-B26E-4C58-A52C-1E95C473CBEB}">
                 <File Id="fil7F648BC6CE89FED36FF6E56396DA2017" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\ShadowMapping.exe.config" />
             </Component>
-            <Component Id="cmpA671BE43AED5C9C40B3921E05B9661F8" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{2C2BE1E1-29C1-4B0F-809D-E071D7C7CD34}">
+            <Component Id="cmpA671BE43AED5C9C40B3921E05B9661F8" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{6C42D785-CC4A-4167-9DD5-FB2B8DEEEEFB}">
                 <File Id="filD446177A807E4CD6A2EDF5F72DE0793D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp2826DA45E31A2E21EA4165A33C50EFE8" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{D56EBD91-384C-40B7-9DCB-0CFAA5F76AB4}">
+            <Component Id="cmp2826DA45E31A2E21EA4165A33C50EFE8" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{A983E558-BB3B-49AC-9DA8-20277C359501}">
                 <File Id="filE205E18F296039560E12637277F1EDD6" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\dude.xnb" />
             </Component>
-            <Component Id="cmp84E08132C898E425D73B3B7BE3EC0173" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{78873E34-8F49-4394-BEC1-8A26BED04E9C}">
+            <Component Id="cmp84E08132C898E425D73B3B7BE3EC0173" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{BB40D1CA-D9D9-4A25-9EC5-CE457DCC9FFB}">
                 <File Id="filEE05A9853D4AF760E31C8E1BD1BEB429" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\head_0.xnb" />
             </Component>
-            <Component Id="cmp603A0481C863AFC662540869F265A182" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{54CC9821-D7E0-45A1-8535-264EF1A513B9}">
+            <Component Id="cmp603A0481C863AFC662540869F265A182" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{FB82B289-CE45-4022-B246-7749EF083748}">
                 <File Id="fil560A0F15A375795B00F123A6C8E198BD" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\head_n_0.xnb" />
             </Component>
-            <Component Id="cmp995EFAAD4911357BFFD9ADE5356F8A7D" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{AC379B3F-7524-4A60-9629-5FC04F7180D7}">
+            <Component Id="cmp995EFAAD4911357BFFD9ADE5356F8A7D" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{5F5E5A46-155D-4A7F-8622-9D1561FAC076}">
                 <File Id="filF802A36FDD32444A928DA84DD22EC9E9" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\jacket_0.xnb" />
             </Component>
-            <Component Id="cmp248085985E70DEC69CB76CC5D096A6F7" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{56F6F5DB-709E-4C60-A0AC-0481C564103B}">
+            <Component Id="cmp248085985E70DEC69CB76CC5D096A6F7" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{8A962E1E-1052-4CCA-B373-FFE453A59820}">
                 <File Id="fil0FA2A38D312270C1B31B74D3CDBA16FF" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\jacket_n_0.xnb" />
             </Component>
-            <Component Id="cmpCCD2B9D4781538F755E6252C36B35B8F" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{B2B0B608-8896-4B44-8B46-BE776233129A}">
+            <Component Id="cmpCCD2B9D4781538F755E6252C36B35B8F" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{832AEF4A-94E0-416A-8F3F-3E0FB8BA59BB}">
                 <File Id="fil11DD25E65CBA056F5D071BBD0E6F1874" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\jacket_s_0.xnb" />
             </Component>
-            <Component Id="cmp374D5BCBA315D37C71B2652F7E6FD77D" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{72B0D0FD-C31D-4EE7-85C9-30E6306F533B}">
+            <Component Id="cmp374D5BCBA315D37C71B2652F7E6FD77D" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{B95E7311-986B-4F98-9D68-E9EC35EC0842}">
                 <File Id="filC791A3EE6CBD60B9D7754AA4BED4A771" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\pants_0.xnb" />
             </Component>
-            <Component Id="cmp78CE94F00BC2269ADE633C2A4FEF4D0D" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{70815FF2-0F43-41D1-B5B4-30C3B0934FEA}">
+            <Component Id="cmp78CE94F00BC2269ADE633C2A4FEF4D0D" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{A37B69C3-AEB2-4245-A0B6-49AE78C96FB9}">
                 <File Id="filC9B1FC04239D84FA05E870239C74C075" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\pants_n_0.xnb" />
             </Component>
-            <Component Id="cmp6F0EB89D4462E3BC31F59AA26CB2FA24" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{60A52DF4-879F-489D-890C-B6E0A00FD003}">
+            <Component Id="cmp6F0EB89D4462E3BC31F59AA26CB2FA24" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{736C87E7-543A-4513-BF4D-67DB5E547079}">
                 <File Id="filA807FEA953E7C4CAC26B48EBE3F4D2B2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\pants_s_0.xnb" />
             </Component>
-            <Component Id="cmpA5C2A0488A962454435478573E7FB7CB" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{2DF6CA24-9581-4B75-B1BF-B6F61D192DFB}">
+            <Component Id="cmpA5C2A0488A962454435478573E7FB7CB" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{0629126D-820E-4ACF-9F68-E6563CFA9D49}">
                 <File Id="filBE257E9D97D43C09CDFDC9A7BD56DFA1" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\ShadowEffect.xnb" />
             </Component>
-            <Component Id="cmpE773C4FB3976731E27472AA97B213A73" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{17AE7DAC-86D7-45F3-B89D-B5D2C14895D0}">
+            <Component Id="cmpE773C4FB3976731E27472AA97B213A73" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{71F48BEA-2880-48A6-97C3-344BC24F16DC}">
                 <File Id="filE077F464E75B58C1FA305B7AAEA7E991" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\ShadowNormalSkinnedEffect.xnb" />
             </Component>
-            <Component Id="cmpE3EA73BE864A2327B318DC8C93991B29" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{CCC63EC9-6510-418E-8DE2-4001DDA14420}">
+            <Component Id="cmpE3EA73BE864A2327B318DC8C93991B29" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{6ADDED8A-A2EC-420E-8A4E-60B023C279B0}">
                 <File Id="filA361640074D408EB10C835804938F200" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\SkyCubeMap.xnb" />
             </Component>
-            <Component Id="cmp9D183BFECD2724CA4DEAB06DC34ED5BC" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{EBD84925-CD06-4573-A23B-4325DD06F4AA}">
+            <Component Id="cmp9D183BFECD2724CA4DEAB06DC34ED5BC" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{DEAEA20B-3FF6-4340-8E8F-39F19B345FD9}">
                 <File Id="fil43FEB46C625EF6CAE4CDC17D8D9C6B44" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\Terrain.xnb" />
             </Component>
-            <Component Id="cmpCECB8A686ADC6B7A4D83473C427856E0" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{45F54C5E-D430-4A37-86DF-DB70F0A0F2AF}">
+            <Component Id="cmpCECB8A686ADC6B7A4D83473C427856E0" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{D64F6C03-6E9F-43B3-86C0-75A5E08E6CBF}">
                 <File Id="fil89CE0706D150694FE895ECDB196E2761" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\Terrain_0.xnb" />
             </Component>
-            <Component Id="cmp85B7409E4C539A9C97F4E1E304F3E0F1" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{82E24B09-567E-4181-83C6-33D6FAEAF40D}">
+            <Component Id="cmp85B7409E4C539A9C97F4E1E304F3E0F1" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{1A25356B-5A0E-48C9-9753-C9031124665E}">
                 <File Id="fil50A4D7F93490113B2D11707B9C58E73C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\upBodyC_0.xnb" />
             </Component>
-            <Component Id="cmpFEFF4A41E9254DE9743802079BDCEEA4" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{386A31B9-5F09-488E-8B24-41F70C6B0B2D}">
+            <Component Id="cmpFEFF4A41E9254DE9743802079BDCEEA4" Directory="dir0CDE3E797DF69AC94460D96480395253" Guid="{C10C6FE2-2D4A-4500-BF8F-E30161D8D9A8}">
                 <File Id="fil6E538B9C7842D647ADAE50D61C104C19" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\ShadowMapping\Content\upBodyC_n_0.xnb" />
             </Component>
-            <Component Id="cmp4BFC4CE31F33DCB321D6DAD004F83AEA" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{FE78E150-B6AB-4B8A-B9DC-A8BF2F61B6A4}">
+            <Component Id="cmp4BFC4CE31F33DCB321D6DAD004F83AEA" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{921187B4-E065-432F-9CEC-D8D2495D9CC4}">
                 <File Id="fil32205490DF9CBC9EC993E05D31B9C307" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\GameThumbnail.png" />
             </Component>
-            <Component Id="cmpDDCC07EB9774E00993D8D100281CCF3B" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{7BFD1C84-EC75-41D1-8DF0-77B034CF5DCB}">
+            <Component Id="cmpDDCC07EB9774E00993D8D100281CCF3B" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{9F9D2486-0CDE-45A9-AC8B-EC3B5AB740A8}">
                 <File Id="filB10C1F29AFC7D849255BB27E0264258B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Nine.dll" />
             </Component>
-            <Component Id="cmpECD464BEB4CE9E493E00295D03599ED3" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{8BEA4683-962F-4551-83D2-85465BC78C1B}">
+            <Component Id="cmpECD464BEB4CE9E493E00295D03599ED3" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{8089A5D8-B307-451B-BB11-FC5EE8986C70}">
                 <File Id="fil29B7A3FA85D405194D83799062B4E7DC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpEF1B4ACFF18A4F4B824E55A92F425927" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{358CD914-D941-4E83-9ED5-DF63F00ACD11}">
+            <Component Id="cmpEF1B4ACFF18A4F4B824E55A92F425927" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{5BA7A9B7-AD3A-4CAC-9162-BD4CE13157D5}">
                 <File Id="filA43336AFAF572D645E039DD7346CB6FC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\SkinnedModel.exe" />
             </Component>
-            <Component Id="cmp45E1DD59DA8FD4ACD0B45D22610D600A" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{3E0773E3-6F5A-435D-943F-B9B5A9D92CB9}">
+            <Component Id="cmp45E1DD59DA8FD4ACD0B45D22610D600A" Directory="dir59555557C21CA25E5550CBCADB0BA242" Guid="{B909F73F-CD8C-4550-8B97-D3E6D3515DEE}">
                 <File Id="filF60B1CA1D69A972F7AF707B015812A42" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\SkinnedModel.exe.config" />
             </Component>
-            <Component Id="cmp4238EA36EF232966DF8588F59F62DB11" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{8EC2E35F-54E8-4360-9FD6-0404F97F4EBE}">
+            <Component Id="cmp4238EA36EF232966DF8588F59F62DB11" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{4F2F7C55-5304-406E-B1F3-0A1889CCBEF4}">
                 <File Id="fil1D89C354A009F0BBE7808FCCCB8685B4" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp370A71289BB2EBBB32276CA27C59E9E3" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{84A3989F-BB7F-4D85-B5E4-C82057C7D86F}">
+            <Component Id="cmp370A71289BB2EBBB32276CA27C59E9E3" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{C66B87C8-3965-43B7-9F68-27FCD097FF42}">
                 <File Id="filA191D83275E03ADD171A4A73002EE62A" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Content\hammer.xnb" />
             </Component>
-            <Component Id="cmpB7EB73D49B61273220EEE645356D46D4" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{720B046A-6C04-497C-8529-030CB87DDB90}">
+            <Component Id="cmpB7EB73D49B61273220EEE645356D46D4" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{0F663B19-97F0-4A91-BFF6-BA4C80B459E5}">
                 <File Id="filA9C23B5935163DA696811C7430121855" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Content\hammer_0.xnb" />
             </Component>
-            <Component Id="cmpF92FF003E846C68A8990AAE7DA17BD77" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{32448BAC-EF28-43E9-B6EF-E9ABA7666AFF}">
+            <Component Id="cmpF92FF003E846C68A8990AAE7DA17BD77" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{7837F701-CF5E-4D92-BE8A-529046B84309}">
                 <File Id="fil97D9BC01F087773212A598A736D759F5" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Content\Peon.xnb" />
             </Component>
-            <Component Id="cmpD9707D181F9C8790180E9C131BB38E4B" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{A305861B-44CA-47DC-92E1-4C0A794D123E}">
+            <Component Id="cmpD9707D181F9C8790180E9C131BB38E4B" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{5C55D29F-48BC-4B2E-A8AD-E487FD168CA1}">
                 <File Id="fil97F058E232FF25880B624774381CE1F8" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Content\SkinnedEffect.xnb" />
             </Component>
-            <Component Id="cmp93A32A2F64F17AF86EE9E265E9FC2683" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{7BCC16D2-4FD3-483C-B715-7BB68D934DC4}">
+            <Component Id="cmp93A32A2F64F17AF86EE9E265E9FC2683" Directory="dirCF18AEA33BC48709BBE90CA1EBCC1EE1" Guid="{1BFE4341-4D0E-4E13-A544-D0CA582EC3FB}">
                 <File Id="filA035C3E344FF1CBA31700171AE903F1D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SkinnedModel\Content\tietu_nongmin_0.xnb" />
             </Component>
-            <Component Id="cmp0CED5F42FF18566C66A93CFC18033A49" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{7EF84464-0785-4448-934B-144D8A334F1A}">
+            <Component Id="cmp0CED5F42FF18566C66A93CFC18033A49" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{7CA888CA-F7CB-4E93-940B-12FA2F5DB6AF}">
                 <File Id="filF9F9F9A3FC9413321059F834D9D3C847" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp72412BC8A79B45AB1EFBFF12A5A6B34C" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{86E2CE34-D71C-444C-9EFC-7304B29CF1B4}">
+            <Component Id="cmp72412BC8A79B45AB1EFBFF12A5A6B34C" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{7C4C01EB-4169-4063-8848-BD43B7484E31}">
                 <File Id="fil405492A5EB202A61554C54D293E68F13" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\Nine.dll" />
             </Component>
-            <Component Id="cmp824521E0440597BED64CC29181CEAA88" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{863CF6D7-2441-4C4E-85B6-CC226DEAF7CF}">
+            <Component Id="cmp824521E0440597BED64CC29181CEAA88" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{8B373CD3-9F82-44D4-87A3-3A9AA616CD18}">
                 <File Id="fil33DA97A7330559FAF7081E191646BE8C" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp441DF935E6B28B08F82EB682C1AB93FB" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{32DDC32C-6C97-47BB-AA9A-7FA7A3CC1D2D}">
+            <Component Id="cmp441DF935E6B28B08F82EB682C1AB93FB" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{2BB90DF4-49C8-4AC3-9A72-C162F359F586}">
                 <File Id="fil843EE1ECD093B703FC2928F881C53E71" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\SpriteAnimation.exe" />
             </Component>
-            <Component Id="cmpA10B468485202ADCE7A3FCE8D3DDB791" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{22C81DFF-9130-44FB-A259-839D9956331A}">
+            <Component Id="cmpA10B468485202ADCE7A3FCE8D3DDB791" Directory="dirFDE49DB29186DEDF307A78B25B1E363B" Guid="{CB46E711-303E-4D9C-BE8E-5A6E15859AE8}">
                 <File Id="fil9F15CBD9870C768386C2533EE4E0A619" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\SpriteAnimation.exe.config" />
             </Component>
-            <Component Id="cmpA450D7C15DF9F169CA2957DF5C7ECE83" Directory="dirB704024C099C5544278954816E46DB9D" Guid="{CFC7163E-6AC7-4B20-BD05-B81CDDEE2FB8}">
+            <Component Id="cmpA450D7C15DF9F169CA2957DF5C7ECE83" Directory="dirB704024C099C5544278954816E46DB9D" Guid="{E6BF4226-216C-4E4A-9135-C4274211AF08}">
                 <File Id="fil003E0FE0EC1BDBAE2CC1B16DD829D940" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmpE22E9307E8A506DBEDCD95BFEBE75473" Directory="dirB704024C099C5544278954816E46DB9D" Guid="{44241ED9-37C0-44FB-A977-55812059E9D5}">
+            <Component Id="cmpE22E9307E8A506DBEDCD95BFEBE75473" Directory="dirB704024C099C5544278954816E46DB9D" Guid="{1B32FA14-EE58-4F04-9024-982E065B93A5}">
                 <File Id="fil64FDBEE3857384DE5480E1CA716E55E5" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\Content\fireball.xnb" />
             </Component>
-            <Component Id="cmpE2ED99FCBCAE9EC179B4E537A06D475E" Directory="dirB704024C099C5544278954816E46DB9D" Guid="{52864EEF-B980-41B8-BA12-6F7F2542C01C}">
+            <Component Id="cmpE2ED99FCBCAE9EC179B4E537A06D475E" Directory="dirB704024C099C5544278954816E46DB9D" Guid="{E2F97466-5C38-44FC-93DC-FBA223CDDF10}">
                 <File Id="filF7284C91FADFAE81E62B26D46C4B40AC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\SpriteAnimation\Content\Run.xnb" />
             </Component>
-            <Component Id="cmpD157B35B9F1BD977DD5C18F050C8EFF3" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{2F6DD735-D637-4A84-AF79-4A82A953C4EA}">
+            <Component Id="cmpD157B35B9F1BD977DD5C18F050C8EFF3" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{C4487941-19CF-4E1A-86DF-629DFC4BF733}">
                 <File Id="fil7C8E1B7DF9DFC9E2A51779D3F194E2A2" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\GameThumbnail.png" />
             </Component>
-            <Component Id="cmp446C198D876AB91B408F766AD48F3544" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{BD3D4820-2154-4FDE-9A00-90429A5A86B2}">
+            <Component Id="cmp446C198D876AB91B408F766AD48F3544" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{A57A5446-F0F0-4529-B6EE-190DDD6D1D91}">
                 <File Id="filC1BD6A4C76C819EC4D688C3F0BD40E31" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Nine.dll" />
             </Component>
-            <Component Id="cmp56DE69B600FBB6779456D44BB3260D28" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{416D3F83-1596-41E5-9657-3DF57D08D057}">
+            <Component Id="cmp56DE69B600FBB6779456D44BB3260D28" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{A8E84C36-4311-445B-A213-BA9C61B02403}">
                 <File Id="filC025DE9E6D3FACCD52B043D6081F0EDC" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmp4A4931EFB4129750787DE780B6F98D0F" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{26215135-9B7F-4DB2-9FB0-B44E64F2C1B7}">
+            <Component Id="cmp4A4931EFB4129750787DE780B6F98D0F" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{6F3D198B-56A5-4F9A-BAFE-C0A56E19C13C}">
                 <File Id="fil19C0F1491F5265425C6005203975992E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Terrain.exe" />
             </Component>
-            <Component Id="cmp04EEBA782A8D5E2AC2E83BE16D0B554D" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{F446836F-83D6-4871-9EA1-1314D29B132B}">
+            <Component Id="cmp04EEBA782A8D5E2AC2E83BE16D0B554D" Directory="dir72E6DE313204BCD415326E37B0B1D975" Guid="{B7FE6041-6A93-4D39-87C7-C1A2DA177C76}">
                 <File Id="fil75E833C6208399AEBEC99B364353CE66" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Terrain.exe.config" />
             </Component>
-            <Component Id="cmp09FA49A2D868E44F2A359EAC1C949B5B" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{2D0F1680-81E5-42E1-BEEF-FE4893C45A74}">
+            <Component Id="cmp09FA49A2D868E44F2A359EAC1C949B5B" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{3DD35673-DCB7-412A-BFD1-2AB6218F5AC6}">
                 <File Id="fil5109F024A4F76E7FD20AA665E6515CAB" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\checker.xnb" />
             </Component>
-            <Component Id="cmp7CA7F1DE556F5F9725DE81B8A1125552" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{DF5D1A2D-5F1B-4F2C-9BC7-5F0EBB4CEE38}">
+            <Component Id="cmp7CA7F1DE556F5F9725DE81B8A1125552" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{CEBCA1EE-5532-413C-B8EC-1C89423ACAD6}">
                 <File Id="fil80DA338F6A032826A4219C9A0A7F1FBA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\clouds.xnb" />
             </Component>
-            <Component Id="cmp796FC7790DBA2B89ECF44383828C3F9E" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{7D8A9916-4823-4324-8762-583C1986A02A}">
+            <Component Id="cmp796FC7790DBA2B89ECF44383828C3F9E" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{409DDF2E-6C04-49D2-A27C-61FD155FB132}">
                 <File Id="fil474FA8ECF10A9FBE6DE5E52E0EE7CBD9" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmp548ADD0DD651DBA73815D19A38FEA631" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{73648728-7758-49B6-9E36-5884993C5692}">
+            <Component Id="cmp548ADD0DD651DBA73815D19A38FEA631" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{B55D6133-FC84-4FCA-BACD-153436083E53}">
                 <File Id="fil89230CA457C10F45809CC8B49B03C733" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\grass.xnb" />
             </Component>
-            <Component Id="cmpE01B1ED761765F5F890D453F4FAB1479" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{C12D963A-E445-4115-8D9F-DAE7E11CE3A9}">
+            <Component Id="cmpE01B1ED761765F5F890D453F4FAB1479" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{64C28985-735F-4B87-A9B4-248BCFA15C47}">
                 <File Id="fil7264F26BECC8ED6C478EF8386918971E" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\Mountain.Low.xnb" />
             </Component>
-            <Component Id="cmp40E3C2EB412E1CC8FF4FE791BAC8DAB9" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{1D3EA25A-8DE7-49D6-B8FE-BF66BB759EF1}">
+            <Component Id="cmp40E3C2EB412E1CC8FF4FE791BAC8DAB9" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{C3C2C2F9-4470-47D3-99A8-0C41057BA8EA}">
                 <File Id="fil83E45F9A86184274B135605B9199EFAE" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\Mountain.xnb" />
             </Component>
-            <Component Id="cmp527C741E7D315AA56FB58017040B29AA" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{BF480915-8FA8-48C1-B7D4-709842CDB298}">
+            <Component Id="cmp527C741E7D315AA56FB58017040B29AA" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{4D1A1734-DAF3-4E89-B0FE-3AE5E75745A4}">
                 <File Id="fil364A887FA087601F01DAB7A5FA0CB3AD" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\MountainHeightmap.xnb" />
             </Component>
-            <Component Id="cmpAF72192BEF6FE0E1674160AEA7945C50" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{8BF526D7-C74B-48F2-ADA8-67AC27138CA5}">
+            <Component Id="cmpAF72192BEF6FE0E1674160AEA7945C50" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{B949EF8B-BFA1-4742-8A90-CE5A6C644176}">
                 <File Id="fil14EF46E9DD613EA95D9BEB298C74FDF9" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\RF1.xnb" />
             </Component>
-            <Component Id="cmpA8CBC23B6EFDDC9A0CBAA9E9FE325C59" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{EC041814-E628-4869-8532-8B8689793672}">
+            <Component Id="cmpA8CBC23B6EFDDC9A0CBAA9E9FE325C59" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{173F74A5-1FB2-41AC-BA7D-2D767D4F0315}">
                 <File Id="filE1EC697A3910BC0B22D376641FD6AA2D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\Splat.xnb" />
             </Component>
-            <Component Id="cmp8DC2AF6030B01DAD53DF5A64FF1DCAC2" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{F58956BE-15C1-4BF3-847D-5A73F67EEFF6}">
+            <Component Id="cmp8DC2AF6030B01DAD53DF5A64FF1DCAC2" Directory="dir276427A0533764A434C11BE1F2B8120C" Guid="{10E04C99-08E0-47C4-AF60-A3B1635AC162}">
                 <File Id="filB4844D86126220BCBBCCE962006CA19D" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Terrain\Content\TerrainEffect.xnb" />
             </Component>
-            <Component Id="cmp0CC4AAEACCD538377DFF5E4EBF820199" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{475C0037-9C20-43D0-AAF5-D416EABA5389}">
+            <Component Id="cmp0CC4AAEACCD538377DFF5E4EBF820199" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{3D0ED567-910B-4345-98C9-2581CD0837CC}">
                 <File Id="fil7EE5231B16FAEAF5630FB5714F52C416" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\GameThumbnail.png" />
             </Component>
-            <Component Id="cmpDB09EA37CD9B5CF46650407473801626" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{B2B049D5-E859-4A8D-91E6-56F295853EF5}">
+            <Component Id="cmpDB09EA37CD9B5CF46650407473801626" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{E67D530B-8074-4845-BD72-9D56D78E9DBB}">
                 <File Id="filEFFCB7F4D56B82AB603064846FF9FAF5" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Nine.dll" />
             </Component>
-            <Component Id="cmpC4A6F1557653DFFF8BA5D29ECDFB43F4" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{A726D178-9F32-44E3-8920-68BC841F7D03}">
+            <Component Id="cmpC4A6F1557653DFFF8BA5D29ECDFB43F4" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{DB0B08EE-048F-4FD9-91BE-DAB8A7FCE025}">
                 <File Id="fil58CADC358AB38D8834ED4484651E132B" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Nine.Graphics.dll" />
             </Component>
-            <Component Id="cmpC04C354BC8330A01FD61A0A77C7ED36C" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{EEB62568-5D38-411A-9E3E-16D3C0155060}">
+            <Component Id="cmpC04C354BC8330A01FD61A0A77C7ED36C" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{2FAC472E-0948-46A4-A99F-34D3D9B449DD}">
                 <File Id="fil3C6C6CFCE25D40FE58EE374EE1ADF5B3" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Transitions.exe" />
             </Component>
-            <Component Id="cmpCBC28C694B609108F44EA0ABB69D217C" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{F570E4D4-3586-4C65-8FCD-14677C4F3837}">
+            <Component Id="cmpCBC28C694B609108F44EA0ABB69D217C" Directory="dir13D943D1F5DA26E7E8095CFAAB811567" Guid="{05C75D61-66AB-4D2B-9067-016A1F8713B9}">
                 <File Id="fil98AB808AECB84EC06B099AF04224D2FA" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Transitions.exe.config" />
             </Component>
-            <Component Id="cmp6C079A28E6B648EA8D766101AFE154E4" Directory="dir2D55A7260CF9644D5C496D10661D6EDC" Guid="{F5CA49D0-C754-44BC-85EB-88854850CFA1}">
+            <Component Id="cmp6C079A28E6B648EA8D766101AFE154E4" Directory="dir2D55A7260CF9644D5C496D10661D6EDC" Guid="{2C1756EA-0AD8-41BD-BBC7-B40A11C47156}">
                 <File Id="fil43CA1904AB161E9259D86B5D6096E594" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Content\checker.xnb" />
             </Component>
-            <Component Id="cmp8090DE7134194918F4E7B1005F0C2D30" Directory="dir2D55A7260CF9644D5C496D10661D6EDC" Guid="{B78D24D5-067C-4C97-9683-3D4EFF89CF22}">
+            <Component Id="cmp8090DE7134194918F4E7B1005F0C2D30" Directory="dir2D55A7260CF9644D5C496D10661D6EDC" Guid="{4DC39833-5057-4505-8A3D-850A9A54DA25}">
                 <File Id="fil507C28004722A23B79D76611960C6A34" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Content\Consolas.xnb" />
             </Component>
-            <Component Id="cmpB43A06768927EBCD48F8F94465EC5703" Directory="dir2D55A7260CF9644D5C496D10661D6EDC" Guid="{73ABE7AD-5605-4937-8D5D-ADE2F0E7D44A}">
+            <Component Id="cmpB43A06768927EBCD48F8F94465EC5703" Directory="dir2D55A7260CF9644D5C496D10661D6EDC" Guid="{4AF80EDD-EB94-4C91-B689-38BC237D8E24}">
                 <File Id="filD9E5D19CFFF0758F1E59A126DC7FBD76" KeyPath="yes" Source="$(var.SamplesSourceDir)\x86\Transitions\Content\glacier.xnb" />
             </Component>
-            <Component Id="cmpAD1059F8260B65109360D1EA9E5B5E8E" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{F9E92B7F-9F34-4D7E-9393-16F2F02E233B}">
+            <Component Id="cmpAD1059F8260B65109360D1EA9E5B5E8E" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{8C25616D-BFB0-4D90-B862-4CA829C2A017}">
                 <File Id="fil0FCE10583E9B9C357AD58933C7E39932" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\AvatarAnimation.ccgame" />
             </Component>
-            <Component Id="cmp08789126A7279240382F49E1601779EF" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{58CB9B93-DCC9-43CC-BD84-F8EB498D2368}">
+            <Component Id="cmp08789126A7279240382F49E1601779EF" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{79CAC7FF-9167-4705-B320-AA840F2BB4F2}">
                 <File Id="filC861EF6F5A321DDB55BA1C4E8DF3228B" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\CustomEffects.ccgame" />
             </Component>
-            <Component Id="cmp63420527FB5111D72C77F335723FBBDC" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{6258807F-9B46-4E1D-96DF-20E2BD3A9210}">
+            <Component Id="cmp63420527FB5111D72C77F335723FBBDC" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{49DDDF5B-B0C1-4620-87B6-8DEFAA48BA34}">
                 <File Id="fil111062508631DB987ABA82DDDA1DC0C4" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\DebuggerPrimitives.ccgame" />
             </Component>
-            <Component Id="cmp3D1CFE0BBE63EDB3B93386FBA1E4D3A8" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{7A715521-0BF3-4CD4-B935-826D702D081E}">
+            <Component Id="cmp3D1CFE0BBE63EDB3B93386FBA1E4D3A8" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{D50EBADC-2282-4E2E-8456-CB0F925CAE79}">
                 <File Id="fil9B3AB570307F9648D00A14A0C58EC656" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\DeferredLighting.ccgame" />
             </Component>
-            <Component Id="cmp8776518607FA816A08FEA30FAA319430" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{5C3FDB18-8936-40B0-A7CB-57D9DC09B653}">
+            <Component Id="cmpC19B914A59DC0B2799CFCEFD55382449" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{8D5A46B0-689B-4AA3-A2A2-BB2304676703}">
+                <File Id="filAC42232A17E2DF6E049E01C306487809" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\FlockingBehaviors.ccgame" />
+            </Component>
+            <Component Id="cmp8776518607FA816A08FEA30FAA319430" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{C188C678-4BBD-46B0-A6EA-94AEC691E99C}">
                 <File Id="fil9E4813133CF7A4939201FC17C0FAF399" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\Game.ccgame" />
             </Component>
-            <Component Id="cmp3A2388AA6B7936127638813BED9716DC" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{C9516567-2BFF-4959-B227-1FDDD2CAAB44}">
+            <Component Id="cmp3A2388AA6B7936127638813BED9716DC" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{F932B994-80C2-4C6A-9375-744AC57E812B}">
                 <File Id="filF9890D94C69406B60E1F37994632737E" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\Materials.ccgame" />
             </Component>
-            <Component Id="cmp6D7540193ADA164BFE40C592319A1729" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{CDBCDD35-8633-4579-A132-F4F0588423BF}">
+            <Component Id="cmp6D7540193ADA164BFE40C592319A1729" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{FE00644E-DFFE-4C34-A1C0-B4367114C1B3}">
                 <File Id="fil2F4736AC04E447B360ABDE706BEB70B6" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\MultiPassLighting.ccgame" />
             </Component>
-            <Component Id="cmp4D3176CBB9C1E94BDB7F0D985B31C6B1" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{C8BF1CDE-8F22-4605-B53E-231F5C5C1AE3}">
+            <Component Id="cmp4D3176CBB9C1E94BDB7F0D985B31C6B1" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{91419E26-483A-4AB0-8DB1-60220F30742F}">
                 <File Id="filF7AD7046A2785AA89F826A537B34841D" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\ParticleSystem.ccgame" />
             </Component>
-            <Component Id="cmp757FCFB72D8D0E27A7AD42C6D45E1B9C" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{2B49A921-2EF0-4147-B1DF-EDECA98C7342}">
+            <Component Id="cmp4D352B0A1E3CB3C64968ED95C72F16FE" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{48E35CBC-7CBF-4F9B-ACCB-F372CC1996B9}">
+                <File Id="fil4BB995290A0C5883351C45F0D1384BA2" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\PathFinding.ccgame" />
+            </Component>
+            <Component Id="cmp757FCFB72D8D0E27A7AD42C6D45E1B9C" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{CA29E296-4C1F-49A6-BEC1-B9BA16EA61D3}">
                 <File Id="fil82B67E8AB7A8AE0676A35B1D362E99A1" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\ScreenEffects.ccgame" />
             </Component>
-            <Component Id="cmpF9EDA3B184884D65246E4CE4AEA99BB9" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{50BB6EA7-DAFE-47BA-A03A-EE04303D33EA}">
+            <Component Id="cmpF9EDA3B184884D65246E4CE4AEA99BB9" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{EF7EAFDB-EC7E-4E6B-8DED-524FDA1616B6}">
                 <File Id="fil23320A65D306650D935DB4B84A6BC1AC" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\ShadowMapping.ccgame" />
             </Component>
-            <Component Id="cmp518BC74915663C2DBBD2C4CDA31B1FFB" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{F9174C1A-3BF1-4BC3-8C0E-556A54809177}">
+            <Component Id="cmp518BC74915663C2DBBD2C4CDA31B1FFB" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{5FC4B72C-6E3D-4354-916B-35424CD01112}">
                 <File Id="fil82A54FFD61E714F7DF74AB466BE6F6EA" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\SkinnedModel.ccgame" />
             </Component>
-            <Component Id="cmp4B4F34E7A96DCAA730ED3A1C16897867" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{37A8CE01-6C52-47C6-A1BB-3B9AE57A1A0E}">
+            <Component Id="cmp4B4F34E7A96DCAA730ED3A1C16897867" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{CEF07E95-5560-413A-90A7-CD7F0CB0A654}">
                 <File Id="fil54B1D7D9332E6BFB875A29C056CF8377" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\SpriteAnimation.ccgame" />
             </Component>
-            <Component Id="cmpFB95A55C9007CE57CC02121D6817BBB5" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{DE04CD28-6914-4884-9C47-4A46C15F9F51}">
+            <Component Id="cmpFB95A55C9007CE57CC02121D6817BBB5" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{87E42ED9-6803-4AC6-BAAD-5CB699D4228E}">
                 <File Id="filED9FA537B5010BEB5A6FA7F07D63C4F3" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\Terrain.ccgame" />
             </Component>
-            <Component Id="cmp86DEB19DBD77741BC95E5CA6423C9C9D" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{E359F3C5-2F98-4B4E-B5AF-A724F0408866}">
+            <Component Id="cmp86DEB19DBD77741BC95E5CA6423C9C9D" Directory="dir75603D1BA9EA0694CCA4D82174B51C73" Guid="{B64FE764-35AC-44D4-8EEE-88A6EC38BF78}">
                 <File Id="fil1F6E0B8E341584063D40FD2433A1ADD3" KeyPath="yes" Source="$(var.SamplesSourceDir)\Xbox 360\Transitions.ccgame" />
             </Component>
         </ComponentGroup>
@@ -761,6 +773,9 @@
     </Fragment>
     <Fragment>
         <DirectoryRef Id="dirFDE49DB29186DEDF307A78B25B1E363B" />
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir22ECA8FA4FC17B77EC0EFD6D976053FC" />
     </Fragment>
     <Fragment>
         <DirectoryRef Id="dirE20C50D45C4D2ACD23A66771CF1E9C09" />
@@ -788,9 +803,6 @@
     </Fragment>
     <Fragment>
         <DirectoryRef Id="dir59555557C21CA25E5550CBCADB0BA242" />
-    </Fragment>
-    <Fragment>
-        <DirectoryRef Id="dir22ECA8FA4FC17B77EC0EFD6D976053FC" />
     </Fragment>
     <Fragment>
         <DirectoryRef Id="dir95D361FE45217A613FBCA928F112896B" />

@@ -22,13 +22,20 @@
     <RootNamespace>GameContent</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Nine.Content.Pipeline, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Fonts\Consolas.spritefont">
@@ -122,15 +129,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Worlds\Scene.xml">
-      <Link>Scene.xml</Link>
-      <Name>Scene</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\Models\Palm\AlphaPalm.X">
       <Link>Models\AlphaPalm.X</Link>
       <Name>AlphaPalm</Name>
@@ -158,10 +156,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Worlds\Scene.WindowsPhone.xml">
-      <Link>Scene.WindowsPhone.xml</Link>
+    <Compile Include="..\..\Content\Worlds\Scene.WindowsPhone.xaml">
+      <Link>Scene.WindowsPhone.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
       <Name>Scene.WindowsPhone</Name>
-      <Importer>XmlImporter</Importer>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="..\..\Content\Worlds\Scene.xaml">
+      <Link>Scene.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <Name>Scene</Name>
+      <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>

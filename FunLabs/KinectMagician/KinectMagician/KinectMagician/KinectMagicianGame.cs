@@ -112,7 +112,7 @@ namespace KinectMagician
 
             GraphicsDevice.Textures[0] = null;
 
-            particlePatch.Begin(camera.View, camera.Projection, null, null, RasterizerState.CullNone);
+            particlePatch.Begin(camera.View, camera.Projection, null, RasterizerState.CullNone);
             primitiveBatch.Begin(0, modelViewerCamera.View, modelViewerCamera.Projection, null, null, DepthStencilState.None, null);
 
             if (gameTime.ElapsedGameTime != TimeSpan.Zero)

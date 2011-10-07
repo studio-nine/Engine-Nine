@@ -39,7 +39,7 @@ namespace Nine.Content.Pipeline.Processors
         {
             ForEachProperty(input, Process);
 
-            var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultProcessorAttribute), false).OfType<DefaultProcessorAttribute>().FirstOrDefault();
+            var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).OfType<DefaultContentProcessorAttribute>().FirstOrDefault();
             if (defaultProcessorAttribute != null)
             {
                 var processor = (IContentProcessor)Activator.CreateInstance(Type.GetType(defaultProcessorAttribute.DefaultProcessor));

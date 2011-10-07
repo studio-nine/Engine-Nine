@@ -1,13 +1,14 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -23,6 +24,7 @@ namespace Nine.Content.Pipeline
     /// A replacement for ExternalReference to allow referencing the output *.xnb file
     /// without providing a full path.
     /// </summary>
+    [TypeConverter(typeof(Nine.Content.Pipeline.Converters.ContentReferenceConverter))]
     public class ContentReference<T> : ContentItem
     {
         /// <summary>

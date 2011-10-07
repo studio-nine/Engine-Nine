@@ -70,6 +70,7 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.DirectX">
       <Name>Microsoft.DirectX</Name>
       <AssemblyFolderKey>hklm\current managed directx 9.2</AssemblyFolderKey>
@@ -91,6 +92,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -123,13 +125,15 @@
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Converters\ContentReferenceConverter.cs" />
     <Compile Include="Graphics\ContentGraphics.cs" />
-    <Compile Include="DefaultProcessorAttribute.cs" />
+    <Compile Include="DefaultContentProcessorAttribute.cs" />
     <Compile Include="Graphics\Effects\BasicLinkedMaterialContent.cs" />
     <Compile Include="Graphics\Effects\LinkedMaterialContent.cs" />
     <Compile Include="Graphics\Effects\LinkedEffectBuilder.cs" />
     <Compile Include="Graphics\Effects\ModelMaterialContent.cs" />
     <Compile Include="Graphics\Effects\TerrainMaterialContent.cs" />
+    <Compile Include="Graphics\ObjectModel\DisplayObjectContent.cs" />
     <Compile Include="Graphics\ObjectModel\SpotLightContent.cs" />
     <Compile Include="Graphics\ObjectModel\PointlLightContent.cs" />
     <Compile Include="Graphics\ObjectModel\DirectionalLightContent.cs" />
@@ -139,6 +143,7 @@
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
     <Compile Include="Graphics\Effects\CustomEffectContent.cs" />
     <Compile Include="Graphics\ParticleEffects\MergedParticleEffectContent.cs" />
+    <Compile Include="Importers\XamlImporter.cs" />
     <Compile Include="Importers\ManifestImporter.cs" />
     <Compile Include="ContentProcessorContextExtensions.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />

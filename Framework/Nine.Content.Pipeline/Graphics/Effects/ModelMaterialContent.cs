@@ -46,7 +46,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     /// <summary>
     /// Defines an effect for models that supports normal mapping, shadow mapping, etc.
     /// </summary>
-    [DefaultProcessor(typeof(ModelMaterialProcessor))]
+    [DefaultContentProcessor(typeof(ModelMaterialProcessor))]
     public class ModelMaterialContent : BasicLinkedMaterialContent
     {
         [DefaultValue("1")]

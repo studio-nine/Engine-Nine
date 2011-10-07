@@ -19,15 +19,15 @@ namespace Nine.Content.Pipeline
     /// process the content when processing using DefaultContentProcessor.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface, AllowMultiple=false)]
-    public class DefaultProcessorAttribute : Attribute
+    public class DefaultContentProcessorAttribute : Attribute
     {
         /// <summary>
         /// Gets or sets the assembly quanlified name of the default processor.
         /// </summary>
         public string DefaultProcessor { get; set; }
 
-        public DefaultProcessorAttribute() { }
-        public DefaultProcessorAttribute(string defaultProcessor) { DefaultProcessor = defaultProcessor; }
-        public DefaultProcessorAttribute(Type defaultProcessorType) { DefaultProcessor = defaultProcessorType.AssemblyQualifiedName; }
+        public DefaultContentProcessorAttribute() { }
+        public DefaultContentProcessorAttribute(string defaultProcessor) { DefaultProcessor = defaultProcessor; }
+        public DefaultContentProcessorAttribute(Type defaultProcessorType) { DefaultProcessor = defaultProcessorType.AssemblyQualifiedName; }
     }
 }
