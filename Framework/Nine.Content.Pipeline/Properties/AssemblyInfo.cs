@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -21,3 +22,9 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d7d47d45-91c0-4c79-9c76-2aedfbb2685a")]
+
+[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline")]
+[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics")]
+[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects")]
+[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ParticleEffects")]
+[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ObjectModel")]

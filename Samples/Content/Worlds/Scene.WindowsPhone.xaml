@@ -1,8 +1,4 @@
-﻿<DisplayObjectContent 
-    xmlns="clr-namespace:Nine.Content.Pipeline.Graphics.ObjectModel;assembly=Nine.Content.Pipeline"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:fx="clr-namespace:Nine.Content.Pipeline.Graphics.Effects;assembly=Nine.Content.Pipeline"
-    Name="Scene">
+﻿<DisplayObjectContent xmlns="http://schemas.nightingames.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="Scene">
     
     <SkyBoxContent Texture="SkyCubeMap" />
     <FogContent FogStart="50" FogEnd="500" />
@@ -11,7 +7,7 @@
     
     <DrawableSurfaceContent Position="-290, -100, -10" Heightmap="Terrain\MountainHeightmap" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300">
         <DrawableSurfaceContent.Material>
-            <fx:BasicMaterialContent SpecularColor="1, 1, 1" Texture="Terrain\Mountain" TextureEnabled="True" />
+            <BasicMaterialContent SpecularColor="1, 1, 1" Texture="Terrain\Mountain" TextureEnabled="True" />
         </DrawableSurfaceContent.Material>
     </DrawableSurfaceContent>
     
@@ -19,31 +15,31 @@
     
     <DrawableModelContent Alpha="0.4" LightingEnabled="True" Model="Models\Dude" Position="-10, -10, 10">
         <DrawableModelContent.Material>
-            <fx:BasicMaterialContent TextureEnabled="True" />
+            <BasicMaterialContent TextureEnabled="True" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
     <DrawableModelContent Model="Models\Dude" Position="-5, -10, 10">
         <DrawableModelContent.Material>
-            <fx:SkinnedMaterialContent Alpha="0.9"/>
+            <SkinnedMaterialContent Alpha="0.9"/>
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
     <DrawableModelContent Model="Models\Dude" Position="0, -10, 10" Scale="1.2, 1.2, 1.2">
         <DrawableModelContent.Material>
-            <fx:EnvironmentMapMaterialContent EnvironmentMap="SkyCubeMap" EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
+            <EnvironmentMapMaterialContent EnvironmentMap="SkyCubeMap" EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
     <DrawableModelContent Model="Models\AlphaPalm" Position="5, -10, 10">
         <DrawableModelContent.Material>
-            <fx:AlphaTestMaterialContent AlphaFunction="Greater" ReferenceAlpha="128" />
+            <AlphaTestMaterialContent AlphaFunction="Greater" ReferenceAlpha="128" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
     <DrawableModelContent Model="Models\Dude" Position="10, -10, 10" Rotation="0, 0, 90">
         <DrawableModelContent.Material>
-            <fx:DualTextureMaterialContent Texture2="flake" />
+            <DualTextureMaterialContent Texture2="flake" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
     
