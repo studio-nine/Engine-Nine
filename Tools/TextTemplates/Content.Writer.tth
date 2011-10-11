@@ -40,11 +40,30 @@ namespace <#= namespaceGroup.Key #>
 <#
     foreach (var member in members)
     {
-        var memberTypeName = GetMemberTypeName(member);
+        var memberType = GetMemberType(member);
         var memberName = GetMemberFieldName(member);
+        var memberTypeName = GetMemberTypeName(member);
+        var primitiveTypeName = GetPrimitiveTypeName(GetMemberType(member));
+        var isSharedResource = IsMemberSharedResource(member);
+
+        if (primitiveTypeName != null)
+        {
+#>
+            output.Write(value.<#= memberName #>);
+<#
+        }
+        else if (isSharedResource)
+        {
+#>
+            output.Write(value.<#= memberName #> ?? "");
+<#
+        }
+        else
+        {
 #>
             output.WriteObject(value.<#= memberName #>);
 <#
+        }
     }
 #>
         }

@@ -211,6 +211,7 @@
       <DependentUpon>DeferredSpotLight.fx</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\Transformable.cs" />
+    <Compile Include="ObjectModel\TransformBinding.cs" />
     <Compile Include="ParticleEffects\ParticleTrigger.cs" />
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />

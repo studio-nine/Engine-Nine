@@ -119,6 +119,7 @@
     <Compile Include="ObjectModel\SkyBox.cs" />
     <Compile Include="Lights.cs" />
     <Compile Include="BlendStateReader.cs" />
+    <Compile Include="ObjectModel\TransformBinding.cs" />
     <Compile Include="ParticleEffects\ParticleTrigger.cs" />
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />

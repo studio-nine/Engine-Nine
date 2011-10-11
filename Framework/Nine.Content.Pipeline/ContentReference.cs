@@ -24,7 +24,7 @@ namespace Nine.Content.Pipeline
     /// A replacement for ExternalReference to allow referencing the output *.xnb file
     /// without providing a full path.
     /// </summary>
-    [TypeConverter(typeof(Nine.Content.Pipeline.Converters.ContentReferenceConverter))]
+    [TypeConverter(typeof(Nine.Content.Pipeline.Design.ContentReferenceConverter))]
     public class ContentReference<T> : ContentItem
     {
         /// <summary>

@@ -8,8 +8,10 @@
 
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Collections.Generic;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -22,11 +24,13 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 namespace Nine.Content.Pipeline.Graphics.ParticleEffects
 {
     using Nine.Graphics.ParticleEffects;
+    using Nine.Content.Pipeline.Design;
 
     /// <summary>
     /// Content model for particle effects.
     /// </summary>
     [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics")]
+    [ContentProperty("Controllers")]
     public class ParticleEffectContent
     {
         /// <summary>
@@ -132,6 +136,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// Gets or sets the blend state used by this particle effect.
         /// </summary>
         [ContentSerializer(Optional = true)]
+        [TypeConverter(typeof(BlendStateConverter))]
         public BlendState BlendState { get; set; }
 
         /// <summary>
@@ -151,13 +156,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// Gets or sets the emitter of this particle effect.
         /// </summary>
         [ContentSerializer(Optional = true)]
-        public IParticleEmitter Emitter { get; set; }
+        public object Emitter { get; set; }
 
         /// <summary>
         /// Gets a collection of controllers that defines the visual of this particle effect.
         /// </summary>
         [ContentSerializer(Optional = true)]
-        public List<IParticleController> Controllers { get; private set; }
+        public List<object> Controllers { get; private set; }
 
         /// <summary>
         /// Gets a collection of particle effects that is used as the appareance of each
@@ -195,8 +200,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             Duration = 2;
             Color = Microsoft.Xna.Framework.Color.White;
             BlendState = BlendState.Additive;
-            Emitter = new PointEmitter();
-            Controllers = new List<IParticleController>();
+            Controllers = new List<object>();
             ChildEffects = new List<ParticleEffectContent>();
             EndingEffects = new List<ParticleEffectContent>();
         }
@@ -231,7 +235,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.WriteObject(value.Tag);
 
             output.Write(value.Controllers.Count);
-            foreach (IParticleController controller in value.Controllers)
+            foreach (var controller in value.Controllers)
                 output.WriteObject(controller);
             
             output.Write(value.ChildEffects.Count);

@@ -28,7 +28,20 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the parent of this object.
         /// </summary>
-        public Transformable Parent { get; internal set; }
+        public Transformable Parent
+        {
+            get { return parent; }
+
+            // Don't allow externals to set parents
+            internal set 
+            {
+                parent = value; 
+                MarkAbsoluteTransformsDirty();
+                OnTransformChanged();
+                OnBoundingBoxChanged();
+            }
+        }
+        private Transformable parent;
 
         /// <summary>
         /// Gets or sets the name of this transformable.
@@ -84,7 +97,7 @@ namespace Nine.Graphics.ObjectModel
         private Matrix transform = Matrix.Identity;
 
         /// <summary>
-        /// Called when transform changed.
+        /// Called when local or absolute transform changed.
         /// </summary>
         protected virtual void OnTransformChanged()
         {

@@ -1,4 +1,4 @@
-﻿<DisplayObjectContent xmlns="http://schemas.nightingames.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="Scene">
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="Scene">
     
     <SkyBoxContent Texture="SkyCubeMap" />
     <FogContent FogStart="50" FogEnd="500" />
@@ -58,21 +58,19 @@
             <DualTextureMaterialContent Texture2="flake" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
-    
+
     <DrawableModelContent Model="Models\AlphaPalm" Position="5, 0, 10">
         <DrawableModelContent.ModelParts>
-            <x:Array Type="DrawableModelPartContent">
-                <DrawableModelPartContent>
-                    <DrawableModelPartContent.Material>
-                        <CustomMaterialContent Effect="cage" IsTransparent="True" />
-                    </DrawableModelPartContent.Material>
-                </DrawableModelPartContent>
-                <DrawableModelPartContent>
-                    <DrawableModelPartContent.Material>
-                        <BasicMaterialContent DepthAlphaEnabled="True" IsTransparent="True" TextureEnabled="True" />
-                    </DrawableModelPartContent.Material>
-                </DrawableModelPartContent>
-            </x:Array>
+            <DrawableModelPartContent>
+                <DrawableModelPartContent.Material>
+                    <CustomMaterialContent Effect="cage" IsTransparent="True" />
+                </DrawableModelPartContent.Material>
+            </DrawableModelPartContent>
+            <DrawableModelPartContent>
+                <DrawableModelPartContent.Material>
+                    <BasicMaterialContent DepthAlphaEnabled="True" IsTransparent="True" TextureEnabled="True" />
+                </DrawableModelPartContent.Material>
+            </DrawableModelPartContent>
         </DrawableModelContent.ModelParts>
     </DrawableModelContent>
 
@@ -83,5 +81,17 @@
     </DrawableModelContent>
     
     <DrawableParticleEffectContent ParticleEffect="Galaxy" />
+    <DisplayObjectContent Position="20, 0, 10" Name="CombinedObject">        
+        <DrawableModelContent Name="Dude" Model="Models\Dude">
+            <DrawableModelContent.Material>
+                <SkinnedMaterialContent />
+            </DrawableModelContent.Material>
+        </DrawableModelContent>        
+        <DrawableModelContent Name="Tree" Model="Models\AlphaPalm" />
+
+        <DisplayObjectContent.TransformBindings>
+            <TransformBindingContent Source="Tree" Target="Dude" TargetBone="R_Hand" />
+        </DisplayObjectContent.TransformBindings>
+    </DisplayObjectContent>
     
-</DisplayObjectContent>
+</SceneContent>

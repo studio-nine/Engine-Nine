@@ -54,11 +54,6 @@ namespace Game
         SpotLight spotLight;
         DirectionalLight directionalLight;
 
-#if WINDOWS_PHONE
-        InputComponent input;
-#endif
-
-
         public SampleGame()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -85,19 +80,14 @@ namespace Game
             //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")) { Position = new Vector2(100, 100), Scale = 5, Color = Color.Black });
             Components.Add(new InputComponent(Window.Handle));
 
-            
-
-            scene = new Scene(GraphicsDevice);
-            scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
 #if WINDOWS_PHONE
-            input = new InputComponent();
+            scene = Content.Load<Scene>("Scene.WindowsPhone");
             scene.Camera = new TopDownEditorCamera(GraphicsDevice) { Pitch = MathHelper.ToRadians(30) };
-            scene.Add(Content.Load<DisplayObject>("Scene.WindowsPhone"));
 #else
+            scene = Content.Load<Scene>("Scene");
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(-10, -30, 10));
-            scene.Add(Content.Load<DisplayObject>("Scene"));
 #endif
-            var terrain = scene.Find<DrawableSurface>("Terrain");
+            scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
 
             /*
             scene.Add(directionalLight = new DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(-1, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 1 });
@@ -160,13 +150,8 @@ namespace Game
             if (spotLight != null)
                 spotLight.Transform = Matrix.CreateRotationX(MathHelper.PiOver2) *
                                       Matrix.CreateRotationZ(-(float)totalSeconds * 1.5f) *
-                    //Matrix.CreateRotationZ(-16.75f) *
+                                      //Matrix.CreateRotationZ(-16.75f) *
                                       Matrix.CreateTranslation(50, 50, 10);
-
-#if WINDOWS_PHONE
-            input.Update(gameTime.ElapsedGameTime);
-#endif
-
             base.Update(gameTime);
         }
 

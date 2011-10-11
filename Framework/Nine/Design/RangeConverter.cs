@@ -13,9 +13,9 @@ using System.ComponentModel;
 using System.Globalization;
 #endregion
 
-namespace Nine.Content.Pipeline.Converters
+namespace Nine.Design
 {
-    class ContentReferenceConverter : TypeConverter
+    class RangeConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
@@ -31,8 +31,7 @@ namespace Nine.Content.Pipeline.Converters
         {
             if (destinationType == typeof(string) && value != null)
             {
-                dynamic contentReference = value;
-                return contentReference.Filename;
+                return value.ToString();
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -41,14 +40,31 @@ namespace Nine.Content.Pipeline.Converters
         {
             if (value is string)
             {
-                // http://stackoverflow.com/questions/1723263/typeconverter-for-generic-type-used-in-xaml
                 var destinationTypeProvider = context.GetService<IDestinationTypeProvider>();
                 if (destinationTypeProvider == null)
-                {
                     throw new NotSupportedException("IDestinationTypeProvider not found");
-                }
+
                 var destinationType = destinationTypeProvider.GetDestinationType();
-                return Activator.CreateInstance(destinationType, value.ToString());
+                if (!destinationType.IsGenericType || destinationType.GetGenericTypeDefinition() != typeof(Range<>))
+                    throw new InvalidOperationException("RangeConverter must be applied to Range<T>");
+
+                try
+                {
+                    var innerType = destinationType.GetGenericArguments()[0];
+                    var converter = TypeDescriptor.GetConverter(innerType);
+                    if (value.ToString().Contains("~"))
+                    {
+                        var minMax = value.ToString().Split('~');
+                        var min = converter.ConvertFrom(context, culture, minMax[0]);
+                        var max = converter.ConvertFrom(context, culture, minMax[1]);
+                        return Activator.CreateInstance(destinationType, min, max);
+                    }
+                    return Activator.CreateInstance(destinationType, converter.ConvertFrom(context, culture, value));
+                }
+                catch (Exception e)
+                {
+                    throw new InvalidOperationException("Invalid range format. Range must be formatted to \"Min ~ Max\"", e);
+                }
             }
             return base.ConvertFrom(context, culture, value);
         }

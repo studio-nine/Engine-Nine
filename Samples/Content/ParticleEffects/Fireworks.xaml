@@ -1,0 +1,30 @@
+﻿<ParticleEffectContent 
+    xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Emission="10" Duration="1.8 ~ 2" Speed="8">
+
+    <ParticleEffectContent.Emitter>
+        <PointEmitterContent Position="0, -10, 0" Direction="0, 1, 0" Spread="0.4" />
+    </ParticleEffectContent.Emitter>
+
+    <ParticleEffectContent.ChildEffects>
+        <ParticleEffectContent MaxParticleCount="2048" Emission="100" Duration="0.5 ~ 1" Size="0 ~ 0.2" Speed="0.5" Texture="smoke" DepthSortEnabled="True" BlendState="AlphaBlend">
+            <SizeControllerContent EndSize="0.5" />
+            <SpeedControllerContent EndSpeed="0" />
+            <FadeControllerContent />
+        </ParticleEffectContent>
+
+        <ParticleEffectContent Emission="100" Duration="0.5 ~ 1" Size="0.2 ~ 0.5" Speed="1" Texture="fire">
+            <SizeControllerContent EndSize="0.5" />
+            <FadeControllerContent />
+        </ParticleEffectContent>
+    </ParticleEffectContent.ChildEffects>
+
+    <ParticleEffectContent.EndingEffects>
+        <ParticleEffectContent MaxParticleCount="4096" TriggerCount="100" Duration="0.5 ~ 1" Size="0.5 ~ 1" Speed="4" Texture="fire">
+            <SizeControllerContent EndSize="0.1" />
+            <SpeedControllerContent EndSpeed="0" />
+            <FadeControllerContent />
+        </ParticleEffectContent>
+    </ParticleEffectContent.EndingEffects>
+
+</ParticleEffectContent>

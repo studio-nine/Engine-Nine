@@ -92,7 +92,7 @@ namespace Nine.Graphics.ObjectModel
 
         protected override void Enable(IDirectionalLight light)
         {
-            light.Direction = Transform.Forward;
+            light.Direction = AbsoluteTransform.Forward;
             light.DiffuseColor = DiffuseColor;
             light.SpecularColor = SpecularColor;
         }
@@ -103,7 +103,7 @@ namespace Nine.Graphics.ObjectModel
             light.SpecularColor = Vector3.Zero;
         }
 
-        public Vector3 Direction { get { return Transform.Forward; } }
+        public Vector3 Direction { get { return AbsoluteTransform.Forward; } }
 
         [ContentSerializer(Optional = true)]
         public Vector3 SpecularColor { get; set; }

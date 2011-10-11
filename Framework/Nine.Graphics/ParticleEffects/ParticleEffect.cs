@@ -151,7 +151,12 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets the emitter of this particle effect.
         /// </summary>
-        public IParticleEmitter Emitter { get; set; }
+        public IParticleEmitter Emitter
+        {
+            get { return emitter ?? (emitter = new PointEmitter()); }
+            set { emitter = value; }
+        }
+        IParticleEmitter emitter;
 
         /// <summary>
         /// Gets a collection of controllers that defines the visual of this particle effect.

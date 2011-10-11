@@ -18,6 +18,7 @@ namespace Nine
     /// </summary>
 #if WINDOWS
     [Serializable()]
+    [TypeConverter(typeof(Nine.Design.RangeConverter))]
 #endif
     public struct Range<T> : IEquatable<Range<T>>
     {
@@ -30,6 +31,15 @@ namespace Nine
         /// Gets or sets the max value.
         /// </summary>
         public T Max;
+
+        /// <summary>
+        /// Create a new instance of Range object.
+        /// </summary>
+        public Range(T value)
+        {
+            Min = value;
+            Max = value;
+        }
 
         /// <summary>
         /// Create a new instance of Range object.
@@ -82,7 +92,17 @@ namespace Nine
 
         public override string ToString()
         {
-            return Min.ToString() + " ~ " + Max.ToString();
+            string min = Min.ToString();
+            string max = Max.ToString();
+#if WINDOWS
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            if (converter != null && converter.CanConvertTo(typeof(string)))
+            {
+                min = converter.ConvertToInvariantString(Min);
+                max = converter.ConvertToInvariantString(Max);
+            }
+#endif
+            return Min.Equals(Max) ? min : string.Format("{0} ~ {1}", min, max);
         }
     }
 }

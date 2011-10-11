@@ -1768,6 +1768,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.AmbientLight, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class AmbientLightContent
     {
         /// <summary>
@@ -1833,6 +1834,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DirectionalLight, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class DirectionalLightContent
     {
         /// <summary>
@@ -1906,6 +1908,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DisplayObject, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class DisplayObjectContent
     {
         /// <summary>
@@ -1927,12 +1930,19 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.ObjectModel.TransformBindingContent> TransformBindings { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of <c>DisplayObjectContent</c>.
         /// </summary>
         public DisplayObjectContent()
         {
             Children = new System.Collections.Generic.List<System.Object>();
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            TransformBindings = new System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.ObjectModel.TransformBindingContent>();
             OnCreate();
         }
 
@@ -1946,6 +1956,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableModel, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class DrawableModelContent
     {
         /// <summary>
@@ -2127,6 +2138,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableParticleEffect, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class DrawableParticleEffectContent
     {
         /// <summary>
@@ -2183,6 +2195,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableSurface, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class DrawableSurfaceContent
     {
         /// <summary>
@@ -2391,6 +2404,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.PointLight, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class PointLightContent
     {
         /// <summary>
@@ -2473,6 +2487,40 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         partial void OnCreate();
     }
     /// <summary>
+    /// Content model for <c>Scene</c>.
+    /// Defines a graphical scene that manages a set of objects, cameras and lights.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Scene, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
+    public partial class SceneContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.List<System.Object> SceneObjects { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>SceneContent</c>.
+        /// </summary>
+        public SceneContent()
+        {
+            SceneObjects = new System.Collections.Generic.List<System.Object>();
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
     /// Content model for <c>SkyBox</c>.
     /// 
     /// </summary>
@@ -2480,6 +2528,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.SkyBox, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class SkyBoxContent
     {
         /// <summary>
@@ -2527,6 +2576,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.SpotLight, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class SpotLightContent
     {
         /// <summary>
@@ -2627,6 +2677,58 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             Range = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("10");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>TransformBinding</c>.
+    /// Binds the transform from the source object to the target object. Once a transform binding is set, the source object will be transformed based on the target object.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.TransformBinding, Nine.Graphics")]
+    public partial class TransformBindingContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean ScaleEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Source { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Target { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String TargetBone { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<Microsoft.Xna.Framework.Matrix> Transform { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>TransformBindingContent</c>.
+        /// </summary>
+        public TransformBindingContent()
+        {
+            ScaleEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
 
@@ -2756,6 +2858,9 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public ColorControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            EndColor = new Nine.Range<Microsoft.Xna.Framework.Color>(
+                (Microsoft.Xna.Framework.Color)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Color)).ConvertFromInvariantString("255, 255, 255, 255"),
+                (Microsoft.Xna.Framework.Color)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Color)).ConvertFromInvariantString("255, 255, 255, 255"));
             OnCreate();
         }
 
@@ -3024,6 +3129,9 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public RotationControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            EndRotation = new Nine.Range<System.Single>(
+                (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0"),
+                (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0"));
             OnCreate();
         }
 
@@ -3058,6 +3166,9 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public SizeControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            EndSize = new Nine.Range<System.Single>(
+                (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1"),
+                (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1"));
             OnCreate();
         }
 
@@ -3092,6 +3203,9 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public SpeedControllerContent()
         {
             Enabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            EndSpeed = new Nine.Range<System.Single>(
+                (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0"),
+                (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0"));
             OnCreate();
         }
 

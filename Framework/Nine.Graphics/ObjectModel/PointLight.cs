@@ -81,7 +81,7 @@ namespace Nine.Graphics.ObjectModel
 
         protected override void Enable(IPointLight light)
         {
-            light.Position = Transform.Translation;
+            light.Position = AbsoluteTransform.Translation;
             light.DiffuseColor = DiffuseColor;
             light.SpecularColor = SpecularColor;
             light.Attenuation = Attenuation;

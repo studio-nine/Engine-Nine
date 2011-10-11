@@ -125,7 +125,8 @@
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="ContentReference.cs" />
-    <Compile Include="Converters\ContentReferenceConverter.cs" />
+    <Compile Include="Design\ContentReferenceConverter.cs" />
+    <Compile Include="Design\BlendStateConverter.cs" />
     <Compile Include="Graphics\ContentGraphics.cs" />
     <Compile Include="DefaultContentProcessorAttribute.cs" />
     <Compile Include="Graphics\Effects\BasicLinkedMaterialContent.cs" />
@@ -133,6 +134,8 @@
     <Compile Include="Graphics\Effects\LinkedEffectBuilder.cs" />
     <Compile Include="Graphics\Effects\ModelMaterialContent.cs" />
     <Compile Include="Graphics\Effects\TerrainMaterialContent.cs" />
+    <Compile Include="Graphics\ObjectModel\TransformBindingContent.cs" />
+    <Compile Include="Graphics\ObjectModel\SceneContent.cs" />
     <Compile Include="Graphics\ObjectModel\DisplayObjectContent.cs" />
     <Compile Include="Graphics\ObjectModel\SpotLightContent.cs" />
     <Compile Include="Graphics\ObjectModel\PointlLightContent.cs" />

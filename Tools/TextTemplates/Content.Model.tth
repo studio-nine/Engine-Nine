@@ -36,6 +36,14 @@ namespace <#= namespaceGroup.Key #>
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("<#= type.FullName #>, <#= assembly.GetName().Name #>")]
+<#
+        if (members.Any(m => m.Name == "Name"))
+        {
+#>
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
+<#
+        }
+#>
     public partial class <#= className #>
     {
 <#
@@ -72,7 +80,7 @@ namespace <#= namespaceGroup.Key #>
         var hasDefaultValue = !string.IsNullOrEmpty(defaultValueString);
         var memberType = GetMemberType(member);
         var memberTypeName = GetMemberContentTypeName(member);
-        var memberName = GetMemberFieldName(member);
+        var memberName = GetMemberFieldName(member);        
         if (hasDefaultValue)
         {
 #>
@@ -89,6 +97,27 @@ namespace <#= namespaceGroup.Key #>
         {
 #>
             <#= memberName #> = new <#= memberTypeName #>(<#= ((Matrix)defaultValue).M11#>f, <#= ((Matrix)defaultValue).M12#>f, <#= ((Matrix)defaultValue).M13#>f, <#= ((Matrix)defaultValue).M14#>f, <#= ((Matrix)defaultValue).M21#>f, <#= ((Matrix)defaultValue).M22#>f, <#= ((Matrix)defaultValue).M23#>f, <#= ((Matrix)defaultValue).M24#>f,<#= ((Matrix)defaultValue).M31#>f, <#= ((Matrix)defaultValue).M32#>f, <#= ((Matrix)defaultValue).M33#>f, <#= ((Matrix)defaultValue).M34#>f, <#= ((Matrix)defaultValue).M41#>f, <#= ((Matrix)defaultValue).M42#>f, <#= ((Matrix)defaultValue).M43#>f, <#= ((Matrix)defaultValue).M44#>f);
+<#
+        }
+        else if (memberType.IsGenericType && memberType.GetGenericTypeDefinition().FullName.StartsWith("Nine.Range"))
+        {
+            var min = "";
+            var max = "";
+            var innerType = memberType.GetGenericArguments()[0];
+            if (defaultValue.ToString().Contains("~"))
+            {
+                var minMax = defaultValue.ToString().Split('~');
+                min = minMax[0];
+                max = minMax[1];
+            }
+            else
+            {
+                min = max = defaultValue.ToString();
+            }
+#>
+            <#= memberName #> = new <#= memberTypeName #>(
+                (<#= innerType.FullName #>)System.ComponentModel.TypeDescriptor.GetConverter(typeof(<#= innerType.FullName #>)).ConvertFromInvariantString("<#= min.Trim() #>"),
+                (<#= innerType.FullName #>)System.ComponentModel.TypeDescriptor.GetConverter(typeof(<#= innerType.FullName #>)).ConvertFromInvariantString("<#= max.Trim() #>"));
 <#
         }
     }

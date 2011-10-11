@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Graphics.ScreenEffects;
@@ -50,6 +51,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the post processing screen effect used by this renderer.
         /// </summary>
+        [ContentSerializerIgnore]
         public ScreenEffect ScreenEffect
         {
             get { return screenEffect ?? (screenEffect = new ScreenEffect(GraphicsDevice) { Enabled = false }); }
@@ -71,6 +73,26 @@ namespace Nine.Graphics.ObjectModel
         /// Gets or sets the graphics context.
         /// </summary>
         public GraphicsContext GraphicsContext { get; protected set; }
+
+        /// <summary>
+        /// For serialization only.
+        /// </summary>
+        [ContentSerializer()]
+        internal List<object> SceneObjects
+        {
+            get { return objects.OfType<object>().ToList(); }
+            set { (value ?? Enumerable.Empty<object>()).OfType<ISpatialQueryable>().ForEach(obj => Add(obj)); }
+        }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tag.
+        /// </summary>
+        public object Tag { get; set; }
         #endregion
 
         #region Fields
@@ -316,6 +338,8 @@ namespace Nine.Graphics.ObjectModel
 
         public T Find<T>(string name)
         {
+            if (Name == name && this is T)
+                return (T)(object)this;
             var result = objects.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
             if (result is T)
                 return (T)(object)result;
@@ -324,6 +348,8 @@ namespace Nine.Graphics.ObjectModel
 
         public IEnumerable<T> FindAll<T>(string name)
         {
+            if (Name == name && this is T)
+                yield return (T)(object)this;
             foreach (var result in objects.OfType<Transformable>().Where(t => t.Name == name))
             {
                 if (result is T)

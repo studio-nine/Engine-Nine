@@ -16,12 +16,33 @@
             public static List<string> ExcludedTypes = new List<string>();
             public static Dictionary<string, string> NamespaceMapping = new Dictionary<string, string>();
             public static Dictionary<string, string> TypeMapping = new Dictionary<string, string>();
+            public static Dictionary<Type, string> PrimitiveTypes = new Dictionary<Type, string>();
+
             static KnownContentTypes()
             {
                 NamespaceMapping.Add("Microsoft.Xna.Framework", "Microsoft.Xna.Framework.Content.Pipeline");
                 NamespaceMapping.Add("Nine", "Nine.Content.Pipeline");
 
                 ExcludedTypes.Add("Microsoft.Xna.Framework.Graphics.EffectTechnique");
+                
+                PrimitiveTypes.Add(typeof(bool), "Boolean");
+                PrimitiveTypes.Add(typeof(int), "Int32");
+                PrimitiveTypes.Add(typeof(long), "Int64");
+                PrimitiveTypes.Add(typeof(short), "Int16");
+                PrimitiveTypes.Add(typeof(uint), "UInt32");
+                PrimitiveTypes.Add(typeof(ulong), "UInt64");
+                PrimitiveTypes.Add(typeof(ushort), "UInt16");
+                PrimitiveTypes.Add(typeof(byte), "Byte");
+                PrimitiveTypes.Add(typeof(sbyte), "SByte");
+                PrimitiveTypes.Add(typeof(float), "Single");
+                PrimitiveTypes.Add(typeof(double), "Double");
+                PrimitiveTypes.Add(typeof(decimal), "Decimal");
+                PrimitiveTypes.Add(typeof(Color), "Color");
+                PrimitiveTypes.Add(typeof(Vector2), "Vector2");
+                PrimitiveTypes.Add(typeof(Vector3), "Vector3");
+                PrimitiveTypes.Add(typeof(Vector4), "Vector4");
+                PrimitiveTypes.Add(typeof(Matrix), "Matrix");
+                PrimitiveTypes.Add(typeof(Quaternion), "Quaternion");
 
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
@@ -38,6 +59,8 @@
                 TypeMapping.Add("Nine.Graphics.IEffectInstance", "System.Object");
                 TypeMapping.Add("Nine.Graphics.Effects.Material", "System.Object");
                 TypeMapping.Add("Nine.Graphics.ObjectModel.DrawableModelPart[]", "Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[]");
+                TypeMapping.Add("Nine.Graphics.ObjectModel.Scene", "Nine.Content.Pipeline.Graphics.ObjectModel.SceneContent");
+                TypeMapping.Add("Nine.Graphics.ObjectModel.Transformable", "System.Object");
             }
         }
 
@@ -229,13 +252,13 @@
         {
             if (type.IsValueType || type.IsEnum || type.IsPrimitive || type == typeof(string))
                 return GetClassFullName(type);
+            if (KnownContentTypes.TypeMapping.ContainsKey(type.FullName))
+                return KnownContentTypes.TypeMapping[type.FullName];
             if (IsDictionary(type))
                 return "System.Collections.Generic.Dictionary<" + GetContentClassFullName(GetDictionaryType(type)[0]) + ", "
                                                                 + GetContentClassFullName(GetDictionaryType(type)[1]) + ">";
             if (IsCollection(type))
                 return "System.Collections.Generic.List<" + GetContentClassFullName(GetCollectionType(type)) + ">";
-            if (KnownContentTypes.TypeMapping.ContainsKey(type.FullName))
-                return KnownContentTypes.TypeMapping[type.FullName];
             if (!(!HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))))
                 return GetClassFullName(type);
 
@@ -327,6 +350,12 @@
             return member.Name;
         }
 
+        bool IsMemberSharedResource(MemberInfo member)
+        {
+            var attrib = member.GetCustomAttributes(typeof(ContentSerializerAttribute), false).OfType<ContentSerializerAttribute>().FirstOrDefault();
+            return attrib != null && attrib.SharedResource;
+        }
+
         bool CanSetMember(MemberInfo member)
         {
             return true;
@@ -388,7 +417,7 @@
             {
                 var type = GetMemberType(member);
                 if (type == typeof(string) || (TypeDescriptor.GetConverter(type).CanConvertFrom(typeof(string)) &&
-                                               TypeDescriptor.GetConverter(type).CanConvertTo(typeof(string))))
+                                               TypeDescriptor.GetConverter(type).CanConvertTo(typeof(string)) && !type.IsGenericType))
                 {
                     return TypeDescriptor.GetConverter(type).ConvertToInvariantString(TryGetDefaultValue(declaringType, member));
                 }
@@ -422,6 +451,13 @@
         {
             return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public,
                                        null, new Type[] { typeof(GraphicsDevice) }, null) != null;
+        }
+
+        string GetPrimitiveTypeName(Type type)
+        {
+            if (KnownContentTypes.PrimitiveTypes.ContainsKey(type))
+                return KnownContentTypes.PrimitiveTypes[type];
+            return null;
         }
 
         GraphicsDevice CreateDummyGraphicsDevice()

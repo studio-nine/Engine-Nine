@@ -14,8 +14,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
 {
-    [System.Windows.Markup.ContentProperty("Children")]
-    partial class DisplayObjectContent
+    partial class TransformBindingContent
     {
         [ContentSerializer(Optional = true)]
         public virtual Vector3 Position

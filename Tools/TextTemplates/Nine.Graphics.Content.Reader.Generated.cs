@@ -18,21 +18,16 @@ namespace Nine.Animations
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class BoneAnimationClipReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.BoneAnimationClip>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BoneAnimationClip instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BoneAnimationClip instance);
-
         protected override Nine.Animations.BoneAnimationClip Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BoneAnimationClip existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new BoneAnimationClip();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.FramesPerSecond = input.ReadObject<System.Int32>();
-            existingInstance.TotalFrames = input.ReadObject<System.Int32>();
+            existingInstance.FramesPerSecond = input.ReadInt32();
+            existingInstance.TotalFrames = input.ReadInt32();
             existingInstance.PreferredEnding = input.ReadObject<Nine.Animations.KeyframeEnding>();
             existingInstance.Transforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[][]>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -47,21 +42,16 @@ namespace Nine.Graphics
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class GeometryReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Geometry>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Geometry instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Geometry instance);
-
         protected override Nine.Graphics.Geometry Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Geometry existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new Geometry();
             }
-            BeginRead(input, existingInstance);
             existingInstance.BoundingSphere = input.ReadObject<Microsoft.Xna.Framework.BoundingSphere>();
             existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
             existingInstance.Positions = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
             existingInstance.Indices = input.ReadObject<System.UInt16[]>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -73,18 +63,13 @@ namespace Nine.Graphics
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ModelCollisionReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelCollision>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelCollision instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelCollision instance);
-
         protected override Nine.Graphics.ModelCollision Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelCollision existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ModelCollision();
             }
-            BeginRead(input, existingInstance);
             existingInstance.CollisionTree = input.ReadObject<Nine.Octree<System.Boolean>>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -96,19 +81,14 @@ namespace Nine.Graphics
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ModelMeshPartTagReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelMeshPartTag>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelMeshPartTag instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelMeshPartTag instance);
-
         protected override Nine.Graphics.ModelMeshPartTag Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelMeshPartTag existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ModelMeshPartTag();
             }
-            BeginRead(input, existingInstance);
             existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
             existingInstance.Textures = input.ReadObject<System.Collections.Generic.Dictionary<Nine.Graphics.TextureUsage, Microsoft.Xna.Framework.Graphics.Texture>>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -120,21 +100,14 @@ namespace Nine.Graphics
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ModelSkeletonDataReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelSkeletonData>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkeletonData instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkeletonData instance);
-
         protected override Nine.Graphics.ModelSkeletonData Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelSkeletonData existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ModelSkeletonData();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.InverseAbsoluteBindPose = new System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>();
-            foreach (var item in input.ReadObject<System.Collections.Generic.ICollection<Microsoft.Xna.Framework.Matrix>>())
-                existingInstance.InverseAbsoluteBindPose.Add(item);
-            existingInstance.SkeletonRoot = input.ReadObject<System.Int32>();
-            EndRead(input, existingInstance);
+            existingInstance.InverseAbsoluteBindPose = input.ReadObject<System.Collections.Generic.List<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.SkeletonRoot = input.ReadInt32();
             return existingInstance;
         }
     }
@@ -146,20 +119,15 @@ namespace Nine.Graphics
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ModelTagReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelTag>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelTag instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelTag instance);
-
         protected override Nine.Graphics.ModelTag Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelTag existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ModelTag();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Skeleton = input.ReadObject<Nine.Graphics.ModelSkeletonData>();
             existingInstance.Collision = input.ReadObject<Nine.Graphics.ModelCollision>();
             existingInstance.Animations = input.ReadObject<System.Collections.Generic.Dictionary<System.String, Nine.Animations.BoneAnimationClip>>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -174,9 +142,6 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class AlphaTestMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.AlphaTestMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.AlphaTestMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.AlphaTestMaterial instance);
-
         protected override Nine.Graphics.Effects.AlphaTestMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.AlphaTestMaterial existingInstance)
         {
             if (existingInstance == null)
@@ -185,16 +150,14 @@ namespace Nine.Graphics.Effects
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new AlphaTestMaterial(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Alpha = input.ReadObject<System.Single>();
+            existingInstance.Alpha = input.ReadSingle();
             existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.ReferenceAlpha = input.ReadObject<System.Int32>();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.ReferenceAlpha = input.ReadInt32();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.VertexColorEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.VertexColorEnabled = input.ReadBoolean();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -206,9 +169,6 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class BasicMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.BasicMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.BasicMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.BasicMaterial instance);
-
         protected override Nine.Graphics.Effects.BasicMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.BasicMaterial existingInstance)
         {
             if (existingInstance == null)
@@ -217,21 +177,19 @@ namespace Nine.Graphics.Effects
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new BasicMaterial(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Alpha = input.ReadObject<System.Single>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.LightingEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.PreferPerPixelLighting = input.ReadObject<System.Boolean>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularPower = input.ReadObject<System.Single>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.EmissiveColor = input.ReadVector3();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.PreferPerPixelLighting = input.ReadBoolean();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.SpecularPower = input.ReadSingle();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.TextureEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.VertexColorEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.TextureEnabled = input.ReadBoolean();
+            existingInstance.VertexColorEnabled = input.ReadBoolean();
+            existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -244,22 +202,17 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class CustomMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.CustomMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.CustomMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.CustomMaterial instance);
-
         protected override Nine.Graphics.Effects.CustomMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.CustomMaterial existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new CustomMaterial();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
+            existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.EffectSerializer = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
             existingInstance.ParametersSerializer = input.ReadObject<System.Collections.Generic.Dictionary<System.String, System.Object>>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -272,9 +225,6 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DualTextureMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.DualTextureMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.DualTextureMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.DualTextureMaterial instance);
-
         protected override Nine.Graphics.Effects.DualTextureMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.DualTextureMaterial existingInstance)
         {
             if (existingInstance == null)
@@ -283,16 +233,14 @@ namespace Nine.Graphics.Effects
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new DualTextureMaterial(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Alpha = input.ReadObject<System.Single>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.DiffuseColor = input.ReadVector3();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Texture2 = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.VertexColorEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.VertexColorEnabled = input.ReadBoolean();
+            existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -304,9 +252,6 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class EnvironmentMapMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EnvironmentMapMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EnvironmentMapMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EnvironmentMapMaterial instance);
-
         protected override Nine.Graphics.Effects.EnvironmentMapMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EnvironmentMapMaterial existingInstance)
         {
             if (existingInstance == null)
@@ -315,19 +260,17 @@ namespace Nine.Graphics.Effects
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new EnvironmentMapMaterial(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Alpha = input.ReadObject<System.Single>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.EmissiveColor = input.ReadVector3();
             existingInstance.EnvironmentMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
-            existingInstance.EnvironmentMapAmount = input.ReadObject<System.Single>();
-            existingInstance.EnvironmentMapSpecular = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.FresnelFactor = input.ReadObject<System.Single>();
+            existingInstance.EnvironmentMapAmount = input.ReadSingle();
+            existingInstance.EnvironmentMapSpecular = input.ReadVector3();
+            existingInstance.FresnelFactor = input.ReadSingle();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -340,22 +283,17 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class LinkedMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.LinkedMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.LinkedMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.LinkedMaterial instance);
-
         protected override Nine.Graphics.Effects.LinkedMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.LinkedMaterial existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new LinkedMaterial();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
+            existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.EffectSerializer = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
             existingInstance.EffectPartsSerializer = input.ReadObject<System.Collections.Generic.IList<Nine.Graphics.Effects.LinkedEffectPart>>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -368,9 +306,6 @@ namespace Nine.Graphics.Effects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SkinnedMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.SkinnedMaterial>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.SkinnedMaterial instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.SkinnedMaterial instance);
-
         protected override Nine.Graphics.Effects.SkinnedMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.SkinnedMaterial existingInstance)
         {
             if (existingInstance == null)
@@ -379,20 +314,18 @@ namespace Nine.Graphics.Effects
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new SkinnedMaterial(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Alpha = input.ReadObject<System.Single>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.PreferPerPixelLighting = input.ReadObject<System.Boolean>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularPower = input.ReadObject<System.Single>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.EmissiveColor = input.ReadVector3();
+            existingInstance.PreferPerPixelLighting = input.ReadBoolean();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.SpecularPower = input.ReadSingle();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.WeightsPerVertex = input.ReadObject<System.Int32>();
-            existingInstance.IsTransparent = input.ReadObject<System.Boolean>();
-            existingInstance.SkinningEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DepthAlphaEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.DoubleSided = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.WeightsPerVertex = input.ReadInt32();
+            existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.SkinningEnabled = input.ReadBoolean();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.DoubleSided = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -408,18 +341,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class AmbientLightEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new AmbientLightEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.AmbientLightColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            EndRead(input, existingInstance);
+            existingInstance.AmbientLightColor = input.ReadVector3();
             return existingInstance;
         }
     }
@@ -433,19 +361,14 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class BasicTextureEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new BasicTextureEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.OverlayColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            EndRead(input, existingInstance);
+            existingInstance.OverlayColor = input.ReadVector3();
             return existingInstance;
         }
     }
@@ -459,17 +382,12 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class BeginLightEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.BeginLightEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.BeginLightEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.BeginLightEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.BeginLightEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.BeginLightEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new BeginLightEffectPart();
             }
-            BeginRead(input, existingInstance);
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -483,18 +401,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ColorMatrixEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ColorMatrixEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.ColorMatrix = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.ColorMatrix = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -508,20 +421,15 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DeferredLightsEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.DeferredLightsEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DeferredLightsEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DeferredLightsEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.DeferredLightsEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DeferredLightsEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DeferredLightsEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            EndRead(input, existingInstance);
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.EmissiveColor = input.ReadVector3();
+            existingInstance.SpecularColor = input.ReadVector3();
             return existingInstance;
         }
     }
@@ -535,19 +443,14 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DetailTextureEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DetailTextureEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.DetailTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.DetailTextureScale = input.ReadObject<Microsoft.Xna.Framework.Vector2>();
-            EndRead(input, existingInstance);
+            existingInstance.DetailTextureScale = input.ReadVector2();
             return existingInstance;
         }
     }
@@ -561,20 +464,15 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DirectionalLightEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DirectionalLightEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            EndRead(input, existingInstance);
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.SpecularColor = input.ReadVector3();
             return existingInstance;
         }
     }
@@ -588,18 +486,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DualTextureEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.DualTextureEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DualTextureEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DualTextureEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.DualTextureEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.DualTextureEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DualTextureEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -613,18 +506,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class EmissiveMapEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.EmissiveMapEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.EmissiveMapEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.EmissiveMapEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.EmissiveMapEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.EmissiveMapEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new EmissiveMapEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.EmissiveMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -638,20 +526,15 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class FogEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.FogEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.FogEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.FogEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.FogEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.FogEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new FogEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.FogColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.FogStart = input.ReadObject<System.Single>();
-            existingInstance.FogEnd = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.FogColor = input.ReadVector3();
+            existingInstance.FogStart = input.ReadSingle();
+            existingInstance.FogEnd = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -665,22 +548,17 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class MaterialEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.MaterialEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.MaterialEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.MaterialEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.MaterialEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.MaterialEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new MaterialEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.EmissiveColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularPower = input.ReadObject<System.Single>();
-            existingInstance.Alpha = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.EmissiveColor = input.ReadVector3();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.SpecularPower = input.ReadSingle();
+            existingInstance.Alpha = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -694,18 +572,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class NormalMapEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.NormalMapEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.NormalMapEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.NormalMapEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.NormalMapEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.NormalMapEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new NormalMapEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -719,18 +592,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class OverlayTextureEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new OverlayTextureEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -744,22 +612,17 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class PointLightEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.PointLightEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PointLightEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PointLightEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.PointLightEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.PointLightEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new PointLightEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Range = input.ReadObject<System.Single>();
-            existingInstance.Attenuation = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.Range = input.ReadSingle();
+            existingInstance.Attenuation = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -773,19 +636,14 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ShadowMapEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ShadowMapEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.ShadowIntensity = input.ReadObject<System.Single>();
-            existingInstance.DepthBias = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.ShadowIntensity = input.ReadSingle();
+            existingInstance.DepthBias = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -799,19 +657,14 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SkinTransformEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SkinTransformEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.MaxBones = input.ReadObject<System.Int32>();
-            existingInstance.WeightsPerVertex = input.ReadObject<System.Int32>();
-            EndRead(input, existingInstance);
+            existingInstance.MaxBones = input.ReadInt32();
+            existingInstance.WeightsPerVertex = input.ReadInt32();
             return existingInstance;
         }
     }
@@ -825,18 +678,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SpecularMapEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.SpecularMapEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SpecularMapEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SpecularMapEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.SpecularMapEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SpecularMapEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SpecularMapEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.SpecularMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -850,16 +698,12 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SplatterTextureEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SplatterTextureEffectPart();
             }
-            BeginRead(input, existingInstance);
             existingInstance.TextureX = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.TextureY = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.TextureZ = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
@@ -868,21 +712,20 @@ namespace Nine.Graphics.Effects.EffectParts
             existingInstance.NormalMapY = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.NormalMapZ = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.NormalMapW = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.DiffuseColorX = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColorY = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColorZ = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColorW = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColorX = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColorY = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColorZ = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColorW = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularPowerX = input.ReadObject<System.Single>();
-            existingInstance.SpecularPowerY = input.ReadObject<System.Single>();
-            existingInstance.SpecularPowerZ = input.ReadObject<System.Single>();
-            existingInstance.SpecularPowerW = input.ReadObject<System.Single>();
+            existingInstance.DiffuseColorX = input.ReadVector3();
+            existingInstance.DiffuseColorY = input.ReadVector3();
+            existingInstance.DiffuseColorZ = input.ReadVector3();
+            existingInstance.DiffuseColorW = input.ReadVector3();
+            existingInstance.SpecularColorX = input.ReadVector3();
+            existingInstance.SpecularColorY = input.ReadVector3();
+            existingInstance.SpecularColorZ = input.ReadVector3();
+            existingInstance.SpecularColorW = input.ReadVector3();
+            existingInstance.SpecularPowerX = input.ReadSingle();
+            existingInstance.SpecularPowerY = input.ReadSingle();
+            existingInstance.SpecularPowerZ = input.ReadSingle();
+            existingInstance.SpecularPowerW = input.ReadSingle();
             existingInstance.SplatterTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.SplatterTextureScale = input.ReadObject<Microsoft.Xna.Framework.Vector2>();
-            EndRead(input, existingInstance);
+            existingInstance.SplatterTextureScale = input.ReadVector2();
             return existingInstance;
         }
     }
@@ -896,26 +739,21 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SpotLightEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.SpotLightEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SpotLightEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SpotLightEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.SpotLightEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.SpotLightEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SpotLightEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Range = input.ReadObject<System.Single>();
-            existingInstance.Attenuation = input.ReadObject<System.Single>();
-            existingInstance.InnerAngle = input.ReadObject<System.Single>();
-            existingInstance.OuterAngle = input.ReadObject<System.Single>();
-            existingInstance.Falloff = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.Range = input.ReadSingle();
+            existingInstance.Attenuation = input.ReadSingle();
+            existingInstance.InnerAngle = input.ReadSingle();
+            existingInstance.OuterAngle = input.ReadSingle();
+            existingInstance.Falloff = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -929,18 +767,13 @@ namespace Nine.Graphics.Effects.EffectParts
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class TextureTransformEffectPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.EffectParts.TextureTransformEffectPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.TextureTransformEffectPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.TextureTransformEffectPart instance);
-
         protected override Nine.Graphics.Effects.EffectParts.TextureTransformEffectPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.EffectParts.TextureTransformEffectPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new TextureTransformEffectPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.TextureTransform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.TextureTransform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -956,9 +789,6 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class AmbientLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.AmbientLight>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.AmbientLight instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.AmbientLight instance);
-
         protected override Nine.Graphics.ObjectModel.AmbientLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.AmbientLight existingInstance)
         {
             if (existingInstance == null)
@@ -967,14 +797,12 @@ namespace Nine.Graphics.ObjectModel
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new AmbientLight(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.AmbientLightColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            existingInstance.CastShadow = input.ReadObject<System.Boolean>();
-            existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.AmbientLightColor = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -986,9 +814,6 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DirectionalLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DirectionalLight>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DirectionalLight instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DirectionalLight instance);
-
         protected override Nine.Graphics.ObjectModel.DirectionalLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DirectionalLight existingInstance)
         {
             if (existingInstance == null)
@@ -997,15 +822,13 @@ namespace Nine.Graphics.ObjectModel
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new DirectionalLight(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            existingInstance.CastShadow = input.ReadObject<System.Boolean>();
-            existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -1017,20 +840,16 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DisplayObjectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DisplayObject>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DisplayObject instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DisplayObject instance);
-
         protected override Nine.Graphics.ObjectModel.DisplayObject Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DisplayObject existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DisplayObject();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Children = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
+            existingInstance.TransformBindings = input.ReadObject<System.Collections.Generic.IList<Nine.Graphics.ObjectModel.TransformBinding>>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -1042,34 +861,29 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DrawableModelReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DrawableModel>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableModel instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableModel instance);
-
         protected override Nine.Graphics.ObjectModel.DrawableModel Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableModel existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DrawableModel();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Model = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
-            existingInstance.OverrideModelTextures = input.ReadObject<System.Boolean>();
-            existingInstance.OverrideModelMaterial = input.ReadObject<System.Boolean>();
-            existingInstance.Alpha = input.ReadObject<System.Single>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Visible = input.ReadObject<System.Boolean>();
-            existingInstance.LightingEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.MultiPassLightingEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.MaxAffectingLights = input.ReadObject<System.Int32>();
-            existingInstance.CastShadow = input.ReadObject<System.Boolean>();
-            existingInstance.ReceiveShadow = input.ReadObject<System.Boolean>();
-            existingInstance.MaxReceivedShadows = input.ReadObject<System.Int32>();
-            existingInstance.MultiPassShadowEnabled = input.ReadObject<System.Boolean>();
+            existingInstance.OverrideModelTextures = input.ReadBoolean();
+            existingInstance.OverrideModelMaterial = input.ReadBoolean();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
+            existingInstance.MaxAffectingLights = input.ReadInt32();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.ReceiveShadow = input.ReadBoolean();
+            existingInstance.MaxReceivedShadows = input.ReadInt32();
+            existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
             existingInstance.modelPartsSerializer = input.ReadObject<Nine.Graphics.ObjectModel.DrawableModelPart[]>();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -1081,19 +895,14 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DrawableModelPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DrawableModelPart>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableModelPart instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableModelPart instance);
-
         protected override Nine.Graphics.ObjectModel.DrawableModelPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableModelPart existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DrawableModelPart();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Visible = input.ReadObject<System.Boolean>();
+            existingInstance.Visible = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -1105,22 +914,17 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DrawableParticleEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DrawableParticleEffect>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableParticleEffect instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableParticleEffect instance);
-
         protected override Nine.Graphics.ObjectModel.DrawableParticleEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableParticleEffect existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new DrawableParticleEffect();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
+            existingInstance.Position = input.ReadVector3();
             existingInstance.ParticleEffect = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
-            existingInstance.Visible = input.ReadObject<System.Boolean>();
+            existingInstance.Visible = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -1132,9 +936,6 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DrawableSurfaceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DrawableSurface>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableSurface instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableSurface instance);
-
         protected override Nine.Graphics.ObjectModel.DrawableSurface Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableSurface existingInstance)
         {
             if (existingInstance == null)
@@ -1143,22 +944,20 @@ namespace Nine.Graphics.ObjectModel
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new DrawableSurface(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.PatchSegmentCount = input.ReadObject<System.Int32>();
-            existingInstance.TextureTransform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
+            existingInstance.PatchSegmentCount = input.ReadInt32();
+            existingInstance.TextureTransform = input.ReadMatrix();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
             existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
-            existingInstance.LevelOfDetailStart = input.ReadObject<System.Single>();
-            existingInstance.LevelOfDetailEnd = input.ReadObject<System.Single>();
-            existingInstance.LevelOfDetailEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.Visible = input.ReadObject<System.Boolean>();
+            existingInstance.LevelOfDetailStart = input.ReadSingle();
+            existingInstance.LevelOfDetailEnd = input.ReadSingle();
+            existingInstance.LevelOfDetailEnabled = input.ReadBoolean();
+            existingInstance.Visible = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
-            existingInstance.LightingEnabled = input.ReadObject<System.Boolean>();
-            existingInstance.CastShadow = input.ReadObject<System.Boolean>();
-            existingInstance.ReceiveShadow = input.ReadObject<System.Boolean>();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -1170,13 +969,9 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DrawableSurfacePatchReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DrawableSurfacePatch>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableSurfacePatch instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableSurfacePatch instance);
-
         protected override Nine.Graphics.ObjectModel.DrawableSurfacePatch Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawableSurfacePatch existingInstance)
         {
-            existingInstance.Visible = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Visible = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1188,22 +983,17 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class FogReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Fog>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Fog instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Fog instance);
-
         protected override Nine.Graphics.ObjectModel.Fog Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Fog existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new Fog();
             }
-            BeginRead(input, existingInstance);
             existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
-            existingInstance.FogStart = input.ReadObject<System.Single>();
-            existingInstance.FogEnd = input.ReadObject<System.Single>();
-            existingInstance.FogColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.FogEnabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.FogStart = input.ReadSingle();
+            existingInstance.FogEnd = input.ReadSingle();
+            existingInstance.FogColor = input.ReadVector3();
+            existingInstance.FogEnabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1215,9 +1005,6 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class PointLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.PointLight>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.PointLight instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.PointLight instance);
-
         protected override Nine.Graphics.ObjectModel.PointLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.PointLight existingInstance)
         {
             if (existingInstance == null)
@@ -1226,17 +1013,36 @@ namespace Nine.Graphics.ObjectModel
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new PointLight(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Range = input.ReadObject<System.Single>();
-            existingInstance.Attenuation = input.ReadObject<System.Single>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            existingInstance.CastShadow = input.ReadObject<System.Boolean>();
-            existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Range = input.ReadSingle();
+            existingInstance.Attenuation = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Scene</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SceneReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Scene>
+    {
+        protected override Nine.Graphics.ObjectModel.Scene Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Scene existingInstance)
+        {
+            if (existingInstance == null)
+            {
+                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
+                existingInstance = new Scene(graphicsDeviceService.GraphicsDevice);
+            }
+            existingInstance.SceneObjects = input.ReadObject<System.Collections.Generic.List<System.Object>>();
+            existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
     }
@@ -1248,21 +1054,16 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SkyBoxReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.SkyBox>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SkyBox instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SkyBox instance);
-
         protected override Nine.Graphics.ObjectModel.SkyBox Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SkyBox existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SkyBox();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
-            existingInstance.Visible = input.ReadObject<System.Boolean>();
+            existingInstance.Visible = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
             return existingInstance;
         }
     }
@@ -1274,9 +1075,6 @@ namespace Nine.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SpotLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.SpotLight>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SpotLight instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SpotLight instance);
-
         protected override Nine.Graphics.ObjectModel.SpotLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SpotLight existingInstance)
         {
             if (existingInstance == null)
@@ -1285,20 +1083,40 @@ namespace Nine.Graphics.ObjectModel
                                       typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
                 existingInstance = new SpotLight(graphicsDeviceService.GraphicsDevice);
             }
-            BeginRead(input, existingInstance);
-            existingInstance.SpecularColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.DiffuseColor = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Range = input.ReadObject<System.Single>();
-            existingInstance.Attenuation = input.ReadObject<System.Single>();
-            existingInstance.InnerAngle = input.ReadObject<System.Single>();
-            existingInstance.OuterAngle = input.ReadObject<System.Single>();
-            existingInstance.Falloff = input.ReadObject<System.Single>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            existingInstance.CastShadow = input.ReadObject<System.Boolean>();
-            existingInstance.Order = input.ReadObject<System.Single>();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Range = input.ReadSingle();
+            existingInstance.Attenuation = input.ReadSingle();
+            existingInstance.InnerAngle = input.ReadSingle();
+            existingInstance.OuterAngle = input.ReadSingle();
+            existingInstance.Falloff = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Transform = input.ReadObject<Microsoft.Xna.Framework.Matrix>();
-            EndRead(input, existingInstance);
+            existingInstance.Transform = input.ReadMatrix();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>TransformBinding</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class TransformBindingReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.TransformBinding>
+    {
+        protected override Nine.Graphics.ObjectModel.TransformBinding Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.TransformBinding existingInstance)
+        {
+            if (existingInstance == null)
+            {
+                existingInstance = new TransformBinding();
+            }
+            existingInstance.SourceName = input.ReadString();
+            existingInstance.TargetName = input.ReadString();
+            existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.ScaleEnabled = input.ReadBoolean();
+            existingInstance.TargetBone = input.ReadObject<System.String>();
             return existingInstance;
         }
     }
@@ -1313,20 +1131,15 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class AbsorbControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.AbsorbController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.AbsorbController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.AbsorbController instance);
-
         protected override Nine.Graphics.ParticleEffects.AbsorbController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.AbsorbController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new AbsorbController();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Force = input.ReadObject<System.Single>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Force = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1338,21 +1151,16 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class BoxEmitterReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.BoxEmitter>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.BoxEmitter instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.BoxEmitter instance);
-
         protected override Nine.Graphics.ParticleEffects.BoxEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.BoxEmitter existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new BoxEmitter();
             }
-            BeginRead(input, existingInstance);
             existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Box = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Spread = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Spread = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -1364,19 +1172,14 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ColorControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.ColorController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ColorController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ColorController instance);
-
         protected override Nine.Graphics.ParticleEffects.ColorController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ColorController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ColorController();
             }
-            BeginRead(input, existingInstance);
             existingInstance.EndColor = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1388,25 +1191,20 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class CylinderEmitterReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.CylinderEmitter>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.CylinderEmitter instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.CylinderEmitter instance);
-
         protected override Nine.Graphics.ParticleEffects.CylinderEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.CylinderEmitter existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new CylinderEmitter();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Shell = input.ReadObject<System.Boolean>();
-            existingInstance.Radiate = input.ReadObject<System.Boolean>();
-            existingInstance.Height = input.ReadObject<System.Single>();
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Spread = input.ReadObject<System.Single>();
-            existingInstance.Center = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Up = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Radius = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.Shell = input.ReadBoolean();
+            existingInstance.Radiate = input.ReadBoolean();
+            existingInstance.Height = input.ReadSingle();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Spread = input.ReadSingle();
+            existingInstance.Center = input.ReadVector3();
+            existingInstance.Up = input.ReadVector3();
+            existingInstance.Radius = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -1418,18 +1216,13 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class FadeControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.FadeController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.FadeController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.FadeController instance);
-
         protected override Nine.Graphics.ParticleEffects.FadeController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.FadeController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new FadeController();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1441,19 +1234,14 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ForceControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.ForceController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ForceController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ForceController instance);
-
         protected override Nine.Graphics.ParticleEffects.ForceController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ForceController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new ForceController();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Force = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Force = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1465,20 +1253,15 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class LineEmitterReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.LineEmitter>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.LineEmitter instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.LineEmitter instance);
-
         protected override Nine.Graphics.ParticleEffects.LineEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.LineEmitter existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new LineEmitter();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Spread = input.ReadObject<System.Single>();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Spread = input.ReadSingle();
             existingInstance.LineList = input.ReadObject<System.Collections.Generic.IEnumerable<Microsoft.Xna.Framework.Vector3>>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -1490,20 +1273,15 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class PointEmitterReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.PointEmitter>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.PointEmitter instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.PointEmitter instance);
-
         protected override Nine.Graphics.ParticleEffects.PointEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.PointEmitter existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new PointEmitter();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Position = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Spread = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Spread = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -1515,19 +1293,14 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class RotationControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.RotationController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.RotationController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.RotationController instance);
-
         protected override Nine.Graphics.ParticleEffects.RotationController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.RotationController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new RotationController();
             }
-            BeginRead(input, existingInstance);
             existingInstance.EndRotation = input.ReadObject<Nine.Range<System.Single>>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1539,19 +1312,14 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SizeControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.SizeController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SizeController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SizeController instance);
-
         protected override Nine.Graphics.ParticleEffects.SizeController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SizeController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SizeController();
             }
-            BeginRead(input, existingInstance);
             existingInstance.EndSize = input.ReadObject<Nine.Range<System.Single>>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1563,19 +1331,14 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SpeedControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.SpeedController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SpeedController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SpeedController instance);
-
         protected override Nine.Graphics.ParticleEffects.SpeedController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SpeedController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SpeedController();
             }
-            BeginRead(input, existingInstance);
             existingInstance.EndSpeed = input.ReadObject<Nine.Range<System.Single>>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -1587,23 +1350,18 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SphereEmitterReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.SphereEmitter>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SphereEmitter instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SphereEmitter instance);
-
         protected override Nine.Graphics.ParticleEffects.SphereEmitter Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.SphereEmitter existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new SphereEmitter();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Shell = input.ReadObject<System.Boolean>();
-            existingInstance.Radiate = input.ReadObject<System.Boolean>();
-            existingInstance.Center = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Radius = input.ReadObject<System.Single>();
-            existingInstance.Direction = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Spread = input.ReadObject<System.Single>();
-            EndRead(input, existingInstance);
+            existingInstance.Shell = input.ReadBoolean();
+            existingInstance.Radiate = input.ReadBoolean();
+            existingInstance.Center = input.ReadVector3();
+            existingInstance.Radius = input.ReadSingle();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Spread = input.ReadSingle();
             return existingInstance;
         }
     }
@@ -1615,21 +1373,16 @@ namespace Nine.Graphics.ParticleEffects
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class TangentForceControllerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.TangentForceController>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.TangentForceController instance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.TangentForceController instance);
-
         protected override Nine.Graphics.ParticleEffects.TangentForceController Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.TangentForceController existingInstance)
         {
             if (existingInstance == null)
             {
                 existingInstance = new TangentForceController();
             }
-            BeginRead(input, existingInstance);
-            existingInstance.Force = input.ReadObject<System.Single>();
-            existingInstance.Up = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Center = input.ReadObject<Microsoft.Xna.Framework.Vector3>();
-            existingInstance.Enabled = input.ReadObject<System.Boolean>();
-            EndRead(input, existingInstance);
+            existingInstance.Force = input.ReadSingle();
+            existingInstance.Up = input.ReadVector3();
+            existingInstance.Center = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
             return existingInstance;
         }
     }

@@ -10,6 +10,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Collections.Generic;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -27,6 +28,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     /// Defines a merged particle effect. The is equivalent to ParticleEffect.CreateMerged.
     /// </summary>
     [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics")]
+    [ContentProperty("ParticleEffects")]
     public class MergedParticleEffectContent
     {
         /// <summary>

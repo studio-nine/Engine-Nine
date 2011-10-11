@@ -25,9 +25,9 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     /// <remarks>
     /// This class serves as a container to composite other objects.
-    /// If you wish to create your own display object, derive from <c>IGraphicsObject</c> instead.
+    /// If you wish to create your own display object, derive from <c>Transformable</c> instead.
     /// </remarks>
-    public sealed class DisplayObject : Transformable, IEnumerable<object>, INotifyCollectionChanged<object>, IDisposable
+    public sealed class DisplayObject : Transformable, IUpdateable, IEnumerable<object>, INotifyCollectionChanged<object>, IDisposable
     {
         #region Children
         /// <summary>
@@ -49,10 +49,18 @@ namespace Nine.Graphics.ObjectModel
 
         void children_Added(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
+            if (e.Value == null)
+                throw new ArgumentNullException("item");
+
+            if (children.Contains(e.Value))
+                throw new InvalidOperationException("The object is already a child of this display object");
+
             ISpatialQueryable boundable = e.Value as ISpatialQueryable;
             if (boundable != null)
+            {
+                boundingBoxDirty = true;
                 boundable.BoundingBoxChanged += new EventHandler<EventArgs>(boundable_BoundingBoxChanged);
-
+            }
             Transformable transformable = e.Value as Transformable;
             if (transformable != null)
             {
@@ -66,14 +74,19 @@ namespace Nine.Graphics.ObjectModel
         {
             ISpatialQueryable boundable = e.Value as ISpatialQueryable;
             if (boundable != null)
+            {
+                boundingBoxDirty = true;
                 boundable.BoundingBoxChanged -= new EventHandler<EventArgs>(boundable_BoundingBoxChanged);
-
+            }
             Transformable transformable = e.Value as Transformable;
             if (transformable != null)
             {
                 if (transformable.Parent == null)
                     throw new InvalidOperationException("The object does not belong to this display object.");
                 transformable.Parent = null;
+
+                // Remove all the transform bindings associated with this child
+                transformBindings.RemoveAll(b => b.Source == transformable || b.Target == transformable);
             }
         }
         #endregion
@@ -101,6 +114,109 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region Transform Binding
+        /// <summary>
+        /// Gets all the transform bindings owned by this <c>DisplayObject</c>.
+        /// </summary>
+        public IList<TransformBinding> TransformBindings
+        {
+            get { return transformBindings; }
+
+            // To be used by content reader
+            internal set
+            {
+                transformBindings.Clear();
+                transformBindings.AddRange(value);
+            }
+        }
+        private NotificationCollection<TransformBinding> transformBindings;
+
+        void transformBindings_Added(object sender, NotifyCollectionChangedEventArgs<TransformBinding> e)
+        {
+            if (e.Value == null)
+                throw new ArgumentNullException("item");
+
+            if (!string.IsNullOrEmpty(e.Value.SourceName))
+            {
+                e.Value.Source = Find<Transformable>(e.Value.SourceName);
+                if (e.Value.Source == null)
+                    throw new ContentLoadException("Cannot find a child object with name: " + e.Value.SourceName);
+                e.Value.SourceName = null;
+            }
+
+            if (!string.IsNullOrEmpty(e.Value.TargetName))
+            {
+                e.Value.Target = Find<Transformable>(e.Value.TargetName);
+                if (e.Value.Target == null)
+                    throw new ContentLoadException("Cannot find a child object with name: " + e.Value.TargetName);
+                e.Value.TargetName = null;
+            }
+
+            if (!children.Contains(e.Value.Source) || !children.Contains(e.Value.Target))
+                throw new InvalidOperationException("The source and target object for the binding must be a child of this display object.");
+
+            if (transformBindings.Count(b => b.Source == e.Value.Source) > 1)
+                throw new InvalidOperationException("Cannot bind the source object multiple times.");
+
+            // TODO: Dependency sorting
+        }
+        
+        /// <summary>
+        /// Binds the transformation of the source object to the target object.
+        /// </summary>
+        public void Bind(Transformable source, Transformable target)
+        {
+            Bind(source, target, null, null);
+        }
+
+        /// <summary>
+        /// Binds the transformation of the source object to the target object.
+        /// </summary>
+        public void Bind(Transformable source, Transformable target, string boneName)
+        {
+            Bind(source, target, boneName, null);
+        }
+
+        /// <summary>
+        /// Binds the transformation of the source object to the target object.
+        /// </summary>
+        public void Bind(Transformable source, Transformable target, string boneName, Matrix? biasTransform)
+        {
+            transformBindings.Add(new TransformBinding(source, target) { TargetBone = boneName, Transform = biasTransform });
+        }
+
+        /// <summary>
+        /// Unbinds the transformation of the source object to the target object.
+        /// </summary>
+        public void Unbind(Transformable source, Transformable target)
+        {
+            transformBindings.RemoveAll(b => b.Source == source && b.Target == target);
+        }
+        #endregion
+
+        #region Find
+        public T Find<T>(string name)
+        {
+            if (Name == name && this is T)
+                return (T)(object)this;
+            var result = children.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
+            if (result is T)
+                return (T)(object)result;
+            return default(T);
+        }
+
+        public IEnumerable<T> FindAll<T>(string name)
+        {
+            if (Name == name && this is T)
+                yield return (T)(object)this;
+            foreach (var result in children.OfType<Transformable>().Where(t => t.Name == name))
+            {
+                if (result is T)
+                    yield return (T)(object)result;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Initializes a new instance of <c>DisplayObject</c>.
         /// </summary>
@@ -110,7 +226,55 @@ namespace Nine.Graphics.ObjectModel
             children.Sender = this;
             children.Added += (sender, e) => { if (Added != null) Added(sender, e); };
             children.Removed += (sender, e) => { if (Removed != null) Removed(sender, e); };
+
+            transformBindings = new NotificationCollection<TransformBinding>();
+            transformBindings.Sender = this;
+            transformBindings.Added += new EventHandler<NotifyCollectionChangedEventArgs<TransformBinding>>(transformBindings_Added);
         }
+
+        #region Update
+        public void Update(TimeSpan elapsedTime)
+        {
+            UpdateTransformBindings();
+        }
+
+        private void UpdateTransformBindings()
+        {
+            foreach (var binding in transformBindings)
+            {
+                if (string.IsNullOrEmpty(binding.TargetBone))
+                {
+                    if (binding.Transform != null)
+                        binding.Source.Transform = binding.Transform.Value * binding.Target.Transform;
+                    else
+                        binding.Source.Transform = binding.Target.Transform;
+                }
+                else
+                {
+                    DrawableModel model = binding.Target as DrawableModel;
+                    if (model == null)
+                        throw new InvalidOperationException("The target object must be a DrawableModel when a bone name is specified.");
+
+                    var boneTransform = model.Skeleton.GetAbsoluteBoneTransform(binding.TargetBone);
+                    if (!binding.ScaleEnabled)
+                    {
+                        Vector3 translation, scale;
+                        Quaternion rotation;
+                        if (!boneTransform.Decompose(out scale, out rotation, out translation))
+                            throw new InvalidOperationException();
+                        Matrix.CreateFromQuaternion(ref rotation, out boneTransform);
+                        boneTransform.M41 = translation.X;
+                        boneTransform.M42 = translation.Y;
+                        boneTransform.M43 = translation.Z;
+                    }
+                    if (binding.Transform != null)
+                        binding.Source.Transform = binding.Transform.Value * boneTransform * model.Transform;
+                    else
+                        binding.Source.Transform = boneTransform * model.Transform;
+                }
+            }
+        }
+        #endregion
 
         #region IEnumerable
         public IEnumerator<object> GetEnumerator()

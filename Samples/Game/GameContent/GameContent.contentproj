@@ -46,14 +46,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\ParticleEffects\Galaxy.xml">
-      <Link>Galaxy.xml</Link>
-      <Name>Galaxy</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">
       <Link>flake.png</Link>
       <Name>flake</Name>
@@ -170,6 +162,16 @@
       <Name>Scene</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\ParticleEffects\Galaxy.xaml">
+      <Link>Galaxy.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <Name>Galaxy</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>

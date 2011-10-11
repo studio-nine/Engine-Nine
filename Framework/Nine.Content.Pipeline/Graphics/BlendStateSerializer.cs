@@ -52,7 +52,7 @@ namespace Nine.Content.Pipeline.Graphics
                 throw new InvalidContentException("Unknown BlendState: " + value);
         }
 
-        static bool BlendStateEquals(BlendState a, BlendState b)
+        internal static bool BlendStateEquals(BlendState a, BlendState b)
         {
             return a.AlphaBlendFunction == b.AlphaBlendFunction &&
                    a.AlphaDestinationBlend == b.AlphaDestinationBlend &&

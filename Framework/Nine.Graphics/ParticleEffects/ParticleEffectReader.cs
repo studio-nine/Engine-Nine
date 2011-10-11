@@ -33,7 +33,7 @@ namespace Nine.Graphics.ParticleEffects
             effect.Color = input.ReadObject<Range<Color>>();
             effect.Duration = input.ReadObject<Range<float>>();
             effect.Emission = input.ReadSingle();
-            effect.Emitter = input.ReadObject<IParticleEmitter>();
+            effect.Emitter = input.ReadObject<object>() as IParticleEmitter;
             effect.Enabled = input.ReadBoolean();
             effect.Rotation = input.ReadObject<Range<float>>();
             effect.Size = input.ReadObject<Range<float>>();
@@ -47,7 +47,7 @@ namespace Nine.Graphics.ParticleEffects
 
             int count = input.ReadInt32();
             for (int i = 0; i < count; i++)
-                effect.Controllers.Add(input.ReadObject<IParticleController>());
+                effect.Controllers.Add(input.ReadObject<object>() as IParticleController);
 
             count = input.ReadInt32();
             for (int i = 0; i < count; i++)

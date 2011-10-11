@@ -292,7 +292,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         protected override void OnTransformChanged()
         {
-            boundingBox = orientedBoundingBox.CreateAxisAligned(Transform);
+            boundingBox = orientedBoundingBox.CreateAxisAligned(AbsoluteTransform);
             base.OnTransformChanged();
         }
         #endregion
@@ -303,7 +303,11 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public AnimationPlayer Animations { get { return animations ?? (animations = new AnimationPlayer()); } }
         private AnimationPlayer animations;
-        private ModelSkeleton skeleton;
+
+        /// <summary>
+        /// Gets the skeleton of this model.
+        /// </summary>
+        public ModelSkeleton Skeleton { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is skinned.
@@ -363,16 +367,17 @@ namespace Nine.Graphics.ObjectModel
             // Initialize bounds
             materialNeedsUpdate = true;
             orientedBoundingBox = model.ComputeBoundingBox();
-            boundingBox = orientedBoundingBox.CreateAxisAligned(Transform);
+            boundingBox = orientedBoundingBox.CreateAxisAligned(AbsoluteTransform);
 
             // Initialize animations
+            Skeleton = new ModelSkeleton(model);
+
             var animationNames = model.GetAnimations();
             if (animationNames.Count > 0)
             {
-                skeleton = new ModelSkeleton(model);
                 animations = new AnimationPlayer();
                 animationNames.ForEach(anim => animations.Animations.Add(
-                                   anim, new BoneAnimation(skeleton, model.GetAnimation(anim))));
+                                   anim, new BoneAnimation(Skeleton, model.GetAnimation(anim))));
                 animations.Play();
             }
 
@@ -466,14 +471,14 @@ namespace Nine.Graphics.ObjectModel
             {
                 if (IsSkinned)
                 {
-                    if (skinTransforms == null || skinTransforms.Length < skeleton.InverseAbsoluteBindPose.Count)
+                    if (skinTransforms == null || skinTransforms.Length < Skeleton.InverseAbsoluteBindPose.Count)
                     {
-                        skinTransforms = new Matrix[skeleton.InverseAbsoluteBindPose.Count];
-                        skeleton.GetSkinTransforms(skinTransforms);
+                        skinTransforms = new Matrix[Skeleton.InverseAbsoluteBindPose.Count];
+                        Skeleton.GetSkinTransforms(skinTransforms);
                     }
                     else if (boneTransformNeedUpdate)
                     {
-                        skeleton.GetSkinTransforms(skinTransforms);
+                        Skeleton.GetSkinTransforms(skinTransforms);
                     }
                 }
                 else
@@ -481,11 +486,11 @@ namespace Nine.Graphics.ObjectModel
                     if (boneTransforms == null || boneTransforms.Length < Model.Bones.Count)
                     {
                         boneTransforms = new Matrix[Model.Bones.Count];
-                        skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
+                        Skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
                     }
                     else if (boneTransformNeedUpdate)
                     {
-                        skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
+                        Skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
                     }
                 }
             }

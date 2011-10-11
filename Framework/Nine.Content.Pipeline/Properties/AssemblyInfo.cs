@@ -23,8 +23,10 @@ using System.Windows.Markup;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d7d47d45-91c0-4c79-9c76-2aedfbb2685a")]
 
-[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline")]
-[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics")]
-[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects")]
-[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ParticleEffects")]
-[assembly: XmlnsDefinition("http://schemas.nightingames.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ObjectModel")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Animations")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects.EffectParts")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ParticleEffects")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ObjectModel")]

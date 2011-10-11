@@ -182,8 +182,8 @@ namespace Nine.Graphics.ObjectModel
 
         protected override void Enable(ISpotLight light)
         {
-            light.Direction = Transform.Forward;
-            light.Position = Transform.Translation;
+            light.Direction = AbsoluteTransform.Forward;
+            light.Position = AbsoluteTransform.Translation;
             light.DiffuseColor = DiffuseColor;
             light.SpecularColor = SpecularColor;
             light.Attenuation = Attenuation;

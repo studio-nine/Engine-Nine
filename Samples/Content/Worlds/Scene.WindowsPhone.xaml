@@ -1,4 +1,4 @@
-﻿<DisplayObjectContent xmlns="http://schemas.nightingames.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="Scene">
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="Scene">
     
     <SkyBoxContent Texture="SkyCubeMap" />
     <FogContent FogStart="50" FogEnd="500" />
@@ -45,4 +45,4 @@
     
     <DrawableParticleEffectContent ParticleEffect="Galaxy" />
     
-</DisplayObjectContent>
+</SceneContent>
