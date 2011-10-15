@@ -9,13 +9,14 @@
 #region Using Directives
 using System;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Nine.Graphics.ParticleEffects;
+using Nine.Animations;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -52,7 +53,8 @@ namespace Nine.Graphics.ObjectModel
             if (e.Value == null)
                 throw new ArgumentNullException("item");
 
-            if (children.Contains(e.Value))
+            // This method is called after the object has been added to children, so check against 1 instead.
+            if (children.Count(c => c == e.Value) > 1)
                 throw new InvalidOperationException("The object is already a child of this display object");
 
             ISpatialQueryable boundable = e.Value as ISpatialQueryable;
@@ -61,6 +63,7 @@ namespace Nine.Graphics.ObjectModel
                 boundingBoxDirty = true;
                 boundable.BoundingBoxChanged += new EventHandler<EventArgs>(boundable_BoundingBoxChanged);
             }
+
             Transformable transformable = e.Value as Transformable;
             if (transformable != null)
             {
@@ -68,6 +71,9 @@ namespace Nine.Graphics.ObjectModel
                     throw new InvalidOperationException("The object is already added to a display object.");
                 transformable.Parent = this;
             }
+
+            if (Added != null)
+                Added(sender, e);
         }
 
         void children_Removed(object sender, NotifyCollectionChangedEventArgs<object> e)
@@ -78,6 +84,7 @@ namespace Nine.Graphics.ObjectModel
                 boundingBoxDirty = true;
                 boundable.BoundingBoxChanged -= new EventHandler<EventArgs>(boundable_BoundingBoxChanged);
             }
+            
             Transformable transformable = e.Value as Transformable;
             if (transformable != null)
             {
@@ -88,7 +95,13 @@ namespace Nine.Graphics.ObjectModel
                 // Remove all the transform bindings associated with this child
                 transformBindings.RemoveAll(b => b.Source == transformable || b.Target == transformable);
             }
+
+            if (Removed != null)
+                Removed(sender, e);
         }
+
+        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Added;
+        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Removed;
         #endregion
 
         #region BoundingBox
@@ -194,6 +207,58 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region Animations
+        /// <summary>
+        /// Gets all the animations in this display object.
+        /// </summary>
+        [ContentSerializer]
+        public AnimationPlayer Animations
+        {
+            get { return animations; }
+            
+            // For serialization
+            internal set 
+            {
+                if (value != null && value.Animations != null)
+                {
+                    UpdateTweenAnimationTargets(value.Animations.Values);
+                    animations = value;
+                }
+                animations.Play(); 
+            }
+        }
+        
+        private void UpdateTweenAnimationTargets(IEnumerable value)
+        {
+            if (value != null)
+            {
+                foreach (var supportTarget in value.ForEachRecursive<ISupportTarget>())
+                {
+                    var property = supportTarget.TargetProperty;
+                    if (!string.IsNullOrEmpty(property))
+                    {
+                        var nameEnds = property.IndexOf(".");
+                        if (nameEnds < 0)
+                        {
+                            supportTarget.Target = this;
+                        }
+                        else
+                        {
+                            var name = property.Substring(0, nameEnds);
+                            var target = Find<object>(name);
+                            if (target == null)
+                                throw new ContentLoadException("Cannot find a child object with name " + name);
+                            supportTarget.Target = target;
+                            supportTarget.TargetProperty = property.Substring(nameEnds + 1, property.Length - nameEnds - 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        private AnimationPlayer animations = new AnimationPlayer();
+        #endregion
+
         #region Find
         public T Find<T>(string name)
         {
@@ -217,6 +282,7 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region Constructor
         /// <summary>
         /// Initializes a new instance of <c>DisplayObject</c>.
         /// </summary>
@@ -224,17 +290,19 @@ namespace Nine.Graphics.ObjectModel
         {
             children = new NotificationCollection<object>();
             children.Sender = this;
-            children.Added += (sender, e) => { if (Added != null) Added(sender, e); };
-            children.Removed += (sender, e) => { if (Removed != null) Removed(sender, e); };
+            children.Added += children_Added;
+            children.Removed += children_Removed;
 
             transformBindings = new NotificationCollection<TransformBinding>();
             transformBindings.Sender = this;
-            transformBindings.Added += new EventHandler<NotifyCollectionChangedEventArgs<TransformBinding>>(transformBindings_Added);
+            transformBindings.Added += transformBindings_Added;
         }
+        #endregion
 
         #region Update
         public void Update(TimeSpan elapsedTime)
         {
+            Animations.Update(elapsedTime);
             UpdateTransformBindings();
         }
 
@@ -256,7 +324,7 @@ namespace Nine.Graphics.ObjectModel
                         throw new InvalidOperationException("The target object must be a DrawableModel when a bone name is specified.");
 
                     var boneTransform = model.Skeleton.GetAbsoluteBoneTransform(binding.TargetBone);
-                    if (!binding.ScaleEnabled)
+                    if (!binding.UseBoneScale)
                     {
                         Vector3 translation, scale;
                         Quaternion rotation;
@@ -299,8 +367,5 @@ namespace Nine.Graphics.ObjectModel
             }
         }
         #endregion
-
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Added;
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Removed;
     }
 }

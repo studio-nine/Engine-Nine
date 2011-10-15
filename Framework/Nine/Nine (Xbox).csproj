@@ -65,8 +65,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
+    <Compile Include="Animations\TransformAnimation.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="PropertyExpression.cs" />
     <Compile Include="WeakReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />

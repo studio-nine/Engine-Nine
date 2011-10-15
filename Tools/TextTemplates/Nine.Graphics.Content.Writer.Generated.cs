@@ -17,14 +17,19 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class BoneAnimationClipContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BoneAnimationClipContent>
+    partial class BoneAnimationClipContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BoneAnimationClipContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoneAnimationClipContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoneAnimationClipContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoneAnimationClipContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.FramesPerSecond);
             output.Write(value.TotalFrames);
             output.WriteObject(value.PreferredEnding);
             output.WriteObject(value.Transforms);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -47,14 +52,19 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class GeometryContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<GeometryContent>
+    partial class GeometryContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<GeometryContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GeometryContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GeometryContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GeometryContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.BoundingSphere);
             output.WriteObject(value.BoundingBox);
             output.WriteObject(value.Positions);
             output.WriteObject(value.Indices);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -74,11 +84,16 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ModelCollisionContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelCollisionContent>
+    partial class ModelCollisionContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelCollisionContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelCollisionContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelCollisionContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelCollisionContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.CollisionTree);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -98,12 +113,17 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ModelMeshPartTagContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelMeshPartTagContent>
+    partial class ModelMeshPartTagContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelMeshPartTagContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelMeshPartTagContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelMeshPartTagContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelMeshPartTagContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.BoundingBox);
             output.WriteObject(value.Textures);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -123,12 +143,17 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ModelSkeletonDataContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelSkeletonDataContent>
+    partial class ModelSkeletonDataContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelSkeletonDataContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelSkeletonDataContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelSkeletonDataContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelSkeletonDataContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.InverseAbsoluteBindPose);
             output.Write(value.SkeletonRoot);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -148,13 +173,18 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ModelTagContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelTagContent>
+    partial class ModelTagContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ModelTagContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelTagContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelTagContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelTagContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Skeleton);
             output.WriteObject(value.Collision);
             output.WriteObject(value.Animations);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -177,18 +207,24 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class AlphaTestMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AlphaTestMaterialContent>
+    partial class AlphaTestMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AlphaTestMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AlphaTestMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AlphaTestMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AlphaTestMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Alpha);
             output.WriteObject(value.AlphaFunction);
             output.Write(value.DiffuseColor);
             output.Write(value.ReferenceAlpha);
+            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.VertexColorEnabled);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -208,10 +244,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class BasicMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BasicMaterialContent>
+    partial class BasicMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BasicMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
@@ -219,12 +259,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.PreferPerPixelLighting);
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
+            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.TextureEnabled);
             output.Write(value.VertexColorEnabled);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -244,15 +286,20 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class CustomMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CustomMaterialContent>
+    partial class CustomMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CustomMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.IsTransparent);
             output.WriteObject(value.Effect);
             output.WriteObject(value.Parameters);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -272,18 +319,24 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DualTextureMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DualTextureMaterialContent>
+    partial class DualTextureMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DualTextureMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
+            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.WriteObject(value.Texture2);
             output.Write(value.VertexColorEnabled);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -303,10 +356,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class EnvironmentMapMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<EnvironmentMapMaterialContent>
+    partial class EnvironmentMapMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<EnvironmentMapMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EnvironmentMapMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EnvironmentMapMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EnvironmentMapMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
@@ -314,10 +371,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.EnvironmentMapAmount);
             output.Write(value.EnvironmentMapSpecular);
             output.Write(value.FresnelFactor);
+            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -337,15 +396,20 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class LinkedMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LinkedMaterialContent>
+    partial class LinkedMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LinkedMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinkedMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinkedMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinkedMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.IsTransparent);
             output.WriteObject(value.Effect);
             output.WriteObject(value.EffectParts);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -365,22 +429,28 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SkinnedMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SkinnedMaterialContent>
+    partial class SkinnedMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SkinnedMaterialContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinnedMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinnedMaterialContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinnedMaterialContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
             output.Write(value.PreferPerPixelLighting);
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
+            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.WeightsPerVertex);
             output.Write(value.IsTransparent);
             output.Write(value.SkinningEnabled);
             output.Write(value.DepthAlphaEnabled);
             output.Write(value.DoubleSided);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -403,11 +473,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class AmbientLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AmbientLightEffectPartContent>
+    partial class AmbientLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AmbientLightEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.AmbientLightColor);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -427,12 +502,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class BasicTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BasicTextureEffectPartContent>
+    partial class BasicTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BasicTextureEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicTextureEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicTextureEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicTextureEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Texture);
             output.Write(value.OverlayColor);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -452,10 +532,15 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class BeginLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BeginLightEffectPartContent>
+    partial class BeginLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BeginLightEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BeginLightEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BeginLightEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BeginLightEffectPartContent value)
         {
+            BeginWrite(output, value);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -475,11 +560,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ColorMatrixEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ColorMatrixEffectPartContent>
+    partial class ColorMatrixEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ColorMatrixEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.ColorMatrix);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -499,13 +589,18 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DeferredLightsEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DeferredLightsEffectPartContent>
+    partial class DeferredLightsEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DeferredLightsEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DeferredLightsEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DeferredLightsEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DeferredLightsEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
             output.Write(value.SpecularColor);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -525,12 +620,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DetailTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DetailTextureEffectPartContent>
+    partial class DetailTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DetailTextureEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DetailTextureEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DetailTextureEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DetailTextureEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.DetailTexture);
             output.Write(value.DetailTextureScale);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -550,13 +650,18 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DirectionalLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DirectionalLightEffectPartContent>
+    partial class DirectionalLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DirectionalLightEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Direction);
             output.Write(value.DiffuseColor);
             output.Write(value.SpecularColor);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -576,11 +681,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DualTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DualTextureEffectPartContent>
+    partial class DualTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DualTextureEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Texture);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -600,11 +710,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class EmissiveMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<EmissiveMapEffectPartContent>
+    partial class EmissiveMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<EmissiveMapEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmissiveMapEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmissiveMapEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmissiveMapEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.EmissiveMap);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -624,13 +739,18 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class FogEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<FogEffectPartContent>
+    partial class FogEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<FogEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.FogColor);
             output.Write(value.FogStart);
             output.Write(value.FogEnd);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -650,15 +770,20 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class MaterialEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<MaterialEffectPartContent>
+    partial class MaterialEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<MaterialEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MaterialEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MaterialEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MaterialEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
             output.Write(value.Alpha);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -678,11 +803,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class NormalMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<NormalMapEffectPartContent>
+    partial class NormalMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<NormalMapEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NormalMapEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NormalMapEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NormalMapEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.NormalMap);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -702,11 +832,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class OverlayTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<OverlayTextureEffectPartContent>
+    partial class OverlayTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<OverlayTextureEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, OverlayTextureEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, OverlayTextureEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, OverlayTextureEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Texture);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -726,15 +861,20 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class PointLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointLightEffectPartContent>
+    partial class PointLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointLightEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.DiffuseColor);
             output.Write(value.SpecularColor);
             output.Write(value.Range);
             output.Write(value.Attenuation);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -754,12 +894,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ShadowMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ShadowMapEffectPartContent>
+    partial class ShadowMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ShadowMapEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ShadowMapEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ShadowMapEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ShadowMapEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.ShadowIntensity);
             output.Write(value.DepthBias);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -779,12 +924,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SkinTransformEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SkinTransformEffectPartContent>
+    partial class SkinTransformEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SkinTransformEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinTransformEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinTransformEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinTransformEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.MaxBones);
             output.Write(value.WeightsPerVertex);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -804,11 +954,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SpecularMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpecularMapEffectPartContent>
+    partial class SpecularMapEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpecularMapEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpecularMapEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpecularMapEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpecularMapEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.SpecularMap);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -828,10 +983,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SplatterTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SplatterTextureEffectPartContent>
+    partial class SplatterTextureEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SplatterTextureEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SplatterTextureEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SplatterTextureEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SplatterTextureEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.TextureX);
             output.WriteObject(value.TextureY);
             output.WriteObject(value.TextureZ);
@@ -854,6 +1013,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             output.Write(value.SpecularPowerW);
             output.WriteObject(value.SplatterTexture);
             output.Write(value.SplatterTextureScale);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -873,10 +1033,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SpotLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpotLightEffectPartContent>
+    partial class SpotLightEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpotLightEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.Direction);
             output.Write(value.DiffuseColor);
@@ -886,6 +1050,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             output.Write(value.InnerAngle);
             output.Write(value.OuterAngle);
             output.Write(value.Falloff);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -905,11 +1070,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class TextureTransformEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TextureTransformEffectPartContent>
+    partial class TextureTransformEffectPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TextureTransformEffectPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TextureTransformEffectPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TextureTransformEffectPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TextureTransformEffectPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.TextureTransform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -932,16 +1102,22 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class AmbientLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AmbientLightContent>
+    partial class AmbientLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AmbientLightContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.AmbientLightColor);
             output.Write(value.Enabled);
             output.Write(value.CastShadow);
             output.Write(value.Order);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -961,17 +1137,23 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DirectionalLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DirectionalLightContent>
+    partial class DirectionalLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DirectionalLightContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
             output.Write(value.Enabled);
             output.Write(value.CastShadow);
             output.Write(value.Order);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -991,14 +1173,21 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DisplayObjectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DisplayObjectContent>
+    partial class DisplayObjectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DisplayObjectContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DisplayObjectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DisplayObjectContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DisplayObjectContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Children);
             output.WriteObject(value.TransformBindings);
+            output.WriteObject(value.Animations);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1018,10 +1207,14 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DrawableModelContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableModelContent>
+    partial class DrawableModelContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableModelContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Model);
             output.WriteObject(value.Material);
             output.Write(value.OverrideModelTextures);
@@ -1038,7 +1231,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.Write(value.MultiPassShadowEnabled);
             output.WriteObject(value.ModelParts);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1058,12 +1253,18 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DrawableModelPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableModelPartContent>
+    partial class DrawableModelPartContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableModelPartContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelPartContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelPartContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelPartContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Visible);
             output.WriteObject(value.Material);
+            output.WriteObject(value.Tag);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1083,15 +1284,21 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DrawableParticleEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableParticleEffectContent>
+    partial class DrawableParticleEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableParticleEffectContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableParticleEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableParticleEffectContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableParticleEffectContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Position);
             output.WriteObject(value.ParticleEffect);
             output.Write(value.Visible);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1111,10 +1318,14 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DrawableSurfaceContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableSurfaceContent>
+    partial class DrawableSurfaceContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableSurfaceContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfaceContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfaceContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfaceContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.PatchSegmentCount);
             output.Write(value.TextureTransform);
             output.WriteObject(value.Heightmap);
@@ -1128,7 +1339,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.Write(value.CastShadow);
             output.Write(value.ReceiveShadow);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1148,11 +1361,17 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class DrawableSurfacePatchContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableSurfacePatchContent>
+    partial class DrawableSurfacePatchContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DrawableSurfacePatchContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfacePatchContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfacePatchContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfacePatchContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Visible);
+            output.WriteObject(value.Tag);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1172,15 +1391,20 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class FogContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<FogContent>
+    partial class FogContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<FogContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.BoundingBox);
             output.Write(value.FogStart);
             output.Write(value.FogEnd);
             output.Write(value.FogColor);
             output.Write(value.FogEnabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1200,10 +1424,14 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class PointLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointLightContent>
+    partial class PointLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointLightContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
             output.Write(value.Range);
@@ -1212,7 +1440,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.Write(value.CastShadow);
             output.Write(value.Order);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1232,12 +1462,19 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SceneContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SceneContent>
+    partial class SceneContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SceneContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SceneContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SceneContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SceneContent value)
         {
+            BeginWrite(output, value);
+            output.WriteObject(value.Camera);
             output.WriteObject(value.SceneObjects);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1257,14 +1494,20 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SkyBoxContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SkyBoxContent>
+    partial class SkyBoxContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SkyBoxContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkyBoxContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkyBoxContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkyBoxContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Texture);
             output.Write(value.Visible);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1284,10 +1527,14 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SpotLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpotLightContent>
+    partial class SpotLightContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpotLightContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
             output.Write(value.Range);
@@ -1299,7 +1546,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.Write(value.CastShadow);
             output.Write(value.Order);
             output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
             output.Write(value.Transform);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1319,15 +1568,20 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class TransformBindingContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TransformBindingContent>
+    partial class TransformBindingContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TransformBindingContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformBindingContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformBindingContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformBindingContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Source ?? "");
             output.Write(value.Target ?? "");
             output.WriteObject(value.Transform);
-            output.Write(value.ScaleEnabled);
             output.WriteObject(value.TargetBone);
+            output.Write(value.UseBoneScale);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1350,13 +1604,18 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class AbsorbControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AbsorbControllerContent>
+    partial class AbsorbControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AbsorbControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AbsorbControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AbsorbControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AbsorbControllerContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.Force);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1376,14 +1635,19 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class BoxEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BoxEmitterContent>
+    partial class BoxEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BoxEmitterContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoxEmitterContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoxEmitterContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoxEmitterContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.Transform);
             output.WriteObject(value.Box);
             output.Write(value.Direction);
             output.Write(value.Spread);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1403,12 +1667,17 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ColorControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ColorControllerContent>
+    partial class ColorControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ColorControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorControllerContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.EndColor);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1428,10 +1697,14 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class CylinderEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CylinderEmitterContent>
+    partial class CylinderEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CylinderEmitterContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CylinderEmitterContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CylinderEmitterContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CylinderEmitterContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Shell);
             output.Write(value.Radiate);
             output.Write(value.Height);
@@ -1440,6 +1713,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.Write(value.Center);
             output.Write(value.Up);
             output.Write(value.Radius);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1459,11 +1733,16 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class FadeControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<FadeControllerContent>
+    partial class FadeControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<FadeControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FadeControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FadeControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FadeControllerContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1483,12 +1762,17 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class ForceControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ForceControllerContent>
+    partial class ForceControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ForceControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ForceControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ForceControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ForceControllerContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Force);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1508,13 +1792,18 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class LineEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LineEmitterContent>
+    partial class LineEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LineEmitterContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LineEmitterContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LineEmitterContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LineEmitterContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Direction);
             output.Write(value.Spread);
             output.WriteObject(value.LineList);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1534,13 +1823,18 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class PointEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointEmitterContent>
+    partial class PointEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PointEmitterContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointEmitterContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointEmitterContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointEmitterContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.Direction);
             output.Write(value.Spread);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1560,12 +1854,17 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class RotationControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<RotationControllerContent>
+    partial class RotationControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<RotationControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RotationControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RotationControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RotationControllerContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.EndRotation);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1585,12 +1884,17 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SizeControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SizeControllerContent>
+    partial class SizeControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SizeControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SizeControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SizeControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SizeControllerContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.EndSize);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1610,12 +1914,17 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SpeedControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpeedControllerContent>
+    partial class SpeedControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpeedControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpeedControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpeedControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpeedControllerContent value)
         {
+            BeginWrite(output, value);
             output.WriteObject(value.EndSpeed);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1635,16 +1944,21 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class SphereEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SphereEmitterContent>
+    partial class SphereEmitterContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SphereEmitterContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SphereEmitterContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SphereEmitterContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SphereEmitterContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Shell);
             output.Write(value.Radiate);
             output.Write(value.Center);
             output.Write(value.Radius);
             output.Write(value.Direction);
             output.Write(value.Spread);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
@@ -1664,14 +1978,19 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    class TangentForceControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TangentForceControllerContent>
+    partial class TangentForceControllerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TangentForceControllerContent>
     {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TangentForceControllerContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TangentForceControllerContent value);        
+        
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TangentForceControllerContent value)
         {
+            BeginWrite(output, value);
             output.Write(value.Force);
             output.Write(value.Up);
             output.Write(value.Center);
             output.Write(value.Enabled);
+            EndWrite(output, value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)

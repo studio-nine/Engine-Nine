@@ -87,7 +87,7 @@ namespace <#= namespaceGroup.Key #>
             <#= memberName #> = (<#= memberTypeName #>)System.ComponentModel.TypeDescriptor.GetConverter(typeof(<#= memberTypeName #>)).ConvertFromInvariantString("<#= defaultValueString #>");
 <#
         }
-        else if (IsCollection(memberType) || IsDictionary(memberType) || HasDefaultPublicConstructor(memberType))
+        else if (IsCollection(memberType) || IsDictionary(memberType) || (HasDefaultPublicConstructor(memberType) && defaultValue != null))
         {
 #>
             <#= memberName #> = new <#= memberTypeName #>();

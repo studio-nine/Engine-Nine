@@ -45,6 +45,10 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        public System.Object Tag { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Microsoft.Xna.Framework.Graphics.Texture2D Texture { get; set; }
         /// <summary>
         /// 
@@ -72,6 +76,7 @@ namespace Nine.Graphics.Effects
             this.AlphaFunction = effect.AlphaFunction;
             this.DiffuseColor = effect.DiffuseColor;
             this.ReferenceAlpha = effect.ReferenceAlpha;
+            this.Tag = effect.Tag;
             this.Texture = effect.Texture;
             this.VertexColorEnabled = effect.VertexColorEnabled;
         }
@@ -93,6 +98,8 @@ namespace Nine.Graphics.Effects
                 this.effect.DiffuseColor = this.DiffuseColor;
             if (this.effect.ReferenceAlpha != this.ReferenceAlpha)
                 this.effect.ReferenceAlpha = this.ReferenceAlpha;
+            if (this.effect.Tag != this.Tag)
+                this.effect.Tag = this.Tag;
             if (this.effect.Texture != this.Texture)
                 this.effect.Texture = this.Texture;
             if (this.effect.VertexColorEnabled != this.VertexColorEnabled)
@@ -112,6 +119,7 @@ namespace Nine.Graphics.Effects
             cloned.AlphaFunction = this.AlphaFunction;
             cloned.DiffuseColor = this.DiffuseColor;
             cloned.ReferenceAlpha = this.ReferenceAlpha;
+            cloned.Tag = this.Tag;
             cloned.Texture = this.Texture;
             cloned.VertexColorEnabled = this.VertexColorEnabled;
             OnClone(cloned);
@@ -164,6 +172,10 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        public System.Object Tag { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Microsoft.Xna.Framework.Graphics.Texture2D Texture { get; set; }
         /// <summary>
         /// 
@@ -198,6 +210,7 @@ namespace Nine.Graphics.Effects
             this.PreferPerPixelLighting = effect.PreferPerPixelLighting;
             this.SpecularColor = effect.SpecularColor;
             this.SpecularPower = effect.SpecularPower;
+            this.Tag = effect.Tag;
             this.Texture = effect.Texture;
             this.TextureEnabled = effect.TextureEnabled;
             this.VertexColorEnabled = effect.VertexColorEnabled;
@@ -226,6 +239,8 @@ namespace Nine.Graphics.Effects
                 this.effect.SpecularColor = this.SpecularColor;
             if (this.effect.SpecularPower != this.SpecularPower)
                 this.effect.SpecularPower = this.SpecularPower;
+            if (this.effect.Tag != this.Tag)
+                this.effect.Tag = this.Tag;
             if (this.effect.Texture != this.Texture)
                 this.effect.Texture = this.Texture;
             if (this.effect.TextureEnabled != this.TextureEnabled)
@@ -250,6 +265,7 @@ namespace Nine.Graphics.Effects
             cloned.PreferPerPixelLighting = this.PreferPerPixelLighting;
             cloned.SpecularColor = this.SpecularColor;
             cloned.SpecularPower = this.SpecularPower;
+            cloned.Tag = this.Tag;
             cloned.Texture = this.Texture;
             cloned.TextureEnabled = this.TextureEnabled;
             cloned.VertexColorEnabled = this.VertexColorEnabled;
@@ -283,6 +299,10 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        public System.Object Tag { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Microsoft.Xna.Framework.Graphics.Texture2D Texture { get; set; }
         /// <summary>
         /// 
@@ -312,6 +332,7 @@ namespace Nine.Graphics.Effects
             this.effect = effect;
             this.Alpha = effect.Alpha;
             this.DiffuseColor = effect.DiffuseColor;
+            this.Tag = effect.Tag;
             this.Texture = effect.Texture;
             this.Texture2 = effect.Texture2;
             this.VertexColorEnabled = effect.VertexColorEnabled;
@@ -330,6 +351,8 @@ namespace Nine.Graphics.Effects
                 this.effect.Alpha = this.Alpha;
             if (this.effect.DiffuseColor != this.DiffuseColor)
                 this.effect.DiffuseColor = this.DiffuseColor;
+            if (this.effect.Tag != this.Tag)
+                this.effect.Tag = this.Tag;
             if (this.effect.Texture != this.Texture)
                 this.effect.Texture = this.Texture;
             if (this.effect.Texture2 != this.Texture2)
@@ -349,6 +372,7 @@ namespace Nine.Graphics.Effects
             cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
             cloned.Alpha = this.Alpha;
             cloned.DiffuseColor = this.DiffuseColor;
+            cloned.Tag = this.Tag;
             cloned.Texture = this.Texture;
             cloned.Texture2 = this.Texture2;
             cloned.VertexColorEnabled = this.VertexColorEnabled;
@@ -402,6 +426,10 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        public System.Object Tag { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Microsoft.Xna.Framework.Graphics.Texture2D Texture { get; set; }
 
         private EnvironmentMapMaterial() { }
@@ -428,6 +456,7 @@ namespace Nine.Graphics.Effects
             this.EnvironmentMapAmount = effect.EnvironmentMapAmount;
             this.EnvironmentMapSpecular = effect.EnvironmentMapSpecular;
             this.FresnelFactor = effect.FresnelFactor;
+            this.Tag = effect.Tag;
             this.Texture = effect.Texture;
         }
         
@@ -454,6 +483,8 @@ namespace Nine.Graphics.Effects
                 this.effect.EnvironmentMapSpecular = this.EnvironmentMapSpecular;
             if (this.effect.FresnelFactor != this.FresnelFactor)
                 this.effect.FresnelFactor = this.FresnelFactor;
+            if (this.effect.Tag != this.Tag)
+                this.effect.Tag = this.Tag;
             if (this.effect.Texture != this.Texture)
                 this.effect.Texture = this.Texture;
       
@@ -474,6 +505,7 @@ namespace Nine.Graphics.Effects
             cloned.EnvironmentMapAmount = this.EnvironmentMapAmount;
             cloned.EnvironmentMapSpecular = this.EnvironmentMapSpecular;
             cloned.FresnelFactor = this.FresnelFactor;
+            cloned.Tag = this.Tag;
             cloned.Texture = this.Texture;
             OnClone(cloned);
             return cloned;
@@ -521,6 +553,10 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        public System.Object Tag { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Microsoft.Xna.Framework.Graphics.Texture2D Texture { get; set; }
         /// <summary>
         /// 
@@ -550,6 +586,7 @@ namespace Nine.Graphics.Effects
             this.PreferPerPixelLighting = effect.PreferPerPixelLighting;
             this.SpecularColor = effect.SpecularColor;
             this.SpecularPower = effect.SpecularPower;
+            this.Tag = effect.Tag;
             this.Texture = effect.Texture;
             this.WeightsPerVertex = effect.WeightsPerVertex;
         }
@@ -575,6 +612,8 @@ namespace Nine.Graphics.Effects
                 this.effect.SpecularColor = this.SpecularColor;
             if (this.effect.SpecularPower != this.SpecularPower)
                 this.effect.SpecularPower = this.SpecularPower;
+            if (this.effect.Tag != this.Tag)
+                this.effect.Tag = this.Tag;
             if (this.effect.Texture != this.Texture)
                 this.effect.Texture = this.Texture;
             if (this.effect.WeightsPerVertex != this.WeightsPerVertex)
@@ -596,6 +635,7 @@ namespace Nine.Graphics.Effects
             cloned.PreferPerPixelLighting = this.PreferPerPixelLighting;
             cloned.SpecularColor = this.SpecularColor;
             cloned.SpecularPower = this.SpecularPower;
+            cloned.Tag = this.Tag;
             cloned.Texture = this.Texture;
             cloned.WeightsPerVertex = this.WeightsPerVertex;
             OnClone(cloned);

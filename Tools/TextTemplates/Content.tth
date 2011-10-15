@@ -50,17 +50,15 @@
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.TextureCube", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Model", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent>");
-                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");                
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
                 TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
                 TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent");
-                TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart[]", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent[]");
-                TypeMapping.Add("Nine.Graphics.IEffectInstance", "System.Object");
-                TypeMapping.Add("Nine.Graphics.Effects.Material", "System.Object");
-                TypeMapping.Add("Nine.Graphics.ObjectModel.DrawableModelPart[]", "Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[]");
                 TypeMapping.Add("Nine.Graphics.ObjectModel.Scene", "Nine.Content.Pipeline.Graphics.ObjectModel.SceneContent");
                 TypeMapping.Add("Nine.Graphics.ObjectModel.Transformable", "System.Object");
+                TypeMapping.Add("Nine.Animations.TweenAnimation`1[[Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<Microsoft.Xna.Framework.Vector3>");                
+                TypeMapping.Add("Nine.Animations.TweenAnimation`1[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single>");                
             }
         }
 
@@ -106,11 +104,11 @@
 
         bool IsContentSerializable(Type type)
         {
-            if (type == null || type.IsInterface)
+            if (type == null)
                 return false;
             if (KnownContentTypes.ExcludedTypes.Contains(type.FullName))
                 return false;
-            if (type.IsValueType || type.IsEnum || type == typeof(string) || type.IsPrimitive)
+            if (type.IsValueType || type.IsEnum || type == typeof(string) || type == typeof(object) || type.IsPrimitive || type.IsInterface || type.IsAbstract)
                 return true;
             if (type.IsArray)
                 return IsContentSerializable(type.GetElementType());
@@ -163,6 +161,11 @@
             return KnownContentTypes.TypeMapping.ContainsKey(type.FullName);
         }
 
+        string GetKnownContentType(Type type)
+        {
+            return KnownContentTypes.TypeMapping[type.FullName];
+        }
+
         bool IsCollection(Type type)
         {
             return !(typeof(Array).IsAssignableFrom(type)) && !type.Name.Contains("ReadOnly") &&
@@ -179,15 +182,22 @@
 
         bool IsDictionary(Type type)
         {
-            return type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>), null).Length > 0;
+            return FindDictionaryInterface(type) != null;
         }
 
         Type[] GetDictionaryType(Type type)
         {
-            var i = type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>), null).FirstOrDefault();
+            var i = FindDictionaryInterface(type);
             if (i == null)
                 return null;
             return i.GetGenericArguments();
+        }
+
+        Type FindDictionaryInterface(Type type)
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+                return type;
+            return type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>), null).FirstOrDefault();
         }
 
         string GetContentPipelineNamespace(Type type)
@@ -238,27 +248,34 @@
                 }
                 name += ">";
             }
-            return type.Namespace + "." + name;
+            return type.IsGenericParameter ? name : type.Namespace + "." + name;
         }
 
         string GetClassName(Type type)
         {
-            if (type.IsGenericType)
-                return GetClassFullName(type).Split('<')[0].Split('.').Last();
-            return GetClassFullName(type).Split('.').Last();
+            var className = GetClassFullName(type);
+            var generic = className.IndexOf('<');
+            return generic > 0 ? className.Substring(0, generic).Split('.').Last() + className.Substring(generic, className.Length - generic)
+                               : className.Split('.').Last();
         }
 
         string GetContentClassFullName(Type type)
         {
+            if (type.IsGenericParameter)
+                return type.Name;
             if (type.IsValueType || type.IsEnum || type.IsPrimitive || type == typeof(string))
                 return GetClassFullName(type);
-            if (KnownContentTypes.TypeMapping.ContainsKey(type.FullName))
-                return KnownContentTypes.TypeMapping[type.FullName];
+            if (IsKnownType(type))
+                return GetKnownContentType(type);
             if (IsDictionary(type))
                 return "System.Collections.Generic.Dictionary<" + GetContentClassFullName(GetDictionaryType(type)[0]) + ", "
                                                                 + GetContentClassFullName(GetDictionaryType(type)[1]) + ">";
             if (IsCollection(type))
                 return "System.Collections.Generic.List<" + GetContentClassFullName(GetCollectionType(type)) + ">";
+            if (type.IsArray)
+                return GetContentClassFullName(type.GetElementType()) + "[]";
+            if (type.IsInterface || type.IsAbstract)
+                return "System.Object";
             if (!(!HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))))
                 return GetClassFullName(type);
 
@@ -271,7 +288,7 @@
                 count = Convert.ToInt32(name[index].ToString());
                 name = name.Remove(index, 1);
             }
-            if (!type.IsGenericType && !IsCollection(type) && !IsDictionary(type))
+            if (!(type.IsGenericType && !type.IsGenericTypeDefinition) && !IsCollection(type) && !IsDictionary(type))
                 name = name + "Content";
             if (type.IsGenericTypeDefinition)
             {
@@ -307,9 +324,10 @@
 
         string GetContentClassName(Type type)
         {
-            if (type.IsGenericType)
-                return GetContentClassFullName(type).Split('<')[0].Split('.').Last();
-            return GetContentClassFullName(type).Split('.').Last();
+            var className = GetContentClassFullName(type);
+            var generic = className.IndexOf('<');
+            return generic > 0 ? className.Substring(0, generic).Split('.').Last() + className.Substring(generic, className.Length - generic)
+                               : className.Split('.').Last();
         }
 
         string GetContentClassConstructorName(Type type)
@@ -321,6 +339,15 @@
                 name = name.Remove(index, 2);
             }
             return name + "Content";
+        }
+
+        string AppendClassName(string className, string append)
+        {
+            var generic = className.IndexOf('<');
+            if (generic < 0)
+                generic = className.IndexOf('`');
+            return generic > 0 ? className.Substring(0, generic) + append + className.Substring(generic, className.Length - generic)
+                               : className + append;
         }
 
         Type GetMemberType(MemberInfo member)
@@ -378,6 +405,8 @@
             var type = GetMemberType(member);
             if (type == null)
                 return null;
+            if (declaringType.IsGenericTypeDefinition)
+                declaringType = declaringType.MakeGenericType(typeof(int));
             object obj = null;
             if (HasDefaultGraphicsDeviceConstructor(declaringType))
             {
@@ -482,7 +511,17 @@
         string GetContentReaderAssemblyQualifiedName(Type type)
         {
             var list = type.AssemblyQualifiedName.Split(',').ToList();
-            list[0] = list[0] + "Reader";
+            if (type.IsGenericType && type.IsGenericTypeDefinition)
+                list[0] += "[\" + " + string.Join(" + ", type.GetGenericArguments().Select(t => "string.Format(\"[{0}]\", typeof(" + t.Name + ").AssemblyQualifiedName)")) + " + \"]";
+            list[0] = AppendClassName(list[0], "Reader");
+            return string.Join(",", list);
+        }
+
+        string GetContentRuntimeTypeAssemblyQualifiedName(Type type)
+        {
+            var list = type.AssemblyQualifiedName.Split(',').ToList();
+            if (type.IsGenericType && type.IsGenericTypeDefinition)
+                list[0] += "[\" + " + string.Join(" + ", type.GetGenericArguments().Select(t => "string.Format(\"[{0}]\", typeof(" + t.Name + ").AssemblyQualifiedName)")) + " + \"]";
             return string.Join(",", list);
         }
         

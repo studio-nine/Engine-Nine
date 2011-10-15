@@ -77,7 +77,7 @@ namespace Game
         /// </summary>
         protected override void LoadContent()
         {
-            //Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")) { Position = new Vector2(100, 100), Scale = 5, Color = Color.Black });
+            Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
 #if WINDOWS_PHONE

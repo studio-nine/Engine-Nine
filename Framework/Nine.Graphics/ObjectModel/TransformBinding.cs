@@ -42,15 +42,15 @@ namespace Nine.Graphics.ObjectModel
         public Matrix? Transform { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether source object is scaled 
-        /// according to the target object.
-        /// </summary>
-        public bool ScaleEnabled { get; set; }
-
-        /// <summary>
         /// Gets or sets the bone name if the target is a model.
         /// </summary>
         public string TargetBone { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether source object is scaled 
+        /// according to the target bone.
+        /// </summary>
+        public bool UseBoneScale { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TransformBinding"/> class.

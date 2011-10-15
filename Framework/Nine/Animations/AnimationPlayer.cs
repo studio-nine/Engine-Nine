@@ -18,6 +18,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Animations
@@ -33,7 +34,23 @@ namespace Nine.Animations
         /// <summary>
         /// Gets the dictionary that stores any animation data.
         /// </summary>
+        [ContentSerializerIgnore]
         public IDictionary<string, IAnimation> Animations { get; private set; }
+        
+        [ContentSerializer(ElementName = "Animations")]
+        internal IDictionary<string, object> AnimationsSerializer
+        {
+            get { throw new NotSupportedException(); }
+            set
+            {
+                Animations.Clear();
+                foreach (var pair in value)
+                {
+                    if (pair.Value is IAnimation)
+                        Animations.Add(pair.Key, (IAnimation)pair.Value);
+                }
+            }
+        }
         
         /// <summary>
         /// Gets or sets user data.
@@ -46,7 +63,7 @@ namespace Nine.Animations
         public AnimationPlayer()
         {
             this.Animations = new Dictionary<string, IAnimation>();
-            base.animations = this.Animations;
+            base.SharedAnimations = this.Animations;
         }
 
         public bool Contains(string name)
@@ -66,7 +83,7 @@ namespace Nine.Animations
                 if (!channels.TryGetValue(channelIdentifier, out channel))
                 {
                     channel = new AnimationPlayerChannel();
-                    channel.animations = Animations;
+                    channel.SharedAnimations = Animations;
                     channels.Add(channelIdentifier, channel);
                 }
 
@@ -80,7 +97,7 @@ namespace Nine.Animations
             {
                 CurrentName = Animations.Keys.FirstOrDefault();
                 if (CurrentName != null)
-                        Current = Animations[CurrentName];
+                    Current = Animations[CurrentName];
             }
             base.OnStarted();
         }
@@ -103,7 +120,7 @@ namespace Nine.Animations
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class AnimationPlayerChannel : Animation
     {
-        internal IDictionary<string, IAnimation> animations;
+        internal IDictionary<string, IAnimation> SharedAnimations;
 
         public string CurrentName { get; internal set; }
 
@@ -116,7 +133,7 @@ namespace Nine.Animations
         {
             IAnimation current;
 
-            if (!animations.TryGetValue(animationName, out current))
+            if (!SharedAnimations.TryGetValue(animationName, out current))
             {
                 throw new KeyNotFoundException("name");
             }
@@ -172,7 +189,7 @@ namespace Nine.Animations
         {
             IAnimation current = animation;
 
-            if (animations.ContainsKey(animationName))
+            if (SharedAnimations.ContainsKey(animationName))
                 throw new ArgumentException(
                     string.Format("An animation with the name {0} already exists.", animationName));
             
@@ -187,34 +204,38 @@ namespace Nine.Animations
 
         protected override void OnStarted()
         {
-            base.OnStarted();
-
             if (Current != null)
+            {
                 Current.Play();
+                base.OnStarted();
+            }
         }
 
         protected override void OnPaused()
         {
-            base.OnPaused();
-
             if (Current != null)
+            {
                 Current.Pause();
+                base.OnPaused();
+            }
         }
 
         protected override void OnStopped()
         {
-            base.OnStopped();
-
             if (Current != null)
+            {
                 Current.Stop();
+                base.OnStopped();
+            }
         }
 
         protected override void OnResumed()
         {
-            base.OnResumed();
-
             if (Current != null)
+            {
                 Current.Resume();
+                base.OnResumed();
+            }
         }
 
         public override void Update(TimeSpan elapsedTime)

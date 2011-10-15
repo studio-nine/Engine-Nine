@@ -58,40 +58,47 @@
             <DualTextureMaterialContent Texture2="flake" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
-
-    <DrawableModelContent Model="Models\AlphaPalm" Position="5, 0, 10">
-        <DrawableModelContent.ModelParts>
-            <DrawableModelPartContent>
-                <DrawableModelPartContent.Material>
-                    <CustomMaterialContent Effect="cage" IsTransparent="True" />
-                </DrawableModelPartContent.Material>
-            </DrawableModelPartContent>
-            <DrawableModelPartContent>
-                <DrawableModelPartContent.Material>
-                    <BasicMaterialContent DepthAlphaEnabled="True" IsTransparent="True" TextureEnabled="True" />
-                </DrawableModelPartContent.Material>
-            </DrawableModelPartContent>
-        </DrawableModelContent.ModelParts>
-    </DrawableModelContent>
-
-    <DrawableModelContent Model="Models\Dude" Position="15, 0, 10">
-        <DrawableModelContent.Material>
-            <ModelMaterialContent FogEnabled="True" ShadowEnabled="True" NormalMappingEnabled="True" SkinningEnabled="True" SpecularColor="1, 1, 1" SpecularMappingEnabled="True" SpecularPower="128" />
-        </DrawableModelContent.Material>
-    </DrawableModelContent>
     
     <DrawableParticleEffectContent ParticleEffect="Galaxy" />
-    <DisplayObjectContent Position="20, 0, 10" Name="CombinedObject">        
+    
+    <DisplayObjectContent Position="10, 0, 10" Name="CombinedObject">
         <DrawableModelContent Name="Dude" Model="Models\Dude">
             <DrawableModelContent.Material>
-                <SkinnedMaterialContent />
+                <ModelMaterialContent FogEnabled="True" ShadowEnabled="True" NormalMappingEnabled="True" SkinningEnabled="True" SpecularColor="1, 1, 1" SpecularMappingEnabled="True" SpecularPower="128" />
             </DrawableModelContent.Material>
-        </DrawableModelContent>        
-        <DrawableModelContent Name="Tree" Model="Models\AlphaPalm" />
+        </DrawableModelContent>
+
+        <DrawableModelContent Name="Tree"  Model="Models\AlphaPalm">
+            <DrawableModelContent.ModelParts>
+                <DrawableModelPartContent>
+                    <DrawableModelPartContent.Material>
+                        <CustomMaterialContent Effect="cage" IsTransparent="True" />
+                    </DrawableModelPartContent.Material>
+                </DrawableModelPartContent>
+                <DrawableModelPartContent>
+                    <DrawableModelPartContent.Material>
+                        <BasicMaterialContent DepthAlphaEnabled="True" IsTransparent="True" TextureEnabled="True" />
+                    </DrawableModelPartContent.Material>
+                </DrawableModelPartContent>
+            </DrawableModelContent.ModelParts>
+        </DrawableModelContent>
 
         <DisplayObjectContent.TransformBindings>
-            <TransformBindingContent Source="Tree" Target="Dude" TargetBone="R_Hand" />
+            <TransformBindingContent Source="Tree" Target="Dude" TargetBone="R_Hand" Scale="0.25, 0.25, 0.25" Position="0.2, 0.3, -0.6" Rotation="15, 15, 0" />
         </DisplayObjectContent.TransformBindings>
+
+        <DisplayObjectContent.Animations>
+            <LayeredAnimationContent x:Key="Default" >
+                <!--
+                <SingleAnimationContent TargetProperty="Dude.Alpha" From="1" To="0" Repeat="99999999" AutoReverse="True" Duration="00:00:01" />
+                -->
+                <TransformAnimationContent TargetProperty="Dude.Transform">
+                    <TransformAnimationContent.RotationZ>
+                        <SingleAnimationContent From="0" To="360" Repeat="99999999" Duration="00:00:05" />
+                    </TransformAnimationContent.RotationZ>
+                </TransformAnimationContent>
+            </LayeredAnimationContent>
+        </DisplayObjectContent.Animations>
     </DisplayObjectContent>
     
 </SceneContent>

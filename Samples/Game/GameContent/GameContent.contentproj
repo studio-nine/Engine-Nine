@@ -148,14 +148,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Worlds\Scene.WindowsPhone.xaml">
+    <None Include="..\..\Content\Worlds\Scene.WindowsPhone.xaml">
       <Link>Scene.WindowsPhone.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <Name>Scene.WindowsPhone</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </None>
     <Compile Include="..\..\Content\Worlds\Scene.xaml">
       <Link>Scene.xaml</Link>
       <Generator>MSBuild:Compile</Generator>

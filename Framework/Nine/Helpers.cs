@@ -29,14 +29,44 @@ namespace Nine
     /// </summary>
     internal static class LerpHelper
     {
+        public static byte Lerp(byte x, byte y, float amount)
+        {
+            return (byte)(x * (1 - amount) + y * amount);
+        }
+        
+        public static char Lerp(char x, char y, float amount)
+        {
+            return (char)(x * (1 - amount) + y * amount);
+        }
+
         public static int Lerp(int x, int y, float amount)
         {
             return (int)(x * (1 - amount) + y * amount);
         }
 
+        public static short Lerp(short x, short y, float amount)
+        {
+            return (short)(x * (1 - amount) + y * amount);
+        }
+
+        public static long Lerp(long x, long y, float amount)
+        {
+            return (long)(x * (1 - amount) + y * amount);
+        }
+
         public static double Lerp(double x, double y, float amount)
         {
             return x * (1 - amount) + y * amount;
+        }
+
+        public static decimal Lerp(decimal x, decimal y, float amount)
+        {
+            return x * (decimal)(1 - amount) + y * (decimal)amount;
+        }
+
+        public static bool Lerp(bool x, bool y, float amount)
+        {
+            return amount < 0.5f ? x : y;
         }
 
         public static Rectangle Lerp(Rectangle x, Rectangle y, float amount)

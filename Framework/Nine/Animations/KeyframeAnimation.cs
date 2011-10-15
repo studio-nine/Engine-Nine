@@ -190,10 +190,13 @@ namespace Nine.Animations
             }
         }
 
-        protected sealed override TimeSpan GetDuration()
+        protected override TimeSpan DurationValue
         {
-            int realFrames = Ending == KeyframeEnding.Discard ? (TotalFrames - 1) : TotalFrames;
-            return TimeSpan.FromSeconds( realFrames / FramesPerSecond);
+            get
+            {
+                int realFrames = Ending == KeyframeEnding.Discard ? (TotalFrames - 1) : TotalFrames;
+                return TimeSpan.FromSeconds(realFrames / FramesPerSecond);
+            }
         }
 
         /// <summary>

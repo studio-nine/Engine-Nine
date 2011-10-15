@@ -15,6 +15,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Animations
@@ -44,13 +45,18 @@ namespace Nine.Animations
     /// Defines a basic primitive animation that changes it value 
     /// base on time.
     /// </summary>
-    public class TweenAnimation<T> : TimelineAnimation where T : struct
+    [ContentSerializable]
+    public class TweenAnimation<T> : TimelineAnimation, ISupportTarget where T : struct
     {
         private T from;
         private T to;
-        private MemberInfo member;
+        private object target;
+        private string targetProperty;
+        private bool expressionChanged;
+        private PropertyExpression expression;
         private Interpolate<T> lerp;
         private Operator<T> add;
+        private ICurve curve = Curves.Linear;
 
         /// <summary>
         /// Gets or sets where the tween starts.
@@ -85,7 +91,11 @@ namespace Nine.Animations
         /// Gets or sets the curve that controls the detailed motion of this
         /// tween animation.
         /// </summary>
-        public ICurve Curve { get; set; }
+        public ICurve Curve
+        {
+            get { return curve; }
+            set { curve = value ?? Curves.Linear; }
+        }
 
         /// <summary>
         /// Gets or sets the duration of this animation.
@@ -96,14 +106,23 @@ namespace Nine.Animations
         /// Gets or sets the target object that this tweening will affect.
         /// This property is not required.
         /// </summary>
-        public object Target { get; set; }
+        [ContentSerializerIgnore]
+        public object Target
+        {
+            get { return target; }
+            set { if (target != value) { target = value; expressionChanged = true; } }
+        }
 
         /// <summary>
         /// Gets or sets the property or field name of the target object.
         /// The property or field must be publicly visible.
         /// This property is not required.
         /// </summary>
-        public string TargetProperty { get; set; }
+        public string TargetProperty
+        {
+            get { return targetProperty; }
+            set { if (targetProperty != value) { targetProperty = value; expressionChanged = true; } }
+        }
 
         /// <summary>
         /// Create a new instance of tweener.
@@ -132,34 +151,24 @@ namespace Nine.Animations
             this.Repeat = 1;
         }
 
-        protected sealed override TimeSpan GetDuration()
+        protected override TimeSpan DurationValue
         {
-            return Duration;
+            get { return Duration; }
         }
 
         protected override void OnStarted()
         {
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
             {
-                // Extract a valid property target
-                member = Target.GetType().GetProperty(TargetProperty);
-
-                if (member == null)
-                    member = Target.GetType().GetField(TargetProperty);
-
-                if (member == null)
-                {
-                    throw new ArgumentException(
-                        "Type " + Target.GetType().Name +
-                        " does not have a valid public property or field: " + TargetProperty);
-                }
+                if (expression == null || expressionChanged)
+                    expression = new PropertyExpression(Target, TargetProperty);
             }
 
             // Initialize from
             if (From.HasValue)
                 from = From.Value;
-            else if (member != null)
-                from = GetValue();
+            else if (expression != null)
+                from = (T)expression.Value;
             else
                 throw new InvalidOperationException(
                     "When From is set to null, a valid Target and TargetProperty must be set");
@@ -187,9 +196,6 @@ namespace Nine.Animations
 
         protected override void OnSeek(TimeSpan elapsedTime, TimeSpan previousPosition)
         {
-            if (Curve == null)
-                throw new ArgumentNullException("Curve cannot be null");
-
             float percentage = 0;
             float position = (float)(elapsedTime.TotalSeconds / Duration.TotalSeconds);
 
@@ -210,7 +216,9 @@ namespace Nine.Animations
                 }
             }
 
-            SetValue(Value = lerp(from, to, percentage));
+            Value = lerp(from, to, percentage);
+            if (expression != null)
+                expression.Value = Value;
         }
 
         private T ReflectionAdd(T x, T y)
@@ -236,8 +244,20 @@ namespace Nine.Animations
                 field.SetValue(this, (Interpolate<float>)MathHelper.Lerp);
             else if (typeof(T) == typeof(double))
                 field.SetValue(this, (Interpolate<double>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(bool))
+                field.SetValue(this, (Interpolate<bool>)LerpHelper.Lerp);
             else if (typeof(T) == typeof(int))
                 field.SetValue(this, (Interpolate<int>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(char))
+                field.SetValue(this, (Interpolate<char>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(byte))
+                field.SetValue(this, (Interpolate<byte>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(short))
+                field.SetValue(this, (Interpolate<short>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(long))
+                field.SetValue(this, (Interpolate<long>)LerpHelper.Lerp);
+            else if (typeof(T) == typeof(decimal))
+                field.SetValue(this, (Interpolate<decimal>)LerpHelper.Lerp);
             else if (typeof(T) == typeof(Vector2))
                 field.SetValue(this, (Interpolate<Vector2>)Vector2.Lerp);
             else if (typeof(T) == typeof(Vector3))
@@ -289,38 +309,9 @@ namespace Nine.Animations
             else if (typeof(T) == typeof(Ray))
                 field.SetValue(this, (Operator<Ray>)AddHelper.Add);
         }
-
-        private T GetValue()
-        {
-            if (Target != null)
-            {
-                if (member is FieldInfo)
-                {
-                    return (T)(member as FieldInfo).GetValue(Target);
-                }
-
-                if (member is PropertyInfo)
-                {
-                    return (T)(member as PropertyInfo).GetValue(Target, null);
-                }
-            }
-
-            return default(T);
-        }
-
-        private void SetValue(T value)
-        {
-            if (Target != null)
-            {
-                if (member is FieldInfo)
-                {
-                    (member as FieldInfo).SetValue(Target, value);
-                }
-                else if (member is PropertyInfo)
-                {
-                    (member as PropertyInfo).SetValue(Target, value, null);
-                }
-            }
-        }
     }
+
+#if !TEXT_TEMPLATE
+    partial class TweenAnimationReader<T> where T : struct { }
+#endif
 }

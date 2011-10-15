@@ -124,4 +124,22 @@ namespace Nine
     {
 
     }
+
+    /// <summary>
+    /// This interface supports the infrastructure of the framework and is not 
+    /// intended to be used by externals.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public interface ISupportTarget
+    {
+        /// <summary>
+        /// Gets or sets the target.
+        /// </summary>
+        object Target { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target property.
+        /// </summary>
+        string TargetProperty { get; set; }
+    }
 }

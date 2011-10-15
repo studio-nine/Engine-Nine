@@ -70,6 +70,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="ExpressionTest.cs" />
     <Compile Include="Graphics\ObjectModel\RendererTest.cs" />
     <Compile Include="OctreeObjectManagerTest.cs" />
     <Compile Include="UniformGridTest.cs" />

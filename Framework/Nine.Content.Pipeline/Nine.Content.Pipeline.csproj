@@ -124,7 +124,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
+    <Compile Include="Animations\AnimationContent.cs" />
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Dictionary.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Design\BlendStateConverter.cs" />
     <Compile Include="Graphics\ContentGraphics.cs" />

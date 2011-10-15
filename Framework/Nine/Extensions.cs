@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -76,6 +77,25 @@ namespace Nine
         {
             foreach (T item in collection)
                 action(item);
+        }
+
+        internal static IEnumerable<T> ForEachRecursive<T>(this IEnumerable target)
+        {
+            if (target != null)
+            {
+                foreach (var item in target)
+                {
+                    if (item is T)
+                        yield return (T)item;
+
+                    IEnumerable enumerable = item as IEnumerable;
+                    if (enumerable != null)
+                    {
+                        foreach (var result in ForEachRecursive<T>(enumerable))
+                            yield return result;
+                    }
+                }
+            }
         }
     }
 

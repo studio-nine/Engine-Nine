@@ -85,12 +85,12 @@ namespace Nine.Animations
         /// Gets the total length of the animation without been affected
         /// by <c>Speed</c> factor.
         /// </summary>
-        public TimeSpan Duration { get { return GetDuration(); } }
+        public TimeSpan Duration { get { return DurationValue; } }
 
         /// <summary>
         /// When implemented, returns the duration of this animation.
         /// </summary>
-        protected abstract TimeSpan GetDuration();
+        protected abstract TimeSpan DurationValue { get; }
 
         /// <summary>
         /// Gets or sets the playing speed of this animation.

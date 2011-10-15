@@ -60,7 +60,6 @@ namespace Nine.Graphics.ObjectModel
         /// owned by this <c>DrawableModel</c> except for texture settings.
         /// To specify material for each individual model part, see <c>DrawableModelPart.Material</c>.
         /// </remarks>
-        [ContentSerializer]
         public Material Material 
         {
             get 

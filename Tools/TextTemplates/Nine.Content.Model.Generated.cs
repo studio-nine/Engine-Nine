@@ -9,4 +9,344 @@
 
 
 #if !TEXT_TEMPLATE
+namespace Nine.Content.Pipeline.Animations
+{
+    /// <summary>
+    /// Content model for <c>AnimationPlayer</c>.
+    /// Represents a basic animation player that can play multiple animation sequences using different channels.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.AnimationPlayer, Nine")]
+    public partial class AnimationPlayerContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.Dictionary<System.String, System.Object> Animations { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Object Tag { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>AnimationPlayerContent</c>.
+        /// </summary>
+        public AnimationPlayerContent()
+        {
+            Animations = new System.Collections.Generic.Dictionary<System.String, System.Object>();
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>DelayAnimation</c>.
+    /// An dummy animation that completes after the specified duration. This is usually used with SequentialAnimation to delay the playing of subsequent animations.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.DelayAnimation, Nine")]
+    public partial class DelayAnimationContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean AutoReverse { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("00:00:00")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.TimeSpan Duration { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Repeat { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Speed { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("Forward")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Animations.AnimationDirection StartupDirection { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>DelayAnimationContent</c>.
+        /// </summary>
+        public DelayAnimationContent()
+        {
+            AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            Duration = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
+            Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>LayeredAnimation</c>.
+    /// Contains several animation clips that are played concurrently. The animation completes when all of its containing animations had finished playing.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.LayeredAnimation, Nine")]
+    public partial class LayeredAnimationContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.List<System.Object> Animations { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 Repeat { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>LayeredAnimationContent</c>.
+        /// </summary>
+        public LayeredAnimationContent()
+        {
+            Animations = new System.Collections.Generic.List<System.Object>();
+            Repeat = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("1");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>SequentialAnimation</c>.
+    /// Contains several animation clips that are played one after another. The animation completes when the last animation has finished playing.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.SequentialAnimation, Nine")]
+    public partial class SequentialAnimationContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.List<System.Object> Animations { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 Repeat { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>SequentialAnimationContent</c>.
+        /// </summary>
+        public SequentialAnimationContent()
+        {
+            Animations = new System.Collections.Generic.List<System.Object>();
+            Repeat = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("1");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>TransformAnimation</c>.
+    /// Defines an animation that modifies the transform of the target object.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.TransformAnimation, Nine")]
+    public partial class TransformAnimationContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationX { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationY { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationZ { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> ScaleX { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> ScaleY { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> ScaleZ { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String TargetProperty { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> X { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> Y { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> Z { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>TransformAnimationContent</c>.
+        /// </summary>
+        public TransformAnimationContent()
+        {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>TweenAnimation`1</c>.
+    /// Defines a basic primitive animation that changes it value  base on time.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.TweenAnimation`1, Nine")]
+    public partial class TweenAnimationContent<T>
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean AutoReverse { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<T> By { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Object Curve { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.TimeSpan Duration { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Animations.Easing Easing { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<T> From { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Repeat { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Speed { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("Forward")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Animations.AnimationDirection StartupDirection { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String TargetProperty { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<T> To { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>TweenAnimationContent</c>.
+        /// </summary>
+        public TweenAnimationContent()
+        {
+            AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+}
 #endif

@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Animations
@@ -26,12 +28,18 @@ namespace Nine.Animations
     /// </summary>
     public class SequentialAnimation : Animation, IEnumerable<IAnimation>
     {
-        List<IAnimation> animations = new List<IAnimation>();
-
         /// <summary>
-        /// Gets all the animations.
+        /// Gets all the layers in the animation.
         /// </summary>
-        public IList<IAnimation> Animations { get { return animations; } }
+        [ContentSerializerIgnore]
+        public IList<IAnimation> Animations { get; private set; }
+
+        [ContentSerializer(ElementName = "Animations")]
+        internal IList<object> AnimationsSerializer
+        {
+            get { throw new NotSupportedException(); }
+            set { Animations.Clear(); Animations.AddRange(value.OfType<IAnimation>()); }
+        }
 
         /// <summary>
         /// Gets or sets number of times this animation will be played.
@@ -47,7 +55,11 @@ namespace Nine.Animations
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c>.
         /// </summary>
-        public SequentialAnimation() { Repeat = 1; }
+        public SequentialAnimation()
+        {
+            Repeat = 1;
+            Animations = new List<IAnimation>();
+        }
 
         /// <summary>
         /// Creates a new <c>SequentialAnimation</c> with the specified animations.
@@ -55,8 +67,9 @@ namespace Nine.Animations
         public SequentialAnimation(IEnumerable<IAnimation> animations)
         {
             Repeat = 1;
+            Animations = new List<IAnimation>();
             foreach (IAnimation animation in animations)
-                this.animations.Add(animation);
+                Animations.Add(animation);
         }
         
         /// <summary>
@@ -65,8 +78,9 @@ namespace Nine.Animations
         public SequentialAnimation(params IAnimation[] animations)
         {
             Repeat = 1;
+            Animations = new List<IAnimation>();
             foreach (IAnimation animation in animations)
-                this.animations.Add(animation);
+                Animations.Add(animation);
         }
 
         /// <summary>
@@ -81,8 +95,8 @@ namespace Nine.Animations
         {
             get
             {
-                if (CurrentIndex >= 0 && CurrentIndex < animations.Count)
-                    return animations[CurrentIndex];
+                if (CurrentIndex >= 0 && CurrentIndex < Animations.Count)
+                    return Animations[CurrentIndex];
 
                 return null;
             }
@@ -93,7 +107,7 @@ namespace Nine.Animations
         /// </summary>
         public void Play(IAnimation animation)
         {
-            int index = animations.IndexOf(animation);
+            int index = Animations.IndexOf(animation);
 
             if (index < 0)
                 throw new ArgumentOutOfRangeException(
@@ -171,12 +185,12 @@ namespace Nine.Animations
                     Current.State != AnimationState.Playing)
                 {
                     CurrentIndex++;
-                    
-                    if (CurrentIndex < animations.Count)
+
+                    if (CurrentIndex < Animations.Count)
                         Current.Play();
                 }
 
-                if (CurrentIndex == animations.Count)
+                if (CurrentIndex == Animations.Count)
                 {
                     repeatCounter++;
                     if (repeatCounter == Repeat)
@@ -201,12 +215,12 @@ namespace Nine.Animations
 
         public IEnumerator<IAnimation> GetEnumerator()
         {
-            return animations.GetEnumerator();
+            return Animations.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return animations.GetEnumerator();
+            return Animations.GetEnumerator();
         }
     }
 }

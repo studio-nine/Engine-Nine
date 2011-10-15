@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Animations
@@ -30,13 +32,22 @@ namespace Nine.Animations
         /// <summary>
         /// Gets all the layers in the animation.
         /// </summary>
+        [ContentSerializerIgnore]
         public IList<IAnimation> Animations { get; private set; }
+
+        [ContentSerializer(ElementName="Animations")]
+        internal IList<object> AnimationsSerializer
+        {
+            get { throw new NotSupportedException(); }
+            set { Animations.Clear(); Animations.AddRange(value.OfType<IAnimation>()); }
+        }
         
         /// <summary>
         /// Gets or sets the key animation of this LayeredAnimation.
         /// A LayeredAnimation ends either when the last contained 
         /// animation stops or when the specifed KeyAnimation ends.
         /// </summary>
+        [ContentSerializerIgnore]
         public IAnimation KeyAnimation
         {
             get { return keyAnimation; }
@@ -94,7 +105,7 @@ namespace Nine.Animations
         /// </summary>
         public LayeredAnimation(params IAnimation[] animations)
         {
-            Repeat = 1;
+            this.Repeat = 1;
             Animations = new List<IAnimation>();
             foreach (IAnimation animation in animations)
                 Animations.Add(animation);

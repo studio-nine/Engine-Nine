@@ -8,4 +8,171 @@
 // -----------------------------------------------------------------------------
 
 #if !TEXT_TEMPLATE
+namespace Nine.Animations
+{
+    /// <summary>
+    /// Content reader for <c>AnimationPlayer</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AnimationPlayerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.AnimationPlayer>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance);
+        
+        protected override Nine.Animations.AnimationPlayer Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new AnimationPlayer();
+            }
+            existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IDictionary<System.String, System.Object>>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>DelayAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DelayAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.DelayAnimation>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance);
+        
+        protected override Nine.Animations.DelayAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new DelayAnimation();
+            }
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>LayeredAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class LayeredAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.LayeredAnimation>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance);
+        
+        protected override Nine.Animations.LayeredAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new LayeredAnimation();
+            }
+            existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
+            existingInstance.Repeat = input.ReadInt32();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>SequentialAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SequentialAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.SequentialAnimation>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance);
+        
+        protected override Nine.Animations.SequentialAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new SequentialAnimation();
+            }
+            existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
+            existingInstance.Repeat = input.ReadInt32();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>TransformAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class TransformAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.TransformAnimation>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TransformAnimation existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TransformAnimation existingInstance);
+        
+        protected override Nine.Animations.TransformAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TransformAnimation existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new TransformAnimation();
+            }
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.ScaleX = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.ScaleY = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.ScaleZ = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.RotationX = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.RotationY = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.RotationZ = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.X = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.Y = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.Z = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>TweenAnimation`1</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class TweenAnimationReader<T> : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.TweenAnimation<T>>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance);
+        
+        protected override Nine.Animations.TweenAnimation<T> Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new TweenAnimation<T>();
+            }
+            existingInstance.From = input.ReadObject<System.Nullable<T>>();
+            existingInstance.To = input.ReadObject<System.Nullable<T>>();
+            existingInstance.By = input.ReadObject<System.Nullable<T>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+}
 #endif
