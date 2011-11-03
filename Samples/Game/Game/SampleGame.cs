@@ -67,7 +67,7 @@ namespace Game
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-            IsFixedTimeStep = false;            
+            IsFixedTimeStep = true;            
             Window.AllowUserResizing = true;
         }
 
@@ -83,15 +83,18 @@ namespace Game
 #if WINDOWS_PHONE
             scene = Content.Load<Scene>("Scene.WindowsPhone");
             scene.Camera = new TopDownEditorCamera(GraphicsDevice) { Pitch = MathHelper.ToRadians(30) };
+#elif XBOX
+            scene = Content.Load<Scene>("Scene");
+            scene.Camera = new TopDownEditorCamera(GraphicsDevice) { Pitch = MathHelper.ToRadians(30) };
 #else
             scene = Content.Load<Scene>("Scene");
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(-10, -30, 10));
 #endif
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
-
-            /*
+            scene.Add(new AmbientLight(GraphicsDevice) { AmbientLightColor = Vector3.One * 0.4f });
             scene.Add(directionalLight = new DirectionalLight(GraphicsDevice) { Transform = Matrix.CreateWorld(Vector3.Zero, new Vector3(-1, -1, -1), Vector3.UnitZ), DiffuseColor = Vector3.One * 1 });
 
+            /*
             scene.Add(pointLight1 = new PointLight(GraphicsDevice));
             scene.Add(pointLight2 = new PointLight(GraphicsDevice));
             scene.Add(pointLight3 = new PointLight(GraphicsDevice));
@@ -119,11 +122,14 @@ namespace Game
             base.LoadContent(); 
         }
 
+        int frame = 0;
         /// <summary>
         /// This is called when the game should update itself.
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
+            if (frame++ > 1000)
+                ;// Exit();
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Exit();
 

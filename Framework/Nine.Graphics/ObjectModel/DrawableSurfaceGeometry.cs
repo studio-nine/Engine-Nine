@@ -64,7 +64,7 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
-        /// Gets a static instance of DrawableSurfaceGeometry.
+        /// Gets a static instance of SurfaceGeometry.
         /// </summary>
         public static DrawableSurfaceGeometry GetInstance(GraphicsDevice graphics, int patchSegmentCount)
         {

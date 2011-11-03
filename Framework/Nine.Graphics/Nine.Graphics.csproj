@@ -135,10 +135,11 @@
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="GraphicsExtensions.cs" />
+    <Compile Include="ObjectModel\FindResult.cs" />
+    <Compile Include="ObjectModel\SceneQuery.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
     <Compile Include="ObjectModel\Fog.cs" />
     <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
-    <Compile Include="ObjectModel\SceneQuery.cs" />
     <Compile Include="ObjectModel\LightEngine.cs" />
     <Compile Include="TextureUsage.cs" />
     <Compile Include="Effects\AmbientLightEffect.cs">

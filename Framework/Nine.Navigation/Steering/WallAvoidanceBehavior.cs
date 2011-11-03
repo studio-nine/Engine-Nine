@@ -20,6 +20,8 @@ namespace Nine.Navigation.Steering
 {
     public class WallAvoidanceBehavior : SteeringBehavior
     {
+        static List<LineSegment> Lines = new List<LineSegment>();
+
         public float DetectorLength { get; set; }
         public ISpatialQuery<LineSegment> Walls { get; set; }
         
@@ -39,7 +41,10 @@ namespace Nine.Navigation.Steering
 
             Vector2 targetedForward = movingEntity.TargetedForward;
 
-            foreach (LineSegment line in Walls.FindAll(new Vector3(movingEntity.Position, 0), detectorLength))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), detectorLength);
+            Walls.FindAll(ref boundingSphere, Lines);
+
+            foreach (var line in Lines)
             {
                 // Allow the entity to move across from back to front.
                 if (Vector2.Dot(targetedForward, line.Normal) > SteeringHelper.AvoidanceAngularEpsilon)
@@ -56,6 +61,7 @@ namespace Nine.Navigation.Steering
                     nearestLineSegment = line;
                 }
             }
+            Lines.Clear();
 
             if (nearestLineSegment.HasValue)
             {
@@ -115,7 +121,10 @@ namespace Nine.Navigation.Steering
         {
             float detectorLength = movingEntity.BoundingRadius;
 
-            foreach (LineSegment line in Walls.FindAll(new Vector3(movingEntity.Position, 0), detectorLength))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), detectorLength);
+            Walls.FindAll(ref boundingSphere, Lines);
+
+            foreach (var line in Lines)
             {
                 if (Vector2.Dot(Vector2.Subtract(to, from), line.Normal) > 0)
                     continue;
@@ -125,10 +134,14 @@ namespace Nine.Navigation.Steering
 
                 if (Math2D.PointLineRelation(from + line.Normal * movingEntity.BoundingRadius, line.Start, line.Normal) == Math2D.SpanType.Back)
                     continue;
-                
+
                 if (Math2D.DistanceToLineSegment(line.Start, line.End, to) < movingEntity.BoundingRadius)
+                {
+                    Lines.Clear();
                     return 0;
+                }
             }
+            Lines.Clear();
             return null;
         }
     }

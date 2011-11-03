@@ -23,7 +23,7 @@ namespace Nine.Graphics.ObjectModel
     /// A square block made up of surface patch parts. The whole surface is rendered patch by patch.
     /// </summary>
     [ContentSerializable]
-    public class DrawableSurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, IDisposable
+    public class DrawableSurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, IContainedObject, IDisposable
     {
         #region Properties
         /// <summary>
@@ -153,6 +153,13 @@ namespace Nine.Graphics.ObjectModel
         bool ILightable.MultiPassShadowEnabled { get { return false; } }
 
         object ILightable.LightingData { get; set; }
+        #endregion
+
+        #region IContainedObject
+        IContainer IContainedObject.Parent
+        {
+            get { return Surface; }
+        }
         #endregion
 
         #region Methods
@@ -323,7 +330,7 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     class DrawableSurfacePatch<T> : DrawableSurfacePatch where T: struct, IVertexType
     {
-        public DrawSurfaceVertexConverter<T> FillVertex;
+        public DrawableSurfaceVertexConverter<T> FillVertex;
         private static WeakReference<T[]> WeakVertices = new WeakReference<T[]>(null);
 
         internal DrawableSurfacePatch(DrawableSurface surface, int xPatch, int yPatch, int patchSegmentCount)

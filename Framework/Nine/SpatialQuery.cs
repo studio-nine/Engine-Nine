@@ -41,6 +41,8 @@ namespace Nine
         /// </summary>
         public Converter<TInput, TOutput> Converter { get; set; }
 
+        private CollectionAdapter adapter;
+
         public SpatialQuery(params ISpatialQuery<TInput>[] queries) 
         {
             if (queries == null)
@@ -49,75 +51,80 @@ namespace Nine
             this.Filter = d => d is TOutput;
             this.Converter = d => (TOutput)(object)d;
             this.InnerQueries = new List<ISpatialQuery<TInput>>(queries);
+            this.adapter = new CollectionAdapter() { Parent = this };
         }
 
-        private TOutput Convert(TInput input)
+        private bool Convert(TInput input, out TOutput output)
         {
             if (Filter != null && !Filter(input))
-                return default(TOutput);
+            {
+                output = default(TOutput);
+                return false;
+            }
 
             if (Converter != null)
-                return Converter(input);
+            {
+                output = Converter(input);
+                return true;
+            }
 
             if (input is TOutput)
-                return (TOutput)(object)input;
-
-            return default(TOutput);
-        }
-
-        private IEnumerable<TOutput> Convert(IEnumerable<TInput> inputs)
-        {
-            foreach (TInput input in inputs)
             {
-                if (Filter != null && !Filter(input))
-                    continue;
-
-                if (Converter != null)
-                    yield return Converter(input);
-
-                else if (input is TOutput)
-                    yield return (TOutput)(object)input;
+                output = (TOutput)(object)input;
+                return true;
             }
+
+            output = default(TOutput);
+            return false;
         }
 
-        public IEnumerable<TOutput> FindAll(Vector3 position, float radius)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<TOutput> result)
         {
-            foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.FindAll(position, radius)))
-                    yield return output;
+            adapter.Result = result;
+            if (InnerQueries != null)
+                for (int i = 0; i < InnerQueries.Count; i++)
+                    InnerQueries[i].FindAll(ref boundingSphere, adapter);
+            adapter.Result = null;
         }
 
-        public IEnumerable<TOutput> FindAll(Ray ray)
+        public void FindAll(ref Ray ray, ICollection<TOutput> result)
         {
-            foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.FindAll(ray)))
-                    yield return output;
+            adapter.Result = result;
+            if (InnerQueries != null)
+                for (int i = 0; i < InnerQueries.Count; i++)
+                    InnerQueries[i].FindAll(ref ray, adapter);
+            adapter.Result = null;
         }
 
-        public IEnumerable<TOutput> FindAll(BoundingBox boundingBox)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<TOutput> result)
         {
-            foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.FindAll(boundingBox)))
-                    yield return output;
+            adapter.Result = result;
+            if (InnerQueries != null)
+                for (int i = 0; i < InnerQueries.Count; i++)
+                    InnerQueries[i].FindAll(ref boundingBox, adapter);
+            adapter.Result = null;
         }
 
-        public IEnumerable<TOutput> FindAll(BoundingFrustum frustum)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<TOutput> result)
         {
-            foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query.FindAll(frustum)))
-                    yield return output;
+            adapter.Result = result;
+            if (InnerQueries != null)
+                for (int i = 0; i < InnerQueries.Count; i++)
+                    InnerQueries[i].FindAll(ref boundingFrustum, adapter);
+            adapter.Result = null;
         }
 
-        public IEnumerator<TOutput> GetEnumerator()
+        class CollectionAdapter : SpatialQueryCollectionAdapter<TInput>
         {
-            foreach (ISpatialQuery<TInput> query in InnerQueries)
-                foreach (TOutput output in Convert(query))
-                    yield return output;
-        }
+            public SpatialQuery<TInput, TOutput> Parent;
+            public ICollection<TOutput> Result;
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            public override void Add(TInput item)
+            {
+                TOutput output;
+                if (Parent.Convert(item, out output))
+                    Result.Add(output);
+            }
         }
     }
 
@@ -126,55 +133,55 @@ namespace Nine
     /// </summary>
     public class SpatialQuery<T> : ISpatialQuery<T>
     {
-        private IEnumerable<T> innerObjects;
-        public IEnumerable<T> Objects
-        {
-            get { return innerObjects ?? Enumerable.Empty<T>(); }
-            set { innerObjects = value; }
-        }
+        public IList<T> Objects { get; private set; }
 
         public SpatialQuery() { }
 
-        public SpatialQuery(IEnumerable<T> objects)
+        public SpatialQuery(IList<T> objects)
         {
             if (objects == null)
                 throw new ArgumentNullException("objects");
             this.Objects = objects;
         }
-        
-        public IEnumerable<T> FindAll(Vector3 position, float radius)
+
+        private void Find(ICollection<T> result)
         {
-            return Objects;
+            var count = Objects.Count;
+            for (int i = 0; i < count; i++)
+                result.Add(Objects[i]);
         }
 
-        public IEnumerable<T> FindAll(BoundingBox box)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
         {
-            return Objects;
+            Find(result);
         }
 
-        public IEnumerable<T> FindAll(BoundingSphere sphere)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<T> result)
         {
-            return Objects;
+            Find(result);
         }
 
-        public IEnumerable<T> FindAll(BoundingFrustum frustum)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
         {
-            return Objects;
+            Find(result);
         }
 
-        public IEnumerable<T> FindAll(Ray ray)
+        public void FindAll(ref Ray ray, ICollection<T> result)
         {
-            return Objects;
+            Find(result);
         }
+    }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Objects.GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    abstract class SpatialQueryCollectionAdapter<T> : ICollection<T>
+    {
+        public abstract void Add(T item);
+        public void Clear() { throw new InvalidOperationException(); }
+        public bool Contains(T item) { throw new InvalidOperationException(); }
+        public void CopyTo(T[] array, int arrayIndex) { throw new InvalidOperationException(); }
+        public int Count { get { throw new InvalidOperationException(); } }
+        public bool IsReadOnly { get { throw new InvalidOperationException(); } }
+        public bool Remove(T item) { throw new InvalidOperationException(); }
+        public IEnumerator<T> GetEnumerator() { throw new InvalidOperationException(); }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { throw new InvalidOperationException(); }
     }
 }

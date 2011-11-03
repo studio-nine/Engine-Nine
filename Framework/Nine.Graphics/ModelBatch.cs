@@ -441,6 +441,7 @@ namespace Nine.Graphics
 
         protected virtual void Dispose(bool disposing)
         {
+#if !SILVERLIGHT
             if (disposing)
             {
                 if (basicEffect != null)
@@ -448,6 +449,7 @@ namespace Nine.Graphics
                 if (skinnedEffect != null)
                     skinnedEffect.Dispose();
             }
+#endif
         }
 
         ~ModelBatch()

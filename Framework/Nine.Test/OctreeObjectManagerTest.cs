@@ -27,7 +27,7 @@ namespace Nine.Test
             set { boundingBox = value; if (BoundingBoxChanged != null) BoundingBoxChanged(this, EventArgs.Empty); }
         }
 
-        BoundingBox boundingBox;
+        public BoundingBox boundingBox;
 
         public event EventHandler<EventArgs> BoundingBoxChanged;
 
@@ -110,15 +110,14 @@ namespace Nine.Test
             Assert.AreEqual(objects.Length, scene.Count);
             Assert.AreEqual(objects.Length, scene.Count());
 
+            List<ISpatialQueryable> queryResult = new List<ISpatialQueryable>();
+
             // Query
             watch.Restart();
             
             foreach (var q in queries)
             {
-                foreach (var o in scene.FindAll(q.BoundingBox)) 
-                {
-
-                }
+                scene.FindAll(ref q.boundingBox, queryResult);
             }
 
             watch.Stop();

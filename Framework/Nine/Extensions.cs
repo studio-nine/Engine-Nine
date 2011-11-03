@@ -79,20 +79,33 @@ namespace Nine
                 action(item);
         }
 
-        internal static IEnumerable<T> ForEachRecursive<T>(this IEnumerable target)
+        /// <summary>
+        /// Tests the target object and its descendants to see if it of type T.
+        /// </summary>
+        internal static void ForEachRecursive<T>(this IEnumerable target, Action<T> action)
+        {
+            if (target != null)
+            {
+                if (target is T)
+                    action((T)target);
+
+                ForEachRecursiveInternal<T>(target, action);
+            }
+        }
+
+        private static void ForEachRecursiveInternal<T>(this IEnumerable target, Action<T> action)
         {
             if (target != null)
             {
                 foreach (var item in target)
                 {
                     if (item is T)
-                        yield return (T)item;
+                        action((T)item);
 
                     IEnumerable enumerable = item as IEnumerable;
                     if (enumerable != null)
                     {
-                        foreach (var result in ForEachRecursive<T>(enumerable))
-                            yield return result;
+                        ForEachRecursiveInternal<T>(enumerable, action);
                     }
                 }
             }

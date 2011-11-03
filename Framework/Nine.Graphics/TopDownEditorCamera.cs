@@ -34,6 +34,11 @@ namespace Nine.Graphics
         public float MaxRadius { get; set; }
         public float Sensitivity { get; set; }
 
+        public Vector3 Target
+        {
+            get { return target; }
+            set { target = value; }
+        }
 
         private Vector3 target = Vector3.Zero;
         private Point startPoint = Point.Zero;

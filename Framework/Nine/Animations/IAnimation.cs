@@ -72,7 +72,7 @@ namespace Nine.Animations
         void Resume();
 
         /// <summary>
-        /// Occurs when this clock has completely finished playing.
+        /// Occurs when this animation has completely finished playing.
         /// </summary>
         event EventHandler Completed;
     }

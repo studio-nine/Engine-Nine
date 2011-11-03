@@ -174,7 +174,7 @@ namespace Nine.Graphics.ParticleEffects
         /// by this particle effect is about to die.
         /// </summary>
         public ParticleEffectCollection EndingEffects { get; private set; }
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether two pass rendering technique is used to sort each particle based on depth.
         /// The default value is false. This flag is only available when you are drawing using ParticleBatch.
@@ -241,13 +241,21 @@ namespace Nine.Graphics.ParticleEffects
         // An array of particles, treated as a circular queue.
         private Particle[] particles;
         private int firstParticle = 0;
-        private int lastParticle = 0;
+        private int lastParticle = 0;        
         internal int CurrentParticle = 0;
 
+        private int CurrentController = 0;
+        private float elapsedSeconds = 0;
+        private TimeSpan elapsedTime = TimeSpan.Zero;
         private Random random = new Random();
         private float timeLeftOver = 0;
         private bool triggerOnStartup = false;
         private ParticleEndsEventArgs endsEventArgs = new ParticleEndsEventArgs();
+
+        private ParticleAction cachedForEachAction;
+        private ParticleAction cachedForEachDelegate;
+        private ParticleAction cachedUpdateControllersDelegate;
+        private ParticleAction cachedUpdateParticlesDelegate;
 
         /// <summary>
         /// Creates a new particle effect.
@@ -288,6 +296,10 @@ namespace Nine.Graphics.ParticleEffects
             this.EndingEffects = new ParticleEffectCollection();
 
             this.particles = new Particle[this.MaxParticleCount = maxParticles];
+
+            this.cachedForEachDelegate = new ParticleAction(ForEachDelegateMethod);
+            this.cachedUpdateControllersDelegate = new ParticleAction(UpdateControllersDelegateMethod);
+            this.cachedUpdateParticlesDelegate = new ParticleAction(UpdateParticlesDelegateMethod);
         }
 
         /// <summary>
@@ -381,11 +393,15 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public void ForEach(ParticleAction action)
         {
-            ForEachInternal((ref Particle particle) =>
-            {
-                if (particle.Age <= 1)
-                    action(ref particles[CurrentParticle]);
-            });
+            cachedForEachAction = action;
+            ForEachInternal(cachedForEachDelegate);
+            cachedForEachAction = null;
+        }
+
+        private void ForEachDelegateMethod(ref Particle particle)
+        {
+            if (particle.Age <= 1)
+                cachedForEachAction(ref particles[CurrentParticle]);
         }
 
         private void ForEachInternal(ParticleAction action)
@@ -431,14 +447,14 @@ namespace Nine.Graphics.ParticleEffects
             UpdateControllers(elapsedSeconds);
             UpdateParticles(elapsedTime);
 
-            foreach (var childEffect in ChildEffects)
+            for (int i = 0; i < ChildEffects.Count; i++)
             {
-                childEffect.Update(elapsedTime, true);
+                ChildEffects[i].Update(elapsedTime, true);
             }
 
-            foreach (var endEffect in EndingEffects)
+            for (int i = 0; i < EndingEffects.Count; i++)
             {
-                endEffect.Update(elapsedTime);
+                EndingEffects[i].Update(elapsedTime);
             }
         }
 
@@ -538,66 +554,73 @@ namespace Nine.Graphics.ParticleEffects
             if (ParticleCount <= 0)
                 return;
 
-            for (int currentController = 0; currentController < Controllers.Count; currentController++)
-            {
-                ForEachInternal((ref Particle particle) =>
-                {
-                    Controllers[currentController].Update(elapsedTime, ref particle);
-                });
+            this.elapsedSeconds = elapsedTime;
+            for (CurrentController = 0; CurrentController < Controllers.Count; CurrentController++)
+            {                
+                ForEachInternal(cachedUpdateControllersDelegate);
             }
+        }
+
+        private void UpdateControllersDelegateMethod(ref Particle particle)
+        {
+            Controllers[CurrentController].Update(elapsedSeconds, ref particle);
         }
 
         private void UpdateParticles(TimeSpan elapsedTime)
         {
-            float elapsedSeconds = (float)elapsedTime.TotalSeconds;
+            this.elapsedTime = elapsedTime;
+            this.elapsedSeconds = (float)(elapsedTime.TotalSeconds);
 
+            ForEachInternal(cachedUpdateParticlesDelegate);
+        }
+
+        private void UpdateParticlesDelegateMethod(ref Particle particle)
+        {
             bool hasParticleEndsEvent = ParticleEnds != null;
             bool hasEndingEffects = EndingEffects.Count > 0;
             bool hasChildEffects = ChildEffects.Count > 0;
             bool hasAliveParticle = false;
 
-            ForEachInternal((ref Particle particle) =>
+            particle.Update(elapsedSeconds);
+
+            if (hasChildEffects)
             {
-                particle.Update(elapsedSeconds);
-
-                if (hasChildEffects)
+                for (int i = 0; i < ChildEffects.Count; i++)
                 {
-                    foreach (var childEffect in ChildEffects)
-                    {
-                        foreach (var trigger in childEffect.Triggers)
-                            trigger.Position = particle.Position;
-                        childEffect.UpdateTriggers(elapsedTime);
-                    }
+                    var childEffect = ChildEffects[i];
+                    for (int t = 0; t < childEffect.Triggers.Count; t++)
+                        childEffect.Triggers[t].Position = particle.Position;
+                    childEffect.UpdateTriggers(elapsedTime);
+                }
+            }
+
+            if (particle.Age < 1)
+            {
+                hasAliveParticle = true;
+            }
+            else
+            {
+                if (ParticleCount > 0 && !hasAliveParticle)
+                {
+                    firstParticle = (firstParticle + 1) % MaxParticleCount;
+                    ParticleCount--;
                 }
 
-                if (particle.Age < 1)
+                if ((hasEndingEffects || hasParticleEndsEvent) && particle.Age < float.MaxValue)
                 {
-                    hasAliveParticle = true;
-                }
-                else
-                {
-                    if (ParticleCount > 0 && !hasAliveParticle)
+                    if (hasEndingEffects)
                     {
-                        firstParticle = (firstParticle + 1) % MaxParticleCount;
-                        ParticleCount--;
+                        for (int i = 0; i < EndingEffects.Count; i++)
+                            EndingEffects[i].Trigger(particle.Position);
                     }
-
-                    if ((hasEndingEffects || hasParticleEndsEvent) && particle.Age < float.MaxValue)
+                    if (hasParticleEndsEvent)
                     {
-                        if (hasEndingEffects)
-                        {
-                            foreach (var endingEffect in EndingEffects)
-                                endingEffect.Trigger(particle.Position);
-                        }
-                        if (hasParticleEndsEvent)
-                        {
-                            endsEventArgs.Particle = particle;
-                            ParticleEnds(this, endsEventArgs);
-                        }
-                        particle.Age = float.MaxValue;
+                        endsEventArgs.Particle = particle;
+                        ParticleEnds(this, endsEventArgs);
                     }
+                    particle.Age = float.MaxValue;
                 }
-            });
+            }
         }
 
         public void Dispose()

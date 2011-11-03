@@ -40,9 +40,10 @@ namespace Nine
 #else
             // Hack into ReadAsset using reflection.
             var readAsset = content.GetType().GetMethod("ReadAsset", BindingFlags.Instance | BindingFlags.NonPublic, null, ReadAssetParameterTypes, null);
+            var genericReadAsset = readAsset.MakeGenericMethod(typeof(T));
             try
             {
-                return (T)readAsset.Invoke(content, new object[] { assetName, null });
+                return (T)genericReadAsset.Invoke(content, new object[] { assetName, null });
             }
             catch (TargetInvocationException e)
             {

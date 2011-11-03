@@ -76,7 +76,7 @@ namespace Nine.Navigation
         /// <summary>
         /// Gets all the out-going edges of a given node.
         /// </summary>
-        IEnumerable<GraphEdge<TGraphNode>> GetEdges(TGraphNode node);
+        void GetEdges(TGraphNode node, ICollection<GraphEdge<TGraphNode>> result);
 
         /// <summary>
         /// Gets the heuristic value between two nodes used in A* algorithm.
@@ -115,13 +115,18 @@ namespace Nine.Navigation
         PriorityQueue<TGraphNode> queue;
 
         /// <summary>
+        /// A list holding the edges during search.
+        /// </summary>
+        List<GraphEdge<TGraphNode>> edges = new List<GraphEdge<TGraphNode>>();
+
+        /// <summary>
         /// Perform a graph search on a graph, find a best path from start to end.
         /// </summary>
         /// <param name="graph">The graph to be searched.</param>
         /// <param name="start">Start node.</param>
         /// <param name="end">End node</param>
-        /// <returns>The result path from end node to start node.</returns>
-        public IEnumerable<TGraphNode> Search(IGraph<TGraphNode> graph, TGraphNode start, TGraphNode end)
+        /// <param name="result">The result path from end node to start node.</param>
+        public void Search(IGraph<TGraphNode> graph, TGraphNode start, TGraphNode end, ICollection<TGraphNode> result)
         {
             int newLength = graph.NodeCount;    
 
@@ -158,18 +163,23 @@ namespace Nine.Navigation
 
                     while (current.ID != start.ID && current.ID > 0)
                     {
-                        yield return current;
+                        result.Add(current);
 
                         current = path[current.ID];
                     }
 
                     // Do not forget to return start
-                    yield return start;
+                    result.Add(start);
                 }
 
                 // Otherwise test all node adjacent to this one
-                foreach (GraphEdge<TGraphNode> edge in graph.GetEdges(top.Value))
+                edges.Clear();
+                graph.GetEdges(top.Value, edges);
+
+                for (int i = 0; i < edges.Count; i++)
                 {
+                    var edge = edges[i];
+
                     // Calculate the heuristic cost from this node to the target (H)                       
                     float HCost = graph.GetHeuristicValue(edge.To, end);
 

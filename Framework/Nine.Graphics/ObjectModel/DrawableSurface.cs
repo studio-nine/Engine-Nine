@@ -24,7 +24,7 @@ namespace Nine.Graphics.ObjectModel
     /// The up axis of the surface is Vector.UnitZ.
     /// </summary>
     [ContentSerializable]
-    public class DrawableSurface : Transformable, IDrawableObject, ISurface, IPickable, IDisposable, IEnumerable<DrawableSurfacePatch>
+    public class DrawableSurface : Transformable, IDrawableObject, ISurface, IPickable, IDisposable
     {
         #region Properties
         /// <summary>
@@ -128,7 +128,7 @@ namespace Nine.Graphics.ObjectModel
                     else if (value == typeof(VertexPositionColorNormalTexture))
                         ConvertVertexType<VertexPositionColorNormalTexture>(PopulateVertex);
                     else
-                        throw new NotSupportedException("Vertex type not supported. Try using DrawableSurface.ConvertVertexType<T> instead.");
+                        throw new NotSupportedException("Vertex type not supported. Try using Surface.ConvertVertexType<T> instead.");
                     vertexType = value;
                 }
             }
@@ -194,7 +194,16 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the material of this drawable surface.
         /// </summary>
-        public Material Material { get; set; }
+        public Material Material 
+        {
+            get { return material; }
+#if !TEXT_TEMPLATE
+            set { material = value ?? new BasicMaterial(GraphicsDevice); }
+#else
+            set { material = value; }
+#endif
+        }
+        private Material material;
 
         /// <summary>
         /// Gets or sets a value indicating whether lighting is enabled.
@@ -266,7 +275,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the axis aligned bounding box of this surface.
         /// </summary>
-        public override BoundingBox BoundingBox
+        public BoundingBox BoundingBox
         {
             get
             {
@@ -313,6 +322,7 @@ namespace Nine.Graphics.ObjectModel
             Visible = true;
             ReceiveShadow = true;
             PatchSegmentCount = 32;
+            Material = null;
         }
 
         /// <summary>
@@ -403,7 +413,7 @@ namespace Nine.Graphics.ObjectModel
         /// The default vertex format is VertexPositionColorNormalTexture.
         /// This method must be called immediately after the surface is created.
         /// </summary>
-        public void ConvertVertexType<T>(DrawSurfaceVertexConverter<T> fillVertex) where T : struct, IVertexType
+        public void ConvertVertexType<T>(DrawableSurfaceVertexConverter<T> fillVertex) where T : struct, IVertexType
         {
             if (fillVertex == null)
                 throw new ArgumentNullException("fillVertex");
@@ -444,7 +454,6 @@ namespace Nine.Graphics.ObjectModel
         private void Invalidate()
         {
             boundingBox = Heightmap.BoundingBox;
-            OnBoundingBoxChanged();
 
             foreach (DrawableSurfacePatch patch in Patches)
             {
@@ -617,6 +626,25 @@ namespace Nine.Graphics.ObjectModel
             height = float.MinValue;
             return false;
         }
+
+
+        /// <summary>
+        /// Gets the height of the surface at a given location.
+        /// </summary>
+        /// <returns>False if the location is outside the boundary of the surface.</returns>
+        public bool TryGetHeight(float x, float y, out float height)
+        {
+            Vector3 normal;
+            float baseHeight;
+            if (Heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, y - AbsolutePosition.Y, true, false, out baseHeight, out normal))
+            {
+                height = baseHeight + AbsolutePosition.Z;
+                return true;
+            }
+
+            height = float.MinValue;
+            return false;
+        }
         #endregion
 
         #region IPickable Members
@@ -645,6 +673,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public float? Intersects(Ray ray)
         {
+            float height;
             Vector3 start = ray.Position;
             Vector3 pickStep = ray.Direction * Step * 0.5f;
 
@@ -652,13 +681,24 @@ namespace Nine.Graphics.ObjectModel
             if (intersection.HasValue)
             {
                 if (ray.Direction.X == 0 && ray.Direction.Y == 0)
-                    return GetHeight(ray.Position.X, ray.Position.Y);
+                {
+                    if (TryGetHeight(ray.Position.X, ray.Position.Y, out height))
+                    {
+                        float distance = ray.Position.Z - height;
+                        if (distance * ray.Direction.Z < 0)
+                            return distance;
+                    }
+                    return null;
+                }
 
                 bool? isAboveLastTime = null;
                 start += ray.Direction * intersection.Value;
                 while (true)
                 {
-                    bool isAbove = (GetHeight(start.X, start.Y) <= start.Z);
+                    if (!TryGetHeight(start.X, start.Y, out height))
+                        return null;
+
+                    bool isAbove = (height <= start.Z);
                     if (isAboveLastTime == null)
                     {
                         if (!isAbove)
@@ -697,15 +737,15 @@ namespace Nine.Graphics.ObjectModel
         void IDrawableObject.Draw(GraphicsContext context, Effect effect) { }
         #endregion
 
-        #region IEnumerable
-        IEnumerator<DrawableSurfacePatch> IEnumerable<DrawableSurfacePatch>.GetEnumerator()
+        #region IContainer
+        protected override int ChildCount
         {
-            return Patches.GetEnumerator();
+            get { return Patches.Count; }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        public override void CopyTo(object[] array, int startIndex)
         {
-            return Patches.GetEnumerator();
+            ((System.Collections.ICollection)Patches).CopyTo(array, startIndex);
         }
         #endregion
 
@@ -749,5 +789,5 @@ namespace Nine.Graphics.ObjectModel
     /// <param name="input">The input vertex contains the default position, normal and texture coordinates for the target vertex.</param>
     /// <param name="output">The output vertex to be set.</param>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public delegate void DrawSurfaceVertexConverter<T>(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref T output);
+    public delegate void DrawableSurfaceVertexConverter<T>(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref T output);
 }

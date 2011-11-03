@@ -1215,7 +1215,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelContent value)
         {
             BeginWrite(output, value);
-            output.WriteObject(value.Model);
+            output.WriteObject(value.Source);
             output.WriteObject(value.Material);
             output.Write(value.OverrideModelTextures);
             output.Write(value.OverrideModelMaterial);
@@ -1293,7 +1293,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         {
             BeginWrite(output, value);
             output.Write(value.Position);
-            output.WriteObject(value.ParticleEffect);
+            output.WriteObject(value.Source);
             output.Write(value.Visible);
             output.WriteObject(value.Name);
             output.WriteObject(value.Tag);
@@ -1399,11 +1399,13 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogContent value)
         {
             BeginWrite(output, value);
-            output.WriteObject(value.BoundingBox);
             output.Write(value.FogStart);
             output.Write(value.FogEnd);
             output.Write(value.FogColor);
             output.Write(value.FogEnabled);
+            output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
+            output.Write(value.Transform);
             EndWrite(output, value);
         }
 

@@ -40,7 +40,7 @@ namespace Nine.Graphics.Effects
         protected virtual bool IsTransparentValue { get { return false; } }
 
         /// <summary>
-        /// Gets a value indicating whether this material is deferred.
+        /// Gets a value indicating whether this material uses deferred lighting.
         /// </summary>
         public virtual bool IsDeferred { get { return false; } }
 
@@ -59,7 +59,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Queries the material for the specified interface T.
         /// </summary>
-        public virtual T As<T>() where T : class
+        public virtual T Find<T>() where T : class
         {
             return this as T;
         }

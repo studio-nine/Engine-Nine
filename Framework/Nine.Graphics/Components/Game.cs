@@ -16,8 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Microsoft.Xna.Framework
 {
     /// <summary>
-    /// Provides basic graphics device initialization, game logic, and rendering
-    /// code.
+    /// Provides basic graphics device initialization, game logic, and rendering code.
     /// </summary>
     public class Game : ContentControl
     {

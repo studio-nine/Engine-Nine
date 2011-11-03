@@ -16,7 +16,7 @@ using System.Collections.Generic;
 namespace Nine.Test
 {
     [TestClass()]
-    public class GridObjectManagerTest
+    public class GridSceneManagerTest
     {
         [TestMethod()]
         public void BresenhamLineTest()

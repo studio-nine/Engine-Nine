@@ -50,7 +50,11 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the shadow frustum of this light.
         /// </summary>
-        public BoundingFrustum ShadowFrustum { get; private set; }
+        public BoundingFrustum ShadowFrustum
+        {
+            get { return shadowFrustum; } 
+        }
+        private BoundingFrustum shadowFrustum;
 
         /// <summary>
         /// Used by the rendering system to keep track of drawables affect by this light.
@@ -68,13 +72,17 @@ namespace Nine.Graphics.ObjectModel
         internal Light()
         {
             Enabled = true;
-            ShadowFrustum = new BoundingFrustum(new Matrix());
+            shadowFrustum = new BoundingFrustum(new Matrix());
         }
 
         /// <summary>
         /// Finds all the objects affected by this light.
         /// </summary>
-        protected internal abstract IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum);
+        protected internal virtual void FindAll(Scene scene, List<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        {
+            for (var i = 0; i < drawablesInViewFrustum.Count; i++)
+                result.Add(drawablesInViewFrustum[i]);
+        }
 
         /// <summary>
         /// TODO:
@@ -110,12 +118,14 @@ namespace Nine.Graphics.ObjectModel
                 context.Projection = shadowFrustum;
                 context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
                 {
+                    /*
                     DepthEffect depthEffect = (DepthEffect)ShadowMap.Effect;
-                    foreach (var drawable in drawables.FindAll(ShadowFrustum))
+                    drawables.FindAll(ref shadowFrustum, drawable =>
                     {
                         depthEffect.TextureEnabled = drawable.Material != null && drawable.Material.DepthAlphaEnabled;
                         drawable.Draw(context, depthEffect);
-                    }
+                    });
+                     */
                 }
                 context.End();
                 context.View = view;
@@ -150,7 +160,7 @@ namespace Nine.Graphics.ObjectModel
     {
         protected internal sealed override bool Apply(Material material, int index, bool last)
         {
-            IEffectLights<T> lightables = material.As<IEffectLights<T>>();
+            IEffectLights<T> lightables = material.Find<IEffectLights<T>>();
             if (lightables == null || lightables.Lights == null || index >= lightables.Lights.Count)
                 return false;
             Enable(lightables.Lights[index]);

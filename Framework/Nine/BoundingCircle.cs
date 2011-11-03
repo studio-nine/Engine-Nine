@@ -1,13 +1,14 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
+#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
 #region Using Directives
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
@@ -115,13 +116,7 @@ namespace Nine
         /// </summary>
         public static BoundingCircle CreateFromPoints(IEnumerable<Vector2> points)
         {
-            return new BoundingCircle(BoundingSphere.CreateFromPoints(Vector2ToVector3(points)));
-        }
-
-        private static IEnumerable<Vector3> Vector2ToVector3(IEnumerable<Vector2> points)
-        {
-            foreach (Vector2 pt in points)
-                yield return new Vector3(pt, 0);
+            return new BoundingCircle(BoundingSphere.CreateFromPoints(points.Select(pt => new Vector3(pt, 0))));
         }
     }
 }

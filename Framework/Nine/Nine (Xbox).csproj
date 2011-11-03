@@ -67,7 +67,11 @@
     </Compile>
     <Compile Include="Animations\TransformAnimation.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="GridSceneManager.cs" />
+    <Compile Include="HashSet.cs" />
+    <Compile Include="XamlAttributes.cs" />
     <Compile Include="PropertyExpression.cs" />
     <Compile Include="WeakReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,7 +117,6 @@
     <Compile Include="Range.cs" />
     <Compile Include="Input.cs">
     </Compile>
-    <Compile Include="GridObjectManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="Helpers.cs" />

@@ -28,7 +28,11 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+#if !SILVERLIGHT
 using Microsoft.Xna.Framework.Input.Touch;
+#else
+using Keys = System.Windows.Input.Key;
+#endif
 #endregion
 
 namespace Nine
@@ -128,14 +132,17 @@ namespace Nine
             set 
             {
                 enabled = value; 
+#if !SILVERLIGHT
                 Component.PlayerIndexChanged = true;
                 if (EnabledGestures != GestureType.None)
                     Component.EnabledGesturesChanged = true; 
+#endif
             }
         }
 
         private bool enabled;
-
+        
+#if !SILVERLIGHT
         /// <summary>
         /// Gets or sets the player index to which this <c>Input</c> class will respond to.
         /// A value of null represents this instance will respond to all player inputs.
@@ -168,6 +175,12 @@ namespace Nine
         private GestureType enabledGestures = GestureType.None;
 
         /// <summary>
+        /// Gets the current gamePad state.
+        /// </summary>
+        public GamePadState GamePadState { get { return PlayerIndex != null ? Component.gamePadStates[(int)PlayerIndex] : new GamePadState(); } }
+#endif
+
+        /// <summary>
         /// Gets the current keyboard state.
         /// </summary>
         public KeyboardState KeyboardState { get { return Component.keyboardState; } }
@@ -176,11 +189,6 @@ namespace Nine
         /// Gets the current mouse state.
         /// </summary>
         public MouseState MouseState { get { return Component.mouseState; } }
-
-        /// <summary>
-        /// Gets the current gamePad state.
-        /// </summary>
-        public GamePadState GamePadState { get { return PlayerIndex != null ? Component.gamePadStates[(int)PlayerIndex] : new GamePadState(); } }
 
         #region Events
         /// <summary>
@@ -214,6 +222,12 @@ namespace Nine
         public event EventHandler<MouseEventArgs> MouseMove;
 
         /// <summary>
+        /// Occurs when the game update itself.
+        /// </summary>
+        public event EventHandler<EventArgs> Update;
+        
+#if !SILVERLIGHT
+        /// <summary>
         /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
         /// </summary>
         public event EventHandler<GamePadEventArgs> ButtonDown;
@@ -228,24 +242,7 @@ namespace Nine
         /// </summary>
         public event EventHandler<GestureEventArgs> GestureSampled;
 
-        /// <summary>
-        /// Occurs when the game update itself.
-        /// </summary>
-        public event EventHandler<EventArgs> Update;
-
         internal bool HasGestureSampled { get { return GestureSampled != null; } }
-
-        internal protected virtual void OnKeyUp(KeyboardEventArgs e)
-        {
-            if (KeyUp != null)
-                KeyUp(this, e);
-        }
-
-        internal protected virtual void OnKeyDown(KeyboardEventArgs e)
-        {
-            if (KeyDown != null)
-                KeyDown(this, e);
-        }
 
         internal protected virtual void OnButtonDown(GamePadEventArgs e)
         {
@@ -263,6 +260,19 @@ namespace Nine
         {
             if (GestureSampled != null)
                 GestureSampled(this, e);
+        }
+#endif
+
+        internal protected virtual void OnKeyUp(KeyboardEventArgs e)
+        {
+            if (KeyUp != null)
+                KeyUp(this, e);
+        }
+
+        internal protected virtual void OnKeyDown(KeyboardEventArgs e)
+        {
+            if (KeyDown != null)
+                KeyDown(this, e);
         }
 
         internal protected virtual void OnMouseMove(MouseEventArgs e)
@@ -297,6 +307,7 @@ namespace Nine
         #endregion
 
         #region Extras
+#if !SILVERLIGHT
         /// <summary>
         /// All keys except A-Z, 0-9 and `-\[];',./= (and space) are special keys.
         /// With shift pressed this also results in this keys:
@@ -435,6 +446,7 @@ namespace Nine
                     }
                 }
         }
+#endif
         #endregion
     }
     #endregion
@@ -480,10 +492,6 @@ namespace Nine
         /// Keys pressed last frame, for comparison if a key was just pressed.
         /// </summary>
         internal List<Keys> keysPressedLastFrame = new List<Keys>();
-        
-        internal GamePadState[] gamePadStates = new GamePadState[4];
-        internal GamePadState[] gamePadStatesLastFrame = new GamePadState[4];
-        private bool[] playerIndexEnabled = new bool[4] { true, true, true, true, };
 
         /// <summary>
         /// Mouse wheel delta this frame. XNA does report only the total
@@ -492,10 +500,31 @@ namespace Nine
         /// <returns>0</returns>
         int mouseWheelDelta = 0;
         int mouseWheelValue = 0;
+        
+#if !SILVERLIGHT
+        internal GamePadState[] gamePadStates = new GamePadState[4];
+        internal GamePadState[] gamePadStatesLastFrame = new GamePadState[4];
+        private bool[] playerIndexEnabled = new bool[4] { true, true, true, true, };
 
         internal bool PlayerIndexChanged = false;
         internal bool EnabledGesturesChanged = false;
         private GestureType enabledGestures = GestureType.None;
+
+        private static readonly Buttons[] AllGamePadButtons = new Buttons[] 
+        {
+#if WINDOWS_PHONE
+            Buttons.Back,
+#else
+            Buttons.A, Buttons.B, Buttons.Back, Buttons.BigButton, Buttons.DPadDown,
+            Buttons.DPadLeft, Buttons.DPadRight, Buttons.DPadUp, Buttons.LeftShoulder,
+            Buttons.LeftStick, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft,
+            Buttons.LeftThumbstickRight, Buttons.LeftThumbstickUp, Buttons.LeftTrigger,
+            Buttons.RightShoulder, Buttons.RightStick, Buttons.RightThumbstickDown,
+            Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight, Buttons.RightThumbstickUp,
+            Buttons.RightTrigger, Buttons.Start, Buttons.X, Buttons.Y,
+#endif
+        };
+#endif
 
         /// <summary>
         /// Gets or sets the InputComponent for current context.
@@ -516,21 +545,6 @@ namespace Nine
         private Control control = null;
         internal bool HostingEnabled = false;        
 #endif
-
-        private static readonly Buttons[] AllGamePadButtons = new Buttons[] 
-        {
-#if WINDOWS_PHONE
-            Buttons.Back,
-#else
-            Buttons.A, Buttons.B, Buttons.Back, Buttons.BigButton, Buttons.DPadDown,
-            Buttons.DPadLeft, Buttons.DPadRight, Buttons.DPadUp, Buttons.LeftShoulder,
-            Buttons.LeftStick, Buttons.LeftThumbstickDown, Buttons.LeftThumbstickLeft,
-            Buttons.LeftThumbstickRight, Buttons.LeftThumbstickUp, Buttons.LeftTrigger,
-            Buttons.RightShoulder, Buttons.RightStick, Buttons.RightThumbstickDown,
-            Buttons.RightThumbstickLeft, Buttons.RightThumbstickRight, Buttons.RightThumbstickUp,
-            Buttons.RightTrigger, Buttons.Start, Buttons.X, Buttons.Y,
-#endif
-        };
         #endregion
 
         #region Method
@@ -705,6 +719,7 @@ namespace Nine
             }
         }
 
+#if !SILVERLIGHT
         private void UpdateGamePad()
         {
             if (PlayerIndexChanged)
@@ -769,6 +784,7 @@ namespace Nine
             else if (gamePadStatesLastFrame[i].IsButtonDown(button) && gamePadStates[i].IsButtonUp(button))
                 ButtonUp(new GamePadEventArgs() { Button = button, GamePadState = gamePadStates[i], PlayerIndex = (PlayerIndex)i });
         }
+#endif
 
 #if WINDOWS
         void control_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -914,26 +930,6 @@ namespace Nine
             });
         }
 
-        internal void ButtonUp(GamePadEventArgs gamePadArgs)
-        {
-            ForEach(input =>
-            {
-                if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
-                    input.OnButtonUp(gamePadArgs);
-                return gamePadArgs.Handled;
-            });
-        }
-
-        internal void ButtonDown(GamePadEventArgs gamePadArgs)
-        {
-            ForEach(input =>
-            {
-                if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
-                    input.OnButtonDown(gamePadArgs);
-                return gamePadArgs.Handled;
-            });
-        }
-
         internal void MouseMove(MouseEventArgs mouseArgs)
         {
             ForEach(input =>
@@ -974,6 +970,27 @@ namespace Nine
             });
         }
 
+#if !SILVERLIGHT
+        internal void ButtonUp(GamePadEventArgs gamePadArgs)
+        {
+            ForEach(input =>
+            {
+                if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
+                    input.OnButtonUp(gamePadArgs);
+                return gamePadArgs.Handled;
+            });
+        }
+
+        internal void ButtonDown(GamePadEventArgs gamePadArgs)
+        {
+            ForEach(input =>
+            {
+                if (input.Enabled && (input.PlayerIndex == null || input.PlayerIndex.Value == gamePadArgs.PlayerIndex))
+                    input.OnButtonDown(gamePadArgs);
+                return gamePadArgs.Handled;
+            });
+        }
+
         internal void GestureSampled(GestureEventArgs gestureArgs)
         {
             ForEach(input =>
@@ -983,6 +1000,7 @@ namespace Nine
                 return gestureArgs.Handled;
             });
         }
+#endif
 
         private void Update()
         {
@@ -996,5 +1014,4 @@ namespace Nine
         #endregion
     }
     #endregion
-
 }

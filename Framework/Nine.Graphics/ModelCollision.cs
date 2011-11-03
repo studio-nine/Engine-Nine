@@ -26,7 +26,19 @@ namespace Nine.Graphics
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ModelCollision : IPickable
     {
-        internal ModelCollision() { }
+        private Ray ray;
+        private Vector3 point;
+        private bool contains;
+        private float? distance;
+        private float? neareastDistance;
+        private Func<OctreeNode<bool>, TraverseOptions> traverseContains;
+        private Func<OctreeNode<bool>, TraverseOptions> traverseIntersects;
+
+        internal ModelCollision() 
+        {
+            traverseContains = new Func<OctreeNode<bool>, TraverseOptions>(TraverseContains);
+            traverseIntersects = new Func<OctreeNode<bool>, TraverseOptions>(TraverseIntersects);
+        }
 
         /// <summary>
         /// Gets the collision tree.
@@ -39,18 +51,24 @@ namespace Nine.Graphics
         /// </summary>
         public bool Contains(Vector3 point)
         {
-            IEnumerable<OctreeNode<bool>> nodes = CollisionTree.Traverse((o) =>
-            {
-                return o.Value && o.Bounds.Contains(point) == ContainmentType.Contains;
-            });
+            this.point = point;
+            this.contains = false;
+            CollisionTree.Traverse(traverseContains);
+            return contains;
+        }
 
-            foreach (OctreeNode<bool> node in nodes)
+        private TraverseOptions TraverseContains(OctreeNode<bool> node)
+        {
+            if (node.Value && node.Bounds.Contains(point) == ContainmentType.Contains)
             {
                 if (!node.HasChildren)
-                    return true;
+                {
+                    contains = true;
+                    return TraverseOptions.Stop;
+                }
+                return TraverseOptions.Continue;
             }
-
-            return false;
+            return TraverseOptions.Skip;
         }
 
         /// <summary>
@@ -59,20 +77,24 @@ namespace Nine.Graphics
         /// <returns>Distance to the start of the ray.</returns>
         public float? Intersects(Ray ray)
         {
-            float? currentDistance = null;
+            this.ray = ray;
+            this.distance = null;
+            this.neareastDistance = null;
+            CollisionTree.Traverse(traverseIntersects);
+            return neareastDistance;
+        }
 
-            IEnumerable<OctreeNode<bool>> nodes = CollisionTree.Traverse((o) =>
+        private TraverseOptions TraverseIntersects(OctreeNode<bool> node)
+        {
+            if (node.Value && (distance = node.Bounds.Intersects(ray)) != null)
             {
-                return o.Value && (currentDistance = o.Bounds.Intersects(ray)) != null;
-            });
-
-            foreach (OctreeNode<bool> node in nodes)
-            {
-                if (!node.HasChildren)
-                    return currentDistance;
+                if (neareastDistance == null)
+                    neareastDistance = distance.Value;
+                else if (neareastDistance.Value > distance.Value)
+                    neareastDistance = distance.Value;
+                return TraverseOptions.Continue;
             }
-
-            return null;
+            return TraverseOptions.Skip;
         }
     }
 }

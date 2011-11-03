@@ -20,6 +20,8 @@ namespace Nine.Navigation.Steering
 {
     public class SteerableAvoidanceBehavior : SteeringBehavior
     {
+        static List<Steerable> Partners = new List<Steerable>();
+
         public ISpatialQuery<Steerable> Neighbors { get; set; }
 
         protected override Vector2 OnUpdateSteeringForce(float elapsedTime, Steerable movingEntity)
@@ -34,7 +36,10 @@ namespace Nine.Navigation.Steering
             float detectorLength = movingEntity.BoundingRadius + movingEntity.Skin;
 
             // FindAll nearest steerable
-            foreach (Steerable partner in Neighbors.FindAll(new Vector3(movingEntity.Position, 0), detectorLength))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), detectorLength);
+            Neighbors.FindAll(ref boundingSphere, Partners);
+            
+            foreach (var partner in Partners)
             {
                 if (partner == null || partner == movingEntity)
                     continue;
@@ -46,7 +51,7 @@ namespace Nine.Navigation.Steering
                     continue;
 
                 float distance = toTarget.Length();
-                
+
                 // Ignore entities too far away
                 if (distance > movingEntity.BoundingRadius + partner.BoundingRadius + movingEntity.Skin)
                     continue;
@@ -57,6 +62,7 @@ namespace Nine.Navigation.Steering
                     nearestSteerable = partner;
                 }
             }
+            Partners.Clear();
 
             if (nearestSteerable != null)
             {
@@ -67,7 +73,10 @@ namespace Nine.Navigation.Steering
                 float minDistanceToSecondSteerable = float.MaxValue;
                 float secondDetectorLength = movingEntity.BoundingRadius * 2 + movingEntity.Skin * 2 + partner.BoundingRadius;
 
-                foreach (Steerable secondPartner in Neighbors.FindAll(new Vector3(movingEntity.Position, 0), secondDetectorLength))
+                boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), secondDetectorLength);
+                Neighbors.FindAll(ref boundingSphere, Partners);
+                
+                foreach (var secondPartner in Partners)
                 {
                     if (secondPartner == null || secondPartner == partner || secondPartner == movingEntity)
                         continue;
@@ -86,6 +95,7 @@ namespace Nine.Navigation.Steering
                         secondNearestSteerable = secondPartner;
                     }
                 }
+                Partners.Clear();
 
                 if (secondNearestSteerable != null)
                 {
@@ -150,7 +160,10 @@ namespace Nine.Navigation.Steering
 
         private void AdjustTargetPositionWhenOverlapped(float elapsedTime, Steerable movingEntity)
         {
-            foreach (Steerable partner in Neighbors.FindAll(new Vector3(movingEntity.Target.Value, 0), movingEntity.BoundingRadius))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Target.Value, 0), movingEntity.BoundingRadius);
+            Neighbors.FindAll(ref boundingSphere, Partners);
+                
+            foreach (var partner in Partners)
             {
                 if (partner == null || partner == movingEntity)
                     continue;
@@ -171,13 +184,17 @@ namespace Nine.Navigation.Steering
                     break;
                 }
             }
+            Partners.Clear();
         }
 
         protected override float? OnCollides(Vector2 from, Vector2 to, float elapsedTime, Steerable movingEntity)
         {
             float detectorLength = movingEntity.BoundingRadius + movingEntity.Skin;
 
-            foreach (Steerable partner in Neighbors.FindAll(new Vector3(movingEntity.Position, 0), detectorLength))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), detectorLength);
+            Neighbors.FindAll(ref boundingSphere, Partners);
+
+            foreach (var partner in Partners)
             {
                 if (partner == null || partner == movingEntity)
                     continue;
@@ -189,9 +206,11 @@ namespace Nine.Navigation.Steering
 
                 if (obstacle.Contains(new BoundingCircle(to, movingEntity.BoundingRadius)) == ContainmentType.Disjoint)
                     continue;
-                
+
+                Partners.Clear();
                 return 0;
             }
+            Partners.Clear();
             return null;
         }
     }

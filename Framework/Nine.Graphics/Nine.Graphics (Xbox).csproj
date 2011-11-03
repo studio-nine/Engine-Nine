@@ -126,6 +126,7 @@
     <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
     <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
     <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="ObjectModel\FindResult.cs" />
     <Compile Include="ObjectModel\Fog.cs" />
     <Compile Include="ObjectModel\LightEngine.cs" />
     <Compile Include="ObjectModel\ModelBatchExtensions.cs" />

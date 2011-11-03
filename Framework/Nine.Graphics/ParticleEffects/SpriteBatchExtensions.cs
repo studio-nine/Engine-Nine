@@ -25,69 +25,78 @@ namespace Nine.Graphics.ParticleEffects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class SpriteBatchExtensions
     {
+        static SpriteBatch CurrentSpriteBatch;
+        static ParticleEffect CurrentParticleEffect;
+
         public static void DrawParticleEffect(this SpriteBatch spriteBatch, ParticleEffect particleEffect)
         {
             if (particleEffect == null)
                 throw new ArgumentNullException("particleEffect");
 
-            // TODO: Use Vector2 for size (both width and height)?
-            if (particleEffect.Texture != null)
-            {
-                Vector2 scaleFactor = new Vector2(1.0f / particleEffect.Texture.Width, 1.0f / particleEffect.Texture.Height);
-                Vector2 origin = new Vector2(particleEffect.Texture.Width / 2, particleEffect.Texture.Height / 2);
+            CurrentParticleEffect = particleEffect;
+            CurrentSpriteBatch = spriteBatch;
 
-                if (particleEffect.ParticleType == ParticleType.Billboard)
+            // TODO: Use Vector2 for size (both width and height)?
+            if (CurrentParticleEffect.Texture != null)
+            {
+                Vector2 scaleFactor = new Vector2(1.0f / CurrentParticleEffect.Texture.Width, 1.0f / CurrentParticleEffect.Texture.Height);
+                Vector2 origin = new Vector2(CurrentParticleEffect.Texture.Width / 2, CurrentParticleEffect.Texture.Height / 2);
+
+                if (CurrentParticleEffect.ParticleType == ParticleType.Billboard)
                 {
-                    particleEffect.ForEach((ref Particle particle) =>
+                    CurrentParticleEffect.ForEach((ref Particle particle) =>
                     {
-                        spriteBatch.Draw(particleEffect.Texture, 
+                        CurrentSpriteBatch.Draw(CurrentParticleEffect.Texture, 
                                          new Vector2(particle.Position.X, particle.Position.Y), 
-                                         particleEffect.SourceRectangle,
+                                         CurrentParticleEffect.SourceRectangle,
                                          particle.Color * particle.Alpha, particle.Rotation, origin,
                                          particle.Size * scaleFactor, SpriteEffects.None, 0);
                     });
                 }
-                else if (particleEffect.ParticleType == ParticleType.ConstrainedBillboard)
+                else if (CurrentParticleEffect.ParticleType == ParticleType.ConstrainedBillboard)
                 {
-                    scaleFactor.X *= particleEffect.Stretch;
+                    scaleFactor.X *= CurrentParticleEffect.Stretch;
 
-                    particleEffect.ForEach((ref Particle particle) =>
+                    CurrentParticleEffect.ForEach((ref Particle particle) =>
                     {
                         float rotation = (float)Math.Atan2(particle.Velocity.Y, particle.Velocity.X);
 
-                        spriteBatch.Draw(particleEffect.Texture,
+                        CurrentSpriteBatch.Draw(CurrentParticleEffect.Texture,
                                          new Vector2(particle.Position.X, particle.Position.Y),
-                                         particleEffect.SourceRectangle,
+                                         CurrentParticleEffect.SourceRectangle,
                                          particle.Color * particle.Alpha, rotation, origin,
                                          particle.Size * scaleFactor, SpriteEffects.None, 0);
                     });
                 }
-                else if (particleEffect.ParticleType == ParticleType.ConstrainedBillboardUp)
+                else if (CurrentParticleEffect.ParticleType == ParticleType.ConstrainedBillboardUp)
                 {
-                    scaleFactor.X *= particleEffect.Stretch;
-                    float rotation = (float)Math.Atan2(particleEffect.Up.Y, particleEffect.Up.X);
+                    scaleFactor.X *= CurrentParticleEffect.Stretch;
+                    float rotation = (float)Math.Atan2(CurrentParticleEffect.Up.Y, CurrentParticleEffect.Up.X);
 
-                    particleEffect.ForEach((ref Particle particle) =>
+                    CurrentParticleEffect.ForEach((ref Particle particle) =>
                     {
 
-                        spriteBatch.Draw(particleEffect.Texture,
+                        CurrentSpriteBatch.Draw(CurrentParticleEffect.Texture,
                                          new Vector2(particle.Position.X, particle.Position.Y),
-                                         particleEffect.SourceRectangle,
+                                         CurrentParticleEffect.SourceRectangle,
                                          particle.Color * particle.Alpha, rotation, origin,
                                          particle.Size * scaleFactor, SpriteEffects.None, 0);
                     });
                 }
-                else if (particleEffect.ParticleType == ParticleType.RibbonTrail)
+                else if (CurrentParticleEffect.ParticleType == ParticleType.RibbonTrail)
                 {
                     throw new NotImplementedException();
                 }
             }
 
-            foreach (var childEffect in particleEffect.ChildEffects)
-                DrawParticleEffect(spriteBatch, childEffect);
+            CurrentSpriteBatch = null;
+            CurrentParticleEffect = null;
 
-            foreach (var endingEffect in particleEffect.EndingEffects)
-                DrawParticleEffect(spriteBatch, endingEffect);
+            for (int i = 0; i < particleEffect.ChildEffects.Count; i++)
+                DrawParticleEffect(spriteBatch, particleEffect.ChildEffects[i]);
+
+            for (int i = 0; i < particleEffect.EndingEffects.Count; i++)
+                DrawParticleEffect(spriteBatch, particleEffect.EndingEffects[i]);
         }
     }
 }

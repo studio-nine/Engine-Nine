@@ -148,14 +148,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Content\Worlds\Scene.WindowsPhone.xaml">
+    <Compile Include="..\..\Content\Worlds\Scene.WindowsPhone.xaml">
       <Link>Scene.WindowsPhone.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <Name>Scene.WindowsPhone</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
     <Compile Include="..\..\Content\Worlds\Scene.xaml">
       <Link>Scene.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
@@ -173,6 +173,14 @@
       <Importer>XamlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\AnimatedCube\AnimatedCube.fbx">
+      <Link>Models\AnimatedCube.fbx</Link>
+      <Name>AnimatedCube</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ExtendedModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

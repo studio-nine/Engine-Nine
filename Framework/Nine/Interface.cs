@@ -73,31 +73,31 @@ namespace Nine
     /// <summary>
     /// Defines Spatial relations between objects.
     /// </summary>
-#if WINDOWS
-    public interface ISpatialQuery<out T> : IEnumerable<T>
-#else
-    public interface ISpatialQuery<T> : IEnumerable<T>
-#endif
+    public interface ISpatialQuery<T>
     {
-        /// <summary>
-        /// Finds all the objects resides within the specified bounding sphere.
-        /// </summary>
-        IEnumerable<T> FindAll(Vector3 position, float radius);
-
         /// <summary>
         /// Finds all the objects that intersects with the specified ray.
         /// </summary>
-        IEnumerable<T> FindAll(Ray ray);
+        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        void FindAll(ref Ray ray, ICollection<T> result);
+
+        /// <summary>
+        /// Finds all the objects resides within the specified bounding sphere.
+        /// </summary>
+        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result);
 
         /// <summary>
         /// Finds all the objects that intersects with the specified bounding box.
         /// </summary>
-        IEnumerable<T> FindAll(BoundingBox boundingBox);
+        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        void FindAll(ref BoundingBox boundingBox, ICollection<T> result);
 
         /// <summary>
         /// Finds all the objects resides within the specified bounding frustum.
         /// </summary>
-        IEnumerable<T> FindAll(BoundingFrustum frustum);
+        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result);
     }
 
     /// <summary>

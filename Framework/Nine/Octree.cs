@@ -92,8 +92,13 @@ namespace Nine
         /// <summary>
         /// Gets the bounds of the Octree node.
         /// </summary>
-        public BoundingBox Bounds { get; internal set; }
+        public BoundingBox Bounds
+        {
+            get { return boundingBox; }
+            internal set { boundingBox = value; }
+        }
 
+        internal BoundingBox boundingBox;
         internal OctreeNode() { }
     }
 

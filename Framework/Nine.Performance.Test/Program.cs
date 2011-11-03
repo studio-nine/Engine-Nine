@@ -17,8 +17,8 @@ namespace Nine.Test
     {
         public static void Main(string[] args)
         {
-            OctreeObjectManagerTest test = new OctreeObjectManagerTest();
-            test.AddQueryUpdateRemoveTest();
+            var test = new UnifromGridTest();
+            test.BresenhamLineTest();
         }
     }
 }

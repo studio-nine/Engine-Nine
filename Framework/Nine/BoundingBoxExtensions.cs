@@ -127,7 +127,7 @@ namespace Nine
             const float FloatMax = float.MaxValue;
 
             // Find the 8 corners
-            Vector3[] corners = box.GetCorners();
+            box.GetCorners(corners);
 
             // Compute bounding box
             Vector3 min = new Vector3(FloatMax, FloatMax, FloatMax);

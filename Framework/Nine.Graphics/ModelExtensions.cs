@@ -405,13 +405,14 @@ namespace Nine.Graphics
             if (extensions != null && extensions.Collision != null)
             {
                 return extensions.Collision.CollisionTree.Bounds;
-            }
+            }            
 
             // Try to use vertices of the mesh
             BoundingBox result = new BoundingBox();
+#if !SILVERLIGHT
             if (ComputeBoundingBoxFromVertices(model, out result))
                 return result;
-
+#endif
             // Now use bounding spheres
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -421,11 +422,12 @@ namespace Nine.Graphics
             }
 
             return result;
-        }
+        }  
 
+#if !SILVERLIGHT
         static WeakReference<Vector3[]> WeakVertices = new WeakReference<Vector3[]>(null);
         static WeakReference<ushort[]> WeakIndices = new WeakReference<ushort[]>(null);
-        
+                  
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
@@ -451,14 +453,12 @@ namespace Nine.Graphics
                     {
                         boundingBox = new BoundingBox();
                         return false;
-                    }
-
+                    }        
                     if (!ComputeBoundingBoxFromVertices(model, mesh, part, bones[mesh.ParentBone.Index], out boundingBox))
                     {
                         boundingBox = new BoundingBox();
                         return false;
                     }
-
                     if (first)
                         temp = boundingBox;
                     else
@@ -471,22 +471,24 @@ namespace Nine.Graphics
             boundingBox = temp;
             return true;
         }
-
+#endif
 
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
         public static BoundingBox ComputeBoundingBox(this Model model, ModelMesh mesh, ModelMeshPart part)
         {
+#if !SILVERLIGHT
             // Try to use vertices of the mesh
             BoundingBox result = new BoundingBox();
             if (ComputeBoundingBoxFromVertices(model, mesh, part, null, out result))
                 return result;
-
+#endif
             // Now use bounding spheres
             return BoundingBox.CreateFromSphere(mesh.BoundingSphere);
         }
 
+#if !SILVERLIGHT
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
@@ -552,5 +554,6 @@ namespace Nine.Graphics
             boundingBox = new BoundingBox(min, max);
             return true;
         }
+#endif
     }
 }

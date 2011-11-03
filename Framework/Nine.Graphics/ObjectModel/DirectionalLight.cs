@@ -26,11 +26,6 @@ namespace Nine.Graphics.ObjectModel
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        public override BoundingBox BoundingBox
-        {
-            get { return BoundingBoxExtensions.Max; }
-        }
-
         public DirectionalLight(GraphicsDevice graphics)
         {
             GraphicsDevice = graphics;
@@ -38,11 +33,6 @@ namespace Nine.Graphics.ObjectModel
             SpecularColor = Vector3.Zero;
         }
         
-        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
-        {
-            return objectsInViewFrustum;
-        }
-
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
         protected override void GetShadowFrustum(GraphicsContext context,

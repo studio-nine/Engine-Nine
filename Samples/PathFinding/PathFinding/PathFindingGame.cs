@@ -129,9 +129,7 @@ namespace PathFinding
                         // Search from start to end.
                         // NOTE: the path return from A* search is from end to start.
                         path.Clear();
-                        path.AddRange(
-                            graphSearch.Search(pathGraph, start.Value, end.Value));
-
+                        graphSearch.Search(pathGraph, start.Value, end.Value, path);
                         start = null;
                     }
                 }
@@ -189,7 +187,7 @@ namespace PathFinding
                 // Draw start node
                 if (start.HasValue)
                 {
-                    primitiveBatch.DrawSolidSphere(new Vector3(pathGraph.SegmentToPosition(start.Value.X, start.Value.Y), 0), 0.5f, 12, null, Color.Honeydew);
+                    primitiveBatch.DrawSolidSphere(new Vector3(pathGraph.SegmentToPosition(start.Value.X, start.Value.Y), 0), 0.5f, 4, null, Color.Honeydew);
                 }
                 
                 // Draw path

@@ -24,18 +24,8 @@ namespace Nine.Graphics.ObjectModel
     /// Defines an area of fog.
     /// </summary>
     [ContentSerializable]
-    public class Fog : ISpatialQueryable, IEffectFog
+    public class Fog : Transformable, IEffectFog
     {
-        public BoundingBox BoundingBox
-        {
-            get { return boundingBox; }
-            set { boundingBox = value; if (BoundingBoxChanged != null) BoundingBoxChanged(this, EventArgs.Empty); }
-        }
-        private BoundingBox boundingBox = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);
-
-        public event EventHandler<EventArgs> BoundingBoxChanged;
-        object ISpatialQueryable.SpatialData { get; set; }
-
         public float FogStart { get; set; }
         public float FogEnd { get; set; }
         public Vector3 FogColor { get; set; }

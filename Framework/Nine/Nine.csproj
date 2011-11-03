@@ -91,6 +91,7 @@
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\TransformAnimation.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="PropertyExpression.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
@@ -157,7 +158,7 @@
     <Compile Include="Range.cs" />
     <Compile Include="Input.cs">
     </Compile>
-    <Compile Include="GridObjectManager.cs" />
+    <Compile Include="GridSceneManager.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="Helpers.cs" />

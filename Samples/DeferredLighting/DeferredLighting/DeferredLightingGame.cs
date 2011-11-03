@@ -9,6 +9,7 @@
 #region Using Directives
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -19,9 +20,9 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 using Nine.Graphics.Effects.Deferred;
 using Nine.Graphics.ScreenEffects;
-using System.ComponentModel;
 using Nine.Components;
 using Nine.Graphics.ObjectModel;
+using Model = Microsoft.Xna.Framework.Graphics.Model;
 #endregion
 
 namespace DeferredLighting
@@ -144,7 +145,7 @@ namespace DeferredLighting
         {
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
 
-            foreach (DrawableSurfacePatch patch in surface.Patches)
+            foreach (var patch in surface.Patches)
             {
                 // Cull patches that are outside the view frustum
                 if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)

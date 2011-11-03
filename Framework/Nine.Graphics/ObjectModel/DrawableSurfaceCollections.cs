@@ -19,7 +19,7 @@ using Microsoft.Xna.Framework.Content;
 namespace Nine.Graphics.ObjectModel
 {    
     /// <summary>
-    /// A collection of all the pathes in a DrawableSurface.
+    /// A collection of all the pathes in a Surface.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class DrawableSurfacePatchCollection : ReadOnlyCollection<DrawableSurfacePatch>

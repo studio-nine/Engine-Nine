@@ -31,11 +31,7 @@ namespace Nine.Graphics.ObjectModel
         [ContentSerializer]
         public TextureCube Texture { get; internal set; }
 
-        public override BoundingBox BoundingBox { get { return boundingBox; } }
-        
         private Effect effect;
-
-        static BoundingBox boundingBox = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);
 
         public override void Draw(GraphicsContext context)
         {

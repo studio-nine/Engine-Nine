@@ -254,9 +254,10 @@ namespace Nine.Animations
         {
             SychronizeSpeed();
 
-            foreach (IBoneAnimationController controller in Controllers)
+            var currentController = 0;
+            for (currentController = 0; currentController < Controllers.Count; currentController++)
             {
-                IUpdateable update = controller as IUpdateable;
+                IUpdateable update = Controllers[currentController].Controller as IUpdateable;
                 if (update != null)
                     update.Update(elapsedTime);
             }
@@ -269,9 +270,9 @@ namespace Nine.Animations
             }
             else
             {
-                foreach (IBoneAnimationController controller in Controllers)
+                for (currentController = 0; currentController < Controllers.Count; currentController++)
                 {
-                    IAnimation animation = controller as IAnimation;
+                    IAnimation animation = Controllers[currentController].Controller as IAnimation;
                     if (animation != null)
                     {
                         if (animation.State != AnimationState.Stopped)
@@ -296,8 +297,9 @@ namespace Nine.Animations
             if (isSychronized && keyController != null)
             {
                 TimeSpan duration = keyController.Duration;
-                foreach (IBoneAnimationController controller in Controllers)
+                for (var currentController = 0; currentController < Controllers.Count; currentController++)
                 {
+                    var controller = Controllers[currentController].Controller;
                     if (controller == keyController)
                         continue;
 
@@ -641,8 +643,7 @@ namespace Nine.Animations
 
         public IEnumerator<IBoneAnimationController> GetEnumerator()
         {
-            foreach (WeightedBoneAnimationController controller in controllers)
-                yield return controller.Controller;
+            return controllers.Select(controller => controller.Controller).GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

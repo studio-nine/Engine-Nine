@@ -26,26 +26,59 @@ namespace Nine
     /// "Names[0].FirstName"    -> Target.Names[0].FirstName
     /// "Names["n"].FirstName"  -> Target.Names["n"].FirstName
     /// </example>
-    class PropertyExpression
+    public class PropertyExpression<T>
     {
         MemberInfo invocationMember;
         object invocationTarget;
 
+        Action<T> setValue;
+        Func<T> getValue;
+        
         /// <summary>
         /// Gets or sets the value of the target evaluated using this expression.
         /// </summary>
-        public object Value
+        public T Value
         {
-            get { return GetValue(invocationTarget, invocationMember); }
-            set { SetValue(invocationTarget, invocationMember, value); }
+            get 
+            {
+                if (getValue != null)
+                    return getValue();
+                return (T)GetValue(invocationTarget, invocationMember); 
+            }
+            set 
+            {
+                if (setValue != null)
+                    setValue(value);
+                else
+                    SetValue(invocationTarget, invocationMember, value); 
+            }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyExpression"/> class.
+        /// Initializes a new instance of the <see cref="PropertyExpression&lt;T&gt;"/> class.
         /// </summary>
         public PropertyExpression(object target, string property)
         {
             Parse(target, property, out invocationTarget, out invocationMember);
+
+            // Getting a value by reflection without garbage
+            //
+            // http://stackoverflow.com/questions/2378195/getting-a-value-by-reflection-without-garbage
+
+            if (invocationMember is PropertyInfo)
+            {
+                try
+                {
+                    setValue = (Action<T>)Delegate.CreateDelegate(typeof(Action<T>), invocationTarget, ((PropertyInfo)invocationMember).GetSetMethod());
+                }
+                catch { }
+
+                try
+                {
+                    getValue = (Func<T>)Delegate.CreateDelegate(typeof(Func<T>), invocationTarget, ((PropertyInfo)invocationMember).GetGetMethod());
+                }
+                catch { }
+            }            
         }
 
         private static void Parse(object target, string property, out object invocationTarget, out MemberInfo invocationMember)

@@ -110,7 +110,7 @@ namespace Nine
         {
             using (var stream = new MemoryStream(persisted))
             {
-                return Serialization.CreateSerializer(Type).Deserialize(stream);
+                throw new NotImplementedException();
             }
         }
 

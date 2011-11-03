@@ -358,7 +358,7 @@ namespace Nine.Graphics
             return TryGetHeightAndNormal(x, y, true, true, out height, out normal);
         }
         
-        private bool TryGetHeightAndNormal(float positionX, float positionY, bool getHeight, bool getNormal, out float height, out Vector3 normal)
+        internal bool TryGetHeightAndNormal(float positionX, float positionY, bool getHeight, bool getNormal, out float height, out Vector3 normal)
         {
             // first we'll figure out where on the heightmap "position" is...
             if (positionX == Size.X)

@@ -22,14 +22,14 @@ using Nine.Graphics;
 
 namespace Nine.Graphics.ObjectModel
 {
-    public partial class SpotLight : Light<ISpotLight>
+    public partial class SpotLight : Light<ISpotLight>, ISpatialQueryable
     {
         const float NearPlane = 0.01f;
 
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         #region BoundingBox
-        public override BoundingBox BoundingBox
+        public BoundingBox BoundingBox
         {
             get
             {
@@ -45,11 +45,25 @@ namespace Nine.Graphics.ObjectModel
         private bool isBoundingBoxDirty;
         private BoundingBox boundingBox;
 
-        protected override void OnBoundingBoxChanged()
+        private void OnBoundingBoxChanged()
         {
             isBoundingFrustumDirty = true;
             isBoundingBoxDirty = true;
-            base.OnBoundingBoxChanged();
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
+        }
+
+        object ISpatialQueryable.SpatialData { get; set; }
+
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+
+        protected override void OnTransformChanged()
+        {
+            base.OnTransformChanged();
+            OnBoundingBoxChanged();
         }
         #endregion
 
@@ -91,17 +105,10 @@ namespace Nine.Graphics.ObjectModel
             Falloff = 1;
         }
 
-#if !WINDOWS_PHONE
-        protected override void OnTransformChanged()
+        protected internal override void FindAll(Scene scene, List<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
-            isBoundingFrustumDirty = true;
-            base.OnTransformChanged();
-        }
-#endif
-
-        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
-        {
-            return allObjects.FindAll(BoundingFrustum);
+            var boundingFrustum = BoundingFrustum;
+            scene.FindAll(ref boundingFrustum, result);
         }
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];

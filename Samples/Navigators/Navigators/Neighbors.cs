@@ -9,38 +9,29 @@ namespace Navigators
 {
     public class Neighbors : List<Navigator>, ISpatialQuery<Navigator>
     {
-
-        public IEnumerable<Navigator> FindAll(Microsoft.Xna.Framework.BoundingFrustum frustum)
+        public void FindAll(ref Microsoft.Xna.Framework.BoundingFrustum boundingFrustum, ICollection<Navigator> result)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Navigator> FindAll(Microsoft.Xna.Framework.BoundingBox boundingBox)
+        public void FindAll(ref Microsoft.Xna.Framework.BoundingBox boundingBox, ICollection<Navigator> result)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Navigator> FindAll(Microsoft.Xna.Framework.Ray ray)
+        public void FindAll(ref Microsoft.Xna.Framework.BoundingSphere boundingSphere, ICollection<Navigator> result)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Navigator> FindAll(Microsoft.Xna.Framework.Vector3 position, float radius)
-        {
-            List<Navigator> list = new List<Navigator>();
-
-            ForEach(n =>
+            foreach (var n in this)
             {
-                var distance = Math.Sqrt(Math.Pow(n.Position.X - position.X, 2) + Math.Pow(n.Position.Y - position.Y, 2));
-                if (distance < radius)
-                    list.Add(n);
-            });
-            return list;
+                var distance = Math.Sqrt(Math.Pow(n.Position.X - boundingSphere.Center.X, 2) + Math.Pow(n.Position.Y - boundingSphere.Center.Y, 2));
+                if (distance < boundingSphere.Radius)
+                    result.Add(n);
+            }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        public void FindAll(ref Microsoft.Xna.Framework.Ray ray, ICollection<Navigator> result)
         {
-            return this.GetEnumerator();
+            throw new NotImplementedException();
         }
     }
 }

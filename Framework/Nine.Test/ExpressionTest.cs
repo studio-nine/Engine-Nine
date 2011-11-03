@@ -41,19 +41,19 @@ namespace Nine.Test
         public void ExpressionTest()
         {
             var a = new Container();
-            var expression = new PropertyExpression(a, "Child.X");
+            var expression = new PropertyExpression<int>(a, "Child.X");
             Assert.AreEqual(10, expression.Value);
             expression.Value = 1;
             Assert.AreEqual(1, expression.Value);
             Assert.AreEqual(1, a.Child.X);
-            
-            expression = new PropertyExpression(a, "Children[0].X");
+
+            expression = new PropertyExpression<int>(a, "Children[0].X");
             Assert.AreEqual(10, expression.Value);
             expression.Value = 1;
             Assert.AreEqual(1, expression.Value);
             Assert.AreEqual(1, a.Children[0].X);
 
-            expression = new PropertyExpression(a, "Dictionary[\"Name\"].X");
+            expression = new PropertyExpression<int>(a, "Dictionary[\"Name\"].X");
             Assert.AreEqual(10, expression.Value);
             expression.Value = 1;
             Assert.AreEqual(1, expression.Value);

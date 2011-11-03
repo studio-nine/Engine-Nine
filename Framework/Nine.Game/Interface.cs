@@ -45,7 +45,7 @@ namespace Nine
     /// <summary>
     /// Defines the protocal for game objects to interact with each other.
     /// </summary>
-    public interface IGameObjectContainer : IGameObject
+    public interface IGameObjectContainer
     {
         /// <summary>
         /// Find the first feature of type T owned by this game object container.

@@ -21,6 +21,7 @@ using Nine.Graphics.ObjectModel;
 using Nine.Navigation;
 using Nine.Animations;
 using Nine.Components;
+using Model = Microsoft.Xna.Framework.Graphics.Model;
 #endregion
 
 namespace NavigationSample
@@ -233,20 +234,17 @@ namespace NavigationSample
                     // Select single object from ray
                     Ray pickRay = GraphicsDevice.Viewport.CreatePickRay(e.X, e.Y, camera.View, camera.Projection);
 
-                    Unit selected = objectManager.FindAll(pickRay).FirstOrDefault();
+                    objectManager.FindAll(ref pickRay, selectedUnits);
 
-                    if (selected != null)
-                        selectedUnits.Add(selected);
+                    if (selectedUnits.Count > 1)
+                        selectedUnits.RemoveRange(1, selectedUnits.Count);
                 }
                 else
                 {
                     // Select multiple objects from frustum
                     pickFrustum = GraphicsDevice.Viewport.CreatePickFrustum(beginSelect, e.Position, camera.View, camera.Projection);
 
-                    foreach (Unit selected in objectManager.FindAll(pickFrustum))
-                    {
-                        selectedUnits.Add(selected);
-                    }
+                    objectManager.FindAll(ref pickFrustum, selectedUnits);
                 }
 
                 beginSelect = endSelect = Point.Zero;
@@ -273,12 +271,8 @@ namespace NavigationSample
             if (selectedUnits.Count > 0)
             {
                 float range = (float)(selectedUnits[0].Navigator.SoftBoundingRadius + selectedUnits[0].Navigator.MaxSpeed * gameTime.ElapsedGameTime.TotalSeconds);
-
-                foreach (Unit unit in objectManager.FindAll(selectedUnits[0].Navigator.Position, range))
-                {
-                    if (unit != selectedUnits[0])
-                        nearbyUnits.Add(unit);
-                }
+                var bounds = new BoundingSphere(selectedUnits[0].Navigator.Position, range);
+                objectManager.FindAll(ref bounds, nearbyUnits);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && selectedUnits.Count > 0)
@@ -303,7 +297,7 @@ namespace NavigationSample
             // Draw the terrain
             BoundingFrustum frustum = new BoundingFrustum(camera.View * camera.Projection);
 
-            foreach (DrawableSurfacePatch patch in terrain.Patches)
+            foreach (var patch in terrain.Patches)
             {
                 // Cull patches that are outside the view frustum
                 if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)
@@ -356,7 +350,7 @@ namespace NavigationSample
                 }
                 foreach (Unit unit in nearbyUnits)
                 {
-                    //primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.BoundingRadius, 12, null, Color.Red);
+                    ;// primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.SoftBoundingRadius, 12, null, Color.Red);
                 }
 
                 if (walls != null)

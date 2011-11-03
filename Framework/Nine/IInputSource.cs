@@ -28,7 +28,6 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
 #endregion
 
 namespace Nine
@@ -66,6 +65,7 @@ namespace Nine
         /// </summary>
         event EventHandler<MouseEventArgs> MouseMove;
 
+#if !SILVERLIGHT
         /// <summary>
         /// Occurs when a gamepad used by the current <c>PlayerIndex</c> has just been pressed.
         /// </summary>
@@ -80,6 +80,7 @@ namespace Nine
         /// Occurs when a new gesture has been sampled.
         /// </summary>
         event EventHandler<GestureEventArgs> GestureSampled;
+#endif
 
         /// <summary>
         /// Occurs when the game update itself.

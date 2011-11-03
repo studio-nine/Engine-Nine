@@ -55,8 +55,30 @@ namespace Nine
         public OctreeSceneManager(BoundingBox bounds, int maxDepth)
         {
             Tree = new Octree<List<T>>(bounds, maxDepth);
+
+            add = new Func<OctreeNode<List<T>>, TraverseOptions>(Add);
+            findAllRay = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllRay);
+            findAllBoundingBox = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllBoundingBox);
+            findAllBoundingSphere = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllBoundingSphere);
+            findAllBoundingFrustum = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllBoundingFrustum);
+            boundingBoxChanged = new EventHandler<EventArgs>(BoundingBoxChanged);
         }
 
+        private bool addedToNode;
+        private T item;
+        private Func<OctreeNode<List<T>>, TraverseOptions> add;
+
+        private ICollection<T> result;
+        private Ray ray;
+        private BoundingBox boundingBox;
+        private BoundingFrustum boundingFrustum;
+        private BoundingSphere boundingSphere;
+        private Func<OctreeNode<List<T>>, TraverseOptions> findAllRay;
+        private Func<OctreeNode<List<T>>, TraverseOptions> findAllBoundingBox;
+        private Func<OctreeNode<List<T>>, TraverseOptions> findAllBoundingSphere;
+        private Func<OctreeNode<List<T>>, TraverseOptions> findAllBoundingFrustum;
+        private EventHandler<EventArgs> boundingBoxChanged;
+        
         #region ICollection
         public void Add(T item)
         {
@@ -65,61 +87,57 @@ namespace Nine
             if (item.SpatialData != null)
                 throw new InvalidOperationException(Strings.AlreadyAddedToASceneManager);
 
-            item.SpatialData = new OctreeSceneManagerSpatialData<T>();
+            if (!(item.SpatialData is OctreeSceneManagerSpatialData<T>))
+                item.SpatialData = new OctreeSceneManagerSpatialData<T>();
 
             Add(Tree.Root, item);
 
-            item.BoundingBoxChanged += new EventHandler<EventArgs>(BoundingBoxChanged);
+            item.BoundingBoxChanged += boundingBoxChanged;
 
             Count++;
         }
-
+        
         private void Add(OctreeNode<List<T>> treeNode, T item)
         {
-            bool hasResult = false;
+            addedToNode = false;
 
-            var nodes = Tree.Traverse(treeNode, node =>
-            {
-                ContainmentType containment = node.Bounds.Contains(item.BoundingBox);
+            this.item = item;
+            Tree.Traverse(treeNode, add);
+            this.item = default(T);
 
-                    // Add to root if the object is too large
-                if (node == Tree.Root && containment != ContainmentType.Contains)
-                {
-                    AddToNode(item, node);
-                    hasResult = true;
-                    return true;
-                }
-
-                if (containment == ContainmentType.Disjoint)
-                    return false;
-
-                if (containment == ContainmentType.Intersects)
-                {
-                    AddToNode(item, node.Parent);
-                    hasResult = true;
-                    return true;
-                }
-
-                if (containment == ContainmentType.Contains && node.Depth == Tree.MaxDepth - 1)
-                {
-                    AddToNode(item, node);
-                    hasResult = true;
-                    return true;
-                }
-                return Tree.Expand(node);
-            });
-
-            foreach (var node in nodes)
-            {
-                if (hasResult)
-                    break;
-            }
-
-            if (!hasResult)
+            if (!addedToNode)
             {
                 // Something must be wrong if the node is not added.
                 throw new InvalidOperationException();
             }
+        }
+
+        private TraverseOptions Add(OctreeNode<List<T>> node)
+        {
+            ContainmentType containment = node.Bounds.Contains(item.BoundingBox);
+
+            // Add to root if the object is too large
+            if (node == Tree.Root && containment != ContainmentType.Contains)
+            {
+                AddToNode(item, node);
+                return TraverseOptions.Stop;
+            }
+
+            if (containment == ContainmentType.Disjoint)
+                return TraverseOptions.Skip;
+
+            if (containment == ContainmentType.Intersects)
+            {
+                AddToNode(item, node.Parent);
+                return TraverseOptions.Stop;
+            }
+
+            if (containment == ContainmentType.Contains && node.Depth == Tree.MaxDepth - 1)
+            {
+                AddToNode(item, node);
+                return TraverseOptions.Stop;
+            }
+            return Tree.Expand(node) ? TraverseOptions.Continue : TraverseOptions.Skip;
         }
 
         private void AddToNode(T item, OctreeNode<List<T>> node)
@@ -130,6 +148,7 @@ namespace Nine
             data.Tree = Tree;
             data.Node = node;
             node.Value.Add(item);
+            addedToNode = true;
         }
 
         public bool Remove(T item)
@@ -155,13 +174,13 @@ namespace Nine
             Tree.Collapse(node, n => n.Value == null || n.Value.Count <= 0);
 
             item.SpatialData = null;
-            item.BoundingBoxChanged -= new EventHandler<EventArgs>(BoundingBoxChanged);
+            item.BoundingBoxChanged -= boundingBoxChanged;
             Count--;
 
             return true;
         }
 
-        void BoundingBoxChanged(object sender, EventArgs e)
+        private void BoundingBoxChanged(object sender, EventArgs e)
         {
             T item = (T)sender;
 
@@ -238,53 +257,184 @@ namespace Nine
         #endregion
 
         #region ISpatialQuery
-        public IEnumerable<T> FindAll(Vector3 position, float radius)
+        public void FindAll(ref Ray ray, ICollection<T> result)
         {
-            var sphere = new BoundingSphere(position, radius);
-
-            foreach (var node in Tree.Traverse(node => node == Tree.Root || // Objects outside the tree bounds are stored in the root node.
-                                                       node.Bounds.Contains(sphere) != ContainmentType.Disjoint ||
-                                                       sphere.Contains(node.Bounds) != ContainmentType.Disjoint))
-                if (node.Value != null)
-                    foreach (var val in node.Value)
-                        if (val.BoundingBox.Contains(sphere) != ContainmentType.Disjoint ||
-                            sphere.Contains(val.BoundingBox) != ContainmentType.Disjoint)
-                            yield return val;
+            this.result = result;
+            this.ray = ray;
+            Tree.Traverse(findAllRay);
+            this.result = null;
         }
 
-        public IEnumerable<T> FindAll(Ray ray)
+        private TraverseOptions FindAllRay(OctreeNode<List<T>> node)
         {
-            foreach (var node in Tree.Traverse(node => node == Tree.Root ||
-                                                       node.Bounds.Intersects(ray).HasValue))
-                if (node.Value != null)
-                    foreach (var val in node.Value)
-                        if (val.BoundingBox.Intersects(ray).HasValue)
-                            yield return val;
+            float? intersection;
+            bool skip = (node != Tree.Root);
+            if (skip)
+            {
+                node.Bounds.Intersects(ref ray, out intersection);
+                if (intersection.HasValue)
+                {
+                    skip = false;
+                }
+            }
+
+            if (skip)
+                return TraverseOptions.Skip;
+
+            if (node.Value != null)
+            {
+                var count = node.Value.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var val = node.Value[i];
+                    val.BoundingBox.Intersects(ref ray, out intersection);
+                    if (intersection.HasValue)
+                    {
+                        result.Add(val);
+                    }
+                }
+            }
+            return TraverseOptions.Continue;
         }
 
-        public IEnumerable<T> FindAll(BoundingBox boundingBox)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<T> result)
         {
-            foreach (var node in Tree.Traverse(node => node == Tree.Root ||
-                                                       node.Bounds.Contains(boundingBox) != ContainmentType.Disjoint ||
-                                                       boundingBox.Contains(node.Bounds) != ContainmentType.Disjoint))
-                if (node.Value != null)
-                    foreach (var val in node.Value)
-                        if (val.BoundingBox.Contains(boundingBox) != ContainmentType.Disjoint ||
-                            boundingBox.Contains(val.BoundingBox) != ContainmentType.Disjoint)
-                            yield return val;
+            this.result = result;
+            this.boundingBox = boundingBox;
+            Tree.Traverse(findAllBoundingBox);
+            this.result = null;
         }
 
-        public IEnumerable<T> FindAll(BoundingFrustum frustum)
+        private TraverseOptions FindAllBoundingBox(OctreeNode<List<T>> node)
         {
-            foreach (var node in Tree.Traverse(node => node == Tree.Root ||
-                                                       node.Bounds.Contains(frustum) != ContainmentType.Disjoint ||
-                                                       frustum.Contains(node.Bounds) != ContainmentType.Disjoint))
-                if (node.Value != null)
-                    foreach (var val in node.Value)
-                        if (val.BoundingBox.Contains(frustum) != ContainmentType.Disjoint ||
-                            frustum.Contains(val.BoundingBox) != ContainmentType.Disjoint)
-                            yield return val;
+            var nodeContainment = ContainmentType.Intersects;
+            if (node != Tree.Root)
+            {
+                boundingBox.Contains(ref node.boundingBox, out nodeContainment);
+            }
+
+            if (nodeContainment == ContainmentType.Disjoint)
+                return TraverseOptions.Skip;
+
+            if (nodeContainment == ContainmentType.Contains)
+            {
+                AddAllDesedents(node);
+                return TraverseOptions.Skip;
+            }
+            
+            if (node.Value != null)
+            {
+                var count = node.Value.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var val = node.Value[i];
+                    ContainmentType objectContainment;
+                    val.BoundingBox.Contains(ref boundingBox, out objectContainment);
+                    if (objectContainment != ContainmentType.Disjoint)
+                        result.Add(val);
+                }
+            }
+            return TraverseOptions.Continue;
         }
+
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
+        {
+            this.result = result;
+            this.boundingSphere = boundingSphere;
+            Tree.Traverse(findAllBoundingBox);
+            this.result = null;
+        }
+
+        private TraverseOptions FindAllBoundingSphere(OctreeNode<List<T>> node)
+        {
+            var nodeContainment = ContainmentType.Intersects;
+            if (node != Tree.Root)
+            {
+                boundingSphere.Contains(ref node.boundingBox, out nodeContainment);
+            }
+
+            if (nodeContainment == ContainmentType.Disjoint)
+                return TraverseOptions.Skip;
+
+            if (nodeContainment == ContainmentType.Contains)
+            {
+                AddAllDesedents(node);
+                return TraverseOptions.Skip;
+            }
+
+            if (node.Value != null)
+            {
+                var count = node.Value.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var val = node.Value[i];
+                    ContainmentType objectContainment;
+                    val.BoundingBox.Contains(ref boundingSphere, out objectContainment);
+                    if (objectContainment != ContainmentType.Disjoint)
+                        result.Add(val);
+                }
+            }
+            return TraverseOptions.Continue;
+        }
+
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
+        {
+            this.result = result;
+            this.boundingFrustum = boundingFrustum;
+            Tree.Traverse(findAllBoundingFrustum);
+            this.result = null;
+        }
+
+        private TraverseOptions FindAllBoundingFrustum(OctreeNode<List<T>> node)
+        {
+            var nodeContainment = ContainmentType.Intersects;
+            if (node != Tree.Root)
+            {
+                boundingFrustum.Contains(ref node.boundingBox, out nodeContainment);
+            }
+
+            if (nodeContainment == ContainmentType.Disjoint)
+                return TraverseOptions.Skip;
+
+            if (nodeContainment == ContainmentType.Contains)
+            {
+                AddAllDesedents(node);
+                return TraverseOptions.Skip;
+            }
+
+            if (node.Value != null)
+            {
+                var count = node.Value.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var val = node.Value[i];
+                    if (boundingFrustum.Contains(val.BoundingBox) != ContainmentType.Disjoint)
+                    {
+                        result.Add(val);
+                    }
+                }
+            }
+            return TraverseOptions.Continue;
+        }
+
+        private void AddAllDesedents(OctreeNode<List<T>> node)
+        {
+            DesedentsStack.Push(node);
+            
+            while (DesedentsStack.Count > 0)
+            {
+                node = DesedentsStack.Pop();
+                if (node.Value != null)
+                {
+                    var count = node.Value.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        result.Add(node.Value[i]);
+                    }
+                }
+            }
+        }        
+        static Stack<OctreeNode<List<T>>> DesedentsStack = new Stack<OctreeNode<List<T>>>();
         #endregion
     }
     #endregion

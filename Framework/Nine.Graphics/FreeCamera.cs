@@ -15,6 +15,9 @@ using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+#if SILVERLIGHT
+using Keys = System.Windows.Input.Key;
+#endif
 #endregion
 
 namespace Nine.Graphics
@@ -81,10 +84,11 @@ namespace Nine.Graphics
         {
             // Assume screen size always greater then 100
             float delta = (float)elapsedTime.TotalSeconds;
-            GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
             Vector3 forward;
             Vector3 left;
 
+#if !SILVERLIGHT
+            GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
             if (gamePad.IsConnected)
             {
                 angle.X -= gamePad.ThumbSticks.Right.Y * TurnSpeed * 0.001f;
@@ -103,6 +107,7 @@ namespace Nine.Graphics
                 View *= Matrix.CreateRotationX(Angle.X);
             }
             else
+#endif
             {
                 KeyboardState keyboard = Keyboard.GetState();
                 MouseState mouse = Mouse.GetState();
@@ -122,9 +127,10 @@ namespace Nine.Graphics
                 forward = Vector3.Normalize(new Vector3((float)Math.Sin(-angle.Y), (float)Math.Sin(angle.X), (float)Math.Cos(-angle.Y)));
                 left = Vector3.Normalize(new Vector3((float)Math.Cos(angle.Y), 0f, (float)Math.Sin(angle.Y)));
 
+#if !SILVERLIGHT
                 if (keyboard.IsKeyDown(Keys.LeftShift))
                     delta /= 3;
-
+#endif
                 if (keyboard.IsKeyDown(Keys.W))
                     position -= forward * Speed * delta;
 

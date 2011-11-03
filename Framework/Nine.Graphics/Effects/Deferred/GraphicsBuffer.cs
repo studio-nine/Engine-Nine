@@ -244,11 +244,6 @@ namespace Nine.Graphics.Effects.Deferred
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, light.VertexBuffer.VertexCount, 0, light.IndexBuffer.IndexCount / 3);
         }
 
-        internal static BoundingBox BoxFromPlane(Vector3[] plane)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Ends the rendering of lights and generates LightTexture.
         /// </summary>

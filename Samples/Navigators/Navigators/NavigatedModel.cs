@@ -6,6 +6,7 @@ using Nine.Animations;
 using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
 using Nine.Navigation;
+using Model = Microsoft.Xna.Framework.Graphics.Model;
 
 namespace Navigators
 {
@@ -32,10 +33,14 @@ namespace Navigators
             get { return navigator; }
         }
 
-        public override BoundingBox BoundingBox
+        public BoundingBox BoundingBox
         {
             get { return boundingBox; }
         }
+
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+
+        public object SpatialData { get; set; }
 
         public Matrix OriginalRotation { get; set; }
         public Matrix OriginalScale { get; set; }
@@ -98,6 +103,8 @@ namespace Navigators
         {
             boundingBox = orientedBoundingBox.CreateAxisAligned(Transform);
             base.OnTransformChanged();
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
         }
 
 

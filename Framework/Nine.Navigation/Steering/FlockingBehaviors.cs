@@ -29,6 +29,8 @@ namespace Nine.Navigation.Steering
     #region CohesionBehavior
     public class CohesionBehavior : SteeringBehavior
     {
+        static List<Steerable> Partners = new List<Steerable>();
+
         public float Range { get; set; }
         public ISpatialQuery<Steerable> Neighbors { get; set; }
 
@@ -42,7 +44,10 @@ namespace Nine.Navigation.Steering
             int count = 0;
             Vector2 center = Vector2.Zero;
 
-            foreach (Steerable partner in Neighbors.FindAll(new Vector3(movingEntity.Position, 0), Range))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), Range);
+            Neighbors.FindAll(ref boundingSphere, Partners);
+
+            foreach (var partner in Partners)
             {
                 if (partner != null && partner != movingEntity)
                 {
@@ -51,6 +56,7 @@ namespace Nine.Navigation.Steering
                         break;
                 }
             }
+            Partners.Clear();
 
             if (count > 0)
             {
@@ -66,6 +72,8 @@ namespace Nine.Navigation.Steering
     #region SeperationBehavior
     public class SeparationBehavior : SteeringBehavior
     {
+        static List<Steerable> Partners = new List<Steerable>();
+
         public float Range { get; set; }
         public ISpatialQuery<Steerable> Neighbors { get; set; }
 
@@ -82,9 +90,12 @@ namespace Nine.Navigation.Steering
             float minDistanceToPartner = float.MaxValue;
             
             // Make sure seperation gets called earlier then steerable avoidance.
-            float detectorLength = movingEntity.BoundingRadius + movingEntity.Skin * 2; 
+            float detectorLength = movingEntity.BoundingRadius + movingEntity.Skin * 2;
 
-            foreach (Steerable partner in Neighbors.FindAll(new Vector3(movingEntity.Position, 0), detectorLength))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), detectorLength);
+            Neighbors.FindAll(ref boundingSphere, Partners);
+
+            foreach (var partner in Partners)
             {
                 if (partner == null || partner == movingEntity)
                     continue;
@@ -107,6 +118,7 @@ namespace Nine.Navigation.Steering
                 if (++count >= SteeringHelper.MaxAffectingEntities)
                     break;
             }
+            Partners.Clear();
 
             if (nearestPartner != null)
             {
@@ -120,6 +132,8 @@ namespace Nine.Navigation.Steering
     #region AlignmentBehavior
     public class AlignmentBehavior : SteeringBehavior
     {
+        static List<Steerable> Partners = new List<Steerable>();
+
         public float Range { get; set; }
         public ISpatialQuery<Steerable> Neighbors { get; set; }
 
@@ -133,7 +147,10 @@ namespace Nine.Navigation.Steering
             int count = 0;
             Vector2 totalForce = Vector2.Zero;
 
-            foreach (Steerable partner in Neighbors.FindAll(new Vector3(movingEntity.Position, 0), Range))
+            var boundingSphere = new BoundingSphere(new Vector3(movingEntity.Position, 0), Range);
+            Neighbors.FindAll(ref boundingSphere, Partners);
+
+            foreach (var partner in Partners)
             {
                 if (partner != null && partner != movingEntity)
                 {
@@ -142,6 +159,7 @@ namespace Nine.Navigation.Steering
                         break;
                 }
             }
+            Partners.Clear();
 
             if (count > 0)
             {

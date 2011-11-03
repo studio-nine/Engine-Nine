@@ -31,7 +31,7 @@ namespace Nine.Content.Pipeline
                 var property = GetType().GetCustomAttributes(typeof(ContentPropertyAttribute), true).OfType<ContentPropertyAttribute>().FirstOrDefault();
                 if (property != null)
                 {
-                    dictionary = (IDictionary)(new PropertyExpression(this, property.Name).Value);
+                    dictionary = (IDictionary)(new PropertyExpression<object>(this, property.Name).Value);
                 }
             }
         }

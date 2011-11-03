@@ -102,24 +102,24 @@ namespace Nine
         #endregion
 
         #region ISpatialQuery<T>
-        public IEnumerable<TOutput> FindAll(Vector3 position, float radius)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<TOutput> result)
         {
-            return query.FindAll(position, radius);
+            query.FindAll(ref boundingSphere, result);
         }
 
-        public IEnumerable<TOutput> FindAll(Ray ray)
+        public void FindAll(ref Ray ray, ICollection<TOutput> result)
         {
-            return query.FindAll(ray);
+            query.FindAll(ref ray, result);
         }
 
-        public IEnumerable<TOutput> FindAll(BoundingBox boundingBox)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<TOutput> result)
         {
-            return query.FindAll(boundingBox);
+            query.FindAll(ref boundingBox, result);
         }
 
-        public IEnumerable<TOutput> FindAll(BoundingFrustum frustum)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<TOutput> result)
         {
-            return query.FindAll(frustum);
+            query.FindAll(ref boundingFrustum, result);
         }
         #endregion
     }

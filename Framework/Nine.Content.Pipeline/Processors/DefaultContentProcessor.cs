@@ -8,11 +8,15 @@
 
 #region Using Directives
 using System;
+using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -23,6 +27,12 @@ namespace Nine.Content.Pipeline.Processors
     [ContentProcessor(DisplayName = "Content - Engine Nine")]
     public class DefaultContentProcessor : ContentProcessor<object, object>
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether a debug intermediate xml file will be created.
+        /// </summary>
+        [DefaultValue(false)]
+        public bool Debug { get; set; }
+
         ContentProcessorContext context;
 
         public override object Process(object input, ContentProcessorContext context)
@@ -32,6 +42,15 @@ namespace Nine.Content.Pipeline.Processors
 
             this.context = context;
             ForEachProperty(input, Process);
+
+            if (Debug)
+            {
+                using (var writer = XmlWriter.Create(Path.Combine(context.IntermediateDirectory, Path.GetRandomFileName()) + ".xml",
+                                new XmlWriterSettings { Indent = true, NewLineChars = Environment.NewLine }))
+                {
+                    IntermediateSerializer.Serialize(writer, input, ".");
+                }
+            }
             return input;
         }
         
@@ -100,7 +119,9 @@ namespace Nine.Content.Pipeline.Processors
                                 {
                                     context.Logger.LogMessage("Scanning List {0}:{1}", property.Name, property.PropertyType.Name);
 
-                                    for (int i = 0; i < ((ICollection)value).Count; i++)
+                                    dynamic dynamicValue = value;
+                                    var count = dynamicValue.Count;
+                                    for (int i = 0; i < count; i++)
                                     {
                                         itemAccessor.SetValue(value, action(property.PropertyType,
                                             itemAccessor.GetValue(value, new object[] { i })), new object[] { i });

@@ -30,7 +30,7 @@ namespace Nine.Animations
         private object target;
         private string targetProperty;
         private bool expressionChanged;
-        private PropertyExpression expression;
+        private PropertyExpression<Matrix> expression;
 
         private TweenAnimation<float> scaleX;
         private TweenAnimation<float> scaleY;
@@ -292,7 +292,7 @@ namespace Nine.Animations
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
             {
                 if (expression == null || expressionChanged)
-                    expression = new PropertyExpression(Target, TargetProperty);
+                    expression = new PropertyExpression<Matrix>(Target, TargetProperty);
             }
 
             layeredAnimation.Play();

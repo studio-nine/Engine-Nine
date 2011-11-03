@@ -198,7 +198,7 @@ namespace Nine.Navigation
         /// <summary>
         /// Gets all the adjacent edges of the specified node.
         /// </summary>
-        public IEnumerable<GraphEdge<PathGridNode>> GetEdges(PathGridNode node)
+        public void GetEdges(PathGridNode node, ICollection<GraphEdge<PathGridNode>> result)
         {
             int x = node.X;
             int y = node.Y;
@@ -214,7 +214,7 @@ namespace Nine.Navigation
                 edge.To.ID = y * SegmentCountX + x - 1;
                 edge.Cost = 1.0f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (x < Bounds.Right - 1 && data[x + 1, y] == 0)
             {
@@ -223,7 +223,7 @@ namespace Nine.Navigation
                 edge.To.ID = y * SegmentCountX + x + 1;
                 edge.Cost = 1.0f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (y > Bounds.Top && data[x, y - 1] == 0)
             {
@@ -232,7 +232,7 @@ namespace Nine.Navigation
                 edge.To.ID = (y - 1) * SegmentCountX + x;
                 edge.Cost = 1.0f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (y < Bounds.Bottom - 1 && data[x, y + 1] == 0)
             {
@@ -241,7 +241,7 @@ namespace Nine.Navigation
                 edge.To.ID = (y + 1) * SegmentCountX + x;
                 edge.Cost = 1.0f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (x > Bounds.Left && y > Bounds.Top && data[x - 1, y - 1] == 0)
             {
@@ -250,7 +250,7 @@ namespace Nine.Navigation
                 edge.To.ID = (y - 1) * SegmentCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (x > Bounds.Left && y < Bounds.Bottom - 1 && data[x - 1, y + 1] == 0)
             {
@@ -259,7 +259,7 @@ namespace Nine.Navigation
                 edge.To.ID = (y + 1) * SegmentCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (x < Bounds.Right - 1 && y > Bounds.Top && data[x + 1, y - 1] == 0)
             {
@@ -268,7 +268,7 @@ namespace Nine.Navigation
                 edge.To.ID = (y - 1) * SegmentCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
-                yield return edge;
+                result.Add(edge);
             }
             if (x < Bounds.Right - 1 && y < Bounds.Bottom - 1 && data[x + 1, y + 1] == 0)
             {
@@ -277,7 +277,7 @@ namespace Nine.Navigation
                 edge.To.ID = (y + 1) * SegmentCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
-                yield return edge;
+                result.Add(edge);
             }
         }
 

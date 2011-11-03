@@ -25,7 +25,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     {
         partial void OnCreate()
         {
-            BoundingBox = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);
+
         }
     }
 }

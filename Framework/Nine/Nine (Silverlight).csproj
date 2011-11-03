@@ -55,9 +55,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.Content, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Math, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2c5c654d367bf4a7, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -70,6 +72,20 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="AddHelper.cs" />
+    <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\DelayAnimation.cs" />
+    <Compile Include="Animations\IAnimation.cs" />
+    <Compile Include="Animations\KeyframeAnimation.cs" />
+    <Compile Include="Animations\LayeredAnimation.cs" />
+    <Compile Include="Animations\SequentialAnimation.cs" />
+    <Compile Include="Animations\TimelineAnimation.cs" />
+    <Compile Include="Animations\TransformAnimation.cs" />
+    <Compile Include="Animations\TweenAnimation.cs" />
+    <Compile Include="BoundingBoxExtensions.cs" />
+    <Compile Include="BoundingCircle.cs" />
+    <Compile Include="BoundingRectangle.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameTime.cs" />
     <Compile Include="Components\GameComponent.cs" />
@@ -78,12 +94,40 @@
     <Compile Include="Components\IDrawable.cs" />
     <Compile Include="Components\IGameComponent.cs" />
     <Compile Include="Components\IUpdateable.cs" />
+    <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="ContentSerializableAttribute.cs" />
+    <Compile Include="Curves.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GridObjectManager.cs" />
+    <Compile Include="Helpers.cs" />
+    <Compile Include="IInputSource.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="InputEventArgs.cs" />
     <Compile Include="Interface.cs" />
+    <Compile Include="LineSegment.cs" />
+    <Compile Include="Math2D.cs" />
+    <Compile Include="NotificationCollection.cs" />
+    <Compile Include="Octree.cs" />
+    <Compile Include="OctreeSceneManager.cs" />
+    <Compile Include="Pickable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyExpression.cs" />
+    <Compile Include="QuadTree.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="SceneManager.cs" />
+    <Compile Include="SpacePartitionTree.cs" />
+    <Compile Include="SpatialQuery.cs" />
+    <Compile Include="Strings.Designer.cs" />
+    <Compile Include="Surface.cs" />
+    <Compile Include="Triangle.cs" />
+    <Compile Include="UniformGrid.cs" />
+    <Compile Include="WeakReference.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

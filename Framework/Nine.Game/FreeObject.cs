@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -21,6 +21,7 @@ namespace Nine
     /// Defines an object that has an abitrary transform.
     /// </summary>
     [Serializable]
+    [ContentProperty("Components")]
     public class FreeObject : GameObjectContainer
     {
         #region Transform

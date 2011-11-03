@@ -53,7 +53,7 @@ namespace Nine.Animations
         private object target;
         private string targetProperty;
         private bool expressionChanged;
-        private PropertyExpression expression;
+        private PropertyExpression<T> expression;
         private Interpolate<T> lerp;
         private Operator<T> add;
         private ICurve curve = Curves.Linear;
@@ -161,14 +161,14 @@ namespace Nine.Animations
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
             {
                 if (expression == null || expressionChanged)
-                    expression = new PropertyExpression(Target, TargetProperty);
+                    expression = new PropertyExpression<T>(Target, TargetProperty);
             }
 
             // Initialize from
             if (From.HasValue)
                 from = From.Value;
             else if (expression != null)
-                from = (T)expression.Value;
+                from = expression.Value;
             else
                 throw new InvalidOperationException(
                     "When From is set to null, a valid Target and TargetProperty must be set");

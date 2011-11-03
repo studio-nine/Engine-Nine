@@ -12,6 +12,7 @@ using Nine.Graphics.ObjectModel;
 using Nine.Graphics;
 using Nine.Components;
 using Nine;
+using Model = Microsoft.Xna.Framework.Graphics.Model;
 
 namespace Navigators
 {

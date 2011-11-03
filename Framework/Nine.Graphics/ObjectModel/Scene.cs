@@ -30,7 +30,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Defines a graphical scene that manages a set of objects, cameras and lights.
     /// </summary>
-    public class Scene : ISceneManager<ISpatialQueryable>, IDisposable, IDrawable
+    public class Scene : ICollection<object>, IDisposable, IDrawable
     {
         #region Properties
         /// <summary>
@@ -80,8 +80,15 @@ namespace Nine.Graphics.ObjectModel
         [ContentSerializer()]
         internal List<object> SceneObjects
         {
-            get { return objects.OfType<object>().ToList(); }
-            set { (value ?? Enumerable.Empty<object>()).OfType<ISpatialQueryable>().ForEach(obj => Add(obj)); }
+            get { return topLevelObjects; }
+            set 
+            {
+                if (value != null)
+                {
+                    for (int i = 0; i < value.Count; i++)
+                        Add(value[i]);
+                }
+            }
         }
 
         /// <summary>
@@ -96,13 +103,38 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Fields
-        private SceneManager<ISpatialQueryable, ISpatialQueryable> sceneManager;
-        private SpatialQuery<object, IDrawableObject> shadowQuery;
-        private SceneQuery<object> sceneQuery;
+        /// <summary>
+        /// This is the underlying scene manager that manages all spatial queryables.
+        /// </summary>
+        private ISceneManager<ISpatialQueryable> sceneManager;
 
-        private List<ISpatialQueryable> objects = new List<ISpatialQueryable>();
-        private List<ISpatialQueryable> objectsInViewFrustum = new List<ISpatialQueryable>();
+        /// <summary>
+        /// Gets the spatial query that can find all the top level objects.
+        /// </summary>
+        private ISpatialQuery<FindResult> detailedQuery;
+
+        /// <summary>
+        /// Gets the spatial query that can find all the flattened objects.
+        /// </summary>
+        private ISpatialQuery<object> flattenedQuery;
+
+        private SpatialQuery<object, IDrawableObject> shadowQuery;
+
+        /// <summary>
+        /// This list contains only the objects added using Scene.Add method.
+        /// </summary>
+        private List<object> topLevelObjects = new List<object>();
+
+        /// <summary>
+        /// This list contains all the drawable objects in the current view frustum.
+        /// </summary>
         private List<IDrawableObject> drawablesInViewFrustum = new List<IDrawableObject>();
+        
+        /// <summary>
+        /// This list contains all the flattened objects in the current view frustum.
+        /// </summary>
+        private List<object> flattenedObjectsInViewFrustum = new List<object>();
+
         private List<IDrawableObject> opaqueDrawablesInViewFrustum = new List<IDrawableObject>();
         private List<IDrawableObject> transparentDrawablesInViewFrustum = new List<IDrawableObject>();
         
@@ -136,139 +168,93 @@ namespace Nine.Graphics.ObjectModel
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            if (sceneManager == null)
-                sceneManager = new OctreeSceneManager<ISpatialQueryable>();
-
-            this.sceneQuery = new SceneQuery<object>(sceneManager);
-            this.sceneManager = new SceneManager<ISpatialQueryable, ISpatialQueryable>(sceneManager);
-            this.sceneManager.Added += OnAdded;
-            this.sceneManager.Removed += OnRemoved;
-
             this.GraphicsDevice = graphics;
+            this.sceneManager = sceneManager ?? new OctreeSceneManager<ISpatialQueryable>();
+            this.flattenedQuery = new FlattenedQuery(this.sceneManager, this.topLevelObjects);
+            this.detailedQuery = new DetailedQuery(this.sceneManager);
             this.Settings = settings ?? new GraphicsSettings();
             this.Statistics = new GraphicsStatistics();
             this.GraphicsContext = GraphicsContext ?? new GraphicsContext(graphics, Settings, Statistics);
         }
         #endregion
 
-        #region Scene Manager
+        #region Collection
         /// <summary>
         /// Adds a new item to the scene.
         /// </summary>
-        public void Add(ISpatialQueryable item)
+        public void Add(object item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
-            sceneManager.Add(item);
-            objects.Add(item);
+            topLevelObjects.Add(item); 
+            InternalAdd(item);
+        }
+
+        private void InternalAdd(object item)
+        {
+            ContainerTraverser.Traverse<object>(item, FlattenedAdd);
+        }
+
+        private TraverseOptions FlattenedAdd(object item)
+        {
+            if (item == null)
+                throw new ArgumentNullException("item");
+
+            var queryable = item as ISpatialQueryable;
+            if (queryable != null)
+                sceneManager.Add(queryable);
+
+            var collectionChanged = item as INotifyCollectionChanged<object>;
+            if (collectionChanged != null)
+            {
+                collectionChanged.Added += OnChildAdded;
+                collectionChanged.Removed += OnChildRemoved;
+            }
+            return TraverseOptions.Continue;            
         }
 
         /// <summary>
         /// Removes an item from the scene.
         /// </summary>
-        public bool Remove(ISpatialQueryable item)
+        public bool Remove(object item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
-            sceneManager.Remove(item);
-            return objects.Remove(item);
+            InternalRemove(item);
+            return topLevelObjects.Remove(item);
         }
 
-        protected virtual void OnAdded(object sender, NotifyCollectionChangedEventArgs<ISpatialQueryable> e)
+        private void InternalRemove(object item)
         {
-            IEnumerable enumerable = e.Value as IEnumerable;
-            if (enumerable != null)
-            {
-                ForEachInEnumerable<object>(enumerable, child =>
-                {
-                    Transformable transformable = child as Transformable;
-                    if (transformable != null)
-                        transformable.Parent = enumerable as Transformable;
-                    ISpatialQueryable queryable = child as ISpatialQueryable;
-                    if (queryable != null)
-                        Add(queryable);
-                });
-
-                var collectionChanged = e.Value as INotifyCollectionChanged<object>;
-                if (collectionChanged != null)
-                {
-                    collectionChanged.Added += OnChildAdded;
-                    collectionChanged.Removed += OnChildRemoved;
-                }
-            }
+            ContainerTraverser.Traverse<object>(item, FlattenedRemove);
         }
 
-        protected virtual void OnRemoved(object sender, NotifyCollectionChangedEventArgs<ISpatialQueryable> e)
+        private TraverseOptions FlattenedRemove(object item)
         {
-            IEnumerable enumerable = e.Value as IEnumerable;
-            if (enumerable != null)
-            {
-                ForEachInEnumerable<object>(enumerable, child =>
-                {
-                    Transformable transformable = child as Transformable;
-                    if (transformable != null)
-                    {
-                        if (transformable.Parent != enumerable as Transformable)
-                        {
-                            throw new InvalidOperationException(
-                                "Cannot modify the IEnumerable when it is added to a scene, " +
-                                "or implement INotifyCollectionChanged<object> if the modification is intended.");
-                        }
-                        transformable.Parent = null;
-                    }
-                    ISpatialQueryable queryable = child as ISpatialQueryable;
-                    if (queryable != null)
-                        Remove(queryable);
-                });
+            if (item == null)
+                throw new ArgumentNullException("item");
 
-                var collectionChanged = e.Value as INotifyCollectionChanged<object>;
-                if (collectionChanged != null)
-                {
-                    collectionChanged.Added -= OnChildAdded;
-                    collectionChanged.Removed -= OnChildRemoved;
-                }
+            var queryable = item as ISpatialQueryable;
+            if (queryable != null)
+                sceneManager.Remove(queryable);
+
+            var collectionChanged = item as INotifyCollectionChanged<object>;
+            if (collectionChanged != null)
+            {
+                collectionChanged.Added -= OnChildAdded;
+                collectionChanged.Removed -= OnChildRemoved;
             }
+            return TraverseOptions.Continue;
         }
 
         private void OnChildAdded(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
-            var queryable = e.Value as ISpatialQueryable;
-            if (queryable != null)
-                Add(queryable);
+            InternalAdd(e.Value);
         }
 
         private void OnChildRemoved(object sender, NotifyCollectionChangedEventArgs<object> e)
         {
-            var queryable = e.Value as ISpatialQueryable;
-            if (queryable != null)
-                Remove(queryable);
-        }
-
-        private void ForEachInEnumerable<T>(IEnumerable enumerable, Action<T> action)
-        {
-            if (enumerable != null)
-            {
-                foreach (var child in enumerable)
-                {
-                    if (child is T)
-                        action((T)child);
-                }
-            }
-        }
-
-        private void ForEachInSpatialQueryable<T>(ISpatialQueryable queryable, Action<T> action) where T : class
-        {
-            if (queryable is T)
-                action((T)queryable);
-
-            var enumerable = queryable as IEnumerable;
-            if (enumerable != null)
-            {
-                foreach (var child in SceneQuery<T>.Enumerate(enumerable))
-                {
-                    action((T)child);
-                }
-            }
+            InternalRemove(e.Value);
         }
 
         /// <summary>
@@ -276,21 +262,36 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public void Clear()
         {
+            for (int i = 0; i < topLevelObjects.Count; i++)
+            {
+                ContainerTraverser.Traverse<INotifyCollectionChanged<object>>(topLevelObjects[i], ClearEvents);
+            }
+
             sceneManager.Clear();
-            objects.Clear();
+            topLevelObjects.Clear();
+        }
+
+        private TraverseOptions ClearEvents(INotifyCollectionChanged<object> collectionChanged)
+        {
+            if (collectionChanged != null)
+            {
+                collectionChanged.Added -= OnChildAdded;
+                collectionChanged.Removed -= OnChildRemoved;
+            }
+            return TraverseOptions.Continue;
         }
 
         /// <summary>
         /// Gets whether the scene contains the target item.
         /// </summary>
-        public bool Contains(ISpatialQueryable item)
+        public bool Contains(object item)
         {
-            return objects.Contains(item);
+            return topLevelObjects.Contains(item);
         }
 
-        void ICollection<ISpatialQueryable>.CopyTo(ISpatialQueryable[] array, int arrayIndex)
+        void ICollection<object>.CopyTo(object[] array, int arrayIndex)
         {
-            objects.CopyTo(array, arrayIndex);
+            topLevelObjects.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -298,83 +299,125 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public int Count 
         {
-            get { return objects.Count; } 
+            get { return topLevelObjects.Count; } 
         }
 
-        bool ICollection<ISpatialQueryable>.IsReadOnly
+        bool ICollection<object>.IsReadOnly
         {
             get { return false; } 
         }
 
-        IEnumerator<ISpatialQueryable> IEnumerable<ISpatialQueryable>.GetEnumerator()
+        IEnumerator<object> IEnumerable<object>.GetEnumerator()
         {
-            return objects.GetEnumerator();
+            return topLevelObjects.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return objects.GetEnumerator();
+            return topLevelObjects.GetEnumerator();
         }
+        #endregion
 
-        public IEnumerable<ISpatialQueryable> FindAll(Vector3 position, float radius)
-        {
-            return sceneManager.FindAll(position, radius);
-        }
-
-        public IEnumerable<ISpatialQueryable> FindAll(Ray ray)
-        {
-            return sceneManager.FindAll(ray);
-        }
-
-        public IEnumerable<ISpatialQueryable> FindAll(BoundingBox boundingBox)
-        {
-            return sceneManager.FindAll(boundingBox);
-        }
-
-        public IEnumerable<ISpatialQueryable> FindAll(BoundingFrustum frustum)
-        {
-            return sceneManager.FindAll(frustum);
-        }
-
-        public T Find<T>(string name)
+        #region Find
+        public T Find<T>(string name) where T : class
         {
             if (Name == name && this is T)
-                return (T)(object)this;
-            var result = objects.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
-            if (result is T)
-                return (T)(object)result;
-            return default(T);
-        }
+                return this as T;
 
-        public IEnumerable<T> FindAll<T>(string name)
-        {
-            if (Name == name && this is T)
-                yield return (T)(object)this;
-            foreach (var result in objects.OfType<Transformable>().Where(t => t.Name == name))
+            for (int i = 0; i < topLevelObjects.Count; i++)
             {
-                if (result is T)
-                    yield return (T)(object)result;
+                var result = SceneQueryHelper<T>.FindName(topLevelObjects[i], name);
+                if (result != null)
+                    return result;
+            }
+            return null;
+        }
+
+        public void FindAll<T>(string name, ICollection<T> result) where T : class
+        {
+            if (Name == name && this is T)
+                result.Add(this as T);
+
+            for (int i = 0; i < topLevelObjects.Count; i++)
+            {
+                SceneQueryHelper<T>.FindAllNames(topLevelObjects[i], name, result);
             }
         }
 
-        public IEnumerable<T> FindAll<T>(Vector3 position, float radius)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<object> result)
         {
-            return sceneQuery.FindAll(position, radius).OfType<T>();
+            flattenedQuery.FindAll(ref boundingSphere, result);
         }
 
-        public IEnumerable<T> FindAll<T>(Ray ray)
+        public void FindAll(ref Ray ray, ICollection<object> result)
         {
-            return sceneQuery.FindAll(ray).OfType<T>();
+            flattenedQuery.FindAll(ref ray, result);
         }
 
-        public IEnumerable<T> FindAll<T>(BoundingBox boundingBox)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<object> result)
         {
-            return sceneQuery.FindAll(boundingBox).OfType<T>();
+            flattenedQuery.FindAll(ref boundingBox, result);
         }
 
-        public IEnumerable<T> FindAll<T>(BoundingFrustum frustum)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<object> result)
         {
-            return sceneQuery.FindAll(frustum).OfType<T>();
+            flattenedQuery.FindAll(ref boundingFrustum, result);
+        }
+
+        public void FindAll<T>(ref BoundingSphere boundingSphere, ICollection<T> result) where T : class
+        {
+            var adapter = FlattenedCollectionAdapter<T>.Instance;
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            sceneManager.FindAll(ref boundingSphere, adapter);
+            adapter.Result = null;
+        }
+
+        public void FindAll<T>(ref Ray ray, ICollection<T> result) where T : class
+        {
+            var adapter = FlattenedCollectionAdapter<T>.Instance;
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            sceneManager.FindAll(ref ray, adapter);
+            adapter.Result = null;
+        }
+
+        public void FindAll<T>(ref BoundingBox boundingBox, ICollection<T> result) where T : class
+        {
+            var adapter = FlattenedCollectionAdapter<T>.Instance;
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            sceneManager.FindAll(ref boundingBox, adapter);
+            adapter.Result = null;
+        }
+
+        public void FindAll<T>(ref BoundingFrustum boundingFrustum, ICollection<T> result) where T : class
+        {
+            var adapter = FlattenedCollectionAdapter<T>.Instance;
+            adapter.Result = result;
+            adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
+            sceneManager.FindAll(ref boundingFrustum, adapter);
+            adapter.Result = null;
+        }
+
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<FindResult> result)
+        {
+            detailedQuery.FindAll(ref boundingSphere, result);
+        }
+
+        public void FindAll(ref Ray ray, ICollection<FindResult> result)
+        {
+            detailedQuery.FindAll(ref ray, result);
+        }
+
+        public void FindAll(ref BoundingBox boundingBox, ICollection<FindResult> result)
+        {
+            detailedQuery.FindAll(ref boundingBox, result);
+        }
+
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<FindResult> result)
+        {
+            detailedQuery.FindAll(ref boundingFrustum, result);
         }
         #endregion
 
@@ -409,6 +452,8 @@ namespace Nine.Graphics.ObjectModel
                 DrawShadowMaps();
             }
 #endif
+
+            GraphicsDevice.Clear(Settings.BackgroundColor);
 
             if (Settings.LightingEnabled)
             {
@@ -487,14 +532,19 @@ namespace Nine.Graphics.ObjectModel
 
         private void UpdateVisibleDrawablesAndLightsInViewFrustum()
         {
-            objectsInViewFrustum.Clear();
+            flattenedObjectsInViewFrustum.Clear();
             drawablesInViewFrustum.Clear();
             opaqueDrawablesInViewFrustum.Clear();
             transparentDrawablesInViewFrustum.Clear();
             lightsInViewFrustum.Clear();
 
-            foreach (var obj in sceneQuery.FindAll(GraphicsContext.ViewFrustum))
+            var viewFrustum = GraphicsContext.ViewFrustum;
+            FindAll(ref viewFrustum, flattenedObjectsInViewFrustum);
+            
+            for (int i = 0; i < flattenedObjectsInViewFrustum.Count; i++)
             {
+                var obj = flattenedObjectsInViewFrustum[i];
+
                 var light = obj as Light;
                 if (light != null && light.Enabled)
                 {
@@ -511,16 +561,10 @@ namespace Nine.Graphics.ObjectModel
                         opaqueDrawablesInViewFrustum.Add(drawable);
                     drawablesInViewFrustum.Add(drawable);
                 }
-
-                var boundable = obj as ISpatialQueryable;
-                if (boundable != null)
-                {
-                    objectsInViewFrustum.Add(boundable);
-                }
             }
 
             Statistics.VisibleDrawableCount = drawablesInViewFrustum.Count;
-            Statistics.VisibleObjectCount = objectsInViewFrustum.Count;
+            Statistics.VisibleObjectCount = flattenedObjectsInViewFrustum.Count;
             Statistics.VisibleLightCount = lightsInViewFrustum.Count;
         }
 
@@ -536,8 +580,12 @@ namespace Nine.Graphics.ObjectModel
             if (updateable != null)
                 updateable.Update(elapsedTime);
 
-            foreach (var up in sceneQuery.OfType<IUpdateable>())
-                up.Update(elapsedTime);
+            for (int i = 0; i < flattenedObjectsInViewFrustum.Count; i++)
+            {
+                updateable = flattenedObjectsInViewFrustum[i] as IUpdateable;
+                if (updateable != null)
+                    updateable.Update(elapsedTime);
+            }
         }
 
         private void BeginDraw()
@@ -615,10 +663,11 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Forward
-        private void DrawUsingForwardLighting(IList<IDrawableObject> drawables)
+        private void DrawUsingForwardLighting(List<IDrawableObject> drawables)
         {
-            foreach (var drawable in drawables)
+            for (int i = 0; i < drawables.Count; i++)
             {
+                var drawable = drawables[i];
                 var material = drawable.Material;
                 var lightable = drawable as ILightable;
 
@@ -631,12 +680,7 @@ namespace Nine.Graphics.ObjectModel
                         if (lightingData.MultiPassLights != null)
                             lightingData.MultiPassLights.Clear();
 
-                        ApplyLights(lightingData.AffectingLights, material, light =>
-                        {
-                            if (lightingData.MultiPassLights == null)
-                                lightingData.MultiPassLights = new List<Light>();
-                            lightingData.MultiPassLights.Add(light);
-                        });
+                        ApplyLights(lightingData.AffectingLights, material, ref lightingData.MultiPassLights);
 
 #if !WINDOWS_PHONE
                         // Setup shadow info in drawable materials.
@@ -645,13 +689,8 @@ namespace Nine.Graphics.ObjectModel
                             if (lightingData.MultiPassShadows != null)
                                 lightingData.MultiPassShadows.Clear();
 
-                            ApplyShadowMap(lightingData.AffectingLights, material, light =>
-                            {
-                                if (lightingData.MultiPassShadows == null)
-                                    lightingData.MultiPassShadows = new List<Light>();
-                                lightingData.MultiPassShadows.Add(light);
-                            });
-                        }     
+                            ApplyShadowMap(lightingData.AffectingLights, material, ref lightingData.MultiPassShadows);
+                        }
 #endif
                     }
                 }
@@ -659,7 +698,7 @@ namespace Nine.Graphics.ObjectModel
             }
         }
 
-        private void DrawMultiPassLightingOverlay(IList<IDrawableObject> drawables)
+        private void DrawMultiPassLightingOverlay(List<IDrawableObject> drawables)
         {
             // Multipass lighting
             foreach (var drawable in drawables)
@@ -681,7 +720,7 @@ namespace Nine.Graphics.ObjectModel
                             appliedMultiPassLights.Clear();
 
                             int countBeforeApply = unAppliedMultiPassLights.Count;
-                            ApplyLights(unAppliedMultiPassLights, effect, light => appliedMultiPassLights.Add(light));
+                            ApplyLights(unAppliedMultiPassLights, effect, ref appliedMultiPassLights);
                             int countAfterApply = appliedMultiPassLights.Count;
 
                             if (countAfterApply >= countBeforeApply)
@@ -705,7 +744,7 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Debug
-        private void DrawDebug(IEnumerable<IDrawableObject> drawables, IEnumerable<Light> lights)
+        private void DrawDebug(List<IDrawableObject> drawables, List<Light> lights)
         {
             var settings = Settings.Debug;
             var primitiveBatch = GraphicsContext.PrimitiveBatch;
@@ -717,16 +756,21 @@ namespace Nine.Graphics.ObjectModel
             }
             if (settings.ShowBoundingBox)
             {
-                sceneManager.ForEach(d => primitiveBatch.DrawBox(d.BoundingBox, null, settings.BoundingBoxColor));
+                foreach (var obj in flattenedObjectsInViewFrustum)
+                {
+                    var boundable = obj as IBoundable;
+                    if (boundable != null)
+                        primitiveBatch.DrawBox(boundable.BoundingBox, null, settings.BoundingBoxColor);
+                }
             }
             if (settings.ShowLightFrustum)
             {
-                lights.ForEach(d => 
+                foreach (var light in lights)
                 { 
-                    d.DrawFrustum(GraphicsContext);
-                    if (d.ShadowFrustum.Matrix.M44 != 0)
-                        primitiveBatch.DrawFrustum(d.ShadowFrustum, null, settings.ShadowFrustumColor);
-                });
+                    light.DrawFrustum(GraphicsContext);
+                    if (light.ShadowFrustum.Matrix.M44 != 0)
+                        primitiveBatch.DrawFrustum(light.ShadowFrustum, null, settings.ShadowFrustumColor);
+                }
             }
             if (settings.ShowSceneManager)
             {
@@ -785,11 +829,12 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Lighting
-        private void UpdateAffectedDrawablesAndAffectingLights(IList<IDrawableObject> drawables, IList<Light> lights)
+        private void UpdateAffectedDrawablesAndAffectingLights(List<IDrawableObject> drawables, List<Light> lights)
         {
             // Clear affecting lights
-            foreach (var obj in drawables)
+            for (var i = 0; i < drawables.Count; i++)
             {
+                var obj = drawables[i];
                 if (!obj.Visible)
                     continue;
 
@@ -803,8 +848,9 @@ namespace Nine.Graphics.ObjectModel
             }
 
             // Setup lights and drawable relations.
-            foreach (var light in lights)
+            for (var currentLight = 0; currentLight < lights.Count; currentLight++)
             {
+                var light = lights[currentLight];
                 if (!light.Enabled)
                     continue;
 
@@ -816,37 +862,30 @@ namespace Nine.Graphics.ObjectModel
                     light.AffectedBoundables = new List<ISpatialQueryable>();
                 light.AffectedBoundables.Clear();
 
-                foreach (var obj in light.Find(sceneManager, objectsInViewFrustum))
-                {
-                    bool hasChildDrawable = false;
-                    ForEachInSpatialQueryable<IDrawableObject>(obj, drawable =>
-                    {
-                        var lightable = drawable as ILightable;
-                        if (drawable.Visible && lightable != null && lightable.LightingEnabled)
-                        {
-                            var lightingData = lightable.LightingData as LightingData;
-                            if (lightingData == null)
-                                lightable.LightingData = (lightingData = new LightingData());
-                            if (lightingData.AffectingLights == null)
-                                lightingData.AffectingLights = new List<Light>();
-                            lightingData.AffectingLights.Add(light);
-                            light.AffectedDrawables.Add(drawable);
-                            hasChildDrawable = true;
-                        }
-                    });
+                light.FindAll(this, drawablesInViewFrustum, light.AffectedDrawables);
 
-                    if (hasChildDrawable)
+                for (int currentDrawable = 0; currentDrawable < light.AffectedDrawables.Count; currentDrawable++)
+                {
+                    var drawable = light.AffectedDrawables[currentDrawable];
+                    var lightable = drawable as ILightable;
+                    if (drawable.Visible && lightable != null && lightable.LightingEnabled)
                     {
-                        light.AffectedBoundables.Add(obj);
+                        var lightingData = lightable.LightingData as LightingData;
+                        if (lightingData == null)
+                            lightable.LightingData = (lightingData = new LightingData());
+                        if (lightingData.AffectingLights == null)
+                            lightingData.AffectingLights = new List<Light>();
+                        lightingData.AffectingLights.Add(light);
                     }
                 }
             }
         }
 
-        private void ClearLights(IList<IDrawableObject> drawables)
+        private void ClearLights(List<IDrawableObject> drawables)
         {
-            foreach (var drawable in drawables)
+            for (int currentDrawable = 0; currentDrawable < drawables.Count; currentDrawable++)
             {
+                var drawable = drawables[currentDrawable];
                 if (drawable.Material != null)
                     ClearLights(drawable.Material);
             }
@@ -857,32 +896,51 @@ namespace Nine.Graphics.ObjectModel
             if (material == null)
                 return;
 
-            var ambientLights = material.As<IEffectLights<IAmbientLight>>();
+            var ambientLights = material.Find<IEffectLights<IAmbientLight>>();
             if (ambientLights != null)
-                ambientLights.Lights.ForEach(light => light.AmbientLightColor = Vector3.Zero);
-
-            var directionalLights = material.As<IEffectLights<IDirectionalLight>>();
+            {
+                var lights = ambientLights.Lights;
+                var count = lights.Count;
+                for (int i = 0; i < count; i++)
+                    lights[i].AmbientLightColor = Vector3.Zero;
+            }
+            var directionalLights = material.Find<IEffectLights<IDirectionalLight>>();
             if (directionalLights != null)
-                directionalLights.Lights.ForEach(light => light.DiffuseColor = Vector3.Zero);
+            {
+                var lights = directionalLights.Lights;
+                var count = lights.Count;
+                for (int i = 0; i < count; i++)
+                    lights[i].DiffuseColor = Vector3.Zero;
+            }
 
-            var pointLights = material.As<IEffectLights<IPointLight>>();
+            var pointLights = material.Find<IEffectLights<IPointLight>>();
             if (pointLights != null)
-                pointLights.Lights.ForEach(light => light.DiffuseColor = Vector3.Zero);
+            {
+                var lights = pointLights.Lights;
+                var count = lights.Count;
+                for (int i = 0; i < count; i++)
+                    lights[i].DiffuseColor = Vector3.Zero;
+            }
 
-            var spotLights = material.As<IEffectLights<ISpotLight>>();
+            var spotLights = material.Find<IEffectLights<ISpotLight>>();
             if (spotLights != null)
-                spotLights.Lights.ForEach(light => light.DiffuseColor = Vector3.Zero);
+            {
+                var lights = spotLights.Lights;
+                var count = lights.Count;
+                for (int i = 0; i < count; i++)
+                    lights[i].DiffuseColor = Vector3.Zero;
+            }
         }
 
-        private void ApplyLights(IList<Light> sourceLights, Effect effect, Action<Light> onLightNotUsed)
+        private void ApplyLights(List<Light> sourceLights, Effect effect, ref List<Light> unusedLights)
         {
             if (cachedEffectMaterial == null)
                 cachedEffectMaterial = new EffectMaterial();
             cachedEffectMaterial.SetEffect(effect);
-            ApplyLights(sourceLights, cachedEffectMaterial, onLightNotUsed);
+            ApplyLights(sourceLights, cachedEffectMaterial, ref unusedLights);
         }
 
-        private void ApplyLights(IList<Light> sourceLights, Material material, Action<Light> onLightNotUsed)
+        private void ApplyLights(List<Light> sourceLights, Material material, ref List<Light> unusedLights)
         {
             if (sourceLights == null || material == null)
                 return;
@@ -901,8 +959,9 @@ namespace Nine.Graphics.ObjectModel
                 var light = sourceLights[i];
                 if (!light.Apply(material, iLight++, IsLastLightOfType(sourceLights, i)))
                 {
-                    if (onLightNotUsed != null)
-                        onLightNotUsed(light);
+                    if (unusedLights == null)
+                        unusedLights = new List<Light>();
+                    unusedLights.Add(light);
                     continue;
                 }
 
@@ -916,15 +975,16 @@ namespace Nine.Graphics.ObjectModel
                     lightUsed[j] = true;
                     if (failed || !light2.Apply(material, iLight++, IsLastLightOfType(sourceLights, j)))
                     {
-                        if (onLightNotUsed != null)
-                            onLightNotUsed(light2);
+                        if (unusedLights == null)
+                            unusedLights = new List<Light>();
+                        unusedLights.Add(light2);
                         failed = true;
                     }
                 }
             }
         }
 
-        private bool IsLastLightOfType(IList<Light> sourceLights, int i)
+        private bool IsLastLightOfType(List<Light> sourceLights, int i)
         {
             int lightCount = sourceLights.Count;
             var type = sourceLights[i].GetType();
@@ -940,8 +1000,10 @@ namespace Nine.Graphics.ObjectModel
         #region Shadow
         private void DrawShadowMaps()
         {
-            lightsInViewFrustum.ForEach(light =>
+            /*
+            for (int i = 0; i < lightsInViewFrustum.Count; i++)
             {
+                var light = lightsInViewFrustum[i];
                 if (light.Enabled && light.CastShadow)
                 {
                     if (shadowQuery == null)
@@ -956,20 +1018,21 @@ namespace Nine.Graphics.ObjectModel
 
                     light.DrawShadowMap(GraphicsContext, shadowQuery,
                                         light.AffectedBoundables.Where(boundable => CastShadow(boundable) || ReceiveShadow(boundable)),
-                                        objectsInViewFrustum.Where(boundable => CastShadow(boundable) || ReceiveShadow(boundable)));
+                                        flattenedObjectsInViewFrustum.Where(boundable => CastShadow(boundable) || ReceiveShadow(boundable)));
                 }
-            });
+            }
+             */
         }
 
-        private void DrawMultiPassShadowMapOverlay(IList<IDrawableObject> opaqueDrawablesInViewFrustum)
+        private void DrawMultiPassShadowMapOverlay(List<IDrawableObject> opaqueDrawablesInViewFrustum)
         {
 
         }
 
 #if !WINDOWS_PHONE
-        private void ApplyShadowMap(IList<Light> sourceLights, Material material, Action<Light> onLightNotUsed)
+        private void ApplyShadowMap(List<Light> sourceLights, Material material, ref List<Light> unusedLights)
         {
-            var effectShadowMap = material.As<IEffectShadowMap>();
+            var effectShadowMap = material.Find<IEffectShadowMap>();
 
             foreach (var light in sourceLights)
             {
@@ -982,9 +1045,11 @@ namespace Nine.Graphics.ObjectModel
                         effectShadowMap.DepthBias = Settings.ShadowMapDepthBias;
                         effectShadowMap = null;
                     }
-                    else if (onLightNotUsed != null)
+                    else
                     {
-                        onLightNotUsed(light);
+                        if (unusedLights == null)
+                            unusedLights = new List<Light>();
+                        unusedLights.Add(light);
                     }
                 }
             }
@@ -995,12 +1060,16 @@ namespace Nine.Graphics.ObjectModel
         #region Fog
         private void UpdateFog()
         {
-            var firstFog = objectsInViewFrustum.OfType<IEffectFog>().FirstOrDefault();
-            if (firstFog != null)
+            for (int currentFog = 0; currentFog < flattenedObjectsInViewFrustum.Count; currentFog++)
             {
-                foreach (var drawable in drawablesInViewFrustum)
+                var firstFog = flattenedObjectsInViewFrustum[currentFog] as IEffectFog;
+                if (firstFog != null)
                 {
-                    ApplyFog(firstFog, drawable.Material);
+                    for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                    {
+                        ApplyFog(firstFog, drawablesInViewFrustum[currentDrawable].Material);
+                    }
+                    break;
                 }
             }
         }
@@ -1009,7 +1078,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (material != null)
             {
-                IEffectFog target = material.As<IEffectFog>();
+                IEffectFog target = material.Find<IEffectFog>();
                 if (target != null)
                 {
                     target.FogEnabled = sourceFog.FogEnabled;
@@ -1025,23 +1094,24 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Material
-        private bool IsTransparent(IDrawableObject drawable)
+        private static bool IsTransparent(IDrawableObject drawable)
         {
             return drawable != null && drawable.Material != null && drawable.Material.IsTransparent;
         }
 
-        private bool CastShadow(IDrawableObject drawable)
+        private static bool CastShadow(IDrawableObject drawable)
         {
             var lightable = drawable as ILightable;
             return lightable != null && lightable.CastShadow;
         }
 
-        private bool ReceiveShadow(IDrawableObject drawable)
+        private static bool ReceiveShadow(IDrawableObject drawable)
         {
             var lightable = drawable as ILightable;
             return lightable != null && lightable.ReceiveShadow;
         }
 
+        /*
         private bool CastShadow(ISpatialQueryable boundable)
         {
             bool castShadow = false;
@@ -1055,16 +1125,30 @@ namespace Nine.Graphics.ObjectModel
             ForEachInSpatialQueryable<IDrawableObject>(boundable, drawable => receiveShadow |= ReceiveShadow(drawable));
             return receiveShadow;
         }
+         */
         #endregion
 
         #region Dispose
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) { }
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing) 
+        {
+            foreach (var disposable in this.OfType<IDisposable>())
+            {
+                disposable.Dispose();
+            }
+        }
         #endregion
     }
 }

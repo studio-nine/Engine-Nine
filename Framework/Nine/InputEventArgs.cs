@@ -28,7 +28,11 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+#if !SILVERLIGHT
 using Microsoft.Xna.Framework.Input.Touch;
+#else
+using Keys = System.Windows.Input.Key;
+#endif
 #endregion
 
 namespace Nine
@@ -183,7 +187,8 @@ namespace Nine
         }
     }
     #endregion
-
+    
+#if !SILVERLIGHT
     #region GamePadEventArgs
     /// <summary>
     /// EventArgs use for gamepad events.
@@ -248,4 +253,5 @@ namespace Nine
         internal GestureEventArgs() { }
     }
     #endregion
+#endif
 }

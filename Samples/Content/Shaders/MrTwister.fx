@@ -100,7 +100,7 @@ float3 AmbiColor : Ambient
 
 float3 SurfColor : Diffuse
 <
-    string UIName =  "Surface Color";
+    string UIName =  "DrawableSurface Color";
     string UIWidget = "Color";
 > = {0.1f, 0.5f, 0.4f};
 

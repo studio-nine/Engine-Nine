@@ -21,12 +21,12 @@ using Nine.Graphics;
 
 namespace Nine.Graphics.ObjectModel
 {
-    public partial class PointLight : Light<IPointLight>
+    public partial class PointLight : Light<IPointLight>, ISpatialQueryable
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         #region BoundingBox
-        public override BoundingBox BoundingBox
+        public BoundingBox BoundingBox
         {
             get
             {
@@ -42,18 +42,32 @@ namespace Nine.Graphics.ObjectModel
         private bool isBoundingBoxDirty;
         private BoundingBox boundingBox;
 
-        protected override void OnBoundingBoxChanged()
+        private void OnBoundingBoxChanged()
         {
             isBoundingBoxDirty = true;
-            base.OnBoundingBoxChanged();
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
         }
 
         public BoundingSphere BoundingSphere
         {
             get { return new BoundingSphere(Position, Range); }
         }
-        #endregion
 
+        object ISpatialQueryable.SpatialData { get; set; }
+
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+
+        protected override void OnTransformChanged()
+        {
+            base.OnTransformChanged();
+            OnBoundingBoxChanged();
+        }
+        #endregion
+        
         public PointLight(GraphicsDevice graphics)
         {
             GraphicsDevice = graphics;
@@ -64,9 +78,10 @@ namespace Nine.Graphics.ObjectModel
             SpecularColor = Vector3.Zero;
         }
 
-        protected internal override IEnumerable<ISpatialQueryable> Find(ISpatialQuery<ISpatialQueryable> allObjects, IEnumerable<ISpatialQueryable> objectsInViewFrustum)
+        protected internal override void FindAll(Scene scene, List<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
-            return allObjects.FindAll(Position, Range);
+            var boundingSphere = BoundingSphere;
+            scene.FindAll(ref boundingSphere, result);
         }
 
         public override void DrawFrustum(GraphicsContext context)

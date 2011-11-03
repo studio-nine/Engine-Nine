@@ -24,31 +24,30 @@ namespace Nine.Components
     /// <summary>
     /// Defines a graphics component that can be added to a game object container.
     /// </summary>
-    public class GraphicsComponent : GameObject
+    public class GraphicsComponent : GameObject, IUpdateable
     {
         /// <summary>
         /// Gets or sets the view template of this graphics component.
         /// </summary>
-        public string ViewTemplate
+        public string Template
         {
-            get { return viewTemplate; }
+            get { return template; }
             set
             {
-                if (viewTemplate != value)
+                if (template != value)
                 {
                     DestroyGraphicsObject();
-                    viewTemplate = value;
+                    template = value;
                     CreateGraphicsObject();
                 }
             }
         }
-        private string viewTemplate;
+        private string template;
 
         /// <summary>
         /// Gets the graphics object owned by this graphics component.
         /// </summary>
-        [XmlIgnore]
-        public ISpatialQueryable GraphicsObject { get; private set; }
+        public DisplayObject GraphicsObject { get; private set; }
 
         /// <summary>
         /// Gets the scene that contains the graphics object owned by this graphics component.
@@ -67,7 +66,15 @@ namespace Nine.Components
         {
             if (Scene != null || GraphicsObject != null)
                 throw new InvalidOperationException();
-            Scene = parent.Find<Scene>();
+
+            var worldObject = Parent as WorldObject;
+            if (worldObject != null)
+                worldObject.TransformChanged += new EventHandler<EventArgs>(parent_TransformChanged);
+
+            var freeObject = Parent as FreeObject;
+            if (freeObject != null)
+                freeObject.TransformChanged += new EventHandler<EventArgs>(parent_TransformChanged);
+
             CreateGraphicsObject();
         }
 
@@ -78,24 +85,41 @@ namespace Nine.Components
         {
             if (Scene == null && GraphicsObject != null)
                 throw new InvalidOperationException();
+
+            var worldObject = Parent as WorldObject;
+            if (worldObject != null)
+                worldObject.TransformChanged -= new EventHandler<EventArgs>(parent_TransformChanged);
+
+            var freeObject = Parent as FreeObject;
+            if (freeObject != null)
+                freeObject.TransformChanged -= new EventHandler<EventArgs>(parent_TransformChanged);
+
             DestroyGraphicsObject();
-           Scene = null;
         }
 
-        private void CreateGraphicsObject()
+        /// <summary>
+        /// Creates the graphics object.
+        /// </summary>
+        internal void CreateGraphicsObject()
         {
-            if (Scene != null && !string.IsNullOrEmpty(ViewTemplate))
+            if (Parent != null)
             {
-                var contentManager = Parent.Find<ContentManager>();
-                if (contentManager != null)
+                Scene = Parent.Find<Scene>();
+                if (Scene != null && !string.IsNullOrEmpty(Template))
                 {
-                    GraphicsObject = contentManager.Create<ISpatialQueryable>(ViewTemplate);
+                    var contentManager = Parent.Find<ContentManager>();
+                    if (contentManager == null)
+                        throw new InvalidOperationException("Cannot find ContentManager when creating graphics object");
+                    GraphicsObject = contentManager.Create<DisplayObject>(Template);
                     Scene.Add(GraphicsObject);
                 }
             }
         }
 
-        private void DestroyGraphicsObject()
+        /// <summary>
+        /// Destroys the graphics object.
+        /// </summary>
+        internal void DestroyGraphicsObject()
         {
             if (Scene != null && GraphicsObject != null)
             {
@@ -104,6 +128,38 @@ namespace Nine.Components
                 if (disposable != null)
                     disposable.Dispose();
                 GraphicsObject = null;
+                Scene = null;
+            }
+        }
+
+        void IUpdateable.Update(TimeSpan elapsedTime)
+        {
+            if (Parent != null && Scene != null && GraphicsObject != null)
+            {
+                Update(elapsedTime);
+            }
+        }
+
+        void parent_TransformChanged(object sender, EventArgs e)
+        {
+            transformNeedsUpdate = true;
+        }
+
+        bool transformNeedsUpdate = true;
+
+        protected virtual void Update(TimeSpan elapsedTime)
+        {
+            if (transformNeedsUpdate)
+            {
+                var worldObject = Parent as WorldObject;
+                if (worldObject != null)
+                    GraphicsObject.Transform = worldObject.Transform;
+
+                var freeObject = Parent as FreeObject;
+                if (freeObject != null)
+                    GraphicsObject.Transform = freeObject.Transform;
+
+                transformNeedsUpdate = false;
             }
         }
     }

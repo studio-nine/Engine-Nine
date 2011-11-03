@@ -102,7 +102,7 @@ namespace TerrainSample
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
-            Vector3 positionWorld;
+            Vector3 positionWorld = new Vector3();
             if (terrain.TryPick(GraphicsDevice.Viewport, camera.View, camera.Projection, out positionWorld))
             {
                 pickedPosition = positionWorld;
@@ -127,7 +127,7 @@ namespace TerrainSample
             modelBatch.Begin(ModelSortMode.Deferred, camera.View, camera.Projection, BlendState.AlphaBlend, SamplerState.LinearWrap, null,
                 Keyboard.GetState().IsKeyDown(Keys.Space) ? wireframe : null);
             {
-                foreach (DrawableSurfacePatch patch in terrain.Patches)
+                foreach (var patch in terrain.Patches)
                 {
                     // Cull patches that are outside the view frustum
                     if (frustum.Contains(patch.BoundingBox) != ContainmentType.Disjoint)

@@ -28,9 +28,4 @@ namespace Nine.Graphics.ObjectModel
         public List<Light> MultiPassLights;
         public List<Light> MultiPassShadows;
     }
-
-    static class LightEngine
-    {
-
-    }
 }

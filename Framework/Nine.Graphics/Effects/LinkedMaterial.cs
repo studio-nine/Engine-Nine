@@ -38,7 +38,6 @@ namespace Nine.Graphics.Effects
                                                    IEffectLights<IDirectionalLight>, IEffectLights<ISpotLight>
     {
         LinkedEffect effect;
-        LinkedEffect deferredEffect;
         LinkedEffectPart[] parts;
 
         /// <summary>
@@ -76,20 +75,26 @@ namespace Nine.Graphics.Effects
         /// </summary>
         public override Effect DeferredEffect
         {
-            get { return deferredEffect; }
-        }
-
-        public override T As<T>()
-        {
-            return base.As<T>() ?? Find<T>() ?? effect.Find<T>();
+            get { return effect.DeferredEffect; }
         }
 
         /// <summary>
-        /// Finds the first accurance of LinkedEffectPart that is of type T.
+        /// Queries the material for the specified interface T.
         /// </summary>
-        public T Find<T>() where T : class
+        public override T Find<T>()
         {
-            return parts.FirstOrDefault(part => part is T) as T;
+            var result = base.Find<T>();
+            if (result != null)
+                return result;
+            
+            for (int i = 0; i < parts.Length; i++)
+            {
+                var part = parts[i];
+                if (part is T)
+                    return part as T;
+            }
+
+            return effect.Find<T>();
         }
 
         /// <summary>

@@ -19,9 +19,8 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Graphics.ObjectModel
 {
-    public class DrawableParticleEffect : Drawable
+    public class DrawableParticleEffect : Drawable, ISpatialQueryable
     {
-        #region Position
         [ContentSerializer(Optional = true)]
         public Vector3 Position
         {
@@ -35,29 +34,34 @@ namespace Nine.Graphics.ObjectModel
         {
             position = Transform.Translation;
             base.OnTransformChanged();
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
         }
-        #endregion
 
         [ContentSerializer(Optional = true)]
-        public ParticleEffect ParticleEffect { get; set; }
+        public ParticleEffect Source { get; set; }
         
-        public override BoundingBox BoundingBox
+        public BoundingBox BoundingBox
         {
-            get { /* TODO: */ return ParticleEffect.BoundingBox; }
+            get { /* TODO: */ return Source.BoundingBox; }
         }
+
+        object ISpatialQueryable.SpatialData { get; set; }
+
+        public event EventHandler<EventArgs> BoundingBoxChanged;
 
         public override void Update(TimeSpan elapsedTime)
         {
-            if (ParticleEffect != null)
-                ParticleEffect.Update(elapsedTime);
+            if (Source != null)
+                Source.Update(elapsedTime);
         }
 
         public override void Draw(GraphicsContext context)
         {
-            if (ParticleEffect == null || Visible)
+            if (Source == null || Visible)
             {
                 // FIXME: We might be drawing it twice if 2 DrawableParticleEffect share the same ParticleEffect !!!
-                context.ParticleBatch.Draw(ParticleEffect);
+                context.ParticleBatch.Draw(Source);
             }
         }
     }

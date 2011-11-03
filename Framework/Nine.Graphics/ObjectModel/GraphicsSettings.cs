@@ -24,6 +24,11 @@ namespace Nine.Graphics.ObjectModel
     public class GraphicsSettings
     {
         /// <summary>
+        /// Gets or sets the color of the background.
+        /// </summary>
+        public Color BackgroundColor { get; set; }
+
+        /// <summary>
         /// Gets or sets whether high dynamic range lighting technique is used.
         /// </summary>
         public bool PreferHighDynamicRangeLighting { get; set; }
@@ -90,6 +95,7 @@ namespace Nine.Graphics.ObjectModel
             PreferHighDynamicRangeLighting = true;
             ShadowMapResolution = 1024;
             ShadowMapDepthBias = 0.005f;
+            BackgroundColor = Color.Black;
             Debug = new GraphicsDebugSetting();
         }
     }

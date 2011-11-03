@@ -44,10 +44,22 @@ namespace Nine
         /// </summary>
         public Vector2 Size { get; protected set; }
 
+        int scaleX, scaleY;
+        Point previousPoint;
+        private Predicate<Point> result;
+        private Predicate<Point> cachedTraversePointDelegate;
+        private Predicate<Point> cachedTraverseVectorDelegate;
+
+        private UniformGrid()
+        {
+            cachedTraversePointDelegate = new Predicate<Point>(TraversePoint);
+            cachedTraverseVectorDelegate = new Predicate<Point>(TraverseVector);
+        }
+
         /// <summary>
         /// Creates a new grid.
         /// </summary>
-        public UniformGrid(float x, float y, float width, float height, int countX, int countY)
+        public UniformGrid(float x, float y, float width, float height, int countX, int countY) : this()
         {
             if (width <= 0)
                 throw new ArgumentOutOfRangeException("width");
@@ -67,7 +79,7 @@ namespace Nine
         /// <summary>
         /// Creates a new grid.
         /// </summary>
-        public UniformGrid(float x, float y, float step, int countX, int countY)
+        public UniformGrid(float x, float y, float step, int countX, int countY) : this()
         {
             if (step <= 0)
                 throw new ArgumentOutOfRangeException("step");
@@ -85,7 +97,7 @@ namespace Nine
         /// <summary>
         /// Creates a new grid.
         /// </summary>
-        public UniformGrid(BoundingRectangle bounds, int countX, int countY)
+        public UniformGrid(BoundingRectangle bounds, int countX, int countY) : this()
         {
             if (countX <= 0)
                 throw new ArgumentOutOfRangeException("countX");
@@ -235,31 +247,33 @@ namespace Nine
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified bounds.
         /// </summary>
-        public IEnumerable<Point> Traverse(Vector3 position, Vector3 size)
+        public void Traverse(Vector3 position, Vector3 size, Predicate<Point> result)
         {
             Point min = PositionToSegment(Clamp(position.X - size.X / 2, position.Y - size.Y / 2));
             Point max = PositionToSegment(Clamp(position.X + size.X / 2, position.Y + size.Y / 2));
 
             for (int y = min.Y; y <= max.Y; y++)
                 for (int x = min.X; x <= max.X; x++)
-                    yield return new Point(x, y);
+                    if (!result(new Point(x, y)))
+                        return;
         }
 
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified bounds.
         /// </summary>
-        public IEnumerable<Point> Traverse(BoundingBox boundingBox)
+        public void Traverse(BoundingBox boundingBox, Predicate<Point> result)
         {
-            return Traverse(boundingBox.GetCenter(), boundingBox.Max - boundingBox.Min);
+            Traverse(boundingBox.GetCenter(), boundingBox.Max - boundingBox.Min, result);
         }
 
         /// <summary>
         /// Returns an enumeration of grids that floods from the specified position to the outside.
         /// </summary>
-        public IEnumerable<Point> Traverse(int x, int y)
+        public void Traverse(int x, int y, Predicate<Point> result)
         {
             if (Contains(x, y))
-                yield return new Point(x, y);
+                if (!result(new Point(x, y)))
+                    return;
 
             int maxRadius = Math.Max(SegmentCountX, SegmentCountY);
             for (int r = 1; r < maxRadius; r++)
@@ -273,7 +287,8 @@ namespace Nine
                         offset.X += Directions[currentDirection].X;
                         offset.Y += Directions[currentDirection].Y;
                         if (Contains(x + offset.X, y + offset.Y))
-                            yield return new Point(x + offset.X, y + offset.Y);
+                            if (!result(new Point(x + offset.X, y + offset.Y)))
+                                return;
                     }
                 }
             }
@@ -287,13 +302,18 @@ namespace Nine
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified line.
         /// </summary>
-        public IEnumerable<Point> Traverse(Point begin, Point end)
+        public void Traverse(Point begin, Point end, Predicate<Point> result)
         {
-            foreach (Point pt in BresenhamLine(begin.X, begin.Y, end.X, end.Y))
-            {
-                if (Contains(pt.X, pt.Y))
-                    yield return pt;
-            }
+            this.result = result;
+            BresenhamLine(begin.X, begin.Y, end.X, end.Y, cachedTraversePointDelegate);
+            this.result = null;
+        }
+
+        private bool TraversePoint(Point pt)
+        {
+            if (Contains(pt.X, pt.Y))
+                return result(pt);
+            return true;
         }
 
         /// <summary>
@@ -304,7 +324,7 @@ namespace Nine
         /// The precision of line picking. A recommended value is half the radius of the
         /// smallest object to be picked.
         /// </param>
-        public IEnumerable<Point> Traverse(Ray ray, float smallestPickableSize)
+        public void Traverse(Ray ray, float smallestPickableSize, Predicate<Point> result)
         {
             Vector2 begin = new Vector2();
             Vector2 end = new Vector2();
@@ -317,14 +337,10 @@ namespace Nine
                 begin += Position;
                 end += Position;
 
-                return Traverse(begin, end, smallestPickableSize);
+                Traverse(begin, end, smallestPickableSize, result);
             }
-
-            return EmptyPoints;
         }
-
-        static List<Point> EmptyPoints = new List<Point>(1);
-
+        
         /// <summary>
         /// Returns an enumeration of grids overlapping the specified line.
         /// </summary>
@@ -334,7 +350,7 @@ namespace Nine
         /// The precision of line picking. A recommended value is half the radius of the
         /// smallest object to be picked.
         /// </param>
-        public IEnumerable<Point> Traverse(Vector2 begin, Vector2 end, float smallestPickableSize)
+        public void Traverse(Vector2 begin, Vector2 end, float smallestPickableSize, Predicate<Point> result)
         {
             Point ptBegin = PositionToSegment(Clamp(begin));
             Point ptEnd = PositionToSegment(Clamp(end));
@@ -349,22 +365,26 @@ namespace Nine
             if (smallestPickableSize > step)
                 smallestPickableSize = step;
 
-            int scaleX = (int)(stepX / smallestPickableSize);
-            int scaleY = (int)(stepY / smallestPickableSize);
+            scaleX = (int)(stepX / smallestPickableSize);
+            scaleY = (int)(stepY / smallestPickableSize);
 
-            Point previousPoint = new Point(int.MinValue, int.MinValue);
+            previousPoint = new Point(int.MinValue, int.MinValue);
+            
+            this.result = result;
+            BresenhamLine(ptBegin.X * scaleX, ptBegin.Y * scaleY, ptEnd.X * scaleX, ptEnd.Y * scaleY, cachedTraverseVectorDelegate);
+            this.result = null;
+        }
 
-            foreach (Point pt in BresenhamLine(ptBegin.X * scaleX, ptBegin.Y * scaleY,
-                                               ptEnd.X * scaleX, ptEnd.Y * scaleY))
+        private bool TraverseVector(Point pt)
+        {
+            Point next = new Point((int)(pt.X / scaleX), (int)(pt.Y / scaleY));
+
+            if (next != previousPoint && Contains(next.X, next.Y))
             {
-                Point result = new Point((int)(pt.X / scaleX), (int)(pt.Y / scaleY));
-
-                if (result != previousPoint && Contains(result.X, result.Y))
-                {
-                    previousPoint = result;
-                    yield return result;
-                }
+                previousPoint = next;
+                return result(next);
             }
+            return true;
         }
 
         private static void Swap<T>(ref T a, ref T b)
@@ -373,8 +393,8 @@ namespace Nine
             a = b;
             b = c;
         }
-        
-        private static IEnumerable<Point> BresenhamLine(int x0, int y0, int x1, int y1)
+
+        private static void BresenhamLine(int x0, int y0, int x1, int y1, Predicate<Point> result)
         {
             bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
             if (steep)
@@ -396,10 +416,16 @@ namespace Nine
             if (y0 < y1) ystep = 1; else ystep = -1;
             for (int x = x0; x <= x1; x++)
             {
-                if (steep) 
-                    yield return new Point(y, x);
-                else 
-                    yield return new Point(x, y);
+                if (steep)
+                {
+                    if (!result(new Point(y, x)))
+                        break;
+                }
+                else
+                {
+                    if (!result(new Point(x, y)))
+                        break;
+                }
                 error += deltay;
                 if (2 * error >= deltax)
                 {

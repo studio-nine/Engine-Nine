@@ -21,6 +21,27 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine
 {
     /// <summary>
+    /// Determines how to traverse the next node when traversing a space partition tree.
+    /// </summary>
+    public enum TraverseOptions
+    {
+        /// <summary>
+        /// The traverse operation should continue to visit the next node.
+        /// </summary>
+        Continue,
+
+        /// <summary>
+        /// The traverse operation should skip the current node and its child nodes.
+        /// </summary>
+        Skip,
+
+        /// <summary>
+        /// The traverse operation should stop visiting nodes.
+        /// </summary>
+        Stop,
+    }
+
+    /// <summary>
     /// Represents basic a space partition tree structure.
     /// </summary>
     public abstract class SpacePartitionTree<T, TNode> : IEnumerable<TNode> where TNode : SpacePartitionTreeNode<T, TNode>
@@ -35,15 +56,22 @@ namespace Nine
         /// </summary>
         public int MaxDepth { get; internal set; }
 
+        private int nodeExpanded;
+        private Predicate<TNode> condition;
+        private Func<TNode, TraverseOptions> expandAllPredicate;
+
         /// <summary>
         /// For serialization.
         /// </summary>
-        internal SpacePartitionTree() { }
+        internal SpacePartitionTree() 
+        {
+            expandAllPredicate = new Func<TNode, TraverseOptions>(ExpandAllPredicate);
+        }
 
         /// <summary>
         /// Creates a new SpacePartitionTree with the specified boundary.
         /// </summary>
-        public SpacePartitionTree(TNode root, int maxDepth)
+        public SpacePartitionTree(TNode root, int maxDepth) : this()
         {
             if (root == null)
                 throw new ArgumentNullException("root");
@@ -120,12 +148,19 @@ namespace Nine
         /// </returns>
         public int ExpandAll(TNode target, Predicate<TNode> condition)
         {
-            int count = 0;
-            foreach (var node in Traverse(target, (o) => { return condition(o) && Expand(o); }))
-            {
-                count++;
-            }
-            return count;
+            this.nodeExpanded = 0;
+            this.condition = condition;
+            
+            Traverse(target, expandAllPredicate);
+
+            this.condition = null;
+            return nodeExpanded;
+        }
+
+        private TraverseOptions ExpandAllPredicate(TNode node)
+        {
+            nodeExpanded++;
+            return condition(node) && Expand(node) ? TraverseOptions.Continue : TraverseOptions.Skip;
         }
 
         /// <summary>
@@ -158,8 +193,9 @@ namespace Nine
             int count = 1;
             bool collapsedThisNode = true;
 
-            foreach (TNode child in target.Children)
+            for (int i = 0; i < target.Children.Count; i++)
             {
+                var child = target.Children[i];
                 int childCount = Collapse(child, condition);
                 if (childCount <= 0)
                     collapsedThisNode = false;
@@ -180,16 +216,22 @@ namespace Nine
         /// Traverses the tree using Depth First Search (DFS). Compare each node 
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
-        public IEnumerable<TNode> Traverse(Predicate<TNode> condition)
+        /// <param name="result">
+        /// Returns true when the trverse should continue.
+        /// </param>
+        public void Traverse(Func<TNode, TraverseOptions> result)
         {
-            return Traverse(Root, condition);
+            Traverse(Root, result);
         }
 
         /// <summary>
         /// Traverses the tree using Depth First Search (DFS) from the target. Compare each node 
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
-        public IEnumerable<TNode> Traverse(TNode target, Predicate<TNode> condition)
+        /// <param name="result">
+        /// Returns true when the trverse should continue.
+        /// </param>
+        public void Traverse(TNode target, Func<TNode, TraverseOptions> result)
         {
             if (target.Tree != this)
                 throw new InvalidOperationException(Strings.NodeMustBeAPartOfTheTree);
@@ -201,13 +243,16 @@ namespace Nine
             {
                 TNode node = stack.Pop();
 
-                if (condition(node))
-                {
-                    yield return node;
+                var traverseOptions = result(node);
+                
+                if (traverseOptions == TraverseOptions.Stop)
+                    break;
 
-                    foreach (TNode child in node.Children)
+                if (traverseOptions == TraverseOptions.Continue)
+                {
+                    for (int i = 0; i < node.Children.Count; i++)
                     {
-                        stack.Push(child);
+                        stack.Push(node.Children[i]);
                     }
                 }
             }

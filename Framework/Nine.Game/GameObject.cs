@@ -8,10 +8,13 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Markup;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
@@ -21,12 +24,29 @@ namespace Nine
     /// <summary>
     /// Defines a basic game object that can be added to a parent container.
     /// </summary>
+    [RuntimeNameProperty("Name")]
+    [DictionaryKeyProperty("Name")]
     public class GameObject : IGameObject
     {
         /// <summary>
-        /// Gets or sets the parent of this game object.
+        /// Gets or sets the name of this game object.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tag.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
+        /// Gets the parent of this game object.
         /// </summary>
         public IGameObjectContainer Parent
+        {
+            get { return parent; }
+        }
+
+        IGameObjectContainer IGameObject.Parent
         {
             get { return parent; }
             set
@@ -67,8 +87,17 @@ namespace Nine
     /// <summary>
     /// Defines a basic game object that can contain a list of components.
     /// </summary>
-    public class GameObjectContainer : GameObject, IGameObjectContainer
+    public class GameObjectContainer : GameObject, IGameObjectContainer, IEnumerable
     {
+        #region Components
+        /// <summary>
+        /// Gets or sets whether this container is the root container.
+        /// </summary>
+        internal bool IsRoot;
+
+        /// <summary>
+        /// Gets a collection of components for this game object container.
+        /// </summary>
         [XmlArrayItem("Component")]
         public NotificationCollection<object> Components
         {
@@ -77,15 +106,74 @@ namespace Nine
                 if (components == null)
                 {
                     components = new NotificationCollection<object>();
-                    components.Added += (sender, e) => { if (e.Value is IGameObject) ((IGameObject)e.Value).Parent = this; };
-                    components.Removed += (sender, e) => { if (e.Value is IGameObject) ((IGameObject)e.Value).Parent = null; };
+                    components.Added += new EventHandler<NotifyCollectionChangedEventArgs<object>>(components_Added);
+                    components.Removed += new EventHandler<NotifyCollectionChangedEventArgs<object>>(components_Removed);
                 }
                 return components;
             }
         }
         private NotificationCollection<object> components;
 
-        public T Find<T>()
+        void components_Added(object sender, NotifyCollectionChangedEventArgs<object> e)
+        {
+            if ((IsRoot || Parent != null) && e.Value is IGameObject)
+            {
+                ((IGameObject)e.Value).Parent = this;
+            }
+        }
+
+        void components_Removed(object sender, NotifyCollectionChangedEventArgs<object> e)
+        {
+            if ((IsRoot || Parent != null) && e.Value is IGameObject)
+            {
+                ((IGameObject)e.Value).Parent = null;
+            }
+        }
+
+        /// <summary>
+        /// Called when this game object is added to a parent container.
+        /// </summary>
+        protected override void OnAdded(IGameObjectContainer parent)
+        {
+            if (IsRoot)
+            {
+                throw new InvalidOperationException("Cannot add root object to a parent container");
+            }
+
+            if (components != null)
+            {
+                foreach (var gameObject in components.OfType<IGameObject>())
+                {
+                    gameObject.Parent = this;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when this game object is removed from a parent container.
+        /// </summary>
+        protected override void OnRemoved(IGameObjectContainer parent)
+        {
+            if (IsRoot)
+            {
+                throw new InvalidOperationException("Cannot remove root object from a parent container");
+            }
+
+            if (components != null)
+            {
+                foreach (var gameObject in components.OfType<IGameObject>())
+                {
+                    gameObject.Parent = null;
+                }
+            }
+        }
+        #endregion
+
+        #region IGameObjectContainer
+        /// <summary>
+        /// Find the first feature of type T owned by this game object container.
+        /// </summary>
+        public virtual T Find<T>()
         {
             if (this is T)
                 return (T)(object)this;
@@ -109,7 +197,10 @@ namespace Nine
             return default(T);
         }
 
-        public IEnumerable<T> FindAll<T>()
+        /// <summary>
+        /// Find all the feature of type T owned by this game object container.
+        /// </summary>
+        public virtual IEnumerable<T> FindAll<T>()
         {
             if (this is T)
                 yield return (T)(object)this;
@@ -130,5 +221,13 @@ namespace Nine
                     yield return result;
             }
         }
+        #endregion
+
+        #region IEnumerable
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return components != null ? components.GetEnumerator() : Enumerable.Empty<object>().GetEnumerator();
+        }
+        #endregion
     }
 }

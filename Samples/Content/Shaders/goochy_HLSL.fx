@@ -41,12 +41,12 @@ float4 LightPos : Position
 > = {100.0f, 100.0f, 100.0f, 0.0f};
 
 float3 LiteColor <
-    string UIName =  "Bright Surface Color";
+    string UIName =  "Bright DrawableSurface Color";
     string UIWidget = "Color";
 > = {0.8f, 0.5f, 0.1f};
 
 float3 DarkColor <
-    string UIName =  "Dark Surface Color";
+    string UIName =  "Dark DrawableSurface Color";
     string UIWidget = "Color";
 > = {0.0f, 0.0f, 0.0f};
 

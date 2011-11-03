@@ -56,13 +56,13 @@ float4 AmbiColor : Ambient
 
 float4 SurfColor1 : Diffuse
 <
-    string UIName =  "Surface Color";
+    string UIName =  "DrawableSurface Color";
     string UIWidget = "Color";
 > = {1.0f, 0.4f, 0.0f, 1.0f};
 
 float4 SurfColor2 : Diffuse
 <
-    string UIName =  "Surface Color";
+    string UIName =  "DrawableSurface Color";
     string UIWidget = "Color";
 > = {0.0f, 0.2f, 1.0f, 1.0f};
 

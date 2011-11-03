@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine
@@ -66,9 +67,9 @@ namespace Nine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class NotificationCollection<T> : IList<T>, INotifyCollectionChanged<T>
     {
-        private bool isDirty = true;
         private List<T> elements = null;
         private List<T> copy = null;
+        private bool isDirty = true;
 
         /// <summary>
         /// Gets or sets the sender that raise the Added and Removed event.
@@ -93,15 +94,16 @@ namespace Nine
         /// Raised when an element is removed from the collection.
         /// </summary>
         public event EventHandler<NotifyCollectionChangedEventArgs<T>> Removed;
-
-        
+                
         /// <summary>
         /// Gets the enumerator associated with is collection.
         /// </summary>
-        public IEnumerator<T> GetEnumerator()
+        public NotificationCollectionEnumerator<T> GetEnumerator()
         {
             if (!EnableManipulationWhenEnumerating)
-                return elements != null ? elements.GetEnumerator() : Enumerable.Empty<T>().GetEnumerator();
+            {
+                return new NotificationCollectionEnumerator<T>() { List = elements ?? Empty, CurrentIndex = -1 };
+            }
 
             // Copy a new list while iterating it
             if (isDirty)
@@ -121,6 +123,13 @@ namespace Nine
             }
 
             return new NotificationCollectionEnumerator<T>() { List = copy, CurrentIndex = -1 };
+        }
+
+        static List<T> Empty = new List<T>();
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -332,9 +341,13 @@ namespace Nine
         }
     }
 
-    class NotificationCollectionEnumerator<T> : IEnumerator<T>
+    /// <summary>
+    /// An optimized enumerator for notification collection.
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public struct NotificationCollectionEnumerator<T> : IEnumerator<T>
     {
-        internal IList<T> List;
+        internal List<T> List;
         internal int CurrentIndex;
 
         public T Current
@@ -360,6 +373,25 @@ namespace Nine
         public void Reset()
         {
             CurrentIndex = -1;
+        }
+    }
+
+    class NotificationCollectionReader<T> : ContentTypeReader<NotificationCollection<T>>
+    {
+        public override bool CanDeserializeIntoExistingObject
+        {
+            get { return true; }
+        }
+
+        protected override NotificationCollection<T> Read(ContentReader input, NotificationCollection<T> existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new NotificationCollection<T>();
+
+            var count = input.ReadInt32();
+            for (int i = 0; i < count; i++)
+                existingInstance.Add(input.ReadObject<T>());
+            return existingInstance;
         }
     }
 }

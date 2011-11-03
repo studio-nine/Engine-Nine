@@ -752,9 +752,9 @@ namespace Nine.Graphics
 
         public static void DrawAxis(this PrimitiveBatch primitiveBatch, Matrix world)
         {
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX, world), null, Color.Red);
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY, world), null, Color.Green);
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ, world), null, Color.Blue);
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX, world), null, new Color(255, 0, 0));
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY, world), null, new Color(0, 255, 0));
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ, world), null, new Color(0, 0, 255));
         }
 
         public static void DrawAxis(this PrimitiveBatch primitiveBatch, Matrix world, float length)
@@ -767,9 +767,9 @@ namespace Nine.Graphics
             world = Matrix.CreateFromQuaternion(rotation);
             world.Translation = translation;
 
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), null, Color.Red);
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), null, Color.Green);
-            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), null, Color.Blue);
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), null, new Color(255, 0, 0));
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), null, new Color(0, 255, 0));
+            DrawArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), null, new Color(0, 0, 255));
         }
 
         public static void DrawAxis(this PrimitiveBatch primitiveBatch, Matrix world, float length, Color colorX, Color colorY, Color colorZ)
@@ -820,14 +820,13 @@ namespace Nine.Graphics
         {
             primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
             {
-                float d = DrawSkeleton(primitiveBatch, skeleton, 0, Matrix.Identity, color);
+                DrawSkeleton(primitiveBatch, skeleton, 0, Matrix.Identity, color);
             }
             primitiveBatch.EndPrimitive();
         }
 
-        private static float DrawSkeleton(this PrimitiveBatch primitiveBatch, Skeleton skeleton, int bone, Matrix parentTransform, Color color)
+        private static void DrawSkeleton(this PrimitiveBatch primitiveBatch, Skeleton skeleton, int bone, Matrix parentTransform, Color color)
         {
-            float distance = 0;
             Matrix start = parentTransform;
             Matrix end = skeleton.GetBoneTransform(bone) * parentTransform;
 
@@ -835,15 +834,14 @@ namespace Nine.Graphics
             {
                 primitiveBatch.AddVertex(start.Translation, color);
                 primitiveBatch.AddVertex(end.Translation, color);
-
-                distance = Vector3.Subtract(end.Translation, start.Translation).Length();
+                
+                Vector3.Subtract(end.Translation, start.Translation).Length();
             }
 
             foreach (int child in skeleton.GetChildBones(bone))
             {
-                distance += DrawSkeleton(primitiveBatch, skeleton, child, end, color);
+                DrawSkeleton(primitiveBatch, skeleton, child, end, color);
             }
-            return distance;
         }
 
 
@@ -866,17 +864,21 @@ namespace Nine.Graphics
                 transform = bones[model.Meshes[0].ParentBone.Index] * transform;
                 Octree<bool> tree = tag.Collision.CollisionTree;
 
-                foreach (OctreeNode<bool> node in tree.Traverse((o) => { return true; }))
+                // TODO: This delegate will generate garbage.
+                //       But as this method is generally used for debug drawing, it shouldn't matter if it is not optimized.
+                tree.Traverse(node =>
                 {
                     if (!node.HasChildren && node.Value)
                         primitiveBatch.DrawSolidBox(node.Bounds, transform, color);
-                }
+                    return TraverseOptions.Continue;
+                });
             }
             // Draw collision sphere
             else
             {
-                foreach (ModelMesh mesh in model.Meshes)
+                for (int i = 0; i < model.Meshes.Count; i++)
                 {
+                    var mesh = model.Meshes[i];
                     primitiveBatch.DrawSolidSphere(mesh.BoundingSphere, 18, bones[mesh.ParentBone.Index] * transform, color);
                 }
             }

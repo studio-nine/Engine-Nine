@@ -89,7 +89,6 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
-    <Compile Include="Effects\EffectParts\MaterialEffectPart.cs" />
     <Compile Include="Effects\Materials.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
@@ -100,6 +99,7 @@
     <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
     <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
     <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="ObjectModel\FindResult.cs" />
     <Compile Include="ObjectModel\Fog.cs" />
     <Compile Include="ObjectModel\LightEngine.cs" />
     <Compile Include="ObjectModel\ModelBatchExtensions.cs" />

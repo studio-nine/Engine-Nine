@@ -98,7 +98,7 @@ namespace Nine.Animations
         {
             blendWeight = 1;
 
-            if (AnimationClip.Transforms[bone] == null)
+            if (bone >= AnimationClip.Transforms.Length || AnimationClip.Transforms[bone] == null)
             {
                 transform = Matrix.Identity;
                 return false;

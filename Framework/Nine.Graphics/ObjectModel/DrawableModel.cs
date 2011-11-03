@@ -27,28 +27,33 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Defines a basic model that can be rendered using the renderer with custom effect.
     /// </summary>
-    public class DrawableModel : Transformable, IUpdateable, IPickable, IEnumerable<DrawableModelPart>
+    public class DrawableModel : Transformable, ISpatialQueryable, IUpdateable, IPickable
     {
         #region Model
+        /// <summary>
+        /// Gets the underlying GraphicsDevice.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         /// <summary>
         /// Gets or sets the underlying model.
         /// </summary>
         [ContentSerializer]
-        public Model Model
+        internal Microsoft.Xna.Framework.Graphics.Model Source
         {
             get { return model; }
-            internal set
+            set
             {
                 if (model != value)
                 {
                     model = value;
                     if (model == null)
-                        throw new ContentLoadException("DrawableModel must specify a model.");
+                        throw new ContentLoadException("Model must specify a model.");
                     UpdateModel();
                 }
             }
         }
-        private Model model;
+        private Microsoft.Xna.Framework.Graphics.Model model;
         #endregion
 
         #region Material
@@ -56,9 +61,9 @@ namespace Nine.Graphics.ObjectModel
         /// Gets or sets the material used to draw the model.
         /// </summary>
         /// <remarks>
-        /// Setting the material of the model will override any existing materials of the <c>DrawableModelPart</c>
-        /// owned by this <c>DrawableModel</c> except for texture settings.
-        /// To specify material for each individual model part, see <c>DrawableModelPart.Material</c>.
+        /// Setting the material of the model will override any existing materials of the <c>ModelPart</c>
+        /// owned by this <c>Model</c> except for texture settings.
+        /// To specify material for each individual model part, see <c>ModelPart.Material</c>.
         /// </remarks>
         public Material Material 
         {
@@ -69,10 +74,10 @@ namespace Nine.Graphics.ObjectModel
             }
             set 
             {
-                if (material != value)
+                if (material != value || value == null)
                 {
                     material = value;
-                    materialNeedsUpdate = true;
+                    materialNeedsUpdate = true; 
                 }
             }
         }
@@ -169,7 +174,7 @@ namespace Nine.Graphics.ObjectModel
                 var material = modelParts[i].Material;
                 if (material == null)
                     continue;
-                var obj = material.As<T>();
+                var obj = material.Find<T>();
                 if (obj != null)
                     action(obj);
             }
@@ -178,7 +183,7 @@ namespace Nine.Graphics.ObjectModel
 
         #region Lighting
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DrawableModel"/> is visible.
+        /// Gets or sets a value indicating whether this <see cref="Source"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
@@ -273,13 +278,31 @@ namespace Nine.Graphics.ObjectModel
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the number of child objects
+        /// </summary>
+        protected override int ChildCount
+        {
+            get { return modelParts.Length; }
+        }
+
+        /// <summary>
+        /// Copies all the child objects to the target array.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="startIndex"></param>
+        public override void CopyTo(object[] array, int startIndex)
+        {
+            modelParts.CopyTo(array, startIndex);
+        }
         #endregion
 
         #region BoundingBox
         /// <summary>
         /// Gets the axis aligned bounding box in world space.
         /// </summary>
-        public override BoundingBox BoundingBox
+        public BoundingBox BoundingBox
         {
             get { return boundingBox; }
         }
@@ -293,7 +316,16 @@ namespace Nine.Graphics.ObjectModel
         {
             boundingBox = orientedBoundingBox.CreateAxisAligned(AbsoluteTransform);
             base.OnTransformChanged();
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
         }
+
+        object ISpatialQueryable.SpatialData { get; set; }
+
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
         #endregion
 
         #region Animation
@@ -330,7 +362,7 @@ namespace Nine.Graphics.ObjectModel
         {
             Visible = true;
             CastShadow = true;
-            ReceiveShadow = true;
+            ReceiveShadow = false;
             LightingEnabled = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;
@@ -340,31 +372,32 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawableModel"/> class.
         /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="material">The material.</param>
         public DrawableModel(Model model, Material material) : this()
         {
             if (model == null)
                 throw new ArgumentNullException();
-            this.Model = model;
+            this.Source = model;
             this.Material = material;
         }
 
-        private static void ForEachModelMeshPart(Model model, Action<ModelMesh, ModelMeshPart> action)
-        {
-            if (action != null)
-                foreach (var mesh in model.Meshes)  
-                    foreach (var part in mesh.MeshParts)
-                        action(mesh, part);
-        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawableModel"/> class.
+        /// </summary>
+        public DrawableModel(Microsoft.Xna.Framework.Graphics.Model model) : this(model, null) { }
 
         private void UpdateModel()
         {
             if (modelParts != null)
                 throw new InvalidOperationException();
 
-            // Initialize bounds
+            if (model.Meshes.Count <= 0 || model.Meshes[0].MeshParts.Count <= 0 || model.Meshes[0].MeshParts[0].VertexBuffer == null)
+                throw new ArgumentException("The input model is must have at least 1 valid mesh part.");
+
+            // Initialize graphics device & material
+            GraphicsDevice = model.Meshes[0].MeshParts[0].VertexBuffer.GraphicsDevice;
             materialNeedsUpdate = true;
+
+            // Initialize bounds
             orientedBoundingBox = model.ComputeBoundingBox();
             boundingBox = orientedBoundingBox.CreateAxisAligned(AbsoluteTransform);
 
@@ -385,7 +418,13 @@ namespace Nine.Graphics.ObjectModel
             modelParts = new DrawableModelPart[model.Meshes.Sum(m => m.MeshParts.Count)];
             ModelParts = new ReadOnlyCollection<DrawableModelPart>(modelParts);
 
-            ForEachModelMeshPart(model, (mesh, part) => modelParts[iPart++] = new DrawableModelPart(this, mesh, part, null));
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (var part in mesh.MeshParts)
+                {
+                    modelParts[iPart++] = new DrawableModelPart(this, mesh, part, null);
+                }
+            }
         }
 
         private void UpdateIsSkinnedAndIsAnimated()
@@ -393,32 +432,41 @@ namespace Nine.Graphics.ObjectModel
             IsSkinned = model.IsSkinned();
             if (material != null && IsSkinned)
             {
-                var effectSkinned = material.As<IEffectSkinned>();
+                var effectSkinned = material.Find<IEffectSkinned>();
                 IsSkinned = effectSkinned != null && effectSkinned.SkinningEnabled;
             }
+
+            // FIXME:
             IsAnimated = model.GetAnimations().Count > 0;
         }
 
         internal void UpdateMaterials()
         {
-            if (model == null || material == null || !materialNeedsUpdate)
+            if (model == null || !materialNeedsUpdate)
                 return;
 
-            if (material != null)
+            // Set default materials based on whether the model is skinned or not
+#if !TEXT_TEMPLATE
+            if (material == null)
+                material = model.IsSkinned() ? (Material)new SkinnedMaterial(GraphicsDevice) : new BasicMaterial(GraphicsDevice);
+#endif
+            var effectMaterial = material.Find<IEffectMaterial>();
+            if (effectMaterial != null)
             {
-                var effectMaterial = material.As<IEffectMaterial>();
-                if (effectMaterial != null)
-                {
-                    alpha = effectMaterial.Alpha;
-                    diffuseColor = effectMaterial.DiffuseColor;
-                }
+                alpha = effectMaterial.Alpha;
+                diffuseColor = effectMaterial.DiffuseColor;
             }
 
             UpdateIsSkinnedAndIsAnimated();
 
             var iPart = 0;
-            ForEachModelMeshPart(model, (mesh, part) => modelParts[iPart++].Material = CreateMaterial(material, part));
-
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (var part in mesh.MeshParts)
+                {
+                    modelParts[iPart++].Material = CreateMaterial(material, part);
+                }
+            }
             materialNeedsUpdate = false;
         }
 
@@ -432,7 +480,7 @@ namespace Nine.Graphics.ObjectModel
 
             if (!overrideModelTextures)
             {
-                IEffectTexture target = clonedMaterial.As<IEffectTexture>();
+                IEffectTexture target = clonedMaterial.Find<IEffectTexture>();
                 if (target != null)
                 {
                     target.Texture = part.Effect.GetTexture();
@@ -446,7 +494,7 @@ namespace Nine.Graphics.ObjectModel
             if (!overrideModelMaterial)
             {
                 IEffectMaterial source = part.Effect.As<IEffectMaterial>();
-                IEffectMaterial target = clonedMaterial.As<IEffectMaterial>();
+                IEffectMaterial target = clonedMaterial.Find<IEffectMaterial>();
                 
                 if (source != null && target != null)
                 {
@@ -482,9 +530,9 @@ namespace Nine.Graphics.ObjectModel
                 }
                 else
                 {
-                    if (boneTransforms == null || boneTransforms.Length < Model.Bones.Count)
+                    if (boneTransforms == null || boneTransforms.Length < Source.Bones.Count)
                     {
-                        boneTransforms = new Matrix[Model.Bones.Count];
+                        boneTransforms = new Matrix[Source.Bones.Count];
                         Skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
                     }
                     else if (boneTransformNeedUpdate)
@@ -524,11 +572,11 @@ namespace Nine.Graphics.ObjectModel
 
             if (IsAnimated)
                 if (IsSkinned)
-                    context.ModelBatch.DrawSkinned(Model, mesh, part, AbsoluteTransform, skinTransforms, null, drawableModelPart.Material);
+                    context.ModelBatch.DrawSkinned(Source, mesh, part, AbsoluteTransform, skinTransforms, null, drawableModelPart.Material);
                 else
-                    context.ModelBatch.Draw(Model, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, null, drawableModelPart.Material);
+                    context.ModelBatch.Draw(Source, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, null, drawableModelPart.Material);
             else
-                context.ModelBatch.Draw(Model, mesh, part, AbsoluteTransform, null, drawableModelPart.Material);
+                context.ModelBatch.Draw(Source, mesh, part, AbsoluteTransform, null, drawableModelPart.Material);
         }
 
         internal void DrawPart(GraphicsContext context, DrawableModelPart drawableModelPart, Effect effect)
@@ -541,11 +589,11 @@ namespace Nine.Graphics.ObjectModel
 
             if (IsAnimated)
                 if (IsSkinned)
-                    context.ModelBatch.DrawSkinned(Model, mesh, part, AbsoluteTransform, skinTransforms, effect);
+                    context.ModelBatch.DrawSkinned(Source, mesh, part, AbsoluteTransform, skinTransforms, effect);
                 else
-                    context.ModelBatch.Draw(Model, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, effect);
+                    context.ModelBatch.Draw(Source, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, effect);
             else
-                context.ModelBatch.Draw(Model, mesh, part, AbsoluteTransform, effect);
+                context.ModelBatch.Draw(Source, mesh, part, AbsoluteTransform, effect);
         }
         #endregion
 
@@ -570,18 +618,6 @@ namespace Nine.Graphics.ObjectModel
         public float? Intersects(Ray ray)
         {
             return model.Intersects(AbsoluteTransform, ray);
-        }
-        #endregion
-        
-        #region IEnumerable
-        IEnumerator<DrawableModelPart> IEnumerable<DrawableModelPart>.GetEnumerator()
-        {
-            return modelParts.OfType<DrawableModelPart>().GetEnumerator();
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return modelParts.OfType<DrawableModelPart>().GetEnumerator();
         }
         #endregion
     }

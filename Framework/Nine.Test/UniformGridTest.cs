@@ -34,32 +34,37 @@ namespace Nine.Test
         [TestMethod()]
         public void BresenhamLineTest()
         {
-            List<Point> points;
+            int count;
             UniformGrid grid = new UniformGrid(0, 0, 2, 10, 10);
-            
-            points = new List<Point>(grid.Traverse(new Point(0, 9), new Point(9, 0)));
-            Assert.AreEqual<int>(10, points.Count);
 
-            points = new List<Point>(grid.Traverse(new Point(-10, -10), new Point(100, 100)));
-            Assert.AreEqual<int>(10, points.Count);
+            count = 0;
+            grid.Traverse(new Point(0, 9), new Point(9, 0), pt => count++ >= 0);
+            Assert.AreEqual<int>(10, count);
 
-            points = new List<Point>(grid.Traverse(Vector2.Zero, new Vector2(6, 20), 1));
-            Assert.IsTrue(points.Count > 10);
+            count = 0;
+            grid.Traverse(new Point(-10, -10), new Point(100, 100), pt => count++ >= 0);
+            Assert.AreEqual<int>(10, count);
 
-            points = new List<Point>(grid.Traverse(Vector2.Zero, new Vector2(4, 40), 1));
-            Assert.IsTrue(points.Count > 10 && points.Count < 15);
+            count = 0;
+            grid.Traverse(Vector2.Zero, new Vector2(6, 20), 1, pt => count++ >= 0);
+            Assert.IsTrue(count > 10);
 
-            points = new List<Point>(grid.Traverse(new Ray(Vector3.One * 4.8f, Vector3.UnitX), 1));
-            Assert.AreEqual<int>(8, points.Count);
+            count = 0;
+            grid.Traverse(Vector2.Zero, new Vector2(4, 40), 1, pt => count++ >= 0);
+            Assert.IsTrue(count > 10 && count < 15);
+
+            count = 0;
+            grid.Traverse(new Ray(Vector3.One * 4.8f, Vector3.UnitX), 1, pt => count++ >= 0);
+            Assert.AreEqual<int>(8, count);
         }
 
         [TestMethod()]
         public void TraverseInnerOutTest()
         {
-            List<Point> points;
+            List<Point> points = new List<Point>();
             UniformGrid grid = new UniformGrid(0, 0, 2, 10, 10);
 
-            var c = grid.Traverse(4, 4).ToList();
+            grid.Traverse(4, 4, pt => { points.Add(pt); return true; });
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Nine.Graphics.ObjectModel
     /// Defines a part of a model that contains only one material.
     /// </summary>
     [ContentSerializable]
-    public class DrawableModelPart : IDrawableObject, ILightable
+    public class DrawableModelPart : IDrawableObject, ILightable, IContainedObject
     {
         #region Properties
         /// <summary>
@@ -39,12 +39,12 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the model mesh part.
         /// </summary>
-        public ModelMesh ModelMesh { get; private set; }
+        internal Microsoft.Xna.Framework.Graphics.ModelMesh ModelMesh;
 
         /// <summary>
         /// Gets the model mesh part.
         /// </summary>
-        public ModelMeshPart ModelMeshPart { get; private set; }
+        internal Microsoft.Xna.Framework.Graphics.ModelMeshPart ModelMeshPart;
 
         /// <summary>
         /// Gets or sets the visibility of this model part.
@@ -52,7 +52,7 @@ namespace Nine.Graphics.ObjectModel
         public bool Visible { get; set; }
 
         /// <summary>
-        /// Visibility can be controlled by both DrawableModelPart and DrawableModel.
+        /// Visibility can be controlled by both ModelPart and Model.
         /// </summary>
         bool IDrawableObject.Visible { get { return Visible && Model.Visible; } }
 
@@ -75,6 +75,11 @@ namespace Nine.Graphics.ObjectModel
         /// Gets or sets any user data.
         /// </summary>
         public object Tag { get; set; }
+        
+        IContainer IContainedObject.Parent
+        {
+            get { return Model; }
+        }
         #endregion
 
         #region ILightable
@@ -91,8 +96,6 @@ namespace Nine.Graphics.ObjectModel
         object ILightable.LightingData { get; set; }
         #endregion
 
-        private Texture2D normalMap;
-
         /// <summary>
         /// For content serializer.
         /// </summary>
@@ -102,7 +105,7 @@ namespace Nine.Graphics.ObjectModel
         }
         
         /// <summary>
-        /// DrawableModelPart should only be created by DrawableModel.
+        /// ModelPart should only be created by Model.
         /// </summary>
         internal DrawableModelPart(DrawableModel model, ModelMesh mesh, ModelMeshPart part, Material material)
         {
@@ -114,7 +117,6 @@ namespace Nine.Graphics.ObjectModel
             this.ModelMesh = mesh;
             this.ModelMeshPart = part;
             this.Material = material;
-            this.normalMap = part.GetTexture(TextureUsage.NormalMap) as Texture2D;
         }
 
         /// <summary>
@@ -133,22 +135,7 @@ namespace Nine.Graphics.ObjectModel
         /// <param name="effect"></param>
         public void Draw(GraphicsContext context, Effect effect)
         {
-#if !WINDOWS_PHONE
-            GraphicsBufferEffect gBufferEffect = effect as GraphicsBufferEffect;
-            if (gBufferEffect != null)
-            {
-                gBufferEffect.NormalMap = normalMap;
-                gBufferEffect.NormalMappingEnabled = (normalMap != null);
-            }
-
             Model.DrawPart(context, this, effect);
-            
-            if (gBufferEffect != null)
-            {
-                gBufferEffect.NormalMap = null;
-                gBufferEffect.NormalMappingEnabled = false;
-            }
-#endif
         }
 
         void IDrawableObject.BeginDraw(GraphicsContext context) { }

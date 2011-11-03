@@ -1060,7 +1060,7 @@ namespace Nine.Graphics.ObjectModel
             {
                 existingInstance = new DrawableModel();
             }
-            existingInstance.Model = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
+            existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
             existingInstance.OverrideModelTextures = input.ReadBoolean();
             existingInstance.OverrideModelMaterial = input.ReadBoolean();
@@ -1126,7 +1126,7 @@ namespace Nine.Graphics.ObjectModel
                 existingInstance = new DrawableParticleEffect();
             }
             existingInstance.Position = input.ReadVector3();
-            existingInstance.ParticleEffect = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
+            existingInstance.Source = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -1212,11 +1212,13 @@ namespace Nine.Graphics.ObjectModel
             {
                 existingInstance = new Fog();
             }
-            existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
             existingInstance.FogStart = input.ReadSingle();
             existingInstance.FogEnd = input.ReadSingle();
             existingInstance.FogColor = input.ReadVector3();
             existingInstance.FogEnabled = input.ReadBoolean();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Transform = input.ReadMatrix();
             EndRead(input, existingInstance);
             return existingInstance;
         }

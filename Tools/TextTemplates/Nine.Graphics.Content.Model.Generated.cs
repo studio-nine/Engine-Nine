@@ -2066,12 +2066,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent> Model { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[] ModelParts { get; set; }
 
         /// <summary>
@@ -2111,9 +2105,15 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("True")]
+        [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean ReceiveShadow { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent> Source { get; set; }
 
         /// <summary>
         /// 
@@ -2149,7 +2149,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             MultiPassShadowEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OverrideModelMaterial = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             OverrideModelTextures = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            ReceiveShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            ReceiveShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             Visible = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             OnCreate();
@@ -2217,15 +2217,15 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent> ParticleEffect { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent> Source { get; set; }
 
         /// <summary>
         /// 
@@ -2430,14 +2430,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Fog, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
     public partial class FogContent
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Microsoft.Xna.Framework.BoundingBox BoundingBox { get; set; }
-
         /// <summary>
         /// 
         /// </summary>
@@ -2467,6 +2462,24 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         public virtual System.Single FogStart { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Object Tag { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of <c>FogContent</c>.
         /// </summary>
         public FogContent()
@@ -2475,6 +2488,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             FogEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             FogEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("10000");
             FogStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1000");
+            Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
             OnCreate();
         }
 

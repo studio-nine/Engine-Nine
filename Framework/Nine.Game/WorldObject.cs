@@ -9,9 +9,9 @@
 #region Using Directives
 using System;
 using System.ComponentModel;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
@@ -22,6 +22,7 @@ namespace Nine
     /// Defines an object that has a position, rotation and scale.
     /// </summary>
     [Serializable]
+    [ContentProperty("Components")]
     public class WorldObject : GameObjectContainer
     {
         #region Position
@@ -38,6 +39,9 @@ namespace Nine
                     if (PositionChanged != null)
                         PositionChanged(this, EventArgs.Empty);
                     OnPositionChanged(oldValue);
+                    if (TransformChanged != null)
+                        TransformChanged(this, EventArgs.Empty);
+                    OnTransformChanged(transform);
                 }
             }
         }
@@ -61,6 +65,9 @@ namespace Nine
                     if (RotationChanged != null)
                         RotationChanged(this, EventArgs.Empty);
                     OnRotationChanged(oldValue);
+                    if (TransformChanged != null)
+                        TransformChanged(this, EventArgs.Empty);
+                    OnTransformChanged(transform);
                 }
             }
         }
@@ -84,6 +91,9 @@ namespace Nine
                     if (ScaleChanged != null)
                         ScaleChanged(this, EventArgs.Empty);
                     OnScaleChanged(oldValue);
+                    if (TransformChanged != null)
+                        TransformChanged(this, EventArgs.Empty);
+                    OnTransformChanged(transform);
                 }
             }
         }
@@ -114,6 +124,9 @@ namespace Nine
         }
         private Matrix transform = Matrix.Identity;
         private bool transformNeedsUpdate = false;
+
+        public event EventHandler<EventArgs> TransformChanged;
+        protected virtual void OnTransformChanged(Matrix oldValue) { }
         #endregion
     }
 }

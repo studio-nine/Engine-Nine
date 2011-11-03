@@ -10,6 +10,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,9 +18,9 @@ using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
-using System.ComponentModel;
 using Nine.Components;
 using Nine.Graphics.ObjectModel;
+using Model = Microsoft.Xna.Framework.Graphics.Model;
 #endregion
 
 namespace MaterialsSample

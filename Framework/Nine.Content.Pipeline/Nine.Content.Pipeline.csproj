@@ -127,6 +127,7 @@
     <Compile Include="Animations\AnimationContent.cs" />
     <Compile Include="ContentReference.cs" />
     <Compile Include="Dictionary.cs" />
+    <Compile Include="NotificationCollectionWriter.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Design\BlendStateConverter.cs" />
     <Compile Include="Graphics\ContentGraphics.cs" />

@@ -31,6 +31,7 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public object Tag { get; set; }
 
+        private int batchCount;
         private bool hasBegin = false;
         private AlphaTestEffect alphaTestEffect;
         private PrimitiveBatch primitiveBatch;
@@ -43,6 +44,15 @@ namespace Nine.Graphics.ParticleEffects
         private Matrix view;
         private Matrix projection;
 
+        private ParticleBatchItem item;
+        private ParticleEffect particleEffect;
+        private Matrix? textureTransform = null;
+
+        private ParticleAction cachedDrawBillboard;
+        private ParticleAction cachedDrawConstrainedBillboard;
+        private ParticleAction cachedDrawConstrainedBillboardUp;
+        private ParticleAction cachedDrawRibbonTrail;
+
         internal int VertexCount { get; private set; }
         internal int PrimitiveCount { get; private set; }
         
@@ -52,6 +62,7 @@ namespace Nine.Graphics.ParticleEffects
         public ParticleBatch(GraphicsDevice graphics) : this(graphics, 8192)
 #endif
         {
+
         }
 
         public ParticleBatch(GraphicsDevice graphics, int capacity)
@@ -60,6 +71,11 @@ namespace Nine.Graphics.ParticleEffects
             batches = new List<ParticleBatchItem>();
             alphaTestEffect = (AlphaTestEffect)GraphicsResources<AlphaTestEffect>.GetInstance(graphics).Clone();
             alphaTestEffect.VertexColorEnabled = true;
+
+            cachedDrawBillboard = new ParticleAction(DrawParticleBillboard);
+            cachedDrawConstrainedBillboard = new ParticleAction(DrawParticleConstrainedBillboard);
+            cachedDrawConstrainedBillboardUp = new ParticleAction(DrawParticleConstrainedBillboardUp);
+            cachedDrawRibbonTrail = new ParticleAction(DrawParticleRibbonTrail);
         }
 
         public void Begin()
@@ -92,13 +108,33 @@ namespace Nine.Graphics.ParticleEffects
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             if (particleEffect.Texture != null)
-                batches.Add(new ParticleBatchItem() { Type = particleEffect.ParticleType, ParticleEffect = particleEffect, Axis = particleEffect.Up  });
-            
-            foreach (var childEffect in particleEffect.ChildEffects)
-                Draw(childEffect);
+            {
+                if (batches.Count <= batchCount)
+                {
+                    batchCount++;
+                    batches.Add(new ParticleBatchItem()
+                    {
+                        Enabled = true,
+                        Type = particleEffect.ParticleType,
+                        ParticleEffect = particleEffect,
+                        Axis = particleEffect.Up
+                    });
+                }
+                else
+                {
+                    var item = batches[batchCount++];
+                    item.Enabled = true;
+                    item.Type = particleEffect.ParticleType;
+                    item.ParticleEffect = particleEffect;
+                    item.Axis = particleEffect.Up;
+                }
+            }
 
-            foreach (var endingEffect in particleEffect.EndingEffects)
-                Draw(endingEffect);
+            for (int i = 0; i < particleEffect.ChildEffects.Count; i++)
+                Draw(particleEffect.ChildEffects[i]);
+
+            for (int i = 0; i < particleEffect.EndingEffects.Count; i++)
+                Draw(particleEffect.EndingEffects[i]);
         }
 
         public void End()
@@ -106,14 +142,21 @@ namespace Nine.Graphics.ParticleEffects
             if (!hasBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
-            if (batches.Count > 0)
+            if (batchCount > 0)
             {
-                batches.Sort(comparer);
+                batches.Sort(0, batchCount, comparer);
                 DrawBatches(DepthStencilState.Default, alphaTestEffect, true);
                 DrawBatches(DepthStencilState.DepthRead, null, false);
+
+                for (int i = 0; i < batchCount; i++)
+                {
+                    var batch = batches[i];
+                    batch.Enabled = false;
+                    batch.ParticleEffect = null;
+                }
+                batchCount = 0;
             }
 
-            batches.Clear();
             hasBegin = false;
 
             PrimitiveCount += primitiveBatch.PrimitiveCount;
@@ -125,7 +168,7 @@ namespace Nine.Graphics.ParticleEffects
             var blendState = batches[0].ParticleEffect.BlendState;
 
             primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState, effect);
-            for (int i = 0; i < batches.Count; i++)
+            for (int i = 0; i < batchCount; i++)
             {
                 if (depthSort)
                 {
@@ -146,67 +189,81 @@ namespace Nine.Graphics.ParticleEffects
 
         private void Draw(ParticleBatchItem item)
         {
-            ParticleEffect particleEffect = item.ParticleEffect;
+            if (!item.Enabled)
+                throw new InvalidOperationException();
 
-            Matrix? textureTransform = null;
+            this.item = item;
+            this.particleEffect = item.ParticleEffect;
+            this.textureTransform = null;
             if (particleEffect.SourceRectangle.HasValue)
                 textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
 
             if (item.Type == ParticleType.Billboard)
             {
-                particleEffect.ForEach((ref Particle particle) =>
-                {
-                    primitiveBatch.DrawBillboard(particleEffect.Texture,
-                                                particle.Position,
-                                                particle.Size,
-                                                particle.Size,
-                                                particle.Rotation, Vector3.UnitZ, textureTransform, null,
-                                                particle.Color * particle.Alpha);
-                });
+                particleEffect.ForEach(cachedDrawBillboard);
             }
             else if (item.Type == ParticleType.ConstrainedBillboard)
             {
-                particleEffect.ForEach((ref Particle particle) =>
-                {
-                    Vector3 forward = Vector3.Normalize(particle.Velocity);
-                    forward *= 0.5f * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
-
-                    primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
-                                                particle.Position - forward,
-                                                particle.Position + forward,
-                                                particle.Size,
-                                                textureTransform, null,
-                                                particle.Color * particle.Alpha);
-                });
+                particleEffect.ForEach(cachedDrawConstrainedBillboard);
             }
             else if (item.Type == ParticleType.ConstrainedBillboardUp)
             {
-                particleEffect.ForEach((ref Particle particle) =>
-                {
-                    Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
-
-                    primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
-                                                particle.Position - forward,
-                                                particle.Position + forward,
-                                                particle.Size,
-                                                textureTransform, null,
-                                                particle.Color * particle.Alpha);
-                });
+                particleEffect.ForEach(cachedDrawConstrainedBillboardUp);
             }
             else if (item.Type == ParticleType.RibbonTrail)
             {
-                particleEffect.ForEach((ref Particle particle) =>
-                {
-                    Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
-
-                    primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
-                                                particle.Position - forward,
-                                                particle.Position + forward,
-                                                particle.Size,
-                                                textureTransform, null,
-                                                particle.Color * particle.Alpha);
-                });
+                particleEffect.ForEach(cachedDrawRibbonTrail);
             }
+
+            this.particleEffect = null;
+            this.item = null;
+        }
+
+        private void DrawParticleBillboard(ref Particle particle)
+        {
+            primitiveBatch.DrawBillboard(particleEffect.Texture,
+                                         particle.Position,
+                                         particle.Size,
+                                         particle.Size,
+                                         particle.Rotation, Vector3.UnitZ, textureTransform, null,
+                                         particle.Color * particle.Alpha);
+        }
+
+        private void DrawParticleConstrainedBillboard(ref Particle particle)
+        {
+            Vector3 forward = Vector3.Normalize(particle.Velocity);
+            forward *= 0.5f * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+            primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                        particle.Position - forward,
+                                        particle.Position + forward,
+                                        particle.Size,
+                                        textureTransform, null,
+                                        particle.Color * particle.Alpha);
+        }
+
+        private void DrawParticleConstrainedBillboardUp(ref Particle particle)
+        {
+            Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+            primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                        particle.Position - forward,
+                                        particle.Position + forward,
+                                        particle.Size,
+                                        textureTransform, null,
+                                        particle.Color * particle.Alpha);
+        }
+
+        private void DrawParticleRibbonTrail(ref Particle particle)
+        {
+            Vector3 forward = 0.5f * item.Axis * particle.Size * particleEffect.Stretch * particleEffect.Texture.Width / particleEffect.Texture.Height;
+
+            primitiveBatch.DrawConstrainedBillboard(particleEffect.Texture,
+                                        particle.Position - forward,
+                                        particle.Position + forward,
+                                        particle.Size,
+                                        textureTransform, null,
+                                        particle.Color * particle.Alpha);
         }
 
         public void Dispose()
@@ -232,6 +289,7 @@ namespace Nine.Graphics.ParticleEffects
 
     class ParticleBatchItem
     {
+        public bool Enabled;
         public ParticleType Type;
         public ParticleEffect ParticleEffect;
         public Vector3 Axis;
@@ -247,27 +305,27 @@ namespace Nine.Graphics.ParticleEffects
         private int Compare(BlendState x, BlendState y)
         {
             int result = 0;
-            if ((result = x.AlphaBlendFunction.CompareTo(y.AlphaBlendFunction)) != 0)
+            if ((result = ((int)x.AlphaBlendFunction).CompareTo((int)y.AlphaBlendFunction)) != 0)
                 return result;
-            if ((result = x.AlphaDestinationBlend.CompareTo(y.AlphaDestinationBlend)) != 0)
+            if ((result = ((int)x.AlphaDestinationBlend).CompareTo((int)y.AlphaDestinationBlend)) != 0)
                 return result;
-            if ((result = x.AlphaSourceBlend.CompareTo(y.AlphaSourceBlend)) != 0)
+            if ((result = ((int)x.AlphaSourceBlend).CompareTo((int)y.AlphaSourceBlend)) != 0)
                 return result;
             if ((result = x.BlendFactor.PackedValue.CompareTo(y.BlendFactor.PackedValue)) != 0)
                 return result;
-            if ((result = x.ColorBlendFunction.CompareTo(y.ColorBlendFunction)) != 0)
+            if ((result = ((int)x.ColorBlendFunction).CompareTo((int)y.ColorBlendFunction)) != 0)
                 return result;
-            if ((result = x.ColorDestinationBlend.CompareTo(y.ColorDestinationBlend)) != 0)
+            if ((result = ((int)x.ColorDestinationBlend).CompareTo((int)y.ColorDestinationBlend)) != 0)
                 return result;
-            if ((result = x.ColorSourceBlend.CompareTo(y.ColorSourceBlend)) != 0)
+            if ((result = ((int)x.ColorSourceBlend).CompareTo((int)y.ColorSourceBlend)) != 0)
                 return result;
-            if ((result = x.ColorWriteChannels.CompareTo(y.ColorWriteChannels)) != 0)
+            if ((result = ((int)x.ColorWriteChannels).CompareTo((int)y.ColorWriteChannels)) != 0)
                 return result;
-            if ((result = x.ColorWriteChannels1.CompareTo(y.ColorWriteChannels1)) != 0)
+            if ((result = ((int)x.ColorWriteChannels1).CompareTo((int)y.ColorWriteChannels1)) != 0)
                 return result;
-            if ((result = x.ColorWriteChannels2.CompareTo(y.ColorWriteChannels2)) != 0)
+            if ((result = ((int)x.ColorWriteChannels2).CompareTo((int)y.ColorWriteChannels2)) != 0)
                 return result;
-            if ((result = x.ColorWriteChannels3.CompareTo(y.ColorWriteChannels3)) != 0)
+            if ((result = ((int)x.ColorWriteChannels3).CompareTo((int)y.ColorWriteChannels3)) != 0)
                 return result;
             if ((result = x.MultiSampleMask.CompareTo(y.MultiSampleMask)) != 0)
                 return result;

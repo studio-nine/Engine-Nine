@@ -30,7 +30,7 @@ namespace Nine.Components
         private TimeSpan elapsedTimeSinceLastUpdate = TimeSpan.Zero;
         private float fps = 0;
         private float overallFps = 0;
-
+        private SpriteBatch spriteBatch;
         
         /// <summary>
         /// Gets the graphics device.
@@ -102,6 +102,7 @@ namespace Nine.Components
             this.Color = Color.Yellow;
             this.Visible = true;
             this.Scale = 1;
+            this.spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
         }
         
         public void Draw(TimeSpan elapsedTime)
@@ -111,8 +112,6 @@ namespace Nine.Components
             // Draw FPS text
             if (Visible && Font != null && GraphicsDevice != null)
             {
-                SpriteBatch spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);
-
                 spriteBatch.Begin();
                 spriteBatch.DrawString(Font, string.Format("FPS: {0:00.00}", fps), Position, Color, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
                 spriteBatch.End();

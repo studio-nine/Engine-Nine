@@ -51,8 +51,6 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
-    <Reference Include="Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -71,7 +69,11 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="ExpressionTest.cs" />
+    <Compile Include="Graphics\GraphicsTest.cs" />
+    <Compile Include="Graphics\ObjectModel\SceneTest.cs" />
     <Compile Include="Graphics\ObjectModel\RendererTest.cs" />
+    <Compile Include="Navigation\Steering\WallAvoidanceTest.cs" />
+    <Compile Include="Navigation\Steering\SteerableTest.cs" />
     <Compile Include="OctreeObjectManagerTest.cs" />
     <Compile Include="UniformGridTest.cs" />
     <Compile Include="GridObjectManagerTest.cs" />
@@ -88,6 +90,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
+      <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
+      <Name>Nine.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Navigation\Nine.Navigation.csproj">
+      <Project>{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}</Project>
+      <Name>Nine.Navigation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine\Nine.csproj">
+      <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
+      <Name>Nine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

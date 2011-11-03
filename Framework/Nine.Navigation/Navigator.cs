@@ -20,7 +20,7 @@ namespace Nine.Navigation
 {
     using Nine.Navigation.Steering;
     
-    internal enum NavigatorState
+    enum NavigatorState
     {
         Stopped,
         Moving,

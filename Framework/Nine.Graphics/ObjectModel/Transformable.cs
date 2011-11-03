@@ -22,7 +22,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Base class for all objects that has a transform and a bounds.
     /// </summary>
-    public abstract class Transformable : ISpatialQueryable
+    public abstract class Transformable : IContainer, IContainedObject
     {
         #region Properties
         /// <summary>
@@ -38,7 +38,6 @@ namespace Nine.Graphics.ObjectModel
                 parent = value; 
                 MarkAbsoluteTransformsDirty();
                 OnTransformChanged();
-                OnBoundingBoxChanged();
             }
         }
         private Transformable parent;
@@ -54,29 +53,6 @@ namespace Nine.Graphics.ObjectModel
         public object Tag { get; set; }
         #endregion
 
-        #region BoundingBox
-        /// <summary>
-        /// Gets the axis aligned bounding box in world space.
-        /// </summary>
-        public abstract BoundingBox BoundingBox { get; }
-
-        /// <summary>
-        /// Called by derived classes to raise BoundingBoxChanged event.
-        /// </summary>
-        protected virtual void OnBoundingBoxChanged()
-        {
-            if (BoundingBoxChanged != null)
-                BoundingBoxChanged(this, EventArgs.Empty);
-        }
-
-        object ISpatialQueryable.SpatialData { get; set; }
-
-        /// <summary>
-        /// Occurs when the bounding box changed.
-        /// </summary>
-        public event EventHandler<EventArgs> BoundingBoxChanged;
-        #endregion
-
         #region Transform
         /// <summary>
         /// Gets or sets the transform of this object.
@@ -90,8 +66,6 @@ namespace Nine.Graphics.ObjectModel
                 Matrix oldValue = transform;
                 transform = value;
                 MarkAbsoluteTransformsDirty();
-                OnTransformChanged();
-                OnBoundingBoxChanged();
             }
         }
         private Matrix transform = Matrix.Identity;
@@ -134,20 +108,35 @@ namespace Nine.Graphics.ObjectModel
         private void MarkAbsoluteTransformsDirty()
         {
             isAbsoluteTransformDirty = true;
-            System.Collections.IEnumerable enumerable = this as System.Collections.IEnumerable;
-            if (enumerable != null)
+            ContainerTraverser.Traverse<Transformable>(this, transformable =>
             {
-                foreach (var child in enumerable)
-                {
-                    Transformable transformable = child as Transformable;
-                    if (transformable != null)
-                    {
-                        transformable.isAbsoluteTransformDirty = true;
-                        transformable.MarkAbsoluteTransformsDirty();
-                    }
-                }
-            }
+                transformable.isAbsoluteTransformDirty = true;
+                transformable.OnTransformChanged();
+                return TraverseOptions.Continue;
+            });
         }
+        #endregion
+
+        #region IContainer
+        IContainer IContainedObject.Parent
+        {
+            get { return Parent; }
+        }
+
+        int IContainer.Count
+        {
+            get { return ChildCount; }
+        }
+
+        /// <summary>
+        /// Gets the number of child objects
+        /// </summary>
+        protected virtual int ChildCount { get { return 0; } }
+
+        /// <summary>
+        /// Copies all the child objects to the target array.
+        /// </summary>
+        public virtual void CopyTo(object[] array, int startIndex) { }
         #endregion
     }
 }

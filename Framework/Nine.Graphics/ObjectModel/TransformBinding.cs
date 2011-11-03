@@ -78,5 +78,7 @@ namespace Nine.Graphics.ObjectModel
 
         [ContentSerializer(SharedResource = true, ElementName = "Target")]
         internal string TargetName;
+
+        internal int TargetBoneIndex = -1;
     }
 }

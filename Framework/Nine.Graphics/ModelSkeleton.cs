@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -48,7 +48,6 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Gets the index of the root bone of the skeleton.
-        /// Return null if the skeleton is not intended for skinned models.
         /// </summary>
         public int SkeletonRoot { get; protected set; }
 
@@ -78,9 +77,21 @@ namespace Nine.Graphics
         /// </summary>
         public IEnumerable<int> GetChildBones(int bone)
         {
-            for (int i = bone + 1; i < ParentBones.Count; i++)
+            var count = ParentBones.Count;
+            for (int i = bone + 1; i < count; i++)
                 if (ParentBones[i] == bone)
                     yield return i;
+        }
+
+        /// <summary>
+        /// Gets all the child bones of the input bone.
+        /// </summary>
+        public void GetChildBones(int bone, ICollection<int> childBones)
+        {
+            var count = ParentBones.Count;
+            for (int i = bone + 1; i < count; i++)
+                if (ParentBones[i] == bone)
+                    childBones.Add(i);
         }
 
         /// <summary>
@@ -263,7 +274,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Skin the target model based on the current state of model bone transforms.
         /// </summary>
-        public  void GetSkinTransforms(Matrix[] skinTransforms)
+        public void GetSkinTransforms(Matrix[] skinTransforms)
         {
             if (InverseAbsoluteBindPose == null)
                 throw new NotSupportedException(Strings.SkeletonNotSupportSkin);
@@ -333,8 +344,10 @@ namespace Nine.Graphics
 
             public int IndexOf(string item)
             {
-                var bone = Model.Bones.FirstOrDefault(b => b.Name == item);
-                return bone != null ? bone.Index : -1;
+                for (int i = 0; i < Model.Bones.Count; i++)
+                    if (Model.Bones[i].Name == item)
+                        return i;
+                return -1;
             }
 
             public void Insert(int index, string item)
@@ -406,7 +419,10 @@ namespace Nine.Graphics
 
             public int IndexOf(int item)
             {
-                return this.First(i => i == item);
+                for (int i = 0; i < Count; i++)
+                    if (this[i] == item)
+                        return i;
+                return -1;
             }
 
             public void Insert(int index, int item)
