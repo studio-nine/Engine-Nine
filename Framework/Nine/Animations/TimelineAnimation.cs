@@ -1,7 +1,9 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
+#region Copyright 2009 - 2011 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
+//
+//  oct 2011 -- dmb -- rework to fix some bugs and handle reversing better.
 //
 //=============================================================================
 #endregion
@@ -50,134 +52,111 @@ namespace Nine.Animations
             StartupDirection = AnimationDirection.Forward;
         }
 
-        /// <summary>
-        /// Gets the elapsed time since the playing of this animation.
-        /// </summary>
-        public TimeSpan ElapsedTime { get; private set; }
+        #region ITimelineAnimation Members
 
         /// <summary>
-        /// Gets the elapsed time since the beginning of this animation.
-        /// </summary>
-        public TimeSpan Position
-        {
-            get
-            {
-                TimeSpan result = undirectedPosition;
-                if (Direction == AnimationDirection.Backward)
-                {
-                    result = Duration - undirectedPosition;
-
-                    if (result == Duration)
-                        result = result - TimeSpanEpsilon;
-                }
-                return result;
-            }
-        }
-
-        TimeSpan undirectedPosition;
-
-        /// <summary>
-        /// Gets the smallest TimeSpan greater then TimeSpan.Zero.
-        /// </summary>
-        internal static TimeSpan TimeSpanEpsilon = TimeSpan.FromTicks(1);
-
-        /// <summary>
-        /// Gets the total length of the animation without been affected
-        /// by <c>Speed</c> factor.
+        /// Gets or set the running time for one run of a timeline animation, excluding repeats.
         /// </summary>
         public TimeSpan Duration { get { return DurationValue; } }
 
         /// <summary>
-        /// When implemented, returns the duration of this animation.
+        /// When overriden, returns the duration of this animation.
         /// </summary>
         protected abstract TimeSpan DurationValue { get; }
+
+        /// <summary>
+        /// Gets the position of the animation as an elapsed time since the begin point.
+        /// Counts up if the direction is Forward, down if Backward.
+        /// </summary>
+        public TimeSpan Position { get; private set; }
 
         /// <summary>
         /// Gets or sets the playing speed of this animation.
         /// </summary>
         public float Speed
         {
-            get { return speed; }
+            get { return _speed; }
             set
             {
                 if (value <= 0)
-                    throw new InvalidOperationException("Speed must be greater then zero.");
-                speed = value;
+                    throw new InvalidOperationException("Speed must be greater than zero.");
+                _speed = value;
             }
         }
+        private float _speed = 1.0f;
 
-        private float speed = 1.0f;
+        #endregion
+
+        /// <summary>
+        /// Gets the elapsed time since the animation started playing.
+        /// Accumulates on each update, and updated by seek to ensure the animation
+        /// stops at the right time.
+        /// </summary>
+        public TimeSpan ElapsedTime { get; private set; }
 
         /// <summary>
         /// Gets whether this animation should play backwards after it reaches the end.
-        /// Set this value before <c>Play</c> is called.
+        /// Takes effect when an animation would otherwise complete.
         /// </summary>
         public bool AutoReverse { get; set; }
 
         /// <summary>
         /// Gets or sets whether the animation is playing forward or backward on startup.
-        /// Set this value before <c>Play</c> is called.
+        /// Takes effect only when <c>Play</c> is called.
         /// </summary>
         public AnimationDirection StartupDirection { get; set; }
 
         /// <summary>
-        /// Gets whether the animation is currently playing forward or backward.
+        /// Gets or set whether the animation is currently playing forward or backward.
+        /// Takes effect on an animation that is playing or paused.
         /// </summary>
-        public AnimationDirection Direction { get; private set; }
+        public AnimationDirection Direction { get; set; }
 
         /// <summary>
-        /// Gets or sets number of times this animation will be played.
-        /// When this value is set to fractional, the animation will be
-        /// stopped and completed halfway between the start and end.
-        /// The default value float.MaxValue means forever.
-        /// Set this value before <c>Play</c> is called.
+        /// Gets or sets the number of times this animation will be played.
+        /// When set to a fractional value, the animation will be stopped and completed part way.
+        /// Float.MaxValue means forever. The default value is 1.
         /// </summary>
         public float Repeat
         {
-            get { return repeat; }
+            get { return _repeat; }
             set
             {
                 if (value <= 0)
-                    throw new InvalidOperationException("Repeat must be greater then zero.");
-
-                repeat = value;
+                    throw new InvalidOperationException("Repeat must be greater than zero.");
+                _repeat = value;
             }
         }
-
-        private float repeat = 1;
-        private TimeSpan targetElapsedTime = TimeSpan.Zero;
+        private float _repeat = 1;
 
         /// <summary>
-        /// Occurs when this animation has reached the end and repeated.
+        /// Occurs when this animation has reached the end and has just repeated.
         /// </summary>
         public event EventHandler Repeated;
 
         /// <summary>
-        /// Positions the animation at the specified value.
+        /// Positions the animation at the specified fraction of <c>Duration</c>.
+        /// Takes effect on an animation that is playing or paused.
+        /// </summary>
+        public void Seek(float fraction)
+        {
+            Seek(TimeSpan.FromSeconds(Duration.TotalSeconds * fraction));
+        }
+
+        /// <summary>
+        /// Positions the animation at the specified time value between 0 and Duration.
+        /// Takes effect on an animation that is playing or paused.
+        /// Adjusts elapsed time, so that animation will stop on time.
         /// </summary>
         public void Seek(TimeSpan position)
         {
             if (position < TimeSpan.Zero || position > Duration)
                 throw new ArgumentOutOfRangeException("position");
-
-            if (position == undirectedPosition)
+            if (position == Position)
                 return;
-
             TimeSpan previousPosition = Position;
-
-            undirectedPosition = position;
-            if (Direction == AnimationDirection.Backward)
-            {
-                undirectedPosition = Duration - undirectedPosition;
-            }
-
-            TimeSpan increment = Position - previousPosition;
-
-            if (Direction == AnimationDirection.Forward)
-                targetElapsedTime -= increment;
-            else
-                targetElapsedTime += increment;
-
+            Position = position;
+            ElapsedTime += (Direction == AnimationDirection.Forward) ? Position - previousPosition : previousPosition - Position;
             OnSeek(Position, previousPosition);
         }
 
@@ -196,77 +175,69 @@ namespace Nine.Animations
         {
             Direction = StartupDirection;
             ElapsedTime = TimeSpan.Zero;
-            undirectedPosition = TimeSpan.Zero;
-
-            targetElapsedTime = TimeSpan.FromSeconds(Math.Min
-            (
-                repeat * Duration.TotalSeconds,
-                TimeSpan.MaxValue.TotalSeconds * 0.9
-            ));
-
-            Seek(TimeSpan.Zero);
-
+            Position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
+            OnSeek(Position, Position);
             base.OnStarted();
         }
-        
+
+        /// <summary>
+        /// Update the animation by a specified amount of elapsed time.
+        /// Handle playing either forwards or backwards.
+        /// Determines whether animation should terminate or continue.
+        /// Signals related events.
+        /// </summary>
+        /// <param name="elapsedTime"></param>
         public override void Update(TimeSpan elapsedTime)
         {
-            if (Duration < TimeSpan.Zero)
-                throw new ArgumentOutOfRangeException("Duration cannot be negative");
-
             if (State != AnimationState.Playing)
                 return;
-
-            if (Duration == TimeSpan.Zero)
-            {
-                Stop();
-                OnCompleted();
-                return;
-            }
-
-            TimeSpan previousPosition = Position;
+            if (Duration < TimeSpan.Zero)
+                throw new ArgumentOutOfRangeException("Update: elapsed time cannot be negative");
             TimeSpan increment = TimeSpan.FromTicks((long)(elapsedTime.Ticks * (double)Speed));
 
-            if (increment == TimeSpan.Zero)
-                return;
+            // Repeat sets an absolute upper bound on how long the animation may run
+            TimeSpan max_elapsed = TimeSpan.MaxValue;
+            double maxSeconds = Repeat * Duration.TotalSeconds;
+            if (max_elapsed.TotalSeconds > maxSeconds)
+                max_elapsed = TimeSpan.FromSeconds(maxSeconds);
 
-            ElapsedTime += increment;
-            undirectedPosition += increment;
+            if (ElapsedTime + increment > max_elapsed)
+                increment = max_elapsed - ElapsedTime;
 
-            if (ElapsedTime >= targetElapsedTime)
+            // Loop to handle reverse or repeat without losing excess time.
+            while (increment > TimeSpan.Zero && ElapsedTime < max_elapsed)
             {
-                while (undirectedPosition > Duration)
-                    undirectedPosition -= Duration;
-
-                undirectedPosition -= (ElapsedTime - targetElapsedTime);
-
-                // Stop at the end when targetElapsedTime is Duration.
-                if (undirectedPosition == TimeSpan.Zero)
-                    undirectedPosition = Duration;
-
-                ElapsedTime = targetElapsedTime;
-
+                // Update, but only by enough to stay within the allowed range
+                // Notify new position
+                TimeSpan previousPosition = Position;
+                if (Direction == AnimationDirection.Forward)
+                    Position = (Position + increment > Duration) ? Duration : Position + increment;
+                else
+                    Position = (Position - increment < TimeSpan.Zero) ? TimeSpan.Zero : Position - increment;
+                var part_inc = (Position - previousPosition).Duration();
+                ElapsedTime += part_inc;
+                increment -= part_inc;
                 OnSeek(Position, previousPosition);
 
+                // If time left and not complete, then reverse or repeat and notify that too.
+                if (increment > TimeSpan.Zero && ElapsedTime < max_elapsed)
+                {
+                    if (AutoReverse)
+                        Direction = (Direction == AnimationDirection.Forward) ? AnimationDirection.Backward : AnimationDirection.Forward;
+                    else
+                    {
+                        previousPosition = Position;
+                        Position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
+                        OnSeek(Position, previousPosition);
+                    }
+                    OnRepeated();
+                }
+            }
+            if (!(ElapsedTime < max_elapsed))
+            {
                 Stop();
                 OnCompleted();
-                return;
             }
-
-            while (undirectedPosition > Duration)
-            {
-                undirectedPosition -= Duration;
-                if (AutoReverse)
-                {
-                    if (Direction == AnimationDirection.Backward)
-                        Direction = AnimationDirection.Forward;
-                    else
-                        Direction = AnimationDirection.Backward;
-                }
-                OnRepeated();
-            }
-
-            OnSeek(Position, previousPosition);
         }
     }
 }

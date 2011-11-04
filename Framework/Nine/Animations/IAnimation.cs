@@ -3,6 +3,8 @@
 //
 //  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
 //
+//  oct 2011 -- dmb -- rework to fix some bugs and handle reversing better.
+//
 //=============================================================================
 #endregion
 
@@ -83,17 +85,19 @@ namespace Nine.Animations
     public interface ITimelineAnimation : IAnimation
     {
         /// <summary>
-        /// Gets the duration of the timeline animation.
+        /// Gets or sets the running time for a timeline animation (excluding repeats).
         /// </summary>
         TimeSpan Duration { get; }
-        
+
         /// <summary>
-        /// Gets the elapsed time since the beginning of this animation.
+        /// Gets the position of the animation as an elapsed time since the start point.
+        /// Counts up if the direction is Forward, down if Backward.
         /// </summary>
         TimeSpan Position { get; }
 
         /// <summary>
-        /// Gets the playing speed of the timeline animation.
+        /// Gets or sets the playing speed of the timeline animation.
+        /// Multiplies the number of clock ticks on each update.
         /// </summary>
         float Speed { get; set; }
     }

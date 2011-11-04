@@ -40,10 +40,10 @@ namespace Nine.Animations
         /// </summary>
         InOut,
     }
-    
+
     /// <summary>
-    /// Defines a basic primitive animation that changes it value 
-    /// base on time.
+    /// Implements a basic primitive animation that changes its value over time.
+    /// Can also update the value of a named target property on an target object.
     /// </summary>
     [ContentSerializable]
     public class TweenAnimation<T> : TimelineAnimation, ISupportTarget where T : struct
@@ -60,20 +60,19 @@ namespace Nine.Animations
 
         /// <summary>
         /// Gets or sets where the tween starts.
-        /// Specify null indicates the tweener will use the current
-        /// property value of the object been animated.
+        /// Specify null to use the current property value of the object being animated.
         /// </summary>
         public T? From { get; set; }
 
         /// <summary>
         /// Gets or sets where then tween ends.
-        /// Specify null when you want to control end position using <c>By</c>.
+        /// Specify null to control the end position using <c>By</c>.
         /// </summary>
         public T? To { get; set; }
 
         /// <summary>
-        /// Gets or sets where then tween ends relative to start position.
-        /// Specify null when you want to control end position using <c>To</c>.
+        /// Gets or sets where the tween ends relative to start position.
+        /// Specify null to control the end position using <c>To</c>.
         /// </summary>
         public T? By { get; set; }
 
@@ -101,6 +100,14 @@ namespace Nine.Animations
         /// Gets or sets the duration of this animation.
         /// </summary>
         public new TimeSpan Duration { get; set; }
+
+        /// <summary>
+        /// When overriden, returns the duration of this animation.
+        /// </summary>
+        protected override TimeSpan DurationValue
+        {
+            get { return Duration; }
+        }
 
         /// <summary>
         /// Gets or sets the target object that this tweening will affect.
@@ -145,15 +152,10 @@ namespace Nine.Animations
                     "Please specify a interpolation method.");
 
             this.add = add;
-            this.Duration = TimeSpan.FromSeconds(1);
             this.Easing = Easing.In;
             this.Curve = new LinearCurve();
             this.Repeat = 1;
-        }
-
-        protected override TimeSpan DurationValue
-        {
-            get { return Duration; }
+            this.Duration = TimeSpan.FromSeconds(1);
         }
 
         protected override void OnStarted()
@@ -161,18 +163,21 @@ namespace Nine.Animations
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
             {
                 if (expression == null || expressionChanged)
+                {
                     expression = new PropertyExpression<T>(Target, TargetProperty);
+                    expressionChanged = false;
+                }
             }
 
             // Initialize from
             if (From.HasValue)
                 from = From.Value;
             else if (expression != null)
-                from = expression.Value;
+                from = (T)expression.Value;
             else
                 throw new InvalidOperationException(
                     "When From is set to null, a valid Target and TargetProperty must be set");
-            
+
             // Initialize to
             if (To.HasValue)
                 to = To.Value;
@@ -184,20 +189,10 @@ namespace Nine.Animations
             base.OnStarted();
         }
 
-        protected override void OnCompleted()
-        {
-            if (Position >= Duration - TimeSpanEpsilon)
-            {
-                OnSeek(Duration, Position);
-            }
-
-            base.OnCompleted();
-        }
-
-        protected override void OnSeek(TimeSpan elapsedTime, TimeSpan previousPosition)
+        protected override void OnSeek(TimeSpan currentPosition, TimeSpan previousPosition)
         {
             float percentage = 0;
-            float position = (float)(elapsedTime.TotalSeconds / Duration.TotalSeconds);
+            float position = (float)(Position.TotalSeconds / Duration.TotalSeconds);
 
             if (!float.IsNaN(position))
             {

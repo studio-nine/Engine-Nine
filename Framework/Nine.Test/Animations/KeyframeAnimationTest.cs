@@ -138,6 +138,28 @@ namespace Nine.Animations.Test
         }
 
         [TestMethod()]
+        public void SpeedTest()
+        {
+            TestAnimation animation = new TestAnimation();
+
+            animation.Speed = 2;
+            animation.Repeat = 2.25f;
+            animation.AutoReverse = true;
+            animation.Play();
+
+            animation.Update(TimeSpan.FromSeconds(3));
+            Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(4), animation.Position);
+
+            animation.Update(TimeSpan.FromSeconds(2.5));
+            Assert.AreEqual<TimeSpan>(TimeSpan.FromSeconds(1), animation.Position);
+            Assert.AreEqual<AnimationState>(AnimationState.Playing, animation.State);
+
+            animation.Update(TimeSpan.FromSeconds(0.75));
+            Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
+        }
+
+        [TestMethod()]
         public void EnterFrameTest()
         {
             TestAnimation animation = new TestAnimation();
