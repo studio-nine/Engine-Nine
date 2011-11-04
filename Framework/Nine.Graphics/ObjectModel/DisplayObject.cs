@@ -28,7 +28,7 @@ namespace Nine.Graphics.ObjectModel
     /// This class serves as a container to composite other objects.
     /// If you wish to create your own display object, derive from <c>Transformable</c> instead.
     /// </remarks>
-    public sealed class DisplayObject : Transformable, IUpdateable, INotifyCollectionChanged<object>, IDisposable
+    public class DisplayObject : Transformable, IUpdateable, INotifyCollectionChanged<object>, IDisposable
     {
         #region Children
         /// <summary>
