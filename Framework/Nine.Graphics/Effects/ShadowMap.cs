@@ -81,7 +81,11 @@ namespace Nine.Graphics.Effects
         {
             GraphicsDevice = graphics;
             Size = size;
+#if SILVERLIGHT
+            SurfaceFormat = SurfaceFormat.Color;
+#else
             SurfaceFormat = SurfaceFormat.Single;
+#endif
         }
 
         /// <summary>
@@ -93,7 +97,10 @@ namespace Nine.Graphics.Effects
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             hasBegin = true;
-            if (renderTarget == null || renderTarget.IsDisposed || renderTarget.IsContentLost || 
+            if (renderTarget == null || renderTarget.IsDisposed ||
+#if !SILVERLIGHT
+                renderTarget.IsContentLost || 
+#endif
                 renderTarget.Format != SurfaceFormat || renderTarget.Width != Size)
             {
                 if (renderTarget != null)
@@ -119,7 +126,10 @@ namespace Nine.Graphics.Effects
 
             if (BlurEnabled)
             {
-                if (depthBlur == null || depthBlur.IsDisposed || depthBlur.IsContentLost ||
+                if (depthBlur == null || depthBlur.IsDisposed ||
+#if !SILVERLIGHT
+                    depthBlur.IsContentLost ||
+#endif
                     depthBlur.Format != SurfaceFormat || depthBlur.Width != Size)
                 {
                     if (depthBlur != null)

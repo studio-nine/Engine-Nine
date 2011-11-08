@@ -60,7 +60,7 @@ namespace Nine.Graphics.ObjectModel
         /// Used by the rendering system to keep track of drawables affect by this light.
         /// </summary>
         internal List<IDrawableObject> AffectedDrawables;
-        internal List<ISpatialQueryable> AffectedBoundables;
+        internal List<IDrawableObject> AffectedShadowCasters;
 
 #if !WINDOWS_PHONE
         internal ShadowMap ShadowMap;
@@ -92,10 +92,9 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Draws the depth map of the specified drawables.
         /// </summary>
-        public virtual void DrawShadowMap(GraphicsContext context,
-                                          ISpatialQuery<IDrawableObject> drawables, 
-                                          IEnumerable<ISpatialQueryable> objectsInLightFrustum,
-                                          IEnumerable<ISpatialQueryable> objectsInViewFrustum)
+        internal void DrawShadowMap(GraphicsContext context, Scene scene,
+                                    HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
+                                    HashSet<ISpatialQueryable> shadowCastersInViewFrustum)
         {
 #if !WINDOWS_PHONE
             if (ShadowMap == null || ShadowMap.Size != context.Settings.ShadowMapResolution)
@@ -108,24 +107,32 @@ namespace Nine.Graphics.ObjectModel
             Matrix view = context.View;
             Matrix projection = context.Projection;
 
-            Matrix shadowFrustum = new Matrix();
-            GetShadowFrustum(context, objectsInLightFrustum, objectsInViewFrustum, out shadowFrustum);
-            ShadowFrustum.Matrix = shadowFrustum;
+            Matrix shadowFrustumMatrix = new Matrix();
+            GetShadowFrustum(context, shadowCastersInLightFrustum, shadowCastersInViewFrustum, out shadowFrustumMatrix);
+            ShadowFrustum.Matrix = shadowFrustumMatrix;
 
             ShadowMap.Begin();
             {
                 context.View = Matrix.Identity;
-                context.Projection = shadowFrustum;
+                context.Projection = shadowFrustumMatrix;
                 context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
                 {
-                    /*
                     DepthEffect depthEffect = (DepthEffect)ShadowMap.Effect;
-                    drawables.FindAll(ref shadowFrustum, drawable =>
+                    if (AffectedShadowCasters == null)
+                        AffectedShadowCasters = new List<IDrawableObject>();
+                    else
+                        AffectedShadowCasters.Clear();
+                    scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
+                    
+                    for (int currentShadowCaster = 0; currentShadowCaster < AffectedShadowCasters.Count; currentShadowCaster++)
                     {
-                        depthEffect.TextureEnabled = drawable.Material != null && drawable.Material.DepthAlphaEnabled;
-                        drawable.Draw(context, depthEffect);
-                    });
-                     */
+                        var shadowCaster = AffectedShadowCasters[currentShadowCaster];
+                        if (Scene.CastShadow(shadowCaster))
+                        {
+                            depthEffect.TextureEnabled = shadowCaster.Material != null && shadowCaster.Material.DepthAlphaEnabled;
+                            shadowCaster.Draw(context, depthEffect);
+                        }
+                    }
                 }
                 context.End();
                 context.View = view;
@@ -139,8 +146,8 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the shadow frustum of this light.
         /// </summary>
         protected virtual void GetShadowFrustum(GraphicsContext context,
-                                                IEnumerable<ISpatialQueryable> drawablesInLightFrustum,
-                                                IEnumerable<ISpatialQueryable> drawablesInViewFrustum,
+                                                HashSet<ISpatialQueryable> drawablesInLightFrustum,
+                                                HashSet<ISpatialQueryable> drawablesInViewFrustum,
                                                 out Matrix frustumMatrix)
         {
             frustumMatrix = context.ViewFrustum.Matrix;

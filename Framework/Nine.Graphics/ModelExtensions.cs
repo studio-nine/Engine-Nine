@@ -228,7 +228,7 @@ namespace Nine.Graphics
 
                     if (result == null)
                         result = current;
-                    else if (current.Value < result.Value)
+                    else if (current.HasValue && current.Value < result.Value)
                         result = current.Value;
                 }
                 
@@ -315,6 +315,7 @@ namespace Nine.Graphics
                     yield return part.Effect;
         }
 
+#if !SILVERLIGHT
         /// <summary>
         /// Converts all the effects of the Model to a new effect.
         /// Materials (Diffuse, Emissive, etc) and textures parameters are copied to the new effect.
@@ -393,6 +394,7 @@ namespace Nine.Graphics
             }
             part.Effect = effect;
         }
+#endif
         
         /// <summary>
         /// Computes the bounding box for the specified xna model.

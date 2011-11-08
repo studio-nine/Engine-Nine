@@ -17,6 +17,11 @@ namespace {$NAMESPACE}
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+#if SILVERLIGHT
+    using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+    using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
+    using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
+#endif
 
     [System.CodeDom.Compiler.GeneratedCode("Nine.Tools.EffectCustomTool", "{$VERSION}")]
     [System.Diagnostics.DebuggerStepThrough()]
@@ -24,14 +29,19 @@ namespace {$NAMESPACE}
     partial class {$CLASS} : Effect
     {
         public {$CLASS}(GraphicsDevice graphics) 
+#if !SILVERLIGHT
             : base(graphics, graphics.GraphicsProfile == GraphicsProfile.Reach ? ReachEffectCode :
                                                                                  HiDefEffectCode)
+#else
+            : base(graphics, ReachEffectCode)
+#endif
         {{$CHECK}
             CacheEffectParameters(Parameters);
 
             OnCreated();
         }
-
+        
+#if !SILVERLIGHT
         /// <summary>
         /// Creates a new {$CLASS} by cloning parameter settings from an existing instance.
         /// </summary>
@@ -53,6 +63,7 @@ namespace {$NAMESPACE}
         {
             return new {$CLASS}(this);
         }
+#endif
 
         protected override void OnApply()
         {
@@ -79,6 +90,11 @@ namespace {$NAMESPACE}
             ReachEffectCode = HiDefEffectCode = new byte[] 
             {
 {$XBOXBYTECODE}
+            };
+#elif SILVERLIGHT
+            ReachEffectCode = HiDefEffectCode = new byte[] 
+            {
+{$SILVERLIGHTBYTECODE}
             };
 #else
             ReachEffectCode = new byte[] 

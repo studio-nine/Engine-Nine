@@ -7,18 +7,18 @@
     </Fragment>
     <Fragment>
         <ComponentGroup Id="EffectCustomToolRegister">
-            <Component Id="cmp31C5B6964AB13D57FD5222FACF382E4B" Directory="dirC75F8675A2182F2958F5F5F6F4C6B675" Guid="{0EC68152-4507-4786-AC06-A60B77996979}">
+            <Component Id="cmp31C5B6964AB13D57FD5222FACF382E4B" Directory="dirC75F8675A2182F2958F5F5F6F4C6B675" Guid="{B16211B5-5C2F-4FA6-8D8D-39A55FA6C628}">
                 <Class Id="{72C1F067-C0D6-4263-8279-65A8786C628F}" Context="InprocServer32" Description="Nine.Tools.EffectCustomTool.EffectCustomTool" ThreadingModel="both" ForeignServer="mscoree.dll">
                     <ProgId Id="Nine.Tools.EffectCustomTool.EffectCustomTool" Description="Nine.Tools.EffectCustomTool.EffectCustomTool" />
                 </Class>
                 <File Id="fil3EAB7C0731F119680BEDF9D1ACCD5690" KeyPath="yes" Source="$(var.BinSourceDir)\Bin\Nine.Tools.EffectCustomTool.dll" />
                 <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.5.1.0" Name="Class" Value="Nine.Tools.EffectCustomTool.EffectCustomTool" Type="string" Action="write" />
-                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.5.1.0" Name="Assembly" Value="Nine.Tools.EffectCustomTool, Version=1.5.1.0, Culture=neutral, PublicKeyToken=e9800a641e49277d" Type="string" Action="write" />
-                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.5.1.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.5.1.0" Name="CodeBase" Value="file:///[#fil3EAB7C0731F119680BEDF9D1ACCD5690]" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.6.0.0" Name="Class" Value="Nine.Tools.EffectCustomTool.EffectCustomTool" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.6.0.0" Name="Assembly" Value="Nine.Tools.EffectCustomTool, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e9800a641e49277d" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32\1.6.0.0" Name="CodeBase" Value="file:///[#fil3EAB7C0731F119680BEDF9D1ACCD5690]" Type="string" Action="write" />
                 <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32" Name="Class" Value="Nine.Tools.EffectCustomTool.EffectCustomTool" Type="string" Action="write" />
-                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32" Name="Assembly" Value="Nine.Tools.EffectCustomTool, Version=1.5.1.0, Culture=neutral, PublicKeyToken=e9800a641e49277d" Type="string" Action="write" />
+                <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32" Name="Assembly" Value="Nine.Tools.EffectCustomTool, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e9800a641e49277d" Type="string" Action="write" />
                 <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                 <RegistryValue Root="HKCR" Key="CLSID\{72C1F067-C0D6-4263-8279-65A8786C628F}\InprocServer32" Name="CodeBase" Value="file:///[#fil3EAB7C0731F119680BEDF9D1ACCD5690]" Type="string" Action="write" />
             </Component>

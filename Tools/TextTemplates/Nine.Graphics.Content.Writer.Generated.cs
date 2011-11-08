@@ -219,7 +219,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.WriteObject(value.AlphaFunction);
             output.Write(value.DiffuseColor);
             output.Write(value.ReferenceAlpha);
-            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.VertexColorEnabled);
             output.Write(value.DepthAlphaEnabled);
@@ -259,7 +258,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.PreferPerPixelLighting);
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
-            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.TextureEnabled);
             output.Write(value.VertexColorEnabled);
@@ -329,7 +327,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
-            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.WriteObject(value.Texture2);
             output.Write(value.VertexColorEnabled);
@@ -371,7 +368,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.EnvironmentMapAmount);
             output.Write(value.EnvironmentMapSpecular);
             output.Write(value.FresnelFactor);
-            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
@@ -443,7 +439,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.PreferPerPixelLighting);
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
-            output.WriteObject(value.Tag);
             output.WriteObject(value.Texture);
             output.Write(value.WeightsPerVertex);
             output.Write(value.IsTransparent);
@@ -1215,7 +1210,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelContent value)
         {
             BeginWrite(output, value);
-            output.WriteObject(value.Source);
+            output.WriteObject(value.Model);
             output.WriteObject(value.Material);
             output.Write(value.OverrideModelTextures);
             output.Write(value.OverrideModelMaterial);
@@ -1293,7 +1288,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         {
             BeginWrite(output, value);
             output.Write(value.Position);
-            output.WriteObject(value.Source);
+            output.WriteObject(value.ParticleEffect);
             output.Write(value.Visible);
             output.WriteObject(value.Name);
             output.WriteObject(value.Tag);

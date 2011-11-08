@@ -291,7 +291,7 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Update
-        public void Update(TimeSpan elapsedTime)
+        public virtual void Update(TimeSpan elapsedTime)
         {
             Animations.Update(elapsedTime);
             UpdateTransformBindings();

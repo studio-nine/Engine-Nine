@@ -39,11 +39,11 @@ namespace Nine.Graphics.ObjectModel
         }
 
         [ContentSerializer(Optional = true)]
-        public ParticleEffect Source { get; set; }
+        public ParticleEffect ParticleEffect { get; set; }
         
         public BoundingBox BoundingBox
         {
-            get { /* TODO: */ return Source.BoundingBox; }
+            get { /* TODO: */ return ParticleEffect.BoundingBox; }
         }
 
         object ISpatialQueryable.SpatialData { get; set; }
@@ -52,16 +52,16 @@ namespace Nine.Graphics.ObjectModel
 
         public override void Update(TimeSpan elapsedTime)
         {
-            if (Source != null)
-                Source.Update(elapsedTime);
+            if (ParticleEffect != null)
+                ParticleEffect.Update(elapsedTime);
         }
 
         public override void Draw(GraphicsContext context)
         {
-            if (Source == null || Visible)
+            if (ParticleEffect == null || Visible)
             {
                 // FIXME: We might be drawing it twice if 2 DrawableParticleEffect share the same ParticleEffect !!!
-                context.ParticleBatch.Draw(Source);
+                context.ParticleBatch.Draw(ParticleEffect);
             }
         }
     }

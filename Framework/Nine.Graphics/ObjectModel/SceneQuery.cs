@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Graphics.ScreenEffects;
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
 using Nine.Graphics.Effects.Deferred;
 #endif
 using Nine.Graphics.Effects;
@@ -178,6 +178,7 @@ namespace Nine.Graphics.ObjectModel
                 findResult.OriginalTarget = item;
                 findResult.Target = ContainerTraverser.FindRootContainer(item);
                 findResult.Distance = null;
+                findResult.ContainmentType = ContainmentType.Disjoint;
                 Result.Add(findResult);
             }
         }

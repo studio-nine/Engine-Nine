@@ -51,15 +51,15 @@ namespace DebuggerPrimitives
         BasicEffect primitiveEffect;
         List<ICustomPrimitive> primitives;
 
-#if !SILVERLIGHT
         public DebuggerPrimitiveGame()
         {
+#if !SILVERLIGHT
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
-
+#endif
             TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
             
             Content.RootDirectory = "Content";
@@ -67,7 +67,6 @@ namespace DebuggerPrimitives
             IsMouseVisible = true;
             IsFixedTimeStep = false;
         }
-#endif
 
 
         /// <summary>
@@ -100,7 +99,7 @@ namespace DebuggerPrimitives
             primitiveEffect = new BasicEffect(GraphicsDevice);
             primitiveEffect.TextureEnabled = false;
             primitiveEffect.EnableDefaultLighting();
-            primitiveEffect.DiffuseColor = Color.BlueViolet.ToVector3();
+            primitiveEffect.DiffuseColor = new Color(138, 43, 226, 255).ToVector3();
 
             base.LoadContent();
         }
@@ -110,7 +109,7 @@ namespace DebuggerPrimitives
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkSlateGray);
+            GraphicsDevice.Clear(new Color(47, 79, 79, 255));
 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
@@ -125,22 +124,22 @@ namespace DebuggerPrimitives
                 primitiveBatch.DrawSphere(new BoundingSphere(Vector3.UnitX * 4, 1), 24, null, Color.White);
                 primitiveBatch.DrawGrid(1, 128, 128, null, Color.White * 0.25f);
                 primitiveBatch.DrawGrid(8, 16, 16, null, Color.Black);
-                primitiveBatch.DrawLine(new Vector3(5, 5, 0), new Vector3(5, 5, 5), Color.Blue);
-                primitiveBatch.DrawConstrainedBillboard(null, new Vector3(5, -5, 0), new Vector3(5, -5, 5), 0.05f, null, null, Color.Yellow);
+                primitiveBatch.DrawLine(new Vector3(5, 5, 0), new Vector3(5, 5, 5), new Color(0, 0, 255, 255));
+                primitiveBatch.DrawConstrainedBillboard(null, new Vector3(5, -5, 0), new Vector3(5, -5, 5), 0.05f, null, null, new Color(255, 255, 0, 255));
                 primitiveBatch.DrawConstrainedBillboard(lightning, new Vector3[] { new Vector3(5, -5, 0), new Vector3(5, 0, 2), new Vector3(5, 5, 0) }, 1f, null, null, Color.White);
                 primitiveBatch.DrawArrow(Vector3.Zero, Vector3.UnitZ * 2, null, Color.White);
                 primitiveBatch.DrawBox(new BoundingBox(-Vector3.One, Vector3.One), null, Color.White);
-                primitiveBatch.DrawSolidBox(new BoundingBox(-Vector3.One, Vector3.One), null, Color.Yellow * 0.2f);
-                primitiveBatch.DrawCircle(Vector3.UnitX * 2, 1, 24, null, Color.Yellow);
-                primitiveBatch.DrawSolidSphere(new BoundingSphere(Vector3.UnitX * 4, 1), 24, null, Color.Red * 0.2f);
-                primitiveBatch.DrawGeometry(model, Matrix.CreateTranslation(-4, 0, 0), Color.Yellow * 0.5f);
+                primitiveBatch.DrawSolidBox(new BoundingBox(-Vector3.One, Vector3.One), null, new Color(255, 255, 0, 255) * 0.2f);
+                primitiveBatch.DrawCircle(Vector3.UnitX * 2, 1, 24, null, new Color(255, 255, 0, 255));
+                primitiveBatch.DrawSolidSphere(new BoundingSphere(Vector3.UnitX * 4, 1), 24, null, new Color(255, 0, 0, 255) * 0.2f);
+                primitiveBatch.DrawGeometry(model, Matrix.CreateTranslation(-4, 0, 0), new Color(255, 255, 0, 255) * 0.5f);
                 primitiveBatch.DrawAxis(Matrix.CreateTranslation(-4, 0, 0));
                 primitiveBatch.DrawFrustum(frustum, null, Color.White);
-                primitiveBatch.DrawSolidFrustum(frustum, null, Color.Pink * 0.5f);
-                primitiveBatch.DrawCentrum(new Vector3(-5, -2, 0), 2, 1, 24, null, Color.WhiteSmoke * 0.5f);
-                primitiveBatch.DrawSolidCentrum(new Vector3(-5, -2, 0), 2, 1, 24, null, Color.LawnGreen * 0.3f);
-                primitiveBatch.DrawCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, Color.WhiteSmoke * 0.5f);
-                primitiveBatch.DrawSolidCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, Color.Lavender * 0.3f);
+                primitiveBatch.DrawSolidFrustum(frustum, null, new Color(255, 192, 203, 255) * 0.5f);
+                primitiveBatch.DrawCentrum(new Vector3(-5, -2, 0), 2, 1, 24, null, new Color(245, 245, 245, 255) * 0.5f);
+                primitiveBatch.DrawSolidCentrum(new Vector3(-5, -2, 0), 2, 1, 24, null, new Color(124, 252, 0, 255) * 0.3f);
+                primitiveBatch.DrawCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, new Color(245, 245, 245, 255) * 0.5f);
+                primitiveBatch.DrawSolidCylinder(new Vector3(-5, -6, 0), 2, 1, 24, null, new Color(230, 230, 255, 255) * 0.3f);
             }
             primitiveBatch.End();
 

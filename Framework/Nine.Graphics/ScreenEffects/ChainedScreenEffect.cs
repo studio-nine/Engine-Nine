@@ -95,7 +95,11 @@ namespace Nine.Graphics.ScreenEffects
             {
                 if (Effects.Count <= 0)
                 {
+#if SILVERLIGHT
+                    System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice.DrawFullscreenQuad(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
+#else      
                     input.GraphicsDevice.DrawFullscreenQuad(input, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
+#endif
                     return;
                 }
 

@@ -21,56 +21,56 @@
         </DrawableSurfaceContent.Material>
     </DrawableSurfaceContent>
 
-    <DrawableModelContent Source="Models\Tank" Position="-10, 0, 10" />
+    <DrawableModelContent Model="Models\Tank" Position="-10, 0, 10" />
     <!--
-    <DrawableModelContent Source="Models\AnimatedCube" Position="-10, 0, 20" />
-    --> 
-    <DrawableModelContent Alpha="0.4" LightingEnabled="True" Source="Models\Dude" Position="-10, -10, 10">
+    <DrawableModelContent Model="Models\AnimatedCube" Position="-10, 0, 20" />
+    -->
+    <DrawableModelContent Alpha="0.4" LightingEnabled="True" Model="Models\Dude" Position="-10, -10, 10">
         <DrawableModelContent.Material>
             <BasicMaterialContent TextureEnabled="True" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
-    <DrawableModelContent Source="Models\Dude" Position="-5, -10, 10">
+    <DrawableModelContent Model="Models\Dude" Position="-5, -10, 10">
         <DrawableModelContent.Material>
             <SkinnedMaterialContent Alpha="0.9"/>
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
-    <DrawableModelContent Source="Models\Dude" Position="0, -10, 10" Scale="1.2, 1.2, 1.2">
+    <DrawableModelContent Model="Models\Dude" Position="0, -10, 10" Scale="1.2, 1.2, 1.2">
         <DrawableModelContent.Material>
             <EnvironmentMapMaterialContent EnvironmentMap="SkyCubeMap" EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
-    <DrawableModelContent Source="Models\Tank" Position="-30, -0, 10">
+    <DrawableModelContent Model="Models\Tank" Position="-30, -0, 10">
         <DrawableModelContent.Material>
             <ModelMaterialContent FogEnabled="True" ShadowEnabled="True" OverlayColor="1, 1, 0" TextureAlphaUsage="Overlay" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
-    <DrawableModelContent Source="Models\AlphaPalm" Position="5, -10, 10">
+    <DrawableModelContent Model="Models\AlphaPalm" Position="5, -10, 10">
         <DrawableModelContent.Material>
             <AlphaTestMaterialContent AlphaFunction="Greater" ReferenceAlpha="128" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
-    <DrawableModelContent Source="Models\Dude" Position="10, -10, 10" Rotation="0, 0, 90">
+    <DrawableModelContent Model="Models\Dude" Position="10, -10, 10" Rotation="0, 0, 90">
         <DrawableModelContent.Material>
             <DualTextureMaterialContent Texture2="flake" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
     
-    <DrawableParticleEffectContent Source="Galaxy" />
+    <DrawableParticleEffectContent ParticleEffect="Galaxy" />
     
     <DisplayObjectContent Position="10, 0, 10" Name="CombinedObject">
-        <DrawableModelContent Name="Dude" Source="Models\Dude">
+        <DrawableModelContent Name="Dude" Model="Models\Dude" ReceiveShadow="True">
             <DrawableModelContent.Material>
                 <ModelMaterialContent FogEnabled="True" ShadowEnabled="True" NormalMappingEnabled="True" SkinningEnabled="True" SpecularColor="1, 1, 1" SpecularMappingEnabled="True" SpecularPower="128" />
             </DrawableModelContent.Material>
         </DrawableModelContent>
 
-        <DrawableModelContent Name="Tree"  Source="Models\AlphaPalm">
+        <DrawableModelContent Name="Tree"  Model="Models\AlphaPalm">
             <DrawableModelContent.ModelParts>
                 <DrawableModelPartContent>
                     <DrawableModelPartContent.Material>

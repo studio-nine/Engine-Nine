@@ -14,6 +14,11 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+#if SILVERLIGHT
+using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
+using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
+#endif
 #endregion
 
 namespace Nine.Graphics.Effects.EffectParts

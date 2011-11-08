@@ -13,7 +13,11 @@ These are the steps needed to use Engine Nine:
 
 3. In your Xna project, you can now add Nine.dll/Nine.Content.dll to your project using Add Reference -> .NET
 
-4. In order to build the Engine Nine for Silverlight, you need to install the lastest Silverlight 5 SDK.
+4. In order to build the Engine Nine for Silverlight, you need to install
+
+- Silverlight 5 RC SDK (http://go.microsoft.com/fwlink/?LinkId=213907)
+- Silverlight 5 RC Tools for Visual Studio 2010 SP1 (http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=27220)
+- Silverlight Toolkit (http://silverlight.codeplex.com/releases/view/74436)
 
 
 Special thanks to:

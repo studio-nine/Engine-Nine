@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Graphics.ScreenEffects;
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
 using Nine.Graphics.Effects.Deferred;
 #endif
 using Nine.Graphics.Effects;
@@ -118,8 +118,6 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         private ISpatialQuery<object> flattenedQuery;
 
-        private SpatialQuery<object, IDrawableObject> shadowQuery;
-
         /// <summary>
         /// This list contains only the objects added using Scene.Add method.
         /// </summary>
@@ -135,17 +133,28 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         private List<object> flattenedObjectsInViewFrustum = new List<object>();
 
+        /// <summary>
+        /// This list contains all the opaque objects in the current view frustum.
+        /// </summary>
         private List<IDrawableObject> opaqueDrawablesInViewFrustum = new List<IDrawableObject>();
+
+        /// <summary>
+        /// This list contains all the transparent objects in the current view frustum.
+        /// </summary>
         private List<IDrawableObject> transparentDrawablesInViewFrustum = new List<IDrawableObject>();
         
         private List<Light> lightsInViewFrustum = new List<Light>();
         private List<Light> appliedMultiPassLights = new List<Light>();
         private List<Light> unAppliedMultiPassLights = new List<Light>();
+        private List<FindResult> rayCastResult = new List<FindResult>();
+
+        private HashSet<ISpatialQueryable> shadowCastersInLightFrustum = new HashSet<ISpatialQueryable>();
+        private HashSet<ISpatialQueryable> shadowCastersInViewFrustum = new HashSet<ISpatialQueryable>();
         
         private EffectMaterial cachedEffectMaterial;
-        private BitArray lightUsed;
+        private BitArray lightUsed;        
 
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
         private GraphicsBuffer graphicsBuffer;
         private DeferredEffect deferredEffect;
 #endif
@@ -153,7 +162,7 @@ namespace Nine.Graphics.ObjectModel
 
         #region Initialization
         /// <summary>
-        /// Creates a new instance of <c>Renderer</c>.
+        /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
         public Scene(GraphicsDevice graphics) : this(graphics, null, null)
         {
@@ -161,7 +170,7 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
-        /// Creates a new instance of <c>Renderer</c>.
+        /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
         public Scene(GraphicsDevice graphics, GraphicsSettings settings, ISceneManager<ISpatialQueryable> sceneManager)
         {
@@ -319,6 +328,9 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Find
+        /// <summary>
+        /// Finds the first object of type T with the specified name.
+        /// </summary>
         public T Find<T>(string name) where T : class
         {
             if (Name == name && this is T)
@@ -333,6 +345,45 @@ namespace Nine.Graphics.ObjectModel
             return null;
         }
 
+        /// <summary>
+        /// Finds the nearest object that intersects the specified ray.
+        /// </summary>
+        public FindResult Find(Ray ray)
+        {
+            FindResult result;
+            Find(ref ray, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Finds the nearest object that intersects the specified ray.
+        /// </summary>
+        public void Find(ref Ray ray, out FindResult result)
+        {
+            result = new FindResult();
+            FindAll(ref ray, rayCastResult);
+
+            float? currentDistance = null;
+            for (int i = 0; i < rayCastResult.Count; i++)
+            {
+                var pickable = ContainerTraverser.FindParentContainer<IPickable>(rayCastResult[i].OriginalTarget);
+                if (pickable != null)
+                {
+                    currentDistance = pickable.Intersects(ray);
+                    if (currentDistance.HasValue && (!result.Distance.HasValue || result.Distance.Value > currentDistance.Value))
+                    {
+                        result.Distance = currentDistance;
+                        result.Target = rayCastResult[i].Target;
+                        result.OriginalTarget = rayCastResult[i].OriginalTarget;
+                    }
+                }
+            }
+            rayCastResult.Clear();
+        }
+
+        /// <summary>
+        /// Finds all the objects of type T with the specified name.
+        /// </summary>
         public void FindAll<T>(string name, ICollection<T> result) where T : class
         {
             if (Name == name && this is T)
@@ -344,26 +395,48 @@ namespace Nine.Graphics.ObjectModel
             }
         }
 
+        /// <summary>
+        /// Finds all the objects that is contained by or intersects the specified bounding sphere.
+        /// </summary>
+        /// <remarks>
+        /// This find process will look up the object tree from the leaf nodes for all the occurrences of 
+        /// <see cref="ISpatialQueryable"/>. 
+        /// If any of object's parent is contained by or intersects the input
+        /// bounding volumn, the object will be added to the result list. 
+        /// If the <see cref="ISpatialQueryable"/>
+        /// is not found, the object will also be added to the result list.
+        /// </remarks>
         public void FindAll(ref BoundingSphere boundingSphere, ICollection<object> result)
         {
             flattenedQuery.FindAll(ref boundingSphere, result);
         }
-
+        
+        /// <summary>
+        /// Finds all the objects that intersects the specified ray.
+        /// </summary>
         public void FindAll(ref Ray ray, ICollection<object> result)
         {
             flattenedQuery.FindAll(ref ray, result);
         }
 
+        /// <summary>
+        /// Finds all the objects that is contained by or intersects the specified bounding box.
+        /// </summary>
         public void FindAll(ref BoundingBox boundingBox, ICollection<object> result)
         {
             flattenedQuery.FindAll(ref boundingBox, result);
         }
-
+        /// <summary>
+        /// Finds all the objects that is contained by or intersects the specified bounding frustum.
+        /// </summary>
         public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<object> result)
         {
             flattenedQuery.FindAll(ref boundingFrustum, result);
         }
 
+        /// <summary>
+        /// Finds all the objects of type T that is contained by or intersects the specified bounding sphere.
+        /// </summary>
         public void FindAll<T>(ref BoundingSphere boundingSphere, ICollection<T> result) where T : class
         {
             var adapter = FlattenedCollectionAdapter<T>.Instance;
@@ -373,6 +446,9 @@ namespace Nine.Graphics.ObjectModel
             adapter.Result = null;
         }
 
+        /// <summary>
+        /// Finds all the objects of type T that intersects the specified ray.
+        /// </summary>
         public void FindAll<T>(ref Ray ray, ICollection<T> result) where T : class
         {
             var adapter = FlattenedCollectionAdapter<T>.Instance;
@@ -382,6 +458,9 @@ namespace Nine.Graphics.ObjectModel
             adapter.Result = null;
         }
 
+        /// <summary>
+        /// Finds all the objects of type T that is contained by or intersects the specified bounding box.
+        /// </summary>
         public void FindAll<T>(ref BoundingBox boundingBox, ICollection<T> result) where T : class
         {
             var adapter = FlattenedCollectionAdapter<T>.Instance;
@@ -391,6 +470,9 @@ namespace Nine.Graphics.ObjectModel
             adapter.Result = null;
         }
 
+        /// <summary>
+        /// Finds all the objects of type T that is contained by or intersects the specified bounding frustum.
+        /// </summary>
         public void FindAll<T>(ref BoundingFrustum boundingFrustum, ICollection<T> result) where T : class
         {
             var adapter = FlattenedCollectionAdapter<T>.Instance;
@@ -400,21 +482,43 @@ namespace Nine.Graphics.ObjectModel
             adapter.Result = null;
         }
 
+        /// <summary>
+        /// Finds all the scene objects and the original volumn for intersection test that is contained by or
+        /// intersects the specified bounding sphere.
+        /// </summary>
+        /// <remarks>
+        /// When an object tree is added to the scene using <see cref="Scene.Add"/>, 
+        /// this find method will set the <see cref="FindResult.OriginalTarget"> property to the original 
+        /// <see cref="ISpatialQueryable"/> for the intersection test against the input bounding volumn.
+        /// It will set the <see cref="FindResult.Target"/> property to the containing object that is added
+        /// to the scene.
+        /// </remarks>
         public void FindAll(ref BoundingSphere boundingSphere, ICollection<FindResult> result)
         {
             detailedQuery.FindAll(ref boundingSphere, result);
         }
 
+        /// <summary>
+        /// Finds all the scene objects and the original volumn for intersection test that intersects the specified ray.
+        /// </summary>
         public void FindAll(ref Ray ray, ICollection<FindResult> result)
         {
             detailedQuery.FindAll(ref ray, result);
         }
 
+        /// <summary>
+        /// Finds all the scene objects and the original volumn for intersection test that is contained by or
+        /// intersects the specified bounding box.
+        /// </summary>
         public void FindAll(ref BoundingBox boundingBox, ICollection<FindResult> result)
         {
             detailedQuery.FindAll(ref boundingBox, result);
         }
 
+        /// <summary>
+        /// Finds all the scene objects and the original volumn for intersection test that is contained by or
+        /// intersects the specified bounding frustum.
+        /// </summary>
         public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<FindResult> result)
         {
             detailedQuery.FindAll(ref boundingFrustum, result);
@@ -614,7 +718,7 @@ namespace Nine.Graphics.ObjectModel
         }
 
         #region Deferred
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
         private void DrawUsingDeferredLighting(List<IDrawableObject> drawables, List<Light> lights)
         {
             if (deferredEffect == null)
@@ -776,7 +880,7 @@ namespace Nine.Graphics.ObjectModel
             {
                 DrawSceneManager(sceneManager);
             }
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
             if (settings.ShowDepthBuffer && graphicsBuffer != null)
             {
                 spriteBatch.End();
@@ -857,10 +961,6 @@ namespace Nine.Graphics.ObjectModel
                 if (light.AffectedDrawables == null)
                     light.AffectedDrawables = new List<IDrawableObject>();
                 light.AffectedDrawables.Clear();
-                
-                if (light.AffectedBoundables == null)
-                    light.AffectedBoundables = new List<ISpatialQueryable>();
-                light.AffectedBoundables.Clear();
 
                 light.FindAll(this, drawablesInViewFrustum, light.AffectedDrawables);
 
@@ -1000,28 +1100,32 @@ namespace Nine.Graphics.ObjectModel
         #region Shadow
         private void DrawShadowMaps()
         {
-            /*
-            for (int i = 0; i < lightsInViewFrustum.Count; i++)
+            for (int currentLight = 0; currentLight < lightsInViewFrustum.Count; currentLight++)
             {
-                var light = lightsInViewFrustum[i];
+                var light = lightsInViewFrustum[currentLight];
                 if (light.Enabled && light.CastShadow)
                 {
-                    if (shadowQuery == null)
-                    {
-                        shadowQuery = new SpatialQuery<object, IDrawableObject>(sceneQuery);
-                        shadowQuery.Filter = obj =>
-                        {
-                            var drawable = obj as IDrawableObject;
-                            return drawable != null && drawable.Visible && CastShadow(drawable);
-                        };
-                    }
+                    FindShadowCasters(drawablesInViewFrustum, ref shadowCastersInViewFrustum);
+                    FindShadowCasters(light.AffectedDrawables, ref shadowCastersInLightFrustum);
 
-                    light.DrawShadowMap(GraphicsContext, shadowQuery,
-                                        light.AffectedBoundables.Where(boundable => CastShadow(boundable) || ReceiveShadow(boundable)),
-                                        flattenedObjectsInViewFrustum.Where(boundable => CastShadow(boundable) || ReceiveShadow(boundable)));
+                    light.DrawShadowMap(GraphicsContext, this, shadowCastersInLightFrustum, shadowCastersInViewFrustum);
                 }
             }
-             */
+        }
+
+        private void FindShadowCasters(List<IDrawableObject> drawables, ref HashSet<ISpatialQueryable> shadowCasters)
+        {
+            shadowCasters.Clear();
+            for (int currentDrawable = 0; currentDrawable < drawables.Count; currentDrawable++)
+            {
+                var drawable = drawables[currentDrawable];
+                if (CastShadow(drawable))
+                {
+                    var parentSpatialQueryable = ContainerTraverser.FindParentContainer<ISpatialQueryable>(drawable);
+                    if (parentSpatialQueryable != null)
+                        shadowCasters.Add(parentSpatialQueryable);
+                }
+            }
         }
 
         private void DrawMultiPassShadowMapOverlay(List<IDrawableObject> opaqueDrawablesInViewFrustum)
@@ -1094,38 +1198,22 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Material
-        private static bool IsTransparent(IDrawableObject drawable)
+        internal static bool IsTransparent(IDrawableObject drawable)
         {
             return drawable != null && drawable.Material != null && drawable.Material.IsTransparent;
         }
 
-        private static bool CastShadow(IDrawableObject drawable)
+        internal static bool CastShadow(IDrawableObject drawable)
         {
             var lightable = drawable as ILightable;
             return lightable != null && lightable.CastShadow;
         }
 
-        private static bool ReceiveShadow(IDrawableObject drawable)
+        internal static bool ReceiveShadow(IDrawableObject drawable)
         {
             var lightable = drawable as ILightable;
             return lightable != null && lightable.ReceiveShadow;
         }
-
-        /*
-        private bool CastShadow(ISpatialQueryable boundable)
-        {
-            bool castShadow = false;
-            ForEachInSpatialQueryable<IDrawableObject>(boundable, drawable => castShadow |= CastShadow(drawable));
-            return castShadow;
-        }
-
-        private bool ReceiveShadow(ISpatialQueryable boundable)
-        {
-            bool receiveShadow = false;
-            ForEachInSpatialQueryable<IDrawableObject>(boundable, drawable => receiveShadow |= ReceiveShadow(drawable));
-            return receiveShadow;
-        }
-         */
         #endregion
 
         #region Dispose

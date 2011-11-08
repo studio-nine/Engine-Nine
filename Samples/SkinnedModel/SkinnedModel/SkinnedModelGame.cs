@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -20,8 +21,10 @@ using Nine.Graphics;
 using Nine.Graphics.Effects;
 #endif
 using Nine.Animations;
-using System.ComponentModel;
 using Nine.Components;
+#if SILVERLIGHT
+using Keys = System.Windows.Input.Key;
+#endif
 #endregion
 
 namespace SkinnedModel
@@ -67,11 +70,13 @@ namespace SkinnedModel
 
         public SkinnedModelGame()
         {
+#if !SILVERLIGHT
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
+#endif
 
             TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
             
@@ -119,6 +124,17 @@ namespace SkinnedModel
 
             // ModelBatch will use this skinned effect to draw the model.
             model.ConvertEffectTo(skinned);
+#elif SILVERLIGHT
+            foreach (var mesh in model.Meshes)
+            {
+                foreach (var part in mesh.MeshParts)
+                {
+                    // Temp walkaround since effect in silverlight cannot be clones.
+                    var skinned = new SkinnedEffect(GraphicsDevice);
+                    skinned.Texture = ((BasicEffect)part.Effect).Texture;
+                    part.Effect = skinned;
+                }
+            }
 #else
             LinkedEffect linkedEffect = Content.Load<LinkedEffect>("SkinnedEffect");
             linkedEffect.EnableDefaultLighting();
@@ -210,7 +226,7 @@ namespace SkinnedModel
 
             animations.Update(gameTime.ElapsedGameTime);
 
-            GraphicsDevice.Clear(Color.DarkSlateGray);
+            GraphicsDevice.Clear(new Color(47, 79, 79, 255));
 
             // Attach the hammer model to the character
             Matrix hammerTransform = skeleton1.GetAbsoluteBoneTransform("Weapon") * world1;
@@ -231,7 +247,7 @@ namespace SkinnedModel
             {
                 primitiveBatch.Begin(camera.View, camera.Projection);
                 {
-                    primitiveBatch.DrawSkeleton(model, world3, Color.Yellow);
+                    primitiveBatch.DrawSkeleton(model, world3, new Color(255, 255, 0, 255));
 
                     primitiveBatch.DrawSkeleton(skeleton1, world1, Color.White);
                     primitiveBatch.DrawSkeleton(skeleton2, world2, Color.White);

@@ -27,8 +27,8 @@ namespace <#= namespaceGroup.Key #>
         var className = GetClassName(type).Replace("Effect", "Material");
         var classConstructorName = className;
         var members = FindContentSerializableMembers(type).Where(m =>
-                            !(m.Name == "World" || m.Name == "View" || m.Name == "Projection" ||
-                             m.Name == "Name" || m.Name == "AmbientLightColor" || m.Name.StartsWith("Fog")))
+                            !(m.Name == "World" || m.Name == "View" || m.Name == "Projection" || m.Name == "Tag" ||
+                              m.Name == "Name" || m.Name == "AmbientLightColor" || m.Name.StartsWith("Fog")))
                                                           .OrderBy(m => m.Name).ToArray();
         var implementedInterfaces = type.GetInterfaces().Where(i => i.IsPublic && i.Name != "IEffectMatrices" && i.Name != "IEffectLights" 
                                                                                && i.Name != "IDisposable" && i.Name != "IUpdateable"

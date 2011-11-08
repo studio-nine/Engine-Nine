@@ -50,8 +50,6 @@ namespace Nine.Graphics
         /// </summary>
         public static RenderTarget2D AddRef(GraphicsDevice graphics, int width, int height, bool mipMap, SurfaceFormat surfaceFormat, DepthFormat depthFormat, int preferredMultiSampleCount, RenderTargetUsage renderTargetUsage)
         {
-            //DisposeAllRenderTargetsWhenDeviceReset(graphics);
-
             RenderTargetPoolKey key = new RenderTargetPoolKey();
             key.Graphics = graphics;
             key.Width = width;
@@ -183,7 +181,11 @@ namespace Nine.Graphics
         {
             for (int i = 0; i < list.Count; i++)
             {
+#if SILVERLIGHT
+                if (list[i].RenderTarget.IsDisposed)
+#else
                 if (list[i].RenderTarget.IsDisposed || list[i].RenderTarget.IsContentLost)
+#endif
                 {
                     list.RemoveAt(i);
                     i--;
@@ -194,34 +196,6 @@ namespace Nine.Graphics
                 }
             }
             return null;
-        }
-
-        private static void DisposeAllRenderTargetsWhenDeviceReset(GraphicsDevice graphics)
-        {
-            bool contains = false;
-            foreach (RenderTargetPoolKey key in registry.Keys)
-            {
-                if (key.Graphics == graphics)
-                {
-                    contains = true;
-                    break;
-                }
-            }
-
-            if (!contains)
-            {
-                graphics.DeviceReset += (o, e) =>
-                {
-                    foreach (List<RenderTargetPoolValue> list in registry.Values)
-                    {
-                        foreach (RenderTargetPoolValue value in list)
-                        {
-                            if (value.RenderTarget.GraphicsDevice == graphics && value.RefCount <= 0)
-                                value.RenderTarget.Dispose();
-                        }
-                    }
-                };
-            }
         }
     }
 

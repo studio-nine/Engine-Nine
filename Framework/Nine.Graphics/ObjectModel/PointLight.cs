@@ -89,11 +89,6 @@ namespace Nine.Graphics.ObjectModel
             context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
         }
 
-        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<ISpatialQueryable> drawablesInLightFrustum, IEnumerable<ISpatialQueryable> drawablesInViewFrustum)
-        {
-            throw new NotSupportedException();
-        }
-
         protected override void Enable(IPointLight light)
         {
             light.Position = AbsoluteTransform.Translation;

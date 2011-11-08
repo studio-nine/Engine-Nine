@@ -102,24 +102,29 @@ namespace Nine.Graphics
         {
             if (renderTarget != null)
             {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = renderTarget.GraphicsDevice;
+#endif
                 if (renderTargetStacks == null)
                     renderTargetStacks = new Dictionary<GraphicsDevice, Stack<RenderTarget2D>>();
 
                 Stack<RenderTarget2D> stack = null;
-                if (!renderTargetStacks.TryGetValue(renderTarget.GraphicsDevice, out stack))
-                    renderTargetStacks.Add(renderTarget.GraphicsDevice, stack = new Stack<RenderTarget2D>());
+                if (!renderTargetStacks.TryGetValue(graphicsDevice, out stack))
+                    renderTargetStacks.Add(graphicsDevice, stack = new Stack<RenderTarget2D>());
 
                 // Get old render target
                 RenderTarget2D previous = null;
 
-                RenderTargetBinding[] bindings = renderTarget.GraphicsDevice.GetRenderTargets();
+                RenderTargetBinding[] bindings = graphicsDevice.GetRenderTargets();
 
                 if (bindings.Length > 0)
                     previous = bindings[0].RenderTarget as RenderTarget2D;
 
                 stack.Push(previous);
 
-                renderTarget.GraphicsDevice.SetRenderTarget(renderTarget);
+                graphicsDevice.SetRenderTarget(renderTarget);
             }
         }
 
@@ -135,8 +140,11 @@ namespace Nine.Graphics
         {
             if (renderTarget == null)
                 throw new ArgumentNullException();
-
+#if SILVERLIGHT
+            PopRenderTarget(System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice);
+#else
             PopRenderTarget(renderTarget.GraphicsDevice);
+#endif
             return renderTarget;
         }
         #endregion

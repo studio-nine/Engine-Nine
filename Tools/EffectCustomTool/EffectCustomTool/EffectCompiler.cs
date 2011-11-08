@@ -1,6 +1,6 @@
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Yufei Huang.
+//  Copyright 2009 - 2011 (c) Yufei Huang.
 //
 //=============================================================================
 
@@ -25,6 +25,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+using Nine.Content.Pipeline.Silverlight;
 #endregion
 
 namespace Nine.Tools.EffectCustomTool
@@ -61,10 +62,12 @@ namespace Nine.Tools.EffectCustomTool
             CompiledEffectContent windowsCompiledEffect = null;
             CompiledEffectContent windowsHiDefCompiledEffect = null;
             CompiledEffectContent xbox360CompiledEffect = null;
+            EffectBinaryContent silverlightCompiledEffect = null;
 
             byte[] windowsEffectCode = null;
             byte[] windowsHiDefEffectCode = null;
             byte[] xbox360EffectCode = null;
+            byte[] silverlightEffectCode = null;
 
             try
             {
@@ -72,6 +75,7 @@ namespace Nine.Tools.EffectCustomTool
                 windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.Reach);
                 windowsHiDefCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
                 xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
+                silverlightCompiledEffect = BuildSilverlightEffect(sourceFile);
             }
             catch (Exception ex)
             {
@@ -83,6 +87,7 @@ namespace Nine.Tools.EffectCustomTool
                     windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
                     xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
                     windowsHiDefCompiledEffect = windowsCompiledEffect;
+                    silverlightCompiledEffect = BuildSilverlightEffect(sourceFile);
                 }
             }
 
@@ -101,9 +106,11 @@ namespace Nine.Tools.EffectCustomTool
             windowsEffectCode = windowsCompiledEffect.GetEffectCode();
             windowsHiDefEffectCode = windowsHiDefCompiledEffect.GetEffectCode();
             xbox360EffectCode = xbox360CompiledEffect.GetEffectCode();
+            silverlightEffectCode = silverlightCompiledEffect.GetEffectCode();
 
             string WindowsEffectCode = ByteArrayToString(windowsEffectCode);
             string XboxEffectCode = ByteArrayToString(xbox360EffectCode);
+            string silverlightCode = ByteArrayToString(silverlightEffectCode);
 
             // Initialize parameters
             Effect effect = new Effect(device, windowsEffectCode);
@@ -122,6 +129,7 @@ namespace Nine.Tools.EffectCustomTool
             content = content.Replace(@"{$CLASS}", className);
             content = content.Replace(@"{$NAMESPACE}", nameSpace);
             content = content.Replace(@"{$XBOXBYTECODE}", XboxEffectCode);
+            content = content.Replace(@"{$SILVERLIGHTBYTECODE}", silverlightCode);
             content = content.Replace(@"{$WINDOWSBYTECODE}", WindowsEffectCode);
             content = content.Replace(@"{$WINDOWSHIDEFBYTECODE}", WindowsHiDefEffectCode);
             content = content.Replace(@"{$VERSION}", GetType().Assembly.GetName().Version.ToString(4));
@@ -331,7 +339,7 @@ namespace Nine.Tools.EffectCustomTool
             {
                 if (hasReach)
                 {
-                    builder.AppendLine("#if WINDOWS");
+                    builder.AppendLine("#if !SILVERLIGHT");
                     builder.Append(indent);
                     builder.AppendLine(@"    if (GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach)");
                     builder.Append(indent);
@@ -344,6 +352,7 @@ namespace Nine.Tools.EffectCustomTool
                 }
                 if (hasHiDef)
                 {
+                    builder.AppendLine("#if !SILVERLIGHT");
                     builder.Append(indent);
                     builder.AppendLine(@"    if (GraphicsDevice.GraphicsProfile == GraphicsProfile.HiDef)");
                     builder.Append(indent);
@@ -352,6 +361,7 @@ namespace Nine.Tools.EffectCustomTool
                     builder.AppendLine();
                     builder.Append(indent);
                     builder.AppendLine("    }");
+                    builder.AppendLine("#endif");
                 }
             }
             else
@@ -411,9 +421,24 @@ namespace Nine.Tools.EffectCustomTool
             return processor.Process(sourceEffect, processorContext);
         }
 
-        public string Process(string content, string className, string namespaceName)
+        private EffectBinaryContent BuildSilverlightEffect(string sourceFile)
         {
-            return null;
+            // Compile effect
+            ContentBuildLogger logger = new CustomLogger(e);
+
+            // Import the effect source code.
+            SilverlightEffectImporter importer = new SilverlightEffectImporter();
+            ContentImporterContext importerContext = new CustomImporterContext(logger);
+            EffectContent sourceEffect = importer.Import(sourceFile, importerContext);
+
+            // Compile the effect.
+            SilverlightEffectProcessor processor = new SilverlightEffectProcessor();
+
+            processor.DebugMode = EffectProcessorDebugMode.Optimize;
+            processor.Defines = "Reach;REACH;SILVERLIGHT;Silverlight;";
+
+            ContentProcessorContext processorContext = new CustomProcessorContext(TargetPlatform.Windows, GraphicsProfile.Reach, logger);
+            return processor.Process(sourceEffect, processorContext);
         }
 
         private static bool IsArray(EffectParameter parameter)

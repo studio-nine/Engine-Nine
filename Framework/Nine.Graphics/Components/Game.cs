@@ -12,13 +12,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Graphics;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace Microsoft.Xna.Framework
 {
     /// <summary>
     /// Provides basic graphics device initialization, game logic, and rendering code.
     /// </summary>
-    public class Game : ContentControl
+    public class Game : UserControl
     {
         private bool surfaceLoaded = false;
         private bool suppressDraw = false;
@@ -26,7 +28,9 @@ namespace Microsoft.Xna.Framework
         private GameTime gameTime = new GameTime();
 
         public GraphicsDevice GraphicsDevice { get; private set; }
+        public GameWindow Window { get; private set; }        
         public GameComponentCollection Components { get; private set; }
+        public new ContentManager Content { get; private set; }
 
         public TimeSpan InactiveSleepTime { get; set; }
         public bool IsActive { get { return true; } }
@@ -37,21 +41,33 @@ namespace Microsoft.Xna.Framework
         
         public Game()
         {
-            Components = new GameComponentCollection();
-            Content = (Surface = new DrawingSurface());
+            Width = 800;
+            Height = 600;
 
-            Surface.Loaded += new RoutedEventHandler(Surface_Loaded);
+            Mouse.RootControl = this;
+            Keyboard.RootControl = this;
+
+            Window = new GameWindow();
+            Components = new GameComponentCollection();
+            Content = new ContentManager(null);
+            base.Content = (Surface = new DrawingSurface());
+
+            Loaded += new RoutedEventHandler(Game_Loaded);
             Surface.Draw += new EventHandler<DrawEventArgs>(Surface_Draw);
         }
 
-        private void Surface_Loaded(object sender, RoutedEventArgs e)
+        void Game_Loaded(object sender, RoutedEventArgs e)
         {
             surfaceLoaded = true;
+            
             GraphicsDevice = GraphicsDeviceManager.Current.GraphicsDevice;
             if (GraphicsDevice == null)
-            {
                 throw new InvalidOperationException("Failed creating graphics device.");
-            }      
+
+            // Check if GPU is on
+            if (GraphicsDeviceManager.Current.RenderMode != RenderMode.Hardware)
+                MessageBox.Show("Please activate enableGPUAcceleration=true on your Silverlight plugin page.", "Warning", MessageBoxButton.OK);
+
             Initialize();
             LoadContent();
         }

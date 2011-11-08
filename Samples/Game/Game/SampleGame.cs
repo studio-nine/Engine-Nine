@@ -58,17 +58,32 @@ namespace Game
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.SynchronizeWithVerticalRetrace = true;
+            GraphicsAdapter.UseReferenceDevice = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
+            graphics.PreparingDeviceSettings += new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);
 
             TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / TargetFrameRate);
 
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
-            IsFixedTimeStep = true;            
+            IsFixedTimeStep = false;            
             Window.AllowUserResizing = true;
+        }
+
+        void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
+        {
+            foreach (GraphicsAdapter curAdapter in GraphicsAdapter.Adapters) 
+            {
+                if (curAdapter.Description.Contains("PerfHUD")) 
+                {
+                    e.GraphicsDeviceInformation.Adapter = curAdapter;
+                    GraphicsAdapter.UseReferenceDevice = true;
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -158,6 +173,22 @@ namespace Game
                                       Matrix.CreateRotationZ(-(float)totalSeconds * 1.5f) *
                                       //Matrix.CreateRotationZ(-16.75f) *
                                       Matrix.CreateTranslation(50, 50, 10);
+            
+            var pickRay = GraphicsDevice.Viewport.CreatePickRay(
+                Mouse.GetState().X, Mouse.GetState().Y, scene.Camera.View, scene.Camera.Projection);
+
+            var pickedObject = scene.Find(pickRay);
+            if (pickedObject.Target != null)
+            {
+                Window.Title = string.Format("Target {0}, OriginalTarget {1}, Distance {2}", pickedObject.Target,
+                                                                                             pickedObject.OriginalTarget,
+                                                                                             pickedObject.Distance);
+            }
+            else
+            {
+                Window.Title = "";
+            }
+
             base.Update(gameTime);
         }
 
@@ -188,6 +219,9 @@ namespace Game
             scene.Draw(gameTime.ElapsedGameTime);
 
             base.Draw(gameTime);
+
+            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            
         }
     }
 }

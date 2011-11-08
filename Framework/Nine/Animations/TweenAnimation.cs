@@ -233,7 +233,7 @@ namespace Nine.Animations
         {
             // This is a generic limitaion,
             // we have to assign the lerp using reflection.
-            FieldInfo field = GetType().GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Interpolate<float>)MathHelper.Lerp);
@@ -277,7 +277,7 @@ namespace Nine.Animations
         {
             // This is a generic limitaion,
             // we have to assign the lerp using reflection.
-            FieldInfo field = GetType().GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))
                 field.SetValue(this, (Operator<float>)AddHelper.Add);

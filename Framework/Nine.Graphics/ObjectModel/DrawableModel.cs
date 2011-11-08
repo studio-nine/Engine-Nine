@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Animations;
 using Nine.Graphics.Effects;
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
 using Nine.Graphics.Effects.Deferred;
 #endif
 #endregion
@@ -39,7 +39,7 @@ namespace Nine.Graphics.ObjectModel
         /// Gets or sets the underlying model.
         /// </summary>
         [ContentSerializer]
-        internal Microsoft.Xna.Framework.Graphics.Model Source
+        public Microsoft.Xna.Framework.Graphics.Model Model
         {
             get { return model; }
             set
@@ -48,7 +48,7 @@ namespace Nine.Graphics.ObjectModel
                 {
                     model = value;
                     if (model == null)
-                        throw new ContentLoadException("Model must specify a model.");
+                        throw new ContentLoadException("Must specify a model.");
                     UpdateModel();
                 }
             }
@@ -183,7 +183,7 @@ namespace Nine.Graphics.ObjectModel
 
         #region Lighting
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Source"/> is visible.
+        /// Gets or sets a value indicating whether this <see cref="Model"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
@@ -376,7 +376,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (model == null)
                 throw new ArgumentNullException();
-            this.Source = model;
+            this.Model = model;
             this.Material = material;
         }
 
@@ -394,7 +394,11 @@ namespace Nine.Graphics.ObjectModel
                 throw new ArgumentException("The input model is must have at least 1 valid mesh part.");
 
             // Initialize graphics device & material
+#if SILVERLIGHT
+            GraphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else      
             GraphicsDevice = model.Meshes[0].MeshParts[0].VertexBuffer.GraphicsDevice;
+#endif
             materialNeedsUpdate = true;
 
             // Initialize bounds
@@ -530,9 +534,9 @@ namespace Nine.Graphics.ObjectModel
                 }
                 else
                 {
-                    if (boneTransforms == null || boneTransforms.Length < Source.Bones.Count)
+                    if (boneTransforms == null || boneTransforms.Length < Model.Bones.Count)
                     {
-                        boneTransforms = new Matrix[Source.Bones.Count];
+                        boneTransforms = new Matrix[Model.Bones.Count];
                         Skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
                     }
                     else if (boneTransformNeedUpdate)
@@ -572,11 +576,11 @@ namespace Nine.Graphics.ObjectModel
 
             if (IsAnimated)
                 if (IsSkinned)
-                    context.ModelBatch.DrawSkinned(Source, mesh, part, AbsoluteTransform, skinTransforms, null, drawableModelPart.Material);
+                    context.ModelBatch.DrawSkinned(Model, mesh, part, AbsoluteTransform, skinTransforms, null, drawableModelPart.Material);
                 else
-                    context.ModelBatch.Draw(Source, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, null, drawableModelPart.Material);
+                    context.ModelBatch.Draw(Model, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, null, drawableModelPart.Material);
             else
-                context.ModelBatch.Draw(Source, mesh, part, AbsoluteTransform, null, drawableModelPart.Material);
+                context.ModelBatch.Draw(Model, mesh, part, AbsoluteTransform, null, drawableModelPart.Material);
         }
 
         internal void DrawPart(GraphicsContext context, DrawableModelPart drawableModelPart, Effect effect)
@@ -589,11 +593,11 @@ namespace Nine.Graphics.ObjectModel
 
             if (IsAnimated)
                 if (IsSkinned)
-                    context.ModelBatch.DrawSkinned(Source, mesh, part, AbsoluteTransform, skinTransforms, effect);
+                    context.ModelBatch.DrawSkinned(Model, mesh, part, AbsoluteTransform, skinTransforms, effect);
                 else
-                    context.ModelBatch.Draw(Source, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, effect);
+                    context.ModelBatch.Draw(Model, mesh, part, boneTransforms[mesh.ParentBone.Index] * AbsoluteTransform, effect);
             else
-                context.ModelBatch.Draw(Source, mesh, part, AbsoluteTransform, effect);
+                context.ModelBatch.Draw(Model, mesh, part, AbsoluteTransform, effect);
         }
         #endregion
 

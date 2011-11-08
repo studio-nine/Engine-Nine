@@ -27,7 +27,17 @@ namespace Nine.Graphics.ScreenEffects
         /// <summary>
         /// Gets the GraphicsDevice associated with this instance.
         /// </summary>
-        public GraphicsDevice GraphicsDevice { get { return Effect != null ? Effect.GraphicsDevice : null; } }
+        public GraphicsDevice GraphicsDevice 
+        {
+            get
+            {
+#if SILVERLIGHT
+                return System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                return Effect != null ? Effect.GraphicsDevice : null; 
+#endif
+            } 
+        }
 
         /// <summary>
         /// Gets or sets the effect file used by this <c>BasicScreenEffect</c>.

@@ -59,9 +59,13 @@ namespace <#= namespaceGroup.Key #>
 #>
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new <#= className #>(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new <#= className #>(graphicsDevice);
             }
 <#
     }

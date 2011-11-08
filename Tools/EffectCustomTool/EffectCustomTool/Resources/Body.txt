@@ -23,8 +23,10 @@
         #endregion
 
         #region Clone
+#if !SILVERLIGHT
         private void CloneFrom({$CLASS} cloneSource)
         {
 {$CLONE}
         }
+#endif
         #endregion

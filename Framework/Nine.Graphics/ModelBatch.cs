@@ -136,13 +136,13 @@ namespace Nine.Graphics
 
             GraphicsDevice = graphics;
 
-            basicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
+            basicEffect = new BasicEffect(graphics);
             basicEffect.TextureEnabled = true;
             basicEffect.VertexColorEnabled = true;
             basicEffect.PreferPerPixelLighting = true;
             basicEffect.EnableDefaultLighting();
 
-            skinnedEffect = (SkinnedEffect)GraphicsResources<SkinnedEffect>.GetInstance(GraphicsDevice).Clone();
+            skinnedEffect = new SkinnedEffect(graphics);
             skinnedEffect.WeightsPerVertex = 4;
             skinnedEffect.PreferPerPixelLighting = true;
             skinnedEffect.EnableDefaultLighting();

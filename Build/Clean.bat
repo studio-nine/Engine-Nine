@@ -15,6 +15,8 @@ for /f "delims=" %%i in ('dir /b /a-d /s "*.exe"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.msi"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.chm"') do (del /s "%%i")
 for /f "delims=" %%i in ('dir /b /a-d /s "*.vsp"') do (del /s "%%i")
+for /f "delims=" %%i in ('dir /b /a-d /s "*.sdf"') do (del /s "%%i")
+for /f "delims=" %%i in ('dir /b /a-d /s "*.xap"') do (del /s "%%i")
 
 
 echo Deleting all bin/obj/testresults folders...

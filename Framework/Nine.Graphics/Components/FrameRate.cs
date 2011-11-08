@@ -99,7 +99,7 @@ namespace Nine.Components
             this.Font = font;
             this.GraphicsDevice = graphics;
             this.UpdateFrequency = TimeSpan.FromSeconds(1);
-            this.Color = Color.Yellow;
+            this.Color = new Color(255, 255, 0, 255);
             this.Visible = true;
             this.Scale = 1;
             this.spriteBatch = GraphicsResources<SpriteBatch>.GetInstance(GraphicsDevice);

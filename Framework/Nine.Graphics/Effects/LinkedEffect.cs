@@ -21,6 +21,11 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+#if SILVERLIGHT
+using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
+using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
+#endif
 #endregion
 
 namespace Nine.Graphics.Effects
@@ -72,6 +77,7 @@ namespace Nine.Graphics.Effects
             return effect != null && uniqueName != null ? effect.Parameters[uniqueName + name] : null;
         }
 
+#if !SILVERLIGHT
         /// <summary>
         /// Gets the EffectParameter by semantic from the fragment parameter name.
         /// </summary>
@@ -90,6 +96,7 @@ namespace Nine.Graphics.Effects
             }
             return null;
         }
+#endif
 
         /// <summary>
         /// Applies the effect state just prior to rendering the effect.
@@ -129,7 +136,9 @@ namespace Nine.Graphics.Effects
         internal static string CurrentUniqueName;
 
         internal LinkedEffect(GraphicsDevice graphics, byte[] code) : base(graphics, code) { }
+#if !SILVERLIGHT
         internal LinkedEffect(Effect cloneSource) : base(cloneSource) { }
+#endif
 
         /// <summary>
         /// Gets the linked effect used to render the graphics buffer in deferred lighting.
@@ -178,6 +187,7 @@ namespace Nine.Graphics.Effects
             base.OnApply();
         }
 
+#if !SILVERLIGHT
         public override Effect Clone()
         {
             LinkedEffect effect = new LinkedEffect(this);
@@ -199,6 +209,7 @@ namespace Nine.Graphics.Effects
             effect.EffectParts = new ReadOnlyCollection<LinkedEffectPart>(effect.effectParts);
             return effect;
         }
+#endif
 
         public void EnableDefaultLighting()
         {
@@ -606,19 +617,25 @@ namespace Nine.Graphics.Effects
             string[] uniqueNames = input.ReadObject<string[]>();
             int count = input.ReadInt32();
             
-            GraphicsDevice graphics = input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
+#if SILVERLIGHT
+            var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+
+            LinkedEffect effect = new LinkedEffect(graphicsDevice, effectCode);
+#else
+            var graphicsDevice = input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
 
             LinkedEffect effect;
-            LinkedEffectToken key = new LinkedEffectToken() { Graphics = graphics, Token = token };
-
+            LinkedEffectToken key = new LinkedEffectToken() { Graphics = graphicsDevice, Token = token };
+            
             if (!Dictionary.TryGetValue(key, out effect))
             {
-                Dictionary.Add(key, effect = new LinkedEffect(graphics, effectCode));
+                Dictionary.Add(key, effect = new LinkedEffect(graphicsDevice, effectCode));
             }
             else
             {
                 effect = (LinkedEffect)effect.Clone();
             }
+#endif
 
             effect.effectParts = new LinkedEffectPart[count];
             LinkedEffect.CurrentEffect = effect;

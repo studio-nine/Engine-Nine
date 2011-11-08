@@ -180,15 +180,18 @@ namespace Nine.Graphics.Effects
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new AlphaTestMaterial(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new AlphaTestMaterial(graphicsDevice);
             }
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
             existingInstance.DiffuseColor = input.ReadVector3();
             existingInstance.ReferenceAlpha = input.ReadInt32();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
@@ -213,9 +216,13 @@ namespace Nine.Graphics.Effects
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new BasicMaterial(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new BasicMaterial(graphicsDevice);
             }
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -224,7 +231,6 @@ namespace Nine.Graphics.Effects
             existingInstance.PreferPerPixelLighting = input.ReadBoolean();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.SpecularPower = input.ReadSingle();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.TextureEnabled = input.ReadBoolean();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
@@ -280,13 +286,16 @@ namespace Nine.Graphics.Effects
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new DualTextureMaterial(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DualTextureMaterial(graphicsDevice);
             }
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.DiffuseColor = input.ReadVector3();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Texture2 = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
@@ -313,9 +322,13 @@ namespace Nine.Graphics.Effects
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new EnvironmentMapMaterial(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new EnvironmentMapMaterial(graphicsDevice);
             }
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -324,7 +337,6 @@ namespace Nine.Graphics.Effects
             existingInstance.EnvironmentMapAmount = input.ReadSingle();
             existingInstance.EnvironmentMapSpecular = input.ReadVector3();
             existingInstance.FresnelFactor = input.ReadSingle();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
@@ -378,9 +390,13 @@ namespace Nine.Graphics.Effects
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new SkinnedMaterial(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new SkinnedMaterial(graphicsDevice);
             }
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -388,7 +404,6 @@ namespace Nine.Graphics.Effects
             existingInstance.PreferPerPixelLighting = input.ReadBoolean();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.SpecularPower = input.ReadSingle();
-            existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.WeightsPerVertex = input.ReadInt32();
             existingInstance.IsTransparent = input.ReadBoolean();
@@ -967,9 +982,13 @@ namespace Nine.Graphics.ObjectModel
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new AmbientLight(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new AmbientLight(graphicsDevice);
             }
             existingInstance.AmbientLightColor = input.ReadVector3();
             existingInstance.Enabled = input.ReadBoolean();
@@ -998,9 +1017,13 @@ namespace Nine.Graphics.ObjectModel
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new DirectionalLight(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DirectionalLight(graphicsDevice);
             }
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -1060,7 +1083,7 @@ namespace Nine.Graphics.ObjectModel
             {
                 existingInstance = new DrawableModel();
             }
-            existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
+            existingInstance.Model = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
             existingInstance.OverrideModelTextures = input.ReadBoolean();
             existingInstance.OverrideModelMaterial = input.ReadBoolean();
@@ -1126,7 +1149,7 @@ namespace Nine.Graphics.ObjectModel
                 existingInstance = new DrawableParticleEffect();
             }
             existingInstance.Position = input.ReadVector3();
-            existingInstance.Source = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
+            existingInstance.ParticleEffect = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -1151,9 +1174,13 @@ namespace Nine.Graphics.ObjectModel
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new DrawableSurface(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DrawableSurface(graphicsDevice);
             }
             existingInstance.PatchSegmentCount = input.ReadInt32();
             existingInstance.TextureTransform = input.ReadMatrix();
@@ -1239,9 +1266,13 @@ namespace Nine.Graphics.ObjectModel
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new PointLight(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new PointLight(graphicsDevice);
             }
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.DiffuseColor = input.ReadVector3();
@@ -1273,9 +1304,13 @@ namespace Nine.Graphics.ObjectModel
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new Scene(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Scene(graphicsDevice);
             }
             existingInstance.Camera = input.ReadObject<Nine.Graphics.ICamera>();
             existingInstance.SceneObjects = input.ReadObject<System.Collections.Generic.List<System.Object>>();
@@ -1328,9 +1363,13 @@ namespace Nine.Graphics.ObjectModel
             BeginRead(input, existingInstance);
             if (existingInstance == null)
             {
-                var graphicsDeviceService = (Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                      typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService));
-                existingInstance = new SpotLight(graphicsDeviceService.GraphicsDevice);
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new SpotLight(graphicsDevice);
             }
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.DiffuseColor = input.ReadVector3();

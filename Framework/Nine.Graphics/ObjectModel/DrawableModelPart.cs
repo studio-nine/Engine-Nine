@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Animations;
 using Nine.Graphics.Effects;
-#if !WINDOWS_PHONE
+#if WINDOWS || XBOX
 using Nine.Graphics.Effects.Deferred;
 #endif
 #endregion

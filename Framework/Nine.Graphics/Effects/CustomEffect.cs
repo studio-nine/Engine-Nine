@@ -21,6 +21,11 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+#if SILVERLIGHT
+using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
+using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
+#endif
 #endregion
 
 namespace Nine.Graphics.Effects
@@ -116,6 +121,8 @@ namespace Nine.Graphics.Effects
                 semantic = EffectSemantics.Ambient;
                 return false;
             }
+#elif SILVERLIGHT
+            throw new NotSupportedException();
 #else
             return Enum.TryParse<EffectSemantics>(parameter.Semantic, true, out semantic);
 #endif
@@ -144,6 +151,7 @@ namespace Nine.Graphics.Effects
 
         static ParameterBinding ParameterBindings = new ParameterBinding
         {
+#if !SILVERLIGHT
             #region WorldViewProjection
             { EffectSemantics.World,                    (effect, parameter) =>
                                                         {
@@ -386,6 +394,7 @@ namespace Nine.Graphics.Effects
                         parameter.SetValue(effect.Texture);
                 } },
             #endregion
+#endif
         };
         #endregion
     }
@@ -396,8 +405,12 @@ namespace Nine.Graphics.Effects
     {
         protected override CustomEffect Read(ContentReader input, CustomEffect existingInstance)
         {
-            var effect =  new CustomEffect(input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice,
-                                           input.ReadBytes(input.ReadInt32()));
+#if SILVERLIGHT
+            var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+            var graphicsDevice = input.ContentManager.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
+#endif
+            var effect = new CustomEffect(graphicsDevice, input.ReadBytes(input.ReadInt32()));
             var parameters = input.ReadObject<Dictionary<string, object>>();
             if (parameters != null)
                 foreach (var pair in parameters)

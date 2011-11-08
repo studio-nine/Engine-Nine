@@ -113,11 +113,14 @@ namespace Nine.Graphics
         /// </summary>
         public PrimitiveBatch(GraphicsDevice graphics, int maxVertexCountPerPrimitive)
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
             VertexBufferSize = maxVertexCountPerPrimitive;
             IndexBufferSize = maxVertexCountPerPrimitive * 2;
 
             GraphicsDevice = graphics;
-            basicEffect = (BasicEffect)GraphicsResources<BasicEffect>.GetInstance(GraphicsDevice).Clone();
+            basicEffect = new BasicEffect(graphics);
             basicEffect.VertexColorEnabled = true;
 
             vertexData = new VertexPositionColorTexture[VertexBufferSize];

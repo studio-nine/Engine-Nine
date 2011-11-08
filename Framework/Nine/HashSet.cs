@@ -18,7 +18,7 @@ namespace Nine
     /// <summary>
     /// Just a simple wrap around dictionary for Windows Phone & Xbox
     /// </summary>
-    class HashSet<T>
+    public class HashSet<T>
     {
         Dictionary<T, int> dictionary = new Dictionary<T, int>();
 

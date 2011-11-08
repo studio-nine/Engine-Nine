@@ -114,8 +114,8 @@ namespace Nine.Graphics.ObjectModel
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
         protected override void GetShadowFrustum(GraphicsContext context,
-                                                IEnumerable<ISpatialQueryable> drawablesInLightFrustum,
-                                                IEnumerable<ISpatialQueryable> drawablesInViewFrustum,
+                                                HashSet<ISpatialQueryable> drawablesInLightFrustum,
+                                                HashSet<ISpatialQueryable> drawablesInViewFrustum,
                                                 out Matrix frustumMatrix)
         {
             Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);

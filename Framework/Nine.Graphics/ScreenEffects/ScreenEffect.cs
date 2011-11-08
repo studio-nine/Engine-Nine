@@ -143,7 +143,8 @@ namespace Nine.Graphics.ScreenEffects
             screenEffect.Effects.Add(multipassEffect);
             return screenEffect;
         }
-
+        
+#if !SILVERLIGHT
         /// <summary>
         /// Creates a High Dynamic Range (HDR) post processing effect.
         /// </summary>
@@ -228,6 +229,7 @@ namespace Nine.Graphics.ScreenEffects
             v++;
             return v;
         }
+#endif
 
         /// <summary>
         /// Creates a depth of field post processing effect.
@@ -276,7 +278,11 @@ namespace Nine.Graphics.ScreenEffects
             if (effect == null)
                 throw new ArgumentNullException("effect");
 
+#if SILVERLIGHT
+            ScreenEffect screenEffect = new ScreenEffect(System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice);
+#else
             ScreenEffect screenEffect = new ScreenEffect(effect.GraphicsDevice);
+#endif
             screenEffect.Effects.Add(effect);
             return screenEffect;
         }
@@ -294,19 +300,22 @@ namespace Nine.Graphics.ScreenEffects
         /// </summary>
         public static ScreenEffect CreateMerged(GraphicsDevice graphics, IEnumerable<IScreenEffect> effects)
         {
+#if !SILVERLIGHT
             SurfaceFormat hdrFormat = Microsoft.Xna.Framework.Graphics.SurfaceFormat.HdrBlendable;
-
+#endif
             ScreenEffect screenEffect = new ScreenEffect(graphics);
             foreach (var effect in effects)
             {
                 screenEffect.Effects.Add(effect);
-
+                
+#if !SILVERLIGHT
                 // Special walkaround for Hdr surface format
                 ScreenEffect hdr = effects as ScreenEffect;
                 if (hdr != null && hdr.SurfaceFormat == hdrFormat)
                 {
                     screenEffect.SurfaceFormat = hdr.SurfaceFormat;
                 }
+#endif
             }
             return screenEffect;
         }

@@ -42,7 +42,11 @@ namespace Nine.Graphics.Effects
 
         int MaxLights
         {
+#if SILVERLIGHT
+            get { return 1; }
+#else
             get { return GraphicsDevice.GraphicsProfile == GraphicsProfile.Reach ? 1 : 4; }
+#endif
         }
 
         public ReadOnlyCollection<IPointLight> Lights { get; private set; }

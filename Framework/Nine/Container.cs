@@ -57,6 +57,21 @@ namespace Nine
             return target;
         }
 
+        public static T FindParentContainer<T>(object target) where T : class
+        {
+            if (!(target is T))
+            {
+                object parent = null;
+                while ((parent = GetParent(target)) != null)
+                {
+                    target = parent;
+                    if (target is T)
+                        break;
+                }
+            }
+            return target as T;
+        }
+
         private static object GetParent(object target)
         {
             var containedObject = target as IContainedObject;

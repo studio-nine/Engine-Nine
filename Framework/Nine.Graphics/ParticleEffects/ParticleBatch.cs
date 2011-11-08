@@ -69,7 +69,7 @@ namespace Nine.Graphics.ParticleEffects
         {
             primitiveBatch = new PrimitiveBatch(graphics, capacity);
             batches = new List<ParticleBatchItem>();
-            alphaTestEffect = (AlphaTestEffect)GraphicsResources<AlphaTestEffect>.GetInstance(graphics).Clone();
+            alphaTestEffect = new AlphaTestEffect(graphics);
             alphaTestEffect.VertexColorEnabled = true;
 
             cachedDrawBillboard = new ParticleAction(DrawParticleBillboard);
@@ -321,6 +321,7 @@ namespace Nine.Graphics.ParticleEffects
                 return result;
             if ((result = ((int)x.ColorWriteChannels).CompareTo((int)y.ColorWriteChannels)) != 0)
                 return result;
+#if !SILVERLIGHT
             if ((result = ((int)x.ColorWriteChannels1).CompareTo((int)y.ColorWriteChannels1)) != 0)
                 return result;
             if ((result = ((int)x.ColorWriteChannels2).CompareTo((int)y.ColorWriteChannels2)) != 0)
@@ -329,6 +330,7 @@ namespace Nine.Graphics.ParticleEffects
                 return result;
             if ((result = x.MultiSampleMask.CompareTo(y.MultiSampleMask)) != 0)
                 return result;
+#endif
             return 0;
         }
     }

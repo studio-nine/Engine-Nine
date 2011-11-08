@@ -64,6 +64,13 @@ namespace Nine.Content.Pipeline.Animations
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("Forward")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Animations.AnimationDirection Direction { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("00:00:00")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.TimeSpan Duration { get; set; }
@@ -95,6 +102,7 @@ namespace Nine.Content.Pipeline.Animations
         public DelayAnimationContent()
         {
             AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            Direction = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
             Duration = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
             Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
@@ -256,7 +264,7 @@ namespace Nine.Content.Pipeline.Animations
     }
     /// <summary>
     /// Content model for <c>TweenAnimation`1</c>.
-    /// Defines a basic primitive animation that changes it value  base on time.
+    /// Implements a basic primitive animation that changes its value over time. Can also update the value of a named target property on an target object.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
@@ -282,6 +290,13 @@ namespace Nine.Content.Pipeline.Animations
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Object Curve { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("Forward")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Animations.AnimationDirection Direction { get; set; }
 
         /// <summary>
         /// 
@@ -340,6 +355,7 @@ namespace Nine.Content.Pipeline.Animations
         public TweenAnimationContent()
         {
             AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            Direction = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
             Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");

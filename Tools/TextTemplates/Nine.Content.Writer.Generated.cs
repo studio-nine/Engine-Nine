@@ -59,6 +59,7 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Speed);
             output.Write(value.AutoReverse);
             output.WriteObject(value.StartupDirection);
+            output.WriteObject(value.Direction);
             output.Write(value.Repeat);
             EndWrite(output, value);
         }
@@ -196,6 +197,7 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Speed);
             output.Write(value.AutoReverse);
             output.WriteObject(value.StartupDirection);
+            output.WriteObject(value.Direction);
             output.Write(value.Repeat);
             EndWrite(output, value);
         }

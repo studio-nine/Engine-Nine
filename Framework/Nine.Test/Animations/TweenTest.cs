@@ -121,6 +121,14 @@ namespace Nine.Animations.Test
             Assert.AreEqual<float>(tween.From.Value, tween.Value);
         }
 
+        class DerivedTween : TweenAnimation<float> { }
+
+        [TestMethod()]
+        public void DerivedTweenAnimationTest()
+        {
+            var derived = new DerivedTween();
+        }
+
         [TestMethod()]
         public void ByTest()
         {

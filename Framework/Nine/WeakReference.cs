@@ -25,6 +25,9 @@ namespace Nine
     public class WeakReference<T> : System.WeakReference where T : class
     {
 #if WINDOWS_PHONE
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WeakReference&lt;T&gt;"/> class.
+        /// </summary>
         [SecuritySafeCritical]
         protected WeakReference() { }
 #endif
@@ -32,14 +35,14 @@ namespace Nine
         /// Initializes a new instance of the <see cref="WeakReference&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="target">The target.</param>
-        public WeakReference(T target) : base(target) { }
+        public WeakReference(object target) : base(target) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WeakReference&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="trackResurrection">if set to <c>true</c> [track resurrection].</param>
-        public WeakReference(T target, bool trackResurrection) : base(target, trackResurrection) { }
+        public WeakReference(object target, bool trackResurrection) : base(target, trackResurrection) { }
 
         /// <summary>
         /// Gets or sets the object (the target) referenced by the current <see cref="T:System.WeakReference"/> object.

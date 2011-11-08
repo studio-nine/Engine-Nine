@@ -39,6 +39,11 @@ namespace Nine.Graphics.ObjectModel
         public float? Distance;
 
         /// <summary>
+        /// Gets the containment type when finding objects from a bounding volumn.
+        /// </summary>
+        public ContainmentType ContainmentType;
+
+        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
@@ -47,7 +52,8 @@ namespace Nine.Graphics.ObjectModel
         /// </returns>
         public bool Equals(FindResult other)
         {
-            return Target == other.Target && OriginalTarget == other.OriginalTarget && Distance == other.Distance;
+            return Target == other.Target && OriginalTarget == other.OriginalTarget &&
+                   Distance == other.Distance && ContainmentType == other.ContainmentType;
         }
 
         /// <summary>
@@ -67,7 +73,8 @@ namespace Nine.Graphics.ObjectModel
 
         public static bool operator ==(FindResult value1, FindResult value2)
         {
-            return ((value1.Target == value2.Target) && (value1.OriginalTarget == value2.OriginalTarget) && (value1.Distance == value2.Distance));
+            return ((value1.Target == value2.Target) && (value1.OriginalTarget == value2.OriginalTarget) &&
+                   (value1.Distance == value2.Distance) && (value1.ContainmentType == value2.ContainmentType));
         }
 
         public static bool operator !=(FindResult value1, FindResult value2)

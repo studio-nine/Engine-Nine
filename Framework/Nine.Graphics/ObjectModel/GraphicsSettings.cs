@@ -125,11 +125,11 @@ namespace Nine.Graphics.ObjectModel
 
         internal GraphicsDebugSetting()
         {
-            BoundingBoxColor = Color.Pink;
-            LightFrustumColor = Color.Yellow;
-            ShadowFrustumColor = Color.SteelBlue;
-            SceneManagerColor = Color.White;
-            StatisticsColor = Color.WhiteSmoke;
+            BoundingBoxColor = new Color(255, 192, 203, 255);
+            LightFrustumColor = new Color(255, 255, 0, 255);
+            ShadowFrustumColor = new Color(70, 130, 180, 255);
+            SceneManagerColor = new Color(255, 255, 255, 255);
+            StatisticsColor = new Color(245, 245, 245, 255);
         }
     }
 }

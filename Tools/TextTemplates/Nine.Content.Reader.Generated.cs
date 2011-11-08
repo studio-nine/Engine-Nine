@@ -56,6 +56,7 @@ namespace Nine.Animations
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
             existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             EndRead(input, existingInstance);
             return existingInstance;
@@ -169,6 +170,7 @@ namespace Nine.Animations
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
             existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             EndRead(input, existingInstance);
             return existingInstance;

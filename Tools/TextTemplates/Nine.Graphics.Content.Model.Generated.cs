@@ -300,12 +300,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Object Tag { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
@@ -411,12 +405,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single SpecularPower { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Object Tag { get; set; }
 
         /// <summary>
         /// 
@@ -566,12 +554,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Object Tag { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
@@ -681,12 +663,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean IsTransparent { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Object Tag { get; set; }
 
         /// <summary>
         /// 
@@ -849,12 +825,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         [System.ComponentModel.DefaultValue("16")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single SpecularPower { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Object Tag { get; set; }
 
         /// <summary>
         /// 
@@ -2066,6 +2036,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent> Model { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.Graphics.ObjectModel.DrawableModelPartContent[] ModelParts { get; set; }
 
         /// <summary>
@@ -2108,12 +2084,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean ReceiveShadow { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent> Source { get; set; }
 
         /// <summary>
         /// 
@@ -2217,15 +2187,15 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
+        public virtual Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent> ParticleEffect { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent> Source { get; set; }
+        public virtual Microsoft.Xna.Framework.Vector3 Position { get; set; }
 
         /// <summary>
         /// 

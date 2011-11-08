@@ -59,7 +59,6 @@
     <Reference Include="Microsoft.Xna.Framework.Math, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Toolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=2c5c654d367bf4a7, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -71,6 +70,12 @@
   <ItemGroup>
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Reader.Generated.cs">
+      <Link>Nine.Content.Reader.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
@@ -94,15 +99,24 @@
     <Compile Include="Components\IDrawable.cs" />
     <Compile Include="Components\IGameComponent.cs" />
     <Compile Include="Components\IUpdateable.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
+    <Compile Include="WeakReference.Silverlight.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="GridObjectManager.cs" />
+    <Compile Include="GridSceneManager.cs" />
+    <Compile Include="HashSet.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IInputSource.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="InputEventArgs.cs" />
+    <Compile Include="Input\ButtonState.cs" />
+    <Compile Include="Input\Keyboard.cs" />
+    <Compile Include="Input\KeyboardState.cs" />
+    <Compile Include="Input\KeyState.cs" />
+    <Compile Include="Input\Mouse.cs" />
+    <Compile Include="Input\MouseState.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="Math2D.cs" />
@@ -121,13 +135,20 @@
     <Compile Include="Surface.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="UniformGrid.cs" />
-    <Compile Include="WeakReference.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">
+      <Link>Nine.Content.Reader.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Content.Reader.Generated.cs</LastGenOutput>
+    </None>
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

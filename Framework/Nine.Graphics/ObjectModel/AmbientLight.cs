@@ -31,11 +31,6 @@ namespace Nine.Graphics.ObjectModel
             AmbientLightColor = Vector3.One * 0.2f;
         }
 
-        public override void DrawShadowMap(GraphicsContext context, ISpatialQuery<IDrawableObject> drawables, IEnumerable<ISpatialQueryable> drawablesInLightFrustum, IEnumerable<ISpatialQueryable> drawablesInViewFrustum)
-        {
-            throw new NotSupportedException();
-        }
-
         protected override void Enable(IAmbientLight light)
         {
             light.AmbientLightColor = AmbientLightColor;

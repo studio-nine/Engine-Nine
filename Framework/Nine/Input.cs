@@ -565,6 +565,7 @@ namespace Nine
         {
             Current = this;
             RaiseStrategy = InputRaiseStrategy.Tunneling;
+
 #if WINDOWS
             Mouse.WindowHandle = handle;
             control = Form.FromHandle(handle);
