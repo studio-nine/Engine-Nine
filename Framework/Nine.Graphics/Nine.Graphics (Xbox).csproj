@@ -115,6 +115,7 @@
     <Compile Include="ObjectModel\AmbientLight.HiDef.cs">
       <DependentUpon>AmbientLight.cs</DependentUpon>
     </Compile>
+    <Compile Include="ObjectModel\Camera.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
     <Compile Include="ObjectModel\DirectionalLight.HiDef.cs">
       <DependentUpon>DirectionalLight.cs</DependentUpon>

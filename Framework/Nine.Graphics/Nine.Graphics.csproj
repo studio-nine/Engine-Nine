@@ -135,6 +135,7 @@
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="GraphicsExtensions.cs" />
+    <Compile Include="ObjectModel\Camera.cs" />
     <Compile Include="ObjectModel\FindResult.cs" />
     <Compile Include="ObjectModel\SceneQuery.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />

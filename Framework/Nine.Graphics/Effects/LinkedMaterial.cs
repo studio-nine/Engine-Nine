@@ -54,8 +54,10 @@ namespace Nine.Graphics.Effects
             get { return IsTransparent; }
         }
 
-        public override bool IsDeferred { get { return isDeferred; } }
-        private bool isDeferred;
+        public override bool IsDeferred 
+        { 
+            get { return effect.GraphicsBufferEffect != null; } 
+        }
 
         /// <summary>
         /// For content serialization.
@@ -73,9 +75,9 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets the deferred effect used to generate the graphics buffer.
         /// </summary>
-        public override Effect DeferredEffect
+        public override Effect GraphicsBufferEffect
         {
-            get { return effect.DeferredEffect; }
+            get { return effect.GraphicsBufferEffect; }
         }
 
         /// <summary>
@@ -158,9 +160,6 @@ namespace Nine.Graphics.Effects
                 {
                     for (int i = 0; i < value.Count; i++)
                     {
-                        if (value[i] is DeferredLightsEffectPart)
-                            isDeferred = true;
-
                         if (i < parts.Length && value[i] != null && parts[i] != null)
                         {
                             if (value[i].GetType() != parts[i].GetType())
@@ -189,7 +188,15 @@ namespace Nine.Graphics.Effects
             for (int i = 0; i < parts.Length; i++)
             {
                 if (parts[i] != null)
+                {
                     parts[i].OnApply(effect.EffectParts[i]);
+                    if (effect.GraphicsBufferEffect != null &&
+                        effect.GraphicsBufferEffect.EffectParts.Count > i &&
+                        effect.GraphicsBufferEffect.EffectParts[i] != null)
+                    {
+                        parts[i].OnApply(effect.GraphicsBufferEffect.EffectParts[i]);
+                    }
+                }
             }
         }
 

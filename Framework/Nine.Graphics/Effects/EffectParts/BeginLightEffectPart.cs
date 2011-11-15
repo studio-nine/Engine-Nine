@@ -32,13 +32,17 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter eyePositionParameter;
         private const uint eyePositionDirtyMask = 1 << 1;
 
+        public BeginLightEffectPart()
+        {
+            eyePositionParameter = GetParameter("EyePosition");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & eyePositionDirtyMask) != 0)
             {
-                if (eyePositionParameter == null)
-                    eyePositionParameter = GetParameter("EyePosition");
-                eyePositionParameter.SetValue(Matrix.Invert(view).Translation);
+                if (eyePositionParameter != null)
+                    eyePositionParameter.SetValue(Matrix.Invert(view).Translation);
                 DirtyMask &= ~eyePositionDirtyMask;
             }
         }

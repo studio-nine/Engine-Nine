@@ -150,9 +150,10 @@ namespace Nine.Graphics.ObjectModel
 
         private HashSet<ISpatialQueryable> shadowCastersInLightFrustum = new HashSet<ISpatialQueryable>();
         private HashSet<ISpatialQueryable> shadowCastersInViewFrustum = new HashSet<ISpatialQueryable>();
-        
+
+        private bool hasShadowReceiversInViewFrustum;
         private EffectMaterial cachedEffectMaterial;
-        private BitArray lightUsed;        
+        private BitArray lightUsed;
 
 #if WINDOWS || XBOX
         private GraphicsBuffer graphicsBuffer;
@@ -543,19 +544,7 @@ namespace Nine.Graphics.ObjectModel
             
             BeginDraw();
 
-            if (Settings.FogEnable)
-            {
-                UpdateFog();
-            }
-            
-#if !WINDOWS_PHONE
-            if (Settings.ShadowEnabled)
-            {
-                UpdateAffectedDrawablesAndAffectingLights(drawablesInViewFrustum, lightsInViewFrustum);
-
-                DrawShadowMaps();
-            }
-#endif
+            UpdateFog();
 
             GraphicsDevice.Clear(Settings.BackgroundColor);
 
@@ -566,46 +555,45 @@ namespace Nine.Graphics.ObjectModel
                 UpdateAffectedDrawablesAndAffectingLights(drawablesInViewFrustum, lightsInViewFrustum);
 
                 GraphicsContext.Begin();
-                DrawUsingForwardLighting(opaqueDrawablesInViewFrustum);
+                DrawObjects(opaqueDrawablesInViewFrustum);
                 GraphicsContext.End();
                 
                 GraphicsContext.Begin(BlendState.Additive, null, DepthStencilState.DepthRead, null);
-                DrawUsingForwardLighting(transparentDrawablesInViewFrustum);
+                DrawObjects(transparentDrawablesInViewFrustum);
                 GraphicsContext.End();
 #else
+                // Draw opaque objects
+                ClearLights(opaqueDrawablesInViewFrustum);
+                UpdateAffectedDrawablesAndAffectingLights(drawablesInViewFrustum, lightsInViewFrustum);
+
+                ApplyDeferredLighting(drawablesInViewFrustum, lightsInViewFrustum);
+                ApplyShadows(drawablesInViewFrustum, lightsInViewFrustum);
+
+                GraphicsDevice.Clear(Settings.BackgroundColor);
+
+                GraphicsContext.Begin();
+                DrawObjects(opaqueDrawablesInViewFrustum);
+                GraphicsContext.End();
+
+                if (Settings.MultiPassShadowEnabled)
                 {
-                    ClearLights(opaqueDrawablesInViewFrustum);
-
-                    if (!Settings.ShadowEnabled)
-                    {
-                        UpdateAffectedDrawablesAndAffectingLights(opaqueDrawablesInViewFrustum, lightsInViewFrustum);
-                    }
-
-                    GraphicsContext.Begin();
-                    DrawUsingForwardLighting(opaqueDrawablesInViewFrustum);
+                    GraphicsContext.Begin(BlendState.AlphaBlend, null, DepthStencilState.DepthRead, null);
+                    DrawMultiPassShadowMapOverlay(opaqueDrawablesInViewFrustum);
                     GraphicsContext.End();
-
-                    if (Settings.MultiPassShadowEnabled)
-                    {
-                        GraphicsContext.Begin(BlendState.AlphaBlend, null, DepthStencilState.DepthRead, null);
-                        DrawMultiPassShadowMapOverlay(opaqueDrawablesInViewFrustum);
-                        GraphicsContext.End();
-                    }
-
-                    if (Settings.MultiPassLightingEnabled)
-                    {
-                        GraphicsContext.Begin(BlendState.Additive, null, DepthStencilState.DepthRead, null);
-                        DrawMultiPassLightingOverlay(opaqueDrawablesInViewFrustum);
-                        GraphicsContext.End();
-                    }
                 }
 
+                if (Settings.MultiPassLightingEnabled)
+                {
+                    GraphicsContext.Begin(BlendState.Additive, null, DepthStencilState.DepthRead, null);
+                    DrawMultiPassLightingOverlay(opaqueDrawablesInViewFrustum);
+                    GraphicsContext.End();
+                }
+
+                // Draw transparent objects
                 ClearLights(transparentDrawablesInViewFrustum);
-                if (!Settings.ShadowEnabled)
-                    UpdateAffectedDrawablesAndAffectingLights(transparentDrawablesInViewFrustum, lightsInViewFrustum);
 
                 GraphicsContext.Begin(BlendState.AlphaBlend, null, null, null);
-                DrawUsingForwardLighting(transparentDrawablesInViewFrustum);
+                DrawObjects(transparentDrawablesInViewFrustum);
                 GraphicsContext.End();
 
                 if (Settings.MultiPassLightingEnabled)
@@ -644,7 +632,9 @@ namespace Nine.Graphics.ObjectModel
 
             var viewFrustum = GraphicsContext.ViewFrustum;
             FindAll(ref viewFrustum, flattenedObjectsInViewFrustum);
-            
+
+            hasShadowReceiversInViewFrustum = false;
+
             for (int i = 0; i < flattenedObjectsInViewFrustum.Count; i++)
             {
                 var obj = flattenedObjectsInViewFrustum[i];
@@ -663,6 +653,10 @@ namespace Nine.Graphics.ObjectModel
                         transparentDrawablesInViewFrustum.Add(drawable);
                     else
                         opaqueDrawablesInViewFrustum.Add(drawable);
+
+                    if (!hasShadowReceiversInViewFrustum && ReceiveShadow(drawable))
+                        hasShadowReceiversInViewFrustum = true;
+
                     drawablesInViewFrustum.Add(drawable);
                 }
             }
@@ -714,91 +708,124 @@ namespace Nine.Graphics.ObjectModel
 
         private void DrawNoLighting(List<IDrawableObject> drawables)
         {
-            drawables.ForEach(d => d.Draw(GraphicsContext));
+            for (int i = 0; i < drawables.Count; i++)
+            {
+                drawables[i].Draw(GraphicsContext);
+            }
         }
 
         #region Deferred
 #if WINDOWS || XBOX
-        private void DrawUsingDeferredLighting(List<IDrawableObject> drawables, List<Light> lights)
+        private void ApplyDeferredLighting(List<IDrawableObject> drawables, List<Light> lights)
         {
-            if (deferredEffect == null)
-                deferredEffect = new DeferredEffect(GraphicsDevice);
+            bool hasDeferred = false;
+            for (int i = 0; i < drawables.Count; i++)
+            {
+                var drawable = drawables[i];
+                var material = drawable.Material;
+                if (material != null && material.IsDeferred)
+                    hasDeferred = true;
+            }
+
+            if (!hasDeferred)
+                return;
+                    
             if (graphicsBuffer == null)
                 graphicsBuffer = new GraphicsBuffer(GraphicsDevice);
+            if (deferredEffect == null)
+                deferredEffect = new DeferredEffect(GraphicsDevice);
 
             if (Settings.PreferHighDynamicRangeLighting)
                 graphicsBuffer.LightBufferFormat = SurfaceFormat.HdrBlendable;
             else
                 graphicsBuffer.LightBufferFormat = SurfaceFormat.Color;
-
-            var lightables = drawables.Where(d => d is ILightable && d.Material != null && d.Material.IsDeferred);
-
-            // Draw deferred scene with DepthNormalEffect first.
+            
+            // Draw depth normal buffer.
             graphicsBuffer.Begin();
-                GraphicsContext.Begin();
-                    lightables.ForEach(d =>
-                    {
-                        if (d.Material != null && d.Material.DeferredEffect != null)
-                            d.Draw(GraphicsContext, d.Material.DeferredEffect);
-                        else
-                            d.Draw(GraphicsContext, graphicsBuffer.Effect);
-                    });
-                GraphicsContext.End();
+            GraphicsContext.Begin();
+            for (int i = 0; i < drawables.Count; i++)
+            {
+                var drawable = drawables[i];
+                var material = drawable.Material;
+                if (material == null || !material.IsDeferred)
+                    continue;
+
+                if (material.GraphicsBufferEffect != null)
+                {
+                    material.Apply();
+                    drawable.Draw(GraphicsContext, material.GraphicsBufferEffect);
+                }
+                else
+                {
+                    drawable.Draw(GraphicsContext, graphicsBuffer.Effect);
+                }
+            }
+            GraphicsContext.End();
             graphicsBuffer.End();
             
-            // Draw all the lights
-            graphicsBuffer.DrawLights(GraphicsContext.View, GraphicsContext.Projection, lights.OfType<IDeferredLight>());
-            deferredEffect.LightTexture = graphicsBuffer.LightBuffer;            
-
-            GraphicsDevice.Clear(Color.DarkSlateGray);
-
-            // 3. Draw the scene using DeferredEffect.
+            // Draw light buffer
             GraphicsContext.Begin();
-                drawables.ForEach(d =>
-                {
-                    if (d is ILightable)
-                        d.Draw(GraphicsContext, deferredEffect);
-                    else
-                        d.Draw(GraphicsContext);
-                });
+            graphicsBuffer.BeginLights(GraphicsContext.View, GraphicsContext.Projection);
+            for (int i = 0; i < lights.Count; i++)
+            {
+                var light = lights[i] as IDeferredLight;
+                if (light != null)
+                    graphicsBuffer.DrawLight(light);
+            }
+            graphicsBuffer.EndLights();
             GraphicsContext.End();
+
+            // Apply light buffer
+            for (int i = 0; i < drawables.Count; i++)
+            {
+                var drawable = drawables[i];
+                var material = drawable.Material;
+                if (material != null && material.IsDeferred && material.GraphicsBufferEffect != null)
+                {
+                    IEffectTexture texture = material.Find<IEffectTexture>();
+                    if (texture != null)
+                        texture.SetTexture(TextureUsage.LightBuffer, graphicsBuffer.LightBuffer);
+                }
+            }
+            deferredEffect.LightTexture = graphicsBuffer.LightBuffer;
         }
 #endif
         #endregion
 
         #region Forward
-        private void DrawUsingForwardLighting(List<IDrawableObject> drawables)
+        private void DrawObjects(List<IDrawableObject> drawables)
         {
             for (int i = 0; i < drawables.Count; i++)
             {
                 var drawable = drawables[i];
                 var material = drawable.Material;
                 var lightable = drawable as ILightable;
-
-                // Setup light info in drawable materials.
-                if (lightable != null && lightable.LightingEnabled && material != null)
-                {
-                    var lightingData = lightable.LightingData as LightingData;
-                    if (lightingData != null)
-                    {
-                        if (lightingData.MultiPassLights != null)
-                            lightingData.MultiPassLights.Clear();
-
-                        ApplyLights(lightingData.AffectingLights, material, ref lightingData.MultiPassLights);
-
+                
 #if !WINDOWS_PHONE
-                        // Setup shadow info in drawable materials.
-                        if (lightable.ReceiveShadow)
-                        {
-                            if (lightingData.MultiPassShadows != null)
-                                lightingData.MultiPassShadows.Clear();
-
-                            ApplyShadowMap(lightingData.AffectingLights, material, ref lightingData.MultiPassShadows);
-                        }
-#endif
-                    }
+                if (material != null && material.IsDeferred)
+                {
+                    // Object uses deferred effect
+                    if (material.GraphicsBufferEffect != null)
+                        drawable.Draw(GraphicsContext);
+                    else
+                        drawable.Draw(GraphicsContext, deferredEffect);
                 }
-                drawable.Draw(GraphicsContext);
+                else
+#endif
+                {
+                    // Setup light info in drawable materials.
+                    if (lightable != null && lightable.LightingEnabled && material != null)
+                    {
+                        var lightingData = lightable.LightingData as LightingData;
+                        if (lightingData != null)
+                        {
+                            if (lightingData.MultiPassLights != null)
+                                lightingData.MultiPassLights.Clear();
+                            ApplyLights(lightingData.AffectingLights, material, ref lightingData.MultiPassLights);
+                        }
+                    }
+                    drawable.Draw(GraphicsContext);
+                }
             }
         }
 
@@ -1098,24 +1125,56 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Shadow
-        private void DrawShadowMaps()
+#if !WINDOWS_PHONE
+        private void ApplyShadows(List<IDrawableObject> drawables, List<Light> lightsInViewFrustum)
         {
+            DrawShadowMaps(lightsInViewFrustum);
+
+            for (int i = 0; i < drawables.Count; i++)
+            {
+                var drawable = drawables[i];
+                var material = drawable.Material;
+                var lightable = drawable as ILightable;
+                if (lightable == null || material == null || !lightable.ReceiveShadow)
+                    continue;
+
+                var lightingData = lightable.LightingData as LightingData;
+                if (lightable != null)
+                {
+                    if (lightingData.MultiPassShadows != null)
+                        lightingData.MultiPassShadows.Clear();
+
+                    ApplyShadowMap(lightingData.AffectingLights, material, ref lightingData.MultiPassShadows);
+                }
+            }
+        }
+
+        private void DrawShadowMaps(List<Light> lightsInViewFrustum)
+        {
+            if (!Settings.ShadowEnabled || !hasShadowReceiversInViewFrustum)
+                return;
+
             for (int currentLight = 0; currentLight < lightsInViewFrustum.Count; currentLight++)
             {
                 var light = lightsInViewFrustum[currentLight];
                 if (light.Enabled && light.CastShadow)
                 {
-                    FindShadowCasters(drawablesInViewFrustum, ref shadowCastersInViewFrustum);
-                    FindShadowCasters(light.AffectedDrawables, ref shadowCastersInLightFrustum);
+                    FindShadowCasters(drawablesInViewFrustum, shadowCastersInViewFrustum);
+                    FindShadowCasters(light.AffectedDrawables, shadowCastersInLightFrustum);
 
-                    light.DrawShadowMap(GraphicsContext, this, shadowCastersInLightFrustum, shadowCastersInViewFrustum);
+                    if (shadowCastersInLightFrustum.Count > 0 || shadowCastersInViewFrustum.Count > 0)
+                    {
+                        light.DrawShadowMap(GraphicsContext, this, shadowCastersInLightFrustum, shadowCastersInViewFrustum);
+                    }
+
+                    shadowCastersInViewFrustum.Clear();
+                    shadowCastersInLightFrustum.Clear();
                 }
             }
         }
 
-        private void FindShadowCasters(List<IDrawableObject> drawables, ref HashSet<ISpatialQueryable> shadowCasters)
+        private void FindShadowCasters(List<IDrawableObject> drawables, HashSet<ISpatialQueryable> shadowCasters)
         {
-            shadowCasters.Clear();
             for (int currentDrawable = 0; currentDrawable < drawables.Count; currentDrawable++)
             {
                 var drawable = drawables[currentDrawable];
@@ -1132,8 +1191,6 @@ namespace Nine.Graphics.ObjectModel
         {
 
         }
-
-#if !WINDOWS_PHONE
         private void ApplyShadowMap(List<Light> sourceLights, Material material, ref List<Light> unusedLights)
         {
             var effectShadowMap = material.Find<IEffectShadowMap>();
@@ -1164,6 +1221,9 @@ namespace Nine.Graphics.ObjectModel
         #region Fog
         private void UpdateFog()
         {
+            if (!Settings.FogEnable)
+                return;
+
             for (int currentFog = 0; currentFog < flattenedObjectsInViewFrustum.Count; currentFog++)
             {
                 var firstFog = flattenedObjectsInViewFrustum[currentFog] as IEffectFog;

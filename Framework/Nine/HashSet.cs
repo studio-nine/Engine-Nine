@@ -22,6 +22,11 @@ namespace Nine
     {
         Dictionary<T, int> dictionary = new Dictionary<T, int>();
 
+        public int Count
+        {
+            get { return dictionary.Count; }
+        }
+
         public void Add(T item)
         {
             if (dictionary.ContainsKey(item))

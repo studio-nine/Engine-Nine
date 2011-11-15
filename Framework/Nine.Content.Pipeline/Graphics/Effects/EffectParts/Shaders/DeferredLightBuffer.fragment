@@ -12,9 +12,9 @@ float SpecularPower;
 __hlsl__
 void main(INPUT input, inout OUTPUT output)
 {
-	float4 color;
-	import(Color, color = Color);
-    color.a = SpecularPower / 255;
+	float3 normal;
+	import(Normal, normal = Normal);
+	float4 color = float4(normal * 0.5 + 0.5, SpecularPower / 255);
 	export(float4, Color, color);
 }
 __hlsl__

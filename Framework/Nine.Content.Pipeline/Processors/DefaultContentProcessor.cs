@@ -22,7 +22,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 namespace Nine.Content.Pipeline.Processors
 {
     /// <summary>
-    /// Processes each object of the input xml content using DefaultContentProcessorAttribute.
+    /// Processes each property of the input object graph using the processor specified by DefaultContentProcessorAttribute.
     /// </summary>
     [ContentProcessor(DisplayName = "Content - Engine Nine")]
     public class DefaultContentProcessor : ContentProcessor<object, object>
@@ -35,18 +35,28 @@ namespace Nine.Content.Pipeline.Processors
 
         ContentProcessorContext context;
 
+        static List<IContentProcessor> DefaultProcessors;
+
         public override object Process(object input, ContentProcessorContext context)
         {
             if (input == null)
                 return null;
 
+            if (DefaultProcessors == null)
+            {
+                DefaultProcessors = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes().Where(
+                    t => typeof(IContentProcessor).IsAssignableFrom(t) && t.GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).Count() > 0))
+                    .Select(t => Activator.CreateInstance(t)).OfType<IContentProcessor>().ToList();
+            }
+
             this.context = context;
-            ForEachProperty(input, Process);
+            ObjectGraph.ForEachProperty(input, Process);
 
             if (Debug)
             {
-                using (var writer = XmlWriter.Create(Path.Combine(context.IntermediateDirectory, Path.GetRandomFileName()) + ".xml",
-                                new XmlWriterSettings { Indent = true, NewLineChars = Environment.NewLine }))
+                var debugOutput = Path.Combine(context.IntermediateDirectory, "DefaultContent-" + Guid.NewGuid().ToString("B").ToUpperInvariant()) + ".xml";
+                var settings = new XmlWriterSettings { Indent = true, NewLineChars = Environment.NewLine };
+                using (var writer = XmlWriter.Create(debugOutput, settings))
                 {
                     IntermediateSerializer.Serialize(writer, input, ".");
                 }
@@ -56,94 +66,29 @@ namespace Nine.Content.Pipeline.Processors
         
         private object Process(Type type, object input)
         {
-            ForEachProperty(input, Process);
+            if (input == null)
+                return null;
 
+            IContentProcessor processor = null;
             var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).OfType<DefaultContentProcessorAttribute>().FirstOrDefault();
             if (defaultProcessorAttribute != null)
+                processor = (IContentProcessor)Activator.CreateInstance(Type.GetType(defaultProcessorAttribute.DefaultProcessor));
+
+            if (processor == null)
+                processor = DefaultProcessors.FirstOrDefault(p => p.InputType.IsAssignableFrom(input.GetType()));
+            if (processor == null)
+                return input;
+
+            if (processor.InputType.IsAssignableFrom(input.GetType())/* && type.IsAssignableFrom(processor.OutputType)*/)
             {
-                var processor = (IContentProcessor)Activator.CreateInstance(Type.GetType(defaultProcessorAttribute.DefaultProcessor));
-                if (processor.InputType.IsAssignableFrom(input.GetType()) && type.IsAssignableFrom(processor.OutputType))
-                {
-                    context.Logger.LogImportantMessage("Processing {0} using {1}", input.GetType().Name, processor.GetType().Name);
-                    return processor.Process(input, context);
-                }
-                else
-                {
-                    context.Logger.LogWarning(null, null, "Processor type mismatch {0} -> {1} -> {2} -> {4}", input.GetType().Name, processor.InputType.Name, processor.OutputType.Name, type.Name);
-                }
+                context.Logger.LogImportantMessage("Processing {0} using {1}", input.GetType().Name, processor.GetType().Name);
+                return processor.Process(input, context);
+            }
+            else
+            {
+                context.Logger.LogWarning(null, null, "Processor type mismatch {0} -> {1} -> {2} -> {4}", input.GetType().Name, processor.InputType.Name, processor.OutputType.Name, type.Name);
             }
             return input;
-        }
-
-        private void ForEachProperty(object target, Func<Type, object, object> action)
-        {
-            if (target != null && action != null)
-            {
-                foreach (var property in target.GetType().GetProperties())
-                {
-                    if (property.CanRead && property.CanWrite && property.GetIndexParameters().Length == 0)
-                    {
-                        context.Logger.LogMessage("Scanning {0}:{1}", property.Name, property.PropertyType.Name);
-
-                        object value = property.GetValue(target, new object[0]);
-                        if (value != null)
-                        {
-                            var result = action(property.PropertyType, value);
-                            property.SetValue(target, result, new object[0]);
-                        }
-                    }
-                }
-            }
-
-            ForEachCollectionProperty(target, action);
-        }
-
-        private void ForEachCollectionProperty(object target, Func<Type, object, object> action)
-        {
-            if (target != null && action != null)
-            {
-                foreach (var property in target.GetType().GetProperties())
-                {
-                    if (property.CanRead && property.GetIndexParameters().Length == 0)
-                    {
-                        object value = property.GetValue(target, new object[0]);
-                        if (value != null)
-                        {
-                            var type = value.GetType();
-                            if (IsList(type))
-                            {
-                                var itemAccessor = type.GetProperty("Item");
-                                if (itemAccessor != null && itemAccessor.CanRead && itemAccessor.CanWrite &&
-                                    itemAccessor.GetIndexParameters().Length == 1 &&
-                                    itemAccessor.GetIndexParameters()[0].ParameterType == typeof(int))
-                                {
-                                    context.Logger.LogMessage("Scanning List {0}:{1}", property.Name, property.PropertyType.Name);
-
-                                    dynamic dynamicValue = value;
-                                    var count = dynamicValue.Count;
-                                    for (int i = 0; i < count; i++)
-                                    {
-                                        itemAccessor.SetValue(value, action(property.PropertyType,
-                                            itemAccessor.GetValue(value, new object[] { i })), new object[] { i });
-                                    }
-                                }
-                            }
-                            // TODO: Support dictionary.
-                        }
-                    }
-                }
-            }
-        }
-
-        private bool IsList(Type type)
-        {
-            return !(typeof(Array).IsAssignableFrom(type)) && !type.Name.Contains("ReadOnly") &&
-                     type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IList<>), null).Length > 0;
-        }
-
-        private bool IsDictionary(Type type)
-        {
-            return type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IDictionary<,>), null).Length > 0;
         }
     }
 }

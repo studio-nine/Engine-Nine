@@ -9,6 +9,179 @@
 
 
 #if !TEXT_TEMPLATE
+namespace Nine.Content.Pipeline
+{
+    /// <summary>
+    /// Content model for <c>BounceCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.BounceCurve, Nine")]
+    public partial class BounceCurveContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0.2")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Strength { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>BounceCurveContent</c>.
+        /// </summary>
+        public BounceCurveContent()
+        {
+            Strength = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0.2");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>CustomCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.CustomCurve, Nine")]
+    public partial class CustomCurveContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Curve> Curve { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>CustomCurveContent</c>.
+        /// </summary>
+        public CustomCurveContent()
+        {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>ElasticCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.ElasticCurve, Nine")]
+    public partial class ElasticCurveContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0.2")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Strength { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>ElasticCurveContent</c>.
+        /// </summary>
+        public ElasticCurveContent()
+        {
+            Strength = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0.2");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>ExponentialCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.ExponentialCurve, Nine")]
+    public partial class ExponentialCurveContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0.03125")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single Power { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>ExponentialCurveContent</c>.
+        /// </summary>
+        public ExponentialCurveContent()
+        {
+            Power = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0.03125");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>LinearCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.LinearCurve, Nine")]
+    public partial class LinearCurveContent
+    {
+        /// <summary>
+        /// Initializes a new instance of <c>LinearCurveContent</c>.
+        /// </summary>
+        public LinearCurveContent()
+        {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>SinCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.SinCurve, Nine")]
+    public partial class SinCurveContent
+    {
+        /// <summary>
+        /// Initializes a new instance of <c>SinCurveContent</c>.
+        /// </summary>
+        public SinCurveContent()
+        {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
+    /// Content model for <c>SmoothCurve</c>.
+    /// 
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.SmoothCurve, Nine")]
+    public partial class SmoothCurveContent
+    {
+        /// <summary>
+        /// Initializes a new instance of <c>SmoothCurveContent</c>.
+        /// </summary>
+        public SmoothCurveContent()
+        {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+}
 namespace Nine.Content.Pipeline.Animations
 {
     /// <summary>
@@ -195,6 +368,13 @@ namespace Nine.Content.Pipeline.Animations
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("Zxy")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Nine.RotationOrder RotationOrder { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationX { get; set; }
 
@@ -257,6 +437,7 @@ namespace Nine.Content.Pipeline.Animations
         /// </summary>
         public TransformAnimationContent()
         {
+            RotationOrder = (Nine.RotationOrder)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.RotationOrder)).ConvertFromInvariantString("Zxy");
             OnCreate();
         }
 
@@ -288,6 +469,7 @@ namespace Nine.Content.Pipeline.Animations
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.TypeConverter(typeof(Nine.Content.Pipeline.Design.CurveConverter))]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Object Curve { get; set; }
 
@@ -301,12 +483,14 @@ namespace Nine.Content.Pipeline.Animations
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("00:00:01")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.TimeSpan Duration { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("In")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Animations.Easing Easing { get; set; }
 
@@ -356,6 +540,8 @@ namespace Nine.Content.Pipeline.Animations
         {
             AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Direction = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
+            Duration = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:01");
+            Easing = (Nine.Animations.Easing)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.Easing)).ConvertFromInvariantString("In");
             Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");

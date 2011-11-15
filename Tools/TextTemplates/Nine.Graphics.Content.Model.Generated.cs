@@ -1833,6 +1833,76 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         partial void OnCreate();
     }
     /// <summary>
+    /// Content model for <c>Camera</c>.
+    /// Defines a camera that can be attacked to a .
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Camera, Nine.Graphics")]
+    [System.Windows.Markup.RuntimeNameProperty("Name")]
+    public partial class CameraContent
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1000")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single FarPlane { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0.7853982")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single FieldOfView { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.String Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single NearPlane { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Object Tag { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Matrix Transform { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport> Viewport { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>CameraContent</c>.
+        /// </summary>
+        public CameraContent()
+        {
+            FarPlane = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1000");
+            FieldOfView = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("0.7853982");
+            NearPlane = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            Transform = new Microsoft.Xna.Framework.Matrix(1f, 0f, 0f, 0f, 0f, 1f, 0f, 0f,0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f);
+            OnCreate();
+        }
+
+        partial void OnCreate();
+    }
+    /// <summary>
     /// Content model for <c>DirectionalLight</c>.
     /// 
     /// </summary>

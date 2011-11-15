@@ -35,11 +35,17 @@ namespace Nine.Graphics.ObjectModel
         
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
-        protected override void GetShadowFrustum(GraphicsContext context,
-                                                 HashSet<ISpatialQueryable> drawablesInLightFrustum,
-                                                 HashSet<ISpatialQueryable> drawablesInViewFrustum,
+        protected override bool GetShadowFrustum(GraphicsContext context,
+                                                 HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
+                                                 HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
                                                  out Matrix frustumMatrix)
         {
+            if (shadowCastersInViewFrustum.Count <= 0)
+            {
+                frustumMatrix = new Matrix();
+                return false;
+            }
+
             Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitZ);
             if (float.IsNaN(view.M11))
                 view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitY);
@@ -52,10 +58,10 @@ namespace Nine.Graphics.ObjectModel
             float right = float.MinValue;
             float bottom = float.MaxValue;
             float top = float.MinValue;
-            
-            foreach (var drawable in drawablesInViewFrustum)
+
+            foreach (var shadowCaster in shadowCastersInViewFrustum)
             {
-                drawable.BoundingBox.GetCorners(Corners);
+                shadowCaster.BoundingBox.GetCorners(Corners);
                 for (int i = 0; i < BoundingBox.CornerCount; i++)
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
@@ -78,6 +84,7 @@ namespace Nine.Graphics.ObjectModel
             Matrix projection;
             Matrix.CreateOrthographicOffCenter(left, right, bottom, top, nearZ, farZ, out projection);
             Matrix.Multiply(ref view, ref projection, out frustumMatrix);
+            return true;
         }
 
         protected override void Enable(IDirectionalLight light)

@@ -355,7 +355,7 @@ namespace Nine.Graphics.ObjectModel
             int indexCount = 6 * SegmentCount * SegmentCount;
 
             T[] vertices = WeakVertices.Target;
-            if (vertices == null)
+            if (vertices == null || vertices.Length < VertexCount)
                 WeakVertices.Target = vertices = new T[VertexCount];
 
             // Fill vertices

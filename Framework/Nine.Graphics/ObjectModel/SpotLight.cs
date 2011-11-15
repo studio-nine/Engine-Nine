@@ -113,11 +113,17 @@ namespace Nine.Graphics.ObjectModel
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
-        protected override void GetShadowFrustum(GraphicsContext context,
-                                                HashSet<ISpatialQueryable> drawablesInLightFrustum,
-                                                HashSet<ISpatialQueryable> drawablesInViewFrustum,
+        protected override bool GetShadowFrustum(GraphicsContext context,
+                                                HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
+                                                HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
                                                 out Matrix frustumMatrix)
         {
+            if (shadowCastersInLightFrustum.Count <= 0)
+            {
+                frustumMatrix = new Matrix();
+                return false;
+            }
+
             Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);
             if (float.IsNaN(view.M11))
                 view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitY);
@@ -131,12 +137,9 @@ namespace Nine.Graphics.ObjectModel
             double bottom = double.MaxValue;
             double top = double.MinValue;
 
-            bool hasDrawable = false;
-
-            foreach (var drawable in drawablesInLightFrustum)
+            foreach (var shadowCaster in shadowCastersInLightFrustum)
             {
-                hasDrawable = true;
-                drawable.BoundingBox.GetCorners(Corners);
+                shadowCaster.BoundingBox.GetCorners(Corners);
                 for (int i = 0; i < BoundingBox.CornerCount; i++)
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
@@ -154,12 +157,6 @@ namespace Nine.Graphics.ObjectModel
 
                     Corners[i] = point;
                 }
-            }
-
-            if (!hasDrawable)
-            {
-                frustumMatrix = new Matrix();
-                return;
             }
 
             double max = outerAngle * 0.5;
@@ -180,6 +177,7 @@ namespace Nine.Graphics.ObjectModel
                                                      Math.Max(NearPlane, nearZ),
                                                      Math.Max(NearPlane * 2, farZ), out projection);
             Matrix.Multiply(ref view, ref projection, out frustumMatrix);
+            return true;
         }
 
         public override void DrawFrustum(GraphicsContext context)

@@ -38,20 +38,20 @@ namespace Nine.Graphics.Effects.EffectParts
             set { ambientLightColor = value; DirtyMask |= ambientLightDirtyMask; }
         }
 
+        public AmbientLightEffectPart()
+        {
+            AmbientLightColor = Vector3.One * 0.2f;
+            ambientLightColorParameter = GetParameter("AmbientLightColor");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & ambientLightDirtyMask) != 0)
             {
-                if (ambientLightColorParameter == null)
-                    ambientLightColorParameter = GetParameter("AmbientLightColor");
-                ambientLightColorParameter.SetValue(ambientLightColor);
+                if (ambientLightColorParameter != null)
+                    ambientLightColorParameter.SetValue(ambientLightColor);
                 DirtyMask &= ~ambientLightDirtyMask;
             }
-        }
-        
-        public AmbientLightEffectPart()
-        {
-            AmbientLightColor = Vector3.One * 0.2f;
         }
 
         protected internal override LinkedEffectPart Clone()

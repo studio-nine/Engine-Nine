@@ -73,49 +73,49 @@ namespace Nine.Graphics.Effects.EffectParts
             set { if (shadowMap != value) { shadowMap = value; DirtyMask |= shadowMapDirtyMask; } }
         }
 
+        public ShadowMapEffectPart()
+        {
+            ShadowIntensity = 0.5f;
+            DepthBias = 0.0005f;
+
+            shadowIntensityParameter = GetParameter("ShadowIntensity");
+            depthBiasParameter = GetParameter("DepthBias");
+            lightViewProjectionParameter = GetParameter("LightViewProjection");
+            shadowMapParameter = GetParameter("ShadowMap");
+            shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & shadowIntensityDirtyMask) != 0)
             {
-                if (shadowIntensityParameter == null)
-                    shadowIntensityParameter = GetParameter("ShadowIntensity");
-                shadowIntensityParameter.SetValue(shadowIntensity);
+                if (shadowIntensityParameter != null)
+                    shadowIntensityParameter.SetValue(shadowIntensity);
                 DirtyMask &= ~shadowIntensityDirtyMask;
             }
 
             if ((DirtyMask & depthBiasDirtyMask) != 0)
             {
-                if (depthBiasParameter == null)
-                    depthBiasParameter = GetParameter("DepthBias");
-                depthBiasParameter.SetValue(depthBias);
+                if (depthBiasParameter != null)
+                    depthBiasParameter.SetValue(depthBias);
                 DirtyMask &= ~depthBiasDirtyMask;
             }
 
             if ((DirtyMask & lightViewProjectionDirtyMask) != 0)
             {
-                if (lightViewProjectionParameter == null)
-                    lightViewProjectionParameter = GetParameter("LightViewProjection");
-                lightViewProjectionParameter.SetValue(lightViewProjection);
+                if (lightViewProjectionParameter != null)
+                    lightViewProjectionParameter.SetValue(lightViewProjection);
                 DirtyMask &= ~lightViewProjectionDirtyMask;
             }
 
             if ((DirtyMask & shadowMapDirtyMask) != 0)
             {
-                if (shadowMapParameter == null)
-                    shadowMapParameter = GetParameter("ShadowMap");
-                shadowMapParameter.SetValue(shadowMap);
-                if (shadowMapSizeParameter == null)
-                    shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
-                if (shadowMap != null)
+                if (shadowMapParameter != null)
+                    shadowMapParameter.SetValue(shadowMap);
+                if (shadowMapSizeParameter != null && shadowMap != null)
                     shadowMapSizeParameter.SetValue(new Vector2(1.0f / shadowMap.Width, 1.0f / shadowMap.Height));
                 DirtyMask &= ~shadowMapDirtyMask;
             }
-        }
-
-        public ShadowMapEffectPart()
-        {
-            ShadowIntensity = 0.5f;
-            DepthBias = 0.0005f;
         }
 
         protected internal override LinkedEffectPart Clone()

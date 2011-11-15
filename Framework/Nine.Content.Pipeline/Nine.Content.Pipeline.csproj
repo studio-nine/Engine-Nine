@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AC6F35A9-124E-447E-99DD-21F68A0C226B}</ProjectGuid>
+    <ProjectGuid>{926CE988-9E75-40DD-80F1-1709A91F8C35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nine.Content.Pipeline</RootNamespace>
@@ -125,7 +125,10 @@
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\AnimationContent.cs" />
+    <Compile Include="Components\GraphicsComponentContent.cs" />
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Design\CurveConverter.cs" />
+    <Compile Include="ObjectGraph.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="NotificationCollectionWriter.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="ContentProcessorContextExtensions.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />
     <Compile Include="Processors\BasicLinkedMaterialProcessor.cs" />
+    <Compile Include="Processors\GraphicsComponentContentProcessor.cs" />
     <Compile Include="Processors\ModelMaterialProcessor.cs" />
     <Compile Include="Processors\DefaultContentProcessor.cs" />
     <Compile Include="Processors\TerrainMaterialProcessor.cs" />
@@ -379,6 +383,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Game\Nine.Game.csproj">
+      <Project>{EDCFE2CE-B346-433F-B214-B47753D5B793}</Project>
+      <Name>Nine.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
       <Name>Nine.Graphics</Name>
@@ -449,7 +457,6 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaSpecular.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLightBuffer.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\Material.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredNormalMap.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredPixelShaderOutput.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\NormalMappedSplatterTexture.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DetailTexture.fragment" />

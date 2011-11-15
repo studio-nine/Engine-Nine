@@ -24,7 +24,19 @@ namespace Nine.Content.Pipeline.Importers
         {
             try
             {
-                return XamlServices.Load(filename);
+                var result = XamlServices.Load(filename);
+
+                // Try to populate the identity of content items.
+                ObjectGraph.ForEachProperty(result, (type, input) =>
+                {
+                    var contentItem = input as ContentItem;
+                    if (contentItem != null)
+                    {
+                        contentItem.Identity = new ContentIdentity(filename, typeof(XamlImporter).Name, null);
+                    }
+                    return input;
+                });
+                return result;
             }
             catch (Exception e)
             {

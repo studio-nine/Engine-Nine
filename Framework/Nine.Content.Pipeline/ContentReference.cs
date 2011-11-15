@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.IO;
 using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -21,8 +22,8 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 namespace Nine.Content.Pipeline
 {
     /// <summary>
-    /// A replacement for ExternalReference to allow referencing the output *.xnb file
-    /// without providing a full path.
+    /// ContentReference is used to reference the output xnb file.
+    /// ExternalReference is used to reference the source asset file.
     /// </summary>
     [TypeConverter(typeof(Nine.Content.Pipeline.Design.ContentReferenceConverter))]
     public class ContentReference<T> : ContentItem
@@ -89,7 +90,11 @@ namespace Nine.Content.Pipeline
 
         protected override void Serialize(IntermediateWriter output, ContentReference<T> value, ContentSerializerAttribute format)
         {
-            output.Xml.WriteString(value.Filename);
+            var path = ContentProcessorContextExtensions.ContentReferenceBasePath;
+            if (string.IsNullOrEmpty(path))
+                output.Xml.WriteString(value.Filename);
+            else
+                output.Xml.WriteString(new Uri(Path.Combine(path, value.Filename + ".xnb")).AbsolutePath);
         }
     }
 }

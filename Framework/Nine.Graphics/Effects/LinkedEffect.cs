@@ -143,7 +143,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets the linked effect used to render the graphics buffer in deferred lighting.
         /// </summary>
-        public LinkedEffect DeferredEffect { get; internal set; }
+        public LinkedEffect GraphicsBufferEffect { get; internal set; }
 
         /// <summary>
         /// Gets all the LinkedEffectPart that makes up this LinkedEffect.
@@ -650,7 +650,7 @@ namespace Nine.Graphics.Effects
             LinkedEffect.CurrentEffect = null;
 
             effect.EffectParts = new ReadOnlyCollection<LinkedEffectPart>(effect.effectParts);
-            effect.DeferredEffect = input.ReadObject<LinkedEffect>();
+            effect.GraphicsBufferEffect = input.ReadObject<LinkedEffect>();
             return effect;
         }
     }

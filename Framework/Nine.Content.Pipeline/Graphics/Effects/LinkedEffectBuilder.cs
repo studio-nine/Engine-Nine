@@ -31,8 +31,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     /// </summary>
     public static class LinkedEffectBuilder
     {
-        public const string OutputDirectory = @"Effects\Library";
-
         /// <summary>
         /// Builds the specified linked effect.
         /// </summary>
@@ -47,33 +45,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects
                 return new ExternalReference<LinkedEffectContent>(Strings.LinkedEffectNotSupported);
             }
 
-            // Process the effect
-            new LinkedEffectProcessor().Process(linkedEffect, context);
-
-            // Computes the hash of the input effect
-            var sb = new StringBuilder();
-            var hash = linkedEffect.Token;
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            var name = sb.ToString().ToLower();
-            var targetFile = Path.Combine(OutputDirectory, name);
-
-            // Return if the file has already been build.
-            if (File.Exists(Path.Combine(context.OutputDirectory, targetFile)))
-                return new ExternalReference<LinkedEffectContent>(targetFile);
-
-            var sourceFile = Path.Combine(context.IntermediateDirectory, name + ".xml");
-
-            // There's currently no way to build from object, so we need to create a temperory file
-            using (XmlWriter writer = XmlWriter.Create(sourceFile))
-            {
-                IntermediateSerializer.Serialize(writer, linkedEffect, ".");
-            }
-
             // Build the source asset
-            return context.BuildAsset<LinkedEffectContent, LinkedEffectContent>(linkedEffect, "LinkedEffectProcessor", null, targetFile);
+            return context.BuildAsset<LinkedEffectContent, LinkedEffectContent>(linkedEffect, "LinkedEffectProcessor");
         }
     }
 }

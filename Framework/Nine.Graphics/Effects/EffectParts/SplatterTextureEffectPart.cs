@@ -74,7 +74,7 @@ namespace Nine.Graphics.Effects.EffectParts
         private Texture2D normalTextureW;
         private EffectParameter normalTextureWParameter;
         private const uint normalTextureWDirtyMask = 1 << 10;
-        
+
         private Vector3 diffuseColorX;
         private EffectParameter diffuseColorXParameter;
         private const uint diffuseColorXDirtyMask = 1 << 11;
@@ -90,7 +90,7 @@ namespace Nine.Graphics.Effects.EffectParts
         private Vector3 diffuseColorW;
         private EffectParameter diffuseColorWParameter;
         private const uint diffuseColorWDirtyMask = 1 << 14;
-        
+
         private Vector3 specularColorX;
         private EffectParameter specularColorXParameter;
         private const uint specularColorXDirtyMask = 1 << 15;
@@ -152,28 +152,28 @@ namespace Nine.Graphics.Effects.EffectParts
         }
 
         [ContentSerializer(Optional = true)]
-        public  Texture2D  NormalMapX
+        public Texture2D NormalMapX
         {
             get { return normalTextureX; }
             set { if (normalTextureX != value) { normalTextureX = value; DirtyMask |= normalTextureXDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
-        public  Texture2D  NormalMapY
+        public Texture2D NormalMapY
         {
             get { return normalTextureY; }
             set { if (normalTextureY != value) { normalTextureY = value; DirtyMask |= normalTextureYDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
-        public  Texture2D  NormalMapZ
+        public Texture2D NormalMapZ
         {
             get { return normalTextureZ; }
             set { if (normalTextureZ != value) { normalTextureZ = value; DirtyMask |= normalTextureZDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
-        public  Texture2D  NormalMapW
+        public Texture2D NormalMapW
         {
             get { return normalTextureW; }
             set { if (normalTextureW != value) { normalTextureW = value; DirtyMask |= normalTextureWDirtyMask; } }
@@ -285,200 +285,200 @@ namespace Nine.Graphics.Effects.EffectParts
             DirtyMask |= maskDirtyMask;
             SplatterTextureScale = Vector2.One;
             DiffuseColorX = DiffuseColorY = DiffuseColorZ = DiffuseColorW = Vector3.One;
+
+            textureXParameter = GetParameter("TextureX");
+            textureYParameter = GetParameter("TextureY");
+            textureZParameter = GetParameter("TextureZ");
+            textureWParameter = GetParameter("TextureW");
+            normalTextureXParameter = GetParameter("NormalMapX");
+            normalTextureYParameter = GetParameter("NormalMapY");
+            normalTextureZParameter = GetParameter("NormalMapZ");
+            normalTextureWParameter = GetParameter("NormalMapW");
+            splatterTextureScaleParameter = GetParameter("SplatterTextureScale");
+            splatterTextureParameter = GetParameter("SplatterTexture");
+            diffuseColorXParameter = GetParameter("DiffuseColorX");
+            diffuseColorYParameter = GetParameter("DiffuseColorY");
+            diffuseColorZParameter = GetParameter("DiffuseColorZ");
+            diffuseColorWParameter = GetParameter("DiffuseColorW");
+            specularColorXParameter = GetParameter("SpecularColorX");
+            specularColorYParameter = GetParameter("SpecularColorY");
+            specularColorZParameter = GetParameter("SpecularColorZ");
+            specularColorWParameter = GetParameter("SpecularColorW");
+            specularPowerXParameter = GetParameter("SpecularPowerX");
+            specularPowerYParameter = GetParameter("SpecularPowerY");
+            specularPowerZParameter = GetParameter("SpecularPowerZ");
+            specularPowerWParameter = GetParameter("SpecularPowerW");
+            maskParameter = GetParameter("Mask");
         }
 
         protected internal override void OnApply()
         {
             if ((DirtyMask & textureXDirtyMask) != 0)
             {
-                if (textureXParameter == null)
-                    textureXParameter = GetParameter("TextureX");
-                textureXParameter.SetValue(textureX);
+                if (textureXParameter != null)
+                    textureXParameter.SetValue(textureX);
                 DirtyMask &= ~textureXDirtyMask;
             }
 
             if ((DirtyMask & textureYDirtyMask) != 0)
             {
-                if (textureYParameter == null)
-                    textureYParameter = GetParameter("TextureY");
-                textureYParameter.SetValue(textureY);
+                if (textureYParameter != null)
+                    textureYParameter.SetValue(textureY);
                 DirtyMask &= ~textureYDirtyMask;
             }
 
             if ((DirtyMask & textureZDirtyMask) != 0)
             {
-                if (textureZParameter == null)
-                    textureZParameter = GetParameter("TextureZ");
-                textureZParameter.SetValue(textureZ);
+                if (textureZParameter != null)
+                    textureZParameter.SetValue(textureZ);
                 DirtyMask &= ~textureZDirtyMask;
             }
 
             if ((DirtyMask & textureWDirtyMask) != 0)
             {
-                if (textureWParameter == null)
-                    textureWParameter = GetParameter("TextureW");
-                textureWParameter.SetValue(textureW);
+                if (textureWParameter != null)
+                    textureWParameter.SetValue(textureW);
                 DirtyMask &= ~textureWDirtyMask;
             }
 
             if ((DirtyMask & normalTextureXDirtyMask) != 0)
             {
-                if (normalTextureXParameter == null)
-                    normalTextureXParameter = GetParameter("NormalMapX");
-                normalTextureXParameter.SetValue(normalTextureX);
+                if (normalTextureXParameter != null)
+                    normalTextureXParameter.SetValue(normalTextureX);
                 DirtyMask &= ~normalTextureXDirtyMask;
             }
 
             if ((DirtyMask & normalTextureYDirtyMask) != 0)
             {
-                if (normalTextureYParameter == null)
-                    normalTextureYParameter = GetParameter("NormalMapY");
-                normalTextureYParameter.SetValue(normalTextureY);
+                if (normalTextureYParameter != null)
+                    normalTextureYParameter.SetValue(normalTextureY);
                 DirtyMask &= ~normalTextureYDirtyMask;
             }
 
             if ((DirtyMask & normalTextureZDirtyMask) != 0)
             {
-                if (normalTextureZParameter == null)
-                    normalTextureZParameter = GetParameter("NormalMapZ");
-                normalTextureZParameter.SetValue(normalTextureZ);
+                if (normalTextureZParameter != null)
+                    normalTextureZParameter.SetValue(normalTextureZ);
                 DirtyMask &= ~normalTextureZDirtyMask;
             }
 
             if ((DirtyMask & normalTextureWDirtyMask) != 0)
             {
-                if (normalTextureWParameter == null)
-                    normalTextureWParameter = GetParameter("NormalMapW");
-                normalTextureWParameter.SetValue(normalTextureW);
+                if (normalTextureWParameter != null)
+                    normalTextureWParameter.SetValue(normalTextureW);
                 DirtyMask &= ~normalTextureWDirtyMask;
             }
 
             if ((DirtyMask & splatterTextureScaleDirtyMask) != 0)
             {
-                if (splatterTextureScaleParameter == null)
-                    splatterTextureScaleParameter = GetParameter("SplatterTextureScale");
-                splatterTextureScaleParameter.SetValue(splatterTextureScale);
+                if (splatterTextureScaleParameter != null)
+                    splatterTextureScaleParameter.SetValue(splatterTextureScale);
                 DirtyMask &= ~splatterTextureScaleDirtyMask;
             }
 
             if ((DirtyMask & splatterTextureDirtyMask) != 0)
             {
-                if (splatterTextureParameter == null)
-                    splatterTextureParameter = GetParameter("SplatterTexture");
-                splatterTextureParameter.SetValue(splatterTexture);
+                if (splatterTextureParameter != null)
+                    splatterTextureParameter.SetValue(splatterTexture);
                 DirtyMask &= ~splatterTextureDirtyMask;
             }
 
             if ((DirtyMask & diffuseColorXDirtyMask) != 0)
             {
-                if (diffuseColorXParameter == null)
-                    diffuseColorXParameter = GetParameter("DiffuseColorX");
-                diffuseColorXParameter.SetValue(diffuseColorX);
+                if (diffuseColorXParameter != null)
+                    diffuseColorXParameter.SetValue(diffuseColorX);
                 DirtyMask &= ~diffuseColorXDirtyMask;
             }
 
             if ((DirtyMask & diffuseColorYDirtyMask) != 0)
             {
-                if (diffuseColorYParameter == null)
-                    diffuseColorYParameter = GetParameter("DiffuseColorY");
-                diffuseColorYParameter.SetValue(diffuseColorY);
+                if (diffuseColorYParameter != null)
+                    diffuseColorYParameter.SetValue(diffuseColorY);
                 DirtyMask &= ~diffuseColorYDirtyMask;
             }
 
             if ((DirtyMask & diffuseColorZDirtyMask) != 0)
             {
-                if (diffuseColorZParameter == null)
-                    diffuseColorZParameter = GetParameter("DiffuseColorZ");
-                diffuseColorZParameter.SetValue(diffuseColorZ);
+                if (diffuseColorZParameter != null)
+                    diffuseColorZParameter.SetValue(diffuseColorZ);
                 DirtyMask &= ~diffuseColorZDirtyMask;
             }
 
             if ((DirtyMask & diffuseColorWDirtyMask) != 0)
             {
-                if (diffuseColorWParameter == null)
-                    diffuseColorWParameter = GetParameter("DiffuseColorW");
-                diffuseColorWParameter.SetValue(diffuseColorW);
+                if (diffuseColorWParameter != null)
+                    diffuseColorWParameter.SetValue(diffuseColorW);
                 DirtyMask &= ~diffuseColorWDirtyMask;
             }
-        
+
             if ((DirtyMask & specularColorXDirtyMask) != 0)
             {
-                if (specularColorXParameter == null)
-                    specularColorXParameter = GetParameter("SpecularColorX");
-                specularColorXParameter.SetValue(specularColorX);
+                if (specularColorXParameter != null)
+                    specularColorXParameter.SetValue(specularColorX);
                 DirtyMask &= ~specularColorXDirtyMask;
             }
 
             if ((DirtyMask & specularColorYDirtyMask) != 0)
             {
-                if (specularColorYParameter == null)
-                    specularColorYParameter = GetParameter("SpecularColorY");
-                specularColorYParameter.SetValue(specularColorY);
+                if (specularColorYParameter != null)
+                    specularColorYParameter.SetValue(specularColorY);
                 DirtyMask &= ~specularColorYDirtyMask;
             }
 
             if ((DirtyMask & specularColorZDirtyMask) != 0)
             {
-                if (specularColorZParameter == null)
-                    specularColorZParameter = GetParameter("SpecularColorZ");
-                specularColorZParameter.SetValue(specularColorZ);
+                if (specularColorZParameter != null)
+                    specularColorZParameter.SetValue(specularColorZ);
                 DirtyMask &= ~specularColorZDirtyMask;
             }
 
             if ((DirtyMask & specularColorWDirtyMask) != 0)
             {
-                if (specularColorWParameter == null)
-                    specularColorWParameter = GetParameter("SpecularColorW");
-                specularColorWParameter.SetValue(specularColorW);
+                if (specularColorWParameter != null)
+                    specularColorWParameter.SetValue(specularColorW);
                 DirtyMask &= ~specularColorWDirtyMask;
             }
-
-
-
+            
             if ((DirtyMask & specularPowerXDirtyMask) != 0)
             {
-                if (specularPowerXParameter == null)
-                    specularPowerXParameter = GetParameter("SpecularPowerX");
-                specularPowerXParameter.SetValue(specularPowerX);
+                if (specularPowerXParameter != null)
+                    specularPowerXParameter.SetValue(specularPowerX);
                 DirtyMask &= ~specularPowerXDirtyMask;
             }
 
             if ((DirtyMask & specularPowerYDirtyMask) != 0)
             {
-                if (specularPowerYParameter == null)
-                    specularPowerYParameter = GetParameter("SpecularPowerY");
-                specularPowerYParameter.SetValue(specularPowerY);
+                if (specularPowerYParameter != null)
+                    specularPowerYParameter.SetValue(specularPowerY);
                 DirtyMask &= ~specularPowerYDirtyMask;
             }
 
             if ((DirtyMask & specularPowerZDirtyMask) != 0)
             {
-                if (specularPowerZParameter == null)
-                    specularPowerZParameter = GetParameter("SpecularPowerZ");
-                specularPowerZParameter.SetValue(specularPowerZ);
+                if (specularPowerZParameter != null)
+                    specularPowerZParameter.SetValue(specularPowerZ);
                 DirtyMask &= ~specularPowerZDirtyMask;
             }
 
             if ((DirtyMask & specularPowerWDirtyMask) != 0)
             {
-                if (specularPowerWParameter == null)
-                    specularPowerWParameter = GetParameter("SpecularPowerW");
-                specularPowerWParameter.SetValue(specularPowerW);
+                if (specularPowerWParameter != null)
+                    specularPowerWParameter.SetValue(specularPowerW);
                 DirtyMask &= ~specularPowerWDirtyMask;
             }
 
             if ((DirtyMask & maskDirtyMask) != 0)
             {
-                if (maskParameter == null)
-                    maskParameter = GetParameter("Mask");
+                if (maskParameter != null)
+                {
+                    Vector4 mask = new Vector4();
+                    mask.X = (TextureX != null ? 1.0f : 0.0f);
+                    mask.Y = (TextureY != null ? 1.0f : 0.0f);
+                    mask.Z = (TextureZ != null ? 1.0f : 0.0f);
+                    mask.W = (TextureW != null ? 1.0f : 0.0f);
 
-                Vector4 mask = new Vector4();
-                mask.X = (TextureX != null ? 1.0f : 0.0f);
-                mask.Y = (TextureY != null ? 1.0f : 0.0f);
-                mask.Z = (TextureZ != null ? 1.0f : 0.0f);
-                mask.W = (TextureW != null ? 1.0f : 0.0f);
-                
-                maskParameter.SetValue(mask);
+                    maskParameter.SetValue(mask);
+                }
                 DirtyMask &= ~maskDirtyMask;
             }
         }
@@ -507,7 +507,7 @@ namespace Nine.Graphics.Effects.EffectParts
             effectPart.SpecularPowerZ = SpecularPowerZ;
             effectPart.SpecularPowerW = SpecularPowerW;
             effectPart.SplatterTexture = SplatterTexture;
-            effectPart.SplatterTextureScale = SplatterTextureScale;            
+            effectPart.SplatterTextureScale = SplatterTextureScale;
         }
 
         protected internal override LinkedEffectPart Clone()

@@ -92,6 +92,7 @@
     <Compile Include="Effects\Materials.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
+    <Compile Include="ObjectModel\Camera.cs" />
     <Compile Include="ObjectModel\DrawableModel.cs" />
     <Compile Include="ObjectModel\DrawableModelPart.cs" />
     <Compile Include="ObjectModel\DrawableParticleEffect.cs" />

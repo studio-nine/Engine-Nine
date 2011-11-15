@@ -9,10 +9,11 @@
 // </auto-generated>
 // -----------------------------------------------------------------------------
 <#@ include file="Content.tth" #>
+<#
+    var assembly = Assembly.LoadFrom(Host.ResolvePath(assemblyFile));  
+#>
 #if !TEXT_TEMPLATE
 <#
-    var assembly = Assembly.LoadFrom(Host.ResolvePath(assemblyFile));
-
     foreach (var namespaceGroup in FindContentSerializableTypes(assembly).GroupBy(t => GetContentPipelineNamespace(t))
                                                                          .OrderBy(g => g.Key))
     {

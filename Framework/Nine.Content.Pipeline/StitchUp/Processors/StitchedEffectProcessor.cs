@@ -105,7 +105,7 @@ namespace StitchUp.Content.Pipeline.Processors
 		// effect files in your temp folder, but they're quite small files.
 		private static string GetTempEffectFileName(ContentProcessorContext context, StitchedEffectContent input)
 		{
-			return Path.Combine(context.IntermediateDirectory, Path.ChangeExtension(Path.GetFileName(input.Identity.SourceFilename), ".fx"));
+			return Path.Combine(context.IntermediateDirectory, "LinkedEffects", Path.ChangeExtension(Path.GetFileName(input.Identity.SourceFilename), ".fx"));
 		}
 
 		private static ShaderProfile GetMinimumTargetShaderProfile(StitchedEffectSymbol stitchedEffect)

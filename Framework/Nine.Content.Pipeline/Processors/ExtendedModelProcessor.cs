@@ -40,6 +40,13 @@ namespace Nine.Content.Pipeline.Processors
         const string DefaultProcessors = "NormalMap|NormalTextureProcessor";
 
         /// <summary>
+        /// Gets a value indicating whether the transform of the root bone is ignored.
+        /// </summary>
+        [DefaultValue(false)]
+        [DisplayName("Ignore Root Bone Transform")]
+        public bool IgnoreRootTransform { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether animation data will be generated.
         /// </summary>
         [DefaultValue(true)]
@@ -81,6 +88,10 @@ namespace Nine.Content.Pipeline.Processors
         [DisplayName("Texture Processors")]
         public string TextureProcessors { get; set; }
 
+        [DefaultValue("1, 1, 1")]
+        [DisplayName("XYZ Scale")]
+        public Vector3 XyzScale { get; set; }
+
         private Dictionary<string, string> attachedTextureNames = new Dictionary<string, string>();
         private Dictionary<string, string> attachedTextureProcessors = new Dictionary<string, string>();
         private List<BoundingBox> partBound = new List<BoundingBox>();
@@ -90,6 +101,7 @@ namespace Nine.Content.Pipeline.Processors
         /// </summary>
         public ExtendedModelProcessor()
         {
+            XyzScale = Vector3.One;
             GenerateCollisionData = true;
             GenerateAnimationData = true;
             CollisionTreeDepth = 3;
@@ -105,6 +117,10 @@ namespace Nine.Content.Pipeline.Processors
         {
             ValidateMesh(input, context, null);
 
+            if (IgnoreRootTransform)
+                input.Transform = Matrix.Identity;
+            input.Transform *= Matrix.CreateScale(XyzScale);
+
             ModelTag tag = new ModelTag();
 
             if (GenerateAnimationData)
@@ -114,7 +130,7 @@ namespace Nine.Content.Pipeline.Processors
                 animationProcessor.RotationX = RotationX;
                 animationProcessor.RotationY = RotationY;
                 animationProcessor.RotationZ = RotationZ;
-                animationProcessor.Scale = Scale;
+                animationProcessor.Scale = base.Scale;
 
                 tag.Animations = animationProcessor.Process(input, context);
                 tag.Skeleton = animationProcessor.Skeleton;
@@ -127,7 +143,7 @@ namespace Nine.Content.Pipeline.Processors
                 collisionProcessor.RotationX = RotationX;
                 collisionProcessor.RotationY = RotationY;
                 collisionProcessor.RotationZ = RotationZ;
-                collisionProcessor.Scale = Scale;
+                collisionProcessor.Scale = base.Scale;
                 collisionProcessor.CollisionTreeDepth = CollisionTreeDepth;
 
                 tag.Collision = collisionProcessor.Process(input, context);
@@ -263,7 +279,17 @@ namespace Nine.Content.Pipeline.Processors
             }
 
             material.OpaqueData.Add("AttachedTextures", textureDictionary);
-            return base.ConvertMaterial(material, context);
+
+            try
+            {
+                return base.ConvertMaterial(material, context);
+            }
+            catch (Exception e)
+            {
+                context.Logger.LogWarning(null, null, e.Message);
+                material.Textures.Clear();
+                return material;
+            }
         }
 
         private void FindModelMeshPartBounds(NodeContent input)

@@ -47,7 +47,7 @@ namespace Nine.Components
         /// <summary>
         /// Gets the graphics object owned by this graphics component.
         /// </summary>
-        public DisplayObject GraphicsObject { get; private set; }
+        public Transformable GraphicsObject { get; private set; }
 
         /// <summary>
         /// Gets the scene that contains the graphics object owned by this graphics component.
@@ -110,7 +110,7 @@ namespace Nine.Components
                     var contentManager = Parent.Find<ContentManager>();
                     if (contentManager == null)
                         throw new InvalidOperationException("Cannot find ContentManager when creating graphics object");
-                    GraphicsObject = contentManager.Create<DisplayObject>(Template);
+                    GraphicsObject = contentManager.Create<Transformable>(Template);
                     Scene.Add(GraphicsObject);
                 }
             }

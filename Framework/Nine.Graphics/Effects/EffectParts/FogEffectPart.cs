@@ -64,26 +64,28 @@ namespace Nine.Graphics.Effects.EffectParts
             FogColor = Vector3.One;
             FogStart = 1;
             FogEnd = 100;
+
+            fogColorParameter = GetParameter("FogColor");
+            fogVectorParameter = GetParameter("FogVector");
         }
 
         protected internal override void OnApply()
         {
             if ((DirtyMask & fogColorDirtyMask) != 0)
             {
-                if (fogColorParameter == null)
-                    fogColorParameter = GetParameter("FogColor");
-                fogColorParameter.SetValue(fogColor);
+                if (fogColorParameter != null)
+                    fogColorParameter.SetValue(fogColor);
                 DirtyMask &= ~fogColorDirtyMask;
             }
 
             if ((DirtyMask & fogVectorDirtyMask) != 0)
             {
-                if (fogVectorParameter == null)
-                    fogVectorParameter = GetParameter("FogVector");
-
-                Matrix worldView;
-                Matrix.Multiply(ref world, ref view, out worldView);
-                SetFogVector(ref worldView, fogStart, fogEnd, fogVectorParameter);
+                if (fogVectorParameter != null)
+                {
+                    Matrix worldView;
+                    Matrix.Multiply(ref world, ref view, out worldView);
+                    SetFogVector(ref worldView, fogStart, fogEnd, fogVectorParameter);
+                }
                 DirtyMask &= ~fogVectorDirtyMask;
             }
         }

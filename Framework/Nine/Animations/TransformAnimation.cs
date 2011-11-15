@@ -150,6 +150,11 @@ namespace Nine.Animations
         }
 
         /// <summary>
+        /// Gets or sets the rotation order.
+        /// </summary>
+        public RotationOrder RotationOrder { get; set; }
+
+        /// <summary>
         /// Gets or sets the animation track that affects the X rotation of the target object.
         /// </summary>
         public TweenAnimation<float> RotationX
@@ -330,9 +335,21 @@ namespace Nine.Animations
                 value.M33 = scaleX.Value;
 
             Matrix temp;
-            Matrix.CreateFromYawPitchRoll(rotationY != null ? rotationY.Value : 0,
-                                          rotationX != null ? rotationX.Value : 0,
-                                          rotationZ != null ? rotationZ.Value : 0, out temp);
+            if (RotationOrder == RotationOrder.Zxy)
+            {
+                Matrix.CreateFromYawPitchRoll(rotationY != null ? rotationY.Value : 0,
+                                              rotationX != null ? rotationX.Value : 0,
+                                              rotationZ != null ? rotationZ.Value : 0, out temp);
+            }
+            else
+            {
+                Matrix temp2;
+                Matrix.CreateRotationY(rotationY != null ? rotationY.Value : 0, out temp);                
+                Matrix.CreateRotationY(rotationX != null ? rotationX.Value : 0, out temp2);
+                Matrix.Multiply(ref temp, ref temp2, out temp);
+                Matrix.CreateRotationZ(rotationZ != null ? rotationZ.Value : 0, out temp2);
+                Matrix.Multiply(ref temp, ref temp2, out temp);
+            }
             Matrix.Multiply(ref value, ref temp, out value);
 
             if (translationX != null)

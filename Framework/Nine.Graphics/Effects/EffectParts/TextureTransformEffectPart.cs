@@ -44,15 +44,15 @@ namespace Nine.Graphics.Effects.EffectParts
         public TextureTransformEffectPart()
         {
             TextureTransform = Matrix.Identity;
+            textureTransformParameter = GetParameter("TextureTransform");
         }
-        
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & textureTransformDirtyMask) != 0)
             {
-                if (textureTransformParameter == null)
-                    textureTransformParameter = GetParameter("TextureTransform");
-                textureTransformParameter.SetValue(Nine.Graphics.TextureTransform.ToArray(TextureTransform));
+                if (textureTransformParameter != null)
+                    textureTransformParameter.SetValue(Nine.Graphics.TextureTransform.ToArray(TextureTransform));
                 DirtyMask &= ~textureTransformDirtyMask;
             }
         }

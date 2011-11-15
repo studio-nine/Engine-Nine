@@ -211,6 +211,7 @@
     <Compile Include="ModelSkeleton.cs" />
     <Compile Include="ModelViewerCamera.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
+    <Compile Include="ObjectModel\Camera.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
     <Compile Include="ObjectModel\DisplayObject.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />
@@ -457,93 +458,10 @@
       <LastGenOutput>SpotLightEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Nine.snk" />
-    <None Include="ObjectModel\.svn\all-wcprops" />
-    <None Include="ObjectModel\.svn\entries" />
-    <None Include="ObjectModel\.svn\text-base\AmbientLight.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\AmbientLight.HiDef.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DirectionalLight.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DirectionalLight.HiDef.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DisplayObject.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\Drawable.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableModel.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableModelPart.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableParticleEffect.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableSurface.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableSurfaceCollections.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableSurfaceGeometry.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\DrawableSurfacePatch.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\FindResult.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\Fog.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\GraphicsContext.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\GraphicsSettings.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\GraphicsStatistics.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\Interface.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\Light.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\LightEngine.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\ModelBatchExtensions.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\PointLight.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\PointLight.HiDef.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\Scene.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\SceneQuery.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\SkyBox.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\SpotLight.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\SpotLight.HiDef.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\Transformable.cs.svn-base" />
-    <None Include="ObjectModel\.svn\text-base\TransformBinding.cs.svn-base" />
     <None Include="ParticleEffects\ParticleSystemEffect.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
     </None>
-    <None Include="ScreenEffects\.svn\all-wcprops" />
-    <None Include="ScreenEffects\.svn\entries" />
-    <None Include="ScreenEffects\.svn\text-base\Adoption.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\Adoption.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\Adoption.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\AdoptionEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\AntiAliasEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\AntiAliasEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\AntiAliasEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\BasicScreenEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\BlurEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\BlurEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\BlurEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ChainedScreenEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ColorMatrixEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ColorMatrixEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ColorMatrixEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\DepthOfFieldEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\DepthOfFieldEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\DepthOfFieldEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\EmbossEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\EmbossEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\EmbossEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\Luminance.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\LuminanceEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\LuminanceEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\LuminanceEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\MultiPassScreenEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\NoiseEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\NoiseEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\NoiseEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\PixelateEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\PixelateEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\PixelateEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\RadialBlurEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\RadialBlurEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\RadialBlurEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ScaleEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ScaleEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ScaleEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ScreenEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ThresholdEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ThresholdEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ThresholdEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ToneMappingEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ToneMappingEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\ToneMappingEffect.fx.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\WiggleEffect.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\WiggleEffect.Designer.cs.svn-base" />
-    <None Include="ScreenEffects\.svn\text-base\WiggleEffect.fx.svn-base" />
     <None Include="ScreenEffects\Adoption.fx">
       <Generator>EffectCustomTool</Generator>
       <LastGenOutput>Adoption.Designer.cs</LastGenOutput>
@@ -610,18 +528,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ObjectModel\.svn\prop-base\" />
-    <Folder Include="ObjectModel\.svn\props\" />
-    <Folder Include="ObjectModel\.svn\tmp\prop-base\" />
-    <Folder Include="ObjectModel\.svn\tmp\props\" />
-    <Folder Include="ObjectModel\.svn\tmp\text-base\" />
-    <Folder Include="ScreenEffects\.svn\prop-base\" />
-    <Folder Include="ScreenEffects\.svn\props\" />
-    <Folder Include="ScreenEffects\.svn\tmp\prop-base\" />
-    <Folder Include="ScreenEffects\.svn\tmp\props\" />
-    <Folder Include="ScreenEffects\.svn\tmp\text-base\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

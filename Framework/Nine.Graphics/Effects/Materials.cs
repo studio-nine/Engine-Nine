@@ -73,7 +73,7 @@ namespace Nine.Graphics.Effects
         /// Gets the deferred effect used to generate the graphics buffer.
         /// If null is returned, the default graphics buffer effect is used.
         /// </summary>
-        public virtual Effect DeferredEffect { get { return null; } }
+        public virtual Effect GraphicsBufferEffect { get { return null; } }
 
         /// <summary>
         /// Applys the parameter values.

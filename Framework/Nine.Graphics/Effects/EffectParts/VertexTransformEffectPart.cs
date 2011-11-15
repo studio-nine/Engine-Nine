@@ -26,7 +26,7 @@ namespace Nine.Graphics.Effects.EffectParts
     internal class VertexTransformEffectPart : LinkedEffectPart, IEffectMatrices
     {
         private uint DirtyMask = 0;
-        
+
         private Matrix world;
         private EffectParameter worldParameter;
         private const uint worldDirtyMask = 1 << 0;
@@ -57,26 +57,31 @@ namespace Nine.Graphics.Effects.EffectParts
             set { projection = value; DirtyMask |= worldViewProjectionDirtyMask; }
         }
 
+        public VertexTransformEffectPart()
+        {
+            worldParameter = GetParameter("World");
+            worldViewProjectionParameter = GetParameter("WorldViewProjection");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & worldDirtyMask) != 0)
             {
-                if (worldParameter == null)
-                    worldParameter = GetParameter("World");
-                worldParameter.SetValue(world);
+                if (worldParameter != null)
+                    worldParameter.SetValue(world);
                 DirtyMask &= ~worldDirtyMask;
             }
 
             if ((DirtyMask & worldViewProjectionDirtyMask) != 0)
             {
-                if (worldViewProjectionParameter == null)
-                    worldViewProjectionParameter = GetParameter("WorldViewProjection");
+                if (worldViewProjectionParameter != null)
+                {
+                    Matrix wvp;
+                    Matrix.Multiply(ref world, ref view, out wvp);
+                    Matrix.Multiply(ref wvp, ref projection, out wvp);
 
-                Matrix wvp;
-                Matrix.Multiply(ref world, ref view, out wvp);
-                Matrix.Multiply(ref wvp, ref projection, out wvp);
-
-                worldViewProjectionParameter.SetValue(wvp);
+                    worldViewProjectionParameter.SetValue(wvp);
+                }
                 DirtyMask &= ~worldViewProjectionDirtyMask;
             }
         }

@@ -392,7 +392,7 @@ namespace Nine.Graphics.ObjectModel
 
             if (model.Meshes.Count <= 0 || model.Meshes[0].MeshParts.Count <= 0 || model.Meshes[0].MeshParts[0].VertexBuffer == null)
                 throw new ArgumentException("The input model is must have at least 1 valid mesh part.");
-
+            
             // Initialize graphics device & material
 #if SILVERLIGHT
             GraphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
@@ -452,7 +452,12 @@ namespace Nine.Graphics.ObjectModel
             // Set default materials based on whether the model is skinned or not
 #if !TEXT_TEMPLATE
             if (material == null)
-                material = model.IsSkinned() ? (Material)new SkinnedMaterial(GraphicsDevice) : new BasicMaterial(GraphicsDevice);
+            {
+                if (model.IsSkinned())
+                    material = new SkinnedMaterial(GraphicsDevice);
+                else
+                    material = new BasicMaterial(GraphicsDevice) { TextureEnabled = true };
+            }
 #endif
             var effectMaterial = material.Find<IEffectMaterial>();
             if (effectMaterial != null)

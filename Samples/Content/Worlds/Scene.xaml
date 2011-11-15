@@ -4,6 +4,16 @@
     <FogContent FogStart="50" FogEnd="500" />
     <AmbientLightContent AmbientLightColor="0.3, 0.3, 0.3" />
     <DirectionalLightContent CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+
+    <DrawableSurfaceContent Name="Terrain" Position="-30, -80, 0" Heightmap="Terrain\RF1" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300" TextureScale="0.125, 0.125" PatchSegmentCount="8" VertexType="VertexPositionNormalTangentBinormalTexture">
+        <DrawableSurfaceContent.Material>
+            <TerrainMaterialContent ShadowEnabled="True" FogEnabled="True" PreferDeferredLighting="True" SplatterTextureScale="8, 8">
+                <TerrainLayerContent Texture="../../Content/Models/Terrain/TerrainTex.png" />
+                <TerrainLayerContent Texture="../../Content/Textures/box.dds" Alpha="../../Content/Terrain/2.bmp" NormalMap="../../Content/Textures/box_n.dds" />
+                <TerrainLayerContent Texture="../../Content/Terrain/grass.dds" Alpha="../../Content/Terrain/3.bmp" NormalMap="../../Content/Terrain/grass_n.dds" />
+            </TerrainMaterialContent>
+        </DrawableSurfaceContent.Material>
+    </DrawableSurfaceContent>
     
     <DrawableSurfaceContent Position="-290, -100, -10" Heightmap="Terrain\MountainHeightmap" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300">
         <DrawableSurfaceContent.Material>
@@ -11,29 +21,11 @@
         </DrawableSurfaceContent.Material>
     </DrawableSurfaceContent>
     
-    <DrawableSurfaceContent Name="Terrain" Position="-30, -80, 0" Heightmap="Terrain\RF1" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300" TextureScale="0.125, 0.125" PatchSegmentCount="8" VertexType="VertexPositionNormalTangentBinormalTexture">
-        <DrawableSurfaceContent.Material>
-            <TerrainMaterialContent FogEnabled="True" PreferDeferredLighting="False" SplatterTextureScale="8, 8">
-                <TerrainLayerContent Texture="../../Content/Models/Terrain/TerrainTex.png" />
-                <TerrainLayerContent Texture="../../Content/Textures/box.dds" Alpha="../../Content/Terrain/2.bmp" NormalMap="../../Content/Textures/box_n.dds" DiffuseColor="1, 1, 1" SpecularColor="1, 1, 1" SpecularPower="64"/>
-                <TerrainLayerContent Texture="../../Content/Terrain/grass.dds" Alpha="../../Content/Terrain/3.bmp" NormalMap="../../Content/Terrain/grass_n.dds" />
-            </TerrainMaterialContent>
-        </DrawableSurfaceContent.Material>
-    </DrawableSurfaceContent>
-
     <DrawableModelContent Model="Models\Tank" Position="-10, 0, 10" />
-    <!--
     <DrawableModelContent Model="Models\AnimatedCube" Position="-10, 0, 20" />
-    -->
     <DrawableModelContent Alpha="0.4" LightingEnabled="True" Model="Models\Dude" Position="-10, -10, 10">
         <DrawableModelContent.Material>
             <BasicMaterialContent TextureEnabled="True" />
-        </DrawableModelContent.Material>
-    </DrawableModelContent>
-
-    <DrawableModelContent Model="Models\Dude" Position="-5, -10, 10">
-        <DrawableModelContent.Material>
-            <SkinnedMaterialContent Alpha="0.9"/>
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
@@ -62,11 +54,11 @@
     </DrawableModelContent>
     
     <DrawableParticleEffectContent ParticleEffect="Galaxy" />
-    
+
     <DisplayObjectContent Position="10, 0, 10" Name="CombinedObject">
         <DrawableModelContent Name="Dude" Model="Models\Dude" ReceiveShadow="True">
             <DrawableModelContent.Material>
-                <ModelMaterialContent FogEnabled="True" ShadowEnabled="True" NormalMappingEnabled="True" SkinningEnabled="True" SpecularColor="1, 1, 1" SpecularMappingEnabled="True" SpecularPower="128" />
+                <ModelMaterialContent FogEnabled="True" PreferDeferredLighting="False" ShadowEnabled="True" NormalMappingEnabled="True" SkinningEnabled="True" SpecularColor="1, 1, 1" SpecularMappingEnabled="True" SpecularPower="128" />
             </DrawableModelContent.Material>
         </DrawableModelContent>
 
@@ -85,19 +77,34 @@
             </DrawableModelContent.ModelParts>
         </DrawableModelContent>
         
+        <CameraContent Name="MyCamera" />
+        
         <DisplayObjectContent.TransformBindings>
             <TransformBindingContent Source="Tree" Target="Dude" TargetBone="R_Hand" Scale="0.25, 0.25, 0.25" Position="0.2, 0.3, -0.6" Rotation="15, 15, 0" />
+            <TransformBindingContent Source="MyCamera" Target="Dude" TargetBone="R_Hand" />
         </DisplayObjectContent.TransformBindings>
         
         <DisplayObjectContent.Animations>
-            <LayeredAnimationContent x:Key="Default" >
-                <!--
-                <SingleAnimationContent TargetProperty="Dude.Alpha" From="1" To="0" Repeat="99999999" AutoReverse="True" Duration="00:00:01" />
-                -->
+            <LayeredAnimationContent x:Key="Default">    
+                <SingleAnimationContent TargetProperty="Dude.Alpha" From="1" To="0" Repeat="99999999" AutoReverse="True" />                
                 <TransformAnimationContent TargetProperty="Dude.Transform">
                     <TransformAnimationContent.RotationZ>
                         <SingleAnimationContent From="0" To="360" Repeat="99999999" Duration="00:00:05" />
                     </TransformAnimationContent.RotationZ>
+                </TransformAnimationContent>
+            </LayeredAnimationContent>
+        </DisplayObjectContent.Animations>
+    </DisplayObjectContent>
+    
+    <DisplayObjectContent Name="Lights" Position="0, 0, 8">
+        <PointLightContent Name="PointLight1" />
+        
+        <DisplayObjectContent.Animations>
+            <LayeredAnimationContent x:Key="Default">
+                <TransformAnimationContent TargetProperty="PointLight1.Transform">
+                    <TransformAnimationContent.X>
+                        <SingleAnimationContent From="-20" To="20" Repeat="99999999" AutoReverse="True" Curve="Sin" />
+                    </TransformAnimationContent.X>
                 </TransformAnimationContent>
             </LayeredAnimationContent>
         </DisplayObjectContent.Animations>

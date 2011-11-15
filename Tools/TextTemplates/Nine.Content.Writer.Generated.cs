@@ -8,6 +8,209 @@
 // -----------------------------------------------------------------------------
 
 #if !TEXT_TEMPLATE
+namespace Nine.Content.Pipeline
+{
+    /// <summary>
+    /// Content writer for <c>BounceCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BounceCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BounceCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Strength);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.BounceCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.BounceCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>CustomCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class CustomCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CustomCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.Curve);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.CustomCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.CustomCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ElasticCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ElasticCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ElasticCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Strength);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.ElasticCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.ElasticCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ExponentialCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ExponentialCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ExponentialCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Power);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.ExponentialCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.ExponentialCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>LinearCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class LinearCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LinearCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value)
+        {
+            BeginWrite(output, value);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.LinearCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.LinearCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>SinCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class SinCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SinCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value)
+        {
+            BeginWrite(output, value);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.SinCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.SinCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>SmoothCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class SmoothCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SmoothCurveContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value)
+        {
+            BeginWrite(output, value);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.SmoothCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.SmoothCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+}
 namespace Nine.Content.Pipeline.Animations
 {
     /// <summary>
@@ -153,6 +356,7 @@ namespace Nine.Content.Pipeline.Animations
             output.WriteObject(value.ScaleX);
             output.WriteObject(value.ScaleY);
             output.WriteObject(value.ScaleZ);
+            output.WriteObject(value.RotationOrder);
             output.WriteObject(value.RotationX);
             output.WriteObject(value.RotationY);
             output.WriteObject(value.RotationZ);

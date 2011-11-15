@@ -7,8 +7,8 @@ set flags=/nologo /p:Configuration=Release /p:Optimize=true /p:DebugSymbols=fals
 
 pushd ..
 
-call %msbuild% %flags% /p:DefineConstants=TEXT_TEMPLATE Framework\Nine\Nine.csproj
-call %msbuild% %flags% /p:DefineConstants=TEXT_TEMPLATE Framework\Nine.Graphics\Nine.Graphics.csproj
+call %msbuild% %flags% /p:DefineConstants="WINDOWS;TEXT_TEMPLATE" Framework\Nine\Nine.csproj
+call %msbuild% %flags% /p:DefineConstants="WINDOWS;TEXT_TEMPLATE" Framework\Nine.Graphics\Nine.Graphics.csproj
 
 pushd Tools\TextTemplates
 

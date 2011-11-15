@@ -82,55 +82,56 @@ namespace Nine.Graphics.Effects.EffectParts
             set { attenuation = value; DirtyMask |= attenuationDirtyMask; }
         }
 
-        protected internal override void OnApply()
-        {
-            if ((DirtyMask & positionDirtyMask) != 0)
-            {
-                if (positionParameter == null)
-                    positionParameter = GetParameter("PointLightPosition");
-                positionParameter.SetValue(position);
-                DirtyMask &= ~positionDirtyMask;
-            }
-
-            if ((DirtyMask & diffuseColorDirtyMask) != 0)
-            {
-                if (diffuseColorParameter == null)
-                    diffuseColorParameter = GetParameter("PointLightDiffuseColor");
-                diffuseColorParameter.SetValue(diffuseColor);
-                DirtyMask &= ~diffuseColorDirtyMask;
-            }
-
-            if ((DirtyMask & specularColorDirtyMask) != 0)
-            {
-                if (specularColorParameter == null)
-                    specularColorParameter = GetParameter("PointLightSpecularColor");
-                specularColorParameter.SetValue(specularColor);
-                DirtyMask &= ~specularColorDirtyMask;
-            }
-
-            if ((DirtyMask & rangeDirtyMask) != 0)
-            {
-                if (rangeParameter == null)
-                    rangeParameter = GetParameter("Range");
-                rangeParameter.SetValue(range);
-                DirtyMask &= ~rangeDirtyMask;
-            }
-
-            if ((DirtyMask & attenuationDirtyMask) != 0)
-            {
-                if (attenuationParameter == null)
-                    attenuationParameter = GetParameter("Attenuation");
-                attenuationParameter.SetValue(attenuation);
-                DirtyMask &= ~attenuationDirtyMask;
-            }
-        }
-
         public PointLightEffectPart()
         {
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
             Range = 10;
             Attenuation = MathHelper.E;
+
+            positionParameter = GetParameter("PointLightPosition");
+            diffuseColorParameter = GetParameter("PointLightDiffuseColor");
+            specularColorParameter = GetParameter("PointLightSpecularColor");
+            rangeParameter = GetParameter("Range");
+            attenuationParameter = GetParameter("Attenuation");
+        }
+
+        protected internal override void OnApply()
+        {
+            if ((DirtyMask & positionDirtyMask) != 0)
+            {
+                if (positionParameter != null)
+                    positionParameter.SetValue(position);
+                DirtyMask &= ~positionDirtyMask;
+            }
+
+            if ((DirtyMask & diffuseColorDirtyMask) != 0)
+            {
+                if (diffuseColorParameter != null)
+                    diffuseColorParameter.SetValue(diffuseColor);
+                DirtyMask &= ~diffuseColorDirtyMask;
+            }
+
+            if ((DirtyMask & specularColorDirtyMask) != 0)
+            {
+                if (specularColorParameter != null)
+                    specularColorParameter.SetValue(specularColor);
+                DirtyMask &= ~specularColorDirtyMask;
+            }
+
+            if ((DirtyMask & rangeDirtyMask) != 0)
+            {
+                if (rangeParameter != null)
+                    rangeParameter.SetValue(range);
+                DirtyMask &= ~rangeDirtyMask;
+            }
+
+            if ((DirtyMask & attenuationDirtyMask) != 0)
+            {
+                if (attenuationParameter != null)
+                    attenuationParameter.SetValue(attenuation);
+                DirtyMask &= ~attenuationDirtyMask;
+            }
         }
 
         protected internal override LinkedEffectPart Clone()

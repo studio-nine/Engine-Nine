@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Nine.Content.Pipeline.Processors;
 using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
+using Nine.Content.Pipeline.Design;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.Effects
@@ -29,13 +30,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     public class TerrainLayerContent
     {
         [ContentSerializer(Optional=true)]
-        public virtual ContentReference<Texture2DContent> Alpha { get; set; }
+        [TypeConverter(typeof(ContentReferenceConverter))]
+        public virtual ExternalReference<Texture2DContent> Alpha { get; set; }
 
         [ContentSerializer]
-        public virtual ContentReference<Texture2DContent> Texture { get; set; }
+        [TypeConverter(typeof(ContentReferenceConverter))]
+        public virtual ExternalReference<Texture2DContent> Texture { get; set; }
 
         [ContentSerializer(Optional = true)]
-        public virtual ContentReference<Texture2DContent> NormalMap { get; set; }
+        [TypeConverter(typeof(ContentReferenceConverter))]
+        public virtual ExternalReference<Texture2DContent> NormalMap { get; set; }
 
         [DefaultValue("1, 1, 1")]
         [ContentSerializer(Optional = true)]
@@ -71,7 +75,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         [ContentSerializer(Optional = true)]
-        public virtual ContentReference<Texture2DContent> DetailTexture { get; set; }
+        [TypeConverter(typeof(ContentReferenceConverter))]
+        public virtual ExternalReference<Texture2DContent> DetailTexture { get; set; }
 
         [DefaultValue("1, 1")]
         [ContentSerializer(Optional = true)]

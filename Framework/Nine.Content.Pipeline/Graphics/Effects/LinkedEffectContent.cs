@@ -56,12 +56,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// Gets the code fragment for this LinkedEffectPartContent.
         /// </summary>
-        public abstract string Code { get; }
+        public abstract string EffectCode { get; }
 
         /// <summary>
         /// Gets the code fragment used to draw the graphics buffer.
         /// </summary>
-        public virtual string DeferredCode { get { return null; } }
+        /// <remarks>
+        /// A null value indicates that this effect part does not contribute to the graphics buffer
+        /// generation process.
+        /// </remarks>
+        public virtual string GraphicsBufferEffectCode { get { return null; } }
     }
 
     /// <summary>
@@ -74,16 +78,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// Gets or sets the path of the file.
         /// </summary>
         [ContentSerializer(Optional=true)]
-        public string Path { get; set; }
+        public string EffectPath { get; set; }
 
         /// <summary>
         /// Gets or sets the path of the deferred file.
         /// </summary>
         [ContentSerializer(Optional = true)]
-        public string DeferredPath { get; set; }
+        public string GraphicsBufferEffectPath { get; set; }
 
-        public override string Code { get { return File.ReadAllText(Path); } }
-        public override string DeferredCode { get { return string.IsNullOrEmpty(DeferredPath) ? null : File.ReadAllText(DeferredPath); } }
+        public override string EffectCode { get { return File.ReadAllText(EffectPath); } }
+        public override string GraphicsBufferEffectCode { get { return string.IsNullOrEmpty(GraphicsBufferEffectPath) ? null : File.ReadAllText(GraphicsBufferEffectPath); } }
     }
 
     /// <summary>
@@ -116,7 +120,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// graphics buffer in deferred lighting.
         /// </summary>
         [ContentSerializer(Optional = true)]
-        public LinkedEffectContent DeferredEffect { get; internal set; }
+        public LinkedEffectContent GraphicsBufferEffect { get; internal set; }
     }
 
     /// <summary>
@@ -142,7 +146,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             foreach (LinkedEffectPartContent part in value.EffectParts)
                 output.WriteObject<LinkedEffectPartContent>(part);
 
-            output.WriteObject<LinkedEffectContent>(value.DeferredEffect);
+            output.WriteObject<LinkedEffectContent>(value.GraphicsBufferEffect);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

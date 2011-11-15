@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Nine.Content.Pipeline.Graphics.Effects;
 using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
 #endregion
@@ -38,6 +39,8 @@ namespace Nine.Content.Pipeline.Processors
     [ContentProcessor(DisplayName = "Linked Effect - Engine Nine")]
     public class LinkedEffectProcessor : ContentProcessor<LinkedEffectContent, LinkedEffectContent>
     {
+        const string LinkedEffectWorkingPath = "LinkedEffects";
+
         public override LinkedEffectContent Process(LinkedEffectContent input, ContentProcessorContext context)
         {
             if (context.TargetPlatform == TargetPlatform.WindowsPhone)
@@ -52,7 +55,7 @@ namespace Nine.Content.Pipeline.Processors
             if (deferred.EffectParts.Any(part => part is DeferredLightsEffectPartContent))
             {
                 Process(deferred, context, true);
-                input.DeferredEffect = deferred;
+                input.GraphicsBufferEffect = deferred;
             }
             return input;
         }
@@ -61,26 +64,41 @@ namespace Nine.Content.Pipeline.Processors
         {
             StringBuilder content = new StringBuilder();
 
-            input.EffectParts.RemoveAll(part =>
-            {
-                part.EffectParts = input.EffectParts;
-                return deferred ? string.IsNullOrEmpty(part.DeferredCode) : string.IsNullOrEmpty(part.Code);
-            });
+            if (!Directory.Exists(Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath)))
+                Directory.CreateDirectory(Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath));
 
-            foreach (LinkedEffectPartContent part in input.EffectParts)
+            int currentName = 0;
+            int[] nameMapping = new int[input.EffectParts.Count];
+            for (int i = 0; i < input.EffectParts.Count; i++)
             {
+                var part = input.EffectParts[i];
                 part.EffectParts = input.EffectParts;
                 part.Validate(context);
 
-                string filename = Path.Combine(context.IntermediateDirectory, Path.GetRandomFileName() + ".Fragment");
-                content.AppendLine(filename);
-                File.WriteAllText(filename, deferred ? part.DeferredCode : part.Code);
+                var effectCode = part.EffectCode;
+                var graphicsBufferCode = part.GraphicsBufferEffectCode;
+                var code = deferred ? graphicsBufferCode : effectCode;
+                if (string.IsNullOrEmpty(effectCode) && !string.IsNullOrEmpty(graphicsBufferCode))
+                    throw new InvalidContentException(string.Format("EffectPart {0} contains graphics buffer effect code but does not have any effect code", part));
+
+                if (!string.IsNullOrEmpty(code))
+                {
+                    var filename = "LinkedFragment-" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()).ToUpperInvariant() + ".fragment";
+                    filename = Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath, filename);
+                    content.AppendLine(filename);
+                    File.WriteAllText(filename, deferred ? part.GraphicsBufferEffectCode : part.EffectCode);
+                    nameMapping[i] = currentName++;
+                }
+                else
+                {
+                    nameMapping[i] = -1;
+                }
             }
 
-            string identity = Path.GetRandomFileName();
-            string resultStitchupFile = Path.Combine(context.IntermediateDirectory, identity + ".stitchedeffect");
-            string resultEffectFile = Path.Combine(Path.GetTempPath(), identity + ".fx");
-            string resultAsmFile = Path.Combine(context.IntermediateDirectory, identity + ".asm");
+            string identity = "LinkedEffect-" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName()).ToUpperInvariant();
+            string resultStitchupFile = Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath, identity + ".stitchedeffect");
+            string resultEffectFile = Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath, identity + ".fx");
+            string resultAsmFile = Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath, identity + ".asm");
             File.WriteAllText(resultStitchupFile, content.ToString());
 
             StitchedEffectImporter importer = new StitchedEffectImporter();
@@ -89,8 +107,8 @@ namespace Nine.Content.Pipeline.Processors
             StitchedEffectProcessor processor = new StitchedEffectProcessor();
             CompiledEffectContent compiledEffect = processor.Process(stitchedContent, context);
 
-            List<string> uniqueNames = new List<string>();
-            input.UniqueNames = processor.Symbols.StitchedFragments.Select(symbol => symbol.UniqueName + "_").ToArray();
+            var uniqueNames = processor.Symbols.StitchedFragments.Select(symbol => symbol.UniqueName + "_").ToArray();
+            input.UniqueNames = Enumerable.Range(0, input.EffectParts.Count).Select(i => nameMapping[i] >= 0 ? uniqueNames[nameMapping[i]] : null).ToArray();
             input.EffectCode = compiledEffect.GetEffectCode();
             input.Token = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(processor.EffectCode.ToString()));
 
@@ -106,12 +124,13 @@ namespace Nine.Content.Pipeline.Processors
                 Process process = new System.Diagnostics.Process();
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.CreateNoWindow = true;
-                process.StartInfo.WorkingDirectory = context.IntermediateDirectory;
+                process.StartInfo.WorkingDirectory = Path.Combine(context.IntermediateDirectory, LinkedEffectWorkingPath);
                 process.StartInfo.FileName = Path.Combine(dxSdkDir, @"Utilities\bin\x86\fxc.exe");
-                process.StartInfo.Arguments = "/nologo /Tfx_2_0 /O3 /Fc" + asmFile + " \"" + effectFile + "\"";
+                process.StartInfo.Arguments = "/nologo /Tfx_2_0 /O3 /Fc \"" + asmFile + "\" \"" + effectFile + "\"";
+                context.Logger.LogMessage(process.StartInfo.FileName + " " + process.StartInfo.Arguments);
+                
                 process.Start();
                 process.WaitForExit();
-
                 context.Logger.LogImportantMessage(string.Format("{0} : (double-click this message to view disassembly file).", asmFile));
             }
         }

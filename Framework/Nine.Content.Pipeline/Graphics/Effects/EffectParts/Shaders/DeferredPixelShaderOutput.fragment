@@ -17,6 +17,9 @@ void main(INPUT input, inout OUTPUT output)
 	import(Color, color = Color);
 	output.color = color;
     
-    export(float, depth, 1);
+	float4 posProjection;
+	import(PositionProjection, posProjection = PositionProjection);
+	
+    output(depth, float4(posProjection.z / posProjection.w, 0, 0, 0));
 }
 __hlsl__

@@ -8,6 +8,163 @@
 // -----------------------------------------------------------------------------
 
 #if !TEXT_TEMPLATE
+namespace Nine
+{
+    /// <summary>
+    /// Content reader for <c>BounceCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BounceCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.BounceCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance);
+        
+        protected override Nine.BounceCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new BounceCurve();
+            }
+            existingInstance.Strength = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>CustomCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class CustomCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.CustomCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance);
+        
+        protected override Nine.CustomCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            existingInstance.Curve = input.ReadObject<Microsoft.Xna.Framework.Curve>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ElasticCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ElasticCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.ElasticCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance);
+        
+        protected override Nine.ElasticCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new ElasticCurve();
+            }
+            existingInstance.Strength = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ExponentialCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ExponentialCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.ExponentialCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance);
+        
+        protected override Nine.ExponentialCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new ExponentialCurve();
+            }
+            existingInstance.Power = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>LinearCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class LinearCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.LinearCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance);
+        
+        protected override Nine.LinearCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new LinearCurve();
+            }
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>SinCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SinCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.SinCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance);
+        
+        protected override Nine.SinCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new SinCurve();
+            }
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>SmoothCurve</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SmoothCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.SmoothCurve>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance);
+        
+        protected override Nine.SmoothCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new SmoothCurve();
+            }
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+}
 namespace Nine.Animations
 {
     /// <summary>
@@ -132,6 +289,7 @@ namespace Nine.Animations
             existingInstance.ScaleX = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
             existingInstance.ScaleY = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
             existingInstance.ScaleZ = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
+            existingInstance.RotationOrder = input.ReadObject<Nine.RotationOrder>();
             existingInstance.RotationX = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
             existingInstance.RotationY = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
             existingInstance.RotationZ = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();

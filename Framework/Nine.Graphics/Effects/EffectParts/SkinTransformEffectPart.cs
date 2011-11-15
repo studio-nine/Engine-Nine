@@ -50,7 +50,7 @@ namespace Nine.Graphics.Effects.EffectParts
             get { return true; }
             set { }
         }
-
+                
         /// <summary>
         /// Sets an array of skinning bone transform matrices.
         /// </summary>

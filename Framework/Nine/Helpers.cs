@@ -20,6 +20,24 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine
 {
     /// <summary>
+    /// Defines the rotation order for 3D rotations. 
+    /// The default value is Zxy which is equivalent to Matrix.CreateFromYawPitchRoll.
+    /// </summary>
+    public enum RotationOrder
+    {
+        /// <summary>
+        /// The rotation will be around z, x and y axis in that order.
+        /// This is equivalent to Matrix.CreateFromYawPitchRoll.
+        /// </summary>
+        Zxy,
+
+        /// <summary>
+        /// The rotation will be around y, x and z axis in that order.
+        /// </summary>
+        Yxz,
+    }
+
+    /// <summary>
     /// A method used to interpolate the specified type.
     /// </summary>
     public delegate T Interpolate<T>(T x, T y, float amount);

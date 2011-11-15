@@ -27,11 +27,11 @@ namespace Nine.Graphics.Effects.EffectParts
     internal class SpotLightEffectPart : LinkedEffectPart, ISpotLight
     {
         private uint DirtyMask = 0;
-        
+
         private Vector3 position;
         private EffectParameter positionParameter;
         private const uint positionDirtyMask = 1 << 0;
-        
+
         private Vector3 diffuseColor;
         private EffectParameter diffuseColorParameter;
         private const uint diffuseColorDirtyMask = 1 << 1;
@@ -63,7 +63,7 @@ namespace Nine.Graphics.Effects.EffectParts
         private Vector3 direction;
         private EffectParameter directionParameter;
         private const uint directionDirtyMask = 1 << 8;
-        
+
         [ContentSerializer(Optional = true)]
         public Vector3 Position
         {
@@ -127,81 +127,6 @@ namespace Nine.Graphics.Effects.EffectParts
             set { falloff = value; DirtyMask |= falloffDirtyMask; }
         }
 
-        protected internal override void OnApply()
-        {
-            if ((DirtyMask & positionDirtyMask) != 0)
-            {
-                if (positionParameter == null)
-                    positionParameter = GetParameter("SpotLightPosition");
-                positionParameter.SetValue(position);
-                DirtyMask &= ~positionDirtyMask;
-            }
-
-            if ((DirtyMask & directionDirtyMask) != 0)
-            {
-                if (directionParameter == null)
-                    directionParameter = GetParameter("SpotLightDirection");
-                directionParameter.SetValue(direction);
-                DirtyMask &= ~directionDirtyMask;
-            }
-
-            if ((DirtyMask & diffuseColorDirtyMask) != 0)
-            {
-                if (diffuseColorParameter == null)
-                    diffuseColorParameter = GetParameter("SpotLightDiffuseColor");
-                diffuseColorParameter.SetValue(diffuseColor);
-                DirtyMask &= ~diffuseColorDirtyMask;
-            }
-
-            if ((DirtyMask & specularColorDirtyMask) != 0)
-            {
-                if (specularColorParameter == null)
-                    specularColorParameter = GetParameter("SpotLightSpecularColor");
-                specularColorParameter.SetValue(specularColor);
-                DirtyMask &= ~specularColorDirtyMask;
-            }
-
-            if ((DirtyMask & rangeDirtyMask) != 0)
-            {
-                if (rangeParameter == null)
-                    rangeParameter = GetParameter("Range");
-                rangeParameter.SetValue(range);
-                DirtyMask &= ~rangeDirtyMask;
-            }
-
-            if ((DirtyMask & attenuationDirtyMask) != 0)
-            {
-                if (attenuationParameter == null)
-                    attenuationParameter = GetParameter("Attenuation");
-                attenuationParameter.SetValue(attenuation);
-                DirtyMask &= ~attenuationDirtyMask;
-            }
-
-            if ((DirtyMask & innerAngleDirtyMask) != 0)
-            {
-                if (innerAngleParameter == null)
-                    innerAngleParameter = GetParameter("InnerAngle");
-                innerAngleParameter.SetValue((float)Math.Cos(innerAngle * 0.5));
-                DirtyMask &= ~innerAngleDirtyMask;
-            }
-
-            if ((DirtyMask & outerAngleDirtyMask) != 0)
-            {
-                if (outerAngleParameter == null)
-                    outerAngleParameter = GetParameter("OuterAngle");
-                outerAngleParameter.SetValue((float)Math.Cos(outerAngle * 0.5));
-                DirtyMask &= ~outerAngleDirtyMask;
-            }
-
-            if ((DirtyMask & falloffDirtyMask) != 0)
-            {
-                if (falloffParameter == null)
-                    falloffParameter = GetParameter("Falloff");
-                falloffParameter.SetValue(falloff);
-                DirtyMask &= ~falloffDirtyMask;
-            }
-        }
-
         public SpotLightEffectPart()
         {
             Direction = new Vector3(0, -0.707107f, -0.707107f);
@@ -212,6 +137,82 @@ namespace Nine.Graphics.Effects.EffectParts
             InnerAngle = MathHelper.PiOver4;
             OuterAngle = MathHelper.PiOver2;
             Falloff = 1;
+
+            positionParameter = GetParameter("SpotLightPosition");
+            directionParameter = GetParameter("SpotLightDirection");
+            diffuseColorParameter = GetParameter("SpotLightDiffuseColor");
+            specularColorParameter = GetParameter("SpotLightSpecularColor");
+            rangeParameter = GetParameter("Range");
+            attenuationParameter = GetParameter("Attenuation");
+            innerAngleParameter = GetParameter("InnerAngle");
+            outerAngleParameter = GetParameter("OuterAngle");
+            falloffParameter = GetParameter("Falloff");
+        }
+
+        protected internal override void OnApply()
+        {
+            if ((DirtyMask & positionDirtyMask) != 0)
+            {
+                if (positionParameter != null)
+                    positionParameter.SetValue(position);
+                DirtyMask &= ~positionDirtyMask;
+            }
+
+            if ((DirtyMask & directionDirtyMask) != 0)
+            {
+                if (directionParameter != null)
+                    directionParameter.SetValue(direction);
+                DirtyMask &= ~directionDirtyMask;
+            }
+
+            if ((DirtyMask & diffuseColorDirtyMask) != 0)
+            {
+                if (diffuseColorParameter != null)
+                    diffuseColorParameter.SetValue(diffuseColor);
+                DirtyMask &= ~diffuseColorDirtyMask;
+            }
+
+            if ((DirtyMask & specularColorDirtyMask) != 0)
+            {
+                if (specularColorParameter != null)
+                    specularColorParameter.SetValue(specularColor);
+                DirtyMask &= ~specularColorDirtyMask;
+            }
+
+            if ((DirtyMask & rangeDirtyMask) != 0)
+            {
+                if (rangeParameter != null)
+                    rangeParameter.SetValue(range);
+                DirtyMask &= ~rangeDirtyMask;
+            }
+
+            if ((DirtyMask & attenuationDirtyMask) != 0)
+            {
+                if (attenuationParameter != null)
+                    attenuationParameter.SetValue(attenuation);
+                DirtyMask &= ~attenuationDirtyMask;
+            }
+
+            if ((DirtyMask & innerAngleDirtyMask) != 0)
+            {
+                if (innerAngleParameter != null)
+                    innerAngleParameter.SetValue((float)Math.Cos(innerAngle * 0.5));
+                DirtyMask &= ~innerAngleDirtyMask;
+            }
+
+            if ((DirtyMask & outerAngleDirtyMask) != 0)
+            {
+                if (outerAngleParameter != null)
+                    outerAngleParameter.SetValue((float)Math.Cos(outerAngle * 0.5));
+                DirtyMask &= ~outerAngleDirtyMask;
+            }
+
+            if ((DirtyMask & falloffDirtyMask) != 0)
+            {
+                if (falloffParameter != null)
+                    falloffParameter.SetValue(falloff);
+                DirtyMask &= ~falloffDirtyMask;
+            }
         }
 
         protected internal override LinkedEffectPart Clone()

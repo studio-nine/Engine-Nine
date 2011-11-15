@@ -36,8 +36,7 @@ namespace Nine.Content.Pipeline.Processors
         /// Gets or sets a value indicating whether a base layer should be generated.
         /// </summary>
         [DefaultValue(true)]
-        [Description(
-            "Determines if a base layer should be generated automatically if the first layer is not specified.")]
+        [Description("Determines if a base layer should be generated automatically if the first layer is not specified.")]
         public bool GenerateBaseLayer { get; set; }
 
         public SplatterTextureProcessor()
@@ -114,6 +113,10 @@ namespace Nine.Content.Pipeline.Processors
                 width = bitmapA.Width;
                 height = bitmapA.Height;
             }
+
+            // In case no alpha texture is specified.
+            width = Math.Max(1, width);
+            height = Math.Max(1, height);
 
             PixelBitmapContent<Vector4> bitmap = new PixelBitmapContent<Vector4>(width, height);
 

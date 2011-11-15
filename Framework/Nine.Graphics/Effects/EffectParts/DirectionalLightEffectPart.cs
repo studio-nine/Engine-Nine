@@ -60,38 +60,39 @@ namespace Nine.Graphics.Effects.EffectParts
             set { specularColor = value; DirtyMask |= specularColorDirtyMask; }
         }
 
-        protected internal override void OnApply()
-        {
-            if ((DirtyMask & directionDirtyMask) != 0)
-            {
-                if (directionParameter == null)
-                    directionParameter = GetParameter("DirLightDirection");
-                directionParameter.SetValue(direction);
-                DirtyMask &= ~directionDirtyMask;
-            }
-
-            if ((DirtyMask & diffuseColorDirtyMask) != 0)
-            {
-                if (diffuseColorParameter == null)
-                    diffuseColorParameter = GetParameter("DirLightDiffuseColor");
-                diffuseColorParameter.SetValue(diffuseColor);
-                DirtyMask &= ~diffuseColorDirtyMask;
-            }
-
-            if ((DirtyMask & specularColorDirtyMask) != 0)
-            {
-                if (specularColorParameter == null)
-                    specularColorParameter = GetParameter("DirLightSpecularColor");
-                specularColorParameter.SetValue(specularColor);
-                DirtyMask &= ~specularColorDirtyMask;
-            }
-        }
-        
         public DirectionalLightEffectPart()
         {
             Direction = new Vector3(0, -0.707107f, -0.707107f);
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
+
+            directionParameter = GetParameter("DirLightDirection");
+            diffuseColorParameter = GetParameter("DirLightDiffuseColor");
+            specularColorParameter = GetParameter("DirLightSpecularColor");
+        }
+
+        protected internal override void OnApply()
+        {
+            if ((DirtyMask & directionDirtyMask) != 0)
+            {
+                if (directionParameter != null)
+                    directionParameter.SetValue(direction);
+                DirtyMask &= ~directionDirtyMask;
+            }
+
+            if ((DirtyMask & diffuseColorDirtyMask) != 0)
+            {
+                if (diffuseColorParameter != null)
+                    diffuseColorParameter.SetValue(diffuseColor);
+                DirtyMask &= ~diffuseColorDirtyMask;
+            }
+
+            if ((DirtyMask & specularColorDirtyMask) != 0)
+            {
+                if (specularColorParameter != null)
+                    specularColorParameter.SetValue(specularColor);
+                DirtyMask &= ~specularColorDirtyMask;
+            }
         }
 
         protected internal override LinkedEffectPart Clone()

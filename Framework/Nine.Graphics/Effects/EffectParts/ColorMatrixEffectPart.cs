@@ -43,15 +43,15 @@ namespace Nine.Graphics.Effects.EffectParts
         public ColorMatrixEffectPart()
         {
             ColorMatrix = Matrix.Identity;
+            transformParameter = GetParameter("Transform");
         }
 
         protected internal override void OnApply()
         {
             if ((DirtyMask & transformDirtyMask) != 0)
             {
-                if (transformParameter == null)
-                    transformParameter = GetParameter("Transform");
-                transformParameter.SetValue(transform);
+                if (transformParameter != null)
+                    transformParameter.SetValue(transform);
                 DirtyMask &= ~transformDirtyMask;
             }
         }

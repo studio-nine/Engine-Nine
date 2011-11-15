@@ -10,11 +10,12 @@
 // -----------------------------------------------------------------------------
 <#@ include file="Content.tth" #>
 <#@ include file="Document.tth" #>
-#if !TEXT_TEMPLATE
 <#
     var assembly = Assembly.LoadFrom(Host.ResolvePath(assemblyFile));
     var assemblyDoc = OpenAssemblyXmlDocument(Host.ResolvePath(assemblyDocumentFile));
-    
+#>
+#if !TEXT_TEMPLATE
+<#
     foreach (var namespaceGroup in FindContentSerializableTypes(assembly).GroupBy(t => GetContentPipelineNamespace(t))
                                                                          .OrderBy(g => g.Key))
     {
@@ -54,12 +55,16 @@ namespace <#= namespaceGroup.Key #>
         var hasDefaultValue = !string.IsNullOrEmpty(defaultValueString);
         var memberTypeName = GetMemberContentTypeName(member);
         var memberName = GetMemberFieldName(member);
+        var typeConverter = GetTypeConverter(member);
 #>
         /// <summary>
         /// <#= GetSummary(assemblyDoc, member.Name).Replace("Gets or sets", "Gets").Replace("Gets", "Gets or sets") #>
         /// </summary>
 <# if (hasDefaultValue) { #>
         [System.ComponentModel.DefaultValue("<#= defaultValueString #>")]
+<# } #>
+<# if (typeConverter != null) { #>
+        [System.ComponentModel.TypeConverter(typeof(<#= typeConverter #>))]
 <# } #>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual <#= memberTypeName #> <#= memberName #> { get; <# if (!CanSetMember(member)) { #> internal <# } #>set; }

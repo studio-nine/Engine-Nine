@@ -56,7 +56,7 @@ namespace Microsoft.Xna.Framework
         /// <summary>
         /// Initializes all components.
         /// </summary>
-        public void Initialize()
+        internal void Initialize()
         {
             // Prevent multiple initializations
             if (isInitialized)
@@ -80,7 +80,7 @@ namespace Microsoft.Xna.Framework
         /// <summary>
         /// Updates all enabled components.
         /// </summary>
-        public void Update(GameTime gameTime)
+        internal void Update(GameTime gameTime)
         {
             // Copy the components into our temporary list in case one of the Update methods
             // modifies the component collection.
@@ -98,7 +98,7 @@ namespace Microsoft.Xna.Framework
         /// <summary>
         /// Draws all visible components.
         /// </summary>
-        public void Draw(GameTime gameTime)
+        internal void Draw(GameTime gameTime)
         {
             // Copy the components into our temporary list in case one of the Draw methods
             // modifies the component collection.

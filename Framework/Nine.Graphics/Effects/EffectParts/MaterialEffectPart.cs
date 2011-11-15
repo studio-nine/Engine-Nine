@@ -84,45 +84,55 @@ namespace Nine.Graphics.Effects.EffectParts
 
         public override bool IsMaterial { get { return true; } }
 
+        public MaterialEffectPart()
+        {
+            DiffuseColor = Vector3.One;
+            EmissiveColor = Vector3.Zero;
+            SpecularColor = Vector3.Zero;
+            SpecularPower = 16;
+            Alpha = 1;
+
+            specularPowerParameter = GetParameter("SpecularPower");
+            diffuseColorParameter = GetParameter("DiffuseColor");
+            emissiveColorParameter = GetParameter("EmissiveColor");
+            specularColorParameter = GetParameter("SpecularColor");
+            alphaParameter = GetParameter("Alpha");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & specularPowerDirtyMask) != 0)
             {
-                if (specularPowerParameter == null)
-                    specularPowerParameter = GetParameter("SpecularPower");
-                specularPowerParameter.SetValue(specularPower);
+                if (specularPowerParameter != null)
+                    specularPowerParameter.SetValue(specularPower);
                 DirtyMask &= ~specularPowerDirtyMask;
             }
 
             if ((DirtyMask & diffuseColorDirtyMask) != 0)
             {
-                if (diffuseColorParameter == null)
-                    diffuseColorParameter = GetParameter("DiffuseColor");
-                diffuseColorParameter.SetValue(diffuseColor);
+                if (diffuseColorParameter != null)
+                    diffuseColorParameter.SetValue(diffuseColor);
                 DirtyMask &= ~diffuseColorDirtyMask;
             }
 
             if ((DirtyMask & emissiveColorDirtyMask) != 0)
             {
-                if (emissiveColorParameter == null)
-                    emissiveColorParameter = GetParameter("EmissiveColor");
-                emissiveColorParameter.SetValue(emissiveColor);
+                if (emissiveColorParameter != null)
+                    emissiveColorParameter.SetValue(emissiveColor);
                 DirtyMask &= ~emissiveColorDirtyMask;
             }
 
             if ((DirtyMask & specularColorDirtyMask) != 0)
             {
-                if (specularColorParameter == null)
-                    specularColorParameter = GetParameter("SpecularColor");
-                specularColorParameter.SetValue(specularColor);
+                if (specularColorParameter != null)
+                    specularColorParameter.SetValue(specularColor);
                 DirtyMask &= ~specularColorDirtyMask;
             }
 
             if ((DirtyMask & alphaDirtyMask) != 0)
             {
-                if (alphaParameter == null)
-                    alphaParameter = GetParameter("Alpha");
-                alphaParameter.SetValue(alpha);
+                if (alphaParameter != null)
+                    alphaParameter.SetValue(alpha);
                 DirtyMask &= ~alphaDirtyMask;
             }
         }
@@ -136,16 +146,6 @@ namespace Nine.Graphics.Effects.EffectParts
             effectPart.SpecularPower = SpecularPower;
             effectPart.Alpha = Alpha;
         }
-        
-        public MaterialEffectPart()
-        {
-            DiffuseColor = Vector3.One;
-            EmissiveColor = Vector3.Zero;
-            SpecularColor = Vector3.Zero;
-            SpecularPower = 16;
-            Alpha = 1;
-        }
-
 
         protected internal override LinkedEffectPart Clone()
         {

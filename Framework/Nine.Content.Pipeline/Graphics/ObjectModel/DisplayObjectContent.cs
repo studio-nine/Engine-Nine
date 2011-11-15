@@ -37,6 +37,9 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         Vector3 rotation;
 
         [ContentSerializer(Optional = true)]
+        public RotationOrder RotationOrder { get; set; }
+
+        [ContentSerializer(Optional = true)]
         public virtual Vector3 Scale
         {
             get { return scale; }
@@ -46,11 +49,22 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
 
         private void UpdateTransform()
         {
-            Transform = Matrix.CreateScale(scale) *
-                        Matrix.CreateRotationX(MathHelper.ToRadians(rotation.X)) *
-                        Matrix.CreateRotationY(MathHelper.ToRadians(rotation.Y)) *
-                        Matrix.CreateRotationZ(MathHelper.ToRadians(rotation.Z)) *
-                        Matrix.CreateTranslation(position);
+            if (RotationOrder == RotationOrder.Zxy)
+            {
+                Transform = Matrix.CreateScale(scale) *
+                            Matrix.CreateRotationZ(MathHelper.ToRadians(rotation.Z)) *
+                            Matrix.CreateRotationY(MathHelper.ToRadians(rotation.Y)) *
+                            Matrix.CreateRotationX(MathHelper.ToRadians(rotation.X)) *
+                            Matrix.CreateTranslation(position);
+            }
+            else
+            {
+                Transform = Matrix.CreateScale(scale) *
+                            Matrix.CreateRotationY(MathHelper.ToRadians(rotation.Y)) *
+                            Matrix.CreateRotationX(MathHelper.ToRadians(rotation.X)) *
+                            Matrix.CreateRotationZ(MathHelper.ToRadians(rotation.Z)) *
+                            Matrix.CreateTranslation(position);
+            }
         }
     }
 }

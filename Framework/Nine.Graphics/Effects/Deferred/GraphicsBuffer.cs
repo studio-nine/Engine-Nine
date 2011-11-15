@@ -171,7 +171,7 @@ namespace Nine.Graphics.Effects.Deferred
         /// <summary>
         /// Draws the specified lights onto the light buffer.
         /// </summary>
-        public void DrawLights(Matrix view, Matrix projection, IEnumerable<IDeferredLight> lights)
+        public void DrawLights(Matrix view, Matrix projection, ICollection<IDeferredLight> lights)
         {
             BeginLights(view, projection);
             foreach (IDeferredLight light in lights)
@@ -182,7 +182,7 @@ namespace Nine.Graphics.Effects.Deferred
         /// <summary>
         /// Begins the rendering of all the lights in the scene.
         /// </summary>
-        private void BeginLights(Matrix view, Matrix projection)
+        internal void BeginLights(Matrix view, Matrix projection)
         {
             if (hasLightBegin || hasSceneBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
@@ -208,7 +208,7 @@ namespace Nine.Graphics.Effects.Deferred
         /// <summary>
         /// Draws a light instance for DeferredEffect.
         /// </summary>
-        private void DrawLight(IDeferredLight light)
+        internal void DrawLight(IDeferredLight light)
         {
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
@@ -247,7 +247,7 @@ namespace Nine.Graphics.Effects.Deferred
         /// <summary>
         /// Ends the rendering of lights and generates LightTexture.
         /// </summary>
-        private Texture2D EndLights()
+        internal Texture2D EndLights()
         {
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);

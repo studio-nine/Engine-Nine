@@ -148,6 +148,29 @@ namespace Nine.Graphics
             return renderTarget;
         }
         #endregion
+
+        #region EnablePerfHudProfiling
+#if WINDOWS
+        /// <summary>
+        /// Enables the profiling using nVidia PerfHud.
+        /// </summary>
+        public static void EnablePerfHudProfiling(this GraphicsDeviceManager graphicsDeviceManager)
+        {
+            graphicsDeviceManager.PreparingDeviceSettings += (sender, e) =>
+            {
+                foreach (GraphicsAdapter currentAdapter in GraphicsAdapter.Adapters)
+                {
+                    if (currentAdapter.Description.Contains("PerfHUD"))
+                    {
+                        e.GraphicsDeviceInformation.Adapter = currentAdapter;
+                        GraphicsAdapter.UseReferenceDevice = true;
+                        break;
+                    }
+                }
+            };
+        }
+#endif
+        #endregion
     }
 
     /// <summary>

@@ -1002,6 +1002,41 @@ namespace Nine.Graphics.ObjectModel
         }
     }
     /// <summary>
+    /// Content reader for <c>Camera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class CameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Camera>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Camera existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Camera existingInstance);
+        
+        protected override Nine.Graphics.ObjectModel.Camera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Camera existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Camera(graphicsDevice);
+            }
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Transform = input.ReadMatrix();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>DirectionalLight</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]

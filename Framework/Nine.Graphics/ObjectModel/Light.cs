@@ -97,19 +97,29 @@ namespace Nine.Graphics.ObjectModel
                                     HashSet<ISpatialQueryable> shadowCastersInViewFrustum)
         {
 #if !WINDOWS_PHONE
+            Matrix view = context.View;
+            Matrix projection = context.Projection;
+
+            Matrix shadowFrustumMatrix = new Matrix();
+            if (!GetShadowFrustum(context, shadowCastersInLightFrustum, shadowCastersInViewFrustum, out shadowFrustumMatrix))
+            {
+                // No shadow casters found, do not create the shadow map.
+                return;
+            }
+            ShadowFrustum.Matrix = shadowFrustumMatrix;
+
+            if (AffectedShadowCasters == null)
+                AffectedShadowCasters = new List<IDrawableObject>();
+            scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
+            if (AffectedShadowCasters.Count <= 0)
+                return;
+
             if (ShadowMap == null || ShadowMap.Size != context.Settings.ShadowMapResolution)
             {
                 if (ShadowMap != null)
                     ShadowMap.Dispose();
                 ShadowMap = new ShadowMap(context.GraphicsDevice, context.Settings.ShadowMapResolution);
             }
-
-            Matrix view = context.View;
-            Matrix projection = context.Projection;
-
-            Matrix shadowFrustumMatrix = new Matrix();
-            GetShadowFrustum(context, shadowCastersInLightFrustum, shadowCastersInViewFrustum, out shadowFrustumMatrix);
-            ShadowFrustum.Matrix = shadowFrustumMatrix;
 
             ShadowMap.Begin();
             {
@@ -118,11 +128,6 @@ namespace Nine.Graphics.ObjectModel
                 context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
                 {
                     DepthEffect depthEffect = (DepthEffect)ShadowMap.Effect;
-                    if (AffectedShadowCasters == null)
-                        AffectedShadowCasters = new List<IDrawableObject>();
-                    else
-                        AffectedShadowCasters.Clear();
-                    scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
                     
                     for (int currentShadowCaster = 0; currentShadowCaster < AffectedShadowCasters.Count; currentShadowCaster++)
                     {
@@ -139,18 +144,24 @@ namespace Nine.Graphics.ObjectModel
                 context.Projection = projection;
             }
             ShadowMap.End();
+
+            AffectedShadowCasters.Clear();
 #endif
         }
 
         /// <summary>
         /// Gets the shadow frustum of this light.
         /// </summary>
-        protected virtual void GetShadowFrustum(GraphicsContext context,
-                                                HashSet<ISpatialQueryable> drawablesInLightFrustum,
-                                                HashSet<ISpatialQueryable> drawablesInViewFrustum,
+        /// <returns>
+        /// Returns true when a shadow caster is found.
+        /// </returns>
+        protected virtual bool GetShadowFrustum(GraphicsContext context,
+                                                HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
+                                                HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
                                                 out Matrix frustumMatrix)
-        {
+        {            
             frustumMatrix = context.ViewFrustum.Matrix;
+            return shadowCastersInViewFrustum.Count > 0;
         }
 
         /// <summary>

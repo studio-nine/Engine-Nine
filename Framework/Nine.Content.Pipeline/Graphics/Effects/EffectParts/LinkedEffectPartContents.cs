@@ -35,7 +35,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.AmbientLight); }
         }
@@ -46,7 +46,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         [ContentSerializer(Optional= true)]
         public virtual TextureAlphaUsage TextureAlphaUsage { get; set; }
 
-        public override string Code
+        public override string EffectCode
         {
             get 
             {
@@ -65,7 +65,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class DetailTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DetailTexture); }
         }
@@ -82,12 +82,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                 throw new InvalidContentException("Deferred lights and forward lights cannot be used together.");
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredLights); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredLightBuffer); }
         }
@@ -104,7 +104,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                 throw new InvalidContentException("BeginLightEffectPartContent and EndLightEffectPartContent must be used together in pairs.");
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.BeginLight); }
         }
@@ -113,7 +113,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class EndLightEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.EndLight); }
         }
@@ -132,7 +132,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DirectionalLight); }
         }
@@ -151,7 +151,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PointLight); }
         }
@@ -170,7 +170,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.SpotLight); }
         }
@@ -179,7 +179,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class DualTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DualTexture); }
         }
@@ -231,7 +231,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             TextureWEnabled = true;
         }
         
-        public override string Code
+        public override string EffectCode
         {
             get 
             {
@@ -251,11 +251,16 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                                .Replace("{$HASSPECULARW}", SpecularWEnabled ? "" : "//");
             }
         }
+
+        public override string GraphicsBufferEffectCode
+        {
+            get { return EffectCode; }
+        }
     }
 
     public partial class FogEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.Fog); }
         }
@@ -264,7 +269,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class OverlayTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.OverlayTexture); }
         }
@@ -273,12 +278,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PixelShaderOutputEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PixelShaderOutput); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.DeferredPixelShaderOutput); }
         }
@@ -287,70 +292,70 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionColorEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionColor); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionColorNormalTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionColorNormalTexture); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionColorTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionColorTexture); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionNormalTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionNormalTexture); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class PositionTextureEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.PositionTexture); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
@@ -366,7 +371,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get 
             { 
@@ -376,15 +381,15 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
     public partial class MaterialEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.Material); }
         }
@@ -392,7 +397,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class TextureTransformEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.TextureTransform); }
         }
@@ -400,7 +405,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class ShadowMapEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ShadowMap); }
         }
@@ -408,7 +413,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class EmissiveMapEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.EmissiveMap); }
         }
@@ -425,7 +430,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             }
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.SpecularMap); }
         }
@@ -433,7 +438,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class NormalMapEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get
             {
@@ -448,28 +453,28 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class VertexShaderOutputEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.VertexShaderOutput); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.VertexTransformEffectPart, Nine.Graphics")]
     public partial class VertexTransformEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.VertexTransform); }
         }
 
-        public override string DeferredCode
+        public override string GraphicsBufferEffectCode
         {
-            get { return Code; }
+            get { return EffectCode; }
         }
     }
 
@@ -482,7 +487,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                 throw new InvalidContentException("ScreenEffect must be placed first.");
         }
 
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ScreenEffect); }
         }
@@ -491,7 +496,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class RadicalBlurEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get
             {
@@ -507,7 +512,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class ColorMatrixEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.ColorMatrix); }
         }
@@ -516,7 +521,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedEffectPart, Nine.Graphics")]
     public partial class ThresholdEffectPartContent : LinkedEffectPartContent
     {
-        public override string Code
+        public override string EffectCode
         {
             get { return Encoding.UTF8.GetString(LinkedEffectParts.Threshold); }
         }

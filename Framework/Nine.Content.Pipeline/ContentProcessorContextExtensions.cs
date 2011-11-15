@@ -10,7 +10,10 @@
 using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
+using System.Linq;
 using System.Text;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -21,7 +24,6 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Nine.Content.Pipeline.Processors;
-using System.ComponentModel;
 #endregion
 
 namespace Nine.Content.Pipeline
@@ -33,7 +35,11 @@ namespace Nine.Content.Pipeline
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ContentProcessorContextExtensions
     {
-        const string DefaultOutputDirectory = @"Misc\Build";
+        // This value will be used by ContentReference when serialize using
+        // reference relocation path.
+        internal static string ContentReferenceBasePath;
+
+        const string DefaultOutputDirectory = @"Misc";
 
         public static ExternalReference<TOutput> BuildAsset<TInput, TOutput>(this ContentProcessorContext context, TInput input, string processorName)
         {
@@ -42,22 +48,73 @@ namespace Nine.Content.Pipeline
 
         public static ExternalReference<TOutput> BuildAsset<TInput, TOutput>(this ContentProcessorContext context, TInput input, string processorName, OpaqueDataDictionary processorParameters, string assetName)
         {
-            if (string.IsNullOrEmpty(assetName))
-            {
-                assetName = Path.Combine(DefaultOutputDirectory, Guid.NewGuid().ToString("N"));
-            }
-
-            var name = Path.GetFileName(assetName);
-            var sourceFile = Path.Combine(context.IntermediateDirectory, name + ".xml");
+            ContentReferenceBasePath = Path.GetDirectoryName(context.OutputFilename);
 
             // There's currently no way to build from object, so we need to create a temperory file
-            using (XmlWriter writer = XmlWriter.Create(sourceFile))
+            using (var stream = new MemoryStream())
             {
-                IntermediateSerializer.Serialize(writer, input, ".");
+                using (XmlWriter writer = XmlWriter.Create(stream))
+                {
+                    try
+                    {
+                        IntermediateSerializer.Serialize(writer, input, Directory.GetCurrentDirectory() + "\\");
+                    }
+                    finally
+                    {
+                        ContentReferenceBasePath = null;
+                    }
+                }
+
+                FixExternalReference(context, stream);
+
+                var sourceFile = "";
+
+                if (string.IsNullOrEmpty(assetName))
+                {
+                    var hashString = new StringBuilder();
+                    stream.Seek(0, SeekOrigin.Begin);
+                    var hash = MD5.Create().ComputeHash(stream);
+                    for (int i = 0; i < hash.Length; i++)
+                    {
+                        hashString.Append(hash[i].ToString("X2"));
+                    }
+
+                    var name = hashString.ToString().ToUpperInvariant();
+                    assetName = Path.Combine(DefaultOutputDirectory, name);
+                    sourceFile = Path.Combine(context.IntermediateDirectory, input.GetType().Name + "-" + name + ".xml");
+                }
+                else
+                {
+                    sourceFile = Path.Combine(context.IntermediateDirectory, Path.GetFileName(assetName) + ".xml");
+                }
+
+                using (var assetFile = new FileStream(sourceFile, FileMode.Create))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.WriteTo(assetFile);
+                }
+
+                // Build the source asset
+                return context.BuildAsset<TInput, TOutput>(new ExternalReference<TInput>(sourceFile), processorName, processorParameters, null, assetName);
+            }
+        }
+
+        private static void FixExternalReference(ContentProcessorContext context, MemoryStream stream)
+        {
+            var outputFile = new Uri(Path.GetFullPath(context.OutputFilename));
+            var outputDirectory = new Uri(Path.GetFullPath(context.OutputDirectory));
+            var relativePath = Path.GetDirectoryName(outputDirectory.MakeRelativeUri(outputFile).OriginalString);
+            
+            stream.Seek(0, SeekOrigin.Begin);            
+            var xml = XDocument.Load(stream);
+
+            foreach (var externalReference in xml.Descendants("ExternalReferences").SelectMany(e => e.Descendants("ExternalReference")))
+            {
+                externalReference.Value = Path.GetFullPath(Path.Combine(relativePath, externalReference.Value));
             }
 
-            // Build the source asset
-            return context.BuildAsset<TInput, TOutput>(new ExternalReference<TInput>(sourceFile), processorName, processorParameters, null, assetName);
+            stream.Seek(0, SeekOrigin.Begin);
+            xml.Save(stream);
         }
     }
 }

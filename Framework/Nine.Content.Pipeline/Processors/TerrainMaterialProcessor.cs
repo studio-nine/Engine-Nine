@@ -106,25 +106,23 @@ namespace Nine.Content.Pipeline.Processors
             }
         }
 
-        private ContentReference<Texture2DContent> BuildTexture(ContentProcessorContext context, ContentReference<Texture2DContent> texture)
+        private ContentReference<Texture2DContent> BuildTexture(ContentProcessorContext context, ExternalReference<Texture2DContent> texture)
         {
             if (texture == null || string.IsNullOrEmpty(texture.Filename))
                 return null;
 
             OpaqueDataDictionary param = new OpaqueDataDictionary();
             param.Add("GenerateMipmaps", true);
-            return new ContentReference<Texture2DContent>(context.BuildAsset<TextureContent, TextureContent>(
-                new ExternalReference<TextureContent>(texture.Filename), "TextureProcessor", param, null, null).Filename);
+            return new ContentReference<Texture2DContent>(context.BuildAsset<Texture2DContent, TextureContent>(texture, "TextureProcessor", param, null, null).Filename);
         }
-        
-        private ContentReference<Texture2DContent> BuildNormalMap(ContentProcessorContext context, ContentReference<Texture2DContent> texture)
+
+        private ContentReference<Texture2DContent> BuildNormalMap(ContentProcessorContext context, ExternalReference<Texture2DContent> texture)
         {
             if (texture == null || string.IsNullOrEmpty(texture.Filename))
                 return null;
 
             OpaqueDataDictionary param = new OpaqueDataDictionary();
-            return new ContentReference<Texture2DContent>(context.BuildAsset<TextureContent, TextureContent>(
-                new ExternalReference<TextureContent>(texture.Filename), "NormalTextureProcessor", param, null, null).Filename);
+            return new ContentReference<Texture2DContent>(context.BuildAsset<Texture2DContent, TextureContent>(texture, "NormalTextureProcessor", param, null, null).Filename);
         }
     }
 }

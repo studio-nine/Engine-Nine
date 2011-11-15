@@ -70,7 +70,8 @@ namespace Nine
     }
 
     #region Curve Implementations
-    internal class LinearCurve : ICurve
+    [ContentSerializable]
+    class LinearCurve : ICurve
     {
         public float Evaluate(float position)
         {
@@ -78,7 +79,8 @@ namespace Nine
         }
     }
 
-    internal class ExponentialCurve : ICurve
+    [ContentSerializable]
+    class ExponentialCurve : ICurve
     {
         public float Power { get; set; }
         
@@ -90,7 +92,8 @@ namespace Nine
         }
     }
 
-    internal class SinCurve : ICurve
+    [ContentSerializable]
+    class SinCurve : ICurve
     {
         public float Evaluate(float position)
         {
@@ -98,7 +101,8 @@ namespace Nine
         }
     }
 
-    internal class SmoothCurve : ICurve
+    [ContentSerializable]
+    class SmoothCurve : ICurve
     {
         public float Evaluate(float position)
         {
@@ -106,7 +110,8 @@ namespace Nine
         }
     }
 
-    internal class ElasticCurve : ICurve
+    [ContentSerializable]
+    class ElasticCurve : ICurve
     {
         public float Strength { get; set; }
 
@@ -121,7 +126,8 @@ namespace Nine
         }
     }
 
-    internal class BounceCurve : ICurve
+    [ContentSerializable]
+    class BounceCurve : ICurve
     {
         public float Strength { get; set; }
 
@@ -138,7 +144,8 @@ namespace Nine
         }
     }
 
-    internal class CustomCurve : ICurve
+    [ContentSerializable]
+    class CustomCurve : ICurve
     {
         private float minPosition;
         private float maxPosition;

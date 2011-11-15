@@ -40,13 +40,17 @@ namespace Nine.Graphics.Effects.EffectParts
             set { if (texture != value) { texture = value; DirtyMask |= textureDirtyMask; } }
         }
 
+        public NormalMapEffectPart()
+        {
+            textureParameter = GetParameter("Texture");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & textureDirtyMask) != 0)
             {
-                if (textureParameter == null)
-                    textureParameter = GetParameter("Texture");
-                textureParameter.SetValue(texture);
+                if (textureParameter != null)
+                    textureParameter.SetValue(texture);
                 DirtyMask &= ~textureDirtyMask;
             }
         }

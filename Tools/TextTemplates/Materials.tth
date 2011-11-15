@@ -10,11 +10,12 @@
 // -----------------------------------------------------------------------------
 <#@ include file="Content.tth" #>
 <#@ include file="Document.tth" #>
-#if !TEXT_TEMPLATE
 <#
     var assembly = Assembly.LoadFrom(Host.ResolvePath(assemblyFile));
     var assemblyDoc = OpenAssemblyXmlDocument(Host.ResolvePath(assemblyDocumentFile));
-
+#>
+#if !TEXT_TEMPLATE
+<#
     foreach (var namespaceGroup in FindEffectInstanceTypes(assembly).GroupBy(t => t.Namespace.IndexOf("Microsoft") >= 0 ? "Nine.Graphics.Effects" : t.Namespace)
                                                                     .OrderBy(g => g.Key))
     {

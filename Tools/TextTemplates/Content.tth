@@ -16,6 +16,7 @@
             public static List<string> ExcludedTypes = new List<string>();
             public static Dictionary<string, string> NamespaceMapping = new Dictionary<string, string>();
             public static Dictionary<string, string> TypeMapping = new Dictionary<string, string>();
+            public static Dictionary<string, string> TypeConverterMapping = new Dictionary<string, string>();
             public static Dictionary<Type, string> PrimitiveTypes = new Dictionary<Type, string>();
 
             static KnownContentTypes()
@@ -43,7 +44,8 @@
                 PrimitiveTypes.Add(typeof(Vector4), "Vector4");
                 PrimitiveTypes.Add(typeof(Matrix), "Matrix");
                 PrimitiveTypes.Add(typeof(Quaternion), "Quaternion");
-
+                
+                TypeMapping.Add("Microsoft.Xna.Framework.Curve", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Curve>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture3D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture3DContent>");
@@ -59,6 +61,8 @@
                 TypeMapping.Add("Nine.Graphics.ObjectModel.Transformable", "System.Object");
                 TypeMapping.Add("Nine.Animations.TweenAnimation`1[[Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<Microsoft.Xna.Framework.Vector3>");                
                 TypeMapping.Add("Nine.Animations.TweenAnimation`1[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single>");                
+
+                TypeConverterMapping.Add("Nine.ICurve", "Nine.Content.Pipeline.Design.CurveConverter");
             }
         }
 
@@ -406,7 +410,10 @@
             if (type == null)
                 return null;
             if (declaringType.IsGenericTypeDefinition)
+            {
                 declaringType = declaringType.MakeGenericType(typeof(int));
+                member = declaringType.GetMember(member.Name)[0];
+            }
             object obj = null;
             if (HasDefaultGraphicsDeviceConstructor(declaringType))
             {
@@ -487,6 +494,21 @@
             if (KnownContentTypes.PrimitiveTypes.ContainsKey(type))
                 return KnownContentTypes.PrimitiveTypes[type];
             return null;
+        }
+
+        string GetTypeConverter(MemberInfo member)
+        {
+            try
+            {
+                var type = GetMemberType(member);
+                if (KnownContentTypes.TypeConverterMapping.ContainsKey(type.FullName))
+                    return KnownContentTypes.TypeConverterMapping[type.FullName];
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         GraphicsDevice CreateDummyGraphicsDevice()

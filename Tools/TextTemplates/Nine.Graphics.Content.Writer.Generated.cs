@@ -1126,6 +1126,41 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
     }
     /// <summary>
+    /// Content writer for <c>Camera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class CameraContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CameraContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CameraContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CameraContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CameraContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
+            output.Write(value.Transform);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ObjectModel.CameraReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ObjectModel.Camera, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>DirectionalLight</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]

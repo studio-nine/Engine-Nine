@@ -51,20 +51,22 @@ namespace Nine.Graphics.Effects.EffectParts
             set { detailTextureScale = value; DirtyMask |= detailTextureScaleDirtyMask; }
         }
 
+        public DetailTextureEffectPart()
+        {
+            textureParameter = GetParameter("Texture");
+            detailTextureScaleParameter = GetParameter("DetailTextureScale");
+        }
+
         protected internal override void OnApply()
         {
             if ((DirtyMask & textureDirtyMask) != 0)
             {
-                if (textureParameter == null)
-                    textureParameter = GetParameter("Texture");
                 if (textureParameter != null)
                     textureParameter.SetValue(texture);
                 DirtyMask &= ~textureDirtyMask;
             }
             if ((DirtyMask & detailTextureScaleDirtyMask) != 0)
             {
-                if (detailTextureScaleParameter == null)
-                    detailTextureScaleParameter = GetParameter("DetailTextureScale");
                 if (detailTextureScaleParameter != null)
                     detailTextureScaleParameter.SetValue(detailTextureScale);
                 DirtyMask &= ~detailTextureScaleDirtyMask;

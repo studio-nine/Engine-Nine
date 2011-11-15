@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Graphics (Silverlight)
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Pipeline.Silverlight", "Nine.Content.Pipeline.Silverlight\Nine.Content.Pipeline.Silverlight.csproj", "{AC6F35A9-124E-447E-99DD-21F68A0C226B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SilverlightShaderCompiler", "Nine.Content.Pipeline.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj", "{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nine.Content.Pipeline.Silverlight.ShaderCompiler", "Nine.Content.Pipeline.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj", "{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

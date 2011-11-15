@@ -285,8 +285,7 @@ namespace Nine.Graphics
                     tangents[x + y * w] = Vector3.Normalize(edge4);
                 }
             #endregion
-
-
+            
             #region Smooth normals
             // Smooth all normals, first copy them over, then smooth everything
             if (normalsForSmoothing == null || normalsForSmoothing.Length < w * h)

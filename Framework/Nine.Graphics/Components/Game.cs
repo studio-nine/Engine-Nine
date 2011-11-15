@@ -1,19 +1,21 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GameComponent.cs
+﻿#region Copyright 2011 (c) Engine Nine
+//=============================================================================
 //
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
+//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
 #endregion
 
+#region Using Directives
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Graphics;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+#endregion
 
 namespace Microsoft.Xna.Framework
 {
@@ -31,7 +33,7 @@ namespace Microsoft.Xna.Framework
         public GameWindow Window { get; private set; }        
         public GameComponentCollection Components { get; private set; }
         public new ContentManager Content { get; private set; }
-
+        
         public TimeSpan InactiveSleepTime { get; set; }
         public bool IsActive { get { return true; } }
         public bool IsFixedTimeStep { get; set; }
@@ -47,7 +49,7 @@ namespace Microsoft.Xna.Framework
             Mouse.RootControl = this;
             Keyboard.RootControl = this;
 
-            Window = new GameWindow();
+            Window = new GameWindow(this);
             Components = new GameComponentCollection();
             Content = new ContentManager(null);
             base.Content = (Surface = new DrawingSurface());
@@ -56,20 +58,38 @@ namespace Microsoft.Xna.Framework
             Surface.Draw += new EventHandler<DrawEventArgs>(Surface_Draw);
         }
 
+        /// <summary>
+        /// This is used to display an error message if there is no suitable graphics device or sound card.
+        /// </summary>
+        protected virtual bool ShowMissingRequirementMessage(Exception exception)
+        {
+            MessageBox.Show(exception.Message, "Your computer does not meet the minimum system requirement.", MessageBoxButton.OK);
+            return false;
+        }
+
         void Game_Loaded(object sender, RoutedEventArgs e)
         {
             surfaceLoaded = true;
-            
-            GraphicsDevice = GraphicsDeviceManager.Current.GraphicsDevice;
-            if (GraphicsDevice == null)
-                throw new InvalidOperationException("Failed creating graphics device.");
 
-            // Check if GPU is on
-            if (GraphicsDeviceManager.Current.RenderMode != RenderMode.Hardware)
-                MessageBox.Show("Please activate enableGPUAcceleration=true on your Silverlight plugin page.", "Warning", MessageBoxButton.OK);
+            try
+            {
+                GraphicsDevice = GraphicsDeviceManager.Current.GraphicsDevice;
+                if (GraphicsDevice == null)
+                    throw new InvalidOperationException("Failed creating graphics device.");
+
+                // Check if GPU is on
+                if (GraphicsDeviceManager.Current.RenderMode != RenderMode.Hardware)
+                    throw new InvalidOperationException("Please activate enableGPUAcceleration=true on your Silverlight plugin page.");
+            }
+            catch (Exception exception)
+            {
+                if (!ShowMissingRequirementMessage(exception))
+                    throw;
+            }
 
             Initialize();
             LoadContent();
+            Components.Initialize();
         }
 
         private void Surface_Draw(object sender, DrawEventArgs e)
@@ -80,10 +100,12 @@ namespace Microsoft.Xna.Framework
                 gameTime.TotalGameTime = e.TotalTime;
                 
                 Update(gameTime);
+                Components.Update(gameTime);
 
                 if (!suppressDraw && BeginDraw())
                 {
                     Draw(gameTime);
+                    Components.Draw(gameTime);
                     EndDraw();
                 }
                 suppressDraw = false;
