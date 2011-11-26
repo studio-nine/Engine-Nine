@@ -21,6 +21,9 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace Nine.Content.Pipeline.Graphics.Effects
 {
+    using Nine.Content.Pipeline.Processors;
+
+    [DefaultContentProcessor(typeof(LinkedMaterialProcessor))]
     partial class LinkedMaterialContent
     {
         partial void OnCreate()

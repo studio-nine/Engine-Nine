@@ -565,8 +565,9 @@ namespace Nine.Graphics.ObjectModel
                 // Draw opaque objects
                 ClearLights(opaqueDrawablesInViewFrustum);
                 UpdateAffectedDrawablesAndAffectingLights(drawablesInViewFrustum, lightsInViewFrustum);
-
+#if !SILVERLIGHT
                 ApplyDeferredLighting(drawablesInViewFrustum, lightsInViewFrustum);
+#endif
                 ApplyShadows(drawablesInViewFrustum, lightsInViewFrustum);
 
                 GraphicsDevice.Clear(Settings.BackgroundColor);
@@ -801,7 +802,7 @@ namespace Nine.Graphics.ObjectModel
                 var material = drawable.Material;
                 var lightable = drawable as ILightable;
                 
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !SILVERLIGHT
                 if (material != null && material.IsDeferred)
                 {
                     // Object uses deferred effect
@@ -919,6 +920,10 @@ namespace Nine.Graphics.ObjectModel
             if (settings.ShowNormalBuffer && graphicsBuffer != null)
             {
                 spriteBatch.Draw(graphicsBuffer.NormalBuffer, Vector2.Zero, Color.White);
+            }
+            if (settings.ShowLightBuffer && graphicsBuffer != null)
+            {
+                spriteBatch.Draw(graphicsBuffer.LightBuffer, Vector2.Zero, Color.White);
             }
             if (settings.ShowShadowMap)
             {

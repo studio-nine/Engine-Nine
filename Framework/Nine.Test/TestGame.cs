@@ -12,17 +12,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Windows.Forms;
 
-namespace Nine.Graphics.Test
+namespace Nine
 {
     public class TestGame : Game
     {
+        GraphicsProfile profile;
+        GraphicsDeviceManager manager;
+
         public event Action<GameTime> Paint;
 
         public TestGame()
         {
-            GraphicsDeviceManager manager = new GraphicsDeviceManager(this);
-            manager.PreferredBackBufferWidth = 800;
-            manager.PreferredBackBufferHeight = 500;
+            manager = new GraphicsDeviceManager(this);
+            manager.GraphicsProfile = GraphicsProfile.HiDef;
+            manager.PreferredBackBufferWidth = 1280;
+            manager.PreferredBackBufferHeight = 800;
 
             Form form = (Form)Form.FromHandle(Window.Handle);
             form.TopMost = false;

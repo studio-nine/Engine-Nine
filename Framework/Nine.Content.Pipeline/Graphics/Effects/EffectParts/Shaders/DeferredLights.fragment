@@ -12,6 +12,9 @@ texture2D LightTexture;
 sampler LightSampler = sampler_state
 {
     Texture = (LightTexture);
+    MipFilter = POINT;
+    MinFilter = POINT;
+    MagFilter = POINT;
 };
 
 [ps]

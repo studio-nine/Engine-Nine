@@ -18,7 +18,7 @@ void main(INPUT input, inout OUTPUT output)
 	float3 color;
 	import(EmissiveColor, color = EmissiveColor);
 	
-	color *= tex2D(Texture, uv);
+	color += tex2D(Texture, uv);
 	export(float3, EmissiveColor, color);
 }
 __hlsl__

@@ -34,11 +34,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
         /// <summary>
         /// The alpha channel will be replaced with the specified overlay color.
+        /// Don't forget to turn off premultiplied alpha when using this flag.
         /// </summary>
         Overlay,
 
         /// <summary>
         /// The alpha channle will be used as the specular map.
+        /// Don't forget to turn off premultiplied alpha when using this flag.
         /// </summary>
         Specular,
     }
@@ -65,10 +67,19 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual Vector3 EmissiveColor { get; set; }
 
         [ContentSerializer(Optional = true)]
+        public virtual ContentReference<Texture2DContent> EmissiveMap { get; set; }
+
+        [ContentSerializer(Optional = true)]
         public virtual bool EmissiveMappingEnabled { get; set; }
 
         [ContentSerializer(Optional = true)]
         public virtual bool IsTransparent { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public virtual bool MaterialEnabled { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public virtual ContentReference<Texture2DContent> NormalMap { get; set; }
 
         [ContentSerializer(Optional = true)]
         public virtual bool NormalMappingEnabled { get; set; }
@@ -78,9 +89,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual Vector3 OverlayColor { get; set; }
 
         [ContentSerializer(Optional = true)]
-        public virtual bool ParallaxMappingEnabled { get; set; }
-
-        [ContentSerializer(Optional = true)]
         public virtual bool SkinningEnabled { get; set; }
 
         [DefaultValue("0, 0, 0")]
@@ -88,11 +96,17 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual Vector3 SpecularColor { get; set; }
 
         [ContentSerializer(Optional = true)]
+        public virtual ContentReference<Texture2DContent> SpecularMap { get; set; }
+
+        [ContentSerializer(Optional = true)]
         public virtual bool SpecularMappingEnabled { get; set; }
 
         [DefaultValue(16)]
         [ContentSerializer(Optional = true)]
         public virtual float SpecularPower { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public virtual ContentReference<Texture2DContent> Texture { get; set; }
 
         [DefaultValue(true)]
         [ContentSerializer(Optional = true)]
@@ -103,6 +117,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
         public ModelMaterialContent()
         {
+            MaterialEnabled = true;
             TextureEnabled = true;
             OverlayColor = Vector3.One;
             DiffuseColor = Vector3.One;

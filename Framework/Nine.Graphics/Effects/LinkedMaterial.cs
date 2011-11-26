@@ -33,12 +33,12 @@ namespace Nine.Graphics.Effects
     /// Defines a material for linked effects.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public sealed class LinkedMaterial : Material, IEffectTexture, IEffectMaterial, IEffectFog,
-                                                   IEffectLights<IAmbientLight>, IEffectLights<IPointLight>,
-                                                   IEffectLights<IDirectionalLight>, IEffectLights<ISpotLight>
+    public sealed class LinkedMaterial : Material, IEffectTexture, IEffectMaterial
     {
         LinkedEffect effect;
-        LinkedEffectPart[] parts;
+        LinkedEffectPart[] effectParts;
+        IEffectMaterial material;
+        IEffectTexture texture;
 
         /// <summary>
         /// Gets or sets whether this material is transparent.
@@ -51,7 +51,7 @@ namespace Nine.Graphics.Effects
         /// </summary>
         protected override bool IsTransparentValue
         {
-            get { return IsTransparent; }
+            get { return Alpha < 1 || IsTransparent; }
         }
 
         public override bool IsDeferred 
@@ -89,12 +89,15 @@ namespace Nine.Graphics.Effects
             if (result != null)
                 return result;
             
-            for (int i = 0; i < parts.Length; i++)
+            for (int i = 0; i < effectParts.Length; i++)
             {
-                var part = parts[i];
+                var part = effectParts[i];
                 if (part is T)
                     return part as T;
             }
+
+            if (effect is T)
+                return effect as T;
 
             return effect.Find<T>();
         }
@@ -102,12 +105,13 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Finds all the accurances of LinkedEffectPart that is of type T.
         /// </summary>
-        public IEnumerable<T> FindAll<T>() where T : class
+        public void FindAll<T>(ICollection<T> result) where T : class
         {
-            foreach (LinkedEffectPart part in parts)
+            for (int i = 0; i < effectParts.Length; i++)
             {
+                var part = effectParts[i];
                 if (part is T)
-                    yield return part as T;
+                    result.Add(part as T);
             }
         }
 
@@ -122,7 +126,7 @@ namespace Nine.Graphics.Effects
                     throw new InvalidOperationException();
 
                 LinkedEffect.CurrentEffect = effect;
-                parts = new LinkedEffectPart[effect.EffectParts.Count];
+                effectParts = new LinkedEffectPart[effect.EffectParts.Count];
                 for (int i = 0; i < effect.EffectParts.Count; i++)
                 {
                     var part = effect.EffectParts[i];
@@ -135,12 +139,14 @@ namespace Nine.Graphics.Effects
                     LinkedEffectPart newPart = part.Clone();
                     newPart.Effect = effect;
                     newPart.UniqueName = part.UniqueName;
-                    parts[i] = newPart;
+                    effectParts[i] = newPart;
                     LinkedEffect.CurrentUniqueName = null;
                 }
                 LinkedEffect.CurrentEffect = null;
 
-                EffectParts = new ReadOnlyCollection<LinkedEffectPart>(parts);
+                EffectParts = new ReadOnlyCollection<LinkedEffectPart>(effectParts);
+                material = effectParts.OfType<IEffectMaterial>().FirstOrDefault();
+                texture = effectParts.OfType<IEffectTexture>().FirstOrDefault();
             }
         }
         
@@ -153,22 +159,22 @@ namespace Nine.Graphics.Effects
         [ContentSerializer(ElementName = "EffectParts")]
         internal IList<LinkedEffectPart> EffectPartsSerializer
         {
-            get { return parts.ToList(); }
+            get { return effectParts.ToList(); }
             set
             {
                 if (value != null)
                 {
                     for (int i = 0; i < value.Count; i++)
                     {
-                        if (i < parts.Length && value[i] != null && parts[i] != null)
+                        if (i < effectParts.Length && value[i] != null && effectParts[i] != null)
                         {
-                            if (value[i].GetType() != parts[i].GetType())
+                            if (value[i].GetType() != effectParts[i].GetType())
                             {
                                 throw new ContentLoadException(
                                     string.Format("Effect part type mismatch. Expected {0}, got {1}.",
-                                    parts[i].GetType().ToString(), value[i].GetType().ToString()));
+                                    effectParts[i].GetType().ToString(), value[i].GetType().ToString()));
                             }
-                            value[i].OnApply(parts[i]);
+                            value[i].OnApply(effectParts[i]);
                         }
                     }
                 }
@@ -185,16 +191,16 @@ namespace Nine.Graphics.Effects
 
         public override void Apply()
         {
-            for (int i = 0; i < parts.Length; i++)
+            for (int i = 0; i < effectParts.Length; i++)
             {
-                if (parts[i] != null)
+                if (effectParts[i] != null)
                 {
-                    parts[i].OnApply(effect.EffectParts[i]);
+                    effectParts[i].OnApply(effect.EffectParts[i]);
                     if (effect.GraphicsBufferEffect != null &&
                         effect.GraphicsBufferEffect.EffectParts.Count > i &&
                         effect.GraphicsBufferEffect.EffectParts[i] != null)
                     {
-                        parts[i].OnApply(effect.GraphicsBufferEffect.EffectParts[i]);
+                        effectParts[i].OnApply(effect.GraphicsBufferEffect.EffectParts[i]);
                     }
                 }
             }
@@ -206,130 +212,130 @@ namespace Nine.Graphics.Effects
             {
                 IsTransparent = IsTransparent,
                 DepthAlphaEnabled = DepthAlphaEnabled,
-                EffectPartsSerializer = parts,
+                EffectPartsSerializer = effectParts,
             };
         }
 
-        Texture2D texture;
-        Texture2D IEffectTexture.Texture
+        /// <summary>
+        /// Gets or sets the primiary diffuse texture of the current effect.
+        /// </summary>
+        public Texture2D Texture
         {
-            get { return texture; }
+            get { return texture != null ? texture.Texture : null; }
             set
             {
-                texture = value;
-                foreach (IEffectTexture part in FindAll<IEffectTexture>())
+                for (int i = 0; i < effectParts.Length; i++)
+                {
+                    var part = effectParts[i] as IEffectTexture;
+                    if (part == null)
+                        continue;
                     part.Texture = value;
+                }
             }
         }
 
-        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture)
+        /// <summary>
+        /// Sets the texture with the specified texture usage.
+        /// </summary>
+        public void SetTexture(TextureUsage usage, Texture texture)
         {
-            foreach (IEffectTexture part in FindAll<IEffectTexture>())
+            for (int i = 0; i < effectParts.Length; i++)
+            {
+                var part = effectParts[i] as IEffectTexture;
+                if (part == null)
+                    continue;
                 part.SetTexture(usage, texture);
+            }
         }
 
-        Vector3 diffuseColor;
-        Vector3 IEffectMaterial.DiffuseColor
+        /// <summary>
+        /// Gets or sets the diffuse color of the effect.
+        /// </summary>
+        public Vector3 DiffuseColor
         {
-            get { return diffuseColor; }
+            get { return material != null ? material.DiffuseColor : Vector3.One; }
             set
             {
-                diffuseColor = value;
-                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
+                for (int i = 0; i < effectParts.Length; i++)
+                {
+                    var part = effectParts[i] as IEffectMaterial;
+                    if (part == null)
+                        continue;
                     part.DiffuseColor = value;
+                }
             }
         }
 
-        Vector3 emissiveColor;
-        Vector3 IEffectMaterial.EmissiveColor
+        /// <summary>
+        /// Gets or sets the emissive color of the effect.
+        /// </summary>
+        public Vector3 EmissiveColor
         {
-            get { return emissiveColor; }
+            get { return material != null ? material.EmissiveColor : Vector3.Zero; }
             set
             {
-                emissiveColor = value;
-                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
+                for (int i = 0; i < effectParts.Length; i++)
+                {
+                    var part = effectParts[i] as IEffectMaterial;
+                    if (part == null)
+                        continue;
                     part.EmissiveColor = value;
+                }
             }
         }
 
-        Vector3 specularColor;
-        Vector3 IEffectMaterial.SpecularColor
+        /// <summary>
+        /// Gets or sets the specular color of the effect.
+        /// </summary>
+        public Vector3 SpecularColor
         {
-            get { return specularColor; }
+            get { return material != null ? material.SpecularColor : Vector3.Zero; }
             set
             {
-                specularColor = value;
-                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
+                for (int i = 0; i < effectParts.Length; i++)
+                {
+                    var part = effectParts[i] as IEffectMaterial;
+                    if (part == null)
+                        continue;
                     part.SpecularColor = value;
+                }
             }
         }
 
-        float specularPower = 16;
-        float IEffectMaterial.SpecularPower
+        /// <summary>
+        /// Gets or sets the specular power of the effect.
+        /// </summary>
+        public float SpecularPower
         {
-            get { return specularPower; }
+            get { return material != null ? material.SpecularPower : 16; }
             set
             {
-                specularPower = value;
-                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
+                for (int i = 0; i < effectParts.Length; i++)
+                {
+                    var part = effectParts[i] as IEffectMaterial;
+                    if (part == null)
+                        continue;
                     part.SpecularPower = value;
+                }
             }
         }
 
-        float alpha = 1;
-        float IEffectMaterial.Alpha
+        /// <summary>
+        /// Gets or sets the opaque of the effect.
+        /// </summary>
+        public float Alpha
         {
-            get { return alpha; }
+            get { return material != null ? material.Alpha : 1; }
             set
             {
-                alpha = value;
-                foreach (IEffectMaterial part in FindAll<IEffectMaterial>())
+                for (int i = 0; i < effectParts.Length; i++)
+                {
+                    var part = effectParts[i] as IEffectMaterial;
+                    if (part == null)
+                        continue;
                     part.Alpha = value;
+                }
             }
-        }
-
-        ReadOnlyCollection<IAmbientLight> IEffectLights<IAmbientLight>.Lights
-        {
-            get { return ((IEffectLights<IAmbientLight>)effect).Lights; }
-        }
-
-        ReadOnlyCollection<IPointLight> IEffectLights<IPointLight>.Lights
-        {
-            get { return ((IEffectLights<IPointLight>)effect).Lights; }
-        }
-
-        ReadOnlyCollection<IDirectionalLight> IEffectLights<IDirectionalLight>.Lights
-        {
-            get { return ((IEffectLights<IDirectionalLight>)effect).Lights; }
-        }
-
-        ReadOnlyCollection<ISpotLight> IEffectLights<ISpotLight>.Lights
-        {
-            get { return ((IEffectLights<ISpotLight>)effect).Lights; }
-        }
-        
-        Vector3 IEffectFog.FogColor
-        {
-            get { return effect.FogColor; }
-            set { effect.FogColor = value; }
-        }
-
-        bool IEffectFog.FogEnabled
-        {
-            get { return effect.FogEnabled; }
-            set { effect.FogEnabled = value; }
-        }
-
-        float IEffectFog.FogEnd
-        {
-            get { return effect.FogEnd; }
-            set { effect.FogEnd = value; }
-        }
-
-        float IEffectFog.FogStart
-        {
-            get { return effect.FogStart; }
-            set { effect.FogStart = value; }
         }
     }
     

@@ -93,8 +93,10 @@ namespace Nine.Content.Pipeline
             var path = ContentProcessorContextExtensions.ContentReferenceBasePath;
             if (string.IsNullOrEmpty(path))
                 output.Xml.WriteString(value.Filename);
+            else if (value.Filename.EndsWith(".xnb", StringComparison.OrdinalIgnoreCase))
+                output.Xml.WriteString(value.Filename);
             else
-                output.Xml.WriteString(new Uri(Path.Combine(path, value.Filename + ".xnb")).AbsolutePath);
+                output.Xml.WriteString(new Uri(Path.Combine(path, value.Filename + ".xnb")).LocalPath);
         }
     }
 }

@@ -59,7 +59,7 @@ void main(INPUT input, inout OUTPUT output)
 	float4 positionProjection = input.PositionProjection;
 	export(float4, PositionProjection, positionProjection);
     
-    float specularPower = 16;
+    float specularPower = 1;
     float3 specularColor = 1;
     float3 emissiveColor = 0;
 

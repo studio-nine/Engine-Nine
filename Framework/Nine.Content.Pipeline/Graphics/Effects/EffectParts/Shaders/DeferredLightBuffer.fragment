@@ -6,7 +6,7 @@
 fragment DeferredLightBuffer;
 
 [parameters]
-float SpecularPower;
+float SpecularPower = 16;
 
 [ps]
 __hlsl__

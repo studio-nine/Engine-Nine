@@ -46,11 +46,6 @@ namespace Nine.Content.Pipeline.Processors
 
         public override Texture2DContent Process(string[] input, ContentProcessorContext context)
         {
-            if (input.Length <= 0)
-            {
-                throw new InvalidContentException("At least 1 layer must be specified.");
-            }
-
             if (input.Length > 4)
             {
                 context.Logger.LogWarning(null, null, "SplatterTextureProcessor supports at most 4 textures. Additional textures will be discarded");

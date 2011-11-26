@@ -46,9 +46,13 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
@@ -57,6 +61,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -68,8 +73,16 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="ContentBuilder.cs" />
+    <Compile Include="ErrorLogger.cs" />
     <Compile Include="ExpressionTest.cs" />
-    <Compile Include="Graphics\GraphicsTest.cs" />
+    <Compile Include="ContentPipelineTest.cs" />
+    <Compile Include="GraphicsTest.cs" />
+    <Compile Include="Graphics\Effects\TerrainMaterialTest.cs" />
+    <Compile Include="Graphics\Effects\ModelMaterialTest.cs" />
+    <Compile Include="Graphics\Effects\MaterialTest.cs" />
+    <Compile Include="Graphics\Effects\LinkedMaterialTest.cs" />
+    <Compile Include="Graphics\ObjectModel\DrawableModelTest.cs" />
     <Compile Include="Graphics\ObjectModel\SceneTest.cs" />
     <Compile Include="Graphics\ObjectModel\RendererTest.cs" />
     <Compile Include="Navigation\Steering\WallAvoidanceTest.cs" />
@@ -79,8 +92,8 @@
     <Compile Include="GridObjectManagerTest.cs" />
     <Compile Include="QuadTreeTest.cs" />
     <Compile Include="Graphics\BoneAnimationTest.cs" />
-    <Compile Include="Graphics\TestGame.cs" />
-    <Compile Include="Graphics\DrawableSurfaceTest.cs" />
+    <Compile Include="TestGame.cs" />
+    <Compile Include="Graphics\ObjectModel\DrawableSurfaceTest.cs" />
     <Compile Include="InputTest.cs" />
     <Compile Include="NotificationCollectionTest.cs" />
     <Compile Include="Animations\KeyframeAnimationTest.cs" />
@@ -92,6 +105,10 @@
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Content.Pipeline\Nine.Content.Pipeline.csproj">
+      <Project>{926CE988-9E75-40DD-80F1-1709A91F8C35}</Project>
+      <Name>Nine.Content.Pipeline</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
       <Name>Nine.Graphics</Name>

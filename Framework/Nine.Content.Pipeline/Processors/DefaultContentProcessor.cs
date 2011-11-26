@@ -50,6 +50,7 @@ namespace Nine.Content.Pipeline.Processors
             }
 
             this.context = context;
+            input = Process(input.GetType(), input);
             ObjectGraph.ForEachProperty(input, Process);
 
             if (Debug)

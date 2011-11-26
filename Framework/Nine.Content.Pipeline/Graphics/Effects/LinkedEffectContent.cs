@@ -95,9 +95,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     /// </summary>
     public class LinkedEffectContent
     {
-        internal byte[] Token;
+        [ContentSerializer(Optional=true)]
         internal byte[] EffectCode;
+        [ContentSerializer(Optional = true)]
         internal string[] UniqueNames;
+        [ContentSerializer(Optional = true)]
+        internal byte[] Token;
 
         public LinkedEffectContent()
         {
@@ -135,10 +138,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             if (output.TargetPlatform == TargetPlatform.WindowsPhone)
                 return;
 
-            if (value.EffectCode == null || value.UniqueNames == null || value.Token == null)
+            if (value.EffectCode == null || value.UniqueNames == null)
                 throw new InvalidContentException("LinkedEffectContent must be processed with LinkedEffectProcessor.");
 
-            output.WriteObject<byte[]>(value.Token);
             output.WriteObject<byte[]>(value.EffectCode);
             output.WriteObject<string[]>(value.UniqueNames);
             output.Write(value.EffectParts.Count);

@@ -264,6 +264,7 @@ namespace Nine.Content.Pipeline.Animations
             output.WriteObject(value.StartupDirection);
             output.WriteObject(value.Direction);
             output.Write(value.Repeat);
+            output.WriteObject(value.Position);
             EndWrite(output, value);
         }
 
@@ -403,6 +404,7 @@ namespace Nine.Content.Pipeline.Animations
             output.WriteObject(value.StartupDirection);
             output.WriteObject(value.Direction);
             output.Write(value.Repeat);
+            output.WriteObject(value.Position);
             EndWrite(output, value);
         }
 

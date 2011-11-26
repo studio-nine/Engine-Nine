@@ -53,6 +53,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual bool ShadowEnabled { get; set; }
 
         [ContentSerializer(Optional = true)]
+        public virtual int ShadowMapSampleCount { get; set; }
+
+        [ContentSerializer(Optional = true)]
         public virtual int SpotLightCount { get; set; }
 
         [ContentSerializer(Optional = true)]
@@ -63,6 +66,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             AmbientLightEnabled = true;
             LightingEnabled = true;
             DirectionalLightCount = 1;
+            ShadowMapSampleCount = 10;
         }
     }
 }

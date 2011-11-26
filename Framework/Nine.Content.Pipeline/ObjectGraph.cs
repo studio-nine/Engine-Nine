@@ -48,7 +48,12 @@ namespace Nine.Content.Pipeline
                 {
                     if (property.CanRead && property.GetIndexParameters().Length == 0)
                     {
-                        object value = property.GetValue(target, new object[0]);
+                        object value = null;
+                        try
+                        {
+                            value = property.GetValue(target, new object[0]);
+                        }
+                        catch { }
                         if (value != null)
                         {
                             var type = value.GetType();

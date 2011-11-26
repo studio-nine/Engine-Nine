@@ -45,7 +45,7 @@ namespace <#= namespaceGroup.Key #>
 <#
         }
 #>
-    public partial class <#= className #>
+    public partial class <#= className #> : System.Xaml.IAttachedPropertyStore
     {
 <#
     foreach (var member in members)
@@ -131,6 +131,35 @@ namespace <#= namespaceGroup.Key #>
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 <#
     }

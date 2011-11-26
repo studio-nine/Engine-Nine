@@ -152,6 +152,7 @@ namespace Game
                 scene.Settings.Debug.ShowStatistics = keyboardState.IsKeyDown(Keys.F);
                 scene.Settings.Debug.ShowDepthBuffer = keyboardState.IsKeyDown(Keys.Space);
                 scene.Settings.Debug.ShowNormalBuffer = keyboardState.IsKeyDown(Keys.N);
+                scene.Settings.Debug.ShowLightBuffer = keyboardState.IsKeyDown(Keys.K);
             }
 
             scene.Draw(gameTime.ElapsedGameTime);

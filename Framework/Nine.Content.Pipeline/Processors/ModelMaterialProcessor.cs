@@ -29,12 +29,9 @@ using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
 
 namespace Nine.Content.Pipeline.Processors
 {
-    /// <summary>
-    /// This processor generates the appropriate texture and materials for the input terrain.
-    /// </summary>
     [DesignTimeVisible(false)]
     [ContentProcessor(DisplayName="Model Material - Engine Nine")]
-    public class ModelMaterialProcessor : BasicLinkedMaterialProcessor<ModelMaterialContent>
+    public class ModelMaterialProcessor : LinkedMaterialProcessor<ModelMaterialContent>
     {
         public override LinkedMaterialContent Process(ModelMaterialContent input, ContentProcessorContext context)
         {
@@ -44,47 +41,49 @@ namespace Nine.Content.Pipeline.Processors
             return material;
         }
 
-        protected override void PreVertexTransform(ModelMaterialContent input, LinkedEffectContent effect, LinkedMaterialContent material, ContentProcessorContext context)
+        protected override void PreVertexTransform(ModelMaterialContent input, LinkedMaterialContent material, ContentProcessorContext context)
         {
             if (input.SkinningEnabled)
-                effect.EffectParts.Add(new SkinTransformEffectPartContent());
+                material.EffectParts.Add(new SkinTransformEffectPartContent());
         }
 
-        protected override void PreLighting(ModelMaterialContent input, LinkedEffectContent effect, LinkedMaterialContent material, ContentProcessorContext context)
+        protected override void PreLighting(ModelMaterialContent input, LinkedMaterialContent material, ContentProcessorContext context)
         {
             if (input.NormalMappingEnabled)
-                effect.EffectParts.Add(new NormalMapEffectPartContent());
+            {
+                material.EffectParts.Add(new NormalMapEffectPartContent() { NormalMap = input.NormalMap });
+            }            
 
             if (input.TextureEnabled)
             {
-                Flush(effect, material);
-                effect.EffectParts.Add(new BasicTextureEffectPartContent()
-                {
-                    TextureAlphaUsage = input.TextureAlphaUsage,
-                });
                 material.EffectParts.Add(new BasicTextureEffectPartContent()
                 {
+                    Texture = input.Texture,
                     TextureAlphaUsage = input.TextureAlphaUsage,
                     OverlayColor = input.OverlayColor,
                 });
             }
 
-            if (input.SpecularMappingEnabled)
-                effect.EffectParts.Add(new SpecularMapEffectPartContent());
-            if (input.EmissiveMappingEnabled)
-                effect.EffectParts.Add(new EmissiveMapEffectPartContent());
-            
-            Flush(effect, material);
-
-            effect.EffectParts.Add(new MaterialEffectPartContent());
-            material.EffectParts.Add(new MaterialEffectPartContent() 
+            if (input.MaterialEnabled)
             {
-                Alpha = input.Alpha,
-                DiffuseColor = input.DiffuseColor, 
-                EmissiveColor = input.EmissiveColor,
-                SpecularColor = input.SpecularColor,
-                SpecularPower = input.SpecularPower 
-            });
+                material.EffectParts.Add(new MaterialEffectPartContent()
+                {
+                    Alpha = input.Alpha,
+                    DiffuseColor = input.DiffuseColor,
+                    EmissiveColor = input.EmissiveColor,
+                    SpecularColor = input.SpecularColor,
+                    SpecularPower = input.SpecularPower
+                });
+            }
+
+            if (input.SpecularMappingEnabled)
+            {
+                material.EffectParts.Add(new SpecularMapEffectPartContent() { SpecularMap = input.SpecularMap });
+            }
+            if (input.EmissiveMappingEnabled)
+            {
+                material.EffectParts.Add(new EmissiveMapEffectPartContent() { EmissiveMap = input.EmissiveMap });
+            }
         }
     }
 }

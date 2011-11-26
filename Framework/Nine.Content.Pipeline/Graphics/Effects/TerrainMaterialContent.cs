@@ -35,11 +35,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
         [ContentSerializer]
         [TypeConverter(typeof(ContentReferenceConverter))]
-        public virtual ExternalReference<Texture2DContent> Texture { get; set; }
+        public virtual ContentReference<Texture2DContent> Texture { get; set; }
 
         [ContentSerializer(Optional = true)]
         [TypeConverter(typeof(ContentReferenceConverter))]
-        public virtual ExternalReference<Texture2DContent> NormalMap { get; set; }
+        public virtual ContentReference<Texture2DContent> NormalMap { get; set; }
 
         [DefaultValue("1, 1, 1")]
         [ContentSerializer(Optional = true)]
@@ -76,7 +76,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
 
         [ContentSerializer(Optional = true)]
         [TypeConverter(typeof(ContentReferenceConverter))]
-        public virtual ExternalReference<Texture2DContent> DetailTexture { get; set; }
+        public virtual ContentReference<Texture2DContent> DetailTexture { get; set; }
 
         [DefaultValue("1, 1")]
         [ContentSerializer(Optional = true)]

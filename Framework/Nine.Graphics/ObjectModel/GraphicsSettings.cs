@@ -113,6 +113,7 @@ namespace Nine.Graphics.ObjectModel
 
         public bool ShowDepthBuffer { get; set; }
         public bool ShowNormalBuffer { get; set; }
+        public bool ShowLightBuffer { get; set; }
         public bool ShowShadowMap { get; set; }
 
         public bool ShowStatistics { get; set; }

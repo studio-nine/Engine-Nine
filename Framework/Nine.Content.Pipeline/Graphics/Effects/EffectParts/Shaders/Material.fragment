@@ -30,7 +30,7 @@ void main(INPUT input, inout OUTPUT output)
     specularColor *= SpecularColor;
     emissiveColor += EmissiveColor;
     color.xyz *= DiffuseColor;
-    color.a *= Alpha;
+    color *= Alpha;
 
 	export(float, SpecularPower, specularPower);
 	export(float3, SpecularColor, specularColor);

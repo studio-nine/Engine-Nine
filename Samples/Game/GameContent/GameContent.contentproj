@@ -137,6 +137,7 @@
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_Scale>0.02</ProcessorParameters_Scale>
       <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
+      <ProcessorParameters_PremultiplyTextureAlpha>False</ProcessorParameters_PremultiplyTextureAlpha>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,42 @@
       <Name>AnimatedCube</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Models\Terrain\TerrainTex.png">
+      <Link>Terrain\TerrainTex.png</Link>
+      <Name>TerrainTex</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Textures\box.dds">
+      <Link>Terrain\box.dds</Link>
+      <Name>box</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Content\Textures\box_n.dds">
+      <Link>Terrain\box_n.dds</Link>
+      <Name>box_n</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>NormalTextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Content\Terrain\grass.dds">
+      <Link>Terrain\grass.dds</Link>
+      <Name>grass</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="..\..\Content\Terrain\grass_n.dds">
+      <Link>Terrain\grass_n.dds</Link>
+      <Name>grass_n</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>NormalTextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

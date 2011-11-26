@@ -65,12 +65,6 @@ namespace Nine.Animations
         protected abstract TimeSpan DurationValue { get; }
 
         /// <summary>
-        /// Gets the position of the animation as an elapsed time since the begin point.
-        /// Counts up if the direction is Forward, down if Backward.
-        /// </summary>
-        public TimeSpan Position { get; private set; }
-
-        /// <summary>
         /// Gets or sets the playing speed of this animation.
         /// </summary>
         public float Speed
@@ -130,6 +124,17 @@ namespace Nine.Animations
         private float _repeat = 1;
 
         /// <summary>
+        /// Gets the position of the animation as an elapsed time since the begin point.
+        /// Counts up if the direction is Forward, down if Backward.
+        /// </summary>
+        public TimeSpan Position
+        {
+            get { return position; }
+            set { Seek(Position); }
+        }
+        private TimeSpan position = TimeSpan.Zero;
+
+        /// <summary>
         /// Occurs when this animation has reached the end and has just repeated.
         /// </summary>
         public event EventHandler Repeated;
@@ -138,9 +143,9 @@ namespace Nine.Animations
         /// Positions the animation at the specified fraction of <c>Duration</c>.
         /// Takes effect on an animation that is playing or paused.
         /// </summary>
-        public void Seek(float fraction)
+        public void Seek(float percentage)
         {
-            Seek(TimeSpan.FromSeconds(Duration.TotalSeconds * fraction));
+            Seek(TimeSpan.FromSeconds(Duration.TotalSeconds * percentage));
         }
 
         /// <summary>
@@ -155,9 +160,9 @@ namespace Nine.Animations
             if (position == Position)
                 return;
             TimeSpan previousPosition = Position;
-            Position = position;
+            this.position = position;
             ElapsedTime += (Direction == AnimationDirection.Forward) ? Position - previousPosition : previousPosition - Position;
-            OnSeek(Position, previousPosition);
+            OnSeek(this.position, previousPosition);
         }
 
         /// <summary>
@@ -175,7 +180,7 @@ namespace Nine.Animations
         {
             Direction = StartupDirection;
             ElapsedTime = TimeSpan.Zero;
-            Position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
+            this.position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
             OnSeek(Position, Position);
             base.OnStarted();
         }
@@ -211,13 +216,13 @@ namespace Nine.Animations
                 // Notify new position
                 TimeSpan previousPosition = Position;
                 if (Direction == AnimationDirection.Forward)
-                    Position = (Position + increment > Duration) ? Duration : Position + increment;
+                    this.position = (this.position + increment > Duration) ? Duration : this.position + increment;
                 else
-                    Position = (Position - increment < TimeSpan.Zero) ? TimeSpan.Zero : Position - increment;
+                    this.position = (this.position - increment < TimeSpan.Zero) ? TimeSpan.Zero : this.position - increment;
                 var part_inc = (Position - previousPosition).Duration();
                 ElapsedTime += part_inc;
                 increment -= part_inc;
-                OnSeek(Position, previousPosition);
+                OnSeek(this.position, previousPosition);
 
                 // If time left and not complete, then reverse or repeat and notify that too.
                 if (increment > TimeSpan.Zero && ElapsedTime < max_elapsed)
@@ -227,8 +232,8 @@ namespace Nine.Animations
                     else
                     {
                         previousPosition = Position;
-                        Position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
-                        OnSeek(Position, previousPosition);
+                        this.position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
+                        OnSeek(this.position, previousPosition);
                     }
                     OnRepeated();
                 }

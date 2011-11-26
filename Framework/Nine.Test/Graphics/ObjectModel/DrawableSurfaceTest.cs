@@ -6,14 +6,14 @@
 //=============================================================================
 #endregion
 
+using System;
 using Nine.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Nine.Graphics.ObjectModel;
 
-namespace Nine.Graphics.Test
+namespace Nine.Graphics.ObjectModel.Test
 {
     [TestClass()]
     public class DrawableSurfaceTest

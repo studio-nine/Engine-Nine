@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using System.ComponentModel;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
@@ -405,9 +406,19 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
 
     public partial class ShadowMapEffectPartContent : LinkedEffectPartContent
     {
+        [DefaultValue(10)]
+        [ContentSerializer(Optional = true)]
+        public int SampleCount { get; set; }
+
+        partial void OnCreate()
+        {
+            SampleCount = 10;
+        }
+
         public override string EffectCode
         {
-            get { return Encoding.UTF8.GetString(LinkedEffectParts.ShadowMap); }
+            // TODO: Change filter core based on sample count.
+            get { return Encoding.UTF8.GetString(LinkedEffectParts.ShadowMap).Replace("{$SAMPLECOUNT}", SampleCount.ToString()); }
         }
     }
 
@@ -447,6 +458,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                                     .Replace("{$SKINNED}", isSkinned ? "" : "//")
                                     .Replace("{$SKINNEDIMPORT}", isSkinned ? "import" : "//");
             }
+        }
+
+        public override string GraphicsBufferEffectCode
+        {
+            get { return EffectCode; }
         }
     }
 

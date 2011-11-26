@@ -19,7 +19,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.BounceCurve, Nine")]
-    public partial class BounceCurveContent
+    public partial class BounceCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -38,6 +38,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>CustomCurve</c>.
@@ -47,7 +76,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.CustomCurve, Nine")]
-    public partial class CustomCurveContent
+    public partial class CustomCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -64,6 +93,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ElasticCurve</c>.
@@ -73,7 +131,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.ElasticCurve, Nine")]
-    public partial class ElasticCurveContent
+    public partial class ElasticCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -92,6 +150,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ExponentialCurve</c>.
@@ -101,7 +188,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.ExponentialCurve, Nine")]
-    public partial class ExponentialCurveContent
+    public partial class ExponentialCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -120,6 +207,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>LinearCurve</c>.
@@ -129,7 +245,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.LinearCurve, Nine")]
-    public partial class LinearCurveContent
+    public partial class LinearCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// Initializes a new instance of <c>LinearCurveContent</c>.
@@ -140,6 +256,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SinCurve</c>.
@@ -149,7 +294,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.SinCurve, Nine")]
-    public partial class SinCurveContent
+    public partial class SinCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// Initializes a new instance of <c>SinCurveContent</c>.
@@ -160,6 +305,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SmoothCurve</c>.
@@ -169,7 +343,7 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.SmoothCurve, Nine")]
-    public partial class SmoothCurveContent
+    public partial class SmoothCurveContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// Initializes a new instance of <c>SmoothCurveContent</c>.
@@ -180,6 +354,35 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 namespace Nine.Content.Pipeline.Animations
@@ -192,7 +395,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.AnimationPlayer, Nine")]
-    public partial class AnimationPlayerContent
+    public partial class AnimationPlayerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -216,6 +419,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DelayAnimation</c>.
@@ -225,7 +457,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.DelayAnimation, Nine")]
-    public partial class DelayAnimationContent
+    public partial class DelayAnimationContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -247,6 +479,13 @@ namespace Nine.Content.Pipeline.Animations
         [System.ComponentModel.DefaultValue("00:00:00")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.TimeSpan Duration { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("00:00:00")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.TimeSpan Position { get; set; }
 
         /// <summary>
         /// 
@@ -277,6 +516,7 @@ namespace Nine.Content.Pipeline.Animations
             AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Direction = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
             Duration = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
+            Position = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
             Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
@@ -284,6 +524,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>LayeredAnimation</c>.
@@ -293,7 +562,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.LayeredAnimation, Nine")]
-    public partial class LayeredAnimationContent
+    public partial class LayeredAnimationContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -319,6 +588,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SequentialAnimation</c>.
@@ -328,7 +626,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.SequentialAnimation, Nine")]
-    public partial class SequentialAnimationContent
+    public partial class SequentialAnimationContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -354,6 +652,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>TransformAnimation</c>.
@@ -363,7 +690,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.TransformAnimation, Nine")]
-    public partial class TransformAnimationContent
+    public partial class TransformAnimationContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -442,6 +769,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>TweenAnimation`1</c>.
@@ -451,7 +807,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.TweenAnimation`1, Nine")]
-    public partial class TweenAnimationContent<T>
+    public partial class TweenAnimationContent<T> : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -503,6 +859,13 @@ namespace Nine.Content.Pipeline.Animations
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("00:00:00")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.TimeSpan Position { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("1")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single Repeat { get; set; }
@@ -542,6 +905,7 @@ namespace Nine.Content.Pipeline.Animations
             Direction = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
             Duration = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:01");
             Easing = (Nine.Animations.Easing)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.Easing)).ConvertFromInvariantString("In");
+            Position = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
             Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
@@ -549,6 +913,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 #endif

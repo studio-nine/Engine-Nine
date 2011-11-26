@@ -215,6 +215,7 @@ namespace Nine.Animations
             existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -330,6 +331,7 @@ namespace Nine.Animations
             existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
             EndRead(input, existingInstance);
             return existingInstance;
         }

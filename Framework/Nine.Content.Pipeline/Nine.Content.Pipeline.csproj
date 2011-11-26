@@ -156,7 +156,7 @@
     <Compile Include="Importers\ManifestImporter.cs" />
     <Compile Include="ContentProcessorContextExtensions.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />
-    <Compile Include="Processors\BasicLinkedMaterialProcessor.cs" />
+    <Compile Include="Processors\LinkedMaterialProcessor.cs" />
     <Compile Include="Processors\GraphicsComponentContentProcessor.cs" />
     <Compile Include="Processors\ModelMaterialProcessor.cs" />
     <Compile Include="Processors\DefaultContentProcessor.cs" />

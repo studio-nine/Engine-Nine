@@ -12,16 +12,16 @@ call %msbuild% %flags% Framework\Nine.Test.sln
 popd
 
 
-pushd ..\Framework\Nine.Test\
+pushd ..\Framework\
 
-"%VS100COMNTOOLS%..\IDE\mstest.exe" /testcontainer:"bin\Release\Nine.Test.dll"
+"%VS100COMNTOOLS%..\IDE\mstest.exe" /testcontainer:"Nine.Test\bin\Release\Nine.Test.dll"
 
 popd
 
 
-pushd ..\Studio\UnitTest\
+pushd ..\Studio\
 
-"%VS100COMNTOOLS%..\IDE\mstest.exe" /testcontainer:"bin\Release\UnitTest.dll"
+"%VS100COMNTOOLS%..\IDE\mstest.exe" /testcontainer:"UnitTest\bin\Release\UnitTest.dll"
 
 popd
 

@@ -19,7 +19,7 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.BoneAnimationClip, Nine.Graphics")]
-    public partial class BoneAnimationClipContent
+    public partial class BoneAnimationClipContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -60,6 +60,35 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 namespace Nine.Content.Pipeline.Graphics
@@ -72,7 +101,7 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Geometry, Nine.Graphics")]
-    public partial class GeometryContent
+    public partial class GeometryContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -107,6 +136,35 @@ namespace Nine.Content.Pipeline.Graphics
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ModelCollision</c>.
@@ -116,7 +174,7 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelCollision, Nine.Graphics")]
-    public partial class ModelCollisionContent
+    public partial class ModelCollisionContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -133,6 +191,35 @@ namespace Nine.Content.Pipeline.Graphics
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ModelMeshPartTag</c>.
@@ -142,7 +229,7 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelMeshPartTag, Nine.Graphics")]
-    public partial class ModelMeshPartTagContent
+    public partial class ModelMeshPartTagContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -166,6 +253,35 @@ namespace Nine.Content.Pipeline.Graphics
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ModelSkeletonData</c>.
@@ -175,7 +291,7 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelSkeletonData, Nine.Graphics")]
-    public partial class ModelSkeletonDataContent
+    public partial class ModelSkeletonDataContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -201,6 +317,35 @@ namespace Nine.Content.Pipeline.Graphics
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ModelTag</c>.
@@ -210,7 +355,7 @@ namespace Nine.Content.Pipeline.Graphics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ModelTag, Nine.Graphics")]
-    public partial class ModelTagContent
+    public partial class ModelTagContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -240,6 +385,35 @@ namespace Nine.Content.Pipeline.Graphics
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 namespace Nine.Content.Pipeline.Graphics.Effects
@@ -252,7 +426,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.AlphaTestMaterial, Nine.Graphics")]
-    public partial class AlphaTestMaterialContent
+    public partial class AlphaTestMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -325,6 +499,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>BasicMaterial</c>.
@@ -334,7 +537,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.BasicMaterial, Nine.Graphics")]
-    public partial class BasicMaterialContent
+    public partial class BasicMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -388,7 +591,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean PreferPerPixelLighting { get; set; }
 
@@ -415,7 +618,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean TextureEnabled { get; set; }
 
@@ -438,15 +641,44 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
-            TextureEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            TextureEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>CustomMaterial</c>.
@@ -456,7 +688,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.CustomMaterial, Nine.Graphics")]
-    public partial class CustomMaterialContent
+    public partial class CustomMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -504,6 +736,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DualTextureMaterial</c>.
@@ -513,7 +774,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.DualTextureMaterial, Nine.Graphics")]
-    public partial class DualTextureMaterialContent
+    public partial class DualTextureMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -584,6 +845,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>EnvironmentMapMaterial</c>.
@@ -593,7 +883,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EnvironmentMapMaterial, Nine.Graphics")]
-    public partial class EnvironmentMapMaterialContent
+    public partial class EnvironmentMapMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -688,6 +978,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>LinkedMaterial</c>.
@@ -697,7 +1016,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.LinkedMaterial, Nine.Graphics")]
-    public partial class LinkedMaterialContent
+    public partial class LinkedMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -745,6 +1064,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SkinnedMaterial</c>.
@@ -754,7 +1102,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.SkinnedMaterial, Nine.Graphics")]
-    public partial class SkinnedMaterialContent
+    public partial class SkinnedMaterialContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -801,7 +1149,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
+        [System.ComponentModel.DefaultValue("True")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean PreferPerPixelLighting { get; set; }
 
@@ -850,7 +1198,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
@@ -859,6 +1207,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
@@ -871,7 +1248,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.AmbientLightEffectPart, Nine.Graphics")]
-    public partial class AmbientLightEffectPartContent
+    public partial class AmbientLightEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -890,6 +1267,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>BasicTextureEffectPart</c>.
@@ -899,7 +1305,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.BasicTextureEffectPart, Nine.Graphics")]
-    public partial class BasicTextureEffectPartContent
+    public partial class BasicTextureEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -924,6 +1330,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>BeginLightEffectPart</c>.
@@ -933,7 +1368,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.BeginLightEffectPart, Nine.Graphics")]
-    public partial class BeginLightEffectPartContent
+    public partial class BeginLightEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// Initializes a new instance of <c>BeginLightEffectPartContent</c>.
@@ -944,6 +1379,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ColorMatrixEffectPart</c>.
@@ -953,7 +1417,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.ColorMatrixEffectPart, Nine.Graphics")]
-    public partial class ColorMatrixEffectPartContent
+    public partial class ColorMatrixEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -971,6 +1435,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DeferredLightsEffectPart</c>.
@@ -980,7 +1473,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DeferredLightsEffectPart, Nine.Graphics")]
-    public partial class DeferredLightsEffectPartContent
+    public partial class DeferredLightsEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1015,6 +1508,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DetailTextureEffectPart</c>.
@@ -1024,7 +1546,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DetailTextureEffectPart, Nine.Graphics")]
-    public partial class DetailTextureEffectPartContent
+    public partial class DetailTextureEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1049,6 +1571,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DirectionalLightEffectPart</c>.
@@ -1058,7 +1609,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DirectionalLightEffectPart, Nine.Graphics")]
-    public partial class DirectionalLightEffectPartContent
+    public partial class DirectionalLightEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1093,6 +1644,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DualTextureEffectPart</c>.
@@ -1102,7 +1682,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.DualTextureEffectPart, Nine.Graphics")]
-    public partial class DualTextureEffectPartContent
+    public partial class DualTextureEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1119,6 +1699,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>EmissiveMapEffectPart</c>.
@@ -1128,7 +1737,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.EmissiveMapEffectPart, Nine.Graphics")]
-    public partial class EmissiveMapEffectPartContent
+    public partial class EmissiveMapEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1145,6 +1754,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>FogEffectPart</c>.
@@ -1154,7 +1792,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.FogEffectPart, Nine.Graphics")]
-    public partial class FogEffectPartContent
+    public partial class FogEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1189,6 +1827,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>MaterialEffectPart</c>.
@@ -1198,7 +1865,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.MaterialEffectPart, Nine.Graphics")]
-    public partial class MaterialEffectPartContent
+    public partial class MaterialEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1249,6 +1916,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>NormalMapEffectPart</c>.
@@ -1258,7 +1954,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.NormalMapEffectPart, Nine.Graphics")]
-    public partial class NormalMapEffectPartContent
+    public partial class NormalMapEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1275,6 +1971,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>OverlayTextureEffectPart</c>.
@@ -1284,7 +2009,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.OverlayTextureEffectPart, Nine.Graphics")]
-    public partial class OverlayTextureEffectPartContent
+    public partial class OverlayTextureEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1301,6 +2026,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>PointLightEffectPart</c>.
@@ -1310,7 +2064,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.PointLightEffectPart, Nine.Graphics")]
-    public partial class PointLightEffectPartContent
+    public partial class PointLightEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1361,6 +2115,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ShadowMapEffectPart</c>.
@@ -1370,7 +2153,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.ShadowMapEffectPart, Nine.Graphics")]
-    public partial class ShadowMapEffectPartContent
+    public partial class ShadowMapEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1397,6 +2180,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SkinTransformEffectPart</c>.
@@ -1406,7 +2218,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SkinTransformEffectPart, Nine.Graphics")]
-    public partial class SkinTransformEffectPartContent
+    public partial class SkinTransformEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1433,6 +2245,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SpecularMapEffectPart</c>.
@@ -1442,7 +2283,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SpecularMapEffectPart, Nine.Graphics")]
-    public partial class SpecularMapEffectPartContent
+    public partial class SpecularMapEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1459,6 +2300,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SplatterTextureEffectPart</c>.
@@ -1468,7 +2338,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SplatterTextureEffectPart, Nine.Graphics")]
-    public partial class SplatterTextureEffectPartContent
+    public partial class SplatterTextureEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1637,6 +2507,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SpotLightEffectPart</c>.
@@ -1646,7 +2545,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.SpotLightEffectPart, Nine.Graphics")]
-    public partial class SpotLightEffectPartContent
+    public partial class SpotLightEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1729,6 +2628,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>TextureTransformEffectPart</c>.
@@ -1738,7 +2666,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.EffectParts.TextureTransformEffectPart, Nine.Graphics")]
-    public partial class TextureTransformEffectPartContent
+    public partial class TextureTransformEffectPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1756,6 +2684,35 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
@@ -1769,7 +2726,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.AmbientLight, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class AmbientLightContent
+    public partial class AmbientLightContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1831,6 +2788,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>Camera</c>.
@@ -1841,7 +2827,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Camera, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class CameraContent
+    public partial class CameraContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1901,6 +2887,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DirectionalLight</c>.
@@ -1911,7 +2926,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DirectionalLight, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class DirectionalLightContent
+    public partial class DirectionalLightContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -1981,6 +2996,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DisplayObject</c>.
@@ -1991,7 +3035,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DisplayObject, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class DisplayObjectContent
+    public partial class DisplayObjectContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2042,6 +3086,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DrawableModel</c>.
@@ -2052,7 +3125,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableModel, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class DrawableModelContent
+    public partial class DrawableModelContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2196,6 +3269,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DrawableModelPart</c>.
@@ -2205,7 +3307,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableModelPart, Nine.Graphics")]
-    public partial class DrawableModelPartContent
+    public partial class DrawableModelPartContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2236,6 +3338,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DrawableParticleEffect</c>.
@@ -2246,7 +3377,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableParticleEffect, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class DrawableParticleEffectContent
+    public partial class DrawableParticleEffectContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2298,6 +3429,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DrawableSurface</c>.
@@ -2308,7 +3468,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableSurface, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class DrawableSurfaceContent
+    public partial class DrawableSurfaceContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2429,6 +3589,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>DrawableSurfacePatch</c>.
@@ -2438,7 +3627,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.DrawableSurfacePatch, Nine.Graphics")]
-    public partial class DrawableSurfacePatchContent
+    public partial class DrawableSurfacePatchContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2461,6 +3650,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>Fog</c>.
@@ -2471,7 +3689,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Fog, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class FogContent
+    public partial class FogContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2533,6 +3751,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>PointLight</c>.
@@ -2543,7 +3790,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.PointLight, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class PointLightContent
+    public partial class PointLightContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2629,6 +3876,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>Scene</c>.
@@ -2639,7 +3915,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.Scene, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class SceneContent
+    public partial class SceneContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2675,6 +3951,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SkyBox</c>.
@@ -2685,7 +3990,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.SkyBox, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class SkyBoxContent
+    public partial class SkyBoxContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2729,6 +4034,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SpotLight</c>.
@@ -2739,7 +4073,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.SpotLight, Nine.Graphics")]
     [System.Windows.Markup.RuntimeNameProperty("Name")]
-    public partial class SpotLightContent
+    public partial class SpotLightContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2849,6 +4183,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>TransformBinding</c>.
@@ -2858,7 +4221,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ObjectModel.TransformBinding, Nine.Graphics")]
-    public partial class TransformBindingContent
+    public partial class TransformBindingContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2901,6 +4264,35 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 namespace Nine.Content.Pipeline.Graphics.ParticleEffects
@@ -2913,7 +4305,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.AbsorbController, Nine.Graphics")]
-    public partial class AbsorbControllerContent
+    public partial class AbsorbControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2948,6 +4340,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>BoxEmitter</c>.
@@ -2957,7 +4378,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.BoxEmitter, Nine.Graphics")]
-    public partial class BoxEmitterContent
+    public partial class BoxEmitterContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -2996,6 +4417,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ColorController</c>.
@@ -3005,7 +4455,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ColorController, Nine.Graphics")]
-    public partial class ColorControllerContent
+    public partial class ColorControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3033,6 +4483,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>CylinderEmitter</c>.
@@ -3042,7 +4521,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.CylinderEmitter, Nine.Graphics")]
-    public partial class CylinderEmitterContent
+    public partial class CylinderEmitterContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3117,6 +4596,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>FadeController</c>.
@@ -3126,7 +4634,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.FadeController, Nine.Graphics")]
-    public partial class FadeControllerContent
+    public partial class FadeControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3145,6 +4653,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>ForceController</c>.
@@ -3154,7 +4691,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ForceController, Nine.Graphics")]
-    public partial class ForceControllerContent
+    public partial class ForceControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3181,6 +4718,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>LineEmitter</c>.
@@ -3190,7 +4756,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.LineEmitter, Nine.Graphics")]
-    public partial class LineEmitterContent
+    public partial class LineEmitterContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3223,6 +4789,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>PointEmitter</c>.
@@ -3232,7 +4827,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.PointEmitter, Nine.Graphics")]
-    public partial class PointEmitterContent
+    public partial class PointEmitterContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3267,6 +4862,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>RotationController</c>.
@@ -3276,7 +4900,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.RotationController, Nine.Graphics")]
-    public partial class RotationControllerContent
+    public partial class RotationControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3304,6 +4928,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SizeController</c>.
@@ -3313,7 +4966,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.SizeController, Nine.Graphics")]
-    public partial class SizeControllerContent
+    public partial class SizeControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3341,6 +4994,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SpeedController</c>.
@@ -3350,7 +5032,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.SpeedController, Nine.Graphics")]
-    public partial class SpeedControllerContent
+    public partial class SpeedControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3378,6 +5060,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>SphereEmitter</c>.
@@ -3387,7 +5098,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.SphereEmitter, Nine.Graphics")]
-    public partial class SphereEmitterContent
+    public partial class SphereEmitterContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3446,6 +5157,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
     /// <summary>
     /// Content model for <c>TangentForceController</c>.
@@ -3455,7 +5195,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.TangentForceController, Nine.Graphics")]
-    public partial class TangentForceControllerContent
+    public partial class TangentForceControllerContent : System.Xaml.IAttachedPropertyStore
     {
         /// <summary>
         /// 
@@ -3498,6 +5238,35 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         }
 
         partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
     }
 }
 #endif

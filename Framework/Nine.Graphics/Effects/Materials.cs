@@ -76,7 +76,7 @@ namespace Nine.Graphics.Effects
         public virtual Effect GraphicsBufferEffect { get { return null; } }
 
         /// <summary>
-        /// Applys the parameter values.
+        /// Applys the parameter values to the underlying effect.
         /// </summary>
         public abstract void Apply();
 
@@ -123,6 +123,14 @@ namespace Nine.Graphics.Effects
         partial void OnClone(BasicMaterial cloned)
         {
             cloned.IsTransparent = this.IsTransparent;
+        }
+
+        partial void OnCreate()
+        {
+            TextureEnabled = true;
+#if !WINDOWS_PHONE
+            PreferPerPixelLighting = true;
+#endif
         }
 
         /// <summary>
@@ -308,6 +316,13 @@ namespace Nine.Graphics.Effects
         partial void OnClone(SkinnedMaterial cloned)
         {
             cloned.IsTransparent = this.IsTransparent;
+        }
+
+        partial void OnCreate()
+        {
+#if !WINDOWS_PHONE
+            PreferPerPixelLighting = true;
+#endif
         }
 
         /// <summary>

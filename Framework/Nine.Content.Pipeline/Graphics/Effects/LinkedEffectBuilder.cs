@@ -46,7 +46,14 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             }
 
             // Build the source asset
-            return context.BuildAsset<LinkedEffectContent, LinkedEffectContent>(linkedEffect, "LinkedEffectProcessor");
+            linkedEffect = new LinkedEffectProcessor().Process(linkedEffect, context);
+            var hash = linkedEffect.Token;
+            var hashString = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                hashString.Append(hash[i].ToString("X2"));
+            }            
+            return context.BuildAsset<LinkedEffectContent, LinkedEffectContent>(linkedEffect, null, null, hashString.ToString());
         }
     }
 }

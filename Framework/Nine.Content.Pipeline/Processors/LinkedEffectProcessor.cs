@@ -109,7 +109,7 @@ namespace Nine.Content.Pipeline.Processors
 
             var uniqueNames = processor.Symbols.StitchedFragments.Select(symbol => symbol.UniqueName + "_").ToArray();
             input.UniqueNames = Enumerable.Range(0, input.EffectParts.Count).Select(i => nameMapping[i] >= 0 ? uniqueNames[nameMapping[i]] : null).ToArray();
-            input.EffectCode = compiledEffect.GetEffectCode();
+            input.EffectCode = compiledEffect.GetEffectCode(); 
             input.Token = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(processor.EffectCode.ToString()));
 
             Disassemble(resultEffectFile, resultAsmFile, context);
