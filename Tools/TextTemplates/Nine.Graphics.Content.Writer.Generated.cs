@@ -42,6 +42,48 @@ namespace Nine.Content.Pipeline.Animations
             return "Nine.Animations.BoneAnimationClip, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
+    /// <summary>
+    /// Content writer for <c>SpriteAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class SpriteAnimationContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SpriteAnimationContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpriteAnimationContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpriteAnimationContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpriteAnimationContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.TextureList);
+            output.WriteObject(value.TargetProperty);
+            output.WriteObject(value.BeginFrame);
+            output.WriteObject(value.EndFrame);
+            output.Write(value.FramesPerSecond);
+            output.WriteObject(value.Ending);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            output.WriteObject(value.StartupDirection);
+            output.WriteObject(value.Direction);
+            output.Write(value.Repeat);
+            output.WriteObject(value.Position);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.SpriteAnimationReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.SpriteAnimation, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
 }
 namespace Nine.Content.Pipeline.Graphics
 {
@@ -897,7 +939,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ShadowMapEffectPartContent value)
         {
             BeginWrite(output, value);
-            output.Write(value.ShadowIntensity);
+            output.Write(value.ShadowColor);
             output.Write(value.DepthBias);
             EndWrite(output, value);
         }
@@ -1211,8 +1253,16 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DisplayObjectContent value)
         {
             BeginWrite(output, value);
-            output.WriteObject(value.Children);
-            output.WriteObject(value.TransformBindings);
+            {
+                output.Write(value.Children.Count);
+                for (var i = 0; i < value.Children.Count; i++)
+                    output.WriteObject(value.Children[i]);
+            }
+            {
+                output.Write(value.TransformBindings.Count);
+                for (var i = 0; i < value.TransformBindings.Count; i++)
+                    output.WriteObject(value.TransformBindings[i]);
+            }
             output.WriteObject(value.Animations);
             output.WriteObject(value.Name);
             output.WriteObject(value.Tag);
@@ -1322,7 +1372,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableParticleEffectContent value)
         {
             BeginWrite(output, value);
-            output.Write(value.Position);
             output.WriteObject(value.ParticleEffect);
             output.Write(value.Visible);
             output.WriteObject(value.Name);
@@ -1677,8 +1726,19 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             BeginWrite(output, value);
             output.WriteObject(value.Transform);
             output.WriteObject(value.Box);
-            output.Write(value.Direction);
             output.Write(value.Spread);
+            output.Write(value.Enabled);
+            output.Write(value.EmitCount);
+            output.Write(value.Emission);
+            output.WriteObject(value.Delay);
+            output.WriteObject(value.Lifetime);
+            output.Write(value.Position);
+            output.Write(value.Direction);
+            output.WriteObject(value.Duration);
+            output.WriteObject(value.Color);
+            output.WriteObject(value.Size);
+            output.WriteObject(value.Rotation);
+            output.WriteObject(value.Speed);
             EndWrite(output, value);
         }
 
@@ -1740,11 +1800,21 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.Write(value.Shell);
             output.Write(value.Radiate);
             output.Write(value.Height);
-            output.Write(value.Direction);
             output.Write(value.Spread);
-            output.Write(value.Center);
             output.Write(value.Up);
             output.Write(value.Radius);
+            output.Write(value.Enabled);
+            output.Write(value.EmitCount);
+            output.Write(value.Emission);
+            output.WriteObject(value.Delay);
+            output.WriteObject(value.Lifetime);
+            output.Write(value.Position);
+            output.Write(value.Direction);
+            output.WriteObject(value.Duration);
+            output.WriteObject(value.Color);
+            output.WriteObject(value.Size);
+            output.WriteObject(value.Rotation);
+            output.WriteObject(value.Speed);
             EndWrite(output, value);
         }
 
@@ -1832,9 +1902,20 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LineEmitterContent value)
         {
             BeginWrite(output, value);
-            output.Write(value.Direction);
             output.Write(value.Spread);
             output.WriteObject(value.LineList);
+            output.Write(value.Enabled);
+            output.Write(value.EmitCount);
+            output.Write(value.Emission);
+            output.WriteObject(value.Delay);
+            output.WriteObject(value.Lifetime);
+            output.Write(value.Position);
+            output.Write(value.Direction);
+            output.WriteObject(value.Duration);
+            output.WriteObject(value.Color);
+            output.WriteObject(value.Size);
+            output.WriteObject(value.Rotation);
+            output.WriteObject(value.Speed);
             EndWrite(output, value);
         }
 
@@ -1846,6 +1927,60 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.ParticleEffects.LineEmitter, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ParticleEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ParticleEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ParticleEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ParticleEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ParticleEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ParticleEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.ParticleType);
+            output.Write(value.Enabled);
+            output.Write(value.Stretch);
+            output.Write(value.Up);
+            output.WriteObject(value.Texture);
+            output.WriteObject(value.SourceRectangle);
+            output.WriteObject(value.BlendState);
+            output.Write(value.DepthSortEnabled);
+            output.Write(value.ReferenceAlpha);
+            output.WriteObject(value.Emitter);
+            {
+                output.Write(value.Controllers.Count);
+                for (var i = 0; i < value.Controllers.Count; i++)
+                    output.WriteObject(value.Controllers[i]);
+            }
+            {
+                output.Write(value.ChildEffects.Count);
+                for (var i = 0; i < value.ChildEffects.Count; i++)
+                    output.WriteObject(value.ChildEffects[i]);
+            }
+            {
+                output.Write(value.EndingEffects.Count);
+                for (var i = 0; i < value.EndingEffects.Count; i++)
+                    output.WriteObject(value.EndingEffects[i]);
+            }
+            output.WriteObject(value.Tag);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ParticleEffects.ParticleEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -1863,9 +1998,19 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointEmitterContent value)
         {
             BeginWrite(output, value);
+            output.Write(value.Spread);
+            output.Write(value.Enabled);
+            output.Write(value.EmitCount);
+            output.Write(value.Emission);
+            output.WriteObject(value.Delay);
+            output.WriteObject(value.Lifetime);
             output.Write(value.Position);
             output.Write(value.Direction);
-            output.Write(value.Spread);
+            output.WriteObject(value.Duration);
+            output.WriteObject(value.Color);
+            output.WriteObject(value.Size);
+            output.WriteObject(value.Rotation);
+            output.WriteObject(value.Speed);
             EndWrite(output, value);
         }
 
@@ -1986,10 +2131,20 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             BeginWrite(output, value);
             output.Write(value.Shell);
             output.Write(value.Radiate);
-            output.Write(value.Center);
             output.Write(value.Radius);
-            output.Write(value.Direction);
             output.Write(value.Spread);
+            output.Write(value.Enabled);
+            output.Write(value.EmitCount);
+            output.Write(value.Emission);
+            output.WriteObject(value.Delay);
+            output.WriteObject(value.Lifetime);
+            output.Write(value.Position);
+            output.Write(value.Direction);
+            output.WriteObject(value.Duration);
+            output.WriteObject(value.Color);
+            output.WriteObject(value.Size);
+            output.WriteObject(value.Rotation);
+            output.WriteObject(value.Speed);
             EndWrite(output, value);
         }
 
@@ -2033,6 +2188,632 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.ParticleEffects.TangentForceController, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+}
+namespace Nine.Content.Pipeline.Graphics.ScreenEffects
+{
+    /// <summary>
+    /// Content writer for <c>AdoptionEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class AdoptionEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AdoptionEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AdoptionEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AdoptionEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AdoptionEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Speed);
+            output.WriteObject(value.Effect);
+            output.Write(value.Enabled);
+            output.WriteObject(value.SurfaceFormat);
+            output.WriteObject(value.RenderTargetSize);
+            output.Write(value.RenderTargetScale);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.AdoptionEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.AdoptionEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>AntiAliasEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class AntiAliasEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AntiAliasEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AntiAliasEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AntiAliasEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AntiAliasEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Weight);
+            output.WriteObject(value.NormalTexture);
+            output.WriteObject(value.Texture);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.AntiAliasEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.AntiAliasEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>BasicScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BasicScreenEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BasicScreenEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicScreenEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicScreenEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicScreenEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.Effect);
+            output.Write(value.Enabled);
+            output.WriteObject(value.SurfaceFormat);
+            output.WriteObject(value.RenderTargetSize);
+            output.Write(value.RenderTargetScale);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.BasicScreenEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.BasicScreenEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>BlurEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BlurEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BlurEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BlurEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BlurEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BlurEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.BlurAmount);
+            output.Write(value.Step);
+            output.Write(value.Direction);
+            output.Write(value.SampleCount);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.BlurEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.BlurEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ChainedScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ChainedScreenEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ChainedScreenEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ChainedScreenEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ChainedScreenEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ChainedScreenEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.Effects);
+            output.Write(value.Enabled);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ChainedScreenEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ChainedScreenEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ColorMatrixEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ColorMatrixEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ColorMatrixEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Transform);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ColorMatrixEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ColorMatrixEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>DepthOfFieldEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DepthOfFieldEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DepthOfFieldEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DepthOfFieldEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DepthOfFieldEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DepthOfFieldEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.FocalPlane);
+            output.Write(value.FocalLength);
+            output.Write(value.FocalDistance);
+            output.WriteObject(value.BlurTexture);
+            output.WriteObject(value.DepthTexture);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.DepthOfFieldEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.DepthOfFieldEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>EmbossEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class EmbossEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<EmbossEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmbossEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmbossEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmbossEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Emboss);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.EmbossEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.EmbossEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>LuminanceEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class LuminanceEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LuminanceEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LuminanceEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LuminanceEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LuminanceEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.LuminanceEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.LuminanceEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>MultiPassScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class MultiPassScreenEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<MultiPassScreenEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectContent value)
+        {
+            BeginWrite(output, value);
+            {
+                output.Write(value.Passes.Count);
+                for (var i = 0; i < value.Passes.Count; i++)
+                    output.WriteObject(value.Passes[i]);
+            }
+            output.WriteObject(value.CombineEffect);
+            output.WriteObject(value.BlendState);
+            output.Write(value.Enabled);
+            output.WriteObject(value.SurfaceFormat);
+            output.WriteObject(value.RenderTargetSize);
+            output.Write(value.RenderTargetScale);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.MultiPassScreenEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.MultiPassScreenEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>MultiPassScreenEffectPass</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class MultiPassScreenEffectPassContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<MultiPassScreenEffectPassContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectPassContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectPassContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectPassContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.SurfaceFormat);
+            output.WriteObject(value.RenderTargetSize);
+            output.Write(value.RenderTargetScale);
+            output.WriteObject(value.BlendState);
+            output.Write(value.Color);
+            output.WriteObject(value.TextureUsage);
+            output.WriteObject(value.Effects);
+            output.Write(value.Enabled);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.MultiPassScreenEffectPassReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>NoiseEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class NoiseEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<NoiseEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NoiseEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NoiseEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NoiseEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.NoiseAmount);
+            output.Write(value.Seed);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.NoiseEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.NoiseEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>PixelateEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class PixelateEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<PixelateEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PixelateEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PixelateEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PixelateEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Threshhold);
+            output.Write(value.EdgeColor);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.PixelateEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.PixelateEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>RadialBlurEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class RadialBlurEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<RadialBlurEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RadialBlurEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RadialBlurEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RadialBlurEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Center);
+            output.Write(value.BlurAmount);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.RadialBlurEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.RadialBlurEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ScaleEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ScaleEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ScaleEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScaleEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScaleEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScaleEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ScaleEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ScaleEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ScreenEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ScreenEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScreenEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScreenEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScreenEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.WriteObject(value.SurfaceFormat);
+            output.WriteObject(value.RenderTargetSize);
+            output.Write(value.RenderTargetScale);
+            output.WriteObject(value.Effects);
+            output.Write(value.Enabled);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ScreenEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ScreenEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ThresholdEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ThresholdEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ThresholdEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ThresholdEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ThresholdEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ThresholdEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Threshold);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ThresholdEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ThresholdEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ToneMappingEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ToneMappingEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ToneMappingEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ToneMappingEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ToneMappingEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ToneMappingEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Exposure);
+            output.Write(value.MaxLuminance);
+            output.WriteObject(value.LuminanceTexture);
+            output.WriteObject(value.BloomTexture);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ToneMappingEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.ToneMappingEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>WiggleEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class WiggleEffectContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<WiggleEffectContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, WiggleEffectContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, WiggleEffectContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, WiggleEffectContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.Speed);
+            output.Write(value.Amplitude);
+            output.Write(value.Repeat);
+            output.WriteObject(value.Tag);
+            output.WriteObject(value.Name);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.WiggleEffectReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ScreenEffects.WiggleEffect, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

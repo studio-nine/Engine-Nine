@@ -1,0 +1,100 @@
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+    <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+    <DirectionalLightContent DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+    
+    <DrawableSurfaceContent Width="64" Height="64" Step="1" PatchSegmentCount="8" Position="-32, -32, 0" TextureScale="0.2, 0.2">
+        <BasicMaterialContent Texture="..\Textures\checker" />
+    </DrawableSurfaceContent>
+
+    <!-- Create an instance of particle system using the DrawableParticleEffect element -->
+    <DrawableParticleEffectContent Name="Fire" Position="10, 10, 4">
+        
+        <!-- 
+            ParticleEffectContent defines the visual for a particle system, think of it as a visual template,
+            each instance of the particle system can share the same particle effect.
+        -->
+        <ParticleEffectContent Texture="..\Textures\fire">            
+            <!-- 
+                An emitter is used to create new particles. It affects the initial properties of each particle, 
+                such as speed, position, color and size.
+            
+                You can define a range of values using the " ~ " syntax.
+            -->
+            <ParticleEffectContent.Emitter>
+                <PointEmitterContent Emission="50" Duration="1.5 ~ 3" Speed="4 ~ 5" Size="0.5 ~ 1" Spread="15" />
+            </ParticleEffectContent.Emitter>
+
+            <!--
+                A particle effect can have multiple controllers that controls how a particle travels and looks
+                after it has been released.               
+            -->
+            <SizeControllerContent EndSize ="4 ~ 5" />
+            <SpeedControllerContent EndSpeed ="0" />
+
+            <!-- Fade controller makes each particle fades in and out.  -->
+            <FadeControllerContent />
+            
+        </ParticleEffectContent>
+        
+    </DrawableParticleEffectContent>
+
+    <!-- Beside creating the particle effect in the same file, you can also reference an external particle effect -->
+    <DrawableParticleEffectContent Position="-20, -20, 1" Direction="0, 0, 1" ParticleEffect="..\Fireworks" />
+
+
+    <!-- Particle effects can also be combined using DisplayObject -->
+    <DisplayObjectContent Position="0, 0, 6">
+        
+        <DrawableParticleEffectContent Name="Snowball">
+            <ParticleEffectContent Texture="..\Textures\flake">
+                <ParticleEffectContent.Emitter>
+                    <SphereEmitterContent Emission="1000" Duration="2 ~ 3" Speed="-0.2 ~ 0.2" Size="0.2 ~ 0.4" Shell="True" Radius="6" />
+                </ParticleEffectContent.Emitter>
+                
+                <FadeControllerContent />
+            </ParticleEffectContent>
+        </DrawableParticleEffectContent>
+
+        <DrawableParticleEffectContent Name="Spark">
+            <!-- 
+                When particles are rendered as constrained billboard, they always travels along the moving
+                direction. This make it simple to create effects light rains.
+            -->
+            <ParticleEffectContent Texture="..\Textures\flake" ParticleType="ConstrainedBillboard" Stretch="8">
+                <ParticleEffectContent.Emitter>
+                    <PointEmitterContent Emission="10" Duration="2 ~ 3" Speed="-0.01 ~ 0.01" Size="1 ~ 1.5" />
+                </ParticleEffectContent.Emitter>
+
+                <FadeControllerContent />
+            </ParticleEffectContent>
+        </DrawableParticleEffectContent>
+        
+        <DrawableParticleEffectContent Name="Fireball">
+            <ParticleEffectContent>
+                <ParticleEffectContent.Emitter>
+                    <PointEmitterContent Emission="50" Duration="0.5 ~ 1" Speed="0.2 ~ 0.4" Size="0.5 ~ 1" />
+                </ParticleEffectContent.Emitter>
+
+                <SizeControllerContent EndSize="1 ~ 2" />
+                <FadeControllerContent />
+            </ParticleEffectContent>
+        </DrawableParticleEffectContent>
+        
+        <!-- Particle system can also be animated using tween animation -->
+        <DisplayObjectContent.Animations>
+            <LayeredAnimationContent x:Key="Default">
+                <Vector3AnimationContent TargetProperty="['Fireball'].Position" Duration="00:00:03"
+                                         Curve="Sin" AutoReverse="True" Repeat="999999" From="-20, 15, 0" To="-10, 15, 0"/>
+                
+                <!-- Animated textures can also be applied to the particle system using the following method -->
+                <SpriteAnimationContent TargetProperty="['Fireball'].ParticleEffect.TextureList" 
+                                        TextureList="..\Textures\fireball002" Repeat="999999"/>
+            </LayeredAnimationContent>            
+        </DisplayObjectContent.Animations>
+
+    </DisplayObjectContent>
+
+</SceneContent>

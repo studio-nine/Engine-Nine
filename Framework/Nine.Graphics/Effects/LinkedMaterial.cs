@@ -32,7 +32,6 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Defines a material for linked effects.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class LinkedMaterial : Material, IEffectTexture, IEffectMaterial
     {
         LinkedEffect effect;
@@ -145,8 +144,6 @@ namespace Nine.Graphics.Effects
                 LinkedEffect.CurrentEffect = null;
 
                 EffectParts = new ReadOnlyCollection<LinkedEffectPart>(effectParts);
-                material = effectParts.OfType<IEffectMaterial>().FirstOrDefault();
-                texture = effectParts.OfType<IEffectTexture>().FirstOrDefault();
             }
         }
         
@@ -178,6 +175,9 @@ namespace Nine.Graphics.Effects
                         }
                     }
                 }
+
+                material = effectParts.OfType<IEffectMaterial>().FirstOrDefault();
+                texture = effectParts.OfType<IEffectTexture>().FirstOrDefault();
             }
         }
 
@@ -219,6 +219,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets or sets the primiary diffuse texture of the current effect.
         /// </summary>
+        [ContentSerializerIgnore]
         public Texture2D Texture
         {
             get { return texture != null ? texture.Texture : null; }
@@ -251,6 +252,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets or sets the diffuse color of the effect.
         /// </summary>
+        [ContentSerializerIgnore]
         public Vector3 DiffuseColor
         {
             get { return material != null ? material.DiffuseColor : Vector3.One; }
@@ -269,6 +271,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets or sets the emissive color of the effect.
         /// </summary>
+        [ContentSerializerIgnore]
         public Vector3 EmissiveColor
         {
             get { return material != null ? material.EmissiveColor : Vector3.Zero; }
@@ -287,6 +290,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets or sets the specular color of the effect.
         /// </summary>
+        [ContentSerializerIgnore]
         public Vector3 SpecularColor
         {
             get { return material != null ? material.SpecularColor : Vector3.Zero; }
@@ -305,6 +309,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets or sets the specular power of the effect.
         /// </summary>
+        [ContentSerializerIgnore]
         public float SpecularPower
         {
             get { return material != null ? material.SpecularPower : 16; }
@@ -323,6 +328,7 @@ namespace Nine.Graphics.Effects
         /// <summary>
         /// Gets or sets the opaque of the effect.
         /// </summary>
+        [ContentSerializerIgnore]
         public float Alpha
         {
             get { return material != null ? material.Alpha : 1; }

@@ -26,6 +26,7 @@ namespace Nine
     /// "Names[0].FirstName"    -> Target.Names[0].FirstName
     /// "Names["n"].FirstName"  -> Target.Names["n"].FirstName
     /// </example>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class PropertyExpression<T>
     {
         MemberInfo invocationMember;
@@ -96,18 +97,25 @@ namespace Nine
             
             var leftBracket = currentProperty.IndexOf('[');
             var rightBracket = currentProperty.IndexOf(']');
-            if (leftBracket * rightBracket <= 0)
+            if (leftBracket * rightBracket < 0)
             {
                 throw new ArgumentException("Invalid expression format: " + currentProperty);
             }
-            if (leftBracket > 0)
+            if (leftBracket >= 0)
             {
                 if (dot < 0)
                     throw new NotSupportedException();
+
                 var content = currentProperty.Substring(leftBracket + 1, rightBracket - leftBracket - 1).Trim();
                 currentProperty = currentProperty.Substring(0, leftBracket);
-                invocationTarget = GetValue(target, GetMember(target.GetType(), currentProperty));
-                if (content.StartsWith("\"") && content.EndsWith("\""))
+
+                if (string.IsNullOrEmpty(currentProperty))
+                    invocationTarget = target;
+                else
+                    invocationTarget = GetValue(target, GetMember(target.GetType(), currentProperty));
+
+                if ((content.StartsWith("\"") && content.EndsWith("\"")) ||
+                    (content.StartsWith("'") && content.EndsWith("'")))
                 {
                     invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
                     invocationTarget = GetValue(invocationTarget, invocationMember, content.Substring(1, content.Length - 2));

@@ -79,7 +79,6 @@ namespace Nine
 
         // Have we been disposed?
         bool isDisposed;
-        private Microsoft.Xna.Framework.Graphics.GraphicsProfile GraphicsProfile;
 
 
         #endregion

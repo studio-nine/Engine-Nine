@@ -1,25 +1,25 @@
 ﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="Scene">
 
-    <SkyBoxContent Texture="SkyCubeMap" />
+    <SkyBoxContent Texture="Textures\SkyCubeMap" />
     <FogContent FogStart="50" FogEnd="500" />
     <AmbientLightContent AmbientLightColor="0.3, 0.3, 0.3" />
     <DirectionalLightContent CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
 
-    <DrawableSurfaceContent Name="Terrain" Position="-30, -80, 0" Heightmap="Terrain\RF1" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300" TextureScale="0.125, 0.125" PatchSegmentCount="8" VertexType="VertexPositionNormalTangentBinormalTexture">
+    <DrawableSurfaceContent Name="Terrain" Position="-30, -80, 0" Heightmap="Textures\RF1" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300" TextureScale="0.125, 0.125" PatchSegmentCount="8" VertexType="VertexPositionNormalTangentBinormalTexture">
         <DrawableSurfaceContent.Material>
             <TerrainMaterialContent ShadowEnabled="True" FogEnabled="True" PreferDeferredLighting="True" SplatterTextureScale="8, 8">
                 <!-- Texture and NormapMap references the output xnb texture, while Alpha references the original texture file -->
                 <!-- Notice that normal maps have to be explicity processed by NormalTextureProcessor -->
-                <TerrainLayerContent Texture="Terrain/TerrainTex" />
-                <TerrainLayerContent Texture="Terrain/box" NormalMap="Terrain/box_n" Alpha="../../Content/Terrain/2.bmp" SpecularColor="1, 1, 1" SpecularPower="64" />
-                <TerrainLayerContent Texture="Terrain/grass" NormalMap="Terrain/grass_n" Alpha="../../Content/Terrain/3.bmp" />
+                <TerrainLayerContent Texture="Textures/TerrainTex" />
+                <TerrainLayerContent Texture="Textures/box" NormalMap="Textures/box_n" Alpha="../../Content/Terrain/2.bmp" SpecularColor="1, 1, 1" SpecularPower="64" />
+                <TerrainLayerContent Texture="Textures/grass" NormalMap="Textures/grass_n" Alpha="../../Content/Terrain/3.bmp" />
             </TerrainMaterialContent>
         </DrawableSurfaceContent.Material>
     </DrawableSurfaceContent>
 
-    <DrawableSurfaceContent Position="-290, -100, -10" Heightmap="Terrain\MountainHeightmap" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300">
+    <DrawableSurfaceContent Position="-290, -100, -10" Heightmap="Textures\MountainHeightmap" LevelOfDetailEnabled="True" LevelOfDetailStart="200" LevelOfDetailEnd="300">
         <DrawableSurfaceContent.Material>
-            <BasicMaterialContent SpecularColor="1, 1, 1" Texture="Terrain\Mountain" TextureEnabled="True" />
+            <BasicMaterialContent SpecularColor="1, 1, 1" Texture="Textures\Mountain" TextureEnabled="True" />
         </DrawableSurfaceContent.Material>
     </DrawableSurfaceContent>
     
@@ -33,7 +33,7 @@
 
     <DrawableModelContent Model="Models\Dude" Position="0, -10, 10" Scale="1.2, 1.2, 1.2">
         <DrawableModelContent.Material>
-            <EnvironmentMapMaterialContent EnvironmentMap="SkyCubeMap" EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
+            <EnvironmentMapMaterialContent EnvironmentMap="Textures\SkyCubeMap" EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
@@ -51,7 +51,7 @@
 
     <DrawableModelContent Model="Models\Dude" Position="10, -10, 10" Rotation="0, 0, 90">
         <DrawableModelContent.Material>
-            <DualTextureMaterialContent Texture2="flake" />
+            <DualTextureMaterialContent Texture2="Textures\flake" />
         </DrawableModelContent.Material>
     </DrawableModelContent>
 
@@ -94,12 +94,8 @@
         
         <DisplayObjectContent.Animations>
             <LayeredAnimationContent x:Key="Default">    
-                <SingleAnimationContent TargetProperty="Dude.Alpha" From="1" To="0" Repeat="99999999" AutoReverse="True" />                
-                <TransformAnimationContent TargetProperty="Dude.Transform">
-                    <TransformAnimationContent.RotationZ>
-                        <SingleAnimationContent From="0" To="360" Repeat="99999999" Duration="00:00:05" />
-                    </TransformAnimationContent.RotationZ>
-                </TransformAnimationContent>
+                <SingleAnimationContent TargetProperty="Dude.Alpha" From="1" To="0" Repeat="99999999" AutoReverse="True" /> 
+                
             </LayeredAnimationContent>
         </DisplayObjectContent.Animations>
     </DisplayObjectContent>
@@ -109,11 +105,7 @@
         
         <DisplayObjectContent.Animations>
             <LayeredAnimationContent x:Key="Default">
-                <TransformAnimationContent TargetProperty="PointLight1.Transform">
-                    <TransformAnimationContent.X>
-                        <SingleAnimationContent From="-20" To="20" Repeat="99999999" AutoReverse="True" Curve="Sin" />
-                    </TransformAnimationContent.X>
-                </TransformAnimationContent>
+                
             </LayeredAnimationContent>
         </DisplayObjectContent.Animations>
     </DisplayObjectContent>

@@ -12,6 +12,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// A post processing screen effect that only show pixels brighter than the threshold.
     /// </summary>
+    [ContentSerializable]
     public partial class ThresholdEffect
     {
         private void OnCreated() { }

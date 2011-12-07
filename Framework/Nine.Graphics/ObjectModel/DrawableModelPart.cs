@@ -69,7 +69,7 @@ namespace Nine.Graphics.ObjectModel
             }
             set { material = value; }
         }
-        private Material material;
+        internal Material material;
         
         /// <summary>
         /// Gets or sets any user data.

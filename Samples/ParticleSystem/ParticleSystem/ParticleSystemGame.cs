@@ -84,9 +84,10 @@ namespace ParticleSystem
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // You can either programatically create the effect or author the effect
-            // using xml file and load it through the content pipeline.
+            // using xaml file and load it through the content pipeline.
             //particleEffect = CreateParticleEffect();
             galaxy = Content.Load<ParticleEffect>("Galaxy");
+            galaxy.Trigger();
 
             // Trigger another wave of particles for 5 seconds
             //particleEffect.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
@@ -103,12 +104,16 @@ namespace ParticleSystem
         {
             ParticleEffect snow = new ParticleEffect(1024);
             snow.Texture = Content.Load<Texture2D>("flake");
-            snow.Duration = 4;
-            snow.Emission = 100;
-            snow.Size = 0.2f;
-            snow.Color = Color.White;
-            snow.Speed = 8f;
             snow.Stretch = 10;
+
+            snow.Emitter = new PointEmitter
+            {
+                Duration = 4,
+                Emission = 100,
+                Size = 0.2f,
+                Color = Color.White,
+                Speed = 8f,
+            };
 
             //snow.Controllers.Add(new SizeController() { EndSize = 0.4f });
             //snow.Controllers.Add(new ColorController() { EndColor = Color.White });
@@ -138,7 +143,7 @@ namespace ParticleSystem
             // Prepare render states used to draw particles.
             GraphicsDevice.BlendState = BlendState.Additive;
             GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
-            
+
             // Update effects
             fireworks.Update(gameTime.ElapsedGameTime);
             galaxy.Update(gameTime.ElapsedGameTime);
@@ -158,7 +163,7 @@ namespace ParticleSystem
 
             // Draw particle system bounds
             primitiveBatch.Begin(camera.View, camera.Projection);
-            primitiveBatch.DrawBox(galaxy.BoundingBox, null, Color.Azure);
+            //primitiveBatch.DrawBox(galaxy.BoundingBox, null, Color.Azure);
             primitiveBatch.End();
 
             base.Draw(gameTime);

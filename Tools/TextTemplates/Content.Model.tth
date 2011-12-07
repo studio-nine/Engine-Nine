@@ -86,6 +86,7 @@ namespace <#= namespaceGroup.Key #>
         var memberType = GetMemberType(member);
         var memberTypeName = GetMemberContentTypeName(member);
         var memberName = GetMemberFieldName(member);        
+
         if (hasDefaultValue)
         {
 #>

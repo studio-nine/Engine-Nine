@@ -87,7 +87,12 @@ namespace Nine.Content.Pipeline.Processors
             PostLighting(input, material, context);
 
             if (input.ShadowEnabled)
-                material.EffectParts.Add(new ShadowMapEffectPartContent() { SampleCount = input.ShadowMapSampleCount });
+                material.EffectParts.Add(new ShadowMapEffectPartContent()
+                {
+                    SampleCount = input.ShadowMapSampleCount,
+                    ShadowColor = input.ShadowColor,
+                    DepthBias = input.ShadowBias,
+                });
 
             if (input.FogEnabled)
                 material.EffectParts.Add(new FogEffectPartContent());

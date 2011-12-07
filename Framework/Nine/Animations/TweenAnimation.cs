@@ -99,14 +99,10 @@ namespace Nine.Animations
         /// <summary>
         /// Gets or sets the duration of this animation.
         /// </summary>
-        public new TimeSpan Duration { get; set; }
-
-        /// <summary>
-        /// When overriden, returns the duration of this animation.
-        /// </summary>
-        protected override TimeSpan DurationValue
+        public new TimeSpan Duration 
         {
-            get { return Duration; }
+            get { return base.TotalDuration; }
+            set { base.TotalDuration = value; }
         }
 
         /// <summary>
@@ -158,6 +154,9 @@ namespace Nine.Animations
             this.Duration = TimeSpan.FromSeconds(1);
         }
 
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
         protected override void OnStarted()
         {
             if (Target != null && !string.IsNullOrEmpty(TargetProperty))
@@ -189,6 +188,9 @@ namespace Nine.Animations
             base.OnStarted();
         }
 
+        /// <summary>
+        /// Called when seek.
+        /// </summary>
         protected override void OnSeek(TimeSpan currentPosition, TimeSpan previousPosition)
         {
             float percentage = 0;
@@ -260,7 +262,7 @@ namespace Nine.Animations
             else if (typeof(T) == typeof(Vector4))
                 field.SetValue(this, (Interpolate<Vector4>)Vector4.Lerp);
             else if (typeof(T) == typeof(Matrix))
-                field.SetValue(this, (Interpolate<Matrix>)Matrix.Lerp);
+                field.SetValue(this, (Interpolate<Matrix>)LerpHelper.Slerp);
             else if (typeof(T) == typeof(Quaternion))
                 field.SetValue(this, (Interpolate<Quaternion>)Quaternion.Lerp);
             else if (typeof(T) == typeof(Color))

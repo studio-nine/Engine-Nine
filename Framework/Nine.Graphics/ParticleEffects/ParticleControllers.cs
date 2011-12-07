@@ -37,8 +37,6 @@ namespace Nine.Graphics.ParticleEffects
             EndColor = Color.White;
         }
 
-        public override Vector3 Border { get { return Vector3.Zero; } }
-
         protected override void OnReset(ref Particle particle, ref Range<Color> tag)
         {
             tag.Min = particle.Color;
@@ -56,8 +54,6 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class FadeController : ParticleController
     {
-        public override Vector3 Border{ get { return Vector3.Zero; } }
-
         protected override void OnReset(ref Particle particle) { }
 
         protected override void OnUpdate(float elapsedTime, ref Particle particle)
@@ -83,8 +79,6 @@ namespace Nine.Graphics.ParticleEffects
             EndSize = 1;
         }
 
-        public override Vector3 Border { get { return Vector3.Zero; } }
-
         protected override void OnReset(ref Particle particle, ref float tag)
         {
             tag = (MathHelper.Lerp(EndSize.Min, EndSize.Max, (float)Random.NextDouble()) - particle.Size) / particle.Duration;
@@ -108,8 +102,6 @@ namespace Nine.Graphics.ParticleEffects
         [ContentSerializer(Optional = true)]
         public Range<float> EndRotation { get; set; }
 
-        public override Vector3 Border { get { return Vector3.Zero; } }
-
         protected override void OnReset(ref Particle particle, ref float tag)
         {
             tag = (MathHelper.Lerp(EndRotation.Min, EndRotation.Max, (float)Random.NextDouble()) - particle.Rotation) / particle.Duration;
@@ -132,14 +124,6 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         [ContentSerializer(Optional = true)]
         public Range<float> EndSpeed { get; set; }
-
-        public override Vector3 Border 
-        {
-            get 
-            {
-                return Vector3.One * (ParticleEffect.Speed.Max + EndSpeed.Max) * 0.5f * ParticleEffect.Duration.Max; 
-            }
-        }
 
         protected override void OnReset(ref Particle particle, ref float tag)
         {
@@ -167,19 +151,6 @@ namespace Nine.Graphics.ParticleEffects
         public ForceController()
         {
             Force = -Vector3.UnitZ;
-        }
-
-        public override Vector3 Border
-        {
-            get 
-            {
-                Vector3 border = Force;
-                border.X = Math.Abs(border.X);
-                border.Y = Math.Abs(border.Y);
-                border.Z = Math.Abs(border.Z);
-                return Vector3.One * ParticleEffect.Speed.Max * ParticleEffect.Duration.Max +
-                       border * ParticleEffect.Duration.Max * ParticleEffect.Duration.Max * 0.5f; 
-            }
         }
 
         protected override void OnReset(ref Particle particle) { }
@@ -218,8 +189,6 @@ namespace Nine.Graphics.ParticleEffects
             Up = Vector3.UnitZ;
         }
 
-        public override Vector3 Border { get { return Vector3.Zero; } }
-
         protected override void OnReset(ref Particle particle) { }
 
         protected override void OnUpdate(float elapsedTime, ref Particle particle)
@@ -248,8 +217,6 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         [ContentSerializer(Optional = true)]
         public float Force { get; set; }
-
-        public override Vector3 Border { get { return Vector3.Zero; } }
 
         protected override void OnReset(ref Particle particle) { }
 

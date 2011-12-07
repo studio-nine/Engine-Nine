@@ -57,6 +57,7 @@ namespace Nine
             return new Point((int)vector.X, (int)vector.Y);
         }
 
+
 #if WINDOWS
         public static string ToContentString(this Matrix matrix)
         {

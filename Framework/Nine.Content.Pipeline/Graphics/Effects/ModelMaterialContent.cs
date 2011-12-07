@@ -43,6 +43,11 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// Don't forget to turn off premultiplied alpha when using this flag.
         /// </summary>
         Specular,
+
+        /// <summary>
+        /// The alpha channel of the texture is ignored.
+        /// </summary>
+        None,
     }
 
     /// <summary>

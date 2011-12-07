@@ -43,8 +43,8 @@ namespace Nine
         /// <summary>
         /// Creates a new instance of OctreeSceneManager.
         /// </summary>
-        public OctreeSceneManager() : this(new BoundingBox(new Vector3(-500f, -500f, -500f),
-                                                            new Vector3(500f, 500f, 500f)), 5)
+        public OctreeSceneManager() : this(new BoundingBox(new Vector3(-100f, -100f, -100f),
+                                                            new Vector3(100f, 100f, 100f)), 5)
         {
 
         }
@@ -64,6 +64,7 @@ namespace Nine
             boundingBoxChanged = new EventHandler<EventArgs>(BoundingBoxChanged);
         }
 
+        private bool needResize;
         private bool addedToNode;
         private T item;
         private Func<OctreeNode<List<T>>, TraverseOptions> add;
@@ -87,14 +88,40 @@ namespace Nine
             if (item.SpatialData != null)
                 throw new InvalidOperationException(Strings.AlreadyAddedToASceneManager);
 
-            if (!(item.SpatialData is OctreeSceneManagerSpatialData<T>))
-                item.SpatialData = new OctreeSceneManagerSpatialData<T>();
+            item.SpatialData = new OctreeSceneManagerSpatialData<T>();
 
-            Add(Tree.Root, item);
+            AddWithResize(Tree.Root, item);
 
             item.BoundingBoxChanged += boundingBoxChanged;
 
             Count++;
+        }
+
+        private void AddWithResize(OctreeNode<List<T>> treeNode, T item)
+        {
+            needResize = false;
+            Add(treeNode, item);
+
+            if (needResize)
+            {
+                needResize = false;
+
+                var newBounds = BoundingBox.CreateMerged(Tree.Bounds, item.BoundingBox);
+                var extends = 0.5f * ((newBounds.Max - newBounds.Min) - (Tree.Bounds.Max - Tree.Bounds.Min));
+
+                newBounds.Min -= extends;
+                newBounds.Max += extends;
+
+                Resize(newBounds);
+
+                Add(Tree.Root, item);
+
+                if (needResize)
+                {
+                    // Should be able to add when the tree is resized.
+                    throw new InvalidOperationException();
+                }
+            }
         }
         
         private void Add(OctreeNode<List<T>> treeNode, T item)
@@ -105,7 +132,7 @@ namespace Nine
             Tree.Traverse(treeNode, add);
             this.item = default(T);
 
-            if (!addedToNode)
+            if (!addedToNode && !needResize)
             {
                 // Something must be wrong if the node is not added.
                 throw new InvalidOperationException();
@@ -116,10 +143,10 @@ namespace Nine
         {
             ContainmentType containment = node.Bounds.Contains(item.BoundingBox);
 
-            // Add to root if the object is too large
+            // Expand the tree to root if the object is too large
             if (node == Tree.Root && containment != ContainmentType.Contains)
             {
-                AddToNode(item, node);
+                needResize = true;
                 return TraverseOptions.Stop;
             }
 
@@ -207,14 +234,38 @@ namespace Nine
                     // Something must be wrong if we cannot remove it.
                     throw new InvalidOperationException();
                 }
-                Add(node, item);
+
+                Count--;
+                AddWithResize(node, item);
+                Count++;
             }
         }
 
         public void Clear()
         {
+            // Clear event handlers
+            foreach (var item in this)
+            {
+                item.SpatialData = null;
+                item.BoundingBoxChanged -= boundingBoxChanged;
+            }
+
             Tree.Collapse();
             Count = 0;
+        }
+
+        private void Resize(BoundingBox boundingBox)
+        {
+            var items = new T[Count];
+
+            CopyTo(items, 0);
+            Clear();
+
+            Tree = new Octree<List<T>>(boundingBox, MaxDepth);
+            foreach (var item in items)
+            {
+                Add(item);
+            }
         }
 
         public bool Contains(T item)
@@ -308,10 +359,7 @@ namespace Nine
         private TraverseOptions FindAllBoundingBox(OctreeNode<List<T>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
-            if (node != Tree.Root)
-            {
-                boundingBox.Contains(ref node.boundingBox, out nodeContainment);
-            }
+            boundingBox.Contains(ref node.boundingBox, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
                 return TraverseOptions.Skip;
@@ -348,10 +396,7 @@ namespace Nine
         private TraverseOptions FindAllBoundingSphere(OctreeNode<List<T>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
-            if (node != Tree.Root)
-            {
-                boundingSphere.Contains(ref node.boundingBox, out nodeContainment);
-            }
+            boundingSphere.Contains(ref node.boundingBox, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
                 return TraverseOptions.Skip;
@@ -388,10 +433,7 @@ namespace Nine
         private TraverseOptions FindAllBoundingFrustum(OctreeNode<List<T>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
-            if (node != Tree.Root)
-            {
-                boundingFrustum.Contains(ref node.boundingBox, out nodeContainment);
-            }
+            boundingFrustum.Contains(ref node.boundingBox, out nodeContainment);
 
             if (nodeContainment == ContainmentType.Disjoint)
                 return TraverseOptions.Skip;
@@ -432,6 +474,10 @@ namespace Nine
                         result.Add(node.Value[i]);
                     }
                 }
+
+                var children = node.Children;
+                for (int i = 0; i < children.Count; i++)
+                    DesedentsStack.Push(children[i]);
             }
         }        
         static Stack<OctreeNode<List<T>>> DesedentsStack = new Stack<OctreeNode<List<T>>>();

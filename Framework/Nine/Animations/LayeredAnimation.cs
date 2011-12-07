@@ -110,7 +110,10 @@ namespace Nine.Animations
             foreach (IAnimation animation in animations)
                 Animations.Add(animation);
         }
-        
+
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
         protected override void OnStarted()
         {
             repeatCounter = 0;
@@ -120,7 +123,10 @@ namespace Nine.Animations
 
             base.OnStarted();
         }
-        
+
+        /// <summary>
+        /// Stops the animation.
+        /// </summary>
         protected override void OnStopped()
         {
             for (int i = 0; i < Animations.Count; i++)
@@ -129,6 +135,9 @@ namespace Nine.Animations
             base.OnStopped();
         }
 
+        /// <summary>
+        /// Pauses the animation.
+        /// </summary>
         protected override void OnPaused()
         {
             for (int i = 0; i < Animations.Count; i++)
@@ -137,6 +146,9 @@ namespace Nine.Animations
             base.OnPaused();
         }
 
+        /// <summary>
+        /// Resumes the animation.
+        /// </summary>
         protected override void OnResumed()
         {
             for (int i = 0; i < Animations.Count; i++)
@@ -145,6 +157,9 @@ namespace Nine.Animations
             base.OnResumed();
         }
 
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
         public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing)
@@ -192,12 +207,18 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Called when repeated.
+        /// </summary>
         protected virtual void OnRepeated()
         {
             if (Repeated != null)
                 Repeated(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
         public IEnumerator<IAnimation> GetEnumerator()
         {
             return Animations.GetEnumerator();

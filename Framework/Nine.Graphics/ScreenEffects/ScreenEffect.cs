@@ -38,6 +38,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Represents post processing effects.
     /// </summary>
+    [ContentSerializable]
     public class ScreenEffect : ChainedScreenEffect
     {
         /// <summary>
@@ -145,6 +146,14 @@ namespace Nine.Graphics.ScreenEffects
         }
         
 #if !SILVERLIGHT
+        /// <summary>
+        /// Creates a High Dynamic Range (HDR) post processing effect.
+        /// </summary>
+        public static ScreenEffect CreateHighDynamicRange(GraphicsDevice graphics)
+        {
+            return CreateHighDynamicRange(graphics, 0.5f, 1f, 4f, 5f, 1);
+        }
+
         /// <summary>
         /// Creates a High Dynamic Range (HDR) post processing effect.
         /// </summary>

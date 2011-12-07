@@ -27,23 +27,10 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
     /// <summary>
     /// Defines a merged particle effect. The is equivalent to ParticleEffect.CreateMerged.
     /// </summary>
-    [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics")]
     [ContentProperty("ParticleEffects")]
+    [ContentSerializerRuntimeType("Nine.Graphics.ParticleEffects.ParticleEffect, Nine.Graphics")]
     public class MergedParticleEffectContent
     {
-        /// <summary>
-        /// Gets or sets whether the particle system will be triggered
-        /// automatically after been created.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public bool TriggerOnStartup { get; set; }
-
-        /// <summary>
-        /// Gets or sets the max particle count of the particle effect.
-        /// </summary>
-        [ContentSerializer(Optional = true)]
-        public int MaxParticleCount { get; set; }
-
         /// <summary>
         /// Gets a collection of particle effects to be merged.
         /// </summary>
@@ -55,8 +42,6 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// </summary>
         public MergedParticleEffectContent()
         {
-            TriggerOnStartup = false;
-            MaxParticleCount = 16;
             ParticleEffects = new List<ParticleEffectContent>();
         }
     }
@@ -74,11 +59,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
                 throw new InvalidOperationException("value");
 
             var particleEffect = new ParticleEffectContent();
-            particleEffect.Emission = 1;
-            particleEffect.TriggerCount = 1;
-            particleEffect.Duration = float.MaxValue;
-            particleEffect.MaxParticleCount = mergedParticleEffect.MaxParticleCount;
-            particleEffect.TriggerOnStartup = mergedParticleEffect.TriggerOnStartup;
+            particleEffect.Emitter = new PointEmitterContent { EmitCount = 1, Duration = float.MaxValue };
             particleEffect.ChildEffects.AddRange(mergedParticleEffect.ParticleEffects);
 
             output.WriteRawObject<ParticleEffectContent>(particleEffect, writer);

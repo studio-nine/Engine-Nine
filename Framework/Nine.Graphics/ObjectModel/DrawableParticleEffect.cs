@@ -15,54 +15,153 @@ using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel;
 using Nine.Graphics.ParticleEffects;
 using Microsoft.Xna.Framework.Content;
+using Nine.Graphics.Effects;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
 {
-    public class DrawableParticleEffect : Drawable, ISpatialQueryable
+    /// <summary>
+    /// Defines an instance of particle effect.
+    /// </summary>
+    public class DrawableParticleEffect : Transformable, ISpatialQueryable, IDrawableObject
     {
+        #region ParticleEffect
+        /// <summary>
+        /// Gets the underlying particle effect.
+        /// </summary>
         [ContentSerializer(Optional = true)]
+        public ParticleEffect ParticleEffect
+        {
+            get { return particleEffect; }
+
+            // For serialization
+            internal set
+            {
+                particleEffect = value;
+                particleEmitter = particleEffect.Trigger();
+
+                // TODO: Include child effects, ending effect and controllers that might affect the bounds.
+                emitterBounds = particleEmitter.BoundingBox;
+                boundingBox = emitterBounds;
+            }
+        }
+
+        private ParticleEffect particleEffect;
+
+        /// <summary>
+        /// Gets the current particle emitter.
+        /// </summary>
+        public IParticleEmitter ParticleEmitter
+        {
+            get { return particleEmitter; }
+        }
+
+        private IParticleEmitter particleEmitter;
+        #endregion
+
+        #region Position
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        [ContentSerializerIgnore]
         public Vector3 Position
         {
-            get { return position; }
+            get { return Transform.Translation; }
             set { Transform = Matrix.CreateTranslation(value); }
         }
 
-        private Vector3 position;
+        /// <summary>
+        /// Gets the absolute position.
+        /// </summary>
+        public Vector3 AbsolutePosition
+        {
+            get { return AbsoluteTransform.Translation; }
+        }
 
+        /// <summary>
+        /// Called when local or absolute transform changed.
+        /// </summary>
         protected override void OnTransformChanged()
         {
-            position = Transform.Translation;
+            particleEmitter.Position = AbsoluteTransform.Translation;
+            particleEmitter.Direction = AbsoluteTransform.Forward;
+
+            boundingBox.Min = emitterBounds.Min + AbsolutePosition;
+            boundingBox.Max = emitterBounds.Max + AbsolutePosition;
+
             base.OnTransformChanged();
             if (BoundingBoxChanged != null)
                 BoundingBoxChanged(this, EventArgs.Empty);
         }
+        #endregion
 
-        [ContentSerializer(Optional = true)]
-        public ParticleEffect ParticleEffect { get; set; }
-        
-        public BoundingBox BoundingBox
+        #region Visible
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DrawableParticleEffect"/> is visible.
+        /// </summary>
+        public bool Visible
         {
-            get { /* TODO: */ return ParticleEffect.BoundingBox; }
+            get { return visible; }
+            set { visible = value; if (particleEmitter != null) particleEmitter.Enabled = value; }
         }
+
+        bool visible = true;
+        #endregion
+
+        #region BoundingBox
+        /// <summary>
+        /// Gets the axis aligned bounding box in world space.
+        /// </summary>
+        public BoundingBox BoundingBox { get { return boundingBox; } }
+
+        private BoundingBox boundingBox;
+        private BoundingBox emitterBounds;
 
         object ISpatialQueryable.SpatialData { get; set; }
 
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
         public event EventHandler<EventArgs> BoundingBoxChanged;
+        #endregion
 
-        public override void Update(TimeSpan elapsedTime)
+        #region Constructor
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawableParticleEffect"/> class.
+        /// </summary>
+        internal DrawableParticleEffect() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawableParticleEffect"/> class.
+        /// </summary>
+        /// <param name="particleEffect">The particle effect.</param>
+        public DrawableParticleEffect(ParticleEffect particleEffect) : this()
         {
-            if (ParticleEffect != null)
-                ParticleEffect.Update(elapsedTime);
+            if (particleEffect == null)
+                throw new ArgumentNullException("particleEffect");
+
+            this.ParticleEffect = particleEffect;
+        }
+        #endregion
+
+        #region Draw
+        Material IDrawableObject.Material
+        {
+            get { return null; }
         }
 
-        public override void Draw(GraphicsContext context)
+        void IDrawableObject.BeginDraw(GraphicsContext context)
         {
-            if (ParticleEffect == null || Visible)
-            {
-                // FIXME: We might be drawing it twice if 2 DrawableParticleEffect share the same ParticleEffect !!!
-                context.ParticleBatch.Draw(ParticleEffect);
-            }
+            particleEmitter.Enabled = false;
         }
+
+        void IDrawableObject.Draw(GraphicsContext context)
+        {
+            particleEmitter.Enabled = visible;
+        }
+
+        void IDrawableObject.Draw(GraphicsContext context, Effect effect) { }
+        void IDrawableObject.EndDraw(GraphicsContext context) { }
+        #endregion
     }
 }

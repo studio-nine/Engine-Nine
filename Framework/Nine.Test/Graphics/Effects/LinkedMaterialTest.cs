@@ -125,9 +125,10 @@ namespace Nine.Graphics.Effects.Test
                 var linkedMaterial1 = Content.Load<LinkedMaterial>(filename1);
                 var linkedMaterial2 = Content.Load<LinkedMaterial>(filename2);
 
+                Assert.AreNotEqual(linkedMaterial1, linkedMaterial2);
+                Assert.AreEqual(linkedMaterial1.Effect, linkedMaterial2.Effect);
                 Assert.AreEqual(Vector3.One * 0.2f, linkedMaterial1.DiffuseColor);
                 Assert.AreEqual(Vector3.One * 0.8f, linkedMaterial2.DiffuseColor);
-                Assert.AreEqual(linkedMaterial1.Effect, linkedMaterial2.Effect);
             });
         }
     }

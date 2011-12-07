@@ -29,7 +29,7 @@ namespace Nine.Graphics.Effects.Test
         public void TerrainMaterialDefaultTest()
         {
             MaterialEquals(ErrorCap
-                , new BasicMaterialContent()
+                , new BasicMaterialContent() { TextureEnabled = false }
                 , new TerrainMaterialContent());
         }
 

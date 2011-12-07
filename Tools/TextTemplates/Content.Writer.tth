@@ -63,6 +63,16 @@ namespace <#= namespaceGroup.Key #>
             output.Write(value.<#= memberName #> ?? "");
 <#
         }
+        else if (IsCollection(memberType) && !CanSet(member) && !HasContentSerializerAttribute(member))
+        {
+#>
+            {
+                output.Write(value.<#= memberName #>.Count);
+                for (var i = 0; i < value.<#= memberName #>.Count; i++)
+                    output.WriteObject(value.<#= memberName #>[i]);
+            }
+<#
+        }
         else
         {
 #>

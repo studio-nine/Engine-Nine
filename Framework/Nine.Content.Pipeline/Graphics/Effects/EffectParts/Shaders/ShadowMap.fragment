@@ -8,7 +8,7 @@ fragment ShadowMap;
 
 [parameters]
 matrix	LightViewProjection;
-float 	ShadowIntensity = 0.5;
+float3	ShadowColor = 0.5;
 float	DepthBias = 0.005f;
 float2  ShadowMapTexelSize = float2(0.0009765625f, 0.0009765625f); // 1.0f/1024
 
@@ -72,13 +72,11 @@ void main(INPUT input, inout OUTPUT output)
             intensity += saturate(shadow.z) > DepthBias + tex2D(ShadowMapSampler, shadow.xy + FilterTaps[i] * ShadowMapTexelSize).x ? 1.0f / {$SAMPLECOUNT} : 0;
         }
 	}
-     
-    intensity *= ShadowIntensity;
-    	
+       	
 	float4 color;
 	import(Color, color = Color);
 	
-	color.rgb *= (1 - intensity);
+	color.rgb *= lerp(1, ShadowColor, intensity);
 	export(float4, Color, color);
 }
 __hlsl__

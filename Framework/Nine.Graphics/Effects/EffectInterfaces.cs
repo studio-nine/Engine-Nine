@@ -38,9 +38,9 @@ namespace Nine.Graphics.Effects
         float DepthBias { get; set; }
 
         /// <summary>
-        /// Gets or sets the intensity of the shadow.
+        /// Gets or sets the color of the shadow.
         /// </summary>
-        float ShadowIntensity { get; set; }
+        Vector3 ShadowColor { get; set; }
 
         /// <summary>
         /// Gets or sets the view projection matrix of the light that casts the shadow.

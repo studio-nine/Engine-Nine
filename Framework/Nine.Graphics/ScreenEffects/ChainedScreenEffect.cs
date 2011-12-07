@@ -9,6 +9,7 @@
 #region Using Statements
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -22,13 +23,32 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Defines an basic screen effect that uses an effect chain.
     /// </summary>
+    [ContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ChainedScreenEffect : IScreenEffect, IUpdateable, IEffectTexture
     {
         /// <summary>
         /// Gets all the effects used by this pass.
         /// </summary>
+        [ContentSerializerIgnore]
         public ScreenEffectCollection Effects { get; private set; }
+
+        [ContentSerializer(ElementName="Effects")]
+        internal List<object> EffectsSerializer
+        {
+            get { return Effects.OfType<object>().ToList(); }
+            set
+            {
+                Effects.Clear();
+                for (int i = 0; i < value.Count; i++)
+                {
+                    if (value[i] is IScreenEffect)
+                        Effects.Add(value[i] as IScreenEffect);
+                    else if (value[i] is Effect)
+                        Effects.Add(value[i] as Effect);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets whether this <c>ChainedScreenEffect</c> is enabled.

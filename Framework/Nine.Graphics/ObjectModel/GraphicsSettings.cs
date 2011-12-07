@@ -14,6 +14,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel;
 using Nine.Graphics.ParticleEffects;
+using Microsoft.Xna.Framework.Input;
+#if SILVERLIGHT
+using Keys = System.Windows.Input.Key;
+#endif
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -67,16 +71,16 @@ namespace Nine.Graphics.ObjectModel
         /// Gets or sets preferred shadowmap resolution.
         /// </summary>
         public int ShadowMapResolution { get; set; }
-
-        /// <summary>
-        /// Gets or sets the depth bias for shadow map. The default value is 0.005f.
-        /// </summary>
-        public float ShadowMapDepthBias { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the default font.
         /// </summary>
         public SpriteFont DefaultFont { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether default debug control is enabled.
+        /// </summary>
+        public bool DefaultDebugControlEnabled { get; set; }
 
         /// <summary>
         /// Gets the debug settings.
@@ -94,9 +98,32 @@ namespace Nine.Graphics.ObjectModel
             ScreenEffectEnabled = true;
             PreferHighDynamicRangeLighting = true;
             ShadowMapResolution = 1024;
-            ShadowMapDepthBias = 0.005f;
             BackgroundColor = Color.Black;
             Debug = new GraphicsDebugSetting();
+        }
+
+        internal void Update()
+        {
+            if (DefaultDebugControlEnabled)
+            {
+                var keyboardState = Keyboard.GetState();
+
+                PreferHighDynamicRangeLighting = !keyboardState.IsKeyDown(Keys.F1);
+                ShadowEnabled = !keyboardState.IsKeyDown(Keys.F2);
+                LightingEnabled = !keyboardState.IsKeyDown(Keys.F3);
+                FogEnable = !keyboardState.IsKeyDown(Keys.F4);
+                ScreenEffectEnabled = !keyboardState.IsKeyDown(Keys.F5);
+
+                Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.D1);
+                Debug.ShowBoundingBox = keyboardState.IsKeyDown(Keys.D2);
+                Debug.ShowLightFrustum = keyboardState.IsKeyDown(Keys.D3);
+                Debug.ShowSceneManager = keyboardState.IsKeyDown(Keys.D4);
+                Debug.ShowShadowMap = keyboardState.IsKeyDown(Keys.D5);
+                Debug.ShowStatistics = keyboardState.IsKeyDown(Keys.D6);
+                Debug.ShowDepthBuffer = keyboardState.IsKeyDown(Keys.D7);
+                Debug.ShowNormalBuffer = keyboardState.IsKeyDown(Keys.D8);
+                Debug.ShowLightBuffer = keyboardState.IsKeyDown(Keys.D9);
+            }
         }
     }
 

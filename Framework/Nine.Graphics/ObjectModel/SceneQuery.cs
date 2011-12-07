@@ -192,7 +192,6 @@ namespace Nine.Graphics.ObjectModel
 
         private static T ResultObject;
         private static string TargetName;
-        private static ISpatialQueryable CurrentItem;
         private static Func<T, TraverseOptions> NameTraverser = new Func<T, TraverseOptions>(FindNameTraverser);
         private static Func<T, TraverseOptions> AllNamesTraverser = new Func<T, TraverseOptions>(FindAllNamesTraverser);
 

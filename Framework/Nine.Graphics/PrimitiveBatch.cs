@@ -55,7 +55,7 @@ namespace Nine.Graphics
         private PrimitiveSortMode sort;
         private bool hasBegin = false;
         private bool hasPrimitiveBegin = false;
-        private Vector3? cameraPosition;
+        private Vector3 cameraPosition;
 
         private BlendState blendState;
         private SamplerState samplerState;
@@ -154,10 +154,14 @@ namespace Nine.Graphics
             this.projection = projection;
             this.sort = sortMode;
             this.hasBegin = true;
-            this.cameraPosition = null;
             this.effect = effect ?? basicEffect;
             this.VertexCount = 0;
             this.PrimitiveCount = 0;
+
+            Matrix.Invert(ref view, out view);
+            cameraPosition.X = view.M41;
+            cameraPosition.Y = view.M42;
+            cameraPosition.Z = view.M43;
             
             this.blendState = blendState != null ? blendState : BlendState.AlphaBlend;
             this.samplerState = samplerState != null ? samplerState : SamplerState.LinearWrap;
@@ -170,8 +174,8 @@ namespace Nine.Graphics
             if (matrices != null)
             {
                 matrices.World = Matrix.Identity;
-                matrices.View = view;
-                matrices.Projection = projection;
+                matrices.View = this.view;
+                matrices.Projection = this.projection;
             }
         }
 
@@ -191,17 +195,38 @@ namespace Nine.Graphics
             VertexPositionColorTexture ba;
             VertexPositionColorTexture bb;
 
-            Matrix transform = Matrix.CreateScale(-1, 1, 1) *
-                               Matrix.CreateRotationZ(rotation) *
-                               Matrix.CreateBillboard(position, GetCameraPosition(), up, null);
+            Matrix transform = new Matrix();
+            Matrix billboard = new Matrix();
+
+            Matrix.CreateRotationZ(rotation, out transform);
+            Matrix.CreateBillboard(ref position, ref cameraPosition, ref up, null, out billboard);
+            Matrix.Multiply(ref transform, ref billboard, out transform);
 
             if (float.IsNaN(transform.M11))
+            {
                 transform = Matrix.Identity;
+                transform.M11 = -1;
+            }
 
-            aa.Position = position + Vector3.TransformNormal(new Vector3(-width * 0.5f, +height * 0.5f, 0), transform);
-            ab.Position = position + Vector3.TransformNormal(new Vector3(+width * 0.5f, +height * 0.5f, 0), transform);
-            ba.Position = position + Vector3.TransformNormal(new Vector3(-width * 0.5f, -height * 0.5f, 0), transform);
-            bb.Position = position + Vector3.TransformNormal(new Vector3(+width * 0.5f, -height * 0.5f, 0), transform);
+            transform.M41 = position.X;
+            transform.M42 = position.Y;
+            transform.M43 = position.Z;
+
+            aa.Position.X = +width * 0.5f; aa.Position.Y = +height * 0.5f; aa.Position.Z = 0;
+            ab.Position.X = -width * 0.5f; ab.Position.Y = +height * 0.5f; ab.Position.Z = 0;
+            ba.Position.X = +width * 0.5f; ba.Position.Y = -height * 0.5f; ba.Position.Z = 0;
+            bb.Position.X = -width * 0.5f; bb.Position.Y = -height * 0.5f; bb.Position.Z = 0;
+
+#if XBOX || WINDOWS_PHONE
+            aa.Position = new Vector3();
+            ab.Position = new Vector3();
+            ba.Position = new Vector3();
+            bb.Position = new Vector3();
+#endif
+            Vector3.Transform(ref aa.Position, ref transform, out aa.Position);
+            Vector3.Transform(ref ab.Position, ref transform, out ab.Position);
+            Vector3.Transform(ref ba.Position, ref transform, out ba.Position);
+            Vector3.Transform(ref bb.Position, ref transform, out bb.Position);
 
             if (textureTransform != null)
             {
@@ -710,7 +735,7 @@ namespace Nine.Graphics
         {
             // Compute billboard facing
             Vector3 v1 = Vector3.Subtract(end, start);
-            Vector3 v2 = Vector3.Subtract(GetCameraPosition(), start);
+            Vector3 v2 = Vector3.Subtract(cameraPosition, start);
 
             Vector3 right = Vector3.Cross(v1, v2);
 
@@ -722,13 +747,6 @@ namespace Nine.Graphics
             ab = end + right;
             ba = start - right;
             bb = start + right;
-        }
-
-        private Vector3 GetCameraPosition()
-        {
-            if (!cameraPosition.HasValue)
-                cameraPosition = Matrix.Invert(view).Translation;
-            return cameraPosition.Value;
         }
 
 

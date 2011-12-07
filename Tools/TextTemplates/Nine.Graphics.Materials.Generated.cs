@@ -18,7 +18,6 @@ namespace Nine.Graphics.Effects
     [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public partial class AlphaTestMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
@@ -125,7 +124,6 @@ namespace Nine.Graphics.Effects
     [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public partial class BasicMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
@@ -264,7 +262,6 @@ namespace Nine.Graphics.Effects
     [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public partial class DualTextureMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
@@ -363,7 +360,6 @@ namespace Nine.Graphics.Effects
     [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public partial class EnvironmentMapMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>
@@ -486,7 +482,6 @@ namespace Nine.Graphics.Effects
     [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public partial class SkinnedMaterial : Nine.Graphics.Effects.Material
     {        
         /// <summary>

@@ -17,10 +17,12 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Nine.Content.Pipeline.Processors;
+using System.Windows.Markup;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
 {
+    [ContentProperty("Material")]
     partial class DrawableModelContent
     {
         [ContentSerializer(Optional = true)]
@@ -73,4 +75,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             }
         }
     }
+
+    [ContentProperty("Material")]
+    partial class DrawableModelPartContent { }
 }

@@ -42,7 +42,15 @@ namespace Nine.Graphics.ScreenEffects
         /// <summary>
         /// Gets or sets the effect file used by this <c>BasicScreenEffect</c>.
         /// </summary>
+        [ContentSerializerIgnore]
         public Effect Effect { get; set; }
+
+        [ContentSerializer(ElementName="Effect")]
+        internal object EffectSerializer
+        {
+            get { return Effect; }
+            set { Effect = value as Effect; }
+        }
 
         /// <summary>
         /// Gets or sets whether this <c>BasicScreenEffect</c> is enabled.

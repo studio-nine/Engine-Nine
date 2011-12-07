@@ -21,41 +21,29 @@ using Microsoft.Xna.Framework.Content;
 namespace Nine.Graphics.ParticleEffects
 {
     using Nine.Animations;
-
+    
     /// <summary>
     /// Defines a point emitter that emit particles from a point in 3D space.
     /// </summary>
     public class PointEmitter : ParticleEmitter
     {
         [ContentSerializer(Optional = true)]
-        public Vector3 Position { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 Direction
-        {
-            get { return direction; }
-            set { direction = value; }
-        }
-        private Vector3 direction = Vector3.UnitZ;
-
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
             set { spread = value; } 
         }
-        private float spread = MathHelper.Pi;
+        private float spread = MathHelper.Pi;        
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override BoundingBox BoundingBox
+        protected override BoundingBox BoundingBoxValue
         {
-            get { return new BoundingBox { Min = Position, Max = Position }; }
+            get { return new BoundingBox(); }
         }
 
         public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
         {
-            position = Position;
-            CreateRandomVelocity(ref velocity, ref direction, spread);
+            position = Vector3.Zero;
+            CreateRandomVector(ref velocity, spread);
         }
     }
 
@@ -88,14 +76,6 @@ namespace Nine.Graphics.ParticleEffects
         public BoundingBox Box { get; set; }
 
         [ContentSerializer(Optional = true)]
-        public Vector3 Direction
-        {
-            get { return direction; }
-            set { direction = value; }
-        }
-        private Vector3 direction = Vector3.UnitZ;
-
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -103,8 +83,7 @@ namespace Nine.Graphics.ParticleEffects
         }
         private float spread = MathHelper.Pi;
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override BoundingBox BoundingBox
+        protected override BoundingBox BoundingBoxValue
         {
             get 
             {
@@ -134,7 +113,7 @@ namespace Nine.Graphics.ParticleEffects
                 Vector3.Transform(ref position, ref transform, out position);
             }
 
-            CreateRandomVelocity(ref velocity, ref direction, spread);
+            CreateRandomVector(ref velocity, spread);
         }
     }
 
@@ -148,17 +127,7 @@ namespace Nine.Graphics.ParticleEffects
         [ContentSerializer(Optional = true)]
         public bool Radiate { get; set; }
         [ContentSerializer(Optional = true)]
-        public Vector3 Center { get; set; }
-        [ContentSerializer(Optional = true)]
         public float Radius { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 Direction
-        {
-            get { return direction; }
-            set { direction = value; }
-        }
-        private Vector3 direction = Vector3.UnitZ;
 
         [ContentSerializer(Optional = true)]
         public float Spread
@@ -173,27 +142,25 @@ namespace Nine.Graphics.ParticleEffects
             Radius = 100;
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override BoundingBox BoundingBox
+        protected override BoundingBox BoundingBoxValue
         {
-            get { return BoundingBox.CreateFromSphere(new BoundingSphere(Center, Radius)); }
+            get { return new BoundingBox(Vector3.One * -Radius, Vector3.One * Radius); }
         }
 
         public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
         {
-            CreateRandomVelocity(ref position);
+            CreateRandomVector(ref position);
 
             if (Radiate)
                 velocity = position;
             else
-                CreateRandomVelocity(ref velocity, ref direction, spread);
+                CreateRandomVector(ref velocity, spread);
 
             float radius = Radius;
             if (!Shell)
                 radius *= (float)Random.NextDouble();
 
             position *= radius;
-            position += Center;
         }
     }
 
@@ -210,14 +177,6 @@ namespace Nine.Graphics.ParticleEffects
         public float Height { get; set; }
 
         [ContentSerializer(Optional = true)]
-        public Vector3 Direction
-        {
-            get { return direction; }
-            set { direction = value; }
-        }
-        private Vector3 direction = Vector3.UnitZ;
-
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -226,16 +185,14 @@ namespace Nine.Graphics.ParticleEffects
         private float spread = MathHelper.Pi;
 
         [ContentSerializer(Optional = true)]
-        public Vector3 Center { get; set; }
-        [ContentSerializer(Optional = true)]
         public Vector3 Up { get; set; }
         [ContentSerializer(Optional = true)]
         public float Radius { get; set; }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override BoundingBox BoundingBox
+        protected override BoundingBox BoundingBoxValue
         {
-            get { return BoundingBox.CreateFromSphere(new BoundingSphere(Center, Math.Max(Radius, Height * 0.5f))); }
+            get { return new BoundingBox(Vector3.One * -Math.Max(Radius, Height * 0.5f), 
+                                         Vector3.One * Math.Max(Radius, Height * 0.5f)); }
         }
 
         public CylinderEmitter()
@@ -283,9 +240,7 @@ namespace Nine.Graphics.ParticleEffects
             }
 
             if (!Radiate)
-                CreateRandomVelocity(ref velocity, ref direction, spread);
-            
-            position += Center;
+                CreateRandomVector(ref velocity, spread);
         }
     }
 
@@ -297,14 +252,6 @@ namespace Nine.Graphics.ParticleEffects
         private List<Vector3> lineList = new List<Vector3>();
         private List<float> lineWeights = new List<float>();
         private BoundingBox bounds;
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 Direction
-        {
-            get { return direction; }
-            set { direction = value; }
-        }
-        private Vector3 direction = Vector3.UnitZ;
 
         [ContentSerializer(Optional = true)]
         public float Spread
@@ -345,8 +292,7 @@ namespace Nine.Graphics.ParticleEffects
             bounds = BoundingBox.CreateFromPoints(value);
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override BoundingBox BoundingBox { get { return bounds; } }
+        protected override BoundingBox BoundingBoxValue { get { return bounds; } }
 
         public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
         {
@@ -365,7 +311,7 @@ namespace Nine.Graphics.ParticleEffects
         private void Emit(ref Vector3 position, ref Vector3 velocity,Vector3 v1, Vector3 v2, float percentage)
         {
             position = Vector3.Lerp(v1, v2, percentage);
-            CreateRandomVelocity(ref velocity, ref direction, spread);
+            CreateRandomVector(ref velocity, spread);
         }
     }
 
@@ -386,8 +332,7 @@ namespace Nine.Graphics.ParticleEffects
             throw new NotImplementedException();
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override BoundingBox BoundingBox
+        protected override BoundingBox BoundingBoxValue
         {
             get { return lineEmitter.BoundingBox; }
         }

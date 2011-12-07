@@ -9,6 +9,7 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
+    [ContentSerializable]
     public partial class ToneMappingEffect : IEffectTexture
     {
 		private void OnClone(ToneMappingEffect cloneSource) { }

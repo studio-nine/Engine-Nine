@@ -1,0 +1,16 @@
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+    <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+    <DirectionalLightContent DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+    
+    <DrawableSurfaceContent Width="64" Height="64" Step="1" PatchSegmentCount="8" Position="-32, -32, 0" TextureScale="0.2, 0.2">
+        <BasicMaterialContent Texture="..\Textures\checker" />
+    </DrawableSurfaceContent>
+
+    <ScreenEffectContent>
+        <WiggleEffectContent />
+    </ScreenEffectContent>
+
+</SceneContent>

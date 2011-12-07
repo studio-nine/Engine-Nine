@@ -82,16 +82,37 @@ namespace Nine.Test
             Assert.AreEqual(0, scene.Count);
             Assert.AreEqual(1, scene.Tree.Count());
         }
+
+        [TestMethod()]
+        public void AddUpdateToNewBoundsRemoveTest()
+        {
+            OctreeSceneManager<ISpatialQueryable> scene = new OctreeSceneManager<ISpatialQueryable>();
+
+            var boundable = new TestBoundable() { BoundingBox = new BoundingBox(Vector3.One * 0.1f, Vector3.One) };
+            scene.Add(boundable);
+            
+            Assert.AreEqual(1, scene.Count);
+            Assert.AreEqual(1, scene.Count());
+            boundable.BoundingBox = new BoundingBox(-Vector3.One * 10000, Vector3.One * 10000);
+            
+            Assert.AreEqual(1, scene.Count);
+            Assert.AreEqual(1, scene.Count());
+
+            scene.Remove(boundable);
+
+            Assert.AreEqual(0, scene.Count);
+            Assert.AreEqual(1, scene.Tree.Count());
+        }
         
         [TestMethod()]
         public void AddQueryUpdateRemoveTest()
         {
             // 1000 x 1000 x 1000
             var scene = new OctreeSceneManager<ISpatialQueryable>();
-
-            var objects = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(scene.Bounds, 50f)).ToArray();
-            var updatedObjects = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(scene.Bounds, 50f)).ToArray();
-            var queries = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(scene.Bounds, 200)).ToArray();
+            var bounds = new BoundingBox(Vector3.One * -500, Vector3.One * 1000);
+            var objects = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(bounds, 50f)).ToArray();
+            var updatedObjects = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(bounds, 50f)).ToArray();
+            var queries = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(bounds, 200)).ToArray();
 
             // Add
             GC.Collect();
@@ -152,9 +173,9 @@ namespace Nine.Test
             // Remove
             watch.Restart();
 
-            foreach (var o in all)
+            for (int i = 0; i < all.Length; i++)
             {
-                scene.Remove(o);
+                scene.Remove(all[i]);
             }
 
             watch.Stop();

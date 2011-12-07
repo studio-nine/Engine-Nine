@@ -288,7 +288,7 @@ namespace Nine.Graphics.Effects.Deferred
 
                 depthBuffer = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width,
                                              GraphicsDevice.Viewport.Height, false, DepthBufferFormat,
-                                             GraphicsDevice.PresentationParameters.DepthStencilFormat);
+                                             DepthFormat.None);
             }
         }
 

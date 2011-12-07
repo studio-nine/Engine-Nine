@@ -71,9 +71,20 @@ namespace Nine.Content.Pipeline.Processors
                 return null;
 
             IContentProcessor processor = null;
-            var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).OfType<DefaultContentProcessorAttribute>().FirstOrDefault();
+            var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false)
+                                                           .OfType<DefaultContentProcessorAttribute>().FirstOrDefault();
+
             if (defaultProcessorAttribute != null)
                 processor = (IContentProcessor)Activator.CreateInstance(Type.GetType(defaultProcessorAttribute.DefaultProcessor));
+
+            if (processor == null)
+            {
+                var selfProcessMethod = input.GetType().GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                                                       .Where(m => m.GetCustomAttributes(typeof(SelfProcessAttribute), false).Any())
+                                                       .FirstOrDefault();
+                if (selfProcessMethod != null)
+                    processor = new SelfProcessor(input, selfProcessMethod);
+            }
 
             if (processor == null)
                 processor = DefaultProcessors.FirstOrDefault(p => p.InputType.IsAssignableFrom(input.GetType()));
@@ -90,6 +101,23 @@ namespace Nine.Content.Pipeline.Processors
                 context.Logger.LogWarning(null, null, "Processor type mismatch {0} -> {1} -> {2} -> {4}", input.GetType().Name, processor.InputType.Name, processor.OutputType.Name, type.Name);
             }
             return input;
+        }
+
+        class SelfProcessor : ContentProcessor<object, object>
+        {
+            private object input;
+            private MethodInfo processMethod;
+
+            public SelfProcessor(object input, MethodInfo processMethod)
+            {
+                this.input = input;
+                this.processMethod = processMethod;
+            }
+
+            public override object Process(object input, ContentProcessorContext context)
+            {
+                return processMethod.Invoke(input, new object[] { input, context });
+            }
         }
     }
 }

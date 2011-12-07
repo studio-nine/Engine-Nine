@@ -86,7 +86,6 @@
     <Compile Include="Animations\LayeredAnimation.cs" />
     <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
-    <Compile Include="Animations\TransformAnimation.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="BoundingCircle.cs" />

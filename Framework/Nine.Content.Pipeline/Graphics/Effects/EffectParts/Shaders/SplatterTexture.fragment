@@ -98,7 +98,7 @@ void main(INPUT input, inout OUTPUT output)
     {$HASY}diffuse += tex2D(TextureYSampler, uv) * DiffuseColorY * splatter.y;
     {$HASZ}diffuse += tex2D(TextureZSampler, uv) * DiffuseColorZ * splatter.z;
     {$HASW}diffuse += tex2D(TextureWSampler, uv) * DiffuseColorW * splatter.w;
-    color.xyz *= diffuse;
+    {$HASDIFFUSE}color.xyz *= diffuse;
 
     float3 specular = 0;
 	{$HASSPECULARX}{$HASX}specular += SpecularColorX * splatter.x;

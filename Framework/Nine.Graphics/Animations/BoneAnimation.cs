@@ -62,6 +62,9 @@ namespace Nine.Animations
     /// </summary>
     public class BoneAnimation : Animation, IBoneAnimationController
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoneAnimation"/> class.
+        /// </summary>
         public BoneAnimation(Skeleton skeleton)
         {
             if (skeleton == null)
@@ -73,12 +76,18 @@ namespace Nine.Animations
             Controllers = new BoneAnimationControllerCollection(skeleton);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoneAnimation"/> class.
+        /// </summary>
         public BoneAnimation(Skeleton skeleton, BoneAnimationClip animation)
             : this(skeleton, new BoneAnimationController(animation))
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoneAnimation"/> class.
+        /// </summary>
         public BoneAnimation(Skeleton skeleton, IBoneAnimationController animationController)
             : this(skeleton)
         {
@@ -161,7 +170,10 @@ namespace Nine.Animations
         private static int numControllers = 0;
         private static int numBones = 0;
         private static BoneAnimationItem[] weightedBones = null;
-        
+
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
         protected override void OnStarted()
         {
             blendTimer = 0;
@@ -204,7 +216,10 @@ namespace Nine.Animations
                 throw new InvalidOperationException(Strings.InvalidateSkeleton);
             }
         }
-        
+
+        /// <summary>
+        /// Stops the animation.
+        /// </summary>
         protected override void OnStopped()
         {
             foreach (IBoneAnimationController controller in Controllers)
@@ -217,6 +232,9 @@ namespace Nine.Animations
             base.OnStopped();
         }
 
+        /// <summary>
+        /// Pauses the animation.
+        /// </summary>
         protected override void OnPaused()
         {
             foreach (IBoneAnimationController controller in Controllers)
@@ -229,6 +247,9 @@ namespace Nine.Animations
             base.OnPaused();
         }
 
+        /// <summary>
+        /// Resumes the animation.
+        /// </summary>
         protected override void OnResumed()
         {
             foreach (IBoneAnimationController controller in Controllers)
@@ -241,6 +262,9 @@ namespace Nine.Animations
             base.OnResumed();
         }
 
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
         public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing && Skeleton != null)
@@ -313,6 +337,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Updates the bone transforms.
+        /// </summary>
         private void UpdateBoneTransforms(TimeSpan elapsedTime)
         {
             // Update default blend
@@ -389,6 +416,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Tries to get the local transform and blend weight of the specified bone.
+        /// </summary>
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
             blendWeight = 1;
@@ -403,7 +433,7 @@ namespace Nine.Animations
         }
     }
 
-    internal struct BoneAnimationItem
+    struct BoneAnimationItem
     {
         public float BlendWeight;
         public Matrix Transform;

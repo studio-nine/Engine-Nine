@@ -25,7 +25,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics.Effects
 {
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public sealed class CustomMaterial : Material
     {
         private CustomEffect effect;

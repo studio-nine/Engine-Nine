@@ -9,6 +9,7 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
+    [ContentSerializable]
     public partial class NoiseEffect : IUpdateable
     {
         private void OnCreated() { NoiseAmount = 1; }

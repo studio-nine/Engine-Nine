@@ -52,9 +52,9 @@ namespace Nine.Animations
         /// Gets the animation clip used by this bone animation.
         /// </summary>
         public BoneAnimationClip AnimationClip { get; private set; }
-
+        
         /// <summary>
-        /// Creates a new instance of BoneAnimation.
+        /// Initializes a new instance of the <see cref="BoneAnimationController"/> class.
         /// </summary>
         public BoneAnimationController(BoneAnimationClip animationClip)
         {
@@ -65,11 +65,17 @@ namespace Nine.Animations
             this.Ending = animationClip.PreferredEnding;
             this.InterpolationEnabled = false;
             this.FramesPerSecond = animationClip.FramesPerSecond;
+            this.TotalFrames = animationClip.TotalFrames;
         }
 
-        protected override int GetTotalFrames()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoneAnimationController"/> class.
+        /// </summary>
+        public BoneAnimationController(BoneAnimationClip animationClip, int beginFrame, int count)
+            : this(animationClip)
         {
-            return AnimationClip.TotalFrames;
+            base.BeginFrame = beginFrame;
+            base.EndFrame = beginFrame + count;
         }
 
         private int startFrame;
@@ -77,6 +83,12 @@ namespace Nine.Animations
         private float percentage;
         private bool shouldLerp;
 
+        /// <summary>
+        /// Update the animation by a specified amount of elapsed time.
+        /// Handle playing either forwards or backwards.
+        /// Determines whether animation should terminate or continue.
+        /// Signals related events.
+        /// </summary>
         public override void Update(TimeSpan elapsedTime)
         {
             if (State == Animations.AnimationState.Playing)
@@ -87,6 +99,10 @@ namespace Nine.Animations
             base.Update(elapsedTime);
         }
 
+        /// <summary>
+        /// Moves the animation at the position between start frame and end frame
+        /// specified by percentage.
+        /// </summary>
         protected override void OnSeek(int startFrame, int endFrame, float percentage)
         {
             this.startFrame = startFrame;
@@ -94,6 +110,9 @@ namespace Nine.Animations
             this.percentage = percentage;
         }
 
+        /// <summary>
+        /// Tries to get the local transform and blend weight of the specified bone.
+        /// </summary>
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
             blendWeight = 1;
@@ -128,12 +147,18 @@ namespace Nine.Animations
     {
         Matrix[] transforms;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoneSnapshotController"/> class.
+        /// </summary>
         public BoneSnapshotController(Model model)
         {
             transforms = new Matrix[model.Bones.Count];
             model.CopyBoneTransformsTo(transforms);
         }
 
+        /// <summary>
+        /// Tries to get the local transform and blend weight of the specified bone.
+        /// </summary>
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
             blendWeight = 1;
@@ -234,6 +259,9 @@ namespace Nine.Animations
             desiredTransform = Matrix.Identity;
         }
 
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
         public void Update(TimeSpan elapsedTime)
         {
             bool hasTarget = Target.HasValue;
@@ -305,6 +333,9 @@ namespace Nine.Animations
             hasTargetLastFrame = hasTarget;
         }
 
+        /// <summary>
+        /// Tries to get the local transform and blend weight of the specified bone.
+        /// </summary>
         public bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight)
         {
             transform = desiredTransform;

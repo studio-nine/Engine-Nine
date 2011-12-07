@@ -203,6 +203,16 @@ namespace Microsoft.Xna.Framework.Graphics
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the name of this effect.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets any user data.
+        /// </summary>
+        public object Tag { get; set; }
         #endregion
     }
 }

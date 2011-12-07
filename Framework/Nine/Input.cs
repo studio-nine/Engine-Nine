@@ -453,7 +453,7 @@ namespace Nine
 
     #region InputRaiseStrategy
 
-    public enum InputRaiseStrategy
+    public enum InputRaiseMode
     {
         Tunneling,
         Bubbling
@@ -536,7 +536,7 @@ namespace Nine
         /// </summary>
         private const float DoubleClickInterval = 0.25f;
 
-        public InputRaiseStrategy RaiseStrategy { get; set; }
+        public InputRaiseMode RaiseStrategy { get; set; }
 
 #if WINDOWS
         private bool leftDown = false;
@@ -554,7 +554,7 @@ namespace Nine
         public InputComponent()
         {
             Current = this;
-            RaiseStrategy = InputRaiseStrategy.Tunneling;
+            RaiseStrategy = InputRaiseMode.Tunneling;
         }
 
         /// <summary>
@@ -564,7 +564,7 @@ namespace Nine
         public InputComponent(IntPtr handle)
         {
             Current = this;
-            RaiseStrategy = InputRaiseStrategy.Tunneling;
+            RaiseStrategy = InputRaiseMode.Tunneling;
 
 #if WINDOWS
             Mouse.WindowHandle = handle;
@@ -875,7 +875,7 @@ namespace Nine
         #region Raise Events
         private void ForEach(Predicate<Input> action)
         {
-            if (RaiseStrategy == InputRaiseStrategy.Tunneling)
+            if (RaiseStrategy == InputRaiseMode.Tunneling)
             {
                 for (int i = 0; i < inputs.Count; i++)
                 {

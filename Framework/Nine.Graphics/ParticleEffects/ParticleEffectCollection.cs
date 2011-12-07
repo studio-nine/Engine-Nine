@@ -30,7 +30,7 @@ namespace Nine.Graphics.ParticleEffects
         {
             if (item == null)
                 throw new ArgumentNullException("item");
-            if (item.Triggers.Count > 0)
+            if (item.ActiveEmitters.Count > 0)
                 throw new ArgumentException(Strings.ParticleEffectAlreadyTriggered);
             base.InsertItem(index, item);
         }
@@ -39,7 +39,7 @@ namespace Nine.Graphics.ParticleEffects
         {
             if (item == null)
                 throw new ArgumentNullException("item");
-            if (item.Triggers.Count > 0)
+            if (item.ActiveEmitters.Count > 0)
                 throw new ArgumentException(Strings.ParticleEffectAlreadyTriggered);
             base.SetItem(index, item);
         }

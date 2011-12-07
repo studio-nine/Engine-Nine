@@ -184,6 +184,8 @@ namespace Nine.Graphics.ObjectModel
 
             // Compute bounding box
             baseBounds = BoundingBox.CreateFromPoints(EnumeratePositions());
+            if (Math.Abs(baseBounds.Max.Z - baseBounds.Min.Z) <= 0.001f)
+                baseBounds.Max.Z += 0.001f;
         }
 
         private bool IsPowerOfTwo(int number)

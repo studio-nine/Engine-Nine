@@ -13,6 +13,7 @@ using System.Xaml;
 using System.Windows.Markup;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
@@ -21,6 +22,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Components;
 using Nine.Content.Pipeline.Processors;
+using Nine.Content.Pipeline.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Content.Pipeline.Components
@@ -30,7 +32,6 @@ namespace Nine.Content.Pipeline.Components
     /// </summary>
     [ContentProperty("Content")]
     [RuntimeNameProperty("Name")]
-    [DefaultContentProcessor(typeof(GraphicsComponentContentProcessor))]
     public class GraphicsComponentContent
     {
         /// <summary>
@@ -46,6 +47,38 @@ namespace Nine.Content.Pipeline.Components
         /// <summary>
         /// Gets or sets the graphics object content.
         /// </summary>
-        public object Content { get; set; }
+        public List<object> Content { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphicsComponentContent"/> class.
+        /// </summary>
+        public GraphicsComponentContent()
+        {
+            Content = new List<object>();
+        }
+
+        [SelfProcess]
+        static GraphicsComponent Process(GraphicsComponentContent input, ContentProcessorContext context)
+        {
+            var result = new GraphicsComponent { Name = input.Name, Tag = input.Tag };
+
+            if (input.Content == null || input.Content.Count <= 0)
+            {
+                return result;
+            }
+
+            object build = input.Content[0];
+            if (!(input.Content.Count == 1 && input.Content[0] is DisplayObjectContent))
+            {
+                var container = new DisplayObjectContent();
+                container.Children.AddRange(input.Content);
+                build = container;
+            }
+
+            var compiled = context.BuildAsset<object, object>(build, "DefaultContentProcessor", null, null);
+            var startIndex = context.OutputDirectory.Length;
+            result.Template = compiled.Filename.Substring(startIndex, compiled.Filename.Length - startIndex - 4);
+            return result;
+        }
     }
 }

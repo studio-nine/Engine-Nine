@@ -52,17 +52,68 @@ namespace Nine.Animations
             StartupDirection = AnimationDirection.Forward;
         }
 
-        #region ITimelineAnimation Members
+        /// <summary>
+        /// Gets the total duration of the timeline animation without been trimmed by StartTime and EndTime.
+        /// </summary>
+        public TimeSpan TotalDuration
+        {
+            get { return totalDuration; }
+
+            protected set
+            {
+                if (value < TimeSpan.Zero)
+                    throw new ArgumentOutOfRangeException("TotalDuration cannot be negative");
+                totalDuration = value; durationNeedsUpdate = true;
+            }
+        }
+        private TimeSpan totalDuration;
 
         /// <summary>
         /// Gets or set the running time for one run of a timeline animation, excluding repeats.
         /// </summary>
-        public TimeSpan Duration { get { return DurationValue; } }
+        public TimeSpan Duration 
+        {
+            get
+            {
+                if (durationNeedsUpdate)
+                {
+                    // Clamp begin time and end time
+                    if (beginTime != null && beginTime.Value < TimeSpan.Zero)
+                        beginTime = TimeSpan.Zero;
+                    if (endTime != null && endTime.Value > totalDuration)
+                        endTime = totalDuration;
+
+                    // Recompute duration
+                    duration = (endTime.HasValue ? endTime.Value : totalDuration) - 
+                               (beginTime.HasValue ? beginTime.Value : TimeSpan.Zero);
+
+                    durationNeedsUpdate = false;
+                }
+                return duration;
+            }
+        }
+        private bool durationNeedsUpdate;
+        private TimeSpan duration;
 
         /// <summary>
-        /// When overriden, returns the duration of this animation.
+        /// Gets or sets the time at which this <see cref="TimelineAnimation"/> should begin.
         /// </summary>
-        protected abstract TimeSpan DurationValue { get; }
+        public TimeSpan? BeginTime
+        {
+            get { return beginTime; }
+            set { beginTime = value; durationNeedsUpdate = true; }
+        }
+        private TimeSpan? beginTime;
+
+        /// <summary>
+        /// Gets or sets the time at which this <see cref="TimelineAnimation"/> should end.
+        /// </summary>
+        public TimeSpan? EndTime
+        {
+            get { return endTime; }
+            set { endTime = value; durationNeedsUpdate = true; }
+        }
+        private TimeSpan? endTime;
 
         /// <summary>
         /// Gets or sets the playing speed of this animation.
@@ -78,8 +129,6 @@ namespace Nine.Animations
             }
         }
         private float _speed = 1.0f;
-
-        #endregion
 
         /// <summary>
         /// Gets the elapsed time since the animation started playing.
@@ -155,7 +204,7 @@ namespace Nine.Animations
         /// </summary>
         public void Seek(TimeSpan position)
         {
-            if (position < TimeSpan.Zero || position > Duration)
+            if (position < TimeSpan.Zero || position > TotalDuration)
                 throw new ArgumentOutOfRangeException("position");
             if (position == Position)
                 return;
@@ -170,17 +219,23 @@ namespace Nine.Animations
         /// </summary>
         protected abstract void OnSeek(TimeSpan position, TimeSpan previousPosition);
 
+        /// <summary>
+        /// Called when this animation is repeated.
+        /// </summary>
         protected virtual void OnRepeated()
         {
             if (Repeated != null)
                 Repeated(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
         protected override void OnStarted()
         {
             Direction = StartupDirection;
             ElapsedTime = TimeSpan.Zero;
-            this.position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
+            this.position = (Direction == AnimationDirection.Forward) ? GetBeginPosition() : GetEndPosition();
             OnSeek(Position, Position);
             base.OnStarted();
         }
@@ -196,8 +251,7 @@ namespace Nine.Animations
         {
             if (State != AnimationState.Playing)
                 return;
-            if (Duration < TimeSpan.Zero)
-                throw new ArgumentOutOfRangeException("Update: elapsed time cannot be negative");
+
             TimeSpan increment = TimeSpan.FromTicks((long)(elapsedTime.Ticks * (double)Speed));
 
             // Repeat sets an absolute upper bound on how long the animation may run
@@ -209,6 +263,9 @@ namespace Nine.Animations
             if (ElapsedTime + increment > max_elapsed)
                 increment = max_elapsed - ElapsedTime;
 
+            var beginPosition = GetBeginPosition();
+            var endPosition = GetEndPosition();
+
             // Loop to handle reverse or repeat without losing excess time.
             while (increment > TimeSpan.Zero && ElapsedTime < max_elapsed)
             {
@@ -216,24 +273,28 @@ namespace Nine.Animations
                 // Notify new position
                 TimeSpan previousPosition = Position;
                 if (Direction == AnimationDirection.Forward)
-                    this.position = (this.position + increment > Duration) ? Duration : this.position + increment;
+                    position = (position + increment > endPosition) ? endPosition : position + increment;
                 else
-                    this.position = (this.position - increment < TimeSpan.Zero) ? TimeSpan.Zero : this.position - increment;
-                var part_inc = (Position - previousPosition).Duration();
+                    position = (position - increment < beginPosition) ? beginPosition : position - increment;
+                
+                var part_inc = (position - previousPosition).Duration();
                 ElapsedTime += part_inc;
                 increment -= part_inc;
+
                 OnSeek(this.position, previousPosition);
 
                 // If time left and not complete, then reverse or repeat and notify that too.
                 if (increment > TimeSpan.Zero && ElapsedTime < max_elapsed)
                 {
                     if (AutoReverse)
+                    {
                         Direction = (Direction == AnimationDirection.Forward) ? AnimationDirection.Backward : AnimationDirection.Forward;
+                    }
                     else
                     {
                         previousPosition = Position;
-                        this.position = (Direction == AnimationDirection.Forward) ? TimeSpan.Zero : Duration;
-                        OnSeek(this.position, previousPosition);
+                        position = (Direction == AnimationDirection.Forward) ? beginPosition : endPosition;
+                        OnSeek(position, previousPosition);
                     }
                     OnRepeated();
                 }
@@ -243,6 +304,16 @@ namespace Nine.Animations
                 Stop();
                 OnCompleted();
             }
+        }
+
+        private TimeSpan GetBeginPosition()
+        {
+            return beginTime.HasValue ? beginTime.Value : TimeSpan.Zero;
+        }
+
+        private TimeSpan GetEndPosition()
+        {
+            return endTime.HasValue ? endTime.Value : TotalDuration;
         }
     }
 }

@@ -125,9 +125,13 @@
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\AnimationContent.cs" />
+    <Compile Include="Animations\AvatarAnimationContent.cs" />
     <Compile Include="Components\GraphicsComponentContent.cs" />
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Graphics\ScreenEffects\ScreenEffectContent.cs" />
+    <Compile Include="SelfProcessAttribute.cs" />
     <Compile Include="Design\CurveConverter.cs" />
+    <Compile Include="Graphics\ObjectModel\DrawableParticleEffectContent.cs" />
     <Compile Include="ObjectGraph.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="NotificationCollectionWriter.cs" />
@@ -157,7 +161,6 @@
     <Compile Include="ContentProcessorContextExtensions.cs" />
     <Compile Include="Processors\AvatarAnimationProcessor.cs" />
     <Compile Include="Processors\LinkedMaterialProcessor.cs" />
-    <Compile Include="Processors\GraphicsComponentContentProcessor.cs" />
     <Compile Include="Processors\ModelMaterialProcessor.cs" />
     <Compile Include="Processors\DefaultContentProcessor.cs" />
     <Compile Include="Processors\TerrainMaterialProcessor.cs" />
@@ -455,6 +458,7 @@
     <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaOverlay.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaSpecular.fragment" />
+    <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaNone.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLightBuffer.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\Material.fragment" />
     <None Include="Graphics\Effects\EffectParts\Shaders\DeferredPixelShaderOutput.fragment" />

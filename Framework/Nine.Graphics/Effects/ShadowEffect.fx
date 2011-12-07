@@ -6,7 +6,7 @@ float4x4 World;
 float4x3 bones[MaxBones];
 float4x4 worldViewProjection;
 matrix	LightViewProjection;
-float 	ShadowIntensity = 0.5;
+float3 	ShadowColor = 0.5;
 float	DepthBias = 0.0005f;
 float2  shadowMapTexelSize = float2(0.0009765625f, 0.0009765625f); // 1.0f/1024
 
@@ -106,9 +106,7 @@ void PixShadow( float3 shadow : TEXCOORD0, out float4 Color : COLOR )
         }
 	}
      
-    intensity *= ShadowIntensity;
-    	
-	Color.rgba = (1 - intensity);
+	Color = lerp(1, float4(ShadowColor, 1), intensity);
 }
 
 int shaderIndex = 0;

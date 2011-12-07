@@ -21,6 +21,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// A post processing screen effect that blurs the whole screen radially.
     /// </summary>
+    [ContentSerializable]
     public partial class RadialBlurEffect
     {
         private void OnCreated() { }

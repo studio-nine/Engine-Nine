@@ -24,6 +24,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// A post processing screen effect that transforms the color of the whole screen.
     /// </summary>
+    [ContentSerializable]
     public partial class ColorMatrixEffect
     {
         private void OnCreated() { }

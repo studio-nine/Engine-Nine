@@ -23,6 +23,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Defines a post processing effect that adopt scene changes.
     /// </summary>
+    [ContentSerializable]
     public class AdoptionEffect : BasicScreenEffect
     {
         private bool processing;

@@ -1,0 +1,81 @@
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+
+    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+    <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+    
+    <!--
+        By default specular color is set to black so there is no specular color at all. To make give objects a
+        shiny look, you have to adjust the specular settings for both the light and the object.
+    -->
+    <DirectionalLightContent DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+
+    <!--
+        Use the DrawableModelContent element to add a model to the scene. The model asset has to be specified.
+        The model can be processed using the default Xna model processor, but processing the model using
+        "Model - Engine Nine" will enable animation, normal mapping, collision detection, etc.
+    -->
+    <DrawableModelContent Model="..\Models\Tank" />
+    
+    <!--
+        You can specify material for models to replace the default look and feel.
+        There are various types of materials to apply, but the most commonly used for models is the model
+        material. Model material can be used for shadow mapping, normal mapping, specular mapping, 
+        and hardware skinning.
+        
+        This following model demonstrate the use of normal mapping and specular lighting.
+    -->
+    <DrawableModelContent Model="..\Models\Dude" Position="-10, 0, 0">
+        <ModelMaterialContent PreferDeferredLighting="True" SkinningEnabled="True" NormalMappingEnabled="True" 
+                              SpecularColor="1, 1, 1" SpecularPower="64" />
+    </DrawableModelContent>
+
+    <!--
+        There are 5 materials that corresponds to the built in effects provided by Xna,
+        BasicMaterial, SkinnedMaterial, EnvironmentMapMaterial, AlphaTestMaterial and DualTextureMaterial.
+        Unlike model material, these materials can be used for Windows Phone games.    
+    -->
+    <DrawableModelContent Model="..\Models\Dude" Position="-20, 20, 0">
+        <BasicMaterialContent />
+    </DrawableModelContent>
+    
+    <DrawableModelContent Model="..\Models\Dude" Position="-10, 20, 0">
+        <SkinnedMaterialContent />
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="..\Models\Dude" Position="0, 20, 0">
+        <EnvironmentMapMaterialContent EnvironmentMap="..\Textures\SkyCubeMap" EnvironmentMapAmount="1" 
+                                       EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="..\Models\Dude" Position="10, 20, 0">
+        <AlphaTestMaterialContent />
+    </DrawableModelContent>
+
+    <DrawableModelContent Model="..\Models\Dude" Position="20, 20, 0">
+        <DualTextureMaterialContent Texture2="..\Textures\Checker" />
+    </DrawableModelContent>
+    
+    <!--
+        You can apply different materials to each part of the model and toggle their visibility seperately.
+    -->
+    <DrawableModelContent Model="..\Models\AlphaPalm" Position="10, 0, 0">
+        <DrawableModelContent.ModelParts>
+            
+            <!-- Hide the trunk -->
+            <DrawableModelPartContent Visible="False" />
+            
+            <!-- 
+                You can apply your own .fx shaders and apply them to the models. 
+                The shader should use the standard annotations to bind to the current graphics settings.
+                
+                Process your shader using "Custom Effect - Engine Nine".
+            -->
+            <DrawableModelPartContent>
+                <CustomMaterialContent Effect="..\Effects\Cage" />
+            </DrawableModelPartContent>
+            
+        </DrawableModelContent.ModelParts>
+    </DrawableModelContent>
+    
+</SceneContent>

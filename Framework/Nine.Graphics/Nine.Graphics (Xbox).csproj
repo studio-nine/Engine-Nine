@@ -214,7 +214,6 @@
     </Compile>
     <Compile Include="ObjectModel\Transformable.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
-    <Compile Include="ParticleEffects\ParticleTrigger.cs" />
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />
     <Compile Include="Primitives\Cube.cs" />
@@ -256,8 +255,6 @@
     <Compile Include="RenderTargetPool.cs" />
     <Compile Include="Effects\EffectInterfaces.cs" />
     <Compile Include="Effects\EffectParts\ColorMatrixEffectPart.cs" />
-    <Compile Include="ParticleEffects\BasicParticleEffect.cs" />
-    <Compile Include="ParticleEffects\ParticleEffectReader.cs" />
     <Compile Include="ParticleEffects\ParticleEffectCollection.cs" />
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />

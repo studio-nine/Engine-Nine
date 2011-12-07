@@ -259,12 +259,6 @@ namespace Nine.Content.Pipeline.Animations
         {
             BeginWrite(output, value);
             output.WriteObject(value.Duration);
-            output.Write(value.Speed);
-            output.Write(value.AutoReverse);
-            output.WriteObject(value.StartupDirection);
-            output.WriteObject(value.Direction);
-            output.Write(value.Repeat);
-            output.WriteObject(value.Position);
             EndWrite(output, value);
         }
 
@@ -339,45 +333,6 @@ namespace Nine.Content.Pipeline.Animations
         }
     }
     /// <summary>
-    /// Content writer for <c>TransformAnimation</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class TransformAnimationContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TransformAnimationContent>
-    {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformAnimationContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformAnimationContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformAnimationContent value)
-        {
-            BeginWrite(output, value);
-            output.WriteObject(value.TargetProperty);
-            output.WriteObject(value.ScaleX);
-            output.WriteObject(value.ScaleY);
-            output.WriteObject(value.ScaleZ);
-            output.WriteObject(value.RotationOrder);
-            output.WriteObject(value.RotationX);
-            output.WriteObject(value.RotationY);
-            output.WriteObject(value.RotationZ);
-            output.WriteObject(value.X);
-            output.WriteObject(value.Y);
-            output.WriteObject(value.Z);
-            EndWrite(output, value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Animations.TransformAnimationReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Animations.TransformAnimation, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>TweenAnimation`1</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -399,6 +354,8 @@ namespace Nine.Content.Pipeline.Animations
             output.WriteObject(value.Curve);
             output.WriteObject(value.Duration);
             output.WriteObject(value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
             output.Write(value.Speed);
             output.Write(value.AutoReverse);
             output.WriteObject(value.StartupDirection);

@@ -16,7 +16,6 @@ namespace Nine
 {
     public class TestGame : Game
     {
-        GraphicsProfile profile;
         GraphicsDeviceManager manager;
 
         public event Action<GameTime> Paint;

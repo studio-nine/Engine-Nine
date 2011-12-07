@@ -12,6 +12,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// A post processing screen effect that pixelate the whole screen.
     /// </summary>
+    [ContentSerializable]
     public partial class PixelateEffect
     {
 		private void OnCreated() { }

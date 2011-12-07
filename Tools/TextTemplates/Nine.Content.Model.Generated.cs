@@ -462,64 +462,16 @@ namespace Nine.Content.Pipeline.Animations
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean AutoReverse { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("Forward")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Animations.AnimationDirection Direction { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [System.ComponentModel.DefaultValue("00:00:00")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.TimeSpan Duration { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("00:00:00")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.TimeSpan Position { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Single Repeat { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("1")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Single Speed { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("Forward")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Animations.AnimationDirection StartupDirection { get; set; }
 
         /// <summary>
         /// Initializes a new instance of <c>DelayAnimationContent</c>.
         /// </summary>
         public DelayAnimationContent()
         {
-            AutoReverse = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            Direction = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
             Duration = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
-            Position = (System.TimeSpan)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.TimeSpan)).ConvertFromInvariantString("00:00:00");
-            Repeat = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            Speed = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
-            StartupDirection = (Nine.Animations.AnimationDirection)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Animations.AnimationDirection)).ConvertFromInvariantString("Forward");
             OnCreate();
         }
 
@@ -683,123 +635,6 @@ namespace Nine.Content.Pipeline.Animations
         #endregion
     }
     /// <summary>
-    /// Content model for <c>TransformAnimation</c>.
-    /// Defines an animation that modifies the transform of the target object.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Animations.TransformAnimation, Nine")]
-    public partial class TransformAnimationContent : System.Xaml.IAttachedPropertyStore
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("Zxy")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.RotationOrder RotationOrder { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationX { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationY { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> RotationZ { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> ScaleX { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> ScaleY { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> ScaleZ { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.String TargetProperty { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> X { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> Y { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single> Z { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of <c>TransformAnimationContent</c>.
-        /// </summary>
-        public TransformAnimationContent()
-        {
-            RotationOrder = (Nine.RotationOrder)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.RotationOrder)).ConvertFromInvariantString("Zxy");
-            OnCreate();
-        }
-
-        partial void OnCreate();
-
-        #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
-
-        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
-        {
-            attachedProperties.CopyTo(array, index);
-        }
-
-        int System.Xaml.IAttachedPropertyStore.PropertyCount
-        {
-            get { return attachedProperties.Count; }
-        }
-
-        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
-        {
-            return attachedProperties.Remove(attachableMemberIdentifier);
-        }
-
-        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
-        {
-            attachedProperties[attachableMemberIdentifier] = value;
-        }
-
-        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
-        {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
-        }
-        #endregion
-    }
-    /// <summary>
     /// Content model for <c>TweenAnimation`1</c>.
     /// Implements a basic primitive animation that changes its value over time. Can also update the value of a named target property on an target object.
     /// </summary>
@@ -815,6 +650,12 @@ namespace Nine.Content.Pipeline.Animations
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean AutoReverse { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<System.TimeSpan> BeginTime { get; set; }
 
         /// <summary>
         /// 
@@ -849,6 +690,12 @@ namespace Nine.Content.Pipeline.Animations
         [System.ComponentModel.DefaultValue("In")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Animations.Easing Easing { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Nullable<System.TimeSpan> EndTime { get; set; }
 
         /// <summary>
         /// 

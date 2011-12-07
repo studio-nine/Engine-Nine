@@ -74,6 +74,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
             }
         }
         
+        internal static byte[] BasicTextureAlphaNone {
+            get {
+                object obj = ResourceManager.GetObject("BasicTextureAlphaNone", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] BasicTextureAlphaOverlay {
             get {
                 object obj = ResourceManager.GetObject("BasicTextureAlphaOverlay", resourceCulture);

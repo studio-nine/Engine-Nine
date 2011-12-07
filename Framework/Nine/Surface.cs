@@ -35,7 +35,7 @@ namespace Nine
     /// <summary>
     /// A simple flat surface that implements <see cref="Nine.ISurface"/>.
     /// </summary>
-    public class FlatSurface : ISurface
+    class FlatSurface : ISurface
     {
         /// <summary>
         /// Gets or sets the height of this flat surface.

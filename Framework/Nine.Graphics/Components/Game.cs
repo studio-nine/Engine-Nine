@@ -101,7 +101,7 @@ namespace Microsoft.Xna.Framework
                 
                 Update(gameTime);
                 Components.Update(gameTime);
-
+                
                 if (!suppressDraw && BeginDraw())
                 {
                     Draw(gameTime);

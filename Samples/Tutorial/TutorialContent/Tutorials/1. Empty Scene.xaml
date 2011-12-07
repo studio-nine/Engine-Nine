@@ -1,0 +1,44 @@
+﻿<!--
+    This is a basic graphical scene that contains a skybox and some lights.
+    
+    The root element is a SceneContent that serves as a root container for all graphical objects.
+    The minimum setup for a scene typically contains a skybox, an ambient light, a directional light and a fog.
+    
+    Notice the "Content" suffix in the name of each element. It means that these elements will be processed 
+    through the content pipeline. If you add an Xaml file to the content pipeline project, the 
+    "Content - Engine Nine" processor will be automatically selected to process the Xaml object graph.
+    
+    Most of these content elements have a corresponding runtime type without the "Content" suffix, so you can
+    access and manipulate them through C# code.
+-->
+<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+    
+    <!-- 
+        A cube texture has to be assigned to a skybox.
+    
+        Notice that the texture references the output .xnb asset file. By default, any reference to external
+        asset is the relative path to the output asset (without file extension), this allows you to easily
+        specify how the external assets are imported and processed. But there are cases when you have to
+        reference the source asset file, which will be stated explicity.
+    
+        Skybox currently won't show up on Windows Phone.
+    -->
+    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+
+    <!--
+        You can optionally specify the name of an object and retrieve it using Scene.Find(name) method.
+    -->
+    <FogContent Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    
+    <!--
+        The ambient light defines the color of an object when it is completely not lit, it will prevent 
+        objects looking too dark.
+    -->
+    <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+
+    <!--
+        This is the main directional light of the scene. 
+    -->
+    <DirectionalLightContent DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+    
+</SceneContent>

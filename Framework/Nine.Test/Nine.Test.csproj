@@ -78,6 +78,7 @@
     <Compile Include="ExpressionTest.cs" />
     <Compile Include="ContentPipelineTest.cs" />
     <Compile Include="GraphicsTest.cs" />
+    <Compile Include="Graphics\ParticleEffectTest.cs" />
     <Compile Include="Graphics\Effects\TerrainMaterialTest.cs" />
     <Compile Include="Graphics\Effects\ModelMaterialTest.cs" />
     <Compile Include="Graphics\Effects\MaterialTest.cs" />

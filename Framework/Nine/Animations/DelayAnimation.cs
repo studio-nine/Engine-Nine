@@ -26,24 +26,53 @@ namespace Nine.Animations
     /// the playing of subsequent animations.
     /// </summary>
     [ContentSerializable]
-    public class DelayAnimation : TimelineAnimation
+    public class DelayAnimation : Animation
     {
         /// <summary>
         /// Gets or sets the duration of this animation.
         /// </summary>
-        public new TimeSpan Duration { get; set; }
+        public TimeSpan Duration { get; set; }
 
-        protected override TimeSpan DurationValue
+        /// <summary>
+        /// Gets the elapsed time since the playing of this delay animation.
+        /// </summary>
+        public TimeSpan ElapsedTime { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DelayAnimation"/> class.
+        /// </summary>
+        public DelayAnimation() { }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DelayAnimation"/> class.
+        /// </summary>
+        public DelayAnimation(float seconds) { Duration = TimeSpan.FromSeconds(seconds); }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DelayAnimation"/> class.
+        /// </summary>
+        public DelayAnimation(TimeSpan duration) { Duration = duration; }
+
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
+        protected override void OnStarted()
         {
-            get { return Duration; }
+            ElapsedTime = TimeSpan.Zero;
+            base.OnStarted();
         }
 
-        public DelayAnimation() { Repeat = 1; }
-
-        public DelayAnimation(float seconds) { Duration = TimeSpan.FromSeconds(seconds); Repeat = 1; }
-
-        public DelayAnimation(TimeSpan duration) { Duration = duration; Repeat = 1; }
-
-        protected override void OnSeek(TimeSpan position, TimeSpan previousPosition) { }
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
+        public override void Update(TimeSpan elapsedTime)
+        {
+            ElapsedTime += elapsedTime;
+            if (ElapsedTime > Duration)
+            {
+                Stop();
+                OnCompleted();
+            }
+        }
     }
 }

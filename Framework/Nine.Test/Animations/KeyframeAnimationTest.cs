@@ -26,11 +26,7 @@ namespace Nine.Animations.Test
             {
                 Repeat = 1;
                 FramesPerSecond = 1;
-            }
-
-            protected override int GetTotalFrames()
-            {
-                return 5;
+                TotalFrames = 5;
             }
 
             protected override void OnSeek(int startFrame, int endFrame, float percentage)
@@ -168,6 +164,7 @@ namespace Nine.Animations.Test
 
             animation.EnterFrame += (o, e) =>
                 {
+                    System.Diagnostics.Trace.WriteLine(e.Frame);
                     if (index < animation.TotalFrames)
                         Assert.AreEqual(index, e.Frame);
                     index++;
@@ -178,7 +175,64 @@ namespace Nine.Animations.Test
                 animation.Update(TimeSpan.FromSeconds(0.25));
 
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
-            Assert.AreEqual(5, index);
+            Assert.AreEqual(6, index);
+        }
+
+        [TestMethod]
+        public void KeyframeEndingTest()
+        {
+            TestAnimation animation = new TestAnimation();
+            animation.Repeat = 9999;
+            animation.Ending = KeyframeEnding.Clamp;
+            animation.Play();
+
+            for (int i = 0; i < 5; i++)
+            {
+                animation.Update(TimeSpan.FromSeconds(1));
+            }
+            Assert.AreEqual(0, animation.CurrentFrame);
+
+            animation.Ending = KeyframeEnding.Discard;
+            animation.Play();
+
+            for (int i = 0; i < 5; i++)
+            {
+                animation.Update(TimeSpan.FromSeconds(1));
+            }
+            Assert.AreEqual(1, animation.CurrentFrame);
+
+            animation.Ending = KeyframeEnding.Discard;
+            animation.AutoReverse = true;
+            animation.Play();
+
+            for (int i = 0; i < 50; i++)
+            {
+                animation.Update(TimeSpan.FromSeconds(0.5));
+                System.Diagnostics.Trace.WriteLine(animation.CurrentFrame);
+            }
+            Assert.AreEqual(1, animation.CurrentFrame);
+        }
+
+        [TestMethod]
+        public void BeginFrameEndFrameTest()
+        {
+            TestAnimation animation = new TestAnimation();
+            animation.BeginFrame = 1;
+            animation.EndFrame = 3;
+
+            int frameCount = 0;
+
+            animation.EnterFrame += (o, e) =>
+            {
+                frameCount++;
+            };
+            animation.Play();
+
+            for (int i = 0; i < 200; i++)
+                animation.Update(TimeSpan.FromSeconds(0.25));
+
+            Assert.AreEqual(AnimationState.Stopped, animation.State);
+            Assert.AreEqual(3, frameCount);
         }
     }
 }

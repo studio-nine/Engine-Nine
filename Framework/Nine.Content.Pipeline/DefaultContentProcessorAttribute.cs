@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Content.Pipeline
 {
     /// <summary>
-    /// Specified the default process for a content type. The default processor will be used to 
+    /// Specifies the default process for a content type. The default processor will be used to 
     /// process the content when processing using DefaultContentProcessor.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface, AllowMultiple=false)]

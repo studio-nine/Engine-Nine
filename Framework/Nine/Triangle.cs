@@ -28,12 +28,12 @@ namespace Nine
         public Vector3 V1;
         
         /// <summary>
-        /// Gets or sets the first vertex.
+        /// Gets or sets the second vertex.
         /// </summary>
         public Vector3 V2;
         
         /// <summary>
-        /// Gets or sets the first vertex.
+        /// Gets or sets the third vertex.
         /// </summary>
         public Vector3 V3;
 

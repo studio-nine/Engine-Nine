@@ -50,7 +50,7 @@ namespace Nine.Content.Pipeline.Graphics
     /// Content pipeline support class for saving sprite sheet data into XNB format.
     /// </summary>
     [ContentTypeWriter]
-    internal class ImageListWriter : ContentTypeWriter<TextureListContent>
+    internal class TextureListWriter : ContentTypeWriter<TextureListContent>
     {
         /// <summary>
         /// Saves sprite sheet data into an XNB file.

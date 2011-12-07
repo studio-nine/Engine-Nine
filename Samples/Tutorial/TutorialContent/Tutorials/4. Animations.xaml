@@ -1,0 +1,82 @@
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+    <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+    
+    <!--
+        To enable animation, objects that needs to be animated have to be grouped together under DisplayObject.
+        Think of display object as a container for a group of objects. 
+    -->
+    <DisplayObjectContent>
+        
+        <DisplayObjectContent.Animations>
+
+            <!--
+                In the Animations property of display object, add a new animation with a name key.
+                
+                The following animation is a tween animation that changes the alpha property of the tank model.
+                
+                Note that tween animation can only reference the direct children of the diplay object.
+            -->
+            <SingleAnimationContent x:Key="Animation1" TargetProperty="['Tank'].Alpha"
+                                    From="1" To="0" Curve="Sin" Repeat="999999" Easing="In" AutoReverse="True" />
+
+        </DisplayObjectContent.Animations>
+        
+        <!-- To enable animation, you have to give the object a name -->
+        <DrawableModelContent Name="Tank" Model="..\Models\Tank" />
+
+        <!--
+            Display object can also be nested, so you can create a tree hierarchy using display object.
+        -->
+        <DisplayObjectContent Position="-10, 0, 0" Name="NestedObject">
+
+            <DrawableModelContent Name="Dude" Model="..\Models\Dude" />
+            <DrawableModelContent Name="Tree"  Model="..\Models\AlphaPalm" />
+
+            <CameraContent Name="MyCamera" />
+
+            <!--
+                Display object can also be used to bind transforms. Here is a demonstration to attach the tree
+                model to the right hand of the dude model. You can also adjust the bind transform.
+            -->
+            <DisplayObjectContent.TransformBindings>
+                <TransformBindingContent Source="MyCamera" Target="Dude" TargetBone="R_Hand" />
+                <TransformBindingContent Source="Tree" Target="Dude" TargetBone="R_Hand"
+                                         Scale="0.25, 0.25, 0.25" Position="0.2, 0.3, -0.6" Rotation="15, 15, 0" />
+            </DisplayObjectContent.TransformBindings>
+
+            <DisplayObjectContent.Animations>
+                
+                <!--
+                    LayeredAnimation plays the contained animations in parallel while SequentialAnimation 
+                    plays them one by one.
+                -->
+                <LayeredAnimationContent x:Key="Default">
+                    
+                    <SequentialAnimationContent Repeat="999999">
+                        <SingleAnimationContent TargetProperty="['Dude'].Alpha" To="0" />
+                        <DelayAnimationContent Duration="00:00:01" />
+                        <!--
+                            If from is not specified, the animation will use the current value of the target
+                            property as the starting value.
+                        -->
+                        <SingleAnimationContent TargetProperty="['Dude'].Alpha" To="1" />
+                    </SequentialAnimationContent>
+                    
+                    <!-- 
+                        A transform animation is designed to manipulate transforms. You can write a transform
+                        using the format "Scale;Rotation;Translation"
+                    -->
+                    <TransformAnimationContent TargetProperty="['Dude'].Transform" Repeat="99999999" Duration="00:00:05"
+                                               From=";" To=";0, 0, 360"/>
+                </LayeredAnimationContent>
+                
+            </DisplayObjectContent.Animations>
+            
+        </DisplayObjectContent>
+
+    </DisplayObjectContent>
+
+</SceneContent>

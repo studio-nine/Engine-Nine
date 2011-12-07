@@ -25,6 +25,11 @@ namespace Nine
         public TestGame Game { get; private set; }
         public GraphicsDevice GraphicsDevice { get { return Game.GraphicsDevice; } }
 
+        protected TimeSpan ElapsedTime
+        {
+            get { return TimeSpan.FromSeconds(1.0 / 60); }
+        }
+
         [TestInitialize()]
         public virtual void Initialize()
         {

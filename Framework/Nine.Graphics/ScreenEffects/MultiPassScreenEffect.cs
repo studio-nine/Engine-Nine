@@ -22,6 +22,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Defines a post processing effect combined from multiple passes.
     /// </summary>
+    [ContentSerializable]
     public class MultiPassScreenEffect : IScreenEffect, IUpdateable, IEffectTexture
     {
         /// <summary>
@@ -191,6 +192,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// Defines a pass used by <c>MultiPassScreenEffect</c>.
     /// </summary>
+    [ContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class MultiPassScreenEffectPass : ChainedScreenEffect
     {

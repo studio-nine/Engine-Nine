@@ -21,60 +21,131 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Animations
 {
     using Nine.Graphics;
+    using Microsoft.Xna.Framework.Content;
 
     /// <summary>
     /// An animation player that plays TextureList based sprite animations.
     /// </summary>
-    public class SpriteAnimation : KeyframeAnimation
+    public class SpriteAnimation : KeyframeAnimation, ISupportTarget
     {
-        int count;
-        int startFrame = 0;
+        private object target;
+        private string targetProperty;
+        private bool expressionChanged;
+        private PropertyExpression<TextureListItem> expression;
 
-        protected override int GetTotalFrames()
+        /// <summary>
+        /// Gets or sets the texture list used by this <see cref="SpriteAnimation"/>.
+        /// </summary>
+        [ContentSerializer]
+        public TextureList TextureList
         {
-            return count;
+            get { return textureList; }
+            set { textureList = value; if (textureList != null) TotalFrames = textureList.Count; }
+        }
+        private TextureList textureList;
+
+        /// <summary>
+        /// Gets the texture for this <see cref="SpriteAnimation"/>.
+        /// </summary>
+        public Texture2D Texture
+        {
+            get { return textureList != null ? textureList[CurrentFrame].Texture : null; } 
         }
 
-        public TextureList TextureList { get; private set; }
-        public Texture2D Texture { get { return TextureList[CurrentFrame + startFrame].Texture; } }
-        public Rectangle SourceRectangle { get { return TextureList[CurrentFrame + startFrame].SourceRectangle; } }
+        /// <summary>
+        /// Gets the current source rectangle.
+        /// </summary>
+        public Rectangle SourceRectangle
+        {
+            get { return textureList != null ? textureList[CurrentFrame].SourceRectangle : new Rectangle(); } 
+        }
 
-        public SpriteAnimation()
+        /// <summary>
+        /// Gets or sets the target that this sprite animation should affect.
+        /// </summary>
+        [ContentSerializerIgnore]
+        public object Target
+        {
+            get { return target; }
+            set { if (target != value) { target = value; expressionChanged = true; } }
+        }
+
+        /// <summary>
+        /// Gets or sets the target property that this sprite animation should affect.
+        /// The property must be of type <see cref="TextureListItem"/>.
+        /// </summary>
+        public string TargetProperty
+        {
+            get { return targetProperty; }
+            set { if (targetProperty != value) { targetProperty = value; expressionChanged = true; } }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
+        /// </summary>
+        internal SpriteAnimation()
         {
             TextureList = new TextureList();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
+        /// </summary>
         public SpriteAnimation(IEnumerable<Texture2D> textures)
         {
-            TextureList = new TextureList();
+            var list = new TextureList();
 
             foreach (Texture2D texture in textures)
             {
-                TextureList.Add(texture, texture.Bounds);
+                list.Add(texture, texture.Bounds);
             }
 
-            count = TextureList.Count;
+            TextureList = list;
         }
 
-        public SpriteAnimation(TextureList imageList)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
+        /// </summary>
+        public SpriteAnimation(TextureList textureList)
         {
-            if (imageList == null)
+            if (textureList == null)
                 throw new ArgumentNullException();
 
-            TextureList = imageList;
-
-            count = imageList.Count;
+            TextureList = textureList;
         }
 
-        public SpriteAnimation(TextureList imageList, int startFrame, int count)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpriteAnimation"/> class.
+        /// </summary>
+        public SpriteAnimation(TextureList textureList, int beginFrame, int frameCount)
         {
-            if (imageList == null)
+            if (textureList == null)
                 throw new ArgumentNullException();
 
-            TextureList = imageList;
+            TextureList = textureList;
 
-            this.startFrame = startFrame;
-            this.count = count;
+            BeginFrame = beginFrame;
+            EndFrame = BeginFrame + frameCount;
+        }
+
+        /// <summary>
+        /// Moves the animation at the position between start frame and end frame
+        /// specified by percentage.
+        /// </summary>
+        protected override void OnSeek(int startFrame, int endFrame, float percentage)
+        {
+            base.OnSeek(startFrame, endFrame, percentage);
+
+            if (Target != null && !string.IsNullOrEmpty(TargetProperty))
+            {
+                if (expression == null || expressionChanged)
+                {
+                    expression = new PropertyExpression<TextureListItem>(Target, TargetProperty);
+                    expressionChanged = false;
+                }
+
+                expression.Value = new TextureListItem(Texture, SourceRectangle);
+            }
         }
     }
 }

@@ -36,6 +36,42 @@ namespace Nine.Animations
             return existingInstance;
         }
     }
+    /// <summary>
+    /// Content reader for <c>SpriteAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SpriteAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.SpriteAnimation>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SpriteAnimation existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SpriteAnimation existingInstance);
+        
+        protected override Nine.Animations.SpriteAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SpriteAnimation existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new SpriteAnimation();
+            }
+            existingInstance.TextureList = input.ReadObject<Nine.Graphics.TextureList>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.FramesPerSecond = input.ReadSingle();
+            existingInstance.Ending = input.ReadObject<Nine.Animations.KeyframeEnding>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
 }
 namespace Nine.Graphics
 {
@@ -801,7 +837,7 @@ namespace Nine.Graphics.Effects.EffectParts
             {
                 existingInstance = new ShadowMapEffectPart();
             }
-            existingInstance.ShadowIntensity = input.ReadSingle();
+            existingInstance.ShadowColor = input.ReadVector3();
             existingInstance.DepthBias = input.ReadSingle();
             EndRead(input, existingInstance);
             return existingInstance;
@@ -1090,8 +1126,16 @@ namespace Nine.Graphics.ObjectModel
             {
                 existingInstance = new DisplayObject();
             }
-            existingInstance.Children = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
-            existingInstance.TransformBindings = input.ReadObject<System.Collections.Generic.IList<Nine.Graphics.ObjectModel.TransformBinding>>();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Children.Add(input.ReadObject<System.Object>());
+            }
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.TransformBindings.Add(input.ReadObject<Nine.Graphics.ObjectModel.TransformBinding>());
+            }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -1183,7 +1227,6 @@ namespace Nine.Graphics.ObjectModel
             {
                 existingInstance = new DrawableParticleEffect();
             }
-            existingInstance.Position = input.ReadVector3();
             existingInstance.ParticleEffect = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -1348,7 +1391,7 @@ namespace Nine.Graphics.ObjectModel
                 existingInstance = new Scene(graphicsDevice);
             }
             existingInstance.Camera = input.ReadObject<Nine.Graphics.ICamera>();
-            existingInstance.SceneObjects = input.ReadObject<System.Collections.Generic.List<System.Object>>();
+            existingInstance.SceneObjects = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             EndRead(input, existingInstance);
@@ -1498,8 +1541,19 @@ namespace Nine.Graphics.ParticleEffects
             }
             existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Box = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Spread = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.EmitCount = input.ReadInt32();
+            existingInstance.Emission = input.ReadSingle();
+            existingInstance.Delay = input.ReadObject<System.TimeSpan>();
+            existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
+            existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -1549,11 +1603,21 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.Shell = input.ReadBoolean();
             existingInstance.Radiate = input.ReadBoolean();
             existingInstance.Height = input.ReadSingle();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Spread = input.ReadSingle();
-            existingInstance.Center = input.ReadVector3();
             existingInstance.Up = input.ReadVector3();
             existingInstance.Radius = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.EmitCount = input.ReadInt32();
+            existingInstance.Emission = input.ReadSingle();
+            existingInstance.Delay = input.ReadObject<System.TimeSpan>();
+            existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
+            existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -1623,9 +1687,68 @@ namespace Nine.Graphics.ParticleEffects
             {
                 existingInstance = new LineEmitter();
             }
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Spread = input.ReadSingle();
             existingInstance.LineList = input.ReadObject<System.Collections.Generic.IEnumerable<Microsoft.Xna.Framework.Vector3>>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.EmitCount = input.ReadInt32();
+            existingInstance.Emission = input.ReadSingle();
+            existingInstance.Delay = input.ReadObject<System.TimeSpan>();
+            existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
+            existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ParticleEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ParticleEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ParticleEffects.ParticleEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ParticleEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ParticleEffect existingInstance);
+        
+        protected override Nine.Graphics.ParticleEffects.ParticleEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ParticleEffects.ParticleEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new ParticleEffect();
+            }
+            existingInstance.ParticleType = input.ReadObject<Nine.Graphics.ParticleEffects.ParticleType>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Stretch = input.ReadSingle();
+            existingInstance.Up = input.ReadVector3();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.SourceRectangle = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
+            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
+            existingInstance.DepthSortEnabled = input.ReadBoolean();
+            existingInstance.ReferenceAlpha = input.ReadInt32();
+            existingInstance.Emitter = input.ReadObject<Nine.Graphics.ParticleEffects.IParticleEmitter>();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Controllers.Add(input.ReadObject<Nine.Graphics.ParticleEffects.IParticleController>());
+            }
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.ChildEffects.Add(input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>());
+            }
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.EndingEffects.Add(input.ReadObject<Nine.Graphics.ParticleEffects.ParticleEffect>());
+            }
+            existingInstance.Tag = input.ReadObject<System.Object>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -1648,9 +1771,19 @@ namespace Nine.Graphics.ParticleEffects
             {
                 existingInstance = new PointEmitter();
             }
+            existingInstance.Spread = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.EmitCount = input.ReadInt32();
+            existingInstance.Emission = input.ReadSingle();
+            existingInstance.Delay = input.ReadObject<System.TimeSpan>();
+            existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
             existingInstance.Position = input.ReadVector3();
             existingInstance.Direction = input.ReadVector3();
-            existingInstance.Spread = input.ReadSingle();
+            existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
+            existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -1747,10 +1880,20 @@ namespace Nine.Graphics.ParticleEffects
             }
             existingInstance.Shell = input.ReadBoolean();
             existingInstance.Radiate = input.ReadBoolean();
-            existingInstance.Center = input.ReadVector3();
             existingInstance.Radius = input.ReadSingle();
-            existingInstance.Direction = input.ReadVector3();
             existingInstance.Spread = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.EmitCount = input.ReadInt32();
+            existingInstance.Emission = input.ReadSingle();
+            existingInstance.Delay = input.ReadObject<System.TimeSpan>();
+            existingInstance.Lifetime = input.ReadObject<System.TimeSpan>();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.Duration = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Color = input.ReadObject<Nine.Range<Microsoft.Xna.Framework.Color>>();
+            existingInstance.Size = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Rotation = input.ReadObject<Nine.Range<System.Single>>();
+            existingInstance.Speed = input.ReadObject<Nine.Range<System.Single>>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -1781,5 +1924,649 @@ namespace Nine.Graphics.ParticleEffects
             return existingInstance;
         }
     }
+}
+namespace Nine.Graphics.ScreenEffects
+{
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>AdoptionEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AdoptionEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.AdoptionEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.AdoptionEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.AdoptionEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.AdoptionEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.AdoptionEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new AdoptionEffect(graphicsDevice);
+            }
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.EffectSerializer = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
+            existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.RenderTargetScale = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>AntiAliasEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AntiAliasEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.AntiAliasEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.AntiAliasEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.AntiAliasEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.AntiAliasEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.AntiAliasEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new AntiAliasEffect(graphicsDevice);
+            }
+            existingInstance.Weight = input.ReadSingle();
+            existingInstance.NormalTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>BasicScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BasicScreenEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.BasicScreenEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.BasicScreenEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.BasicScreenEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.BasicScreenEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.BasicScreenEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new BasicScreenEffect();
+            }
+            existingInstance.EffectSerializer = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
+            existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.RenderTargetScale = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>BlurEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BlurEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.BlurEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.BlurEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.BlurEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.BlurEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.BlurEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new BlurEffect(graphicsDevice);
+            }
+            existingInstance.BlurAmount = input.ReadSingle();
+            existingInstance.Step = input.ReadSingle();
+            existingInstance.Direction = input.ReadSingle();
+            existingInstance.SampleCount = input.ReadInt32();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>ChainedScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ChainedScreenEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.ChainedScreenEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ChainedScreenEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ChainedScreenEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.ChainedScreenEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ChainedScreenEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new ChainedScreenEffect();
+            }
+            existingInstance.EffectsSerializer = input.ReadObject<System.Collections.Generic.List<System.Object>>();
+            existingInstance.Enabled = input.ReadBoolean();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>ColorMatrixEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ColorMatrixEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.ColorMatrixEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ColorMatrixEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ColorMatrixEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.ColorMatrixEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ColorMatrixEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ColorMatrixEffect(graphicsDevice);
+            }
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>DepthOfFieldEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DepthOfFieldEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.DepthOfFieldEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.DepthOfFieldEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.DepthOfFieldEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.DepthOfFieldEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.DepthOfFieldEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DepthOfFieldEffect(graphicsDevice);
+            }
+            existingInstance.FocalPlane = input.ReadSingle();
+            existingInstance.FocalLength = input.ReadSingle();
+            existingInstance.FocalDistance = input.ReadSingle();
+            existingInstance.BlurTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.DepthTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>EmbossEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class EmbossEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.EmbossEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.EmbossEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.EmbossEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.EmbossEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.EmbossEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new EmbossEffect(graphicsDevice);
+            }
+            existingInstance.Emboss = input.ReadSingle();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>LuminanceEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class LuminanceEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.LuminanceEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.LuminanceEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.LuminanceEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.LuminanceEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.LuminanceEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new LuminanceEffect(graphicsDevice);
+            }
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>MultiPassScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class MultiPassScreenEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.MultiPassScreenEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.MultiPassScreenEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.MultiPassScreenEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.MultiPassScreenEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.MultiPassScreenEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new MultiPassScreenEffect(graphicsDevice);
+            }
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass>());
+            }
+            existingInstance.CombineEffect = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
+            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
+            existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.RenderTargetScale = input.ReadSingle();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+    /// <summary>
+    /// Content reader for <c>MultiPassScreenEffectPass</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class MultiPassScreenEffectPassReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.MultiPassScreenEffectPass existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new MultiPassScreenEffectPass();
+            }
+            existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
+            existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.RenderTargetScale = input.ReadSingle();
+            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
+            existingInstance.Color = input.ReadColor();
+            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
+            existingInstance.EffectsSerializer = input.ReadObject<System.Collections.Generic.List<System.Object>>();
+            existingInstance.Enabled = input.ReadBoolean();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>NoiseEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class NoiseEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.NoiseEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.NoiseEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.NoiseEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.NoiseEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.NoiseEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new NoiseEffect(graphicsDevice);
+            }
+            existingInstance.NoiseAmount = input.ReadSingle();
+            existingInstance.Seed = input.ReadSingle();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>PixelateEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class PixelateEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.PixelateEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.PixelateEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.PixelateEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.PixelateEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.PixelateEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new PixelateEffect(graphicsDevice);
+            }
+            existingInstance.Threshhold = input.ReadSingle();
+            existingInstance.EdgeColor = input.ReadVector3();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>RadialBlurEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class RadialBlurEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.RadialBlurEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.RadialBlurEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.RadialBlurEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.RadialBlurEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.RadialBlurEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new RadialBlurEffect(graphicsDevice);
+            }
+            existingInstance.Center = input.ReadVector2();
+            existingInstance.BlurAmount = input.ReadSingle();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>ScaleEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ScaleEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.ScaleEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ScaleEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ScaleEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.ScaleEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ScaleEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ScaleEffect(graphicsDevice);
+            }
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>ScreenEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ScreenEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.ScreenEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ScreenEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ScreenEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.ScreenEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ScreenEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ScreenEffect(graphicsDevice);
+            }
+            existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
+            existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.RenderTargetScale = input.ReadSingle();
+            existingInstance.EffectsSerializer = input.ReadObject<System.Collections.Generic.List<System.Object>>();
+            existingInstance.Enabled = input.ReadBoolean();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>ThresholdEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ThresholdEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.ThresholdEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ThresholdEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ThresholdEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.ThresholdEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ThresholdEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ThresholdEffect(graphicsDevice);
+            }
+            existingInstance.Threshold = input.ReadSingle();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>ToneMappingEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ToneMappingEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.ToneMappingEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ToneMappingEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ToneMappingEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.ToneMappingEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.ToneMappingEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ToneMappingEffect(graphicsDevice);
+            }
+            existingInstance.Exposure = input.ReadSingle();
+            existingInstance.MaxLuminance = input.ReadSingle();
+            existingInstance.LuminanceTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.BloomTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>WiggleEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class WiggleEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ScreenEffects.WiggleEffect>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.WiggleEffect existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.WiggleEffect existingInstance);
+        
+        protected override Nine.Graphics.ScreenEffects.WiggleEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ScreenEffects.WiggleEffect existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new WiggleEffect(graphicsDevice);
+            }
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.Amplitude = input.ReadSingle();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
 }
 #endif

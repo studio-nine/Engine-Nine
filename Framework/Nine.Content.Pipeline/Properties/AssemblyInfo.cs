@@ -30,4 +30,5 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects.EffectParts")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ParticleEffects")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ScreenEffects")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.ObjectModel")]

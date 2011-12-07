@@ -41,10 +41,30 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
 
         private void UpdateTransform()
         {
+            Vector3.Normalize(ref direction, out direction);
+
             if (direction.X == 0 && direction.Y == 0)
-                Transform = Matrix.CreateLookAt(position, position + direction, Vector3.Up);
+                Transform = Matrix.CreateLookAt(position, direction, Vector3.Up);
             else
-                Transform = Matrix.CreateLookAt(position, position + direction, Vector3.UnitZ);
+                Transform = Matrix.CreateWorld(position, direction, Vector3.UnitZ);
+        }
+
+        partial void OnCreate()
+        {
+            OuterAngle = MathHelper.ToDegrees(OuterAngle);
+            InnerAngle = MathHelper.ToDegrees(InnerAngle);
+        }
+    }
+
+    partial class SpotLightContentWriter
+    {
+        partial void BeginWrite(ContentWriter output, SpotLightContent value)
+        {
+            var outer = value.OuterAngle;
+            var inner = value.InnerAngle;
+
+            value.OuterAngle = MathHelper.ToRadians(Math.Max(outer, inner));
+            value.InnerAngle = MathHelper.ToRadians(Math.Min(outer, inner));
         }
     }
 }

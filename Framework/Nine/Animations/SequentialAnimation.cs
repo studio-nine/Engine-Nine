@@ -124,6 +124,10 @@ namespace Nine.Animations
             Seek(index);
         }
 
+        /// <summary>
+        /// Seeks the specified index.
+        /// </summary>
+        /// <param name="index">The index.</param>
         private void Seek(int index)
         {
             if (CurrentIndex != index && Current != null)
@@ -135,6 +139,9 @@ namespace Nine.Animations
                 Current.Play();
         }
 
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
         protected override void OnStarted()
         {
             repeatCounter = 0;
@@ -144,6 +151,9 @@ namespace Nine.Animations
             base.OnStarted();
         }
 
+        /// <summary>
+        /// Stops the animation.
+        /// </summary>
         protected override void OnStopped()
         {
             if (Current != null)
@@ -155,6 +165,9 @@ namespace Nine.Animations
             base.OnStopped();
         }
 
+        /// <summary>
+        /// Pauses the animation.
+        /// </summary>
         protected override void OnPaused()
         {
             if (Current != null)
@@ -163,6 +176,9 @@ namespace Nine.Animations
             base.OnPaused();
         }
 
+        /// <summary>
+        /// Resumes the animation.
+        /// </summary>
         protected override void OnResumed()
         {
             if (Current != null)
@@ -171,6 +187,10 @@ namespace Nine.Animations
             base.OnResumed();
         }
 
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
+        /// <param name="elapsedTime"></param>
         public override void Update(TimeSpan elapsedTime)
         {
             if (State == AnimationState.Playing)
@@ -207,12 +227,18 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Called when repeated.
+        /// </summary>
         protected virtual void OnRepeated()
         {
             if (Repeated != null)
                 Repeated(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
         public IEnumerator<IAnimation> GetEnumerator()
         {
             return Animations.GetEnumerator();

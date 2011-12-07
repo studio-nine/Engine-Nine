@@ -170,13 +170,26 @@ namespace Nine
     {
         public static Matrix CreateRotation(Vector3 fromDirection, Vector3 toDirection)
         {
-            Vector3 axis = Vector3.Cross(fromDirection, toDirection);
+            Matrix result = new Matrix();
+            CreateRotation(ref fromDirection, ref toDirection, out result);
+            return result;
+        }
 
-            if (axis == Vector3.Zero)
-                return Matrix.Identity;
-            
+        public static void CreateRotation(ref Vector3 fromDirection, ref Vector3 toDirection, out Matrix matrix)
+        {
+            Vector3 axis = new Vector3();
+            Vector3.Cross(ref fromDirection, ref toDirection, out axis);
             axis.Normalize();
-            return Matrix.CreateFromAxisAngle(axis, (float)Math.Acos(Vector3.Dot(fromDirection, toDirection)));
+
+            if (float.IsNaN(axis.X))
+            {
+                matrix = Matrix.Identity;
+                return;
+            }
+
+            float angle;
+            Vector3.Dot(ref fromDirection, ref toDirection, out angle);
+            Matrix.CreateFromAxisAngle(ref axis, (float)Math.Acos(angle), out matrix);
         }
 
         static BoundingFrustum frustum = new BoundingFrustum(Matrix.Identity);

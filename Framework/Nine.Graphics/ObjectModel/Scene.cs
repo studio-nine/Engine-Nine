@@ -30,6 +30,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Defines a graphical scene that manages a set of objects, cameras and lights.
     /// </summary>
+    [ContentSerializable]
     public class Scene : ICollection<object>, IDisposable, IDrawable
     {
         #region Properties
@@ -49,17 +50,6 @@ namespace Nine.Graphics.ObjectModel
         private ICamera camera;
 
         /// <summary>
-        /// Gets or sets the post processing screen effect used by this renderer.
-        /// </summary>
-        [ContentSerializerIgnore]
-        public ScreenEffect ScreenEffect
-        {
-            get { return screenEffect ?? (screenEffect = new ScreenEffect(GraphicsDevice) { Enabled = false }); }
-            set { screenEffect = value; }
-        }
-        private ScreenEffect screenEffect;
-
-        /// <summary>
         /// Gets the underlying graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
@@ -75,20 +65,15 @@ namespace Nine.Graphics.ObjectModel
         public GraphicsContext GraphicsContext { get; protected set; }
 
         /// <summary>
-        /// For serialization only.
+        /// Gets a list of objects added to the scene.
         /// </summary>
-        [ContentSerializer()]
-        internal List<object> SceneObjects
+        [ContentSerializer]
+        public IList<object> SceneObjects
         {
             get { return topLevelObjects; }
-            set 
-            {
-                if (value != null)
-                {
-                    for (int i = 0; i < value.Count; i++)
-                        Add(value[i]);
-                }
-            }
+
+            // For serialization
+            internal set { for (int i = 0; i < value.Count; i++) Add(value[i]); }
         }
 
         /// <summary>
@@ -147,6 +132,8 @@ namespace Nine.Graphics.ObjectModel
         private List<Light> appliedMultiPassLights = new List<Light>();
         private List<Light> unAppliedMultiPassLights = new List<Light>();
         private List<FindResult> rayCastResult = new List<FindResult>();
+        private List<IUpdateable> updateableObjects = new List<IUpdateable>();
+        private List<IDrawableObject> drawableObjects = new List<IDrawableObject>();
 
         private HashSet<ISpatialQueryable> shadowCastersInLightFrustum = new HashSet<ISpatialQueryable>();
         private HashSet<ISpatialQueryable> shadowCastersInViewFrustum = new HashSet<ISpatialQueryable>();
@@ -155,10 +142,15 @@ namespace Nine.Graphics.ObjectModel
         private EffectMaterial cachedEffectMaterial;
         private BitArray lightUsed;
 
+        // FIXME: Particles are never removed.
+        private HashSet<ParticleEffect> particleEffects = new HashSet<ParticleEffect>();
+
 #if WINDOWS || XBOX
         private GraphicsBuffer graphicsBuffer;
         private DeferredEffect deferredEffect;
 #endif
+        private ScreenEffect screenEffect;
+
         #endregion
 
         #region Initialization
@@ -210,6 +202,8 @@ namespace Nine.Graphics.ObjectModel
             if (item == null)
                 throw new ArgumentNullException("item");
 
+            OnAdded(item);
+
             var queryable = item as ISpatialQueryable;
             if (queryable != null)
                 sceneManager.Add(queryable);
@@ -244,6 +238,8 @@ namespace Nine.Graphics.ObjectModel
             if (item == null)
                 throw new ArgumentNullException("item");
 
+            OnRemoved(item);
+
             var queryable = item as ISpatialQueryable;
             if (queryable != null)
                 sceneManager.Remove(queryable);
@@ -268,27 +264,39 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
+        /// Called when an object is added to the scene.
+        /// </summary>
+        protected virtual void OnAdded(object child)
+        {
+            var particleEffect = child as DrawableParticleEffect;
+            if (particleEffect != null && particleEffect.ParticleEffect != null)
+                particleEffects.Add(particleEffect.ParticleEffect);
+
+            // Just support one instance of screen effect.
+            if (this.screenEffect == null)
+                this.screenEffect = child as ScreenEffect;
+        }
+        
+        /// <summary>
+        /// Called when an object is removed from the scene.
+        /// </summary>
+        protected virtual void OnRemoved(object child)
+        {
+
+        }
+
+        /// <summary>
         /// Clears all the scene objects.
         /// </summary>
         public void Clear()
         {
             for (int i = 0; i < topLevelObjects.Count; i++)
             {
-                ContainerTraverser.Traverse<INotifyCollectionChanged<object>>(topLevelObjects[i], ClearEvents);
+                ContainerTraverser.Traverse<object>(topLevelObjects[i], FlattenedRemove);
             }
 
             sceneManager.Clear();
             topLevelObjects.Clear();
-        }
-
-        private TraverseOptions ClearEvents(INotifyCollectionChanged<object> collectionChanged)
-        {
-            if (collectionChanged != null)
-            {
-                collectionChanged.Added -= OnChildAdded;
-                collectionChanged.Removed -= OnChildRemoved;
-            }
-            return TraverseOptions.Continue;
         }
 
         /// <summary>
@@ -533,14 +541,16 @@ namespace Nine.Graphics.ObjectModel
         public void Draw(TimeSpan elapsedTime)
         {
             Statistics.Reset();
-            
-            UpdateVisibleDrawablesAndLightsInViewFrustum();
-
-            Update(elapsedTime);
 
             GraphicsContext.View = Camera.View;
             GraphicsContext.Projection = Camera.Projection;
             GraphicsContext.ElapsedTime = elapsedTime;
+
+            Settings.Update(); 
+
+            UpdateCamera(elapsedTime);            
+            UpdateVisibleDrawablesAndLightsInViewFrustum();
+            UpdateObjects(elapsedTime);
             
             BeginDraw();
 
@@ -560,15 +570,23 @@ namespace Nine.Graphics.ObjectModel
                 
                 GraphicsContext.Begin(BlendState.Additive, null, DepthStencilState.DepthRead, null);
                 DrawObjects(transparentDrawablesInViewFrustum);
+                DrawParticleEffects(elapsedTime);
                 GraphicsContext.End();
 #else
                 // Draw opaque objects
-                ClearLights(opaqueDrawablesInViewFrustum);
+                ClearLights(drawablesInViewFrustum);
                 UpdateAffectedDrawablesAndAffectingLights(drawablesInViewFrustum, lightsInViewFrustum);
 #if !SILVERLIGHT
                 ApplyDeferredLighting(drawablesInViewFrustum, lightsInViewFrustum);
 #endif
                 ApplyShadows(drawablesInViewFrustum, lightsInViewFrustum);
+
+                if (screenEffect != null)
+                {
+                    screenEffect.Enabled = Settings.ScreenEffectEnabled;
+                    screenEffect.Update(elapsedTime);
+                    screenEffect.Begin();
+                }
 
                 GraphicsDevice.Clear(Settings.BackgroundColor);
 
@@ -591,10 +609,9 @@ namespace Nine.Graphics.ObjectModel
                 }
 
                 // Draw transparent objects
-                ClearLights(transparentDrawablesInViewFrustum);
-
-                GraphicsContext.Begin(BlendState.AlphaBlend, null, null, null);
+                GraphicsContext.Begin(BlendState.AlphaBlend, null, DepthStencilState.DepthRead, null);
                 DrawObjects(transparentDrawablesInViewFrustum);
+                DrawParticleEffects(elapsedTime);
                 GraphicsContext.End();
 
                 if (Settings.MultiPassLightingEnabled)
@@ -602,6 +619,12 @@ namespace Nine.Graphics.ObjectModel
                     GraphicsContext.Begin(BlendState.Additive, null, DepthStencilState.DepthRead, null);
                     DrawMultiPassLightingOverlay(transparentDrawablesInViewFrustum);
                     GraphicsContext.End();
+                }
+
+                if (screenEffect != null)
+                {
+                    // FIXME: What if this value is changed in between.
+                    screenEffect.End();
                 }
 #endif
             }
@@ -613,6 +636,7 @@ namespace Nine.Graphics.ObjectModel
 
                 GraphicsContext.Begin(BlendState.AlphaBlend, null, null, null);
                 DrawNoLighting(transparentDrawablesInViewFrustum);
+                DrawParticleEffects(elapsedTime);
                 GraphicsContext.End();
             }
 
@@ -621,6 +645,16 @@ namespace Nine.Graphics.ObjectModel
             GraphicsContext.Begin();
             DrawDebug(drawablesInViewFrustum, lightsInViewFrustum);
             GraphicsContext.End();
+
+            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+        }
+
+        private void UpdateCamera(TimeSpan elapsedTime)
+        {
+            IUpdateable updateable;
+            updateable = camera as IUpdateable;
+            if (updateable != null)
+                updateable.Update(elapsedTime);
         }
 
         private void UpdateVisibleDrawablesAndLightsInViewFrustum()
@@ -639,6 +673,8 @@ namespace Nine.Graphics.ObjectModel
             for (int i = 0; i < flattenedObjectsInViewFrustum.Count; i++)
             {
                 var obj = flattenedObjectsInViewFrustum[i];
+
+                OnAddedToViewFrustum(obj);
 
                 var light = obj as Light;
                 if (light != null && light.Enabled)
@@ -668,23 +704,23 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
+        /// Called when an object is added to view frustum each frame.
+        /// </summary>
+        protected virtual void OnAddedToViewFrustum(object item)
+        {
+
+        }
+
+        /// <summary>
         /// Updates all the object in the scene.
         /// </summary>
-        private void Update(TimeSpan elapsedTime)
+        private void UpdateObjects(TimeSpan elapsedTime)
         {
-            // Camera
-            // TODO: Make camera transformable just like lights.
-            IUpdateable updateable;
-            updateable = camera as IUpdateable;
-            if (updateable != null)
-                updateable.Update(elapsedTime);
-
-            for (int i = 0; i < flattenedObjectsInViewFrustum.Count; i++)
-            {
-                updateable = flattenedObjectsInViewFrustum[i] as IUpdateable;
-                if (updateable != null)
-                    updateable.Update(elapsedTime);
-            }
+            updateableObjects.Clear();
+            for (int i = 0; i < topLevelObjects.Count; i++)
+                ContainerTraverser.Traverse<IUpdateable>(topLevelObjects[i], updateableObjects);
+            for (int i = 0; i < updateableObjects.Count; i++)
+                updateableObjects[i].Update(elapsedTime);
         }
 
         private void BeginDraw()
@@ -692,19 +728,18 @@ namespace Nine.Graphics.ObjectModel
             // Xna might complain about floating point texture requires texture filter to be point.
             for (int i = 0; i < 16; i++)
                 GraphicsDevice.Textures[i] = null;
-
-            for (int i = 0; i < drawablesInViewFrustum.Count; i++)
-            {
-                drawablesInViewFrustum[i].BeginDraw(GraphicsContext);
-            }
+            
+            for (int i = 0; i < topLevelObjects.Count; i++)
+                ContainerTraverser.Traverse<IDrawableObject>(topLevelObjects[i], drawableObjects);
+            for (int i = 0; i < drawableObjects.Count; i++)
+                drawableObjects[i].BeginDraw(GraphicsContext);
         }
 
         private void EndDraw()
         {
-            for (int i = 0; i < drawablesInViewFrustum.Count; i++)
-            {
-                drawablesInViewFrustum[i].EndDraw(GraphicsContext);
-            }
+            for (int i = 0; i < drawableObjects.Count; i++)
+                drawableObjects[i].EndDraw(GraphicsContext);
+            drawableObjects.Clear();
         }
 
         private void DrawNoLighting(List<IDrawableObject> drawables)
@@ -712,6 +747,15 @@ namespace Nine.Graphics.ObjectModel
             for (int i = 0; i < drawables.Count; i++)
             {
                 drawables[i].Draw(GraphicsContext);
+            }
+        }
+
+        private void DrawParticleEffects(TimeSpan elapsedTime)
+        {
+            foreach (var particleEffect in particleEffects)
+            {
+                particleEffect.Update(elapsedTime);
+                GraphicsContext.ParticleBatch.Draw(particleEffect);
             }
         }
 
@@ -789,6 +833,13 @@ namespace Nine.Graphics.ObjectModel
                 }
             }
             deferredEffect.LightTexture = graphicsBuffer.LightBuffer;
+
+            if (screenEffect != null)
+            {
+                screenEffect.SetTexture(TextureUsage.DepthBuffer, graphicsBuffer.DepthBuffer);
+                screenEffect.SetTexture(TextureUsage.NormalMap, graphicsBuffer.NormalBuffer);
+                screenEffect.SetTexture(TextureUsage.LightBuffer, graphicsBuffer.LightBuffer);
+            }
         }
 #endif
         #endregion
@@ -923,7 +974,11 @@ namespace Nine.Graphics.ObjectModel
             }
             if (settings.ShowLightBuffer && graphicsBuffer != null)
             {
+                spriteBatch.End();
+                spriteBatch.Begin(0, null, SamplerState.PointClamp, null, null);
                 spriteBatch.Draw(graphicsBuffer.LightBuffer, Vector2.Zero, Color.White);
+                spriteBatch.End();
+                spriteBatch.Begin();
             }
             if (settings.ShowShadowMap)
             {
@@ -1208,7 +1263,6 @@ namespace Nine.Graphics.ObjectModel
                     {
                         effectShadowMap.ShadowMap = light.ShadowMap.Texture;
                         effectShadowMap.LightViewProjection= light.ShadowFrustum.Matrix;
-                        effectShadowMap.DepthBias = Settings.ShadowMapDepthBias;
                         effectShadowMap = null;
                     }
                     else

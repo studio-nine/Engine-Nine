@@ -124,7 +124,7 @@ namespace Nine.Graphics
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class EffectExtensions
     {
-        public static T As<T>(this Effect effect) where T : class
+        internal static T As<T>(this Effect effect) where T : class
         {
 #if WINDOWS_PHONE
             return effect as T;

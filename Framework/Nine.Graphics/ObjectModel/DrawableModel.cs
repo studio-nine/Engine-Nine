@@ -77,7 +77,8 @@ namespace Nine.Graphics.ObjectModel
                 if (material != value || value == null)
                 {
                     material = value;
-                    materialNeedsUpdate = true; 
+                    materialNeedsUpdate = true;
+                    UpdateMaterials(true);
                 }
             }
         }
@@ -264,14 +265,17 @@ namespace Nine.Graphics.ObjectModel
             get { return modelParts; }
             set 
             {
-                if (value != null)
+                if (value != null && modelParts != null)
                 {
                     for (int i = 0; i < value.Length; i++)
                     {
                         if (i < modelParts.Length && value[i] != null)
                         {
                             if (value[i].Material != null)
-                                modelParts[i].Material = CreateMaterial(value[i].Material, modelParts[i].ModelMeshPart);
+                            {
+                                modelParts[i].Material = CreateMaterial(
+                                    value[i].Material, modelParts[i].ModelMeshPart, false);
+                            }
                             modelParts[i].Visible = value[i].Visible;
                         }
                     }
@@ -446,44 +450,56 @@ namespace Nine.Graphics.ObjectModel
 
         internal void UpdateMaterials()
         {
+            UpdateMaterials(false);
+        }
+
+        private void UpdateMaterials(bool force)
+        {
             if (model == null || !materialNeedsUpdate)
                 return;
 
             // Set default materials based on whether the model is skinned or not
+            if (material != null)
+            {
+                var effectMaterial = material.Find<IEffectMaterial>();
+                if (effectMaterial != null)
+                {
+                    alpha = effectMaterial.Alpha;
+                    diffuseColor = effectMaterial.DiffuseColor;
+                }
+            }
+
+            // FIXME: What if only some part of the model is skinned
+            UpdateIsSkinnedAndIsAnimated();
+
+            bool isDefault = false;
+
 #if !TEXT_TEMPLATE
             if (material == null)
             {
+                isDefault = true;
                 if (model.IsSkinned())
                     material = new SkinnedMaterial(GraphicsDevice);
                 else
-                    material = new BasicMaterial(GraphicsDevice) { TextureEnabled = true };
+                    material = new BasicMaterial(GraphicsDevice);
             }
 #endif
-            var effectMaterial = material.Find<IEffectMaterial>();
-            if (effectMaterial != null)
-            {
-                alpha = effectMaterial.Alpha;
-                diffuseColor = effectMaterial.DiffuseColor;
-            }
-
-            UpdateIsSkinnedAndIsAnimated();
-
             var iPart = 0;
             foreach (var mesh in model.Meshes)
             {
                 foreach (var part in mesh.MeshParts)
                 {
-                    modelParts[iPart++].Material = CreateMaterial(material, part);
+                    modelParts[iPart].Material = CreateMaterial(
+                        force ? material :
+                        modelParts[iPart].material ?? material, part, isDefault);
+                    iPart++;
                 }
             }
             materialNeedsUpdate = false;
         }
 
-        private Material CreateMaterial(Material material, ModelMeshPart part)
+        private Material CreateMaterial(Material material, ModelMeshPart part, bool isDefault)
         {
-            if (material == null)
-                return null;
-
             material.Apply();
             var clonedMaterial = material.Clone();
 
@@ -493,6 +509,13 @@ namespace Nine.Graphics.ObjectModel
                 if (target != null)
                 {
                     target.Texture = part.Effect.GetTexture();
+#if !TEXT_TEMPLATE
+                    // Walkaround for default material when the model has no texture.
+                    if (isDefault && target is BasicMaterial)
+                    {
+                        ((BasicMaterial)target).TextureEnabled = (target.Texture != null);
+                    }
+#endif
                     foreach (var texture in part.GetTextures())
                     {
                         target.SetTexture(texture, part.GetTexture(texture));

@@ -72,7 +72,8 @@ namespace SpriteAnimationGame
             // We support 2 sprite animation types,
             // This run animation is processed using TextureListProcessor.
             run = new SpriteAnimation(Content.Load<TextureList>("Run"));
-            run.FramesPerSecond = 10;
+            run.FramesPerSecond = 24;
+            run.AutoReverse = false;
             run.Play();
 
             // This animation is a sequense of image files.

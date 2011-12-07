@@ -52,9 +52,10 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
             get 
             {
                 string code = Encoding.UTF8.GetString(
-                    TextureAlphaUsage == Effects.TextureAlphaUsage.Opacity ? LinkedEffectParts.BasicTexture : (
-                    TextureAlphaUsage == Effects.TextureAlphaUsage.Overlay ? LinkedEffectParts.BasicTextureAlphaOverlay :
-                                                                                  LinkedEffectParts.BasicTextureAlphaSpecular));
+                    TextureAlphaUsage == Effects.TextureAlphaUsage.Opacity  ? LinkedEffectParts.BasicTexture : (
+                    TextureAlphaUsage == Effects.TextureAlphaUsage.Overlay  ? LinkedEffectParts.BasicTextureAlphaOverlay :
+                    TextureAlphaUsage == Effects.TextureAlphaUsage.Specular ? LinkedEffectParts.BasicTextureAlphaSpecular :
+                                                                              LinkedEffectParts.BasicTextureAlphaNone));
                 if (Contains(typeof(ScreenEffectEffectPartContent)))
                 {
                     return code.Replace("{$SAMPLER}", "BasicSampler");
@@ -249,7 +250,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
                                .Replace("{$HASSPECULARX}", SpecularXEnabled ? "" : "//")
                                .Replace("{$HASSPECULARY}", SpecularYEnabled ? "" : "//")
                                .Replace("{$HASSPECULARZ}", SpecularZEnabled ? "" : "//")
-                               .Replace("{$HASSPECULARW}", SpecularWEnabled ? "" : "//");
+                               .Replace("{$HASSPECULARW}", SpecularWEnabled ? "" : "//")
+                               .Replace("{$HASDIFFUSE}", TextureXEnabled || TextureYEnabled || TextureZEnabled || TextureWEnabled ? "" : "//");
             }
         }
 

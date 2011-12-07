@@ -95,8 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NavigatorsContent\NavigatorsContent.contentproj">
-      <Name>NavigatorsContent</Name>
+      <Name>NavigatorsContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{8A0F05B9-F2C6-4849-BA09-F93DEAC808B5}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -112,6 +112,7 @@ namespace Nine.Graphics.Effects.Deferred
                 (this.dirtyFlag & outerAngleDirtyFlag) != 0)
             {
                 float radius = (float)Math.Tan(OuterAngle * 0.5) * Range;
+
                 world = Matrix.CreateScale(radius, radius, Range) *
                         Matrix.CreateTranslation(0, 0, -Range) *
                         MatrixHelper.CreateRotation(Vector3.UnitZ, -Direction) *

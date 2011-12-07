@@ -49,6 +49,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         [ContentSerializer(Optional = true)]
         public virtual bool PreferDeferredLighting { get; set; }
 
+        [ContentSerializer(Optional = true)]
+        public virtual float ShadowBias { get; set; }
+
+        [ContentSerializer(Optional = true)]
+        public virtual Vector3 ShadowColor { get; set; }
+
         [ContentSerializer(Optional=true)]
         public virtual bool ShadowEnabled { get; set; }
 
@@ -67,6 +73,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             LightingEnabled = true;
             DirectionalLightCount = 1;
             ShadowMapSampleCount = 10;
+            ShadowColor = Vector3.One * 0.5f;
+            ShadowBias = 0.005f;
         }
     }
 }

@@ -210,12 +210,6 @@ namespace Nine.Animations
                 existingInstance = new DelayAnimation();
             }
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.Speed = input.ReadSingle();
-            existingInstance.AutoReverse = input.ReadBoolean();
-            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
-            existingInstance.Repeat = input.ReadSingle();
-            existingInstance.Position = input.ReadObject<System.TimeSpan>();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -269,39 +263,6 @@ namespace Nine.Animations
         }
     }
     /// <summary>
-    /// Content reader for <c>TransformAnimation</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class TransformAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.TransformAnimation>
-    {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TransformAnimation existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TransformAnimation existingInstance);
-        
-        protected override Nine.Animations.TransformAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TransformAnimation existingInstance)
-        {
-            BeginRead(input, existingInstance);
-            if (existingInstance == null)
-            {
-                existingInstance = new TransformAnimation();
-            }
-            existingInstance.TargetProperty = input.ReadObject<System.String>();
-            existingInstance.ScaleX = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.ScaleY = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.ScaleZ = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.RotationOrder = input.ReadObject<Nine.RotationOrder>();
-            existingInstance.RotationX = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.RotationY = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.RotationZ = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.X = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.Y = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            existingInstance.Z = input.ReadObject<Nine.Animations.TweenAnimation<System.Single>>();
-            EndRead(input, existingInstance);
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>TweenAnimation`1</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -326,6 +287,8 @@ namespace Nine.Animations
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
             existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.AutoReverse = input.ReadBoolean();
             existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();

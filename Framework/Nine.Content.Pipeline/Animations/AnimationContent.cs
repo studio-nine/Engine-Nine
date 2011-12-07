@@ -82,38 +82,56 @@ namespace Nine.Content.Pipeline.Animations
         }
     }
 
-    partial class TransformAnimationContentWriter
+    public class TransformAnimationContent : TweenAnimationContent<Transform> { }
+    
+    [ContentTypeWriter]
+    class TransformAnimationContentWriter : ContentTypeWriter<TransformAnimationContent>
     {
-        partial void BeginWrite(ContentWriter output, TransformAnimationContent value)
+        ContentTypeWriter writer = new TweenAnimationContentWriter<Matrix>();
+
+        protected override void Write(ContentWriter output, TransformAnimationContent value)
         {
-            // Convert from degrees to radius
-            if (value.RotationX != null)
+            var tween = new TweenAnimationContent<Matrix>
             {
-                if (value.RotationX.From != null)
-                    value.RotationX.From = MathHelper.ToRadians(value.RotationX.From.Value);
-                if (value.RotationX.To != null)
-                    value.RotationX.To = MathHelper.ToRadians(value.RotationX.To.Value);
-                if (value.RotationX.By != null)
-                    value.RotationX.By = MathHelper.ToRadians(value.RotationX.By.Value);
-            }
-            if (value.RotationY != null)
+                AutoReverse = value.AutoReverse,
+                Curve = value.Curve,
+                Direction = value.Direction,
+                Duration = value.Duration,
+                Easing = value.Easing,
+                Position = value.Position,
+                Repeat = value.Repeat,
+                Speed = value.Speed,
+                StartupDirection = value.StartupDirection,
+                TargetProperty = value.TargetProperty,
+            };
+
+            if (value.From.HasValue)
             {
-                if (value.RotationY.From != null)
-                    value.RotationY.From = MathHelper.ToRadians(value.RotationY.From.Value);
-                if (value.RotationY.To != null)
-                    value.RotationY.To = MathHelper.ToRadians(value.RotationY.To.Value);
-                if (value.RotationY.By != null)
-                    value.RotationY.By = MathHelper.ToRadians(value.RotationY.By.Value);
+                var transform = value.From.Value;
+                transform.Rotation = transform.Rotation * MathHelper.Pi / 180;
+                tween.From = transform.ToMatrix();
             }
-            if (value.RotationZ != null)
+
+            if (value.To.HasValue)
             {
-                if (value.RotationZ.From != null)
-                    value.RotationZ.From = MathHelper.ToRadians(value.RotationZ.From.Value);
-                if (value.RotationZ.To != null)
-                    value.RotationZ.To = MathHelper.ToRadians(value.RotationZ.To.Value);
-                if (value.RotationZ.By != null)
-                    value.RotationZ.By = MathHelper.ToRadians(value.RotationZ.By.Value);
+                var transform = value.To.Value;
+                transform.Rotation = transform.Rotation * MathHelper.Pi / 180;
+                tween.To = transform.ToMatrix();
             }
+
+            if (value.By.HasValue)
+            {
+                var transform = value.By.Value;
+                transform.Rotation = transform.Rotation * MathHelper.Pi / 180;
+                tween.By = transform.ToMatrix();
+            }
+
+            output.WriteRawObject<TweenAnimationContent<Matrix>>(tween, writer);
+        }
+
+        public override string GetRuntimeReader(TargetPlatform targetPlatform)
+        {
+            return writer.GetRuntimeReader(targetPlatform);
         }
     }
 }

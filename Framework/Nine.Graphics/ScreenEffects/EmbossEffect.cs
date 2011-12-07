@@ -9,6 +9,7 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
+    [ContentSerializable]
     public partial class EmbossEffect
     {
 		private void OnCreated() 

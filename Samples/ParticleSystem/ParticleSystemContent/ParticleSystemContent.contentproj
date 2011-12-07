@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">
-      <Link>flake.png</Link>
+      <Link>Textures\flake.png</Link>
       <Name>flake</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\fire.png">
-      <Link>fire.png</Link>
+      <Link>Textures\fire.png</Link>
       <Name>fire</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -81,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\smoke.png">
-      <Link>smoke.png</Link>
+      <Link>Textures\smoke.png</Link>
       <Name>smoke</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

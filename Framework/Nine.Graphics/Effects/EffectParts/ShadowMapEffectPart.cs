@@ -28,9 +28,9 @@ namespace Nine.Graphics.Effects.EffectParts
     {
         private uint DirtyMask = 0;
         
-        private float shadowIntensity;
-        private EffectParameter shadowIntensityParameter;
-        private const uint shadowIntensityDirtyMask = 1 << 0;
+        private Vector3 shadowColor;
+        private EffectParameter shadowColorParameter;
+        private const uint shadowColorDirtyMask = 1 << 0;
 
         private float depthBias;
         private EffectParameter depthBiasParameter;
@@ -45,11 +45,16 @@ namespace Nine.Graphics.Effects.EffectParts
         private EffectParameter shadowMapSizeParameter;
         private const uint shadowMapDirtyMask = 1 << 3;
 
-        [ContentSerializer(Optional = true)]
-        public float ShadowIntensity
+        public override bool IsMaterial
         {
-            get { return shadowIntensity; }
-            set { if (shadowIntensity != value) { shadowIntensity = value; DirtyMask |= shadowIntensityDirtyMask; } }
+            get { return true; }
+        }
+
+        [ContentSerializer(Optional = true)]
+        public Vector3 ShadowColor
+        {
+            get { return shadowColor; }
+            set { if (shadowColor != value) { shadowColor = value; DirtyMask |= shadowColorDirtyMask; } }
         }
 
         [ContentSerializer(Optional = true)]
@@ -75,10 +80,10 @@ namespace Nine.Graphics.Effects.EffectParts
 
         public ShadowMapEffectPart()
         {
-            ShadowIntensity = 0.5f;
-            DepthBias = 0.0005f;
+            ShadowColor = Vector3.One * 0.5f;
+            DepthBias = 0.005f;
 
-            shadowIntensityParameter = GetParameter("ShadowIntensity");
+            shadowColorParameter = GetParameter("ShadowColor");
             depthBiasParameter = GetParameter("DepthBias");
             lightViewProjectionParameter = GetParameter("LightViewProjection");
             shadowMapParameter = GetParameter("ShadowMap");
@@ -87,11 +92,11 @@ namespace Nine.Graphics.Effects.EffectParts
 
         protected internal override void OnApply()
         {
-            if ((DirtyMask & shadowIntensityDirtyMask) != 0)
+            if ((DirtyMask & shadowColorDirtyMask) != 0)
             {
-                if (shadowIntensityParameter != null)
-                    shadowIntensityParameter.SetValue(shadowIntensity);
-                DirtyMask &= ~shadowIntensityDirtyMask;
+                if (shadowColorParameter != null)
+                    shadowColorParameter.SetValue(shadowColor);
+                DirtyMask &= ~shadowColorDirtyMask;
             }
 
             if ((DirtyMask & depthBiasDirtyMask) != 0)
@@ -118,12 +123,21 @@ namespace Nine.Graphics.Effects.EffectParts
             }
         }
 
+        protected internal override void OnApply(LinkedEffectPart part)
+        {
+            var effectPart = (ShadowMapEffectPart)part;
+            effectPart.DepthBias = DepthBias;
+            effectPart.ShadowColor = ShadowColor;
+            effectPart.ShadowMap = ShadowMap;
+            effectPart.LightViewProjection = LightViewProjection;
+        }
+
         protected internal override LinkedEffectPart Clone()
         {
             return new ShadowMapEffectPart()
             {
                 DepthBias = this.DepthBias,
-                ShadowIntensity = this.ShadowIntensity,
+                ShadowColor = this.ShadowColor,
                 ShadowMap = this.ShadowMap,
                 LightViewProjection = this.LightViewProjection,
             };

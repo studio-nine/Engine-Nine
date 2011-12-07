@@ -52,8 +52,9 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             for (int i = 0; i < hash.Length; i++)
             {
                 hashString.Append(hash[i].ToString("X2"));
-            }            
-            return context.BuildAsset<LinkedEffectContent, LinkedEffectContent>(linkedEffect, null, null, hashString.ToString());
+            }
+            return context.BuildAsset<LinkedEffectContent, LinkedEffectContent>(linkedEffect, null, null,
+                   Path.Combine(ContentProcessorContextExtensions.DefaultOutputDirectory, hashString.ToString()));
         }
     }
 }

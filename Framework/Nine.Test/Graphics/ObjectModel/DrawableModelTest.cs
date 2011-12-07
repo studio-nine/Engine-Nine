@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using Nine.Graphics.ObjectModel;
 using Nine.Graphics.Test;
 using Nine.Graphics.Effects;
+using Nine.Content.Pipeline.Graphics.ObjectModel;
+using Nine.Content.Pipeline.Graphics.Effects;
 
 namespace Nine.Graphics.ObjectModel.Test
 {
@@ -78,6 +80,33 @@ namespace Nine.Graphics.ObjectModel.Test
                 }
                 Assert.IsInstanceOfType(dude.ModelParts[0].Material, typeof(BasicMaterial));
             }); 
+        }
+
+        [TestMethod()]
+        public void DrawableModelMaterialContentPipelineTest()
+        {
+            Test(() =>
+            {
+                var content = new DrawableModelContent();
+                content.Model = "Dude";
+                content.ModelParts = new []
+                {
+                    new DrawableModelPartContent
+                    {
+                        Material = new DualTextureMaterialContent(),
+                    }
+                };
+
+                BuildModel("dude.fbx");
+                var model = BuildObjectUsingDefaultContentProcessor(content);
+                RunTheBuild();
+
+                var dude = Content.Load<DrawableModel>(model);
+
+                Assert.IsInstanceOfType(dude.Material, typeof(SkinnedMaterial));
+                Assert.IsTrue(dude.ModelParts.Count > 1);
+                Assert.IsInstanceOfType(dude.ModelParts[0].Material, typeof(DualTextureMaterial));
+            });
         }
     }
 }

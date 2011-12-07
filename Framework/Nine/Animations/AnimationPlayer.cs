@@ -66,11 +66,17 @@ namespace Nine.Animations
             base.SharedAnimations = this.Animations;
         }
 
+        /// <summary>
+        /// Determines whether this animation player contains an animation with the specified name.
+        /// </summary>
         public bool Contains(string name)
         {
             return Animations.ContainsKey(name);
         }
 
+        /// <summary>
+        /// Gets the <see cref="Nine.Animations.AnimationPlayerChannel"/> with the specified channel identifier.
+        /// </summary>
         public AnimationPlayerChannel this[object channelIdentifier]
         {
             get
@@ -91,6 +97,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Called when the animation player has started.
+        /// </summary>
         protected override void OnStarted()
         {
             if (Current == null)
@@ -102,6 +111,9 @@ namespace Nine.Animations
             base.OnStarted();
         }
 
+        /// <summary>
+        /// Updates the specified elapsed time.
+        /// </summary>
         public override void Update(TimeSpan elapsedTime)
         {
             base.Update(elapsedTime);
@@ -122,8 +134,14 @@ namespace Nine.Animations
     {
         internal IDictionary<string, IAnimation> SharedAnimations;
 
+        /// <summary>
+        /// Gets the name of the current animation.
+        /// </summary>
         public string CurrentName { get; internal set; }
 
+        /// <summary>
+        /// Gets the current animation.
+        /// </summary>
         public IAnimation Current { get; internal set; }
 
         /// <summary>
@@ -202,6 +220,9 @@ namespace Nine.Animations
             Play();
         }
 
+        /// <summary>
+        /// Plays the animation from start.
+        /// </summary>
         protected override void OnStarted()
         {
             if (Current != null)
@@ -211,6 +232,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Pauses the animation.
+        /// </summary>
         protected override void OnPaused()
         {
             if (Current != null)
@@ -220,6 +244,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Stops the animation.
+        /// </summary>
         protected override void OnStopped()
         {
             if (Current != null)
@@ -229,6 +256,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Resumes the animation.
+        /// </summary>
         protected override void OnResumed()
         {
             if (Current != null)
@@ -238,6 +268,9 @@ namespace Nine.Animations
             }
         }
 
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
         public override void Update(TimeSpan elapsedTime)
         {
             if (Current is IUpdateable && State == AnimationState.Playing)

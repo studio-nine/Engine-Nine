@@ -1,13 +1,19 @@
-﻿<MergedParticleEffectContent 
-    xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    TriggerOnStartup="True">
+﻿<MergedParticleEffectContent xmlns="http://schemas.microsoft.com/nine/2011/xaml">
 
-    <ParticleEffectContent ParticleType="ConstrainedBillboard" Emission="100" Duration="2" Color="255, 255, 255, 255" Size="0.2" Speed="8" Stretch="10" Texture="flake" DepthSortEnabled="True" BlendState="Additive">
+    <ParticleEffectContent ParticleType="ConstrainedBillboard" Stretch="10" Texture="Textures\flake" DepthSortEnabled="True" BlendState="Additive">
+        <ParticleEffectContent.Emitter>
+            <PointEmitterContent Emission="100" Duration="2" Color="255, 255, 255, 255" Size="0.2" Speed="8" />
+        </ParticleEffectContent.Emitter>
+        
         <ColorControllerContent EndColor="255, 0, 255, 255 ~ 255, 255, 0, 255" />
         <FadeControllerContent />
     </ParticleEffectContent>
 
-    <ParticleEffectContent ParticleType="ConstrainedBillboard" Emission="100" Duration="2" Color="255, 255, 255, 255" Size="0.2" Speed="8" Stretch="10" Texture="fire" BlendState="Additive">
+    <ParticleEffectContent ParticleType="ConstrainedBillboard" Stretch="10" Texture="Textures\fire" BlendState="Additive">
+        <ParticleEffectContent.Emitter>
+            <PointEmitterContent Emission="100" Duration="2" Color="255, 255, 255, 255" Size="0.2" Speed="8" />
+        </ParticleEffectContent.Emitter>
+        
         <ColorControllerContent EndColor="255, 0, 255, 255 ~ 255, 255, 0, 255" />
         <FadeControllerContent />
     </ParticleEffectContent>

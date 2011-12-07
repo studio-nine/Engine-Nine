@@ -112,7 +112,7 @@ namespace Nine.Components
             // Draw FPS text
             if (Visible && Font != null && GraphicsDevice != null)
             {
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Immediate, null);
                 spriteBatch.DrawString(Font, string.Format("FPS: {0:00.00}", fps), Position, Color, 0, Vector2.Zero, Scale, SpriteEffects.None, 0);
                 spriteBatch.End();
 

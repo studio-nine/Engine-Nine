@@ -194,14 +194,14 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the material of this drawable surface.
         /// </summary>
-        public Material Material 
+        public Material Material
         {
-            get { return material; }
 #if !TEXT_TEMPLATE
-            set { material = value ?? new BasicMaterial(GraphicsDevice); }
+            get { return material ?? (material = new BasicMaterial(GraphicsDevice) { TextureEnabled = false }); }
 #else
-            set { material = value; }
+            get { return material; }
 #endif
+            set { material = value; }
         }
         private Material material;
 

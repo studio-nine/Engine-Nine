@@ -29,6 +29,7 @@ namespace Nine.Test
             {
                 Children.Add(new Child());
                 Dictionary.Add("Name", new Child());
+                Dictionary.Add("Name2", new Child());
             }
         }
 
@@ -58,6 +59,12 @@ namespace Nine.Test
             expression.Value = 1;
             Assert.AreEqual(1, expression.Value);
             Assert.AreEqual(1, a.Dictionary["Name"].X);
+
+            expression = new PropertyExpression<int>(a.Dictionary, "['Name2'].X");
+            Assert.AreEqual(10, expression.Value);
+            expression.Value = 1;
+            Assert.AreEqual(1, expression.Value);
+            Assert.AreEqual(1, a.Dictionary["Name2"].X);
         }
     }
 }

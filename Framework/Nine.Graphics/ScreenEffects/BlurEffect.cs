@@ -21,6 +21,7 @@ namespace Nine.Graphics.ScreenEffects
     /// <summary>
     /// A post processing screen effect that blurs the whole screen.
     /// </summary>
+    [ContentSerializable]
     public partial class BlurEffect
     {
         /// <summary>

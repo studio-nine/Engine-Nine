@@ -56,7 +56,6 @@ namespace <#= namespaceGroup.Key #>
     [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public partial class <#= className #> : Nine.Graphics.Effects.Material
     {        
         /// <summary>

@@ -96,6 +96,7 @@ namespace Nine.Content.Pipeline.Processors
 
             // we can now just add all of those files to our list
             files.AddRange(copiedAssetFiles);
+            files.Sort(StringComparer.OrdinalIgnoreCase);
 
             // lastly we want to override the manifest file with this list. this allows us to 
             // easily see what files were included in the build for debugging.

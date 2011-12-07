@@ -23,19 +23,27 @@ namespace Nine.Graphics
 {
     #region TextureListItem
     /// <summary>
-    /// A single instance of image.
+    /// Defines a texture and a source rectangle.
     /// </summary>
-    public class TextureListItem
+    public struct TextureListItem
     {
-        public Texture2D Texture { get; internal set; }
-        public Rectangle SourceRectangle { get; internal set; }
+        /// <summary>
+        /// Gets or sets the texture.
+        /// </summary>
+        public Texture2D Texture;
 
-        internal TextureListItem() { }
-        
-        public TextureListItem(Texture2D texture, Rectangle sourceRectangle)
+        /// <summary>
+        /// Gets or sets the source rectangle.
+        /// </summary>
+        public Rectangle SourceRectangle;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextureListItem"/> struct.
+        /// </summary>
+        public TextureListItem(Texture2D texture, Rectangle? sourceRectangle)
         {
             Texture = texture;
-            SourceRectangle = sourceRectangle;
+            SourceRectangle = sourceRectangle.HasValue ? sourceRectangle.Value : texture.Bounds;
         }
     }
     #endregion

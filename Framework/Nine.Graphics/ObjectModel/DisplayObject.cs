@@ -34,28 +34,38 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the child drawable owned used by this drawable.
         /// </summary>
-        [ContentSerializer(Optional=true)]
-        public IList<object> Children
+        public NotificationCollection<object> Children { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="System.Object"/> at the specified index.
+        /// </summary>
+        public object this[int index]
         {
-            get { return children; }
-
-            // To be used by content reader
-            internal set
-            {
-                children.Clear();
-                children.AddRange(value);
-            }
+            get { return Children[index]; }
         }
-        private NotificationCollection<object> children;
 
+        /// <summary>
+        /// Gets the <see cref="System.Object"/> with the specified name.
+        /// </summary>
+        public object this[string name]
+        {
+            get { return Find<object>(name); }
+        }
+
+        /// <summary>
+        /// Gets the number of child objects
+        /// </summary>
         protected override int ChildCount
         {
-            get { return children.Count; }
+            get { return Children.Count; }
         }
 
+        /// <summary>
+        /// Copies all the child objects to the target array.
+        /// </summary>
         public override void CopyTo(object[] array, int startIndex)
         {
-            children.CopyTo(array, startIndex);
+            Children.CopyTo(array, startIndex);
         }
 
         void children_Added(object sender, NotifyCollectionChangedEventArgs<object> e)
@@ -64,7 +74,7 @@ namespace Nine.Graphics.ObjectModel
                 throw new ArgumentNullException("item");
 
             // This method is called after the object has been added to children, so check against 1 instead.
-            if (children.Count(c => c == e.Value) > 1)
+            if (Children.Count(c => c == e.Value) > 1)
                 throw new InvalidOperationException("The object is already a child of this display object");
 
             Transformable transformable = e.Value as Transformable;
@@ -89,12 +99,12 @@ namespace Nine.Graphics.ObjectModel
                 transformable.Parent = null;
 
                 // Remove all the transform bindings associated with this child
-                for (int i = 0; i < transformBindings.Count; i++)
+                for (int i = 0; i < TransformBindings.Count; i++)
                 {
-                    var binding = transformBindings[i];
+                    var binding = TransformBindings[i];
                     if (binding.Source == transformable || binding.Target == transformable)
                     {
-                        transformBindings.RemoveAt(i);
+                        TransformBindings.RemoveAt(i);
                         i--;
                     }
                 }
@@ -104,7 +114,14 @@ namespace Nine.Graphics.ObjectModel
                 Removed(sender, e);
         }
 
+        /// <summary>
+        /// Occurs when a child object is added.
+        /// </summary>
         public event EventHandler<NotifyCollectionChangedEventArgs<object>> Added;
+
+        /// <summary>
+        /// Occurs when a child object is removed.
+        /// </summary>
         public event EventHandler<NotifyCollectionChangedEventArgs<object>> Removed;
         #endregion
 
@@ -112,18 +129,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets all the transform bindings owned by this <c>DisplayObject</c>.
         /// </summary>
-        public IList<TransformBinding> TransformBindings
-        {
-            get { return transformBindings; }
-
-            // To be used by content reader
-            internal set
-            {
-                transformBindings.Clear();
-                transformBindings.AddRange(value);
-            }
-        }
-        private NotificationCollection<TransformBinding> transformBindings;
+        public NotificationCollection<TransformBinding> TransformBindings { get; private set; }
 
         void transformBindings_Added(object sender, NotifyCollectionChangedEventArgs<TransformBinding> e)
         {
@@ -146,10 +152,10 @@ namespace Nine.Graphics.ObjectModel
                 e.Value.TargetName = null;
             }
 
-            if (!children.Contains(e.Value.Source) || !children.Contains(e.Value.Target))
+            if (!Children.Contains(e.Value.Source) || !Children.Contains(e.Value.Target))
                 throw new InvalidOperationException("The source and target object for the binding must be a child of this display object.");
 
-            if (transformBindings.Count(b => b.Source == e.Value.Source) > 1)
+            if (TransformBindings.Count(b => b.Source == e.Value.Source) > 1)
                 throw new InvalidOperationException("Cannot bind the source object multiple times.");
             
             if (!string.IsNullOrEmpty(e.Value.TargetBone))
@@ -187,7 +193,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public void Bind(Transformable source, Transformable target, string boneName, Matrix? biasTransform)
         {
-            transformBindings.Add(new TransformBinding(source, target) { TargetBone = boneName, Transform = biasTransform });
+            TransformBindings.Add(new TransformBinding(source, target) { TargetBone = boneName, Transform = biasTransform });
         }
 
         /// <summary>
@@ -195,7 +201,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public void Unbind(Transformable source, Transformable target)
         {
-            transformBindings.RemoveAll(b => b.Source == source && b.Target == target);
+            TransformBindings.RemoveAll(b => b.Source == source && b.Target == target);
         }
         #endregion
 
@@ -222,29 +228,7 @@ namespace Nine.Graphics.ObjectModel
         
         private void UpdateTweenAnimationTargets(IEnumerable value)
         {
-            UtilityExtensions.ForEachRecursive<ISupportTarget>(value, new Action<ISupportTarget>(FixTweenAnimationTarget));
-        }
-
-        private void FixTweenAnimationTarget(ISupportTarget supportTarget)
-        {
-            var property = supportTarget.TargetProperty;
-            if (!string.IsNullOrEmpty(property))
-            {
-                var nameEnds = property.IndexOf(".");
-                if (nameEnds < 0)
-                {
-                    supportTarget.Target = this;
-                }
-                else
-                {
-                    var name = property.Substring(0, nameEnds);
-                    var target = Find<object>(name);
-                    if (target == null)
-                        throw new ContentLoadException("Cannot find a child object with name " + name);
-                    supportTarget.Target = target;
-                    supportTarget.TargetProperty = property.Substring(nameEnds + 1, property.Length - nameEnds - 1);
-                }
-            }
+            UtilityExtensions.ForEachRecursive<ISupportTarget>(value, supportTarget => supportTarget.Target = this);
         }
 
         private AnimationPlayer animations = new AnimationPlayer();
@@ -255,7 +239,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (Name == name && this is T)
                 return (T)(object)this;
-            var result = children.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
+            var result = Children.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
             if (result is T)
                 return (T)(object)result;
             return default(T);
@@ -265,7 +249,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (Name == name && this is T)
                 yield return (T)(object)this;
-            foreach (var result in children.OfType<Transformable>().Where(t => t.Name == name))
+            foreach (var result in Children.OfType<Transformable>().Where(t => t.Name == name))
             {
                 if (result is T)
                     yield return (T)(object)result;
@@ -279,14 +263,14 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public DisplayObject()
         {
-            children = new NotificationCollection<object>();
-            children.Sender = this;
-            children.Added += children_Added;
-            children.Removed += children_Removed;
+            Children = new NotificationCollection<object>();
+            Children.Sender = this;
+            Children.Added += children_Added;
+            Children.Removed += children_Removed;
 
-            transformBindings = new NotificationCollection<TransformBinding>();
-            transformBindings.Sender = this;
-            transformBindings.Added += transformBindings_Added;
+            TransformBindings = new NotificationCollection<TransformBinding>();
+            TransformBindings.Sender = this;
+            TransformBindings.Added += transformBindings_Added;
         }
         #endregion
 
@@ -299,7 +283,7 @@ namespace Nine.Graphics.ObjectModel
 
         private void UpdateTransformBindings()
         {
-            foreach (var binding in transformBindings)
+            foreach (var binding in TransformBindings)
             {
                 if (binding.TargetBoneIndex < 0)
                 {
@@ -335,9 +319,9 @@ namespace Nine.Graphics.ObjectModel
         #region IDisposable
         public void Dispose()
         {
-            for (var i = 0; i < children.Count; i++)
+            for (var i = 0; i < Children.Count; i++)
             {
-                IDisposable disposable = children[i] as IDisposable;
+                IDisposable disposable = Children[i] as IDisposable;
                 if (disposable != null)
                     disposable.Dispose();
             }

@@ -39,7 +39,7 @@ namespace Nine.Content.Pipeline
         // reference relocation path.
         internal static string ContentReferenceBasePath;
 
-        const string DefaultOutputDirectory = @"Misc";
+        internal const string DefaultOutputDirectory = @"Misc";
 
         public static ExternalReference<TOutput> BuildAsset<TInput, TOutput>(this ContentProcessorContext context, TInput input, string processorName)
         {

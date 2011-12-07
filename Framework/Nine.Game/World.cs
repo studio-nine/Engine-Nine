@@ -213,8 +213,12 @@ namespace Nine
         {
             if (content == null)
                 throw new ArgumentNullException("content");
-            Content = content;
-            Services.AddService(typeof(ContentManager), Content);
+
+            if (Content == null)
+            {
+                Content = content;
+                Services.AddService(typeof(ContentManager), Content);
+            }
         }
 
         /// <summary>

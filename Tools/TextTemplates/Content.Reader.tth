@@ -98,6 +98,16 @@ namespace <#= namespaceGroup.Key #>
             existingInstance.<#= member.Name #> = input.ReadString();
 <#
         }
+        else if (IsCollection(memberType) && !CanSet(member) && !HasContentSerializerAttribute(member))
+        {
+#>
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.<#= member.Name #>.Add(input.ReadObject<<#= GetClassFullName(GetCollectionType(memberType)) #>>());
+            }
+<#
+        }
         else
         {
 #>

@@ -17,7 +17,7 @@ namespace Nine.Content.Pipeline.Importers
     /// <summary>
     /// Imports object graph from Xaml files.
     /// </summary>
-    [ContentImporter(".xaml", DisplayName = "Xaml Importer - Engine Nine")]
+    [ContentImporter(".xaml", DisplayName = "Xaml Importer - Engine Nine", DefaultProcessor="DefaultContentProcessor")]
     public class XamlImporter : ContentImporter<object>
     {
         public override object Import(string filename, ContentImporterContext context)

@@ -238,14 +238,12 @@
     <Compile Include="ObjectModel\SpotLight.cs" />
     <Compile Include="ObjectModel\Transformable.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
-    <Compile Include="ParticleEffects\BasicParticleEffect.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleBatch.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
     <Compile Include="ParticleEffects\ParticleEffectCollection.cs" />
-    <Compile Include="ParticleEffects\ParticleEffectReader.cs" />
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="ParticleEffects\ParticleSystemEffect.cs">
@@ -256,7 +254,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="ParticleEffects\ParticleTrigger.cs" />
     <Compile Include="ParticleEffects\ParticleVertex.cs" />
     <Compile Include="ParticleEffects\SpriteBatchExtensions.cs" />
     <Compile Include="PrimitiveBatch.cs" />

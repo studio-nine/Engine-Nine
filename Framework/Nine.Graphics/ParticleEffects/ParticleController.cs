@@ -25,11 +25,6 @@ namespace Nine.Graphics.ParticleEffects
     public interface IParticleController
     {
         /// <summary>
-        /// Gets the approximate max change of particle positions by this particle controller.
-        /// </summary>
-        Vector3 Border { get; }
-
-        /// <summary>
         /// Resets a newly emitted particle.
         /// </summary>
         void Reset(ref Particle particle);
@@ -68,11 +63,6 @@ namespace Nine.Graphics.ParticleEffects
         }
 
         /// <summary>
-        /// Gets the approximate max change of particle positions by this particle controller.
-        /// </summary>
-        public abstract Vector3 Border { get; }
-
-        /// <summary>
         /// Updates an existing particle.
         /// </summary>
         public void Update(float elapsedTime, ref Particle particle)
@@ -92,6 +82,11 @@ namespace Nine.Graphics.ParticleEffects
 
         internal virtual void Initialize(ParticleEffect particleEffect)
         {
+            if (this.ParticleEffect != null && this.ParticleEffect != particleEffect)
+            {
+                throw new InvalidOperationException(
+                    "The particle controller is already used by another particle effect.");
+            }
             this.ParticleEffect = particleEffect;
         }
 
@@ -118,11 +113,17 @@ namespace Nine.Graphics.ParticleEffects
 
         protected override sealed void OnReset(ref Particle particle)
         {
+            if (ParticleEffect.CurrentParticle >= tags.Length)
+                Array.Resize(ref tags, ParticleEffect.MaxParticleCount);
+
             OnReset(ref particle, ref tags[ParticleEffect.CurrentParticle]);
         }
 
         protected override sealed void OnUpdate(float elapsedTime, ref Particle particle)
         {
+            if (ParticleEffect.CurrentParticle >= tags.Length)
+                Array.Resize(ref tags, ParticleEffect.MaxParticleCount);
+
             OnUpdate(elapsedTime, ref particle, ref tags[ParticleEffect.CurrentParticle]);
         }
 

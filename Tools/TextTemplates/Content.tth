@@ -46,6 +46,7 @@
                 PrimitiveTypes.Add(typeof(Quaternion), "Quaternion");
                 
                 TypeMapping.Add("Microsoft.Xna.Framework.Curve", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Curve>");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.BlendState", "Microsoft.Xna.Framework.Graphics.BlendState");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture3D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture3DContent>");
@@ -54,15 +55,18 @@
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Model", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");                
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
+                TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffectCollection", "System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
                 TypeMapping.Add("Nine.Graphics.Heightmap", "Nine.Content.Pipeline.ContentReference<Nine.Graphics.Heightmap>");
+                TypeMapping.Add("Nine.Graphics.TextureList", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.TextureListContent>");
                 TypeMapping.Add("Nine.Graphics.Effects.LinkedEffectPart", "Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent");
-                TypeMapping.Add("Nine.Graphics.ObjectModel.Scene", "Nine.Content.Pipeline.Graphics.ObjectModel.SceneContent");
+                TypeMapping.Add("Nine.Graphics.ObjectModel.Scene", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ObjectModel.SceneContent>");
                 TypeMapping.Add("Nine.Graphics.ObjectModel.Transformable", "System.Object");
                 TypeMapping.Add("Nine.Animations.TweenAnimation`1[[Microsoft.Xna.Framework.Vector3, Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<Microsoft.Xna.Framework.Vector3>");                
                 TypeMapping.Add("Nine.Animations.TweenAnimation`1[[System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]", "Nine.Content.Pipeline.Animations.TweenAnimationContent<System.Single>");                
 
                 TypeConverterMapping.Add("Nine.ICurve", "Nine.Content.Pipeline.Design.CurveConverter");
+                TypeConverterMapping.Add("Microsoft.Xna.Framework.Graphics.BlendState", "Nine.Content.Pipeline.Design.BlendStateConverter");
             }
         }
 
@@ -143,6 +147,12 @@
             return false;
         }
 
+        bool CanSet(MemberInfo member)
+        {
+            return member is FieldInfo ||
+                 ((member is PropertyInfo) && ((PropertyInfo)member).GetSetMethod() != null);
+        }
+
         bool MemberHasContentSerializerAttribute(Type type)
         {
             return type.FindMembers(MemberTypes.Property | MemberTypes.Field,
@@ -172,7 +182,8 @@
 
         bool IsCollection(Type type)
         {
-            return !(typeof(Array).IsAssignableFrom(type)) && !type.Name.Contains("ReadOnly") &&
+            return !IsDictionary(type) &&
+                   !(typeof(Array).IsAssignableFrom(type)) && !type.Name.Contains("ReadOnly") &&
                      type.FindInterfaces((t, o) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ICollection<>), null).Length > 0;
         }
 
@@ -262,25 +273,30 @@
             return generic > 0 ? className.Substring(0, generic).Split('.').Last() + className.Substring(generic, className.Length - generic)
                                : className.Split('.').Last();
         }
-
+        
         string GetContentClassFullName(Type type)
+        {
+            return GetContentClassFullName(type, true);
+        }
+
+        string GetContentClassFullName(Type type, bool isField)
         {
             if (type.IsGenericParameter)
                 return type.Name;
             if (type.IsValueType || type.IsEnum || type.IsPrimitive || type == typeof(string))
                 return GetClassFullName(type);
-            if (IsKnownType(type))
+            if (isField && IsKnownType(type))
                 return GetKnownContentType(type);
-            if (IsDictionary(type))
+            if (isField && IsDictionary(type))
                 return "System.Collections.Generic.Dictionary<" + GetContentClassFullName(GetDictionaryType(type)[0]) + ", "
                                                                 + GetContentClassFullName(GetDictionaryType(type)[1]) + ">";
-            if (IsCollection(type))
+            if (isField && IsCollection(type))
                 return "System.Collections.Generic.List<" + GetContentClassFullName(GetCollectionType(type)) + ">";
-            if (type.IsArray)
+            if (isField && type.IsArray)
                 return GetContentClassFullName(type.GetElementType()) + "[]";
             if (type.IsInterface || type.IsAbstract)
                 return "System.Object";
-            if (!(!HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))))
+            if (isField && !(!HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))))
                 return GetClassFullName(type);
 
             var count = 0;
@@ -292,7 +308,7 @@
                 count = Convert.ToInt32(name[index].ToString());
                 name = name.Remove(index, 1);
             }
-            if (!(type.IsGenericType && !type.IsGenericTypeDefinition) && !IsCollection(type) && !IsDictionary(type))
+            if (!(type.IsGenericType && !type.IsGenericTypeDefinition) && (!isField || (!IsCollection(type) && !IsDictionary(type))))
                 name = name + "Content";
             if (type.IsGenericTypeDefinition)
             {
@@ -328,7 +344,7 @@
 
         string GetContentClassName(Type type)
         {
-            var className = GetContentClassFullName(type);
+            var className = GetContentClassFullName(type, false);
             var generic = className.IndexOf('<');
             return generic > 0 ? className.Substring(0, generic).Split('.').Last() + className.Substring(generic, className.Length - generic)
                                : className.Split('.').Last();
@@ -552,7 +568,7 @@
             /*
             foreach (var t in from type in assembly.GetTypes()
                               where type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type) &&
-                                    type.FullName.IndexOf("ScreenEffect") < 0
+                                    type.FullName.IndexOf("ScreenEffect") > 0
                               select type)
             {
                 yield return t;

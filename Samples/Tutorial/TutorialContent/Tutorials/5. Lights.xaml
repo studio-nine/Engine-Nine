@@ -1,0 +1,70 @@
+﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+    <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    
+    <!--
+        There are 4 types of lights, ambient light, directional light, point light and spot light.
+        
+        Ambient light and directional light are most commonly used light sources. To use point lights
+        and spot lights, you have to enable a technique called deferred lighting. This allows you to
+        have as many lights as you want in your scene while still maintain a reasonable frame rate.
+    -->
+    <AmbientLightContent AmbientLightColor="0.1, 0.1, 0.1" />
+    <DirectionalLightContent DiffuseColor="0.5, 0.5, 0.5" Direction="-1, -1, -1" />
+    <PointLightContent DiffuseColor="1.0, 1.0, 0" Position="0, 0, 2" Range="10" />
+    <SpotLightContent DiffuseColor="0, 1.0, 1.0" Position="0, -20, 2" Range="20" Direction="0, 1, 0" />
+
+    <!--
+        Deferred lighting is not supported equally on all platforms. It requires at least HiDef profile.
+    
+        To enable deferred lighting on an object, you have to choose the appropriate material that supports
+        this lighting technique. Model material and terrain material both support it by enable the
+        PreferDeferredLighting switch.        
+    -->
+    <DrawableSurfaceContent Width="64" Height="64" Step="1" Position="-32, -32, 0"
+                            TextureScale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
+        <TerrainMaterialContent PreferDeferredLighting="True">
+            <TerrainLayerContent Texture="..\Textures\box" NormalMap="..\Textures\box_n" />
+        </TerrainMaterialContent>
+    </DrawableSurfaceContent>
+    
+    <DrawableModelContent Model="..\Models\Tank">
+        <ModelMaterialContent PreferDeferredLighting="True" />
+    </DrawableModelContent>
+    
+    <!-- Animations can also be applied to lights. -->
+    <DisplayObjectContent>
+
+        <PointLightContent Name="Light1" DiffuseColor="0, 1, 0" Position="-20, -20, 2" />
+        <PointLightContent Name="Light2" DiffuseColor="0, 1, 0" Position="20, -20, 2" />
+        <PointLightContent Name="Light3" DiffuseColor="0, 1, 0" Position="-20, 20, 2" />
+        <SpotLightContent Name="Light4" DiffuseColor="1, 0, 0" OuterAngle="30" InnerAngle="10" Range="25" />
+
+        <DisplayObjectContent.Animations>
+            <LayeredAnimationContent x:Key="Default">
+                
+                <SingleAnimationContent TargetProperty="['Light1'].Attenuation" From="0" To="1" Curve="Sin"
+                                        AutoReverse="True" Repeat="999999" />
+
+                <SingleAnimationContent TargetProperty="['Light2'].Range" From="0" To="10" Curve="Sin"
+                                        AutoReverse="True" Repeat="999999" />
+
+                <Vector3AnimationContent TargetProperty="['Light3'].DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="Sin"
+                                         AutoReverse="True" Repeat="999999" />
+                
+                <!-- The following transform animation will animate the spot light around a circle. -->
+                <SequentialAnimationContent Repeat="999999">
+
+                    <TransformAnimationContent TargetProperty="['Light4'].Transform" Duration="00:00:01"
+                                               From=";30, 0, 0;0, 0, 15;Yxz" To=";30, 0, 180;0, 0, 15;Yxz"/>
+                    <TransformAnimationContent TargetProperty="['Light4'].Transform" Duration="00:00:01"
+                                               From=";30, 0, 180;0, 0, 15;Yxz" To=";30, 0, 360;0, 0, 15;Yxz"/>
+                </SequentialAnimationContent>
+                
+            </LayeredAnimationContent>
+        </DisplayObjectContent.Animations>
+        
+    </DisplayObjectContent>
+    
+</SceneContent>

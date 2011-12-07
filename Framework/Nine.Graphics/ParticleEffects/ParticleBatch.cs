@@ -34,8 +34,10 @@ namespace Nine.Graphics.ParticleEffects
         private int batchCount;
         private bool hasBegin = false;
         private AlphaTestEffect alphaTestEffect;
+        private RenderTarget2D blendTexture;
         private PrimitiveBatch primitiveBatch;
         private List<ParticleBatchItem> batches;
+        private HashSet<BlendState> backgroundBlendStates = new HashSet<BlendState>();
         private ParticleBatchSortComparer comparer = new ParticleBatchSortComparer();
 
         private SamplerState samplerState;
@@ -100,6 +102,7 @@ namespace Nine.Graphics.ParticleEffects
             this.hasBegin = true;
             this.VertexCount = 0;
             this.PrimitiveCount = 0;
+            this.backgroundBlendStates.Clear();
         }
 
         public void Draw(ParticleEffect particleEffect)
@@ -107,8 +110,18 @@ namespace Nine.Graphics.ParticleEffects
             if (!hasBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
+            for (int i = 0; i < particleEffect.ChildEffects.Count; i++)
+                Draw(particleEffect.ChildEffects[i]);
+
             if (particleEffect.Texture != null)
             {
+                BlendState backgroundBlendState = null;
+                if (particleEffect.BackgroundBlendState != null && particleEffect.BackgroundBlendState != particleEffect.BlendState)
+                {
+                    backgroundBlendState = particleEffect.BackgroundBlendState ?? particleEffect.BlendState;
+                    backgroundBlendStates.Add(backgroundBlendState);
+                }
+
                 if (batches.Count <= batchCount)
                 {
                     batchCount++;
@@ -117,7 +130,8 @@ namespace Nine.Graphics.ParticleEffects
                         Enabled = true,
                         Type = particleEffect.ParticleType,
                         ParticleEffect = particleEffect,
-                        Axis = particleEffect.Up
+                        Axis = particleEffect.Up,
+                        BackgroundBlendState = backgroundBlendState,
                     });
                 }
                 else
@@ -127,11 +141,9 @@ namespace Nine.Graphics.ParticleEffects
                     item.Type = particleEffect.ParticleType;
                     item.ParticleEffect = particleEffect;
                     item.Axis = particleEffect.Up;
+                    item.BackgroundBlendState = backgroundBlendState;
                 }
             }
-
-            for (int i = 0; i < particleEffect.ChildEffects.Count; i++)
-                Draw(particleEffect.ChildEffects[i]);
 
             for (int i = 0; i < particleEffect.EndingEffects.Count; i++)
                 Draw(particleEffect.EndingEffects[i]);
@@ -145,8 +157,27 @@ namespace Nine.Graphics.ParticleEffects
             if (batchCount > 0)
             {
                 batches.Sort(0, batchCount, comparer);
-                DrawBatches(DepthStencilState.Default, alphaTestEffect, true);
-                DrawBatches(DepthStencilState.DepthRead, null, false);
+
+                DrawBatches(DepthStencilState.Default, alphaTestEffect, true, null);
+                DrawBatches(DepthStencilState.DepthRead, null, false, null);
+
+                if (backgroundBlendStates.Count > 0)
+                {
+                    EnsureBlendTexture();
+
+                    foreach (var backgroundBlendState in backgroundBlendStates)
+                    {
+                        blendTexture.Begin();
+
+                        DrawBatches(DepthStencilState.Default, alphaTestEffect, true, backgroundBlendState);
+                        DrawBatches(DepthStencilState.DepthRead, null, false, backgroundBlendState);
+
+                        blendTexture.End();
+
+                        // TODO: Stencil optimization?
+                        GraphicsDevice.DrawFullscreenQuad(blendTexture, SamplerState.PointClamp, Color.White, null);
+                    }
+                }
 
                 for (int i = 0; i < batchCount; i++)
                 {
@@ -163,26 +194,30 @@ namespace Nine.Graphics.ParticleEffects
             VertexCount += primitiveBatch.VertexCount;
         }
 
-        private void DrawBatches(DepthStencilState depthStencilState, Effect effect, bool depthSort)
+        private void DrawBatches(DepthStencilState depthStencilState, Effect effect, bool depthSort, BlendState compareBlendState)
         {
             var blendState = batches[0].ParticleEffect.BlendState;
 
             primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState, effect);
             for (int i = 0; i < batchCount; i++)
             {
+                var batch = batches[i];
+                if (batch.BackgroundBlendState != compareBlendState)
+                    continue;
+
                 if (depthSort)
                 {
-                    if (!batches[i].ParticleEffect.DepthSortEnabled)
+                    if (!batch.ParticleEffect.DepthSortEnabled)
                         continue;
-                    alphaTestEffect.ReferenceAlpha = batches[i].ParticleEffect.ReferenceAlpha;
+                    alphaTestEffect.ReferenceAlpha = batch.ParticleEffect.ReferenceAlpha;
                 }
-                if (batches[i].ParticleEffect.BlendState != blendState)
+                if (batch.ParticleEffect.BlendState != blendState)
                 {
                     primitiveBatch.End();
-                    blendState = batches[i].ParticleEffect.BlendState;
+                    blendState = batch.ParticleEffect.BlendState;
                     primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState, effect);
                 }
-                Draw(batches[i]);
+                Draw(batch);
             }
             primitiveBatch.End();
         }
@@ -195,8 +230,9 @@ namespace Nine.Graphics.ParticleEffects
             this.item = item;
             this.particleEffect = item.ParticleEffect;
             this.textureTransform = null;
+
             if (particleEffect.SourceRectangle.HasValue)
-                textureTransform = TextureTransform.CreateSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
+                textureTransform = TextureTransform.CreateFromSourceRectange(particleEffect.Texture, particleEffect.SourceRectangle);
 
             if (item.Type == ParticleType.Billboard)
             {
@@ -225,7 +261,8 @@ namespace Nine.Graphics.ParticleEffects
                                          particle.Position,
                                          particle.Size,
                                          particle.Size,
-                                         particle.Rotation, Vector3.UnitZ, textureTransform, null,
+                                         particle.Rotation, 
+                                         particleEffect.Up, textureTransform, null,
                                          particle.Color * particle.Alpha);
         }
 
@@ -266,6 +303,20 @@ namespace Nine.Graphics.ParticleEffects
                                         particle.Color * particle.Alpha);
         }
 
+        private void EnsureBlendTexture()
+        {
+            if (blendTexture == null || blendTexture.IsDisposed ||
+#if !SILVERLIGHT
+                blendTexture.IsContentLost ||
+#endif
+                blendTexture.Width != GraphicsDevice.Viewport.Width || blendTexture.Height != GraphicsDevice.Viewport.Height)
+            {
+                // Depth buffers are disabled since we cannot share them between render targets in Xna 4.0
+                blendTexture = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width,
+                                                  GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None);
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -277,6 +328,11 @@ namespace Nine.Graphics.ParticleEffects
         {
             if (disposing)
             {
+                if (blendTexture != null)
+                {
+                    blendTexture.Dispose();
+                    blendTexture = null;
+                }
                 primitiveBatch.Dispose();
             }
         }
@@ -293,6 +349,7 @@ namespace Nine.Graphics.ParticleEffects
         public ParticleType Type;
         public ParticleEffect ParticleEffect;
         public Vector3 Axis;
+        public BlendState BackgroundBlendState;
     }
 
     class ParticleBatchSortComparer : IComparer<ParticleBatchItem>
