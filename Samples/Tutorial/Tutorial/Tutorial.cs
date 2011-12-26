@@ -128,12 +128,10 @@ namespace Tutorial
                 // After a world is loaded, you have to explicitly initialize the
                 // content and graphics of the world.
                 world.CreateContent(Content);
-                world.CreateGraphics(GraphicsDevice);
-
-                scene = world.Scene;
+                scene = world.CreateGraphics(GraphicsDevice);
             }
 
-            scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, -40, 10));
+            scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, -40, 10));           
             scene.Settings.DefaultDebugControlEnabled = true;
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
 

@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine
@@ -27,22 +28,26 @@ namespace Nine
         /// <summary>
         /// Gets or sets the number of columns (x) of the grid.
         /// </summary>
-        public int SegmentCountX { get; protected set; }
+        [ContentSerializer(Optional = true)]
+        public int SegmentCountX { get; internal protected set; }
 
         /// <summary>
         /// Gets or sets the number of rows (y) of the grid.
         /// </summary>
-        public int SegmentCountY { get; protected set; }
+        [ContentSerializer(Optional = true)]
+        public int SegmentCountY { get; internal protected set; }
 
         /// <summary>
         /// Gets or sets the top left position of the grid.
         /// </summary>
-        public Vector2 Position { get; protected set; }
+        [ContentSerializer(Optional = true)]
+        public Vector2 Position { get; internal protected set; }
 
         /// <summary>
         /// Gets the width and height of the grid.
         /// </summary>
-        public Vector2 Size { get; protected set; }
+        [ContentSerializer(Optional = true)]
+        public Vector2 Size { get; internal protected set; }
 
         int scaleX, scaleY;
         Point previousPoint;
@@ -50,7 +55,7 @@ namespace Nine
         private Predicate<Point> cachedTraversePointDelegate;
         private Predicate<Point> cachedTraverseVectorDelegate;
 
-        private UniformGrid()
+        internal UniformGrid()
         {
             cachedTraversePointDelegate = new Predicate<Point>(TraversePoint);
             cachedTraverseVectorDelegate = new Predicate<Point>(TraverseVector);

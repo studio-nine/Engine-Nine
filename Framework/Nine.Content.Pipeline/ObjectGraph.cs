@@ -17,7 +17,9 @@ namespace Nine.Content.Pipeline
 {
     static class ObjectGraph
     {
-        public static void ForEachProperty(object target, Func<Type, object, object> action)
+        public delegate bool ScanProperty(Type type, object input, out object output);
+
+        public static void ForEachProperty(object target, ScanProperty action)
         {
             if (target != null && action != null)
             {
@@ -30,7 +32,8 @@ namespace Nine.Content.Pipeline
                         object value = property.GetValue(target, new object[0]);
                         if (value != null)
                         {
-                            var result = action(property.PropertyType, value);
+                            object result = null;
+                            action(property.PropertyType, value, out result);
                             property.SetValue(target, result, new object[0]);
                         }
                     }
@@ -40,7 +43,7 @@ namespace Nine.Content.Pipeline
             ForEachCollectionProperty(target, action);
         }
 
-        private static void ForEachCollectionProperty(object target, Func<Type, object, object> action)
+        private static void ForEachCollectionProperty(object target, ScanProperty action)
         {
             if (target != null && action != null)
             {
@@ -70,10 +73,12 @@ namespace Nine.Content.Pipeline
                                     var count = dynamicValue.Count;
                                     for (int i = 0; i < count; i++)
                                     {
-                                        itemAccessor.SetValue(value, action(property.PropertyType,
-                                            itemAccessor.GetValue(value, new object[] { i })), new object[] { i });
+                                        object result = null;
+                                        var stop = action(property.PropertyType, itemAccessor.GetValue(value, new object[] { i }), out result);
+                                        itemAccessor.SetValue(value, result, new object[] { i });
 
-                                        ObjectGraph.ForEachProperty(itemAccessor.GetValue(value, new object[] { i }), action);
+                                        if (!stop)
+                                            ObjectGraph.ForEachProperty(itemAccessor.GetValue(value, new object[] { i }), action);
                                     }
                                 }
                             }

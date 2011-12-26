@@ -210,6 +210,11 @@ namespace Nine.Components
 
                 screenshot = new Texture2D(GraphicsDevice, width, height);
                 screenshot.SetData<Color>(backbuffer);
+
+                // Avoid the purple look after resolving the back buffer.
+                GraphicsDevice.Clear(Color.Black);
+                Nine.Graphics.GraphicsExtensions.DrawFullscreenQuad(GraphicsDevice, screenshot, SamplerState.PointClamp, Color.White, null);
+
                 screenshotNum++;
                 
                 if (save)

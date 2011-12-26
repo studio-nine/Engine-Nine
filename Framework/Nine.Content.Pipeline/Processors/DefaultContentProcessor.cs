@@ -33,7 +33,7 @@ namespace Nine.Content.Pipeline.Processors
         [DefaultValue(false)]
         public bool Debug { get; set; }
 
-        ContentProcessorContext context;
+        Stack<ContentProcessorContext> contextStack = new Stack<ContentProcessorContext>();
 
         static List<IContentProcessor> DefaultProcessors;
 
@@ -49,9 +49,18 @@ namespace Nine.Content.Pipeline.Processors
                     .Select(t => Activator.CreateInstance(t)).OfType<IContentProcessor>().ToList();
             }
 
-            this.context = context;
-            input = Process(input.GetType(), input);
-            ObjectGraph.ForEachProperty(input, Process);
+
+            try
+            {
+                contextStack.Push(context);
+
+                if (!Process(input.GetType(), input, out input))
+                    ObjectGraph.ForEachProperty(input, Process);
+            }
+            finally
+            {
+                contextStack.Pop();
+            }
 
             if (Debug)
             {
@@ -65,10 +74,11 @@ namespace Nine.Content.Pipeline.Processors
             return input;
         }
         
-        private object Process(Type type, object input)
+        private bool Process(Type type, object input, out object output)
         {
+            output = input;
             if (input == null)
-                return null;
+                return false;
 
             IContentProcessor processor = null;
             var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false)
@@ -89,18 +99,20 @@ namespace Nine.Content.Pipeline.Processors
             if (processor == null)
                 processor = DefaultProcessors.FirstOrDefault(p => p.InputType.IsAssignableFrom(input.GetType()));
             if (processor == null)
-                return input;
+                return false;
 
-            if (processor.InputType.IsAssignableFrom(input.GetType())/* && type.IsAssignableFrom(processor.OutputType)*/)
+            var context = contextStack.Peek();
+            if (processor.InputType.IsAssignableFrom(input.GetType()))
             {
                 context.Logger.LogImportantMessage("Processing {0} using {1}", input.GetType().Name, processor.GetType().Name);
-                return processor.Process(input, context);
+                output = processor.Process(input, context);
+                return output != input;
             }
             else
             {
                 context.Logger.LogWarning(null, null, "Processor type mismatch {0} -> {1} -> {2} -> {4}", input.GetType().Name, processor.InputType.Name, processor.OutputType.Name, type.Name);
             }
-            return input;
+            return false;
         }
 
         class SelfProcessor : ContentProcessor<object, object>

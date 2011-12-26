@@ -44,19 +44,14 @@ namespace Nine
     }
 
     /// <summary>
-    /// Interface for a 3D geometry made up of triangles
+    /// Defines an object that can be transformed.
     /// </summary>
-    public interface IGeometry
+    public interface ITransformable
     {
         /// <summary>
-        /// Gets a readonly list of vertex positions.
+        /// Gets or sets the transform.
         /// </summary>
-        IList<Vector3> Positions { get; }
-
-        /// <summary>
-        /// Gets a read-only list of geometry indices.
-        /// </summary>
-        IList<ushort> Indices { get; }
+        Matrix Transform { get; set; }
     }
 
     /// <summary>
@@ -68,6 +63,27 @@ namespace Nine
         /// Gets the axis aligned bounding box in world space.
         /// </summary>
         BoundingBox BoundingBox { get; }
+    }
+
+    /// <summary>
+    /// Interface for a 3D geometry made up of triangles
+    /// </summary>
+    public interface IGeometry
+    {
+        /// <summary>
+        /// Gets the optional transformation matrix of this <see cref="IGeometry"/>.
+        /// </summary>
+        Matrix? Transform { get; }
+
+        /// <summary>
+        /// Gets a readonly list of vertex positions.
+        /// </summary>
+        Vector3[] Positions { get; }
+
+        /// <summary>
+        /// Gets a read-only list of geometry indices.
+        /// </summary>
+        ushort[] Indices { get; }
     }
 
     /// <summary>
@@ -141,5 +157,17 @@ namespace Nine
         /// Gets or sets the target property.
         /// </summary>
         string TargetProperty { get; set; }
+    }
+
+    /// <summary>
+    /// Defines a factory that can create an instance of a object based on the
+    /// specified type name.
+    /// </summary>
+    public interface IObjectFactory
+    {
+        /// <summary>
+        /// Creates a new instance of the object with the specified type name.
+        /// </summary>
+        T Create<T>(string typeName);
     }
 }

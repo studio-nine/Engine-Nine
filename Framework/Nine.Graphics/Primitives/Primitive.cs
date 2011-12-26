@@ -49,6 +49,19 @@ namespace Nine.Graphics.Primitives
     {
         #region Fields
 
+        Matrix? IGeometry.Transform { get { return null; } }
+
+        /// <summary>
+        /// Gets a readonly list of vertex positions.
+        /// </summary>
+        public Vector3[] Positions { get; private set; }
+
+        /// <summary>
+        /// Gets a read-only list of geometry indices.
+        /// </summary>
+        public ushort[] Indices { get; private set; }
+
+
         // During the process of constructing a primitive model, vertex
         // and index data is stored on the CPU in these managed lists.
         List<T> vertices;
@@ -60,47 +73,62 @@ namespace Nine.Graphics.Primitives
         // method copies the vertex and index data into these buffers, which
         // store it on the GPU ready for efficient rendering.
         public VertexBuffer VertexBuffer { get; private set; }
-        public IndexBuffer IndexBuffer
+        public IndexBuffer IndexBuffer { get; private set; }
+
+        /// <summary>
+        /// Gets the vertex count.
+        /// </summary>
+        public int VertexCount { get { return VertexBuffer.VertexCount; } }
+
+        /// <summary>
+        /// Gets the primitive count.
+        /// </summary>
+        public int PrimitiveCount { get { return IndexBuffer.IndexCount / 3; } }
+
+        /// <summary>
+        /// Gets the graphics device.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
+        /// Gets the optional bounding sphere of the primitive.
+        /// </summary>
+        public BoundingSphere? BoundingSphere { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether winding order will be inverted.
+        /// </summary>
+        public bool InvertWindingOrder
         {
-            get
+            get { return invertWindingOrder; }
+            set
             {
-                if (InvertWindingOrder)
+                if (invertWindingOrder != value)
                 {
-                    if (invertIndexBuffer == null)
+                    invertWindingOrder = value;
+                    if (invertWindingOrder)
                     {
-                        invertIndexBuffer = new IndexBuffer(GraphicsDevice, typeof(ushort),
-                                              indices.Count, BufferUsage.WriteOnly);
-                        ushort[] array = indices.ToArray();
-                        for (int i = 0; i < indices.Count; i += 3)
+                        for (int i = 0; i < Indices.Length; i += 3)
                         {
-                            ushort temp = array[i + 1];
-                            array[i + 1] = array[i + 2];
-                            array[i + 2] = temp;
+                            var temp = Indices[i + 1];
+                            Indices[i + 1] = Indices[i + 2];
+                            Indices[i + 2] = temp;
                         }
-                        invertIndexBuffer.SetData(array);
+                        IndexBuffer.SetData(Indices);
                     }
-                    return invertIndexBuffer;
                 }
-                return indexBuffer;
             }
         }
-
-        IndexBuffer indexBuffer;
-        IndexBuffer invertIndexBuffer;
-
-        public int VertexCount { get { return VertexBuffer.VertexCount; } }
-        public int PrimitiveCount { get { return indexBuffer.IndexCount / 3; } }
-
-        public GraphicsDevice GraphicsDevice { get; private set; }
-        public BoundingSphere? BoundingSphere { get; private set; }
-        
-        public bool InvertWindingOrder { get; set; }
+        private bool invertWindingOrder;
 
         #endregion
 
         #region Initialization
 
-        public Primitive()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Primitive&lt;T&gt;"/> class.
+        /// </summary>
+        protected Primitive()
         {
             vertices = new List<T>();
             indices = new List<ushort>();
@@ -160,6 +188,9 @@ namespace Nine.Graphics.Primitives
         {
             GraphicsDevice = graphicsDevice;
 
+            Positions = positions.ToArray();
+            Indices = indices.ToArray();
+
             // Create a vertex buffer, and copy our vertex data into it.
             VertexBuffer = new VertexBuffer(graphicsDevice,
                                             typeof(T),
@@ -168,12 +199,17 @@ namespace Nine.Graphics.Primitives
             VertexBuffer.SetData(vertices.ToArray());
 
             // Create an index buffer, and copy our index data into it.
-            indexBuffer = new IndexBuffer(graphicsDevice, typeof(ushort),
+            IndexBuffer = new IndexBuffer(graphicsDevice, typeof(ushort),
                                           indices.Count, BufferUsage.WriteOnly);
 
-            indexBuffer.SetData(indices.ToArray());
+            IndexBuffer.SetData(Indices);
 
             BoundingSphere = Microsoft.Xna.Framework.BoundingSphere.CreateFromPoints(positions);
+
+            // Free up the list.
+            positions = null;
+            indices = null;
+            vertices = null;
         }
 
         /// <summary>
@@ -186,7 +222,7 @@ namespace Nine.Graphics.Primitives
         {
             // Set our vertex declaration, vertex buffer, and index buffer.
             GraphicsDevice.SetVertexBuffer(VertexBuffer);
-            GraphicsDevice.Indices = indexBuffer;
+            GraphicsDevice.Indices = IndexBuffer;
 
             // Draw the model, using the specified effect.
             foreach (EffectPass effectPass in effect.CurrentTechnique.Passes)
@@ -226,23 +262,18 @@ namespace Nine.Graphics.Primitives
             if (disposing)
             {
                 if (VertexBuffer != null)
+                {
                     VertexBuffer.Dispose();
-
-                if (indexBuffer != null)
-                    indexBuffer.Dispose();
+                    VertexBuffer = null;
+                }
+                if (IndexBuffer != null)
+                {
+                    IndexBuffer.Dispose();
+                    IndexBuffer = null;
+                }
             }
         }
         #endregion
-
-        IList<Vector3> IGeometry.Positions
-        {
-            get { return positions; }
-        }
-
-        IList<ushort> IGeometry.Indices
-        {
-            get { return indices; }
-        }
     }
     #endregion
 }

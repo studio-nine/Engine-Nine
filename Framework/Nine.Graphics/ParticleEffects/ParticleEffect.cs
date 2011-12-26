@@ -142,6 +142,11 @@ namespace Nine.Graphics.ParticleEffects
         public int ReferenceAlpha { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether particles should softly blends with other scene objects.
+        /// </summary>
+        public bool SoftParticleEnabled { get; set; }
+
+        /// <summary>
         /// Gets or sets the emitter of this particle effect.
         /// </summary>
         public IParticleEmitter Emitter
@@ -235,6 +240,7 @@ namespace Nine.Graphics.ParticleEffects
             this.ReferenceAlpha = 128;
             this.BackgroundBlendState = null;
             this.BlendState = BlendState.Additive;
+            this.SoftParticleEnabled = false;
             this.Emitter = new PointEmitter();
             this.ActiveEmitters = new List<IParticleEmitter>();
 

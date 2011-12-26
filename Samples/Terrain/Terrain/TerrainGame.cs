@@ -38,7 +38,7 @@ namespace TerrainSample
         DrawableSurface terrain;
         BasicEffect basicEffect;
         Vector3 pickedPosition;
-        RasterizerState wireframe;
+        RasterizerState wireframe;        
 
         public TerrainGame()
         {
@@ -71,7 +71,7 @@ namespace TerrainSample
             // Create a topdown perspective editor camera to help us visualize the scene
             camera = new TopDownEditorCamera(GraphicsDevice);
             modelBatch = new ModelBatch(GraphicsDevice);
-            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
+            primitiveBatch = new PrimitiveBatch(GraphicsDevice, 10000);
 
             wireframe = new RasterizerState() { FillMode = FillMode.WireFrame, CullMode = CullMode.None };
 

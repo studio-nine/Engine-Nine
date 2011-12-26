@@ -50,9 +50,4 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
             return input;
         }
     }
-
-    public class HighDynamicRangeScreenEffectContent
-    {
-
-    }
 }

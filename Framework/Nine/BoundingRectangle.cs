@@ -159,5 +159,22 @@ namespace Nine
             }
             return rect;
         }
+
+        /// <summary>
+        /// Creates the merged bounding rectangle.
+        /// </summary>
+        public static BoundingRectangle CreateMerged(BoundingRectangle boundingRectangle1, BoundingRectangle boundingRectangle2)
+        {
+            if (boundingRectangle1.Min.X > boundingRectangle2.Min.X)
+                boundingRectangle1.Min.X = boundingRectangle2.Min.X;
+            if (boundingRectangle1.Min.Y > boundingRectangle2.Min.Y)
+                boundingRectangle1.Min.Y = boundingRectangle2.Min.Y;
+            if (boundingRectangle1.Max.X < boundingRectangle2.Max.X)
+                boundingRectangle1.Max.X = boundingRectangle2.Max.X;
+            if (boundingRectangle1.Max.Y < boundingRectangle2.Max.Y)
+                boundingRectangle1.Max.Y = boundingRectangle2.Max.Y;
+            
+            return boundingRectangle1;
+        }
     }
 }

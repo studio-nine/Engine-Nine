@@ -72,14 +72,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
+    <Compile Include="Component.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
-    <Compile Include="Container.cs" />
+    <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="GridSceneManager.cs" />
     <Compile Include="HashSet.cs" />
+    <Compile Include="Input\SilverlightInputSource.cs" />
+    <Compile Include="Input\IInputSource.cs" />
+    <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\InputComponent.cs" />
+    <Compile Include="Input\InputEventArgs.cs" />
+    <Compile Include="Input\XnaInputSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PropertyExpression.cs" />
+    <Compile Include="QuadTreeSceneManager.cs" />
+    <Compile Include="Serialization.cs" />
+    <Compile Include="TimeEventArgs.cs" />
     <Compile Include="WeakReference.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
@@ -101,14 +111,14 @@
     <Compile Include="SceneManager.cs" />
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
+    <Compile Include="World.cs" />
+    <Compile Include="WorldObject.cs" />
     <Compile Include="XamlAttributes.cs" />
     <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">
       <Link>Nine.Content.Reader.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Content.Reader.Generated.cs</LastGenOutput>
     </None>
-    <Compile Include="InputEventArgs.cs" />
-    <Compile Include="IInputSource.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Strings.Designer.cs">
@@ -121,8 +131,6 @@
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="Input.cs">
-    </Compile>
     <Compile Include="Surface.cs" />
     <Compile Include="Pickable.cs" />
     <Compile Include="Helpers.cs" />
@@ -157,6 +165,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>

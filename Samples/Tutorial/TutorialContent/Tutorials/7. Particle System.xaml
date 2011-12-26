@@ -6,7 +6,8 @@
     <DirectionalLightContent DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
     
     <DrawableSurfaceContent Width="64" Height="64" Step="1" PatchSegmentCount="8" Position="-32, -32, 0" TextureScale="0.2, 0.2">
-        <BasicMaterialContent Texture="..\Textures\checker" />
+        <!-- Deferred lighting must be enabled to draw soft particle effects -->
+        <ModelMaterialContent PreferDeferredLighting="True" Texture="..\Textures\checker" />
     </DrawableSurfaceContent>
 
     <!-- Create an instance of particle system using the DrawableParticleEffect element -->
@@ -97,4 +98,24 @@
 
     </DisplayObjectContent>
 
+    <DrawableParticleEffectContent Position="20, -20, 0">
+
+        <!-- 
+            Create an instance of soft particle effect by the SoftParticleEnabled flag. When drawing 3D soft
+            particles, each pixel of the particle is compare against the current depth buffer to eliminate the
+            intersection artifact between the particle geometry and world geometry.
+        -->
+        <ParticleEffectContent Texture="..\Textures\smoke" SoftParticleEnabled="True" BlendState="Additive">
+            <ParticleEffectContent.Emitter>
+                <!-- Use cylinder emitter to emulate a ring -->
+                <CylinderEmitterContent Emission="50" Radiate="True" Shell="True" Radius="5" Height="0"
+                                        Duration="1.5 ~ 3" Speed="0.5 ~ 1" Size="2 ~ 3" Spread="15" />
+            </ParticleEffectContent.Emitter>
+            
+            <SizeControllerContent EndSize ="4 ~ 5" />
+            <SpeedControllerContent EndSpeed ="0" />
+            <FadeControllerContent />
+
+        </ParticleEffectContent>
+    </DrawableParticleEffectContent>
 </SceneContent>

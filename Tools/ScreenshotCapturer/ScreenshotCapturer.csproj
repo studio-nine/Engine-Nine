@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\Version.cs">
+      <Link>Version.cs</Link>
+    </Compile>
     <Compile Include="GraphicsDeviceManagerWrapper.cs" />
     <Compile Include="ParameterParser.cs" />
     <Compile Include="Screenshot.cs" />

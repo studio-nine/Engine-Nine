@@ -26,14 +26,23 @@ namespace Nine.Graphics
     {
         public static void DrawGeometry(this PrimitiveBatch primitiveBatch, IGeometry geometry, Matrix? world, Color color)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world);
+            var transform = geometry.Transform;
+            if (world.HasValue)
+            {
+                if (transform.HasValue)
+                    transform = transform.Value * world.Value;
+                else
+                    transform = world;
+            }
+
+            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, transform);
             {
                 foreach (Vector3 position in geometry.Positions)
                 {
                     primitiveBatch.AddVertex(new VertexPositionColorTexture() { Position = position, Color = color });
                 }
 
-                for (int i = 0; i < geometry.Indices.Count; i += 3)
+                for (int i = 0; i < geometry.Indices.Length; i += 3)
                 {
                     primitiveBatch.AddIndex(geometry.Indices[i + 0]);
                     primitiveBatch.AddIndex(geometry.Indices[i + 1]);

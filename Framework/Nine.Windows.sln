@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Pipeline", "Ni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Graphics", "Nine.Graphics\Nine.Graphics.csproj", "{9436AF22-6937-4BEE-887E-C93A4692BDD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Game", "Nine.Game\Nine.Game.csproj", "{EDCFE2CE-B346-433F-B214-B47753D5B793}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Navigation", "Nine.Navigation\Nine.Navigation.csproj", "{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Test", "Nine.Test\Nine.Test.csproj", "{411E5108-42A6-4829-AE8A-C022868E4E1A}"
@@ -85,22 +83,6 @@ Global
 		{9436AF22-6937-4BEE-887E-C93A4692BDD7}.Release|x86.Build.0 = Release|x86
 		{9436AF22-6937-4BEE-887E-C93A4692BDD7}.Release|Xbox 360.ActiveCfg = Release|x86
 		{9436AF22-6937-4BEE-887E-C93A4692BDD7}.Release|Xbox 360.Build.0 = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|Win32.ActiveCfg = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|Windows Phone.ActiveCfg = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|x86.ActiveCfg = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|x86.Build.0 = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Debug|Xbox 360.ActiveCfg = Debug|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|Any CPU.ActiveCfg = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|Mixed Platforms.Build.0 = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|Win32.ActiveCfg = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|Windows Phone.ActiveCfg = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|x86.ActiveCfg = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|x86.Build.0 = Release|x86
-		{EDCFE2CE-B346-433F-B214-B47753D5B793}.Release|Xbox 360.ActiveCfg = Release|x86
 		{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}.Debug|Mixed Platforms.Build.0 = Debug|x86

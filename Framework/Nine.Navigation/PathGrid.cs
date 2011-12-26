@@ -14,57 +14,36 @@ using System.Text;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine.Navigation
 {
-    #region PathGridNode
-    /// <summary>
-    /// Node used by PathGraph.
-    /// </summary>
-    public struct PathGridNode : IGraphNode
-    {
-        /// <summary>
-        /// Identifier of this node.
-        /// </summary>
-        public int ID;
-
-        /// <summary>
-        /// X grid index of this node.
-        /// </summary>
-        public int X;
-
-        /// <summary>
-        /// Y grid index of this node.
-        /// </summary>
-        public int Y;
-
-        int IGraphNode.ID { get { return ID; } }
-
-        /// <summary>
-        /// Gets the string representation.
-        /// </summary>
-        public override string ToString()
-        {
-            return String.Format("{0}, {1}, {2}", X, Y, ID);
-        }
-    }
-    #endregion
-
-    #region PathGrid
     /// <summary>
     /// A grid based path graph.
     /// </summary>
-    public class PathGrid : UniformGrid, IGraph<PathGridNode>
+    public class PathGrid : UniformGrid, IGraph, IPathGraph
     {
-        private byte[,] data;
+        [ContentSerializer(Optional=true, ElementName="Data")]
+        private byte[] data;
 
         /// <summary>
         /// Gets or sets the boundary of the PathGraph. 
         /// This value must be contained by Rectangle(0, 0, TessellationX, TessellationY).
         /// When the path graph is searched, the search process will be restricted to the boundary.
         /// </summary>
-        public Rectangle Bounds { get; set; }
+        public Rectangle Bounds
+        {
+            get { return bounds; }
+            set { bounds = value; }
+        }
+
+        private Rectangle bounds;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathGrid"/> class.
+        /// </summary>
+        internal PathGrid() { }
 
         /// <summary>
         /// Creates a new PathGraph.
@@ -72,7 +51,7 @@ namespace Nine.Navigation
         public PathGrid(float x, float y, float width, float height, int countX, int countY) 
             : base(x, y, width, height, countX, countY)
         {
-            data = new byte[countX, countY];
+            data = new byte[countX * countY];
 
             Position = new Vector2(x, y);
 
@@ -84,10 +63,10 @@ namespace Nine.Navigation
         /// </summary>
         public void Mark(int x, int y)
         {
-            //Assert x and y does not exceed limits
+            // Assert x and y does not exceed limits
             System.Diagnostics.Debug.Assert(Contains(x, y));
 
-            data[x, y]++;
+            data[x + y * SegmentCountX]++;
         }
 
         /// <summary>
@@ -98,10 +77,10 @@ namespace Nine.Navigation
         {
             Point pt = PositionToSegment(Clamp(x, y));
 
-            //Assert x and y does not exceed limits
+            // Assert x and y does not exceed limits
             System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y));
 
-            data[pt.X, pt.Y]++;
+            data[pt.X + pt.Y * SegmentCountX]++;
         }
 
         /// <summary>
@@ -109,9 +88,9 @@ namespace Nine.Navigation
         /// </summary>
         public void Unmark(int x, int y)
         {
-            System.Diagnostics.Debug.Assert(Contains(x,y) && data[x, y] > 0);
+            System.Diagnostics.Debug.Assert(Contains(x, y) && data[x + y * SegmentCountX] > 0);
 
-            data[x, y]--;
+            data[x + y * SegmentCountX]--;
         }
 
         /// <summary>
@@ -122,9 +101,9 @@ namespace Nine.Navigation
         {
             Point pt = PositionToSegment(Clamp(x, y));
 
-            System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y) && data[pt.X, pt.Y] > 0);
+            System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y) && data[pt.X + pt.Y * SegmentCountX] > 0);
 
-            data[pt.X, pt.Y]--;
+            data[pt.X + pt.Y * SegmentCountX]--;
         }
 
         /// <summary>
@@ -134,7 +113,7 @@ namespace Nine.Navigation
         {
             System.Diagnostics.Debug.Assert(Contains(x, y));
 
-            return data[x, y] > 0;
+            return data[x + y * SegmentCountX] > 0;
         }
 
         /// <summary>
@@ -147,7 +126,7 @@ namespace Nine.Navigation
 
             System.Diagnostics.Debug.Assert(Contains(pt.X, pt.Y));
 
-            return data[pt.X, pt.Y] > 0;
+            return data[pt.X + pt.Y * SegmentCountX] > 0;
         }
         
         /// <summary>
@@ -159,138 +138,133 @@ namespace Nine.Navigation
         }
 
         /// <summary>
-        /// Gets the path graph node under the specified grid.
+        /// Gets the max count of edges for each node.
         /// </summary>
-        public PathGridNode this[float x, float y]
+        public int MaxEdgeCount
         {
-            get
-            {
-                Point pt = PositionToSegment(Clamp(x, y));
+            get { return 8; }
+        }
 
-                PathGridNode node;
-
-                node.X = pt.X;
-                node.Y = pt.Y;
-                node.ID = pt.X + pt.Y * SegmentCountX;
-
-                return node;
-            }
+        /// <summary>
+        /// Gets the path graph node under the specified grid.
+        /// Input location is turncated.
+        /// </summary>
+        public int PositionToIndex(float x, float y)
+        {
+            Point pt = PositionToSegment(Clamp(x, y));
+            return pt.X + pt.Y * SegmentCountX;
         }
 
         /// <summary>
         /// Gets the path graph node under the specified location.
-        /// Input location is truncated.
+        /// Input location is not truncated.
         /// </summary>
-        public PathGridNode this[int x, int y]
+        public int SegmentToIndex(int x, int y)
         {
-            get
-            {
-                PathGridNode node;
+            return x + y * SegmentCountX;
+        }
 
-                node.X = x;
-                node.Y = y;
-                node.ID = x + y * SegmentCountX;
-
-                return node;
-            }
+        /// <summary>
+        /// Gets the location of the path node.
+        /// </summary>
+        public Vector2 IndexToPosition(int node)
+        {
+            return SegmentToPosition(node % SegmentCountX, node / SegmentCountX);
         }
 
         /// <summary>
         /// Gets all the adjacent edges of the specified node.
         /// </summary>
-        public void GetEdges(PathGridNode node, ICollection<GraphEdge<PathGridNode>> result)
+        public int GetEdges(int node, GraphEdge[] edges, int startIndex)
         {
-            int x = node.X;
-            int y = node.Y;
+            int count = 0;
+            int x = node % SegmentCountX;
+            int y = node / SegmentCountX;
 
-            GraphEdge<PathGridNode> edge;
-
+            GraphEdge edge;
             edge.From = node;
 
-            if (x > Bounds.Left && data[x - 1, y] == 0)
+            if (x > bounds.Left && data[x - 1 + y * SegmentCountX] == 0)
             {
-                edge.To.X = x - 1;
-                edge.To.Y = y;
-                edge.To.ID = y * SegmentCountX + x - 1;
+                edge.To = y * SegmentCountX + x - 1;
                 edge.Cost = 1.0f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (x < Bounds.Right - 1 && data[x + 1, y] == 0)
+            if (x < bounds.Right - 1 && data[x + 1 + y * SegmentCountX] == 0)
             {
-                edge.To.X = x + 1;
-                edge.To.Y = y;
-                edge.To.ID = y * SegmentCountX + x + 1;
+                edge.To = y * SegmentCountX + x + 1;
                 edge.Cost = 1.0f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (y > Bounds.Top && data[x, y - 1] == 0)
+            if (y > bounds.Top && data[x + (y - 1) * SegmentCountX] == 0)
             {
-                edge.To.X = x;
-                edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * SegmentCountX + x;
+                edge.To = (y - 1) * SegmentCountX + x;
                 edge.Cost = 1.0f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (y < Bounds.Bottom - 1 && data[x, y + 1] == 0)
+            if (y < bounds.Bottom - 1 && data[x + (y + 1) * SegmentCountX] == 0)
             {
-                edge.To.X = x;
-                edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * SegmentCountX + x;
+                edge.To = (y + 1) * SegmentCountX + x;
                 edge.Cost = 1.0f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (x > Bounds.Left && y > Bounds.Top && data[x - 1, y - 1] == 0)
+            if (x > bounds.Left && y > bounds.Top && data[x - 1 + (y - 1) * SegmentCountX] == 0)
             {
-                edge.To.X = x - 1;
-                edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * SegmentCountX + x - 1;
+                edge.To = (y - 1) * SegmentCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (x > Bounds.Left && y < Bounds.Bottom - 1 && data[x - 1, y + 1] == 0)
+            if (x > bounds.Left && y < bounds.Bottom - 1 && data[x - 1 + (y + 1) * SegmentCountX] == 0)
             {
-                edge.To.X = x - 1;
-                edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * SegmentCountX + x - 1;
+                edge.To = (y + 1) * SegmentCountX + x - 1;
                 edge.Cost = 1.4142135f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (x < Bounds.Right - 1 && y > Bounds.Top && data[x + 1, y - 1] == 0)
+            if (x < bounds.Right - 1 && y > bounds.Top && data[x + 1 + (y - 1) * SegmentCountX] == 0)
             {
-                edge.To.X = x + 1;
-                edge.To.Y = y - 1;
-                edge.To.ID = (y - 1) * SegmentCountX + x + 1;
+                edge.To = (y - 1) * SegmentCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
-            if (x < Bounds.Right - 1 && y < Bounds.Bottom - 1 && data[x + 1, y + 1] == 0)
+            if (x < bounds.Right - 1 && y < bounds.Bottom - 1 && data[x + 1 + (y + 1) * SegmentCountX] == 0)
             {
-                edge.To.X = x + 1;
-                edge.To.Y = y + 1;
-                edge.To.ID = (y + 1) * SegmentCountX + x + 1;
+                edge.To = (y + 1) * SegmentCountX + x + 1;
                 edge.Cost = 1.4142135f;
 
-                result.Add(edge);
+                edges[startIndex++] = edge;
+                count++;
             }
+            return count;
         }
 
         /// <summary>
         /// Gets the heuristic value used by A star search.
         /// </summary>
-        public float GetHeuristicValue(PathGridNode current, PathGridNode end)
+        public float GetHeuristicValue(int current, int end)
         {
-            int xx = current.X - end.X;
-            int yy = current.Y - end.Y;
+            int xx = current % SegmentCountX - end % SegmentCountX;
+            int yy = current / SegmentCountX - end / SegmentCountX;
 
             return (float)Math.Sqrt(xx * xx + yy * yy);
         }
+
+        public IAsyncResult QueryPathTaskAsync(Vector3 start, Vector3 end, float radius, IList<Vector3> wayPoints)
+        {
+            throw new NotImplementedException();
+        }
     }
-    #endregion
 }

@@ -239,7 +239,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (Name == name && this is T)
                 return (T)(object)this;
-            var result = Children.OfType<Transformable>().FirstOrDefault(t => t.Name == name);
+            var result = Children.FirstOrDefault(t => t.ToString() == name);
             if (result is T)
                 return (T)(object)result;
             return default(T);
@@ -249,7 +249,7 @@ namespace Nine.Graphics.ObjectModel
         {
             if (Name == name && this is T)
                 yield return (T)(object)this;
-            foreach (var result in Children.OfType<Transformable>().Where(t => t.Name == name))
+            foreach (var result in Children.Where(t => t.ToString() == name))
             {
                 if (result is T)
                     yield return (T)(object)result;

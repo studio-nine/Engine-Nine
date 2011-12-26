@@ -295,6 +295,11 @@ namespace Nine
         internal object Tree;
 
         /// <summary>
+        /// Gets or sets the value contained in the node.
+        /// </summary>
+        public T Value;
+
+        /// <summary>
         /// Gets a value indicating whether the control contains child nodes.
         /// </summary>
         public bool HasChildren { get; internal set; }
@@ -308,11 +313,6 @@ namespace Nine
         /// Gets the depth of this SpacePartitionTree node.
         /// </summary>
         public int Depth { get; internal set; }
-
-        /// <summary>
-        /// Gets or sets the value contained in the node.
-        /// </summary>
-        public T Value { get; set; }
 
         /// <summary>
         /// Gets a read-only collection of the 8 child nodes.

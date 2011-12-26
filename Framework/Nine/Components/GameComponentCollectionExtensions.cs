@@ -52,15 +52,16 @@ namespace Nine.Components
         }
     }
 
-    class GameComponentAdapter : IGameComponent, Microsoft.Xna.Framework.IDrawable,
-                                                 Microsoft.Xna.Framework.IUpdateable
+    class GameComponentAdapter : Microsoft.Xna.Framework.IGameComponent, 
+                                 Microsoft.Xna.Framework.IDrawable,
+                                 Microsoft.Xna.Framework.IUpdateable
     {
         public object InnerComponent;
 
         public void Initialize()
         {
-            if (InnerComponent is IGameComponent)
-                ((IGameComponent)InnerComponent).Initialize();
+            if (InnerComponent is Microsoft.Xna.Framework.IGameComponent)
+                ((Microsoft.Xna.Framework.IGameComponent)InnerComponent).Initialize();
         }
 
         public void Update(GameTime gameTime)

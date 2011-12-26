@@ -20,14 +20,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics
 {
-    class EmptyServiceProvider : IServiceProvider
-    {
-        public object GetService(Type serviceType)
-        {
-            return null;
-        }
-    }
-
     class GraphicsDeviceServiceProvider : IServiceProvider, IGraphicsDeviceService, IGraphicsDeviceManager
     {
         GraphicsDevice graphics;

@@ -54,8 +54,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -69,6 +71,9 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="PathGraphComponent.cs" />
+    <Compile Include="PathGraph.cs" />
+    <Compile Include="NavigatorComponent.cs" />
     <Compile Include="GraphSearch.cs" />
     <Compile Include="Navigator.cs" />
     <Compile Include="PathGrid.cs" />
@@ -84,11 +89,16 @@
     <Compile Include="Steering\SteeringHelper.cs" />
     <Compile Include="Steering\StuckAvoidanceBehavior.cs" />
     <Compile Include="Steering\WallAvoidanceBehavior.cs" />
+    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
+      <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
+      <Name>Nine.Graphics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine.csproj">
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
       <Name>Nine</Name>

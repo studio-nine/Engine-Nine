@@ -64,6 +64,9 @@
     </Compile>
     <Compile Include="GraphSearch.cs" />
     <Compile Include="Navigator.cs" />
+    <Compile Include="NavigatorComponent.cs" />
+    <Compile Include="PathGraph.cs" />
+    <Compile Include="PathGraphComponent.cs" />
     <Compile Include="PathGrid.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,9 +80,11 @@
     <Compile Include="Steering\SteeringHelper.cs" />
     <Compile Include="Steering\StuckAvoidanceBehavior.cs" />
     <Compile Include="Steering\WallAvoidanceBehavior.cs" />
+    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,6 +96,10 @@
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28Windows Phone%29.csproj">
+      <Project>{953D3039-556F-44B2-AD65-D76FA20E8746}</Project>
+      <Name>Nine.Graphics %28Windows Phone%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine %28Windows Phone%29.csproj">
       <Project>{4DA3D136-3470-46E9-BF93-B19E2ADB6EEF}</Project>
       <Name>Nine %28Windows Phone%29</Name>

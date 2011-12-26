@@ -609,13 +609,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [System.ComponentModel.DefaultValue("0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Int32 ReferenceAlpha { get; set; }
@@ -625,6 +618,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
 
         /// <summary>
         /// 
@@ -642,8 +642,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             AlphaFunction = (Microsoft.Xna.Framework.Graphics.CompareFunction)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Graphics.CompareFunction)).ConvertFromInvariantString("Greater");
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             ReferenceAlpha = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
@@ -713,13 +713,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
@@ -777,6 +770,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean VertexColorEnabled { get; set; }
 
         /// <summary>
@@ -787,7 +787,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
@@ -795,6 +794,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
             TextureEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
@@ -850,13 +850,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent> Effect { get; set; }
 
@@ -874,14 +867,21 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual System.Collections.Generic.Dictionary<System.String, System.Object> Parameters { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of <c>CustomMaterialContent</c>.
         /// </summary>
         public CustomMaterialContent()
         {
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Parameters = new System.Collections.Generic.Dictionary<System.String, System.Object>();
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
 
@@ -952,13 +952,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean IsTransparent { get; set; }
 
         /// <summary>
@@ -978,6 +971,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// </summary>
         [System.ComponentModel.DefaultValue("False")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Boolean VertexColorEnabled { get; set; }
 
         /// <summary>
@@ -988,8 +988,8 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             VertexColorEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
@@ -1059,13 +1059,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
@@ -1111,6 +1104,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent> Texture { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of <c>EnvironmentMapMaterialContent</c>.
         /// </summary>
         public EnvironmentMapMaterialContent()
@@ -1118,12 +1118,12 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             EnvironmentMapAmount = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             EnvironmentMapSpecular = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             FresnelFactor = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
 
@@ -1178,13 +1178,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent> Effect { get; set; }
 
@@ -1202,14 +1195,21 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         public virtual System.Boolean IsTransparent { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of <c>LinkedMaterialContent</c>.
         /// </summary>
         public LinkedMaterialContent()
         {
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             EffectParts = new System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.Effects.LinkedEffectPartContent>();
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }
 
@@ -1278,13 +1278,6 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("False")]
-        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
-        public virtual System.Boolean DoubleSided { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         [System.ComponentModel.DefaultValue("0, 0, 0")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual Microsoft.Xna.Framework.Vector3 EmissiveColor { get; set; }
@@ -1333,6 +1326,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [System.ComponentModel.DefaultValue("4")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Int32 WeightsPerVertex { get; set; }
@@ -1345,13 +1345,13 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             Alpha = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             DiffuseColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
-            DoubleSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             EmissiveColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 0");
             IsTransparent = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             PreferPerPixelLighting = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             SkinningEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             SpecularColor = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("1, 1, 1");
             SpecularPower = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("16");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             WeightsPerVertex = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("4");
             OnCreate();
         }
@@ -5304,6 +5304,13 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean SoftParticleEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Nullable<Microsoft.Xna.Framework.Rectangle> SourceRectangle { get; set; }
 
@@ -5346,6 +5353,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             EndingEffects = new System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>();
             ParticleType = (Nine.Graphics.ParticleEffects.ParticleType)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Nine.Graphics.ParticleEffects.ParticleType)).ConvertFromInvariantString("Billboard");
             ReferenceAlpha = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("128");
+            SoftParticleEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             Stretch = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
             Up = (Microsoft.Xna.Framework.Vector3)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector3)).ConvertFromInvariantString("0, 0, 1");
             OnCreate();

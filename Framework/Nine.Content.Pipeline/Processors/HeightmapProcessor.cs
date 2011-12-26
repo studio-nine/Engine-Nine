@@ -93,7 +93,8 @@ namespace Nine.Content.Pipeline.Processors
                     if (x < heightfield.Width && y < heightfield.Height)
                         heightmap[i++] = heightfield.GetPixel(x, y) * Height;
                     else
-                        heightmap[i++] = 0;
+                        heightmap[i++] = heightfield.GetPixel(Math.Min(x, heightfield.Width - 1),
+                                                              Math.Min(y, heightfield.Height - 1)) * Height;
                 }
             }
 

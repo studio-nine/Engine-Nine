@@ -25,6 +25,7 @@ using System.Windows.Markup;
 
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Animations")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Navigation")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Components")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Content.Pipeline.Graphics.Effects")]

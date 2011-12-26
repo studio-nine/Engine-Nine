@@ -127,6 +127,38 @@ namespace Nine.Content.Pipeline
         }
     }
     /// <summary>
+    /// Content writer for <c>GridSceneManager`1</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class GridSceneManagerContentWriter<T> : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<GridSceneManagerContent<T>>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.SegmentCountX);
+            output.Write(value.SegmentCountY);
+            output.Write(value.Position);
+            output.Write(value.Size);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.GridSceneManagerReader`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.GridSceneManager`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>LinearCurve</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -208,6 +240,38 @@ namespace Nine.Content.Pipeline
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.SmoothCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>UniformGrid</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class UniformGridContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<UniformGridContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value)
+        {
+            BeginWrite(output, value);
+            output.Write(value.SegmentCountX);
+            output.Write(value.SegmentCountY);
+            output.Write(value.Position);
+            output.Write(value.Size);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.UniformGridReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.UniformGrid, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

@@ -749,7 +749,7 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
-        #region IDisposable Members
+        #region IDisposable
         /// <summary>
         /// Disposes any resources associated with this instance.
         /// </summary>

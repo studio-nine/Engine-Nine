@@ -18,34 +18,21 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Navigation
 {
-    #region IGraphNode
-    /// <summary>
-    /// Interface for a node in the graph.
-    /// </summary>
-    public interface IGraphNode
-    {
-        /// <summary>
-        /// Unique identifier of this node. Should be non-negetive.
-        /// </summary>
-        int ID { get; }
-    }
-    #endregion
-
     #region GraphEdge
     /// <summary>
     /// Represents a graph edge.
     /// </summary>
-    public struct GraphEdge<TGraphNode> where TGraphNode : IGraphNode
+    public struct GraphEdge
     {
         /// <summary>
         /// Gets an index representing where the edge is from.
         /// </summary>
-        public TGraphNode From;
+        public int From;
 
         /// <summary>
         /// Gets an index representing where the edge leads to.
         /// </summary>
-        public TGraphNode To;
+        public int To;
 
         /// <summary>
         /// Gets a non-negtive cost associated to the edge.
@@ -66,7 +53,7 @@ namespace Nine.Navigation
     /// <summary>
     /// Interface for a directed graph.
     /// </summary>
-    public interface IGraph<TGraphNode> where TGraphNode : IGraphNode
+    public interface IGraph
     {
         /// <summary>
         /// Gets the total number of nodes in the graph
@@ -74,15 +61,23 @@ namespace Nine.Navigation
         int NodeCount { get; }
 
         /// <summary>
+        /// Gets the max count of edges for each node.
+        /// </summary>
+        int MaxEdgeCount { get; }
+
+        /// <summary>
         /// Gets all the out-going edges of a given node.
         /// </summary>
-        void GetEdges(TGraphNode node, ICollection<GraphEdge<TGraphNode>> result);
+        /// <returns>
+        /// Returns the count of edges.
+        /// </returns>
+        int GetEdges(int node, GraphEdge[] edges, int startIndex);
 
         /// <summary>
         /// Gets the heuristic value between two nodes used in A* algorithm.
         /// </summary>
         /// <returns>A heuristic value between the two nodes.</returns>
-        float GetHeuristicValue(TGraphNode current, TGraphNode end);
+        float GetHeuristicValue(int current, int end);
     }
     #endregion
     
@@ -90,34 +85,34 @@ namespace Nine.Navigation
     /// <summary>
     /// Performs an A* graph search on a given graph.
     /// </summary>
-    public class GraphSearch<TGraphNode> where TGraphNode : struct, IGraphNode
+    public class GraphSearch
     {
         /// <summary>
         /// A list holding the path information.
         /// For a given node index, the value at that index is the parent
         /// (or the previous step) index.
         /// </summary>
-        TGraphNode[] path;
+        int[] path;
 
         /// <summary>
-        /// Contains the real accumulative cost to that node
+        /// Contains the real accumulative cost from the start to that node
         /// </summary>
         float[] costs;
 
         /// <summary>
         /// Current length of path or costs (Node count)
         /// </summary>
-        int length = 0;
-
+        int nodeCount = 0;
+        
         /// <summary>
         /// Create an priority queue to store node indices.
         /// </summary>
-        PriorityQueue<TGraphNode> queue;
+        PriorityQueue queue;
 
         /// <summary>
         /// A list holding the edges during search.
         /// </summary>
-        List<GraphEdge<TGraphNode>> edges = new List<GraphEdge<TGraphNode>>();
+        GraphEdge[] edges;
 
         /// <summary>
         /// Perform a graph search on a graph, find a best path from start to end.
@@ -126,57 +121,60 @@ namespace Nine.Navigation
         /// <param name="start">Start node.</param>
         /// <param name="end">End node</param>
         /// <param name="result">The result path from end node to start node.</param>
-        public void Search(IGraph<TGraphNode> graph, TGraphNode start, TGraphNode end, ICollection<TGraphNode> result)
+        public void Search(IGraph graph, int start, int end, ICollection<int> result)
         {
-            int newLength = graph.NodeCount;    
-
-            if (newLength > length)
+            int newNodeCount = graph.NodeCount;
+            if (newNodeCount > nodeCount)
             {
-                length = newLength;
+                nodeCount = newNodeCount;
 
-                path = new TGraphNode[length];
-                costs = new float[length];
-                queue = new PriorityQueue<TGraphNode>(length);
+                Array.Resize(ref path, nodeCount);
+                Array.Resize(ref costs, nodeCount);
+
+                queue = new PriorityQueue(nodeCount);
             }
 
-            // Clear everthing
-            Array.Clear(costs, 0, length);
+            if (edges == null || edges.Length < graph.MaxEdgeCount)
+            {
+                edges = new GraphEdge[graph.MaxEdgeCount];
+            }
+
+            // Reset cost
+            costs[start] = 0;
 
             // Reset the queue
             queue.Clear();
 
             // Add the start node on the queue
-            queue.Add(start.ID, graph.GetHeuristicValue(start, end), start);
+            queue.Push(start, graph.GetHeuristicValue(start, end));
             
             // While the queue is not empty
-            while (!queue.IsEmpty)
+            while (queue.Count > 0)
             {
                 // Get the next node with the lowest cost
                 // and removes it from the queue
-                PriorityQueue<TGraphNode>.Entry top = queue.Pop();
+                int top = queue.Pop();
 
                 // If we reached the end, everything is done
-                if (end.ID == top.Key)
+                if (end == top)
                 {
                     // Build result path
-                    TGraphNode current = end;
-
-                    while (current.ID != start.ID && current.ID > 0)
+                    int current = end;
+                    while (current != start && current > 0)
                     {
                         result.Add(current);
-
-                        current = path[current.ID];
+                        current = path[current];
                     }
 
                     // Do not forget to return start
                     result.Add(start);
+                    return;
                 }
 
                 // Otherwise test all node adjacent to this one
-                edges.Clear();
-                graph.GetEdges(top.Value, edges);
+                int edgeCount = graph.GetEdges(top, edges, 0);
 
-                for (int i = 0; i < edges.Count; i++)
+                for (int i = 0; i < edgeCount; i++)
                 {
                     var edge = edges[i];
 
@@ -184,28 +182,30 @@ namespace Nine.Navigation
                     float HCost = graph.GetHeuristicValue(edge.To, end);
 
                     // Calculate the 'real' cost to this node from the source (G)
-                    float GCost = costs[top.Key] + edge.Cost;
+                    float GCost = costs[top] + edge.Cost;
 
-                    // If the node is discoverted for the first time,
+                    // If the node is discovered for the first time,
                     // Setup it's cost then add it to the priority queue.
-                    if (queue.Index[edge.To.ID] - 1 < 0)
+                    if (queue.Index[edge.To] <= 0)
                     {
-                        path[edge.To.ID] = top.Value;
-                        costs[edge.To.ID] = GCost;
+                        costs[edge.To] = GCost;
 
-                        queue.Add(edge.To.ID, GCost + HCost, edge.To);
+                        path[edge.To] = top;
+
+                        queue.Push(edge.To, GCost + HCost);
                     }
 
                     // If the node has already been visited, but we have found a
                     // new path with a lower cost, then replace the existing path
                     // and update the cost.
-                    else if (queue.Index[edge.To.ID] - 1 > 0 && GCost < costs[edge.To.ID])
+                    else if (queue.Index[edge.To] > 1 && GCost < costs[edge.To])
                     {
-                        path[edge.To.ID] = top.Value;
-                        costs[edge.To.ID] = GCost;
+                        costs[edge.To] = GCost;
+
+                        path[edge.To] = top;                     
 
                         // Reset node cost
-                        queue.IncreasePriority(edge.To.ID, GCost + HCost, edge.To);
+                        queue.IncreasePriority(edge.To, GCost + HCost);
                     }
                 }
             }

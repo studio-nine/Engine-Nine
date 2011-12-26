@@ -152,7 +152,7 @@ namespace Nine.Graphics
         #region EnablePerfHudProfiling
 #if WINDOWS
         /// <summary>
-        /// Enables the profiling using nVidia PerfHud.
+        /// Enables profiling using nVidia PerfHud.
         /// </summary>
         public static void EnablePerfHudProfiling(this GraphicsDeviceManager graphicsDeviceManager)
         {
@@ -168,6 +168,35 @@ namespace Nine.Graphics
                     }
                 }
             };
+        }
+#endif
+        #endregion
+        
+        #region CreateMockedGraphicsDevice
+#if WINDOWS
+        /// <summary>
+        /// Creates a new hidden graphics device.
+        /// </summary>
+        public static GraphicsDevice CreateHiddenGraphicsDevice(GraphicsProfile profile)
+        {
+            return CreateHiddenGraphicsDevice(1, 1, profile);
+        }
+
+        /// <summary>
+        /// Creates a new hidden graphics device.
+        /// </summary>
+        public static GraphicsDevice CreateHiddenGraphicsDevice(int width, int height, GraphicsProfile profile)
+        {
+            // Create graphics device
+            System.Windows.Forms.Form dummy = new System.Windows.Forms.Form();
+
+            PresentationParameters parameters = new PresentationParameters();
+            parameters.BackBufferWidth = 1;
+            parameters.BackBufferHeight = 1;
+            parameters.DeviceWindowHandle = dummy.Handle;
+
+            GraphicsAdapter.UseNullDevice = true;
+            return new GraphicsDevice(GraphicsAdapter.DefaultAdapter, GraphicsProfile.HiDef, parameters);
         }
 #endif
         #endregion

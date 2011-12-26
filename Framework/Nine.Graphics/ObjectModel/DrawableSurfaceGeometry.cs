@@ -21,7 +21,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Represents a terrain level of detail technique using GeoMipMapping.
     /// </summary>
-    public sealed class DrawableSurfaceGeometry : IDisposable
+    class DrawableSurfaceGeometry : IDisposable
     {
         private int patchSegmentCount;
         private GraphicsDevice graphics;
@@ -150,7 +150,6 @@ namespace Nine.Graphics.ObjectModel
             // Fill indices.
             int start = 0;
             int lod = 0;
-            int step = patchSegmentCount;
 
             startIndices.Clear();
             startIndices.Add(0);
@@ -160,13 +159,12 @@ namespace Nine.Graphics.ObjectModel
                 {
                     if (LevelOfDetailEnabled || (lod == 0 && i == 0))
                     {
-                        startIndices.Add(start = GetIndicesForLevel(patchSegmentCount, lod, step,
+                        startIndices.Add(start = GetIndicesForLevel(patchSegmentCount, lod,
                             ((i >> 0) & 1) == 1, ((i >> 1) & 1) == 1,
                             ((i >> 2) & 1) == 1, ((i >> 3) & 1) == 1, indices, start));
                     }
                 }
                 lod++;
-                step /= 2;
             }
 
             IndexBuffer = new IndexBuffer(graphics, IndexElementSize.SixteenBits, indices.Length, BufferUsage.WriteOnly);
@@ -187,8 +185,15 @@ namespace Nine.Graphics.ObjectModel
             return indexCount;
         }
 
-        private static int GetIndicesForLevel(int patchSegmentCount, int level, int step, bool left, bool right, bool bottom, bool top, ushort[] indices, int startIndex)
+        /// <summary>
+        /// Gets the indices for the specified detail level.
+        /// </summary>
+        public static int GetIndicesForLevel(int patchSegmentCount, int level, bool left, bool right, bool bottom, bool top, ushort[] indices, int startIndex)
         {
+            int step = patchSegmentCount;
+            for (int i = 0; i < level; i++)
+                step >>= 1;
+
             int n = Math.Max(step / 2, 1);
             int lengh = step == 1 ? 6 : Indices.Length;
             for (int y = 0; y < n; y++)
@@ -235,9 +240,16 @@ namespace Nine.Graphics.ObjectModel
                 vv = 0;
                 if (value == v0 || value == v1 || v0 == v1)
                     return startIndex;
-                indices[startIndex++] = v0;
-                indices[startIndex++] = v1;
-                indices[startIndex++] = value;
+                if (indices == null)
+                {
+                    startIndex += 3;
+                }
+                else
+                {
+                    indices[startIndex++] = v0;
+                    indices[startIndex++] = v1;
+                    indices[startIndex++] = value;
+                }
             }
             return startIndex;
         }
@@ -264,7 +276,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the triangle indices at the specified grid.
         /// </summary>
-        public Point[] GetTriangles(int x, int y)
+        private Point[] GetTriangles(int x, int y)
         {
             if (x < 0 || x >= patchSegmentCount ||
                 y < 0 || y >= patchSegmentCount)

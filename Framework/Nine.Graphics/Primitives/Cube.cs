@@ -87,5 +87,13 @@ namespace Nine.Graphics.Primitives
             });
         }
     }
+
+    class CubeInvert : Cube
+    {
+        public CubeInvert(GraphicsDevice graphics) : base(graphics)
+        {
+            InvertWindingOrder = true;
+        }
+    }
 }
 

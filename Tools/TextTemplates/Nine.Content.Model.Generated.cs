@@ -238,6 +238,79 @@ namespace Nine.Content.Pipeline
         #endregion
     }
     /// <summary>
+    /// Content model for <c>GridSceneManager`1</c>.
+    /// Manages a collection of objects using grids.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.GridSceneManager`1, Nine")]
+    public partial class GridSceneManagerContent<T> : System.Xaml.IAttachedPropertyStore
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector2 Position { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 SegmentCountX { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 SegmentCountY { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector2 Size { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>GridSceneManagerContent</c>.
+        /// </summary>
+        public GridSceneManagerContent()
+        {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
+    }
+    /// <summary>
     /// Content model for <c>LinearCurve</c>.
     /// 
     /// </summary>
@@ -350,6 +423,87 @@ namespace Nine.Content.Pipeline
         /// </summary>
         public SmoothCurveContent()
         {
+            OnCreate();
+        }
+
+        partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
+    }
+    /// <summary>
+    /// Content model for <c>UniformGrid</c>.
+    /// Basic 2D Space partition using uniform grids.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.UniformGrid, Nine")]
+    public partial class UniformGridContent : System.Xaml.IAttachedPropertyStore
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector2 Position { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 SegmentCountX { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Int32 SegmentCountY { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("0, 0")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual Microsoft.Xna.Framework.Vector2 Size { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>UniformGridContent</c>.
+        /// </summary>
+        public UniformGridContent()
+        {
+            Position = (Microsoft.Xna.Framework.Vector2)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector2)).ConvertFromInvariantString("0, 0");
+            SegmentCountX = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
+            SegmentCountY = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("0");
+            Size = (Microsoft.Xna.Framework.Vector2)System.ComponentModel.TypeDescriptor.GetConverter(typeof(Microsoft.Xna.Framework.Vector2)).ConvertFromInvariantString("0, 0");
             OnCreate();
         }
 

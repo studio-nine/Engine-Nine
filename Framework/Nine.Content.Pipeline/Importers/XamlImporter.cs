@@ -10,6 +10,7 @@
 using System.Xaml;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using System;
+using System.IO;
 #endregion
 
 namespace Nine.Content.Pipeline.Importers
@@ -24,19 +25,31 @@ namespace Nine.Content.Pipeline.Importers
         {
             try
             {
+                filename = Path.GetFullPath(filename);
                 var result = XamlServices.Load(filename);
 
-                // Try to populate the identity of content items.
-                ObjectGraph.ForEachProperty(result, (type, input) =>
+                ObjectGraph.ForEachProperty(result, delegate(Type type, object input, out object output)
                 {
+                    // Try to populate the identity of content items.
                     var contentItem = input as ContentItem;
                     if (contentItem != null)
                     {
                         contentItem.Identity = new ContentIdentity(filename, typeof(XamlImporter).Name, null);
                     }
-                    return input;
+
+                    // Add dependencies to content references
+                    var inputType = input.GetType();
+                    if (inputType.IsGenericType && inputType.GetGenericTypeDefinition() == typeof(ContentReference<>))
+                    {
+                        dynamic reference = input;
+                        AddDependency(context, Path.GetDirectoryName(filename), reference.Filename);
+                    }
+
+                    output = input;
+                    return false;
                 });
                 return result;
+
             }
             catch (Exception e)
             {
@@ -48,6 +61,33 @@ namespace Nine.Content.Pipeline.Importers
                 }
                 catch { }
                 throw;
+            }
+        }
+
+        private void AddDependency(ContentImporterContext context, string directory, string filename)
+        {
+            // Try to guess the source file for the content reference
+            if (Path.IsPathRooted(filename))
+                throw new InvalidContentException("ContentReference has to be a relative path");
+
+            filename = new Uri(Path.Combine(directory, filename)).LocalPath;
+            directory = Path.GetDirectoryName(filename);
+            filename = Path.GetFileName(filename);
+
+            var dependenciesFound = false;
+            if (Directory.Exists(directory))
+            {
+                foreach (var file in Directory.GetFiles(directory, filename + "*", SearchOption.TopDirectoryOnly))
+                {
+                    context.Logger.LogImportantMessage("Adding dependency {0}", file);
+                    context.AddDependency(file);
+                    dependenciesFound = true;
+                }
+            }
+
+            if (!dependenciesFound)
+            {
+                context.Logger.LogWarning(null, null, "Content reference source asset not found for {0}", filename);
             }
         }
     }

@@ -7,7 +7,7 @@
     </Fragment>
     <Fragment>
         <ComponentGroup Id="EffectCustomToolRegister">
-            <Component Id="cmp31C5B6964AB13D57FD5222FACF382E4B" Directory="dirC75F8675A2182F2958F5F5F6F4C6B675" Guid="{54A35684-C321-4946-B8B9-E9311928F6CF}">
+            <Component Id="cmp31C5B6964AB13D57FD5222FACF382E4B" Directory="dirC75F8675A2182F2958F5F5F6F4C6B675" Guid="{F47B1155-2866-4546-8037-4E0015BC0A14}">
                 <Class Id="{72C1F067-C0D6-4263-8279-65A8786C628F}" Context="InprocServer32" Description="Nine.Tools.EffectCustomTool.EffectCustomTool" ThreadingModel="both" ForeignServer="mscoree.dll">
                     <ProgId Id="Nine.Tools.EffectCustomTool.EffectCustomTool" Description="Nine.Tools.EffectCustomTool.EffectCustomTool" />
                 </Class>

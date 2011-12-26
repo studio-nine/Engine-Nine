@@ -492,6 +492,92 @@ namespace Nine.Graphics
 
 #if !SILVERLIGHT
         /// <summary>
+        /// Copies the positions of the model to the target array.
+        /// </summary>
+        public static int CopyPositionsTo(this Model model, Vector3[] positions, int startIndex)
+        {
+            Matrix[] bones = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(bones);
+
+            int count = 0;
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    int partCount = CopyPositionsTo(model, mesh, part, positions, startIndex);
+                    if (positions != null)
+                    {
+                        for (int i = startIndex; i < startIndex + partCount; i++)
+                        {
+                            Vector3.Transform(ref positions[i], ref bones[mesh.ParentBone.Index], out positions[i]);
+                        }
+                    }
+                    startIndex += partCount;
+                    count += partCount;
+                }
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Copies the indices of the model to the target array.
+        /// </summary>
+        public static int CopyIndicesTo(this Model model, ushort[] indices, int startIndex)
+        {
+            int count = 0;
+            int baseVertex = 0;
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    int partCount = CopyIndicesTo(model, mesh, part, indices, startIndex);
+                    if (indices != null)
+                    {
+                        for (int i = startIndex; i < startIndex + partCount; i++)
+                        {
+                            // TODO: May overflow here
+                            indices[i] = (ushort)(baseVertex + indices[i]);
+                        }
+                    }
+                    startIndex += partCount;
+                    count += partCount;
+                    baseVertex += part.NumVertices;
+                }
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Copies the positions of the model mesh part to the target array.
+        /// The positions are not transformed by the transform of the model mesh.
+        /// </summary>
+        private static int CopyPositionsTo(this Model model, ModelMesh mesh, ModelMeshPart part, Vector3[] positions, int startIndex)
+        {
+            int stride = part.VertexBuffer.VertexDeclaration.VertexStride;
+            int elementCount = part.NumVertices;
+
+            if (positions != null)
+            {
+                part.VertexBuffer.GetData<Vector3>(part.VertexOffset * stride, positions, startIndex, elementCount, stride);
+            }
+            return elementCount;
+        }
+
+        /// <summary>
+        /// Copies the indices of the model mesh part to the target array.
+        /// </summary>
+        private static int CopyIndicesTo(this Model model, ModelMesh mesh, ModelMeshPart part, ushort[] indices, int startIndex)
+        {
+            int indexCount = part.PrimitiveCount * 3;
+            if (part.IndexBuffer.IndexElementSize == IndexElementSize.ThirtyTwoBits)
+                throw new NotSupportedException();
+
+            if (indices != null)
+                part.IndexBuffer.GetData<ushort>(part.StartIndex * 2, indices, startIndex, indexCount);
+            return indexCount;
+        }
+
+        /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
         private static bool ComputeBoundingBoxFromVertices(this Model model, ModelMesh mesh, ModelMeshPart part, Matrix? transform, out BoundingBox boundingBox)

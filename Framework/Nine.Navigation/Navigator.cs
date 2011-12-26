@@ -19,22 +19,30 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Navigation
 {
     using Nine.Navigation.Steering;
-    
-    enum NavigatorState
+
+    /// <summary>
+    /// Defines the state of a <see cref="Navigator"/>
+    /// </summary>
+    public enum NavigatorState
     {
+        /// <summary>
+        /// The navigator has stopped moving.
+        /// </summary>
         Stopped,
+
+        /// <summary>
+        /// The navigator is moving.
+        /// </summary>
         Moving,
     }
 
     /// <summary>
     /// Represents a basic navigator to simulate game object movement.
     /// </summary>
-    public class Navigator : IUpdateable
+    public class Navigator : IUpdateable, ISpatialQueryable
     {
         #region Fields
-        private NavigatorState state = NavigatorState.Stopped;
-
-        public Steerable steerable;
+        private Steerable steerable;
         private ArriveBehavior arrive;
         private SeparationBehavior separation;
         private SteerableAvoidanceBehavior steerableAvoidance;
@@ -53,6 +61,11 @@ namespace Nine.Navigation
         #endregion
 
         #region Properties
+        /// <summary>
+        /// Gets the current state of this <see cref="Navigator"/>.
+        /// </summary>
+        public NavigatorState State { get; private set; }
+
         /// <summary>
         /// Gets the world transformation matrix this navigator.
         /// </summary>
@@ -172,7 +185,7 @@ namespace Nine.Navigation
         /// <summary>
         /// Gets or sets the navigation graph used for path finding.
         /// </summary>
-        public IGraph<IGraphNode> NavigationGraph { get; set; }
+        public IPathGraph PathGraph { get; set; }
 
         /// <summary>
         /// Gets or sets the interface to query for nearby obstacles.
@@ -222,6 +235,23 @@ namespace Nine.Navigation
         public object Tag { get; set; }
         #endregion
 
+        #region ISpatialQueryable
+        /// <summary>
+        /// Gets the axis aligned bounding box in world space.
+        /// </summary>
+        public BoundingBox BoundingBox
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+
+        object ISpatialQueryable.SpatialData { get; set; }
+        #endregion
+
         #region Events
         /// <summary>
         /// Occures when this navigator has started to move.
@@ -267,7 +297,7 @@ namespace Nine.Navigation
                 steerable.Forward = Vector2.Normalize(target - steerable.Position);
             }
 
-            state = NavigatorState.Moving;
+            State = NavigatorState.Moving;
             OnStarted();
         }
 
@@ -298,15 +328,18 @@ namespace Nine.Navigation
         /// </summary>
         public void Stop()
         {
-            if (state == NavigatorState.Moving)
+            if (State == NavigatorState.Moving)
             {
                 steerableAvoidance.Enabled = false;
                 arrive.Enabled = false;
-                state = NavigatorState.Stopped;
+                State = NavigatorState.Stopped;
                 OnStopped();
             }
         }
 
+        /// <summary>
+        /// Updates the specified game time.
+        /// </summary>
         public void Update(TimeSpan gameTime)
         {
             float elapsedTime = (float)gameTime.TotalSeconds;
@@ -316,16 +349,16 @@ namespace Nine.Navigation
             Vector2 currentPosition = steerable.Position;
             steerable.Update(gameTime);
 
-            if (steerable.Speed > 0 && steerable.Force != Vector2.Zero && state == NavigatorState.Stopped)
+            if (steerable.Speed > 0 && steerable.Force != Vector2.Zero && State == NavigatorState.Stopped)
             {
-                state = NavigatorState.Moving;
+                State = NavigatorState.Moving;
                 OnStarted();
                 return;
             }
 
             if (steerable.Speed <= 0 && steerable.Force == Vector2.Zero)
             {
-                if (state == NavigatorState.Moving)
+                if (State == NavigatorState.Moving)
                 {
                     if (waypoints.Count > 0)
                         MoveTo(waypoints.Dequeue());
@@ -415,6 +448,9 @@ namespace Nine.Navigation
             steerableAvoidance.Enabled = friendsAndOpponents != null;
         }
 
+        /// <summary>
+        /// Called when this <see cref="Navigator"/> has started moving.
+        /// </summary>
         protected virtual void OnStarted()
         {
             separation.Enabled = friends != null;
@@ -423,6 +459,9 @@ namespace Nine.Navigation
                 Started(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Called when this <see cref="Navigator"/> has stopped moving.
+        /// </summary>
         protected virtual void OnStopped()
         {
             if (Stopped != null)

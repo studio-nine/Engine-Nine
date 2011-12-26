@@ -21,6 +21,164 @@ namespace Nine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class BoundingBoxExtensions
     {
+        /// <summary>
+        /// Tests whether the BoundingBox intersects with a line segment.
+        /// </summary>
+        public static float? Intersects(this BoundingBox box, Vector3 v1, Vector3 v2)
+        {
+            float? distance;
+            Intersects(box, ref v1, ref v2, out distance);
+            return distance;
+        }
+
+        /// <summary>
+        /// Tests whether the BoundingBox intersects with a line segment.
+        /// </summary>
+        public static void Intersects(this BoundingBox box, ref Vector3 v1, ref Vector3 v2, out float? result)
+        {
+            const float Epsilon = 1E-10F;
+
+            Vector3 dir;
+            Vector3.Subtract(ref v2, ref v1, out dir);
+
+            float length = dir.Length();
+            if (length <= Epsilon)
+            {
+                result = null;
+                return;
+            }
+
+            float inv = 1.0f / length;
+            dir.X *= inv;
+            dir.Y *= inv;
+            dir.Z *= inv;
+
+            Ray ray = new Ray(v1, dir);
+            box.Intersects(ref ray, out result);
+            if (result.HasValue && result.Value > length)
+                result = null;
+        }
+
+        /// <summary>
+        /// Tests whether the BoundingBox contains the specified geometry.
+        /// </summary>
+        /// <param name="transform">
+        /// Transform of the geometry.
+        /// </param>
+        public static ContainmentType Contains(this BoundingBox box, IGeometry geometry)
+        {
+            if (geometry == null)
+                throw new ArgumentNullException("geometry");
+
+            Triangle triangle;
+            ContainmentType containment;
+
+            Matrix matrix = new Matrix();
+            if (geometry.Transform.HasValue)
+                matrix = geometry.Transform.Value;
+
+            bool? containsLastTriangle = null;
+
+            for (int i = 0; i < geometry.Indices.Length; i += 3)
+            {
+                if (geometry.Transform == null)
+                {
+                    triangle.V1 = geometry.Positions[geometry.Indices[i]];
+                    triangle.V2 = geometry.Positions[geometry.Indices[i + 1]];
+                    triangle.V3 = geometry.Positions[geometry.Indices[i + 2]];
+                }
+                else
+                {
+                    Vector3.Transform(ref geometry.Positions[geometry.Indices[i]], ref matrix, out triangle.V1);
+                    Vector3.Transform(ref geometry.Positions[geometry.Indices[i + 1]], ref matrix, out triangle.V2);
+                    Vector3.Transform(ref geometry.Positions[geometry.Indices[i + 2]], ref matrix, out triangle.V3);
+                }
+
+                box.Contains(ref triangle, out containment);
+                
+                if (containment == ContainmentType.Intersects)
+                    return ContainmentType.Intersects;
+
+                if (containment == ContainmentType.Contains)
+                {
+                    if (containsLastTriangle.HasValue && !containsLastTriangle.Value)
+                        return ContainmentType.Intersects;
+                    containsLastTriangle = true;
+                }
+                else
+                {
+                    if (containsLastTriangle.HasValue && containsLastTriangle.Value)
+                        return ContainmentType.Intersects;
+                    containsLastTriangle = false;
+                }
+            }
+            return (containsLastTriangle.HasValue && containsLastTriangle.Value) ? ContainmentType.Contains : ContainmentType.Disjoint;
+        }
+
+        /// <summary>
+        /// Tests whether the BoundingBox contains a Triangle.
+        /// </summary>
+        public static ContainmentType Contains(this BoundingBox box, Triangle triangle)
+        {
+            ContainmentType containmentType;
+            Contains(box, ref triangle, out containmentType);
+            return containmentType;
+        }
+
+        /// <summary>
+        /// Tests whether the BoundingBox contains a Triangle.
+        /// </summary>
+        public static void Contains(this BoundingBox box, ref Triangle triangle, out ContainmentType containmentType)
+        {
+            bool c1 = box.Contains(triangle.V1) == ContainmentType.Contains;
+            bool c2 = box.Contains(triangle.V2) == ContainmentType.Contains;
+            bool c3 = box.Contains(triangle.V3) == ContainmentType.Contains;
+
+            if (c1 && c2 && c3)
+            {
+                containmentType = ContainmentType.Contains;
+                return;
+            }
+            if (c1 || c2 || c3)
+            {
+                containmentType = ContainmentType.Intersects;
+                return;
+            }
+
+            box.GetCorners(corners);
+
+            for (int i = 0; i < indices.Length; i += 2)
+            {
+                if (triangle.Intersects(corners[indices[i]], corners[indices[i + 1]]).HasValue)
+                {
+                    containmentType = ContainmentType.Intersects;
+                    return;
+                }
+            }
+
+            float? distance;
+            Intersects(box, ref triangle.V1, ref triangle.V2, out distance);
+            if (distance.HasValue)
+            {
+                containmentType = ContainmentType.Intersects;
+                return;
+            }
+            Intersects(box, ref triangle.V1, ref triangle.V3, out distance);
+            if (distance.HasValue)
+            {
+                containmentType = ContainmentType.Intersects;
+                return;
+            }
+            Intersects(box, ref triangle.V2, ref triangle.V3, out distance);
+            if (distance.HasValue)
+            {
+                containmentType = ContainmentType.Intersects;
+                return;
+            }
+
+            containmentType = ContainmentType.Disjoint;
+        }
+
         static Vector3[] corners = new Vector3[BoundingBox.CornerCount];
         static int[] indices = new int[] 
         {
@@ -28,32 +186,6 @@ namespace Nine
             4, 5, 5, 6, 6, 7, 7, 4,
             0, 4, 1, 5, 2, 6, 3, 7,
         };
-
-        /// <summary>
-        /// Tests whether the BoundingBox contains a Triangle.
-        /// </summary>
-        public static ContainmentType Contains(this BoundingBox box, Triangle triangle)
-        {
-            bool c1 = box.Contains(triangle.V1) == ContainmentType.Contains;
-            bool c2 = box.Contains(triangle.V2) == ContainmentType.Contains;
-            bool c3 = box.Contains(triangle.V3) == ContainmentType.Contains;
-            
-            if (c1 && c2 && c3)
-                return ContainmentType.Contains;
-
-            if (c1 || c2 || c3)
-                return ContainmentType.Intersects;
-
-            box.GetCorners(corners);
-
-            for (int i = 0; i < indices.Length; i += 2)
-            {
-                if (triangle.Intersects(corners[indices[i]], corners[indices[i + 1]]))
-                    return ContainmentType.Intersects;
-            }
-
-            return ContainmentType.Disjoint;
-        }
 
         /// <summary>
         /// Gets the center of this BoundingBox.

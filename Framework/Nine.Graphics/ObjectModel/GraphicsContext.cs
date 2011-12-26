@@ -173,7 +173,7 @@ namespace Nine.Graphics.ObjectModel
             ModelBatch.Begin(ModelSortMode.Immediate, view, projection, blendState, samplerState, depthStencilState, rasterizeState);
             PrimitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizeState);
             ParticleBatch.Begin(view, projection, samplerState, rasterizeState);
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(0, blendState, samplerState, depthStencilState, rasterizerState);
         }
 
         public void End()

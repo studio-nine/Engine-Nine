@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -111,6 +112,35 @@ namespace Nine
                 }
             }
         }
+        
+#if WINDOWS && UNSAFE
+        internal static unsafe void FastClear(int[] array)
+        {
+            fixed (int* pArray = array)
+            {
+                ZeroMemory((byte*)pArray, sizeof(int) * array.Length);
+            }
+        }
+
+        [System.Runtime.InteropServices.DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]
+        unsafe static extern bool ZeroMemory(byte* destination, int length);
+#else                
+        internal static void FastClear(int[] array)
+        {
+            int blockSize = 4096;
+            int index = 0;
+
+            int length = Math.Min(blockSize, array.Length);
+            Array.Clear(array, 0, length);
+
+            length = array.Length;
+            while (index < length)
+            {
+                Buffer.BlockCopy(array, 0, array, index, Math.Min(blockSize, length - index));
+                index += blockSize;
+            }
+        }
+#endif
     }
 
 
@@ -133,11 +163,4 @@ namespace Nine
         public string DisplayName { get; set; }
     }
 #endif
-    
-
-#if WINDOWS_PHONE || XBOX
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Delegate, Inherited = false)]
-    public class SerializableAttribute : Attribute { }
-#endif
-
 }

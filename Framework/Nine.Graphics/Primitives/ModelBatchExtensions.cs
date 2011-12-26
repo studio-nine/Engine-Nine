@@ -42,10 +42,8 @@ namespace Nine.Graphics.Primitives
             effect.Texture = skyBoxTexture;
 
             // FIXME: When models batch is not in immediate mode, InvertWindingOrder would have no effect.
-            Cube cube = GraphicsResources<Cube>.GetInstance(modelBatch.GraphicsDevice);
-            cube.InvertWindingOrder = true;
+            Cube cube = GraphicsResources<CubeInvert>.GetInstance(modelBatch.GraphicsDevice);
             modelBatch.DrawPrimitive(cube, Matrix.CreateScale(2), effect);
-            cube.InvertWindingOrder = false;
         }
 #endif
     }

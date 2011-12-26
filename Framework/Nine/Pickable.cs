@@ -51,30 +51,24 @@ namespace Nine
         /// The geometry and bounding sphere will be transformed by the specified
         /// transformation matrix before and intersection tests.
         /// </summary>
-        public static float? Intersects(this Ray ray, IGeometry geometry, BoundingSphere? sphere)
+        public static float? Intersects(this Ray ray, IGeometry geometry)
         {
-            // Bounding sphere test
-            if (sphere.HasValue && !sphere.Value.Intersects(ray).HasValue)
-            {
-                return null;
-            }
-
-
             float? result = null;
             float? point = null;
-            Vector3 v1, v2, v3;
 
+            if (geometry.Transform.HasValue)
+            {
+                var transform = geometry.Transform.Value;
+                Matrix.Invert(ref transform, out transform);
+                ray.Transform(ref transform, out ray);
+            }
 
             // Test each triangle
-            for (int i = 0; i < geometry.Indices.Count; i += 3)
+            for (int i = 0; i < geometry.Indices.Length; i += 3)
             {
-                v1 = geometry.Positions[geometry.Indices[i]];
-                v2 = geometry.Positions[geometry.Indices[i + 1]];
-                v3 = geometry.Positions[geometry.Indices[i + 2]];
-
-
-                Intersects(ray, ref v1, ref v2, ref v3, out point);
-
+                Intersects(ray, ref geometry.Positions[geometry.Indices[i]],
+                                ref geometry.Positions[geometry.Indices[i + 1]],
+                                ref geometry.Positions[geometry.Indices[i + 2]], out point);
 
                 if (point.HasValue)
                 {
@@ -86,6 +80,23 @@ namespace Nine
             return result;
         }
 
+        /// <summary>
+        /// Checks whether a ray intersects a triangle.
+        /// </summary>
+        public static float? Intersects(this Ray ray, Triangle triangle)
+        {
+            float? result;
+            Intersects(ray, ref triangle.V1, ref triangle.V2, ref triangle.V3, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Checks whether a ray intersects a triangle.
+        /// </summary>
+        public static void Intersects(this Ray ray, ref Triangle triangle, out float? result)
+        {
+            Intersects(ray, ref triangle.V1, ref triangle.V2, ref triangle.V3, out result);
+        }
 
         /// <summary>
         /// Checks whether a ray intersects a triangle.
@@ -108,6 +119,8 @@ namespace Nine
                                           ref Vector3 vertex2,
                                           ref Vector3 vertex3, out float? result)
         {
+            const float Epsilon = 1E-10F;
+
             // Compute vectors along two edges of the triangle.
             Vector3 edge1, edge2;
 
@@ -122,7 +135,7 @@ namespace Nine
             Vector3.Dot(ref edge1, ref directionCrossEdge2, out determinant);
 
             // If the ray is parallel to the triangle plane, there is no collision.
-            if (determinant > -float.Epsilon && determinant < float.Epsilon)
+            if (determinant > -Epsilon && determinant < Epsilon)
             {
                 result = null;
                 return;
@@ -174,17 +187,36 @@ namespace Nine
 
             result = rayDistance;
         }
-
-
+        
         /// <summary>
         /// Creates a new ray that is the transformed by the input matrix
         /// </summary>
         public static Ray Transform(this Ray input, Matrix transform)
         {
-            Vector3 pt1 = Vector3.Transform(input.Position, transform);
-            Vector3 pt2 = Vector3.Transform(input.Position + input.Direction, transform);
+            Ray result;
+            Transform(input, ref transform, out result);
+            return result;
+        }
 
-            return new Ray(pt1, Vector3.Normalize(Vector3.Subtract(pt2, pt1)));
+        /// <summary>
+        /// Creates a new ray that is the transformed by the input matrix
+        /// </summary>
+        public static void Transform(this Ray input, ref Matrix transform, out Ray result)
+        {
+            Vector3.Transform(ref input.Position, ref transform, out result.Position);
+
+            result.Direction = new Vector3();
+            result.Direction.X = input.Position.X + input.Direction.X;
+            result.Direction.Y = input.Position.Y + input.Direction.Y;
+            result.Direction.Z = input.Position.Z + input.Direction.Z;
+
+            Vector3.Transform(ref result.Direction, ref transform, out result.Direction);
+
+            result.Direction.X = result.Direction.X - result.Position.X;
+            result.Direction.Y = result.Direction.Y - result.Position.Y;
+            result.Direction.Z = result.Direction.Z - result.Position.Z;
+
+            result.Direction.Normalize();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Nine.Graphics.ObjectModel
     /// A square block made up of surface patch parts. The whole surface is rendered patch by patch.
     /// </summary>
     [ContentSerializable]
-    public class DrawableSurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, IContainedObject, IDisposable
+    public class DrawableSurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, IContainedObject, IGeometry, IDisposable
     {
         #region Properties
         /// <summary>
@@ -162,6 +162,49 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region IGeometry
+        Matrix? IGeometry.Transform { get { return Transform; } }
+
+        Vector3[] IGeometry.Positions
+        {
+            get
+            {
+                if (positions == null)
+                {
+                    int i = 0;
+                    positions = new Vector3[(SegmentCount + 1) * (SegmentCount + 1)];
+                    for (int y = 0; y <= SegmentCount; y++)
+                    {
+                        for (int x = 0; x <= SegmentCount; x++)
+                        {
+                            int xSurface = (x + (X * SegmentCount));
+                            int ySurface = (y + (Y * SegmentCount));
+
+                            positions[i++] = Surface.Heightmap.GetPosition(xSurface, ySurface);
+                        }
+                    }
+                }
+                return positions;
+            }
+        }
+        Vector3[] positions;
+
+        ushort[] IGeometry.Indices
+        {
+            get
+            {
+                if (indices == null)
+                {
+                    int count = DrawableSurfaceGeometry.GetIndicesForLevel(SegmentCount, 0, false, false, false, false, null, 0); 
+                    indices = new ushort[count];
+                    DrawableSurfaceGeometry.GetIndicesForLevel(SegmentCount, 0, false, false, false, false, indices, 0);
+                }
+                return indices;
+            }
+        }
+        ushort[] indices;
+        #endregion
+
         #region Methods
         /// <summary>
         /// Constructor is for internal use only.
@@ -184,8 +227,7 @@ namespace Nine.Graphics.ObjectModel
 
             // Compute bounding box
             baseBounds = BoundingBox.CreateFromPoints(EnumeratePositions());
-            if (Math.Abs(baseBounds.Max.Z - baseBounds.Min.Z) <= 0.001f)
-                baseBounds.Max.Z += 0.001f;
+            UpdatePosition();
         }
 
         private bool IsPowerOfTwo(int number)
@@ -313,8 +355,7 @@ namespace Nine.Graphics.ObjectModel
                 if (VertexBuffer != null)
                     VertexBuffer.Dispose();
 
-                if (IndexBuffer != null)
-                    IndexBuffer.Dispose();
+                // Don't dispose the index buffer since it is shared between surfaces.
             }
         }
 

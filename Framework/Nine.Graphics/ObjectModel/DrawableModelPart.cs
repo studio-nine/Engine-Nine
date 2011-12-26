@@ -96,6 +96,7 @@ namespace Nine.Graphics.ObjectModel
         object ILightable.LightingData { get; set; }
         #endregion
 
+        #region Constructor
         /// <summary>
         /// For content serializer.
         /// </summary>
@@ -118,7 +119,9 @@ namespace Nine.Graphics.ObjectModel
             this.ModelMeshPart = part;
             this.Material = material;
         }
+        #endregion
 
+        #region Draw
         /// <summary>
         /// Draws the object using the graphics context.
         /// </summary>
@@ -140,5 +143,6 @@ namespace Nine.Graphics.ObjectModel
 
         void IDrawableObject.BeginDraw(GraphicsContext context) { }
         void IDrawableObject.EndDraw(GraphicsContext context) { }
+        #endregion
     }
 }

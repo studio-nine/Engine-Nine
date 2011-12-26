@@ -465,13 +465,19 @@ namespace Nine.Graphics
 
         public void Draw(IEnumerable<Vector3> vertices, IEnumerable<int> indices, Matrix? world, Color color)
         {
+            if (vertices == null)
+                throw new ArgumentNullException("vertices");
+            
             BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
                 foreach (Vector3 position in vertices)
                     AddVertex(new VertexPositionColorTexture() { Position = position, Color = color });
 
-                foreach (ushort index in indices)
-                    AddIndex(index);
+                if (indices != null)
+                {
+                    foreach (var index in indices)
+                        AddIndex(index);
+                }
             }
             EndPrimitive();
         }

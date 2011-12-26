@@ -231,7 +231,7 @@ namespace Nine.Graphics.Effects
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -272,7 +272,7 @@ namespace Nine.Graphics.Effects
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -300,7 +300,7 @@ namespace Nine.Graphics.Effects
             existingInstance.EffectSerializer = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
             existingInstance.ParametersSerializer = input.ReadObject<System.Collections.Generic.Dictionary<System.String, System.Object>>();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -337,7 +337,7 @@ namespace Nine.Graphics.Effects
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -376,7 +376,7 @@ namespace Nine.Graphics.Effects
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -404,7 +404,7 @@ namespace Nine.Graphics.Effects
             existingInstance.EffectSerializer = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
             existingInstance.EffectPartsSerializer = input.ReadObject<System.Collections.Generic.IList<Nine.Graphics.Effects.LinkedEffectPart>>();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -445,7 +445,7 @@ namespace Nine.Graphics.Effects
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.SkinningEnabled = input.ReadBoolean();
             existingInstance.DepthAlphaEnabled = input.ReadBoolean();
-            existingInstance.DoubleSided = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }
@@ -1732,6 +1732,7 @@ namespace Nine.Graphics.ParticleEffects
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
             existingInstance.DepthSortEnabled = input.ReadBoolean();
             existingInstance.ReferenceAlpha = input.ReadInt32();
+            existingInstance.SoftParticleEnabled = input.ReadBoolean();
             existingInstance.Emitter = input.ReadObject<Nine.Graphics.ParticleEffects.IParticleEmitter>();
             {
                 var count = input.ReadInt32();

@@ -11,6 +11,7 @@ pushd ..
 
 call %msbuild% %flags% Tools\EffectCustomTool\EffectCustomTool\EffectCustomTool.csproj
 call %msbuild% %flags% Tools\ScreenshotCapturer\ScreenshotCapturer.sln
+call %msbuild% %flags% Tools\PathGraphBuilder\PathGraphBuilder.sln
 call %msbuild% %flags% Tools\ProcessSamples\ProcessSamples.sln
 
 Bin\Samples.exe "Samples" "Bin"

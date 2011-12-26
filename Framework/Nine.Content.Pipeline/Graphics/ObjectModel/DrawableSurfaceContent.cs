@@ -88,7 +88,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
                 throw new InvalidContentException(
                     "Either a heightmap or a valid width/height/step pair must be specified for DrawableSurfaceContent.");
             }
-
             return input;
         }
     }

@@ -47,6 +47,7 @@
     <DocumentationFile>..\..\References\x86\Nine.XML</DocumentationFile>
     <XnaCompressContent>true</XnaCompressContent>
     <NoWarn>1591,1572,1571,1573,1587,1570</NoWarn>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -90,9 +91,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
-    <Compile Include="Container.cs" />
-    <Compile Include="Design\TransformConverter.cs" />
-    <Compile Include="Transform.cs" />
+    <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="QuadTreeSceneManager.cs" />
+    <Compile Include="Component.cs" />
+    <Compile Include="Input\WindowsInputSource.cs" />
+    <Compile Include="Input\XnaInputSource.cs" />
+    <Compile Include="Input\InputComponent.cs" />
+    <Compile Include="Serialization.cs" />
+    <Compile Include="TimeEventArgs.cs" />
     <Compile Include="PropertyExpression.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
@@ -120,6 +126,8 @@
     <Compile Include="SceneManager.cs" />
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
+    <Compile Include="World.cs" />
+    <Compile Include="WorldObject.cs" />
     <None Include="..\..\Tools\TextTemplates\Content.Model.tth">
       <Link>TextTempates\Content.Model.tth</Link>
     </None>
@@ -143,8 +151,8 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Content.Reader.Generated.cs</LastGenOutput>
     </None>
-    <Compile Include="InputEventArgs.cs" />
-    <Compile Include="IInputSource.cs" />
+    <Compile Include="Input\InputEventArgs.cs" />
+    <Compile Include="Input\IInputSource.cs" />
     <Compile Include="LineSegment.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Strings.Designer.cs">
@@ -157,7 +165,7 @@
     <Compile Include="Octree.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="Input.cs">
+    <Compile Include="Input\Input.cs">
     </Compile>
     <Compile Include="GridSceneManager.cs" />
     <Compile Include="Surface.cs" />

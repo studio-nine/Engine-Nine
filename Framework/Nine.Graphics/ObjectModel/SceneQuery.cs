@@ -206,8 +206,7 @@ namespace Nine.Graphics.ObjectModel
         
         private static TraverseOptions FindNameTraverser(T item)
         {
-            var transformable = item as Transformable;
-            if (transformable != null && transformable.Name == TargetName)
+            if (item.ToString() == TargetName || TargetName == null)
             {
                 ResultObject = item;
                 return TraverseOptions.Stop;
@@ -225,8 +224,7 @@ namespace Nine.Graphics.ObjectModel
 
         private static TraverseOptions FindAllNamesTraverser(T item)
         {
-            var transformable = item as Transformable;
-            if (transformable != null && transformable.Name == TargetName)
+            if (item.ToString() == TargetName)
             {
                 Result.Add(item);
             }

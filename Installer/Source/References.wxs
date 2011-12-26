@@ -13,6 +13,8 @@
             <File Id="x86.Nine.xml" Name="Nine.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.xml" />
             <File Id="x86.Nine.Graphics.dll" Name="Nine.Graphics.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Graphics.dll" />
             <File Id="x86.Nine.Graphics.xml" Name="Nine.Graphics.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Graphics.xml" />
+            <File Id="x86.Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Navigation.dll" />
+            <File Id="x86.Nine.Navigation.xml" Name="Nine.Navigation.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Navigation.xml" />
             <File Id="x86.Nine.Content.Pipeline.dll" Name="Nine.Content.Pipeline.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Content.Pipeline.dll" />
             <File Id="x86.Nine.Content.Pipeline.xml" Name="Nine.Content.Pipeline.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Content.Pipeline.xml" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\x86" Type="string"/>
@@ -25,6 +27,8 @@
             <File Id="WindowsPhone.Nine.xml" Name="Nine.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.xml" />
             <File Id="WindowsPhone.Nine.Graphics.dll" Name="Nine.Graphics.dll" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Graphics.dll" />
             <File Id="WindowsPhone.Nine.Graphics.xml" Name="Nine.Graphics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Graphics.xml" />
+            <File Id="WindowsPhone.Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Navigation.dll" />
+            <File Id="WindowsPhone.Nine.Navigation.xml" Name="Nine.Navigation.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Navigation.xml" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\XNA\AssemblyFolders\v4.0\Xbox 360\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\Xbox 360" Type="string"/>
           </Component>
         </Directory>
@@ -35,11 +39,12 @@
             <File Id="Xbox.Nine.xml" Name="Nine.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.xml" />
             <File Id="Xbox.Nine.Graphics.dll" Name="Nine.Graphics.dll" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Graphics.dll" />
             <File Id="Xbox.Nine.Graphics.xml" Name="Nine.Graphics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Graphics.xml" />
+            <File Id="Xbox.Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Navigation.dll" />
+            <File Id="Xbox.Nine.Navigation.xml" Name="Nine.Navigation.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Navigation.xml" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\XNA\AssemblyFolders\v4.0\Windows Phone\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\Windows Phone" Type="string"/>
           </Component>
         </Directory>
 
-	  <!--
         <Directory Id="Silverlight" Name="Silverlight">
           <Component Id="SilverlightComponent" Guid="31123E61-55F8-4B11-B027-088D777E1DD8" DiskId="1">
             <File Id="Silverlight.Nine.dll" Name="Nine.dll" KeyPath="yes" Source="$(sys.SOURCEFILEDIR)../../References/Silverlight/Nine.dll" />
@@ -49,7 +54,6 @@
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Microsoft SDKs\Silverlight\v5.0\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\Silverlight" Type="string"/>
           </Component>
         </Directory>
-	  -->
         
       </Directory>
     </DirectoryRef>
@@ -59,9 +63,7 @@
       <ComponentRef Id="x86Component" />
       <ComponentRef Id="WindowsPhoneComponent" />
       <ComponentRef Id="XboxComponent" />
-	  <!--
       <ComponentRef Id="SilverlightComponent" />
-	  -->
     </ComponentGroup>
     
   </Fragment>

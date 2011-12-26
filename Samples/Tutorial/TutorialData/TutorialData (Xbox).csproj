@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{8BC9A504-AEE3-42F4-B8DB-851AF1031EB6}</ProjectGuid>
+    <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Xbox 360</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TutorialData</RootNamespace>
+    <AssemblyName>TutorialData</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
+    <XnaPlatform>Xbox 360</XnaPlatform>
+    <XnaProfile>HiDef</XnaProfile>
+    <XnaCrossPlatformGroupID>1d01b4e5-0b30-4bb2-82a7-2764f57b8ad6</XnaCrossPlatformGroupID>
+    <XnaOutputType>Library</XnaOutputType>
+    <Thumbnail Condition="$(XnaOutputType)=='Game'">GameThumbnail.png</Thumbnail>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Xbox 360' ">
+    <OutputPath>bin\Xbox 360\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;XBOX;XBOX360</DefineConstants>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Xbox 360' ">
+    <OutputPath>bin\Xbox 360\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;XBOX;XBOX360</DefineConstants>
+    <XnaCompressContent>true</XnaCompressContent>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="ExampleController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.GamerServices" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Nine" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
+  <!--
+      To modify your build process, add your task inside one of the targets below and uncomment it. 
+      Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+    -->
+</Project>

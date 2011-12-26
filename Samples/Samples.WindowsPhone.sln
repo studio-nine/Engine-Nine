@@ -41,6 +41,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{6106
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{997C2948-7A9C-427E-9595-DC25DDD31766}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModelSilverlight", "SkinnedModel\SkinnedModelSilverlight\SkinnedModelSilverlight.csproj", "{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModelSilverlightLib", "SkinnedModel\SkinnedModelSilverlightLib\SkinnedModelSilverlightLib.csproj", "{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -313,6 +317,38 @@ Global
 		{8A0F05B9-F2C6-4849-BA09-F93DEAC808B5}.Release|Windows Phone.ActiveCfg = Release|x86
 		{8A0F05B9-F2C6-4849-BA09-F93DEAC808B5}.Release|x86.ActiveCfg = Release|x86
 		{8A0F05B9-F2C6-4849-BA09-F93DEAC808B5}.Release|Xbox 360.ActiveCfg = Release|x86
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|x86.ActiveCfg = Release|Any CPU
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B}.Release|Xbox 360.ActiveCfg = Release|Any CPU
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|Mixed Platforms.Build.0 = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|x86.ActiveCfg = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Debug|Xbox 360.ActiveCfg = Debug|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|Mixed Platforms.Build.0 = Release|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|Windows Phone.Build.0 = Release|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|x86.ActiveCfg = Release|Windows Phone
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382}.Release|Xbox 360.ActiveCfg = Release|Windows Phone
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -328,6 +364,8 @@ Global
 		{C05E8576-5C96-49F3-ABD2-806D0EA0D375} = {610647CB-6254-479B-997C-3486897E79E2}
 		{21E53400-3F27-4646-8BF7-A956E82B4762} = {610647CB-6254-479B-997C-3486897E79E2}
 		{3A6DA88F-FA82-4D78-9AE7-861D277A26A4} = {610647CB-6254-479B-997C-3486897E79E2}
+		{FC86F29E-850F-4054-8EF0-F9BA9B8DF34B} = {610647CB-6254-479B-997C-3486897E79E2}
+		{C19CCC1A-12F0-4FC1-BE56-77CBD22D2382} = {610647CB-6254-479B-997C-3486897E79E2}
 		{984E8527-106D-4602-ACBB-25C6E5723CB2} = {997C2948-7A9C-427E-9595-DC25DDD31766}
 		{63C9BB99-BA63-4C57-9114-43179975AA96} = {997C2948-7A9C-427E-9595-DC25DDD31766}
 		{DEFF9F75-6F41-426D-AEB9-DA53D0A8543C} = {997C2948-7A9C-427E-9595-DC25DDD31766}

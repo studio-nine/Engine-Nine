@@ -57,6 +57,9 @@
     </Compile>
     <Compile Include="GraphSearch.cs" />
     <Compile Include="Navigator.cs" />
+    <Compile Include="NavigatorComponent.cs" />
+    <Compile Include="PathGraph.cs" />
+    <Compile Include="PathGraphComponent.cs" />
     <Compile Include="PathGrid.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,9 +73,11 @@
     <Compile Include="Steering\SteeringHelper.cs" />
     <Compile Include="Steering\StuckAvoidanceBehavior.cs" />
     <Compile Include="Steering\WallAvoidanceBehavior.cs" />
+    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -84,6 +89,10 @@
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nine.Graphics\Nine.Graphics %28Xbox%29.csproj">
+      <Project>{5E237603-F35B-4CBB-AC75-21F58A2B4D65}</Project>
+      <Name>Nine.Graphics %28Xbox%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine %28Xbox%29.csproj">
       <Project>{77BBD780-087F-4F5F-9375-7A6D5C9D9BE8}</Project>
       <Name>Nine %28Xbox%29</Name>

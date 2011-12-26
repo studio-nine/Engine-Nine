@@ -64,8 +64,7 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Xml.Serialization, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Build\Version.cs">
@@ -90,6 +89,8 @@
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />
+    <Compile Include="Component.cs" />
+    <Compile Include="Components\GameServiceContainer.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameTime.cs" />
     <Compile Include="Components\GameComponent.cs" />
@@ -98,18 +99,23 @@
     <Compile Include="Components\IDrawable.cs" />
     <Compile Include="Components\IGameComponent.cs" />
     <Compile Include="Components\IUpdateable.cs" />
-    <Compile Include="Container.cs" />
+    <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
+    <Compile Include="Input\IInputSource.cs" />
+    <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\InputComponent.cs" />
+    <Compile Include="Input\InputEventArgs.cs" />
+    <Compile Include="Input\XnaInputSource.cs" />
+    <Compile Include="QuadTreeSceneManager.cs" />
+    <Compile Include="Serialization.cs" />
+    <Compile Include="TimeEventArgs.cs" />
     <Compile Include="WeakReference.Silverlight.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GridSceneManager.cs" />
     <Compile Include="HashSet.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="IInputSource.cs" />
-    <Compile Include="Input.cs" />
-    <Compile Include="InputEventArgs.cs" />
     <Compile Include="Input\ButtonState.cs" />
     <Compile Include="Input\Keyboard.cs" />
     <Compile Include="Input\KeyboardState.cs" />
@@ -134,6 +140,9 @@
     <Compile Include="Surface.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="UniformGrid.cs" />
+    <Compile Include="World.cs" />
+    <Compile Include="WorldObject.cs" />
+    <Compile Include="XamlAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">

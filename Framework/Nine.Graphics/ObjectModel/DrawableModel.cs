@@ -19,6 +19,7 @@ using Nine.Animations;
 using Nine.Graphics.Effects;
 #if WINDOWS || XBOX
 using Nine.Graphics.Effects.Deferred;
+using Nine.Graphics.Primitives;
 #endif
 #endregion
 
@@ -27,7 +28,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Defines a basic model that can be rendered using the renderer with custom effect.
     /// </summary>
-    public class DrawableModel : Transformable, ISpatialQueryable, IUpdateable, IPickable
+    public class DrawableModel : Transformable, ISpatialQueryable, IUpdateable, IPickable, IGeometry
     {
         #region Model
         /// <summary>
@@ -184,7 +185,7 @@ namespace Nine.Graphics.ObjectModel
 
         #region Lighting
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Model"/> is visible.
+        /// Gets or sets a value indicating whether this <see cref="DrawableModel"/> is visible.
         /// </summary>
         /// <value>
         ///   <c>true</c> if visible; otherwise, <c>false</c>.
@@ -342,7 +343,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the skeleton of this model.
         /// </summary>
-        public ModelSkeleton Skeleton { get; private set; }
+        public Skeleton Skeleton { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is skinned.
@@ -562,9 +563,9 @@ namespace Nine.Graphics.ObjectModel
                 }
                 else
                 {
-                    if (boneTransforms == null || boneTransforms.Length < Model.Bones.Count)
+                    if (boneTransforms == null || boneTransforms.Length < Skeleton.BoneTransforms.Length)
                     {
-                        boneTransforms = new Matrix[Model.Bones.Count];
+                        boneTransforms = new Matrix[Skeleton.BoneTransforms.Length];
                         Skeleton.CopyAbsoluteBoneTransformsTo(boneTransforms);
                     }
                     else if (boneTransformNeedUpdate)
@@ -651,6 +652,46 @@ namespace Nine.Graphics.ObjectModel
         {
             return model.Intersects(AbsoluteTransform, ray);
         }
+        #endregion
+
+        #region IGeometry
+        Matrix? IGeometry.Transform { get { return AbsoluteTransform; } }
+
+        Vector3[] IGeometry.Positions
+        {
+            get
+            {
+#if SILVERLIGHT
+                throw new NotSupportedException();
+#else
+                if (positions == null)
+                {
+                    positions = new Vector3[Model.CopyPositionsTo(null, 0)];
+                    Model.CopyPositionsTo(positions, 0);
+                }
+                return positions;
+#endif
+            }
+        }
+        Vector3[] positions;
+
+        ushort[] IGeometry.Indices
+        {
+            get
+            {
+#if SILVERLIGHT
+                throw new NotSupportedException();
+#else
+                if (indices == null)
+                {
+                    indices = new ushort[Model.CopyIndicesTo(null, 0)];
+                    Model.CopyIndicesTo(indices, 0);
+                }
+                return indices;
+#endif
+            }
+        }
+        ushort[] indices;
         #endregion
     }
 }

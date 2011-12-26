@@ -21,6 +21,25 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     public class ParticleBatch : IDisposable
     {
+#if !WINDOWS_PHONE
+        /// <summary>
+        /// Gets or sets the distance where the particle pixels start to fade.
+        /// </summary>
+        public float SoftParticleFade
+        {
+            get { return softParticleEffect.DepthFade; }
+            set { softParticleEffect.DepthFade = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the current depth buffer to enable the rendering of soft particles.
+        /// </summary>
+        public Texture2D DepthBuffer
+        {
+            get { return softParticleEffect.DepthBuffer; }
+            set { softParticleEffect.DepthBuffer = value; }
+        }
+#endif
         /// <summary>
         /// Gets the underlying graphics device used by this ModelBatch.
         /// </summary>
@@ -34,6 +53,9 @@ namespace Nine.Graphics.ParticleEffects
         private int batchCount;
         private bool hasBegin = false;
         private AlphaTestEffect alphaTestEffect;
+#if !WINDOWS_PHONE
+        private SoftParticleEffect softParticleEffect;
+#endif
         private RenderTarget2D blendTexture;
         private PrimitiveBatch primitiveBatch;
         private List<ParticleBatchItem> batches;
@@ -73,7 +95,10 @@ namespace Nine.Graphics.ParticleEffects
             batches = new List<ParticleBatchItem>();
             alphaTestEffect = new AlphaTestEffect(graphics);
             alphaTestEffect.VertexColorEnabled = true;
-
+#if !WINDOWS_PHONE
+            softParticleEffect = new SoftParticleEffect(graphics);
+#endif
+                        
             cachedDrawBillboard = new ParticleAction(DrawParticleBillboard);
             cachedDrawConstrainedBillboard = new ParticleAction(DrawParticleConstrainedBillboard);
             cachedDrawConstrainedBillboardUp = new ParticleAction(DrawParticleConstrainedBillboardUp);
@@ -158,8 +183,11 @@ namespace Nine.Graphics.ParticleEffects
             {
                 batches.Sort(0, batchCount, comparer);
 
-                DrawBatches(DepthStencilState.Default, alphaTestEffect, true, null);
-                DrawBatches(DepthStencilState.DepthRead, null, false, null);
+                DrawBatches(DepthStencilState.Default, alphaTestEffect, true, false, null);
+                DrawBatches(DepthStencilState.DepthRead, null, false, false, null);
+#if !WINDOWS_PHONE
+                DrawBatches(DepthStencilState.DepthRead, softParticleEffect, false, true, null);
+#endif
 
                 if (backgroundBlendStates.Count > 0)
                 {
@@ -169,8 +197,11 @@ namespace Nine.Graphics.ParticleEffects
                     {
                         blendTexture.Begin();
 
-                        DrawBatches(DepthStencilState.Default, alphaTestEffect, true, backgroundBlendState);
-                        DrawBatches(DepthStencilState.DepthRead, null, false, backgroundBlendState);
+                        DrawBatches(DepthStencilState.Default, alphaTestEffect, true, false, backgroundBlendState);
+                        DrawBatches(DepthStencilState.DepthRead, null, false, false, backgroundBlendState);
+#if !WINDOWS_PHONE
+                        DrawBatches(DepthStencilState.DepthRead, softParticleEffect, false, true, null);
+#endif
 
                         blendTexture.End();
 
@@ -194,7 +225,7 @@ namespace Nine.Graphics.ParticleEffects
             VertexCount += primitiveBatch.VertexCount;
         }
 
-        private void DrawBatches(DepthStencilState depthStencilState, Effect effect, bool depthSort, BlendState compareBlendState)
+        private void DrawBatches(DepthStencilState depthStencilState, Effect effect, bool depthSort, bool softParticle, BlendState compareBlendState)
         {
             var blendState = batches[0].ParticleEffect.BlendState;
 
@@ -209,6 +240,8 @@ namespace Nine.Graphics.ParticleEffects
                 {
                     if (!batch.ParticleEffect.DepthSortEnabled)
                         continue;
+                    
+                    // FIXME: The alpha test effect has to be applied.
                     alphaTestEffect.ReferenceAlpha = batch.ParticleEffect.ReferenceAlpha;
                 }
                 if (batch.ParticleEffect.BlendState != blendState)
@@ -217,7 +250,15 @@ namespace Nine.Graphics.ParticleEffects
                     blendState = batch.ParticleEffect.BlendState;
                     primitiveBatch.Begin(PrimitiveSortMode.Deferred, view, projection, blendState, samplerState, depthStencilState, rasterizerState, effect);
                 }
+
+#if WINDOWS_PHONE
                 Draw(batch);
+#else
+                // Draw soft particles only when a valid depth buffer is set.
+                bool softParticleEnabled = batch.ParticleEffect.SoftParticleEnabled & (DepthBuffer != null);
+                if (depthSort || (!(softParticle ^ softParticleEnabled)))
+                    Draw(batch);
+#endif
             }
             primitiveBatch.End();
         }

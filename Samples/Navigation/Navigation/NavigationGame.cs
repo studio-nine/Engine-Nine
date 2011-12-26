@@ -275,9 +275,6 @@ namespace NavigationSample
                 objectManager.FindAll(ref bounds, nearbyUnits);
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && selectedUnits.Count > 0)
-                System.Diagnostics.Debug.WriteLine(selectedUnits[0].Navigator.Speed + "\t" + selectedUnits[0].Navigator.steerable.Forward.ToString());
-
             base.Update(gameTime);
         }
 
@@ -339,14 +336,16 @@ namespace NavigationSample
                     primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.SoftBoundingRadius, 12, null, Color.YellowGreen);
                     primitiveBatch.DrawCylinder(unit.Navigator.Position, 0.5f, unit.Navigator.HardBoundingRadius, 12, null, Color.Pink);
                      
-                    primitiveBatch.DrawArrow(unit.Navigator.Position, unit.Navigator.Position + Vector3.Normalize(new Vector3(unit.Navigator.steerable.Force, 0)) * 2, null, Color.Magenta);
-                    primitiveBatch.DrawArrow(unit.Navigator.Position, unit.Navigator.Position + Vector3.Normalize(new Vector3(unit.Navigator.steerable.Forward, 0)) * 2, null, Color.Yellow);
-                                        
+                    //primitiveBatch.DrawArrow(unit.Navigator.Position, unit.Navigator.Position + Vector3.Normalize(new Vector3(unit.Navigator.steerable.Force, 0)) * 2, null, Color.Magenta);
+                    //primitiveBatch.DrawArrow(unit.Navigator.Position, unit.Navigator.Position + Vector3.Normalize(new Vector3(unit.Navigator.steerable.Forward, 0)) * 2, null, Color.Yellow);
+                      
+                    /*
                     if (unit.Navigator.steerable.Target.HasValue && selectedUnits.Contains(unit))
                     {
                         Vector3 target = new Vector3(unit.Navigator.steerable.Target.Value, 0);
                         primitiveBatch.DrawArrow(target + Vector3.UnitZ * 2, target, null, Color.Green);
                     }
+                     */
                 }
                 foreach (Unit unit in nearbyUnits)
                 {

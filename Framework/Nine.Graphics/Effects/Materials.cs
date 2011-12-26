@@ -54,7 +54,7 @@ namespace Nine.Graphics.Effects
         /// Gets or sets a value indicating whether the underlying mesh rendered using
         /// this material is double sided.
         /// </summary>
-        public bool DoubleSided { get; set; }
+        public bool TwoSided { get; set; }
 
         /// <summary>
         /// Queries the material for the specified interface T.

@@ -20,9 +20,9 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Components;
 using Nine.Content.Pipeline.Processors;
 using Nine.Content.Pipeline.Graphics.ObjectModel;
+using Nine.Graphics;
 #endregion
 
 namespace Nine.Content.Pipeline.Components

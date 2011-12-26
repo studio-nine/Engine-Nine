@@ -200,6 +200,7 @@
     </Compile>
     <Compile Include="FreeCamera.cs" />
     <Compile Include="Geometry.cs" />
+    <Compile Include="GraphicsComponent.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
     <Compile Include="Heightmap.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="ModelViewerCamera.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\Camera.cs" />
+    <Compile Include="ObjectModel\Container.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
     <Compile Include="ObjectModel\DisplayObject.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />
@@ -246,15 +248,15 @@
     <Compile Include="ParticleEffects\ParticleEffectCollection.cs" />
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />
-    <Compile Include="ParticleEffects\ParticleSystemEffect.cs">
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
+    <Compile Include="ParticleEffects\ParticleVertex.cs" />
+    <Compile Include="ParticleEffects\SoftParticleEffect.cs">
+      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="ParticleEffects\ParticleSystemEffect.Designer.cs">
+    <Compile Include="ParticleEffects\SoftParticleEffect.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
+      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
     </Compile>
-    <Compile Include="ParticleEffects\ParticleVertex.cs" />
     <Compile Include="ParticleEffects\SpriteBatchExtensions.cs" />
     <Compile Include="PrimitiveBatch.cs" />
     <Compile Include="PrimitiveBatchExtensions.cs" />
@@ -410,6 +412,7 @@
     <Compile Include="VertexPositionNormal.cs" />
     <Compile Include="VertexPositionNormalDualTexture.cs" />
     <Compile Include="VertexPositionNormalTangentBinormalTexture.cs" />
+    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Reader.tt">
@@ -455,9 +458,9 @@
       <LastGenOutput>SpotLightEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="Nine.snk" />
-    <None Include="ParticleEffects\ParticleSystemEffect.fx">
+    <None Include="ParticleEffects\SoftParticleEffect.fx">
       <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
+      <LastGenOutput>SoftParticleEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="ScreenEffects\Adoption.fx">
       <Generator>EffectCustomTool</Generator>

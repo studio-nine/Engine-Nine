@@ -49,13 +49,13 @@ namespace PathFinding
         PathGrid pathGraph;
 
         // An A* seach algorithm.
-        GraphSearch<PathGridNode> graphSearch = new GraphSearch<PathGridNode>();
+        GraphSearch graphSearch = new GraphSearch();
 
         // A list of nodes containing the result path.
-        List<PathGridNode> path = new List<PathGridNode>();
+        List<int> path = new List<int>();
 
         // Start node of the path.
-        PathGridNode? start;
+        int? start;
 
 
         public PathFindingGame()
@@ -122,7 +122,7 @@ namespace PathFinding
                 }
                 else
                 {
-                    PathGridNode? end = GetPickedNode(e.X, e.Y);
+                    int? end = GetPickedNode(e.X, e.Y);
 
                     if (end.HasValue)
                     {
@@ -139,7 +139,7 @@ namespace PathFinding
         /// <summary>
         /// Helper method to get picked path graph node from screen coordinates.
         /// </summary>
-        private PathGridNode? GetPickedNode(int x, int y)
+        private int? GetPickedNode(int x, int y)
         {
             // Gets the pick ray from current mouse cursor
             Ray ray = GraphicsDevice.Viewport.CreatePickRay(x, y, camera.View, camera.Projection);
@@ -152,7 +152,7 @@ namespace PathFinding
 
                 // Make sure we don't pick an obstacle.
                 if (!pathGraph.IsMarked(target.X, target.Y))
-                    return pathGraph[target.X, target.Y];
+                    return pathGraph.PositionToIndex(target.X, target.Y);
             }
 
             return null;
@@ -187,14 +187,14 @@ namespace PathFinding
                 // Draw start node
                 if (start.HasValue)
                 {
-                    primitiveBatch.DrawSolidSphere(new Vector3(pathGraph.SegmentToPosition(start.Value.X, start.Value.Y), 0), 0.5f, 4, null, Color.Honeydew);
+                    primitiveBatch.DrawSolidSphere(new Vector3(pathGraph.IndexToPosition(start.Value), 0), 0.5f, 4, null, Color.Honeydew);
                 }
                 
                 // Draw path
                 for (int i = 0; i < path.Count - 1; i++)
                 {
-                    Vector3 point1 = new Vector3(pathGraph.SegmentToPosition(path[i].X, path[i].Y), 0);
-                    Vector3 point2 = new Vector3(pathGraph.SegmentToPosition(path[i + 1].X, path[i + 1].Y), 0);
+                    Vector3 point1 = new Vector3(pathGraph.SegmentToPosition(path[i] % pathGraph.SegmentCountX, path[i] / pathGraph.SegmentCountX), 0);
+                    Vector3 point2 = new Vector3(pathGraph.SegmentToPosition(path[i + 1] % pathGraph.SegmentCountX, path[i + 1] / pathGraph.SegmentCountX), 0);
 
                     primitiveBatch.DrawLine(point1, point2, null, Color.GreenYellow);
                 }

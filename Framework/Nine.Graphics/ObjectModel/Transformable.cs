@@ -138,5 +138,15 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public virtual void CopyTo(object[] array, int startIndex) { }
         #endregion
+
+        #region ToString
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return Name != null ? Name.ToString() : base.ToString();
+        }
+        #endregion
     }
 }

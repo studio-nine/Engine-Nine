@@ -264,7 +264,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.WriteObject(value.Texture);
             output.Write(value.VertexColorEnabled);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -305,7 +305,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.VertexColorEnabled);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -338,7 +338,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.WriteObject(value.Effect);
             output.WriteObject(value.Parameters);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -374,7 +374,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.VertexColorEnabled);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -413,7 +413,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.WriteObject(value.Texture);
             output.Write(value.IsTransparent);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -446,7 +446,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.WriteObject(value.Effect);
             output.WriteObject(value.EffectParts);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -486,7 +486,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
             output.Write(value.IsTransparent);
             output.Write(value.SkinningEnabled);
             output.Write(value.DepthAlphaEnabled);
-            output.Write(value.DoubleSided);
+            output.Write(value.TwoSided);
             EndWrite(output, value);
         }
 
@@ -1953,6 +1953,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             output.WriteObject(value.BlendState);
             output.Write(value.DepthSortEnabled);
             output.Write(value.ReferenceAlpha);
+            output.Write(value.SoftParticleEnabled);
             output.WriteObject(value.Emitter);
             {
                 output.Write(value.Controllers.Count);

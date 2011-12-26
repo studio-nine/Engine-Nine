@@ -53,18 +53,20 @@ namespace Nine.Graphics.ObjectModel.Test
                 DrawableSurface surface = new DrawableSurface(
                     GraphicsDevice, new Heightmap(1, 2, 2), 2);
 
-                surface.Position = new Vector3(1, 1, 0);
-
-                Assert.AreEqual<Vector3>(new Vector3(2, 2, 0), surface.Size);
-
-                Assert.AreEqual<BoundingBox>(
-                    new BoundingBox(new Vector3(1, 1, 0), new Vector3(3, 3, 0)),
-                    surface.BoundingBox);
-
                 Assert.AreEqual<int>(1, surface.PatchCountX);
                 Assert.AreEqual<int>(1, surface.PatchCountY);
                 Assert.AreEqual<int>(1, surface.Patches.Count);
                 Assert.AreEqual<int>(2, surface.PatchSegmentCount);
+                Assert.AreEqual<Vector3>(new Vector3(2, 2, 0), surface.Size);
+                Assert.AreEqual<BoundingBox>(surface.BoundingBox, surface.Patches[0].BoundingBox);
+
+                surface.Position = new Vector3(1, 1, 0);
+                
+                Assert.AreEqual<BoundingBox>(
+                    new BoundingBox(new Vector3(1, 1, 0), new Vector3(3, 3, 0)),
+                    surface.BoundingBox);
+
+                Assert.AreEqual<BoundingBox>(surface.BoundingBox, surface.Patches[0].BoundingBox);
                                 
                 Game.Exit();
             };

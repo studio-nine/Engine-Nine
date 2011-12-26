@@ -90,9 +90,11 @@
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Effects\Materials.cs" />
+    <Compile Include="GraphicsComponent.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\Camera.cs" />
+    <Compile Include="ObjectModel\Container.cs" />
     <Compile Include="ObjectModel\DrawableModel.cs" />
     <Compile Include="ObjectModel\DrawableModelPart.cs" />
     <Compile Include="ObjectModel\DrawableParticleEffect.cs" />
@@ -121,6 +123,10 @@
     <Compile Include="Lights.cs" />
     <Compile Include="BlendStateReader.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
+    <Compile Include="ParticleEffects\SoftParticleEffect.cs" />
+    <Compile Include="ParticleEffects\SoftParticleEffect.Designer.cs">
+      <DependentUpon>SoftParticleEffect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />
     <Compile Include="Primitives\Cube.cs" />
@@ -271,14 +277,6 @@
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
-    <Compile Include="ParticleEffects\ParticleSystemEffect.cs">
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ParticleEffects\ParticleSystemEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="TextureList.cs" />
     <Compile Include="EffectExtensions.cs" />
     <Compile Include="ParticleEffects\ParticleBatch.cs" />
@@ -298,6 +296,7 @@
     <Compile Include="VertexPositionNormalTangentBinormalTexture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -312,9 +311,7 @@
       <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
     <None Include="Nine.snk" />
-    <None Include="ParticleEffects\ParticleSystemEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-    </None>
+    <None Include="ParticleEffects\SoftParticleEffect.fx" />
     <None Include="ScreenEffects\Adoption.fx">
       <Generator>EffectCustomTool</Generator>
     </None>

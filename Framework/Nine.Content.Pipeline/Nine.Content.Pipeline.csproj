@@ -87,6 +87,7 @@
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -128,7 +129,10 @@
     <Compile Include="Animations\AvatarAnimationContent.cs" />
     <Compile Include="Components\GraphicsComponentContent.cs" />
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\ScreenEffects\ScreenEffectContent.cs" />
+    <Compile Include="Navigation\PathGridBuilder.cs" />
+    <Compile Include="Navigation\PathGridContent.cs" />
     <Compile Include="SelfProcessAttribute.cs" />
     <Compile Include="Design\CurveConverter.cs" />
     <Compile Include="Graphics\ObjectModel\DrawableParticleEffectContent.cs" />
@@ -185,6 +189,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="WorldPart.cs" />
     <Compile Include="StitchUp\FragmentImporter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -370,6 +375,7 @@
     <Compile Include="StitchUp\StitchedEffectImporter.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transform.cs" />
     <Compile Include="TreeWriter.cs" />
     <Compile Include="Graphics\TextureListContent.cs" />
     <Compile Include="Importers\SequentialTextureListImporter.cs" />
@@ -386,13 +392,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nine.Game\Nine.Game.csproj">
-      <Project>{EDCFE2CE-B346-433F-B214-B47753D5B793}</Project>
-      <Name>Nine.Game</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
       <Project>{9436AF22-6937-4BEE-887E-C93A4692BDD7}</Project>
       <Name>Nine.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nine.Navigation\Nine.Navigation.csproj">
+      <Project>{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}</Project>
+      <Name>Nine.Navigation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nine\Nine.csproj">
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>

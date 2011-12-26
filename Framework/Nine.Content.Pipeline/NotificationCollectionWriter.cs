@@ -29,7 +29,7 @@ namespace Nine.Content
         {
             output.Write(value.Count);
             foreach (var item in value)
-                output.WriteObject(item);
+                output.WriteObject<T>(item);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

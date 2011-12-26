@@ -75,6 +75,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -112,6 +113,17 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="GraphicsComponent.cs" />
+    <Compile Include="ObjectModel\Container.cs" />
+    <Compile Include="ParticleEffects\SoftParticleEffect.cs">
+      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="ParticleEffects\SoftParticleEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="WorldExtensions.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Effects\DepthEffect.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -264,11 +276,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ObjectModel\Transformable.cs" />
-    <Compile Include="ParticleEffects\ParticleSystemEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />
     <Compile Include="Primitives\Cube.cs" />
@@ -452,9 +459,6 @@
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
-    <Compile Include="ParticleEffects\ParticleSystemEffect.cs">
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="TextureList.cs" />
     <Compile Include="Effects\DecalEffect.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
@@ -578,9 +582,9 @@
     <None Include="HLSL\SpriteEffect.fx" />
     <None Include="HLSL\Structures.fxh" />
     <None Include="Nine.snk" />
-    <None Include="ParticleEffects\ParticleSystemEffect.fx">
+    <None Include="ParticleEffects\SoftParticleEffect.fx">
       <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ParticleSystemEffect.Designer.cs</LastGenOutput>
+      <LastGenOutput>SoftParticleEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="ScreenEffects\Adoption.fx">
       <Generator>EffectCustomTool</Generator>

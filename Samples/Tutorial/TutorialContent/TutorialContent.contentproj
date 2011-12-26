@@ -35,7 +35,6 @@
     <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9" />
     <Reference Include="Nine.Content.Pipeline, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
-    <Reference Include="Nine.Game, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -164,14 +163,6 @@
       <Importer>SequentialTextureListImporter</Importer>
       <Processor>SequentialTextureListProcessor</Processor>
     </Compile>
-    <None Include="..\..\Content\Worlds\Scene.xaml">
-      <Link>Scene.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <Name>Scene</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Models\AnimatedCube\AnimatedCube.fbx">
@@ -261,13 +252,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\9. Hello World.xaml">
+    <Compile Include="Tutorials\9. Hello World.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>9. Hello World</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+      <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\7. Particle System.xaml">
@@ -322,6 +314,12 @@
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TutorialData\TutorialData.csproj">
+      <Project>{EE06D957-65AF-441C-AB8F-4FD2404DC527}</Project>
+      <Name>TutorialData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

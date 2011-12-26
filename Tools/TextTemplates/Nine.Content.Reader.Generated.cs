@@ -99,6 +99,28 @@ namespace Nine
         }
     }
     /// <summary>
+    /// Content reader for <c>GridSceneManager`1</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class GridSceneManagerReader<T> : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.GridSceneManager<T>>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager<T> existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager<T> existingInstance);
+        
+        protected override Nine.GridSceneManager<T> Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager<T> existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            existingInstance.SegmentCountX = input.ReadInt32();
+            existingInstance.SegmentCountY = input.ReadInt32();
+            existingInstance.Position = input.ReadVector2();
+            existingInstance.Size = input.ReadVector2();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>LinearCurve</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -160,6 +182,32 @@ namespace Nine
             {
                 existingInstance = new SmoothCurve();
             }
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>UniformGrid</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class UniformGridReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.UniformGrid>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.UniformGrid existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.UniformGrid existingInstance);
+        
+        protected override Nine.UniformGrid Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.UniformGrid existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new UniformGrid();
+            }
+            existingInstance.SegmentCountX = input.ReadInt32();
+            existingInstance.SegmentCountY = input.ReadInt32();
+            existingInstance.Position = input.ReadVector2();
+            existingInstance.Size = input.ReadVector2();
             EndRead(input, existingInstance);
             return existingInstance;
         }

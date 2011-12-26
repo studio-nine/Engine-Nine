@@ -31,6 +31,8 @@ namespace Nine.Animations.Test
 
             protected override void OnSeek(int startFrame, int endFrame, float percentage)
             {
+                if (!(startFrame >= 0 && startFrame < TotalFrames))
+                    throw new Exception();
                 Assert.IsTrue(percentage >= 0 && percentage <= 1);
                 Assert.IsTrue(startFrame >= 0 && startFrame < TotalFrames);
                 Assert.IsTrue(endFrame >= 0 && endFrame < TotalFrames);

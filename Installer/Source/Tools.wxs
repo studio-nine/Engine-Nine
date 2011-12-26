@@ -9,11 +9,12 @@
         <Component Id="EffectCustomTool" Guid="FA353E83-79DE-4269-B25B-0C238EB07619" DiskId="1">
           <File Id="Nine.dll" Name="Nine.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.dll" />
           <File Id="Nine.Graphics.dll" Name="Nine.Graphics.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Graphics.dll" />
-          <!--
-          <File Id="Nine.Tools.EffectCustomTool.dll" KeyPath="yes" Name="Nine.Tools.EffectCustomTool.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Tools.EffectCustomTool.dll" />
-          -->
+          <File Id="Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Navigation.dll" />
+          <File Id="Nine.Content.Pipeline.Silverlight.dll" Name="Nine.Content.Pipeline.Silverlight.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Content.Pipeline.Silverlight.dll" />
+          <File Id="Nine.Content.Pipeline.Silverlight.ShaderCompiler.dll" Name="Nine.Content.Pipeline.Silverlight.ShaderCompiler.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Nine.Content.Pipeline.Silverlight.ShaderCompiler.dll" />
           <File Id="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" Name="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" Source="$(sys.SOURCEFILEDIR)../../Bin/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" />
           <File Id="ScreenshotCapturer.exe" Name="ScreenshotCapturer.exe" Source="$(sys.SOURCEFILEDIR)../../Bin/ScreenshotCapturer.exe" />
+          <File Id="PathGraphBuilder.exe" Name="PathGraphBuilder.exe" Source="$(sys.SOURCEFILEDIR)../../Bin/PathGraphBuilder.exe" />
         </Component>
 
         <Component Id="EffectCustomToolVPDRegistry" Guid="2841C602-F52D-4099-A94C-3DE414E9AB50" DiskId="1">

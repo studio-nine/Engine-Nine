@@ -110,12 +110,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShadowEffect.fx</DependentUpon>
     </Compile>
+    <Compile Include="GraphicsComponent.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\AmbientLight.HiDef.cs">
       <DependentUpon>AmbientLight.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\Camera.cs" />
+    <Compile Include="ObjectModel\Container.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
     <Compile Include="ObjectModel\DirectionalLight.HiDef.cs">
       <DependentUpon>DirectionalLight.cs</DependentUpon>
@@ -214,6 +216,14 @@
     </Compile>
     <Compile Include="ObjectModel\Transformable.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
+    <Compile Include="ParticleEffects\SoftParticleEffect.cs">
+      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
+    </Compile>
+    <Compile Include="ParticleEffects\SoftParticleEffect.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
+    </Compile>
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />
     <Compile Include="Primitives\Cube.cs" />
@@ -420,14 +430,6 @@
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
-    <Compile Include="ParticleEffects\ParticleSystemEffect.cs">
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ParticleEffects\ParticleSystemEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParticleSystemEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="TextureList.cs" />
     <Compile Include="Effects\DecalEffect.cs">
       <DependentUpon>DecalEffect.fx</DependentUpon>
@@ -454,6 +456,7 @@
       <DependentUpon>DepthEffect.fx</DependentUpon>
     </Compile>
     <Compile Include="Effects\ShadowMap.cs" />
+    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -522,8 +525,9 @@
       <LastGenOutput>SpotLightEffect1.Designer.cs</LastGenOutput>
     </None>
     <None Include="Nine.snk" />
-    <None Include="ParticleEffects\ParticleSystemEffect.fx">
+    <None Include="ParticleEffects\SoftParticleEffect.fx">
       <Generator>EffectCustomTool</Generator>
+      <LastGenOutput>SoftParticleEffect.Designer.cs</LastGenOutput>
     </None>
     <None Include="ScreenEffects\Adoption.fx">
       <Generator>EffectCustomTool</Generator>

@@ -391,6 +391,15 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
+        /// Finds all the object including child object that is of type T.
+        /// </summary>
+        public void FindAll<T>(ICollection<T> result) where T : class
+        {
+            for (int i = 0; i < topLevelObjects.Count; i++)
+                ContainerTraverser.Traverse(topLevelObjects[i], result);
+        }
+
+        /// <summary>
         /// Finds all the objects of type T with the specified name.
         /// </summary>
         public void FindAll<T>(string name, ICollection<T> result) where T : class
@@ -496,10 +505,10 @@ namespace Nine.Graphics.ObjectModel
         /// intersects the specified bounding sphere.
         /// </summary>
         /// <remarks>
-        /// When an object tree is added to the scene using <see cref="Scene.Add"/>, 
-        /// this find method will set the <see cref="FindResult.OriginalTarget"> property to the original 
+        /// When an object tree is added to the scene using Scene.Add, 
+        /// this find method will set the FindResult.OriginalTarget property to the original 
         /// <see cref="ISpatialQueryable"/> for the intersection test against the input bounding volumn.
-        /// It will set the <see cref="FindResult.Target"/> property to the containing object that is added
+        /// It will set the FindResult.Target property to the containing object that is added
         /// to the scene.
         /// </remarks>
         public void FindAll(ref BoundingSphere boundingSphere, ICollection<FindResult> result)
@@ -534,24 +543,68 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region Bounds
+        /// <summary>
+        /// Computes the bounds of the scene.
+        /// </summary>
+        public BoundingBox ComputeBounds()
+        {
+            var boundableObjects = new List<IBoundable>(topLevelObjects.Count);
+            FindAll(boundableObjects);
+            return BoundingBoxExtensions.CreateMerged(boundableObjects.Select(obj => obj.BoundingBox));
+        }
+
+        /// <summary>
+        /// Computes the bounds of all the object of type T in the scene.
+        /// </summary>
+        public BoundingBox ComputeBounds<T>() where T : class
+        {
+            return ComputeBounds<T>(null);
+        }
+
+        /// <summary>
+        /// Computes the bounds of all the object of that matches the specified predicate in the scene.
+        /// </summary>
+        public BoundingBox ComputeBounds<T>(Predicate<T> predicate) where T : class
+        {
+            if (predicate == null)
+                predicate = obj => true;
+
+            var boundableObjects = new List<T>(topLevelObjects.Count);
+            FindAll<T>(boundableObjects);
+
+            return BoundingBoxExtensions.CreateMerged(
+                    boundableObjects.Where(obj => predicate(obj)).Select(
+                        obj => ContainerTraverser.FindParentContainer<IBoundable>(obj))
+                            .OfType<IBoundable>().Select(b => b.BoundingBox));
+        }
+        #endregion
+
         #region Draw
         /// <summary>
-        /// Draws all the object managed by this renderer.
+        /// Updates and draws the scene under the current camera and graphics setting.
         /// </summary>
         public void Draw(TimeSpan elapsedTime)
         {
+            UpdateCamera(elapsedTime);
+            Draw(elapsedTime, Camera.View, Camera.Projection);
+        }
+
+        /// <summary>
+        /// Updates and draws the scene with the specified camera settings.
+        /// </summary>
+        public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection)
+        {
             Statistics.Reset();
+            Settings.Update();
 
-            GraphicsContext.View = Camera.View;
-            GraphicsContext.Projection = Camera.Projection;
+            GraphicsContext.View = view;
+            GraphicsContext.Projection = projection;
             GraphicsContext.ElapsedTime = elapsedTime;
-
-            Settings.Update(); 
-
-            UpdateCamera(elapsedTime);            
+            
             UpdateVisibleDrawablesAndLightsInViewFrustum();
             UpdateObjects(elapsedTime);
-            
+
             BeginDraw();
 
             UpdateFog();
@@ -649,6 +702,38 @@ namespace Nine.Graphics.ObjectModel
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
         }
 
+        /// <summary>
+        /// Updates and draws all the drawable objects in the scene with the specified camera setting using the
+        /// target effect.
+        /// </summary>
+        public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection, Effect effect)
+        {
+            if (effect == null)
+                throw new ArgumentNullException("effect");
+
+            Statistics.Reset();
+            Settings.Update();
+
+            GraphicsContext.View = view;
+            GraphicsContext.Projection = projection;
+            GraphicsContext.ElapsedTime = elapsedTime;
+
+            UpdateVisibleDrawablesAndLightsInViewFrustum();
+            UpdateObjects(elapsedTime);
+
+            BeginDraw();
+
+            UpdateFog();
+
+            GraphicsDevice.Clear(Settings.BackgroundColor);
+
+            BeginDraw();
+            GraphicsContext.Begin();
+            DrawUsingEffect(drawablesInViewFrustum, effect);
+            GraphicsContext.End();
+            EndDraw();
+        }
+
         private void UpdateCamera(TimeSpan elapsedTime)
         {
             IUpdateable updateable;
@@ -717,8 +802,7 @@ namespace Nine.Graphics.ObjectModel
         private void UpdateObjects(TimeSpan elapsedTime)
         {
             updateableObjects.Clear();
-            for (int i = 0; i < topLevelObjects.Count; i++)
-                ContainerTraverser.Traverse<IUpdateable>(topLevelObjects[i], updateableObjects);
+            FindAll(updateableObjects);
             for (int i = 0; i < updateableObjects.Count; i++)
                 updateableObjects[i].Update(elapsedTime);
         }
@@ -729,8 +813,7 @@ namespace Nine.Graphics.ObjectModel
             for (int i = 0; i < 16; i++)
                 GraphicsDevice.Textures[i] = null;
             
-            for (int i = 0; i < topLevelObjects.Count; i++)
-                ContainerTraverser.Traverse<IDrawableObject>(topLevelObjects[i], drawableObjects);
+            FindAll<IDrawableObject>(drawableObjects);
             for (int i = 0; i < drawableObjects.Count; i++)
                 drawableObjects[i].BeginDraw(GraphicsContext);
         }
@@ -747,6 +830,14 @@ namespace Nine.Graphics.ObjectModel
             for (int i = 0; i < drawables.Count; i++)
             {
                 drawables[i].Draw(GraphicsContext);
+            }
+        }
+
+        private void DrawUsingEffect(List<IDrawableObject> drawables, Effect effect)
+        {
+            for (int i = 0; i < drawables.Count; i++)
+            {
+                drawables[i].Draw(GraphicsContext, effect);
             }
         }
 
@@ -833,6 +924,8 @@ namespace Nine.Graphics.ObjectModel
                 }
             }
             deferredEffect.LightTexture = graphicsBuffer.LightBuffer;
+
+            GraphicsContext.ParticleBatch.DepthBuffer = graphicsBuffer.DepthBuffer;
 
             if (screenEffect != null)
             {
@@ -1199,7 +1292,7 @@ namespace Nine.Graphics.ObjectModel
                     continue;
 
                 var lightingData = lightable.LightingData as LightingData;
-                if (lightable != null)
+                if (lightingData != null)
                 {
                     if (lightingData.MultiPassShadows != null)
                         lightingData.MultiPassShadows.Clear();

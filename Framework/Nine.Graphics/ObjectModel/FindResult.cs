@@ -71,17 +71,39 @@ namespace Nine.Graphics.ObjectModel
             return false;
         }
 
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="value1">The value1.</param>
+        /// <param name="value2">The value2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static bool operator ==(FindResult value1, FindResult value2)
         {
             return ((value1.Target == value2.Target) && (value1.OriginalTarget == value2.OriginalTarget) &&
                    (value1.Distance == value2.Distance) && (value1.ContainmentType == value2.ContainmentType));
         }
 
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="value1">The value1.</param>
+        /// <param name="value2">The value2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static bool operator !=(FindResult value1, FindResult value2)
         {
             return !(value1 == value2);
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             return Target.GetHashCode() + OriginalTarget.GetHashCode();

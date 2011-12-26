@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -86,6 +88,7 @@
     <Compile Include="Graphics\ObjectModel\DrawableModelTest.cs" />
     <Compile Include="Graphics\ObjectModel\SceneTest.cs" />
     <Compile Include="Graphics\ObjectModel\RendererTest.cs" />
+    <Compile Include="Navigation\GraphTest.cs" />
     <Compile Include="Navigation\Steering\WallAvoidanceTest.cs" />
     <Compile Include="Navigation\Steering\SteerableTest.cs" />
     <Compile Include="OctreeObjectManagerTest.cs" />
@@ -103,6 +106,7 @@
     <Compile Include="TriangleTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Navigation\HardToGet.astar" />
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
