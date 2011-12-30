@@ -374,7 +374,7 @@ namespace Nine.Graphics.ObjectModel
     class DrawableSurfacePatch<T> : DrawableSurfacePatch where T: struct, IVertexType
     {
         public DrawableSurfaceVertexConverter<T> FillVertex;
-        private static WeakReference<T[]> WeakVertices = new WeakReference<T[]>(null);
+        private static WeakReference<T[]> WeakVertices;
 
         internal DrawableSurfacePatch(DrawableSurface surface, int xPatch, int yPatch, int patchSegmentCount)
             : base(surface, xPatch, yPatch, patchSegmentCount)
@@ -397,9 +397,17 @@ namespace Nine.Graphics.ObjectModel
             VertexCount = (SegmentCount + 1) * (SegmentCount + 1);
             int indexCount = 6 * SegmentCount * SegmentCount;
 
-            T[] vertices = WeakVertices.Target;
+            T[] vertices = null;
+            if (WeakVertices == null)
+            {
+                // Cannot initialize weak reference to null in silverlight
+                WeakVertices = new WeakReference<T[]>(vertices = new T[VertexCount]);
+            }
+            vertices = WeakVertices.Target;
             if (vertices == null || vertices.Length < VertexCount)
+            {
                 WeakVertices.Target = vertices = new T[VertexCount];
+            }
 
             // Fill vertices
             int i = 0;

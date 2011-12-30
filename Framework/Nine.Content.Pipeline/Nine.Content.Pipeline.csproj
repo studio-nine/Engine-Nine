@@ -130,6 +130,7 @@
     <Compile Include="Components\GraphicsComponentContent.cs" />
     <Compile Include="ContentReference.cs" />
     <Compile Include="Design\TransformConverter.cs" />
+    <Compile Include="Graphics\Effects\LeveledMaterialContent.cs" />
     <Compile Include="Graphics\ScreenEffects\ScreenEffectContent.cs" />
     <Compile Include="Navigation\PathGridBuilder.cs" />
     <Compile Include="Navigation\PathGridContent.cs" />

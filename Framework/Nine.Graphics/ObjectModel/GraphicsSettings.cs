@@ -83,6 +83,11 @@ namespace Nine.Graphics.ObjectModel
         public bool DefaultDebugControlEnabled { get; set; }
 
         /// <summary>
+        /// Gets or sets the overal material quanlity for each leveled material in the scene.
+        /// </summary>
+        public float MaterialQuality { get; set; }
+
+        /// <summary>
         /// Gets the debug settings.
         /// </summary>
         public GraphicsDebugSetting Debug { get; private set; }
@@ -98,6 +103,7 @@ namespace Nine.Graphics.ObjectModel
             ScreenEffectEnabled = true;
             PreferHighDynamicRangeLighting = true;
             ShadowMapResolution = 1024;
+            MaterialQuality = 1;
             BackgroundColor = Color.Black;
             Debug = new GraphicsDebugSetting();
         }

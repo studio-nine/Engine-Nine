@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Graphics
 {
     /// <summary>
@@ -199,6 +200,11 @@ namespace Nine.Graphics
             return rightVector + uv + uuv;
 
         }
+
+        /// <summary>
+        /// Gets the optional viewport of this cameara.
+        /// </summary>
+        public Viewport? Viewport { get; set; }
 
         /// <summary>
         /// Gets or Sets camera position.

@@ -428,6 +428,44 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
     }
     /// <summary>
+    /// Content writer for <c>LeveledMaterial</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class LeveledMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LeveledMaterialContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LeveledMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LeveledMaterialContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LeveledMaterialContent value)
+        {
+            BeginWrite(output, value);
+            {
+                output.Write(value.MaterialLevels.Count);
+                for (var i = 0; i < value.MaterialLevels.Count; i++)
+                    output.WriteObject(value.MaterialLevels[i]);
+            }
+            output.Write(value.LevelOfDetailStart);
+            output.Write(value.LevelOfDetailEnd);
+            output.Write(value.MaterialQuality);
+            output.Write(value.DepthAlphaEnabled);
+            output.Write(value.TwoSided);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.LeveledMaterialReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.LeveledMaterial, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>LinkedMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1310,6 +1348,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.Write(value.MaxReceivedShadows);
             output.Write(value.MultiPassShadowEnabled);
             output.WriteObject(value.ModelParts);
+            output.WriteObject(value.SharedSkeleton);
             output.WriteObject(value.Name);
             output.WriteObject(value.Tag);
             output.Write(value.Transform);
@@ -1662,6 +1701,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.WriteObject(value.Transform);
             output.WriteObject(value.TargetBone);
             output.Write(value.UseBoneScale);
+            output.Write(value.ShareSkeleton);
             EndWrite(output, value);
         }
 

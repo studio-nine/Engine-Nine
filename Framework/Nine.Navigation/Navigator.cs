@@ -288,6 +288,9 @@ namespace Nine.Navigation
         {
             Vector2 target = new Vector2(position.X, position.Y);
 
+            if (Vector2.DistanceSquared(target, steerable.Position) < SoftBoundingRadius * SoftBoundingRadius)
+                return;
+
             steerable.Target = target;
             arrive.Enabled = true;
             steerableAvoidance.Enabled = true;
@@ -297,8 +300,11 @@ namespace Nine.Navigation
                 steerable.Forward = Vector2.Normalize(target - steerable.Position);
             }
 
-            State = NavigatorState.Moving;
-            OnStarted();
+            if (State == NavigatorState.Stopped)
+            {
+                State = NavigatorState.Moving;
+                OnStarted();
+            }
         }
 
         /// <summary>
@@ -320,7 +326,7 @@ namespace Nine.Navigation
         /// </summary>
         public void Move(Vector3 direction)
         {
-            throw new NotImplementedException();
+            MoveTo(Position + direction * SoftBoundingRadius);
         }
 
         /// <summary>

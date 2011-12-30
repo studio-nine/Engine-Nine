@@ -22,6 +22,9 @@ using Nine.Graphics.Effects;
 #endif
 using Nine.Components;
 using Nine.Graphics.ObjectModel;
+#if SILVERLIGHT
+using Keys = System.Windows.Input.Key;
+#endif
 #endregion
 
 namespace TerrainSample
@@ -42,17 +45,19 @@ namespace TerrainSample
 
         public TerrainGame()
         {
+#if !SILVERLIGHT
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 900;
             graphics.PreferredBackBufferHeight = 600;
 
+            Window.AllowUserResizing = true;
+#endif
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Window.AllowUserResizing = true;
         }
 
 
@@ -64,7 +69,7 @@ namespace TerrainSample
         {
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !SILVERLIGHT
             Components.Add(new ScreenshotCapturer(GraphicsDevice));
 #endif
 
@@ -115,7 +120,7 @@ namespace TerrainSample
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkSlateGray);
+            GraphicsDevice.Clear(new Color(47, 79, 79, 255));
 
             // Update terrain level of detail
             Vector3 eyePosition = Matrix.Invert(camera.View).Translation;
@@ -139,7 +144,7 @@ namespace TerrainSample
             modelBatch.End();
 
             primitiveBatch.Begin(camera.View, camera.Projection);
-            primitiveBatch.DrawSolidSphere(new BoundingSphere(pickedPosition, 1), 5, null, Color.Red);
+            primitiveBatch.DrawSolidSphere(new BoundingSphere(pickedPosition, 1), 5, null, new Color(1, 0, 0));
             primitiveBatch.End();
 
             base.Draw(gameTime);

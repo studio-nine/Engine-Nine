@@ -46,6 +46,8 @@ namespace Nine.Graphics
         public Input Input { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
 
+        public Viewport? Viewport { get; set; }
+
         public ScreenCameraCoordinate CoordinateType { get; set; }
 
         public float Zoom { get; set; }

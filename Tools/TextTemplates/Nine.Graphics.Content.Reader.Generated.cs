@@ -383,6 +383,40 @@ namespace Nine.Graphics.Effects
     }
 #if !WINDOWS_PHONE
     /// <summary>
+    /// Content reader for <c>LeveledMaterial</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class LeveledMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.LeveledMaterial>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.LeveledMaterial existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.LeveledMaterial existingInstance);
+        
+        protected override Nine.Graphics.Effects.LeveledMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.LeveledMaterial existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+                existingInstance = new LeveledMaterial();
+            }
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.MaterialLevels.Add(input.ReadObject<Nine.Graphics.Effects.Material>());
+            }
+            existingInstance.LevelOfDetailStart = input.ReadSingle();
+            existingInstance.LevelOfDetailEnd = input.ReadSingle();
+            existingInstance.MaterialQuality = input.ReadSingle();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
     /// Content reader for <c>LinkedMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -1177,6 +1211,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.MaxReceivedShadows = input.ReadInt32();
             existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
             existingInstance.modelPartsSerializer = input.ReadObject<Nine.Graphics.ObjectModel.DrawableModelPart[]>();
+            existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Transform = input.ReadMatrix();
@@ -1489,6 +1524,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.TargetBone = input.ReadObject<System.String>();
             existingInstance.UseBoneScale = input.ReadBoolean();
+            existingInstance.ShareSkeleton = input.ReadBoolean();
             EndRead(input, existingInstance);
             return existingInstance;
         }

@@ -338,6 +338,16 @@ namespace Nine.Graphics.ObjectModel
 
         #region Find
         /// <summary>
+        /// Creates a pick ray based on the current camera.
+        /// </summary>
+        public Ray CreatePickRay(int x, int y)
+        {
+            if (Camera.Viewport == null)
+                return GraphicsDevice.Viewport.CreatePickRay(x, y, Camera.View, Camera.Projection);
+            return Camera.Viewport.Value.CreatePickRay(x, y, Camera.View, Camera.Projection);
+        }
+
+        /// <summary>
         /// Finds the first object of type T with the specified name.
         /// </summary>
         public T Find<T>(string name) where T : class
@@ -428,7 +438,7 @@ namespace Nine.Graphics.ObjectModel
         {
             flattenedQuery.FindAll(ref boundingSphere, result);
         }
-        
+
         /// <summary>
         /// Finds all the objects that intersects the specified ray.
         /// </summary>
@@ -780,6 +790,22 @@ namespace Nine.Graphics.ObjectModel
                         hasShadowReceiversInViewFrustum = true;
 
                     drawablesInViewFrustum.Add(drawable);
+
+                    // Update material level of detail
+                    var leveledMaterial = drawable.Material as LeveledMaterial;
+                    if (leveledMaterial != null)
+                    {
+                        var transformable = ContainerTraverser.FindParentContainer<Transformable>(drawable);
+                        if (transformable == null)
+                        {
+                            throw new InvalidOperationException("Cannot find a parent with a transform while "
+                                                              + "updating the leveled material.");
+                        }
+
+                        leveledMaterial.MaterialQuality = Settings.MaterialQuality;
+                        leveledMaterial.UpdateLevelOfDetail(Vector3.Distance(
+                            transformable.AbsoluteTransform.Translation, GraphicsContext.EyePosition));
+                    }
                 }
             }
 

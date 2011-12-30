@@ -343,7 +343,30 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the skeleton of this model.
         /// </summary>
-        public Skeleton Skeleton { get; private set; }
+        public Skeleton Skeleton
+        {
+            get { return sharedSkeleton ?? skeleton; }
+        }
+        private Skeleton skeleton;
+
+        /// <summary>
+        /// Gets or sets the shared skeleton.
+        /// When a valid shared skeleton is set, the model will be rendered using this shared skeleton.
+        /// </summary>
+        public Skeleton SharedSkeleton
+        {
+            get { return sharedSkeleton; }
+            set
+            {
+                if (sharedSkeleton != value)
+                {
+                    if (value != null && value.BoneTransforms.Length != skeleton.BoneTransforms.Length)
+                        throw new InvalidOperationException(Strings.SkeletonMismatch);
+                    sharedSkeleton = value;
+                }
+            }
+        }
+        private Skeleton sharedSkeleton;
 
         /// <summary>
         /// Gets a value indicating whether this instance is skinned.
@@ -411,7 +434,7 @@ namespace Nine.Graphics.ObjectModel
             boundingBox = orientedBoundingBox.CreateAxisAligned(AbsoluteTransform);
 
             // Initialize animations
-            Skeleton = new ModelSkeleton(model);
+            skeleton = new ModelSkeleton(model);
 
             var animationNames = model.GetAnimations();
             if (animationNames.Count > 0)
@@ -590,7 +613,9 @@ namespace Nine.Graphics.ObjectModel
         {
             if (animations != null)
             {
-                animations.Update(elapsedTime);
+                // Turn off the animation when skeleton is shared
+                if ((IsSkinned && sharedSkeleton == null) || !IsSkinned)
+                    animations.Update(elapsedTime);
                 boneTransformNeedUpdate = true;
             }
         }

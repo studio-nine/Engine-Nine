@@ -25,6 +25,11 @@ namespace Nine.Graphics
     public interface ICamera
     {
         /// <summary>
+        /// Gets the optional viewport of this cameara.
+        /// </summary>
+        Viewport? Viewport { get; }
+
+        /// <summary>
         /// Gets the camera view matrix
         /// </summary>
         Matrix View { get; }
@@ -43,6 +48,7 @@ namespace Nine.Graphics
         public Input Input { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
 
+        public Viewport? Viewport { get; set; }
         public float Radius { get; set; }
         public float MinRadius { get; set; }
         public float MaxRadius { get; set; }

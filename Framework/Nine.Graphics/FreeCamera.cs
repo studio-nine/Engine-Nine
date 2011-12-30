@@ -40,6 +40,7 @@ namespace Nine.Graphics
         Vector3 position;
         Vector2 mouseDown;
 
+        public Viewport? Viewport { get; set; }
         public Vector3 Angle { get { return angle; } set { angle = value; } }
         public float Speed { get; set; }
         public float TurnSpeed { get; set; }

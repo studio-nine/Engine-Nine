@@ -78,4 +78,19 @@
         </DrawableModelContent.ModelParts>
     </DrawableModelContent>
     
+    <!--
+        Leveled material provides the ability to adjust the material quality base on the distance between
+        the object and the camera. You can also control the overall material quality of the scene by
+        adjusting the Scene.Settings.MaterialQuality property.
+    -->
+    <DrawableModelContent Model="..\Models\Tank" Position="30, 20, 0">
+        <LeveledMaterialContent LevelOfDetailStart="10" LevelOfDetailEnd="100">
+            
+            <!-- Material levels are added from the lowest quality to the highest quality  -->
+            <BasicMaterialContent TextureEnabled="False" />
+            <BasicMaterialContent TextureEnabled="True" />
+            
+        </LeveledMaterialContent>
+    </DrawableModelContent>
+    
 </SceneContent>

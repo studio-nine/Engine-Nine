@@ -53,6 +53,25 @@ namespace Nine
         private static List<Assembly> knownAssemblies = new List<Assembly>();
         private static List<Type> knownTypes = new List<Type>();
         private static Dictionary<Assembly, List<Type>> knownTypesDictionary = new Dictionary<Assembly, List<Type>>();
+
+        /// <summary>
+        /// Clones the specified prototype object using xml serialization.
+        /// </summary>
+        internal static object Clone(object prototype)
+        {
+            // Clone using Xml serialization
+            if (SerializationStream == null)
+                SerializationStream = new MemoryStream();
+            
+            SerializationStream.Seek(0, SeekOrigin.Begin);
+            var serializer = CreateSerializer(prototype.GetType());
+            serializer.Serialize(SerializationStream, prototype);
+            var position = SerializationStream.Position;
+            SerializationStream.Seek(0, SeekOrigin.Begin);   
+            return serializer.Deserialize(SerializationStream);
+        }
+
+        static MemoryStream SerializationStream;
         
         /// <summary>
         /// Gets the serializer for the specified type.

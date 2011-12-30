@@ -317,7 +317,7 @@ namespace Nine.Graphics.ObjectModel
 
             GraphicsDevice = graphics;
             LevelOfDetailStart = 100;
-            LevelOfDetailEnd = 200;
+            LevelOfDetailEnd = 1000;
             LightingEnabled = true;
             Visible = true;
             ReceiveShadow = true;

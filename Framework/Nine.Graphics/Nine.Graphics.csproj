@@ -113,6 +113,7 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="Effects\LeveledMaterial.cs" />
     <Compile Include="GraphicsComponent.cs" />
     <Compile Include="ObjectModel\Container.cs" />
     <Compile Include="ParticleEffects\SoftParticleEffect.cs">

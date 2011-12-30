@@ -86,8 +86,9 @@ namespace Nine
             height = 0;
             normal = Vector3.Zero;
 
-            foreach (ISurface surface in this)
+            for (int i = 0; i < Count; i++)
             {
+                var surface = this[i];
                 if (surface != null &&
                     surface.TryGetHeightAndNormal(position, out h, out v))
                 {

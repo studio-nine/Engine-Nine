@@ -14,7 +14,7 @@
     <AssemblyName>Silverlight3dWeb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
-    <SilverlightApplicationList>{5BA1BC8B-0637-4DB2-884A-CCB89B83F5CD}|..\DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitives %28Silverlight%29.csproj|ClientBin|False,{D3F2F276-CA8A-4372-999D-B6736D1A763B}|..\SkinnedModel\SkinnedModel\SkinnedModel %28Silverlight%29.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{5BA1BC8B-0637-4DB2-884A-CCB89B83F5CD}|..\DebuggerPrimitives\DebuggerPrimitives\DebuggerPrimitives %28Silverlight%29.csproj|ClientBin|False,{D3F2F276-CA8A-4372-999D-B6736D1A763B}|..\SkinnedModel\SkinnedModel\SkinnedModel %28Silverlight%29.csproj|ClientBin|False,{F1BDC03F-F79B-4BF9-8FDC-4DD021326125}|..\Terrain\Terrain\Terrain %28Silverlight%29.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,11 +54,14 @@
   <ItemGroup>
     <Content Include="ClientBin\DebuggerPrimitives.xap" />
     <Content Include="ClientBin\SkinnedModel.xap" />
+    <Content Include="ClientBin\Terrain.xap" />
     <Content Include="DebuggerPrimitives %28Silverlight%29TestPage.aspx" />
     <Content Include="DebuggerPrimitives %28Silverlight%29TestPage.html" />
     <Content Include="Silverlight.js" />
     <Content Include="SkinnedModel %28Silverlight%29TestPage.aspx" />
     <Content Include="SkinnedModel %28Silverlight%29TestPage.html" />
+    <Content Include="Terrain %28Silverlight%29TestPage.aspx" />
+    <Content Include="Terrain %28Silverlight%29TestPage.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

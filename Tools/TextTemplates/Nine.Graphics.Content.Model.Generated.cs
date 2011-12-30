@@ -1159,6 +1159,102 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         #endregion
     }
     /// <summary>
+    /// Content model for <c>LeveledMaterial</c>.
+    /// Defines a material with level of details.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Model.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.ContentSerializerRuntimeType("Nine.Graphics.Effects.LeveledMaterial, Nine.Graphics")]
+    public partial class LeveledMaterialContent : System.Xaml.IAttachedPropertyStore
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean DepthAlphaEnabled { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1000")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single LevelOfDetailEnd { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("100")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single LevelOfDetailStart { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Collections.Generic.List<System.Object> MaterialLevels { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("1")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Single MaterialQuality { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean TwoSided { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of <c>LeveledMaterialContent</c>.
+        /// </summary>
+        public LeveledMaterialContent()
+        {
+            DepthAlphaEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            LevelOfDetailEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1000");
+            LevelOfDetailStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
+            MaterialLevels = new System.Collections.Generic.List<System.Object>();
+            MaterialQuality = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1");
+            TwoSided = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
+            OnCreate();
+        }
+
+        partial void OnCreate();
+
+        #region IAttachedPropertyStore
+        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+
+        void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
+        {
+            attachedProperties.CopyTo(array, index);
+        }
+
+        int System.Xaml.IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties.Count; }
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            return attachedProperties.Remove(attachableMemberIdentifier);
+        }
+
+        void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            attachedProperties[attachableMemberIdentifier] = value;
+        }
+
+        bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+        #endregion
+    }
+    /// <summary>
     /// Content model for <c>LinkedMaterial</c>.
     /// Defines a material for linked effects.
     /// </summary>
@@ -3382,6 +3478,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// 
         /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Object SharedSkeleton { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Object Tag { get; set; }
 
         /// <summary>
@@ -3635,7 +3737,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
-        [System.ComponentModel.DefaultValue("200")]
+        [System.ComponentModel.DefaultValue("1000")]
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.Single LevelOfDetailEnd { get; set; }
 
@@ -3718,7 +3820,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         {
             CastShadow = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             LevelOfDetailEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
-            LevelOfDetailEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("200");
+            LevelOfDetailEnd = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("1000");
             LevelOfDetailStart = (System.Single)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Single)).ConvertFromInvariantString("100");
             LightingEnabled = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("True");
             PatchSegmentCount = (System.Int32)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Int32)).ConvertFromInvariantString("32");
@@ -4368,6 +4470,13 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// <summary>
         /// 
         /// </summary>
+        [System.ComponentModel.DefaultValue("False")]
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
+        public virtual System.Boolean ShareSkeleton { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         [Microsoft.Xna.Framework.Content.ContentSerializer(Optional = true)]
         public virtual System.String Source { get; set; }
 
@@ -4401,6 +4510,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         /// </summary>
         public TransformBindingContent()
         {
+            ShareSkeleton = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             UseBoneScale = (System.Boolean)System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Boolean)).ConvertFromInvariantString("False");
             OnCreate();
         }

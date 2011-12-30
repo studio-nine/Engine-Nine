@@ -162,6 +162,7 @@
     <Compile Include="Effects\EffectParts\TextureTransformEffectPart.cs" />
     <Compile Include="Effects\EffectParts\VertexTransformEffectPart.cs" />
     <Compile Include="Effects\EffectSemantics.cs" />
+    <Compile Include="Effects\LeveledMaterial.cs" />
     <Compile Include="Effects\LinkedEffect.cs" />
     <Compile Include="Effects\LinkedMaterial.cs" />
     <Compile Include="Effects\Materials.cs" />

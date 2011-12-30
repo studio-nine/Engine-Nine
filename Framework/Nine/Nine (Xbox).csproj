@@ -76,6 +76,7 @@
     <Compile Include="Input\InputComponent.cs" />
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\XnaInputSource.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="QuadTreeSceneManager.cs" />
     <Compile Include="Serialization.cs" />
     <Compile Include="TimeEventArgs.cs" />

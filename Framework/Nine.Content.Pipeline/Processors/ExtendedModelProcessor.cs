@@ -174,31 +174,34 @@ namespace Nine.Content.Pipeline.Processors
         /// <summary>
         /// Makes sure this mesh contains the kind of data we know how to animate.
         /// </summary>
-        static void ValidateMesh(NodeContent node, ContentProcessorContext context, string parentBoneName)
+        static void ValidateMesh(NodeContent node, ContentProcessorContext context, NodeContent parent)
         {
             MeshContent mesh = node as MeshContent;
 
             if (mesh != null)
             {
                 // Validate the mesh.
-                if (parentBoneName != null)
+                if (parent != null)
                 {
                     context.Logger.LogWarning(null, null,
                         "Mesh {0} is a child of bone {1}. ExtendedModelProcessor " +
-                        "does not correctly handle meshes that are children of bones.",
-                        mesh.Name, parentBoneName);
+                        "does not correctly handle meshes that are children of bones, so it is deleted.",
+                        mesh.Name, parent);
+
+                    parent.Children.Remove(node);
+                    return;
                 }
             }
             else if (node is BoneContent)
             {
                 // If this is a bone, remember that we are now looking inside it.
-                parentBoneName = node.Name;
+                parent = node;
             }
 
             // Recurse (iterating over a copy of the child collection,
             // because validating children may delete some of them).
             foreach (NodeContent child in new List<NodeContent>(node.Children))
-                ValidateMesh(child, context, parentBoneName);
+                ValidateMesh(child, context, parent);
         }
 
         /// <summary>

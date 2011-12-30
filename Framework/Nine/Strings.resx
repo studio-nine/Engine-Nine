@@ -174,4 +174,7 @@
   <data name="ServiceNotFound" xml:space="preserve">
     <value>Cannot find the required service: {0}</value>
   </data>
+  <data name="SkeletonMismatch" xml:space="preserve">
+    <value>The shared skeleton does not match the skeleton used by this model.</value>
+  </data>
 </root>

@@ -38,6 +38,7 @@ namespace Nine
         public World()
         {
             Services = new GameServiceContainer();
+            Prototypes = new Dictionary<string, object>();
 
             worldObjects = new NotificationCollection<WorldObject>() { Sender = this, EnableManipulationWhenEnumerating = true };
             worldObjects.Added += new EventHandler<NotifyCollectionChangedEventArgs<WorldObject>>(OnAdded);
@@ -63,6 +64,13 @@ namespace Nine
                     throw new InvalidOperationException("Version mismatch.");
             }
         }
+        #endregion
+
+        #region Prototypes
+        /// <summary>
+        /// Gets a dictionary of prototypes that can be created though the IObjectFactory service.
+        /// </summary>
+        public IDictionary<string, object> Prototypes { get; private set; }
         #endregion
 
         #region WorldObjects
@@ -96,7 +104,7 @@ namespace Nine
                 throw new ArgumentNullException("content");
 
             Services.AddService(typeof(ContentManager), content);
-            Services.AddService(typeof(IObjectFactory), new ContentObjectFactory(content));
+            Services.AddService(typeof(IObjectFactory), new ObjectFactory(Prototypes, content));
         }
 
         /// <summary>

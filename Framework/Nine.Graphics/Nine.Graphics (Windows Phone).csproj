@@ -89,6 +89,7 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
+    <Compile Include="Effects\LeveledMaterial.cs" />
     <Compile Include="Effects\Materials.cs" />
     <Compile Include="GraphicsComponent.cs" />
     <Compile Include="GraphicsExtensions.cs" />

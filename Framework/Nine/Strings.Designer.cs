@@ -223,6 +223,15 @@ namespace Nine {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The shared skeleton does not match the skeleton used by this model..
+        /// </summary>
+        internal static string SkeletonMismatch {
+            get {
+                return ResourceManager.GetString("SkeletonMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The input skeleton does not support skinning..
         /// </summary>
         internal static string SkeletonNotSupportSkin {

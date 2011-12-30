@@ -15,6 +15,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Xml.Serialization;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Navigation
@@ -23,18 +24,17 @@ namespace Nine.Navigation
     /// Defines a navigation component that can be added to a game object container.
     /// </summary>
     [Serializable]
-    public class NavigatorComponent : Component, IUpdateable
+    public class NavigatorComponent : Component, IUpdateable, IServiceProvider, ICloneable
     {
         /// <summary>
-        /// Gets or sets the position.
+        /// Gets or sets the animation when the navigator is moving.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public string MoveAnimation { get; set; }
 
         /// <summary>
-        /// Gets or sets the template of the navigator.
+        /// Gets or sets the animation when the navigator has stopped.
         /// </summary>
-        [XmlAttribute]
-        public string Template { get; set; }
+        public string StopAnimation { get; set; }
 
         /// <summary>
         /// Gets the underlying navigator.
@@ -53,10 +53,15 @@ namespace Nine.Navigation
         internal void CreateNavigator()
         {
             Navigator = new Navigator();
+            Navigator.Position = Parent.Position;
             Navigator.Ground = Parent.Find<ISurface>();
             Navigator.PathGraph = Parent.Find<IPathGraph>();
             Navigator.Friends = Parent.Find<ISpatialQuery<Navigator>>();
-            Navigator.Opponents = Parent.Find<ISpatialQuery<Navigator>>();            
+            Navigator.Opponents = Parent.Find<ISpatialQuery<Navigator>>();
+            Navigator.Started += new EventHandler<EventArgs>(Navigator_Started);
+            Navigator.Stopped += new EventHandler<EventArgs>(Navigator_Stopped);
+
+            Parent.Transform = Navigator.Transform;
         }
 
         /// <summary>
@@ -75,6 +80,49 @@ namespace Nine.Navigation
                         transformable.Transform = Navigator.Transform;
                 }
             }
+        }
+
+        void Navigator_Stopped(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(StopAnimation))
+            {
+                var displayObject = Parent.Find<DisplayObject>();
+                if (displayObject != null)
+                    displayObject.Animations.Play(StopAnimation);
+            }
+        }
+
+        void Navigator_Started(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(StopAnimation))
+            {
+                var displayObject = Parent.Find<DisplayObject>();
+                if (displayObject != null)
+                    displayObject.Animations.Play(MoveAnimation);
+            }
+        }
+
+        object IServiceProvider.GetService(Type serviceType)
+        {
+            if (serviceType.IsAssignableFrom(typeof(Navigator)))
+                return Navigator;
+            return null;
+        }
+
+        public NavigatorComponent Clone()
+        {
+            return new NavigatorComponent()
+            {
+                Name = Name,
+                Tag = Tag,
+                MoveAnimation = MoveAnimation,
+                StopAnimation = StopAnimation,
+            };
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
     }
 }

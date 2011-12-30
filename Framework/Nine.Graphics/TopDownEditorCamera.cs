@@ -27,6 +27,8 @@ namespace Nine.Graphics
         public Input Input { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
 
+        public Viewport? Viewport { get; set; }
+
         public float Yaw { get; set; }
         public float Pitch { get; set; }
         public float Radius { get; set; }

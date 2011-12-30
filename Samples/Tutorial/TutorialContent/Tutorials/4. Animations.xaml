@@ -33,6 +33,7 @@
         <DisplayObjectContent Position="-10, 0, 0" Name="NestedObject">
 
             <DrawableModelContent Name="Dude" Model="..\Models\Dude" />
+            <DrawableModelContent Name="Dude2" Model="..\Models\Dude"/>
             <DrawableModelContent Name="Tree"  Model="..\Models\AlphaPalm" />
 
             <CameraContent Name="MyCamera" />
@@ -43,6 +44,7 @@
             -->
             <DisplayObjectContent.TransformBindings>
                 <TransformBindingContent Source="MyCamera" Target="Dude" TargetBone="R_Hand" />
+                <TransformBindingContent Source="Dude2" Target="Dude" ShareSkeleton="True" Position="-5, 0, 0" />
                 <TransformBindingContent Source="Tree" Target="Dude" TargetBone="R_Hand"
                                          Scale="0.25, 0.25, 0.25" Position="0.2, 0.3, -0.6" Rotation="15, 15, 0" />
             </DisplayObjectContent.TransformBindings>

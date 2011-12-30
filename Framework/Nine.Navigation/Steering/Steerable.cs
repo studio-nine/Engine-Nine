@@ -39,7 +39,7 @@ namespace Nine.Navigation.Steering
     /// <summary>
     /// Represents a steerable moving entity that can with steering behaviors.
     /// </summary>
-    public class Steerable
+    public class Steerable : IUpdateable
     {
         /// <summary>
         /// Gets or sets the target position of the moving entity.
@@ -132,7 +132,10 @@ namespace Nine.Navigation.Steering
         private float currentAcceleration = float.MaxValue;
         private Vector2 force;
         private Vector2 forward;
-                
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Steerable"/> class.
+        /// </summary>
         public Steerable()
         {
             MaxSpeed = 10.0f;
@@ -144,6 +147,9 @@ namespace Nine.Navigation.Steering
             Behaviors = new SteeringBehaviorCollection();
         }
 
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
         public void Update(TimeSpan gameTime)
         {
             float elapsedTime = (float)(gameTime.TotalSeconds);
@@ -237,8 +243,9 @@ namespace Nine.Navigation.Steering
 
             // FindAll the min penetration depth.
             float? minPenetration = null;
-            foreach (ISteeringBehavior behavior in Behaviors)
+            for (int i = 0; i < Behaviors.Count; i++)
             {
+                var behavior = Behaviors[i];
                 float? penetration = behavior.Collides(from, to, elapsedTime, this);
                 if (penetration.HasValue && (!minPenetration.HasValue || penetration.Value < minPenetration.Value))
                 {

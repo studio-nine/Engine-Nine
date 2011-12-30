@@ -84,6 +84,7 @@
     <Compile Include="Input\InputComponent.cs" />
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\XnaInputSource.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PropertyExpression.cs" />

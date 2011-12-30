@@ -16,6 +16,7 @@ using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using System.IO;
 #endregion
 
 namespace Nine
@@ -25,7 +26,7 @@ namespace Nine
     /// </summary>
     [Serializable]
     [ContentProperty("Components")]
-    public sealed class WorldObject : ITransformable, IUpdateable, IDrawable
+    public sealed class WorldObject : ITransformable, IUpdateable, IDrawable, ICloneable
     {
         #region World
         /// <summary>
@@ -209,6 +210,13 @@ namespace Nine
                     var t = components[i] as T;
                     if (t != null)
                         return t;
+                    var serviceProvider = components[i] as IServiceProvider;
+                    if (serviceProvider != null)
+                    {
+                        t = serviceProvider.GetService<T>();
+                        if (t != null)
+                            return t;
+                    }
                 }
             }
             return null;
@@ -220,18 +228,24 @@ namespace Nine
         {
             if (components != null)
             {
-                foreach (var component in components)
+                // Update components
+                for (int i = 0; i < components.Count; i++)
                 {
-                    if (transformNeedsUpdate)
+                    var updateable = components[i] as IUpdateable;
+                    if (updateable != null)
+                        updateable.Update(elapsedTime);
+                }
+
+                // Update transform
+                if (transformNeedsUpdate)
+                {
+                    transformNeedsUpdate = false;
+                    for (int i = 0; i < components.Count; i++)
                     {
-                        var transformable = component as ITransformable;
+                        var transformable = components[i] as ITransformable;
                         if (transformable != null)
                             transformable.Transform = transform;
                     }
-
-                    var updateable = component as IUpdateable;
-                    if (updateable != null)
-                        updateable.Update(elapsedTime);
                 }
             }
         }
@@ -258,6 +272,41 @@ namespace Nine
         {
             return Name != null ? Name.ToString() : base.ToString();
         }
+        #endregion
+
+        #region Clone
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        public WorldObject Clone()
+        {
+            var cloned = new WorldObject();
+            cloned.Transform = Transform;
+            cloned.Name = Name;
+            cloned.Tag = Tag;
+
+            if (components != null)
+                for (int i = 0; i < components.Count; i++)
+                    cloned.Components.Add(CloneComponent(components[i]));
+            return cloned;
+        }
+
+        private object CloneComponent(object component)
+        {
+            if (component == null)
+                return component;
+
+            var cloneable = component as ICloneable;
+            if (cloneable != null)
+                return cloneable.Clone();
+
+            return Serialization.Clone(component);
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }            
         #endregion
     }
 }

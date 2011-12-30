@@ -92,6 +92,7 @@
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="QuadTreeSceneManager.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Input\WindowsInputSource.cs" />

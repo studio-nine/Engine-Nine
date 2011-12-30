@@ -27,12 +27,12 @@ namespace Nine.Graphics.ObjectModel
     public class TransformBinding
     {
         /// <summary>
-        /// Gets or sets the bind source.
+        /// Gets or sets the source object that is bound to the target object.
         /// </summary>
         public Transformable Source { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the bind target.
+        /// Gets or sets the target object to be bound.
         /// </summary>
         public Transformable Target { get; internal set; }
 
@@ -51,6 +51,12 @@ namespace Nine.Graphics.ObjectModel
         /// according to the target bone.
         /// </summary>
         public bool UseBoneScale { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the source model will 
+        /// use the target skeleton.
+        /// </summary>
+        public bool ShareSkeleton { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TransformBinding"/> class.

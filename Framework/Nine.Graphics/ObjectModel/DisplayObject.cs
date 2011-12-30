@@ -85,6 +85,12 @@ namespace Nine.Graphics.ObjectModel
                 transformable.Parent = this;
             }
 
+            // Model animations are added automatically to the parent display object
+            //if (e.Value is DrawableModel)
+            //{
+            //    animations.Animations.AddRange(((DrawableModel)e.Value).Animations.Animations);
+            //}
+
             if (Added != null)
                 Added(sender, e);
         }
@@ -160,13 +166,28 @@ namespace Nine.Graphics.ObjectModel
             
             if (!string.IsNullOrEmpty(e.Value.TargetBone))
             {
+                if (e.Value.ShareSkeleton)
+                    throw new InvalidOperationException("Cannot specify bone name when skeleton is shared");
+
                 var model = e.Value.Target as DrawableModel;
                 if (model == null)
-                    throw new InvalidOperationException("The target object must be a Model when a bone name is specified.");
+                    throw new InvalidOperationException("The target object must be a DrawableModel when a bone name is specified.");
                 
                 e.Value.TargetBoneIndex = model.Skeleton.GetBone(e.Value.TargetBone);
                 if (e.Value.TargetBoneIndex < 0)
                     throw new InvalidOperationException(string.Format("Target bone {0} not found", e.Value.TargetBone));
+            }
+            else if (e.Value.ShareSkeleton)
+            {
+                var targetModel = e.Value.Target as DrawableModel;
+                if (targetModel == null)
+                    throw new InvalidOperationException("The target object must be a DrawableModel.");
+
+                var sourceModel = e.Value.Source as DrawableModel;
+                if (sourceModel == null)
+                    throw new InvalidOperationException("The target object must be a DrawableModel.");
+
+                sourceModel.SharedSkeleton = targetModel.Skeleton;
             }
 
             // TODO: Dependency sorting
@@ -220,9 +241,9 @@ namespace Nine.Graphics.ObjectModel
                 if (value != null && value.Animations != null)
                 {
                     UpdateTweenAnimationTargets(value.Animations.Values);
-                    animations = value;
+                    animations.Animations.AddRange(value.Animations);
                 }
-                animations.Play(); 
+                animations.Play();
             }
         }
         

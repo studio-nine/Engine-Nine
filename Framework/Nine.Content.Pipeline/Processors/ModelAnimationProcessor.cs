@@ -259,7 +259,14 @@ namespace Nine.Content.Pipeline.Processors
                 string boneName = bones[i].Name;
 
                 if (!string.IsNullOrEmpty(boneName))
+                {
+                    if (boneMap.ContainsKey(boneName))
+                    {
+                        throw new InvalidContentException(
+                            "The input mesh contains multiple bones with the name: " + boneName);
+                    }
                     boneMap.Add(boneName, i);
+                }
             }
 
             // Convert each animation in turn.
@@ -275,8 +282,7 @@ namespace Nine.Content.Pipeline.Processors
 
             if (animationClips.Count == 0)
             {
-                throw new InvalidContentException(
-                            "Input file does not contain any animations.");
+                throw new InvalidContentException("Input file does not contain any animations.");
             }
 
             return animationClips;

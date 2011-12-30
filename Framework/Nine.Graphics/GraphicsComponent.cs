@@ -25,7 +25,7 @@ namespace Nine.Graphics
     /// Defines a graphics component that can be added to a game object container.
     /// </summary>
     [Serializable]
-    public class GraphicsComponent : Component, ITransformable
+    public class GraphicsComponent : Component, ITransformable, IServiceProvider, ICloneable
     {
         /// <summary>
         /// Gets or sets the view template of this graphics component.
@@ -127,6 +127,28 @@ namespace Nine.Graphics
                 DisplayObject = null;
                 Scene = null;
             }
+        }
+
+        object IServiceProvider.GetService(Type serviceType)
+        {
+            if (serviceType.IsAssignableFrom(typeof(DisplayObject)))
+                return DisplayObject;
+            return null;
+        }
+
+        public GraphicsComponent Clone()
+        {
+            return new GraphicsComponent()
+            {
+                Name = Name,
+                Tag = Tag,
+                Template = Template,
+            };
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
         }
     }
 }

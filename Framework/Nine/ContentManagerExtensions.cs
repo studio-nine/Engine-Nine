@@ -70,18 +70,4 @@ namespace Nine
             return base.ReadAsset<T>(assetName, null);
         }
     }
-
-    class ContentObjectFactory : IObjectFactory
-    {
-        ContentManager content;
-        public ContentObjectFactory(ContentManager innerContent)
-        {
-            content = innerContent;
-        }
-
-        public T Create<T>(string typeName)
-        {
-            return content.Create<T>(typeName);
-        }
-    }
 }
