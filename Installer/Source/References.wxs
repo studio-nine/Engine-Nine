@@ -15,8 +15,12 @@
             <File Id="x86.Nine.Graphics.xml" Name="Nine.Graphics.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Graphics.xml" />
             <File Id="x86.Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Navigation.dll" />
             <File Id="x86.Nine.Navigation.xml" Name="Nine.Navigation.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Navigation.xml" />
+            <File Id="x86.Nine.Physics.dll" Name="Nine.Physics.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Physics.dll" />
+            <File Id="x86.Nine.Physics.xml" Name="Nine.Physics.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Physics.xml" />
             <File Id="x86.Nine.Content.Pipeline.dll" Name="Nine.Content.Pipeline.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Content.Pipeline.dll" />
             <File Id="x86.Nine.Content.Pipeline.xml" Name="Nine.Content.Pipeline.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/Nine.Content.Pipeline.xml" />
+            <File Id="x86.BEPUphysics.dll" Name="BEPUphysics.dll" Source="$(sys.SOURCEFILEDIR)../../References/x86/BEPUphysics.dll" />
+            <File Id="x86.BEPUphysics.xml" Name="BEPUphysics.xml" Source="$(sys.SOURCEFILEDIR)../../References/x86/BEPUphysics.xml" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\x86" Type="string"/>
           </Component>
         </Directory>
@@ -29,6 +33,10 @@
             <File Id="WindowsPhone.Nine.Graphics.xml" Name="Nine.Graphics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Graphics.xml" />
             <File Id="WindowsPhone.Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Navigation.dll" />
             <File Id="WindowsPhone.Nine.Navigation.xml" Name="Nine.Navigation.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Navigation.xml" />
+            <File Id="WindowsPhone.Nine.Physics.dll" Name="Nine.Physics.dll" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Physics.dll" />
+            <File Id="WindowsPhone.Nine.Physics.xml" Name="Nine.Physics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/Nine.Physics.xml" />
+            <File Id="WindowsPhone.BEPUphysics.dll" Name="BEPUphysics.dll" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/BEPUphysics.dll" />
+            <File Id="WindowsPhone.BEPUphysics.xml" Name="BEPUphysics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Windows Phone/BEPUphysics.xml" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\XNA\AssemblyFolders\v4.0\Xbox 360\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\Xbox 360" Type="string"/>
           </Component>
         </Directory>
@@ -41,6 +49,10 @@
             <File Id="Xbox.Nine.Graphics.xml" Name="Nine.Graphics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Graphics.xml" />
             <File Id="Xbox.Nine.Navigation.dll" Name="Nine.Navigation.dll" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Navigation.dll" />
             <File Id="Xbox.Nine.Navigation.xml" Name="Nine.Navigation.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Navigation.xml" />
+            <File Id="Xbox.Nine.Physics.dll" Name="Nine.Physics.dll" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Physics.dll" />
+            <File Id="Xbox.Nine.Physics.xml" Name="Nine.Physics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/Nine.Physics.xml" />
+            <File Id="Xbox.BEPUphysics.dll" Name="BEPUphysics.dll" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/BEPUphysics.dll" />
+            <File Id="Xbox.BEPUphysics.xml" Name="BEPUphysics.xml" Source="$(sys.SOURCEFILEDIR)../../References/Xbox 360/BEPUphysics.xml" />
             <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\XNA\AssemblyFolders\v4.0\Windows Phone\AssemblyFoldersEx\Engine Nine" Value="[ProductDir]References\Windows Phone" Type="string"/>
           </Component>
         </Directory>

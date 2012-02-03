@@ -8,7 +8,6 @@
 
 #region Using Directives
 using System;
-using System.Xaml;
 using System.ComponentModel;
 using System.Globalization;
 using Microsoft.Xna.Framework;

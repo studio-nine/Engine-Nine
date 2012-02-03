@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
@@ -18,7 +17,7 @@ namespace Nine.Graphics
 {
     /// <summary>
     /// The geometric representation of heightmap. 
-    /// The up axis of the terrain is Vector.UnitZ.
+    /// The up axis of the terrain is Vector.UnitY.
     /// </summary>
     [NotContentSerializable]
     public class Heightmap
@@ -254,7 +253,7 @@ namespace Nine.Graphics
         /// Calculate normals from height data
         /// </summary>
         private static void CalculateNormalsAndTangents(int w, int h, float[] heights, float sizeX, float sizeY, ref Vector3[] normals, ref Vector3[] tangents)
-        {
+        {        
             #region Build tangent vertices
             // Build our tangent vertices
             for (int x = 0; x < w; x++)
@@ -264,8 +263,6 @@ namespace Nine.Graphics
                     Vector3 pos = CalculatePosition(x, y, w, h, heights, sizeX, sizeY);
 
                     // Step 2: Calculate all edge vectors (for normals and tangents)
-                    // This involves quite complicated optimizations and mathematics,
-                    // hard to explain with just a comment. Read my book :D
                     Vector3 edge1 = pos - CalculatePosition(x, y + 1, w, h, heights, sizeX, sizeY);
                     Vector3 edge2 = pos - CalculatePosition(x + 1, y, w, h, heights, sizeX, sizeY);
                     Vector3 edge3 = pos - CalculatePosition(x, y - 1, w, h, heights, sizeX, sizeY);

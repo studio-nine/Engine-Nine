@@ -6,17 +6,19 @@
 
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="ProgramMenuFolder" Name="ProgramMenuFolder">
-        <Directory Id="ProductProgramMenuFolder" Name="$(var.ProductName)">
-          <Component Id="ShortcutComponent" Guid="AC9ED70C-6BD9-4E06-A933-30A7E815DFE2">
-            <File Id="OnlineShortcut" Name="$(var.ProductName) Online.url" Source="$(sys.SOURCEFILEDIR)../UI/Engine Nine Online.url" />
-            <RemoveFolder Id="ProductProgramMenuFolder" On="uninstall"/>
-            <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)\v$(var.ProductVersion)\ShortCuts" Name="Website" Type="integer" Value="1" KeyPath="yes"/>
-          </Component>
+        <Directory Id="ProductProgramMenu" Name="$(var.ProductName)">
+          <Directory Id="ProductProgramMenuFolder" Name="v$(var.ProductVersion)">
+            <Component Id="ShortcutComponent" Guid="AC9ED70C-6BD9-4E06-A933-30A7E815DFE2">
+              <File Id="OnlineShortcut" Name="$(var.ProductName) Online.url" Source="$(sys.SOURCEFILEDIR)../UI/Engine Nine Online.url" />
+              <RemoveFolder Id="ProductProgramMenuFolder" On="uninstall"/>
+              <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)\v$(var.ProductVersion)\ShortCuts" Name="Website" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
 
-          <Component Id="SamplesShortcutComponent" Guid="CD8A58E2-AE3D-4DB4-97DE-11753290D459">
-            <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)\v$(var.ProductVersion)\ShortCuts" Name="Samples" Type="integer" Value="1" KeyPath="yes"/>
-            <Shortcut Id="SamplesShortcut" Name="Browse Samples" Target="[dir4268DA91D53F8A48E3F86149716D52F6]" />
-          </Component>
+            <Component Id="SamplesShortcutComponent" Guid="CD8A58E2-AE3D-4DB4-97DE-11753290D459">
+              <RegistryValue Root="HKCU" Key="Software\$(var.ProductName)\v$(var.ProductVersion)\ShortCuts" Name="Samples" Type="integer" Value="1" KeyPath="yes"/>
+              <Shortcut Id="SamplesShortcut" Name="Browse Samples" Target="[dir4268DA91D53F8A48E3F86149716D52F6]" />
+            </Component>
+          </Directory>
         </Directory>
       </Directory>
 

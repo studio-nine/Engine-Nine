@@ -8,12 +8,10 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
@@ -51,7 +49,14 @@ namespace Nine
         /// </summary>
         public T Value { get; internal set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotifyCollectionChangedEventArgs&lt;T&gt;"/> class.
+        /// </summary>
         public NotifyCollectionChangedEventArgs() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotifyCollectionChangedEventArgs&lt;T&gt;"/> class.
+        /// </summary>
         public NotifyCollectionChangedEventArgs(int index, T value)
         {
             Index = index;
@@ -65,7 +70,7 @@ namespace Nine
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView`1, mscorlib")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class NotificationCollection<T> : IList<T>, INotifyCollectionChanged<T>
+    public class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T>
     {
         private List<T> elements = null;
         private List<T> copy = null;
@@ -339,6 +344,66 @@ namespace Nine
             if (Removed != null)
                 Removed(Sender, new NotifyCollectionChangedEventArgs<T> { Index = index, Value = value });
         }
+
+        #region IList
+        int IList.Add(object value)
+        {
+            Add((T)value);
+            return Count - 1;
+        }
+        
+        bool IList.Contains(object value)
+        {
+            return Contains((T)value);
+        }
+
+        int IList.IndexOf(object value)
+        {
+            return IndexOf((T)value);
+        }
+
+        void IList.Insert(int index, object value)
+        {
+            Insert(index, (T)value);
+        }
+
+        bool IList.IsFixedSize
+        {
+            get { return false; }
+        }
+
+        bool IList.IsReadOnly
+        {
+            get { return false; }
+        }
+
+        void IList.Remove(object value)
+        {
+            Remove((T)value);
+        }
+
+        object IList.this[int index]
+        {
+            get { return (T)this[index]; }
+            set { this[index] = (T)value; }
+        }
+
+        void ICollection.CopyTo(Array array, int index)
+        {
+            if (elements != null)
+                ((IList)elements).CopyTo(array, index);
+        }
+
+        bool ICollection.IsSynchronized
+        {
+            get { return false; }
+        }
+
+        object ICollection.SyncRoot
+        {
+            get { return null; }
+        }
+        #endregion
     }
 
     /// <summary>
@@ -378,9 +443,16 @@ namespace Nine
 
     class NotificationCollectionReader<T> : ContentTypeReader<NotificationCollection<T>>
     {
+        ContentTypeReader elementReader;
+
         public override bool CanDeserializeIntoExistingObject
         {
             get { return true; }
+        }
+
+        protected override void Initialize(ContentTypeReaderManager manager)
+        {
+            elementReader = manager.GetTypeReader(typeof(T));
         }
 
         protected override NotificationCollection<T> Read(ContentReader input, NotificationCollection<T> existingInstance)
@@ -390,7 +462,7 @@ namespace Nine
 
             var count = input.ReadInt32();
             for (int i = 0; i < count; i++)
-                existingInstance.Add(input.ReadObject<T>());
+                existingInstance.Add(input.ReadObject<T>(elementReader));
             return existingInstance;
         }
     }

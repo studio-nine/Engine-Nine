@@ -7,21 +7,16 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Animations;
+using Nine.Components;
 using Nine.Graphics;
 using Nine.Graphics.Effects;
-using Nine.Graphics.Effects.EffectParts;
 using Nine.Graphics.Primitives;
-using System.ComponentModel;
-using Nine.Components;
 #endregion
 
 namespace ShadowMapping

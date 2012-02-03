@@ -96,6 +96,9 @@
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\Camera.cs" />
     <Compile Include="ObjectModel\Container.cs" />
+    <Compile Include="ObjectModel\Decal.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ObjectModel\DrawableModel.cs" />
     <Compile Include="ObjectModel\DrawableModelPart.cs" />
     <Compile Include="ObjectModel\DrawableParticleEffect.cs" />

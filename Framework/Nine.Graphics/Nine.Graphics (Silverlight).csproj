@@ -215,6 +215,7 @@
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\Camera.cs" />
     <Compile Include="ObjectModel\Container.cs" />
+    <Compile Include="ObjectModel\Decal.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
     <Compile Include="ObjectModel\DisplayObject.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />

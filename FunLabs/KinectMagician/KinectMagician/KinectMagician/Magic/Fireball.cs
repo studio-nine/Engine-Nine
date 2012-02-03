@@ -28,7 +28,7 @@ namespace Nine
 
         protected override void OnInitialize(KinectSkeleton skeleton, KinectSkeletonTag tag)
         {
-            while (ParticleEffect.Triggers.Count < KinectSkeleton.BoneCount)
+            while (ParticleEffect.ActiveEmitters.Count < KinectSkeleton.BoneCount)
             {
                 ParticleEffect.Trigger().Enabled = false;
             }
@@ -38,8 +38,8 @@ namespace Nine
         {
             if (skeleton.IsTracked)
             {
-                ParticleEffect.Triggers[skeleton.Index * 2 + 0].Position = GetDisplayPosition(skeleton, JointID.HandRight);
-                ParticleEffect.Triggers[skeleton.Index * 2 + 1].Position = GetDisplayPosition(skeleton, JointID.HandLeft);
+                ParticleEffect.ActiveEmitters[skeleton.Index * 2 + 0].Position = GetDisplayPosition(skeleton, JointID.HandRight);
+                ParticleEffect.ActiveEmitters[skeleton.Index * 2 + 1].Position = GetDisplayPosition(skeleton, JointID.HandLeft);
             }
             /*
             if (tag.LeftHand.IsSwiping)
@@ -54,14 +54,14 @@ namespace Nine
         {
             KinectSkeletonTag tag = (KinectSkeletonTag)skeleton.Tag;
 
-            ParticleEffect.Triggers[skeleton.Index * 2 + 0].Enabled = tag.RightHandOnFire;
-            ParticleEffect.Triggers[skeleton.Index * 2 + 1].Enabled = tag.LeftHandOnFire;
+            ParticleEffect.ActiveEmitters[skeleton.Index * 2 + 0].Enabled = tag.RightHandOnFire;
+            ParticleEffect.ActiveEmitters[skeleton.Index * 2 + 1].Enabled = tag.LeftHandOnFire;
         }
 
         public override void Disable(KinectSkeleton skeleton)
         {
-            ParticleEffect.Triggers[skeleton.Index * 2 + 0].Enabled = false;
-            ParticleEffect.Triggers[skeleton.Index * 2 + 1].Enabled = false;
+            ParticleEffect.ActiveEmitters[skeleton.Index * 2 + 0].Enabled = false;
+            ParticleEffect.ActiveEmitters[skeleton.Index * 2 + 1].Enabled = false;
         }
     }
 }

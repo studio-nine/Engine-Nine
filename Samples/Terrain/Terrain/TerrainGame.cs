@@ -7,18 +7,14 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Graphics;
 #if !WINDOWS_PHONE
-using Nine.Graphics.Effects;
+
 #endif
 using Nine.Components;
 using Nine.Graphics.ObjectModel;
@@ -95,7 +91,7 @@ namespace TerrainSample
             // Initialize terrain effects
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.TextureEnabled = true;
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || SILVERLIGHT
             basicEffect.Texture = Content.Load<Texture2D>("Mountain.Low");
 #else
             basicEffect.Texture = Content.Load<Texture2D>("Mountain");
@@ -146,7 +142,7 @@ namespace TerrainSample
             primitiveBatch.Begin(camera.View, camera.Projection);
             primitiveBatch.DrawSolidSphere(new BoundingSphere(pickedPosition, 1), 5, null, new Color(1, 0, 0));
             primitiveBatch.End();
-
+            
             base.Draw(gameTime);
         }
     }

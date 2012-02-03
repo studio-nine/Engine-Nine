@@ -8,14 +8,11 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
-using Nine.Graphics.ParticleEffects;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Effects;
+using Nine.Graphics.ParticleEffects;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -160,7 +157,11 @@ namespace Nine.Graphics.ObjectModel
             particleEmitter.Enabled = visible;
         }
 
-        void IDrawableObject.Draw(GraphicsContext context, Effect effect) { }
+        void IDrawableObject.Draw(GraphicsContext context, Effect effect)
+        {
+            particleEmitter.Enabled = false;
+        }
+
         void IDrawableObject.EndDraw(GraphicsContext context) { }
         #endregion
     }

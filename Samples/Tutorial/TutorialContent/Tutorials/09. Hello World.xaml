@@ -5,7 +5,7 @@
 <World xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
 
     <!-- A world contains a list of WorldObject, which in turn contains a list of components. -->
-    <WorldObject>
+    <WorldObject Name="World">
         <!--
             GraphicsComponentContent is a built in component that gives this world object a graphical
             appearance. You can add elements to the graphics component just like adding to the scene as
@@ -26,8 +26,9 @@
             <DrawableModelContent Model="..\Models\Tank" />
         </GraphicsComponentContent>
         
-        <!-- You can also write your own component to extend the behavior of the parent world object. -->
+        <!--
+            You can also write your own component to extend the behavior of the parent world object. 
+        -->
         <my:ExampleController Speed="10" />
     </WorldObject>
-    
 </World>

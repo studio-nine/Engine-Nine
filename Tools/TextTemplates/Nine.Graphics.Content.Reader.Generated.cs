@@ -306,6 +306,41 @@ namespace Nine.Graphics.Effects
         }
     }
 #endif
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>DecalMaterial</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DecalMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Effects.DecalMaterial>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.DecalMaterial existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.DecalMaterial existingInstance);
+        
+        protected override Nine.Graphics.Effects.DecalMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Effects.DecalMaterial existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DecalMaterial(graphicsDevice);
+            }
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.TextureTransform = input.ReadMatrix();
+            existingInstance.DepthAlphaEnabled = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+#endif
     /// <summary>
     /// Content reader for <c>DualTextureMaterial</c>.
     /// </summary>
@@ -1099,6 +1134,49 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Transform = input.ReadMatrix();
+            EndRead(input, existingInstance);
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Decal</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DecalReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Decal>
+    {
+        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Decal existingInstance);
+        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Decal existingInstance);
+        
+        protected override Nine.Graphics.ObjectModel.Decal Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Decal existingInstance)
+        {
+            BeginRead(input, existingInstance);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Decal(graphicsDevice);
+            }
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.Color = input.ReadVector3();
+            existingInstance.Size = input.ReadVector3();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Effects.Material>();
+            existingInstance.DepthBias = input.ReadSingle();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.NormalMappingEnabled = input.ReadBoolean();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Duration = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.FadeDuration = input.ReadObject<System.TimeSpan>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Transform = input.ReadMatrix();

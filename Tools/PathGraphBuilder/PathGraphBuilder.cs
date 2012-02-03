@@ -25,6 +25,7 @@ using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using System.Xml;
+using System.Drawing;
 #endregion
 
 namespace Nine.Tools.PathGraphBuilder
@@ -143,7 +144,7 @@ namespace Nine.Tools.PathGraphBuilder
                                 throw new ContentLoadException("Target xnb file is not a valid World or Scene");
                             }
 
-                            var pathGrid = Builder.Build(scene, task.Step, task.Slope, task.ActorHeight);
+                            var pathGrid = Builder.BuildPathGrid(scene, task.Step, task.Slope, task.ActorHeight);
 
                             var settings = new XmlWriterSettings();
                             settings.Indent = true;
@@ -180,6 +181,46 @@ namespace Nine.Tools.PathGraphBuilder
                     return assembly;
             }
             return null;
+        }
+
+        static void TestExtractRectangle()
+        {  
+            int i = 0;
+            int numPathBricks = 0;
+            //Bitmap bitmap = new Bitmap("C:\\Untitled.png");
+            //Bitmap bitmap = new Bitmap("C:\\Collision.png");
+            Bitmap bitmap = new Bitmap("C:\\Collision1.png");
+
+            bool[] collisionMap = new bool[bitmap.Width * bitmap.Height];
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    collisionMap[i] = (bitmap.GetPixel(x, y).R > 128);
+                    if (!collisionMap[i])
+                        numPathBricks++;
+                    i++;
+                }
+            }
+            var rectangles = Builder.ExtractRectanglesFromCollisionMap(collisionMap, bitmap.Width, bitmap.Height);
+
+            int rectangleArea = rectangles.Sum(rect => rect.Width * rect.Height);
+            Debug.Assert(rectangleArea == numPathBricks);
+            Console.WriteLine(rectangles.Count);
+
+            Random random = new Random();
+            Bitmap regions = new Bitmap(bitmap.Width, bitmap.Height);
+            for (int y = 0; y < bitmap.Height; y++)
+                for (int x = 0; x < bitmap.Width; x++)
+                    regions.SetPixel(x, y, System.Drawing.Color.White);
+            foreach (var rect in rectangles)
+            {
+                var color = System.Drawing.Color.FromArgb(random.Next(255), random.Next(255), random.Next(255));
+                for (int y = 0; y < rect.Height; y++)
+                    for (int x = 0; x < rect.Width; x++)
+                        regions.SetPixel(rect.X + x, rect.Y + y, color);
+            }
+            regions.Save("C:\\Regions.bmp", System.Drawing.Imaging.ImageFormat.Bmp);
         }
     }
 }

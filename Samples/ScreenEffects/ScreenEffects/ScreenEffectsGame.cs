@@ -7,17 +7,12 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
 using Nine.Graphics;
 #if !WINDOWS_PHONE
-using Nine.Graphics.Effects;
 using Nine.Graphics.Effects.Deferred;
 #endif
 using Nine.Graphics.ScreenEffects;

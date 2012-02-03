@@ -6,16 +6,11 @@
 //=============================================================================
 #endregion
 
-using Nine;
-using Microsoft.Xna.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.IO;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework;
 
 namespace Nine.Navigation.Steering.Test
 {

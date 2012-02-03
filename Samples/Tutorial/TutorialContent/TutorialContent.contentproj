@@ -53,10 +53,16 @@
       <Importer>EffectImporter</Importer>
       <Processor>CustomEffectProcessor</Processor>
     </Compile>
-    <Compile Include="Tutorials\3. Terrain.xaml">
+    <Compile Include="..\..\Content\Models\Cube\cube.fbx">
+      <Link>Models\cube.fbx</Link>
+      <Name>cube</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Tutorials\03. Terrain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-      <Name>3. Terrain</Name>
+      <Name>03. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
@@ -178,6 +184,7 @@
       <Name>TerrainTex</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -209,9 +216,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\1. Empty Scene.xaml">
+    <Compile Include="Tutorials\01. Empty Scene.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <Name>1. Empty Scene</Name>
+      <Name>01. Empty Scene</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
@@ -225,56 +232,55 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\2. Models.xaml">
+    <Compile Include="Tutorials\02. Models.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>2. Models</Name>
+      <Name>02. Models</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\6. Shadows.xaml">
+    <Compile Include="Tutorials\06. Shadows.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>6. Shadows</Name>
+      <Name>06. Shadows</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\4. Animations.xaml">
+    <Compile Include="Tutorials\04. Animations.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>4. Animations</Name>
+      <Name>04. Animations</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\9. Hello World.xaml">
+    <Compile Include="Tutorials\09. Hello World.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>9. Hello World</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-      <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Tutorials\7. Particle System.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Name>7. Particle System</Name>
+      <Name>09. Hello World</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\5. Lights.xaml">
+    <Compile Include="Tutorials\07. Particle System.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>5. Lights</Name>
+      <Name>07. Particle System</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\05. Lights.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Name>05. Lights</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
@@ -307,10 +313,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\8. Post Processing.xaml">
+    <Compile Include="Tutorials\08. Post Processing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>8. Post Processing</Name>
+      <Name>08. Post Processing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
@@ -320,6 +326,16 @@
       <Project>{EE06D957-65AF-441C-AB8F-4FD2404DC527}</Project>
       <Name>TutorialData</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\10. Physics.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Name>10. Physics</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

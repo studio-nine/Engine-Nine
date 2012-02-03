@@ -8,12 +8,10 @@
 
 #region Using Directives
 using System;
-using System.Xaml;
 using System.ComponentModel;
 using System.Globalization;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Nine.Content.Pipeline.Graphics;
+
 #endregion
 
 namespace Nine.Content.Pipeline.Design

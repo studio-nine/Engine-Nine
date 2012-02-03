@@ -43,5 +43,23 @@ namespace Nine
         {
             return dictionary.Keys.GetEnumerator();
         }
+
+        public int RemoveWhere(Predicate<T> predicate)
+        {
+            if (ToBeRemoved == null || ToBeRemoved.Length < dictionary.Keys.Count)
+                ToBeRemoved = new T[dictionary.Keys.Count];
+            
+            int removed = 0;
+            dictionary.Keys.CopyTo(ToBeRemoved, 0);
+            for (int i = 0; i < ToBeRemoved.Length; i++)
+            {
+                if (predicate(ToBeRemoved[i]) && dictionary.Remove(ToBeRemoved[i]))
+                    removed++;
+                ToBeRemoved[i] = default(T);
+            }
+            return removed;
+        }
+
+        static T[] ToBeRemoved;
     }
 }

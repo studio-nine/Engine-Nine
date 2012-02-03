@@ -58,7 +58,7 @@ namespace Nine.Graphics.Effects
         public AlphaTestMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.AlphaTestEffect>.GetInstance(graphics))
         {
-            OnCreate();
+
         }
 
         /// <summary>
@@ -73,6 +73,8 @@ namespace Nine.Graphics.Effects
             this.ReferenceAlpha = effect.ReferenceAlpha;
             this.Texture = effect.Texture;
             this.VertexColorEnabled = effect.VertexColorEnabled;
+
+            OnCreate();
         }
         
         partial void OnApply();
@@ -180,7 +182,7 @@ namespace Nine.Graphics.Effects
         public BasicMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.BasicEffect>.GetInstance(graphics))
         {
-            OnCreate();
+
         }
 
         /// <summary>
@@ -199,6 +201,8 @@ namespace Nine.Graphics.Effects
             this.Texture = effect.Texture;
             this.TextureEnabled = effect.TextureEnabled;
             this.VertexColorEnabled = effect.VertexColorEnabled;
+
+            OnCreate();
         }
         
         partial void OnApply();
@@ -255,6 +259,92 @@ namespace Nine.Graphics.Effects
             return cloned;
         }
     }
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Effect instance for <c>DecalEffect</c>.
+    /// </summary>
+    [Nine.ContentSerializable()]
+    [System.CodeDom.Compiler.GeneratedCode("Materials.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    public partial class DecalMaterial : Nine.Graphics.Effects.Material
+    {        
+        /// <summary>
+        /// Gets the underlying DecalMaterial.
+        /// </summary>
+        public override Microsoft.Xna.Framework.Graphics.Effect Effect { get { return effect; } }
+        Nine.Graphics.Effects.DecalEffect effect;
+        /// <summary>
+        /// 
+        /// </summary>
+        public System.Single Alpha { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Microsoft.Xna.Framework.Graphics.Texture2D Texture { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public Microsoft.Xna.Framework.Matrix TextureTransform { get; set; }
+
+        private DecalMaterial() { }
+
+        /// <summary>
+        /// Initializes a new instance of <c>DecalMaterial</c>.
+        /// </summary>
+        public DecalMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
+            : this(Nine.Graphics.GraphicsResources<Nine.Graphics.Effects.DecalEffect>.GetInstance(graphics))
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <c>DecalMaterial</c>.
+        /// </summary>
+        internal DecalMaterial(Nine.Graphics.Effects.DecalEffect effect)
+        {
+            this.effect = effect;
+            this.Alpha = effect.Alpha;
+            this.Texture = effect.Texture;
+            this.TextureTransform = effect.TextureTransform;
+
+            OnCreate();
+        }
+        
+        partial void OnApply();
+        partial void OnCreate();
+        partial void OnClone(DecalMaterial cloned);
+
+        /// <summary>
+        /// Applys the parameter values to the underlying DecalMaterial.
+        /// </summary>
+        public override void Apply()
+        {
+            if (this.effect.Alpha != this.Alpha)
+                this.effect.Alpha = this.Alpha;
+            if (this.effect.Texture != this.Texture)
+                this.effect.Texture = this.Texture;
+            if (this.effect.TextureTransform != this.TextureTransform)
+                this.effect.TextureTransform = this.TextureTransform;
+      
+        }
+        
+        /// <summary>
+        /// Clones the parameter values to a new instance of DecalMaterial.
+        /// </summary>
+        public override Nine.Graphics.Effects.Material Clone()
+        {
+            var cloned = new DecalMaterial();
+            cloned.effect = this.effect;
+            cloned.DepthAlphaEnabled = this.DepthAlphaEnabled;
+            cloned.Alpha = this.Alpha;
+            cloned.Texture = this.Texture;
+            cloned.TextureTransform = this.TextureTransform;
+            OnClone(cloned);
+            return cloned;
+        }
+    }
+#endif
     /// <summary>
     /// Effect instance for <c>DualTextureEffect</c>.
     /// </summary>
@@ -298,7 +388,7 @@ namespace Nine.Graphics.Effects
         public DualTextureMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.DualTextureEffect>.GetInstance(graphics))
         {
-            OnCreate();
+
         }
 
         /// <summary>
@@ -312,6 +402,8 @@ namespace Nine.Graphics.Effects
             this.Texture = effect.Texture;
             this.Texture2 = effect.Texture2;
             this.VertexColorEnabled = effect.VertexColorEnabled;
+
+            OnCreate();
         }
         
         partial void OnApply();
@@ -408,7 +500,7 @@ namespace Nine.Graphics.Effects
         public EnvironmentMapMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect>.GetInstance(graphics))
         {
-            OnCreate();
+
         }
 
         /// <summary>
@@ -425,6 +517,8 @@ namespace Nine.Graphics.Effects
             this.EnvironmentMapSpecular = effect.EnvironmentMapSpecular;
             this.FresnelFactor = effect.FresnelFactor;
             this.Texture = effect.Texture;
+
+            OnCreate();
         }
         
         partial void OnApply();
@@ -530,7 +624,7 @@ namespace Nine.Graphics.Effects
         public SkinnedMaterial(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<Microsoft.Xna.Framework.Graphics.SkinnedEffect>.GetInstance(graphics))
         {
-            OnCreate();
+
         }
 
         /// <summary>
@@ -547,6 +641,8 @@ namespace Nine.Graphics.Effects
             this.SpecularPower = effect.SpecularPower;
             this.Texture = effect.Texture;
             this.WeightsPerVertex = effect.WeightsPerVertex;
+
+            OnCreate();
         }
         
         partial void OnApply();

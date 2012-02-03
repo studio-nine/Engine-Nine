@@ -8,8 +8,7 @@
 
 #region Using Directives
 using System;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
 namespace Nine.Content.Pipeline

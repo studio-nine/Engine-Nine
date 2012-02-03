@@ -1,20 +1,16 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2012 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Nine.Graphics.ScreenEffects;
 #endregion
 
@@ -23,6 +19,7 @@ namespace Nine.Graphics.Effects
     /// <summary>
     /// Represents a shadow drawing technique using shadowmap.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ShadowMap : IDisposable
     {
         bool hasBegin;

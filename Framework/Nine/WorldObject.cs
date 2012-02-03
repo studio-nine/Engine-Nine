@@ -8,15 +8,11 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Markup;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using System.IO;
+
 #endregion
 
 namespace Nine
@@ -26,6 +22,8 @@ namespace Nine
     /// </summary>
     [Serializable]
     [ContentProperty("Components")]
+    [RuntimeNameProperty("Name")]
+    [DictionaryKeyProperty("Name")]
     public sealed class WorldObject : ITransformable, IUpdateable, IDrawable, ICloneable
     {
         #region World
@@ -128,7 +126,7 @@ namespace Nine
             }
         }
         #endregion
-
+        
         #region Properties
         /// <summary>
         /// Gets or sets the position of this world object.

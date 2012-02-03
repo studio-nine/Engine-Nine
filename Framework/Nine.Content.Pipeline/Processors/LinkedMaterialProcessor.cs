@@ -7,22 +7,10 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
-using System.Linq;
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Content.Pipeline.Graphics.Effects;
 using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
 #endregion

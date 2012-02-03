@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenEffects", "ScreenEffects.csproj", "{D528BE6C-0925-4F53-98F8-61171B1A3B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenSaver", "ScreenSaver.csproj", "{D528BE6C-0925-4F53-98F8-61171B1A3B40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

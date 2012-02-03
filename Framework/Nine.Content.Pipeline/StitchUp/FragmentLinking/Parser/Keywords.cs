@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
-using System;
 
 namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 {

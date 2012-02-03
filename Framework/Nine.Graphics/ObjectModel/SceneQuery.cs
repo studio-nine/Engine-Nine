@@ -8,21 +8,13 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ParticleEffects;
-using Nine.Graphics.ScreenEffects;
+
 #if WINDOWS || XBOX
-using Nine.Graphics.Effects.Deferred;
+
 #endif
-using Nine.Graphics.Effects;
-using EffectMaterial = Nine.Graphics.Effects.EffectMaterial;
+
 #endregion
 
 namespace Nine.Graphics.ObjectModel

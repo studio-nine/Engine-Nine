@@ -6,14 +6,8 @@
 //=============================================================================
 #endregion
 
-using Nine;
-using Nine.Components;
-using Microsoft.Xna.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Nine.Animations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Nine.Test
 {
@@ -25,6 +19,7 @@ namespace Nine.Test
             public Child Child = new Child();
             public List<Child> Children = new List<Child>();
             public Dictionary<string, Child> Dictionary = new Dictionary<string, Child>();
+
             public Container()
             {
                 Children.Add(new Child());

@@ -7,18 +7,10 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Linq;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ParticleEffects;
-using Nine.Graphics.Primitives;
-using Nine.Animations;
 using Nine.Graphics.Effects;
+using Nine.Graphics.Primitives;
 #endregion
 
 namespace Nine.Graphics.ObjectModel

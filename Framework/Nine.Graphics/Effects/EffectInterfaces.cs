@@ -7,18 +7,7 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Threading;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 

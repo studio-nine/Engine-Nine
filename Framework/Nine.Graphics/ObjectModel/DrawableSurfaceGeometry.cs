@@ -8,12 +8,10 @@
 
 #region Using Statements
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -316,10 +314,13 @@ namespace Nine.Graphics.ObjectModel
         {
             Points[0], Points[4], Points[3], 
             Points[0], Points[1], Points[4], 
+
             Points[1], Points[2], Points[4], 
             Points[4], Points[2], Points[5], 
+
             Points[3], Points[4], Points[6], 
             Points[6], Points[4], Points[7], 
+
             Points[4], Points[8], Points[7], 
             Points[5], Points[8], Points[4], 
         };

@@ -8,10 +8,9 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.ComponentModel;
-using System.Collections.Generic;
 using System.Collections;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Markup;
 #endregion
 

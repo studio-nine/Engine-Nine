@@ -75,7 +75,7 @@ namespace Nine.Tools.EffectCustomTool
                 windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.Reach);
                 windowsHiDefCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
                 xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
-                silverlightCompiledEffect = BuildSilverlightEffect(sourceFile);
+                silverlightCompiledEffect = BuildSilverlightEffect(sourceFile, GraphicsProfile.Reach);
             }
             catch (Exception ex)
             {
@@ -87,7 +87,7 @@ namespace Nine.Tools.EffectCustomTool
                     windowsCompiledEffect = BuildEffect(sourceFile, TargetPlatform.Windows, GraphicsProfile.HiDef);
                     xbox360CompiledEffect = BuildEffect(sourceFile, TargetPlatform.Xbox360, GraphicsProfile.HiDef);
                     windowsHiDefCompiledEffect = windowsCompiledEffect;
-                    silverlightCompiledEffect = BuildSilverlightEffect(sourceFile);
+                    silverlightCompiledEffect = BuildSilverlightEffect(sourceFile, GraphicsProfile.HiDef);
                 }
             }
 
@@ -421,8 +421,12 @@ namespace Nine.Tools.EffectCustomTool
             return processor.Process(sourceEffect, processorContext);
         }
 
-        private EffectBinaryContent BuildSilverlightEffect(string sourceFile)
+        private EffectBinaryContent BuildSilverlightEffect(string sourceFile, GraphicsProfile targetProfile)
         {
+            // Silverlight does not support HiDef effects
+            if (targetProfile == GraphicsProfile.HiDef)
+                return new EffectBinaryContent();
+
             // Compile effect
             ContentBuildLogger logger = new CustomLogger(e);
 
@@ -559,6 +563,9 @@ namespace Nine.Tools.EffectCustomTool
 
         private static string ByteArrayToString(byte[] effectCode)
         {
+            if (effectCode == null)
+                return "";
+
             StringBuilder builder = new StringBuilder(effectCode.Length);
 
             for (int i = 0; i < effectCode.Length; i++)

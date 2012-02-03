@@ -8,7 +8,6 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -124,7 +123,7 @@ namespace Nine
         /// </summary>
         public override int GetHashCode()
         {
-            return Start.GetHashCode() + End.GetHashCode();
+            return Start.GetHashCode() ^ End.GetHashCode();
         }
 
         /// <summary>

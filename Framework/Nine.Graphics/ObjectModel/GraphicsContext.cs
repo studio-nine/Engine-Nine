@@ -8,11 +8,8 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
 using Nine.Graphics.ParticleEffects;
 #endregion
 

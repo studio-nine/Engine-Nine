@@ -8,15 +8,10 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
-using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Markup;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 #endregion
 
 namespace Nine.Content.Pipeline.Animations

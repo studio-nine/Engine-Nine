@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts {
-    using System;
-    
-    
+namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

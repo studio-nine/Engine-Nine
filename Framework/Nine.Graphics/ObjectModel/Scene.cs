@@ -11,8 +11,6 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -142,7 +140,6 @@ namespace Nine.Graphics.ObjectModel
         private EffectMaterial cachedEffectMaterial;
         private BitArray lightUsed;
 
-        // FIXME: Particles are never removed.
         private HashSet<ParticleEffect> particleEffects = new HashSet<ParticleEffect>();
 
 #if WINDOWS || XBOX
@@ -282,7 +279,14 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         protected virtual void OnRemoved(object child)
         {
-
+            var particleEffect = child as DrawableParticleEffect;
+            if (particleEffect != null && particleEffect.ParticleEffect != null)
+            {
+                particleEffect.ParticleEffect.ActiveEmitters.Remove(particleEffect.ParticleEmitter);
+                
+                // Compact particle effects list when a DrawableParticleEffect is removed.
+                particleEffects.RemoveWhere(pe => pe.ActiveEmitters.Count <= 0 && pe.ParticleCount <= 0);
+            }
         }
 
         /// <summary>
@@ -553,6 +557,50 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region Decal
+        /// <summary>
+        /// Projects a decal onto the scene.
+        /// </summary>
+        [Obsolete("Not Implemented")]
+        public Decal ProjectDecal(Ray ray, Texture2D texture, float width, float height, float rotation)
+        {
+            return ProjectDecal(ray, texture, null, width, height, 0, rotation, null);
+        }
+
+        /// <summary>
+        /// Projects a decal onto the scene.
+        /// </summary>
+        /// <param name="ray">The ray to project.</param>
+        /// <param name="texture">The decal texture.</param>
+        /// <param name="normalMap">The decal normal map or null if normal mapping is disabled.</param>
+        /// <param name="width">The width of the decal texture in world space.</param>
+        /// <param name="height">The height of the decal texture in world space.</param>
+        /// <param name="depth">The depth of the decal bounds or 0 to use the average of width and height.</param>
+        /// <param name="rotation">The rotation of the decal texture.</param>
+        /// <param name="filter">A predicate determines whether the target object should show the decal.</param>
+        /// <returns> The decal object added to the scene or null if nothing is projected.</returns>
+        [Obsolete("Not Implemented")]
+        public Decal ProjectDecal(Ray ray, Texture2D texture, Texture2D normalMap, float width, float height, float depth, float rotation, Predicate<IGeometry> filter)
+        {
+            FindResult rayCastResult = Find(ray);
+            if (!rayCastResult.Distance.HasValue)
+                return null;
+
+            var decalSize = new Vector3(width, height, depth > 0 ? depth : (width + height) * 0.5f);
+            var decalPosition = ray.Position + ray.Direction * rayCastResult.Distance.Value;
+            var decalTransform = Matrix.CreateWorld(decalPosition, -ray.Direction, Vector3.Up);
+
+            Decal decal = new Decal(GraphicsDevice);
+            decal.Texture = texture;
+            decal.NormalMap = normalMap;
+            decal.Transform = decalTransform;
+            decal.Size = decalSize;
+
+            Add(decal);
+            return decal;
+        }
+        #endregion
+
         #region Bounds
         /// <summary>
         /// Computes the bounds of the scene.
@@ -618,14 +666,14 @@ namespace Nine.Graphics.ObjectModel
             BeginDraw();
 
             UpdateFog();
-
-            GraphicsDevice.Clear(Settings.BackgroundColor);
-
+            
             if (Settings.LightingEnabled)
             {
 #if WINDOWS_PHONE
                 ClearLights(drawablesInViewFrustum);
                 UpdateAffectedDrawablesAndAffectingLights(drawablesInViewFrustum, lightsInViewFrustum);
+                
+                GraphicsDevice.Clear(Settings.BackgroundColor);
 
                 GraphicsContext.Begin();
                 DrawObjects(opaqueDrawablesInViewFrustum);
@@ -693,6 +741,8 @@ namespace Nine.Graphics.ObjectModel
             }
             else
             {
+                GraphicsDevice.Clear(Settings.BackgroundColor);
+
                 GraphicsContext.Begin();
                 DrawNoLighting(opaqueDrawablesInViewFrustum);
                 GraphicsContext.End();
@@ -806,6 +856,14 @@ namespace Nine.Graphics.ObjectModel
                         leveledMaterial.UpdateLevelOfDetail(Vector3.Distance(
                             transformable.AbsoluteTransform.Translation, GraphicsContext.EyePosition));
                     }
+                }
+
+                var decal = obj as Decal;
+                if (decal != null && !decal.Initialized)
+                {
+                    BoundingBox decalBounds = decal.BoundingBox;
+                    FindAll(ref decalBounds, decal.DecalGeometries);
+                    decal.Initialized = true;
                 }
             }
 

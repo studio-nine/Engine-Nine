@@ -8,15 +8,10 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Nine.Content.Pipeline.Processors;
+
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel
@@ -41,12 +36,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
 
         private void UpdateTransform()
         {
-            Vector3.Normalize(ref direction, out direction);
-
-            if (direction.X == 0 && direction.Y == 0)
-                Transform = Matrix.CreateLookAt(position, direction, Vector3.Up);
-            else
-                Transform = Matrix.CreateWorld(position, direction, Vector3.UnitZ);
+            Transform = MatrixHelper.CreateWorld(Position, Direction);
         }
 
         partial void OnCreate()

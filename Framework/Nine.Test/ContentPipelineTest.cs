@@ -6,16 +6,14 @@
 //=============================================================================
 #endregion
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using System.Xml;
 using System.Collections.Generic;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 
 namespace Nine
 {

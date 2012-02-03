@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{ECFF8CEA-C2AB-4DA9-BCA8-BE2883F99555}</ProjectGuid>
+    <ProjectGuid>{719E3C7F-4335-4EB9-8F29-BC88E1C38FEE}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nine.Tools.ScreenshotCapturer</RootNamespace>

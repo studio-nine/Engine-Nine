@@ -8,14 +8,8 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Nine.Graphics.ObjectModel;
 #endregion
 
@@ -108,6 +102,7 @@ namespace Nine.Graphics
                     if (objectFactory == null)
                         throw new InvalidOperationException(string.Format(Strings.ServiceNotFound, typeof(IObjectFactory)));
                     DisplayObject = objectFactory.Create<DisplayObject>(Template);
+                    DisplayObject.Transform = Parent.Transform;
                     Scene.Add(DisplayObject);
                 }
             }
@@ -131,7 +126,7 @@ namespace Nine.Graphics
 
         object IServiceProvider.GetService(Type serviceType)
         {
-            if (serviceType.IsAssignableFrom(typeof(DisplayObject)))
+            if (DisplayObject != null && serviceType.IsAssignableFrom(typeof(DisplayObject)))
                 return DisplayObject;
             return null;
         }

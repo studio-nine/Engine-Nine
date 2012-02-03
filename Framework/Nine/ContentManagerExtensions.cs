@@ -8,10 +8,8 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Reflection;
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
+using System.Reflection;
 using Microsoft.Xna.Framework.Content;
 #endregion
 

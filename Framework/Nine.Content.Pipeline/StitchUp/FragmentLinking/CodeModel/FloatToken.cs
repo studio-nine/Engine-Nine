@@ -1,5 +1,5 @@
-using StitchUp.Content.Pipeline.FragmentLinking.Parser;
 using System.Globalization;
+using StitchUp.Content.Pipeline.FragmentLinking.Parser;
 
 namespace StitchUp.Content.Pipeline.FragmentLinking.CodeModel
 {

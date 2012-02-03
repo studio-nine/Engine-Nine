@@ -8,12 +8,8 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
+
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -106,7 +102,7 @@ namespace Nine.Graphics.ObjectModel
         /// </returns>
         public override int GetHashCode()
         {
-            return Target.GetHashCode() + OriginalTarget.GetHashCode();
+            return Target.GetHashCode() ^ OriginalTarget.GetHashCode();
         }
     }
 }

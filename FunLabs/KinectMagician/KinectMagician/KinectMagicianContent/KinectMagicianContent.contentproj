@@ -43,10 +43,12 @@
     <Reference Include="Nine.Content.Pipeline, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fireworks.xml">
+    <Compile Include="Fireworks.xaml">
       <Name>Fireworks</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Compile>
   </ItemGroup>
   <ItemGroup>

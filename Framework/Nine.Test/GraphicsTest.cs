@@ -6,15 +6,13 @@
 //=============================================================================
 #endregion
 
+using System;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.IO;
-using Nine.Graphics;
 using Nine.Components;
+using Nine.Graphics;
 
 namespace Nine
 {

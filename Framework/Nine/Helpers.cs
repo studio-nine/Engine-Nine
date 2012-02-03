@@ -9,12 +9,8 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
-using System.Reflection;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
 namespace Nine
@@ -174,7 +170,7 @@ namespace Nine
             CreateRotation(ref fromDirection, ref toDirection, out result);
             return result;
         }
-
+        
         public static void CreateRotation(ref Vector3 fromDirection, ref Vector3 toDirection, out Matrix matrix)
         {
             Vector3 axis = new Vector3();
@@ -190,6 +186,36 @@ namespace Nine
             float angle;
             Vector3.Dot(ref fromDirection, ref toDirection, out angle);
             Matrix.CreateFromAxisAngle(ref axis, (float)Math.Acos(angle), out matrix);
+        }
+
+        public static Matrix CreateRotation(Vector3 rotation, RotationOrder rotationOrder)
+        {
+            Matrix result;
+            CreateRotation(ref rotation, rotationOrder, out result);
+            return result;
+        }
+
+        public static void CreateRotation(ref Vector3 rotation, RotationOrder rotationOrder, out Matrix result)
+        {
+            if (rotationOrder == RotationOrder.Zxy)
+                Matrix.CreateFromYawPitchRoll(rotation.Y, rotation.X, rotation.Z, out result);
+            else
+            {
+                Matrix temp2;
+                Matrix.CreateRotationY(rotation.Y, out result);
+                Matrix.CreateRotationX(rotation.X, out temp2);
+                Matrix.Multiply(ref result, ref temp2, out result);
+                Matrix.CreateRotationZ(rotation.Z, out temp2);
+                Matrix.Multiply(ref result, ref temp2, out result);
+            }
+        }
+
+        public static Matrix CreateWorld(Vector3 position, Vector3 direction)
+        {
+            direction.Normalize();
+            if (Math.Abs(direction.X * direction.Z) < 0.0001f)
+                return Matrix.CreateWorld(position, direction, Vector3.Up);
+            return Matrix.CreateWorld(position, direction, Vector3.UnitZ);
         }
 
         static BoundingFrustum frustum = new BoundingFrustum(Matrix.Identity);

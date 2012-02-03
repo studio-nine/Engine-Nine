@@ -38,33 +38,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -93,33 +104,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -150,33 +172,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -207,33 +240,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -280,33 +324,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -329,33 +384,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -378,33 +444,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -427,33 +504,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -508,33 +596,44 @@ namespace Nine.Content.Pipeline
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -573,33 +672,44 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -630,33 +740,44 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -694,33 +815,44 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -758,33 +890,44 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }
@@ -914,33 +1057,44 @@ namespace Nine.Content.Pipeline.Animations
         }
 
         partial void OnCreate();
-
+        
         #region IAttachedPropertyStore
-        System.Collections.Generic.IDictionary<System.Xaml.AttachableMemberIdentifier, object> attachedProperties = new System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, object>();
+        class AttachedPropertyEntry
+        {
+            public System.Type Type;
+            public string MemberName;
+            public object Value;
+        }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer(Optional=true)]
+        System.Collections.Generic.List<AttachedPropertyEntry> AttachedProperties = new System.Collections.Generic.List<AttachedPropertyEntry>();
 
         void System.Xaml.IAttachedPropertyStore.CopyPropertiesTo(System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[] array, int index)
         {
-            attachedProperties.CopyTo(array, index);
+            foreach (var property in AttachedProperties)
+                array[index++] = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier,object>(new System.Xaml.AttachableMemberIdentifier(property.Type, property.MemberName), property.Value);
         }
 
         int System.Xaml.IAttachedPropertyStore.PropertyCount
         {
-            get { return attachedProperties.Count; }
+            get { return AttachedProperties.Count; }
         }
-
+        
         bool System.Xaml.IAttachedPropertyStore.RemoveProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier)
         {
-            return attachedProperties.Remove(attachableMemberIdentifier);
+            return AttachedProperties.RemoveAll(entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName) > 0;
         }
 
         void System.Xaml.IAttachedPropertyStore.SetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, object value)
         {
-            attachedProperties[attachableMemberIdentifier] = value;
+            AttachedProperties.Add(new AttachedPropertyEntry { Type = attachableMemberIdentifier.DeclaringType, MemberName = attachableMemberIdentifier.MemberName, Value = value });
         }
 
         bool System.Xaml.IAttachedPropertyStore.TryGetProperty(System.Xaml.AttachableMemberIdentifier attachableMemberIdentifier, out object value)
         {
-            return attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+            var property = System.Linq.Enumerable.FirstOrDefault(AttachedProperties, entry => entry.Type == attachableMemberIdentifier.DeclaringType && entry.MemberName == attachableMemberIdentifier.MemberName);
+            value = (property != null ? property.Value : null);
+            return property != null;
         }
         #endregion
     }

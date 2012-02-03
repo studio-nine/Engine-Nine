@@ -8,12 +8,6 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Xml.Serialization;
 using Nine.Graphics.ObjectModel;
 #endregion
@@ -104,7 +98,7 @@ namespace Nine.Navigation
 
         object IServiceProvider.GetService(Type serviceType)
         {
-            if (serviceType.IsAssignableFrom(typeof(Navigator)))
+            if (Navigator != null && serviceType.IsAssignableFrom(typeof(Navigator)))
                 return Navigator;
             return null;
         }

@@ -7,10 +7,10 @@
 #endregion
 
 #region Using Directives
-using System.Xaml;
-using Microsoft.Xna.Framework.Content.Pipeline;
 using System;
 using System.IO;
+using System.Xaml;
+using Microsoft.Xna.Framework.Content.Pipeline;
 #endregion
 
 namespace Nine.Content.Pipeline.Importers
@@ -28,7 +28,7 @@ namespace Nine.Content.Pipeline.Importers
                 filename = Path.GetFullPath(filename);
                 var result = XamlServices.Load(filename);
 
-                ObjectGraph.ForEachProperty(result, delegate(Type type, object input, out object output)
+                ObjectGraph.TraverseProperties(result, input =>
                 {
                     // Try to populate the identity of content items.
                     var contentItem = input as ContentItem;
@@ -44,12 +44,10 @@ namespace Nine.Content.Pipeline.Importers
                         dynamic reference = input;
                         AddDependency(context, Path.GetDirectoryName(filename), reference.Filename);
                     }
-
-                    output = input;
-                    return false;
+                    return input;
                 });
-                return result;
 
+                return result;
             }
             catch (Exception e)
             {

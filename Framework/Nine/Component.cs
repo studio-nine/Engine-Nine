@@ -8,15 +8,8 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Markup;
 using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
@@ -69,6 +62,15 @@ namespace Nine
         public WorldObject Parent
         {
             get { return parent; }
+        }
+
+        /// <summary>
+        /// Gets the parent world of this game object.
+        /// </summary>
+        [ContentSerializerIgnore]
+        public World World
+        {
+            get { return parent != null ? parent.World : null; }
         }
 
         #region Parent

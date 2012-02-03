@@ -8,19 +8,16 @@
 
 #region Using Directives
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Nine;
+using Nine.Components;
 using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
-using Nine.Graphics.Primitives;
-using Nine.Components;
-using Microsoft.Xna.Framework.Input;
 #endregion
 
 namespace GeometryGame

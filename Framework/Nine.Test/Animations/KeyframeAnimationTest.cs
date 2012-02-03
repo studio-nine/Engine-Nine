@@ -6,10 +6,8 @@
 //=============================================================================
 #endregion
 
-using Nine.Animations;
-using Microsoft.Xna.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Nine.Animations.Test
 {

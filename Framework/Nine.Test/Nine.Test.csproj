@@ -75,11 +75,13 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Content\DefaultContentProcessorTest.cs" />
     <Compile Include="ContentBuilder.cs" />
     <Compile Include="ErrorLogger.cs" />
     <Compile Include="ExpressionTest.cs" />
     <Compile Include="ContentPipelineTest.cs" />
     <Compile Include="GraphicsTest.cs" />
+    <Compile Include="Graphics\ObjectModel\DisplayObjectTest.cs" />
     <Compile Include="Graphics\ParticleEffectTest.cs" />
     <Compile Include="Graphics\Effects\TerrainMaterialTest.cs" />
     <Compile Include="Graphics\Effects\ModelMaterialTest.cs" />

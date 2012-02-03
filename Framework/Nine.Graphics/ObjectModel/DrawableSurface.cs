@@ -9,11 +9,9 @@
 #region Using Statements
 using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Effects;
 #endregion
 
@@ -21,7 +19,7 @@ namespace Nine.Graphics.ObjectModel
 {
     /// <summary>
     /// A triangle mesh constructed from heightmap to represent game surface. 
-    /// The up axis of the surface is Vector.UnitZ.
+    /// The up axis of the surface is Vector.UnitY.
     /// </summary>
     [ContentSerializable]
     public class DrawableSurface : Transformable, IDrawableObject, ISurface, IPickable, IDisposable

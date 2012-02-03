@@ -8,16 +8,13 @@
 
 #region Using Directives
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Nine;
-using Nine.Graphics;
+
 #if !WINDOWS_PHONE
-using Nine.Graphics.Effects;
+
 #endif
 using Nine.Animations;
 using System.ComponentModel;

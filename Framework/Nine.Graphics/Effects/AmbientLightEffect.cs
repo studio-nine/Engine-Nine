@@ -1,10 +1,7 @@
 #region Using Statements
-using System;
-using System.Linq;
+using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using System.Collections.ObjectModel;
 #endregion
 
 namespace Nine.Graphics.Effects

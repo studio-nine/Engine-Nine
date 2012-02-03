@@ -8,17 +8,7 @@
 
 #region Using Directives
 using System;
-using System.Threading;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Primitives;
 #endregion
@@ -115,7 +105,7 @@ namespace Nine.Graphics.Effects.Deferred
 
                 world = Matrix.CreateScale(radius, radius, Range) *
                         Matrix.CreateTranslation(0, 0, -Range) *
-                        MatrixHelper.CreateRotation(Vector3.UnitZ, -Direction) *
+                        MatrixHelper.CreateRotation(Vector3.Up, -Direction) *
                         Matrix.CreateTranslation(Position);
             }
 

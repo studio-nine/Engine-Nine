@@ -10,12 +10,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using System.IO;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
+
 #endregion
 
 namespace Nine.Graphics
@@ -227,13 +224,13 @@ namespace Nine.Graphics
 
         public int GetHashCode(RenderTargetPoolKey obj)
         {
-            return obj.Graphics.GetHashCode() +
-                   obj.Width.GetHashCode() +
-                   obj.Height.GetHashCode() +
-                   obj.Mipmap.GetHashCode() +
-                   obj.PreferredMultiSampleCount.GetHashCode() +
-                   obj.SurfaceFormat.GetHashCode() +
-                   obj.DepthFormat.GetHashCode() +
+            return obj.Graphics.GetHashCode() ^
+                   obj.Width.GetHashCode() ^
+                   obj.Height.GetHashCode() ^
+                   obj.Mipmap.GetHashCode() ^
+                   obj.PreferredMultiSampleCount.GetHashCode() ^
+                   obj.SurfaceFormat.GetHashCode() ^
+                   obj.DepthFormat.GetHashCode() ^
                    obj.RenderTargetUsage.GetHashCode();
         }
     }

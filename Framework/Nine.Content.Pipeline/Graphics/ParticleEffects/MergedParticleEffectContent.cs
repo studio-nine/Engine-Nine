@@ -8,21 +8,15 @@
 
 #region Using Directives
 using System;
-using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.ParticleEffects
 {
-    using Nine.Graphics.ParticleEffects;
 
     /// <summary>
     /// Defines a merged particle effect. The is equivalent to ParticleEffect.CreateMerged.

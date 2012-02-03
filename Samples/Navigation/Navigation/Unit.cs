@@ -8,16 +8,12 @@
 
 #region Using Directives
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Nine;
+using Nine.Animations;
 using Nine.Graphics;
 using Nine.Navigation;
-using Nine.Animations;
 #endregion
 
 namespace NavigationSample

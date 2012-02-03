@@ -24,6 +24,7 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoneAnimationClipContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.FramesPerSecond);
             output.Write(value.TotalFrames);
@@ -56,6 +57,7 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpriteAnimationContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.TextureList);
             output.WriteObject(value.TargetProperty);
@@ -101,6 +103,7 @@ namespace Nine.Content.Pipeline.Graphics
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GeometryContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.BoundingSphere);
             output.WriteObject(value.BoundingBox);
@@ -133,6 +136,7 @@ namespace Nine.Content.Pipeline.Graphics
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelCollisionContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.CollisionTree);
             EndWrite(output, value);
@@ -162,6 +166,7 @@ namespace Nine.Content.Pipeline.Graphics
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelMeshPartTagContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.BoundingBox);
             output.WriteObject(value.Textures);
@@ -192,6 +197,7 @@ namespace Nine.Content.Pipeline.Graphics
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelSkeletonDataContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.InverseAbsoluteBindPose);
             output.Write(value.SkeletonRoot);
@@ -222,6 +228,7 @@ namespace Nine.Content.Pipeline.Graphics
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ModelTagContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Skeleton);
             output.WriteObject(value.Collision);
@@ -256,6 +263,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AlphaTestMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Alpha);
             output.WriteObject(value.AlphaFunction);
@@ -292,6 +300,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
@@ -333,6 +342,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.IsTransparent);
             output.WriteObject(value.Effect);
@@ -353,6 +363,40 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         }
     }
     /// <summary>
+    /// Content writer for <c>DecalMaterial</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DecalMaterialContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DecalMaterialContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DecalMaterialContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DecalMaterialContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DecalMaterialContent value)
+        {
+
+            BeginWrite(output, value);
+            output.Write(value.Alpha);
+            output.WriteObject(value.Texture);
+            output.Write(value.TextureTransform);
+            output.Write(value.DepthAlphaEnabled);
+            output.Write(value.TwoSided);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.DecalMaterialReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Effects.DecalMaterial, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>DualTextureMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -366,6 +410,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
@@ -402,6 +447,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EnvironmentMapMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
@@ -441,6 +487,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LeveledMaterialContent value)
         {
+
             BeginWrite(output, value);
             {
                 output.Write(value.MaterialLevels.Count);
@@ -479,6 +526,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinkedMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.IsTransparent);
             output.WriteObject(value.Effect);
@@ -512,6 +560,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinnedMaterialContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Alpha);
             output.Write(value.DiffuseColor);
@@ -555,6 +604,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.AmbientLightColor);
             EndWrite(output, value);
@@ -584,6 +634,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicTextureEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Texture);
             output.Write(value.OverlayColor);
@@ -614,6 +665,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BeginLightEffectPartContent value)
         {
+
             BeginWrite(output, value);
             EndWrite(output, value);
         }
@@ -642,6 +694,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.ColorMatrix);
             EndWrite(output, value);
@@ -671,6 +724,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DeferredLightsEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
@@ -702,6 +756,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DetailTextureEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.DetailTexture);
             output.Write(value.DetailTextureScale);
@@ -732,6 +787,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Direction);
             output.Write(value.DiffuseColor);
@@ -763,6 +819,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DualTextureEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Texture);
             EndWrite(output, value);
@@ -792,6 +849,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmissiveMapEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.EmissiveMap);
             EndWrite(output, value);
@@ -821,6 +879,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.FogColor);
             output.Write(value.FogStart);
@@ -852,6 +911,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MaterialEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.DiffuseColor);
             output.Write(value.EmissiveColor);
@@ -885,6 +945,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NormalMapEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.NormalMap);
             EndWrite(output, value);
@@ -914,6 +975,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, OverlayTextureEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Texture);
             EndWrite(output, value);
@@ -943,6 +1005,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.DiffuseColor);
@@ -976,6 +1039,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ShadowMapEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.ShadowColor);
             output.Write(value.DepthBias);
@@ -1006,6 +1070,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkinTransformEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.MaxBones);
             output.Write(value.WeightsPerVertex);
@@ -1036,6 +1101,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpecularMapEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.SpecularMap);
             EndWrite(output, value);
@@ -1065,6 +1131,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SplatterTextureEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.TextureX);
             output.WriteObject(value.TextureY);
@@ -1115,6 +1182,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.Direction);
@@ -1152,6 +1220,7 @@ namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TextureTransformEffectPartContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.TextureTransform);
             EndWrite(output, value);
@@ -1184,6 +1253,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AmbientLightContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.AmbientLightColor);
             output.Write(value.Enabled);
@@ -1219,6 +1307,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CameraContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.NearPlane);
             output.Write(value.FarPlane);
@@ -1241,6 +1348,68 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
     }
     /// <summary>
+    /// Content writer for <c>Decal</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DecalContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DecalContent>
+    {
+        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DecalContent value);
+        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DecalContent value);        
+        
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DecalContent value)
+        {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
+            BeginWrite(output, value);
+            output.Write(value.Visible);
+            output.Write(value.Alpha);
+            output.Write(value.Color);
+            output.Write(value.Size);
+            output.WriteObject(value.Material);
+            output.Write(value.DepthBias);
+            output.Write(value.LightingEnabled);
+            output.Write(value.NormalMappingEnabled);
+            output.WriteObject(value.Texture);
+            output.WriteObject(value.NormalMap);
+            output.WriteObject(value.Duration);
+            output.WriteObject(value.FadeDuration);
+            output.WriteObject(value.Name);
+            output.WriteObject(value.Tag);
+            output.Write(value.Transform);
+            EndWrite(output, value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ObjectModel.DecalReader, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ObjectModel.Decal, Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>DirectionalLight</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1254,6 +1423,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DirectionalLightContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
@@ -1290,6 +1478,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DisplayObjectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             {
                 output.Write(value.Children.Count);
@@ -1332,6 +1539,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.Model);
             output.WriteObject(value.Material);
@@ -1379,6 +1605,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableModelPartContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Visible);
             output.WriteObject(value.Material);
@@ -1410,6 +1655,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableParticleEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.ParticleEffect);
             output.Write(value.Visible);
@@ -1443,6 +1707,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfaceContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.PatchSegmentCount);
             output.Write(value.TextureTransform);
@@ -1486,6 +1769,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DrawableSurfacePatchContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Visible);
             output.WriteObject(value.Tag);
@@ -1516,6 +1818,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FogContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.FogStart);
             output.Write(value.FogEnd);
@@ -1551,6 +1872,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointLightContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
@@ -1589,6 +1929,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SceneContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.Camera);
             output.WriteObject(value.SceneObjects);
@@ -1621,6 +1980,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SkyBoxContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.Texture);
             output.Write(value.Visible);
@@ -1654,6 +2032,25 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpotLightContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.SpecularColor);
             output.Write(value.DiffuseColor);
@@ -1695,6 +2092,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TransformBindingContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Source ?? "");
             output.Write(value.Target ?? "");
@@ -1732,6 +2130,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AbsorbControllerContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Position);
             output.Write(value.Force);
@@ -1763,6 +2162,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BoxEmitterContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Transform);
             output.WriteObject(value.Box);
@@ -1806,6 +2206,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorControllerContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.EndColor);
             output.Write(value.Enabled);
@@ -1836,6 +2237,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CylinderEmitterContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Shell);
             output.Write(value.Radiate);
@@ -1882,6 +2284,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, FadeControllerContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Enabled);
             EndWrite(output, value);
@@ -1911,6 +2314,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ForceControllerContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Force);
             output.Write(value.Enabled);
@@ -1941,6 +2345,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LineEmitterContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Spread);
             output.WriteObject(value.LineList);
@@ -1983,6 +2388,25 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ParticleEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.ParticleType);
             output.Write(value.Enabled);
@@ -2038,6 +2462,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PointEmitterContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Spread);
             output.Write(value.Enabled);
@@ -2079,6 +2504,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RotationControllerContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.EndRotation);
             output.Write(value.Enabled);
@@ -2109,6 +2535,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SizeControllerContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.EndSize);
             output.Write(value.Enabled);
@@ -2139,6 +2566,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SpeedControllerContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.EndSpeed);
             output.Write(value.Enabled);
@@ -2169,6 +2597,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SphereEmitterContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Shell);
             output.Write(value.Radiate);
@@ -2213,6 +2642,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TangentForceControllerContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Force);
             output.Write(value.Up);
@@ -2248,6 +2678,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AdoptionEffectContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Speed);
             output.WriteObject(value.Effect);
@@ -2282,6 +2713,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AntiAliasEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Weight);
             output.WriteObject(value.NormalTexture);
@@ -2315,6 +2765,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BasicScreenEffectContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Effect);
             output.Write(value.Enabled);
@@ -2348,6 +2799,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BlurEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.BlurAmount);
             output.Write(value.Step);
@@ -2382,6 +2852,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ChainedScreenEffectContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Effects);
             output.Write(value.Enabled);
@@ -2412,6 +2883,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ColorMatrixEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Transform);
             output.WriteObject(value.Tag);
@@ -2443,6 +2933,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DepthOfFieldEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.FocalPlane);
             output.Write(value.FocalLength);
@@ -2478,6 +2987,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, EmbossEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Emboss);
             output.WriteObject(value.Tag);
@@ -2509,6 +3037,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LuminanceEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.Tag);
             output.WriteObject(value.Name);
@@ -2539,6 +3086,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectContent value)
         {
+
             BeginWrite(output, value);
             {
                 output.Write(value.Passes.Count);
@@ -2578,6 +3126,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, MultiPassScreenEffectPassContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.SurfaceFormat);
             output.WriteObject(value.RenderTargetSize);
@@ -2614,6 +3163,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, NoiseEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.NoiseAmount);
             output.Write(value.Seed);
@@ -2646,6 +3214,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, PixelateEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Threshhold);
             output.Write(value.EdgeColor);
@@ -2678,6 +3265,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, RadialBlurEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Center);
             output.Write(value.BlurAmount);
@@ -2710,6 +3316,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScaleEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.Tag);
             output.WriteObject(value.Name);
@@ -2740,6 +3365,7 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ScreenEffectContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.SurfaceFormat);
             output.WriteObject(value.RenderTargetSize);
@@ -2773,6 +3399,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ThresholdEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Threshold);
             output.WriteObject(value.Tag);
@@ -2804,6 +3449,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ToneMappingEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Exposure);
             output.Write(value.MaxLuminance);
@@ -2838,6 +3502,25 @@ namespace Nine.Content.Pipeline.Graphics.ScreenEffects
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, WiggleEffectContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.Write(value.Speed);
             output.Write(value.Amplitude);

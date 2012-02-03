@@ -8,7 +8,6 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
 #endregion
 

@@ -8,9 +8,9 @@
 
 #region Using Directives
 using System;
-using System.Xaml;
 using System.ComponentModel;
 using System.Globalization;
+using System.Xaml;
 #endregion
 
 namespace Nine.Content.Pipeline.Design

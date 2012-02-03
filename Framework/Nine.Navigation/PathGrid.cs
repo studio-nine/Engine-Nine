@@ -9,11 +9,7 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 #endregion
 
@@ -260,6 +256,25 @@ namespace Nine.Navigation
             int yy = current / SegmentCountX - end / SegmentCountX;
 
             return (float)Math.Sqrt(xx * xx + yy * yy);
+        }
+
+        public float GetHeuristicValueManhattan(int current, int end)
+        {
+            int xx = current % SegmentCountX - end % SegmentCountX;
+            int yy = current / SegmentCountX - end / SegmentCountX;
+
+            return Math.Abs(xx) + Math.Abs(yy);
+        }
+
+        public float GetHeuristicValueDiagonal(int current, int end)
+        {
+            int xx = Math.Abs(current % SegmentCountX - end % SegmentCountX);
+            int yy = Math.Abs(current / SegmentCountX - end / SegmentCountX);
+
+            int diagonal = Math.Min(xx, yy);
+            int straight = xx + yy;
+
+            return 1.4142135F * diagonal + (straight - 2 * diagonal);
         }
 
         public IAsyncResult QueryPathTaskAsync(Vector3 start, Vector3 end, float radius, IList<Vector3> wayPoints)

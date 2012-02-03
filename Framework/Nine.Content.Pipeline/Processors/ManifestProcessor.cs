@@ -100,17 +100,9 @@ namespace Nine.Content.Pipeline.Processors
 
             // lastly we want to override the manifest file with this list. this allows us to 
             // easily see what files were included in the build for debugging.
-            using (FileStream fileStream = new FileStream(input, FileMode.Create, FileAccess.Write))
-            {
-                using (StreamWriter writer = new StreamWriter(fileStream))
-                {
-                    // now write all the files into the manifest
-                    foreach (var file in files)
-                    {
-                        writer.WriteLine(file);
-                    }
-                }
-            }
+            // But we don't want to modify the file to trigger another build.
+            if (!File.ReadAllLines(input).SequenceEqual(files, StringComparer.OrdinalIgnoreCase))
+                File.WriteAllLines(input, files);
 
             // just return the list which will be automatically serialized for us without
             // needing a ContentTypeWriter like we would have needed pre- XNA GS 3.1

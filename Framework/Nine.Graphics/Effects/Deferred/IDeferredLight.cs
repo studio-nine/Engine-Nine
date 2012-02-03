@@ -7,15 +7,8 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Nine.Graphics.ScreenEffects;
+
 #endregion
 
 namespace Nine.Graphics.Effects.Deferred

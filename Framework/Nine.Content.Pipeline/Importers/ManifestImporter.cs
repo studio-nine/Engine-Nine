@@ -7,11 +7,6 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace Nine.Content.Pipeline.Importers

@@ -34,7 +34,7 @@ namespace ProcessSamples
                                            f.IndexOf(@".cache", StringComparison.OrdinalIgnoreCase) < 0 &&
                                            f.IndexOf(@".suo", StringComparison.OrdinalIgnoreCase) < 0 &&
                                            f.IndexOf(".pdb", StringComparison.OrdinalIgnoreCase) < 0 &&
-                                           f.IndexOf("TutorialData", StringComparison.OrdinalIgnoreCase) < 0 &&
+                                           f.IndexOf(@"TutorialData\", StringComparison.OrdinalIgnoreCase) < 0 &&
                                            !Regex.IsMatch(f,  @"Nine.*.xml"))
                                .ToArray();
 

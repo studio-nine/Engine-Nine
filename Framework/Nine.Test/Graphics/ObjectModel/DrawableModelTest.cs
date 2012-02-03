@@ -6,18 +6,11 @@
 //=============================================================================
 #endregion
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics.Test;
-using Nine.Graphics.Effects;
-using Nine.Content.Pipeline.Graphics.ObjectModel;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Content.Pipeline.Graphics.Effects;
+using Nine.Content.Pipeline.Graphics.ObjectModel;
+using Nine.Graphics.Effects;
 
 namespace Nine.Graphics.ObjectModel.Test
 {

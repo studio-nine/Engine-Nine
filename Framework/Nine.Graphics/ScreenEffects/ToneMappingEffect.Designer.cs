@@ -14,8 +14,6 @@ namespace Nine.Graphics.ScreenEffects
 {
 #if !WINDOWS_PHONE
 
-    using System;
-    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 #if SILVERLIGHT
     using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;

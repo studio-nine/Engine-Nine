@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using Nine.Content.Pipeline.Properties;
+using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 
 namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 {

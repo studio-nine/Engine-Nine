@@ -8,15 +8,11 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Diagnostics;
-using System.IO.IsolatedStorage;
 using System.ComponentModel;
+using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 #endregion
 
 namespace Nine.Components

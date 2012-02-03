@@ -8,13 +8,9 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
 namespace Nine

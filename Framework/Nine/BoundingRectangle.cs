@@ -8,7 +8,6 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 #endregion
@@ -129,7 +128,7 @@ namespace Nine
 
         public override int GetHashCode()
         {
-            return Min.GetHashCode() + Max.GetHashCode();
+            return Min.GetHashCode() ^ Max.GetHashCode();
         }
 
         public override string ToString()

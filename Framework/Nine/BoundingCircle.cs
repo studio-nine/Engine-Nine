@@ -8,9 +8,8 @@
 
 #region Using Directives
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Linq;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -103,7 +102,7 @@ namespace Nine
 
         public override int GetHashCode()
         {
-            return Center.GetHashCode() + Radius.GetHashCode();
+            return Center.GetHashCode() ^ Radius.GetHashCode();
         }
 
         public override string ToString()

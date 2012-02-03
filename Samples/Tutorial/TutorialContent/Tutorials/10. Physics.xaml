@@ -1,0 +1,65 @@
+﻿<World xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
+
+    <WorldObject>
+        <GraphicsComponentContent>
+            <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
+            <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+            <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+            <DirectionalLightContent CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+            
+            <!--
+                Use the PhysicsComponentContent.PhysicsType attached properties to generate the corresponding
+                physics model automatically. 
+                Press F2 or F3 to view the physics model of the world.
+            -->
+            <DrawableSurfaceContent Heightmap="..\Textures\RF1" Position="-50, -50, -10" TextureScale="0.3, 0.3"
+                                    PhysicsComponentContent.PhysicsType="Static"
+                                    PhysicsComponentContent.StaticFriction="0.8"
+                                    PhysicsComponentContent.DynamicFriction="0.6"
+                                    PhysicsComponentContent.Restitution="0">
+                <ModelMaterialContent Texture="..\Textures\TerrainTex" ShadowEnabled="True" />
+            </DrawableSurfaceContent>
+            
+        </GraphicsComponentContent>
+    </WorldObject>
+
+    <WorldObject Position="0, 0, 20">
+        <GraphicsComponentContent>
+            
+            <!--
+                PhysicsComponentContent.PhysicsType can also be applied to models. 
+                You can optionally specify the name of the mesh to be used as the collision mesh.
+                That mesh will be hidden automatically. The default value is "Collision".
+            -->
+            <DrawableModelContent Model="..\Models\Cube"
+                                  PhysicsComponentContent.PhysicsType="Dynamic"
+                                  PhysicsComponentContent.Mass="1"
+                                  PhysicsComponentContent.Restitution="0.1"
+                                  PhysicsComponentContent.CollisionMesh="Collision">
+                <BasicMaterialContent Texture="..\Textures\box" TextureEnabled="True" />
+            </DrawableModelContent>
+            
+        </GraphicsComponentContent>
+    </WorldObject>
+    
+    <WorldObject Position="10, 0, 20">
+        <GraphicsComponentContent>
+            <DrawableModelContent Model="..\Models\Tank" />
+        </GraphicsComponentContent>
+        
+        <!--
+            Besides generating physics models from graphical models, you can explicitly specify the physics
+            shapes to use. These includes simple boxes, spheres, cylinders, capsules, cones, etc.
+            A compound shape will be created when multiple shapes are specified.
+        -->
+        <PhysicsComponentContent>
+            <BoxShapeContent Position="0, 0, 1.6" Size="8, 8, 4" />
+            <CylinderShapeContent Position="-3, -3.5, 0" Height="3" Radius="1.4" Rotation="0, 0, 90" />
+            <CylinderShapeContent Position="3, -3.5, 0" Height="3" Radius="1.4" Rotation="0, 0, 90" />
+            <CylinderShapeContent Position="3, 3.5, 0" Height="3" Radius="1.4" Rotation="0, 0, 90" />
+            <CylinderShapeContent Position="-3, 3.5, 0" Height="3" Radius="1.4" Rotation="0, 0, 90" />
+        </PhysicsComponentContent>
+        
+    </WorldObject>
+    
+</World>

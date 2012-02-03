@@ -7,18 +7,11 @@
 #endregion
 
 #region Using Directives
-using System;
+using System.ComponentModel;
 using System.Linq;
-using System.Collections.Generic;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using System.ComponentModel;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.Effects.EffectParts

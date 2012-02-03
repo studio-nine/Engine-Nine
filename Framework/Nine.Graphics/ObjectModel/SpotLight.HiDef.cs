@@ -7,14 +7,8 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics;
+
 
 #if !WINDOWS_PHONE
 using Nine.Graphics.Effects;

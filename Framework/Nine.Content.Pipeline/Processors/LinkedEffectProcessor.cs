@@ -8,19 +8,13 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Text;
-using System.Linq;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+using System.Text;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Nine.Content.Pipeline.Graphics.Effects;
 using Nine.Content.Pipeline.Graphics.Effects.EffectParts;
 #endregion
@@ -30,8 +24,6 @@ namespace Nine.Content.Pipeline.Processors
     using StitchUp.Content.Pipeline;
     using StitchUp.Content.Pipeline.Graphics;
     using StitchUp.Content.Pipeline.Processors;
-    using StitchUp.Content.Pipeline.FragmentLinking;
-    using StitchUp.Content.Pipeline.FragmentLinking.EffectModel;
 
     /// <summary>
     /// Processes the input LinkedEffectContent.

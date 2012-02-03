@@ -27,6 +27,7 @@ namespace <#= namespaceGroup.Key #>
     {
         var className = GetClassName(type).Replace("Effect", "Material");
         var classConstructorName = className;
+        var classModifier = type.IsPublic ? "public" : "internal";
         var members = FindContentSerializableMembers(type).Where(m =>
                             !(m.Name == "World" || m.Name == "View" || m.Name == "Projection" || m.Name == "Tag" ||
                               m.Name == "Name" || m.Name == "AmbientLightColor" || m.Name.StartsWith("Fog")))
@@ -84,13 +85,13 @@ namespace <#= namespaceGroup.Key #>
         public <#= classConstructorName #>(Microsoft.Xna.Framework.Graphics.GraphicsDevice graphics)
             : this(Nine.Graphics.GraphicsResources<<#= GetClassFullName(type) #>>.GetInstance(graphics))
         {
-            OnCreate();
+
         }
 
         /// <summary>
         /// Initializes a new instance of <c><#= classConstructorName #></c>.
         /// </summary>
-        public <#= classConstructorName #>(<#= GetClassFullName(type) #> effect)
+        <#= classModifier #> <#= classConstructorName #>(<#= GetClassFullName(type) #> effect)
         {
             this.effect = effect;
 <#
@@ -103,6 +104,8 @@ namespace <#= namespaceGroup.Key #>
 <#
     }
 #>
+
+            OnCreate();
         }
         
         partial void OnApply();

@@ -8,12 +8,8 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Reflection;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 #endregion
 
 namespace Nine
@@ -31,6 +27,8 @@ namespace Nine
 
         public T Create<T>(string typeName)
         {
+            if (string.IsNullOrEmpty(typeName))
+                return default(T);
             if (prototypes.ContainsKey(typeName))
             {
                 var cloneable = prototypes[typeName] as ICloneable;

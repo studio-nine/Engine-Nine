@@ -24,6 +24,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Strength);
             EndWrite(output, value);
@@ -53,6 +54,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Curve);
             EndWrite(output, value);
@@ -82,6 +84,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Strength);
             EndWrite(output, value);
@@ -111,6 +114,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.Power);
             EndWrite(output, value);
@@ -140,6 +144,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value)
         {
+
             BeginWrite(output, value);
             output.Write(value.SegmentCountX);
             output.Write(value.SegmentCountY);
@@ -172,6 +177,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value)
         {
+
             BeginWrite(output, value);
             EndWrite(output, value);
         }
@@ -200,6 +206,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value)
         {
+
             BeginWrite(output, value);
             EndWrite(output, value);
         }
@@ -228,6 +235,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value)
         {
+
             BeginWrite(output, value);
             EndWrite(output, value);
         }
@@ -256,6 +264,7 @@ namespace Nine.Content.Pipeline
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value)
         {
+
             BeginWrite(output, value);
             output.Write(value.SegmentCountX);
             output.Write(value.SegmentCountY);
@@ -291,6 +300,25 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AnimationPlayerContent value)
         {
+            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
+            if (attachedPropertyStore != null)
+            {
+                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
+                if (dictionary == null)
+                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
+                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
+                attachedPropertyStore.CopyPropertiesTo(properties, 0);
+                foreach (var property in properties)
+                {
+                    var propertyName = new System.Text.StringBuilder();
+                    propertyName.Append(property.Key.DeclaringType.Name);
+                    propertyName.Append(".");
+                    propertyName.Append(property.Key.MemberName);
+                    dictionary.Add(propertyName.ToString(), property.Value);
+                }
+                value.Tag = dictionary;
+            }            
+
             BeginWrite(output, value);
             output.WriteObject(value.Animations);
             output.WriteObject(value.Tag);
@@ -321,6 +349,7 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DelayAnimationContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Duration);
             EndWrite(output, value);
@@ -350,6 +379,7 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LayeredAnimationContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Animations);
             output.Write(value.Repeat);
@@ -380,6 +410,7 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SequentialAnimationContent value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.Animations);
             output.Write(value.Repeat);
@@ -410,6 +441,7 @@ namespace Nine.Content.Pipeline.Animations
         
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TweenAnimationContent<T> value)
         {
+
             BeginWrite(output, value);
             output.WriteObject(value.From);
             output.WriteObject(value.To);

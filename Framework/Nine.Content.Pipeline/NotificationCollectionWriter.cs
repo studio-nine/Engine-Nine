@@ -7,11 +7,7 @@
 #endregion
 
 #region Using Directives
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 #endregion
 
@@ -20,16 +16,23 @@ namespace Nine.Content
     [ContentTypeWriter()]
     class NotificationCollectionWriter<T> : ContentTypeWriter<NotificationCollection<T>>
     {
+        ContentTypeWriter elementWriter;
+
         public override bool CanDeserializeIntoExistingObject
         {
             get { return true; }
+        }
+
+        protected override void Initialize(ContentCompiler compiler)
+        {
+            elementWriter = compiler.GetTypeWriter(typeof(T));
         }
 
         protected override void Write(ContentWriter output, NotificationCollection<T> value)
         {
             output.Write(value.Count);
             foreach (var item in value)
-                output.WriteObject<T>(item);
+                output.WriteObject<T>(item, elementWriter);
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)

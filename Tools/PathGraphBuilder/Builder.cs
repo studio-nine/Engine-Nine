@@ -17,6 +17,7 @@ using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
 using Nine;
 using Nine.Navigation;
+using System.Diagnostics;
 #endregion
 
 namespace Nine.Tools.PathGraphBuilder
@@ -25,7 +26,7 @@ namespace Nine.Tools.PathGraphBuilder
     {
         static object SyncRoot = new object();
 
-        public static PathGrid Build(Scene scene, float step, float maxSlope, float maxActorHeight)
+        public static PathGrid BuildPathGrid(Scene scene, float step, float maxSlope, float maxActorHeight)
         {
             Heightmap heightmap;
             BoundingBox bounds;
@@ -34,10 +35,13 @@ namespace Nine.Tools.PathGraphBuilder
             var collisionMap = CreateCollisionMapFromHeightmap(heightmap, maxSlope);
             ObstacleCollisionTest(scene, heightmap, bounds, collisionMap, maxActorHeight);
 
+            ExtractRectanglesFromCollisionMap(collisionMap, heightmap.Width, heightmap.Height);
+
             var pathGrid = new PathGrid(bounds.Min.X, bounds.Min.Y, heightmap.Size.X, heightmap.Size.Y, heightmap.Width, heightmap.Height);
             for (int i = 0; i < collisionMap.Length; i++)
                 if (collisionMap[i])
                     pathGrid.Mark(i % pathGrid.SegmentCountX, i / pathGrid.SegmentCountX);
+
             return pathGrid;
         }
 
@@ -59,7 +63,6 @@ namespace Nine.Tools.PathGraphBuilder
             var heightField = new float[width * height];
 
             Parallel.For(0, height, y =>
-            //for (int y = 0; y < height; y++)
             {
                 var rayPicks = new List<FindResult>();
 
@@ -85,13 +88,8 @@ namespace Nine.Tools.PathGraphBuilder
                         var geometry = pick.OriginalTarget as IGeometry;
                         if (geometry != null)
                         {
-                            int i = 0;
                             lock (SyncRoot)
                             {
-                                // Force lazy initialization;
-                                i += geometry.Indices.Length;
-                                i += geometry.Positions.Length;
-
                                 var pickResult = pickRay.Intersects(geometry);
                                 if (pickResult.HasValue && pickResult.Value < min)
                                 {
@@ -103,7 +101,6 @@ namespace Nine.Tools.PathGraphBuilder
                     }
                     rayPicks.Clear();
                 }
-            //}
             });
 
             boundingBox = bounds;
@@ -119,7 +116,6 @@ namespace Nine.Tools.PathGraphBuilder
             var heights = heightmap.Heights;
 
             Parallel.For(0, heightmap.Height, y =>
-            //for (int y = 0; y < heightmap.Height; y++)
             {
                 for (int x = 0; x < heightmap.Width; x++)
                 {
@@ -133,7 +129,6 @@ namespace Nine.Tools.PathGraphBuilder
                         Math.Abs(p2 - p4) > maxHeightDif || Math.Abs(p3 - p4) > maxHeightDif ||
                         Math.Abs(p1 - p4) > maxHeightDif * sqrtTwo || Math.Abs(p2 - p3) > maxHeightDif * sqrtTwo);
                 }
-            //}
             });
             return collisions;
         }
@@ -145,7 +140,6 @@ namespace Nine.Tools.PathGraphBuilder
             var heights = heightmap.Heights;
             
             Parallel.For(0, heightmap.Height, y =>
-            //for (int y = 0; y < heightmap.Height; y++)
             {
                 var obstacles = new List<DrawableModel>();
 
@@ -175,13 +169,8 @@ namespace Nine.Tools.PathGraphBuilder
 
                     foreach (IGeometry geometry in obstacles)
                     {
-                        int i = 0;
                         lock (SyncRoot)
                         {
-                            // Force lazy initialization;
-                            i += geometry.Indices.Length;
-                            i += geometry.Positions.Length;
-
                             var containment = boundingBox.Contains(geometry);
                             if (containment != ContainmentType.Disjoint)
                             {
@@ -192,8 +181,80 @@ namespace Nine.Tools.PathGraphBuilder
                     }
                     obstacles.Clear();
                 }
-            //}
             });
+        }
+
+        internal static List<Rectangle> ExtractRectanglesFromCollisionMap(bool[] collisionMap, int width, int height)
+        {
+            Debug.Assert(collisionMap.Length == width * height);
+
+            bool turn = false;
+            var mergedSquares = new List<Rectangle>();
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (collisionMap[x + y * width])
+                        continue;
+                    
+                    int xIncrement = 1;
+                    int yIncrement = 1;
+                    int xx = x;
+                    int yy = y;
+
+                    while (xIncrement + yIncrement != 0)
+                    {
+                        if (turn && xIncrement > 0)
+                        {
+                            xx += xIncrement;
+                            if (xx >= width)
+                                xIncrement = 0;
+                            else
+                            {
+                                for (int i = y; i <= yy; i++)
+                                    if (collisionMap[xx + i * width])
+                                    {
+                                        xIncrement = 0;
+                                        break;
+                                    }
+                            }
+                            if (xIncrement == 0)
+                                xx--;
+                            else if (yIncrement == 0 && 1.0 * (xx - x) / (yy - y) > 4)
+                                xIncrement = 0;
+                        }
+                        else if (!turn && yIncrement > 0)
+                        {
+                            yy += yIncrement;
+                            if (yy >= height)
+                                yIncrement = 0;
+                            else
+                            {
+                                for (int i = x; i <= xx; i++)
+                                    if (collisionMap[i + yy * width])
+                                    {
+                                        yIncrement = 0;
+                                        break;
+                                    }
+                            }
+                            if (yIncrement == 0)
+                                yy--;
+                            else if (xIncrement == 0 && 1.0 * (yy - y) / (xx - x) > 4)
+                                yIncrement = 0;
+                        }
+                        turn = !turn;
+                    }
+
+                    var rect = new Rectangle(x, y, xx - x + 1, yy - y + 1);
+                    for (int iy = 0; iy < rect.Height; iy++)
+                        for (int ix = 0; ix < rect.Width; ix++)
+                            collisionMap[rect.X + ix + (rect.Y + iy) * width] = true;
+
+                    mergedSquares.Add(rect);
+                }
+            }
+            return mergedSquares;
         }
     }
 }

@@ -7,25 +7,8 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.IO;
-using System.Linq;
-using System.ComponentModel;
-using System.Collections.Generic;
 using System.Xaml;
-using System.Reflection;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Graphics;
-using Nine.Content.Pipeline.Components;
-using Nine.Content.Pipeline.Processors;
-using Nine.Content.Pipeline.Graphics.ObjectModel;
-using Nine.Graphics.ObjectModel;
-using Nine.Navigation;
-using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace Nine.Content.Pipeline.Navigation
@@ -55,7 +38,6 @@ namespace Nine.Content.Pipeline.Navigation
         public static void SetIsPath(object target, bool value)
         {
             AttachablePropertyServices.SetProperty(target, IsPathProperty, value);
-            SetTag(target, "IsPath", true);
         }
 
         /// <summary>
@@ -74,16 +56,6 @@ namespace Nine.Content.Pipeline.Navigation
         public static void SetIsObstacle(object target, bool value)
         {
             AttachablePropertyServices.SetProperty(target, IsObstacleProperty, value);
-            SetTag(target, "IsObstacle", true);
-        }
-
-        private static void SetTag(object target, string key, object value)
-        {
-            dynamic tag = target;
-            var dictionary = tag.Tag as IDictionary<string, object>;
-            if (dictionary == null)
-                dictionary = tag.Tag = new Dictionary<string, object>();
-            dictionary[key] = value;
         }
         #endregion
     }

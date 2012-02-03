@@ -9,16 +9,13 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel;
-using System.Collections;
-using System.Xml;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using System.Reflection;
+using System.Xml.Serialization;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace Nine
@@ -62,13 +59,25 @@ namespace Nine
             // Clone using Xml serialization
             if (SerializationStream == null)
                 SerializationStream = new MemoryStream();
-            
+
             SerializationStream.Seek(0, SeekOrigin.Begin);
             var serializer = CreateSerializer(prototype.GetType());
             serializer.Serialize(SerializationStream, prototype);
-            var position = SerializationStream.Position;
-            SerializationStream.Seek(0, SeekOrigin.Begin);   
-            return serializer.Deserialize(SerializationStream);
+            SerializationStream.SetLength(SerializationStream.Position);
+            SerializationStream.Seek(0, SeekOrigin.Begin);
+
+            try
+            {
+                return serializer.Deserialize(SerializationStream);
+            }
+            catch (Exception e)
+            {
+                SerializationStream.Seek(0, SeekOrigin.Begin);
+                StreamReader reader = new StreamReader(SerializationStream);
+
+                throw new NotSupportedException(string.Format(
+                    "Failed Deserializing {0} from\n\n {1}", prototype.GetType(), reader.ReadToEnd(), e));
+            }
         }
 
         static MemoryStream SerializationStream;

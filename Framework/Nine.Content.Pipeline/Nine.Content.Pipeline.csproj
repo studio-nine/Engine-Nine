@@ -39,7 +39,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\References\x86\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;MDX</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RegisterForComInterop>false</RegisterForComInterop>
@@ -131,9 +131,12 @@
     <Compile Include="ContentReference.cs" />
     <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\Effects\LeveledMaterialContent.cs" />
+    <Compile Include="Graphics\ObjectModel\DecalContent.cs" />
     <Compile Include="Graphics\ScreenEffects\ScreenEffectContent.cs" />
     <Compile Include="Navigation\PathGridBuilder.cs" />
     <Compile Include="Navigation\PathGridContent.cs" />
+    <Compile Include="Physics\PhysicsComponentContent.cs" />
+    <Compile Include="Physics\PhysicsShapeContent.cs" />
     <Compile Include="SelfProcessAttribute.cs" />
     <Compile Include="Design\CurveConverter.cs" />
     <Compile Include="Graphics\ObjectModel\DrawableParticleEffectContent.cs" />

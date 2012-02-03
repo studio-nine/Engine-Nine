@@ -8,13 +8,9 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects

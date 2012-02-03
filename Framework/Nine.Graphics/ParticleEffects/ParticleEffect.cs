@@ -8,14 +8,11 @@
 
 #region Using Directives
 using System;
-using System.Text;
-using System.IO;
-using System.Xml;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -147,7 +144,7 @@ namespace Nine.Graphics.ParticleEffects
         public bool SoftParticleEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets the emitter of this particle effect.
+        /// Gets or sets the emitter prototype of this particle effect.
         /// </summary>
         public IParticleEmitter Emitter
         {

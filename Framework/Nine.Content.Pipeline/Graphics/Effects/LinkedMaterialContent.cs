@@ -7,16 +7,8 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.IO;
-using System.Security.Cryptography;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.Effects

@@ -8,20 +8,15 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 namespace Nine.Animations
 {
-    using Nine.Graphics;
     using Microsoft.Xna.Framework.Content;
+    using Nine.Graphics;
 
     /// <summary>
     /// An animation player that plays TextureList based sprite animations.

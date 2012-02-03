@@ -7,7 +7,7 @@
 #endregion
 
 #region Using Directives
-using System;
+
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.ObjectModel

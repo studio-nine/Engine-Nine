@@ -8,16 +8,14 @@
 
 #region Using Directives
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine;
-using Nine.Graphics;
-using System.ComponentModel;
-using Nine.Graphics.Primitives;
 using Nine.Components;
+using Nine.Graphics;
+using Nine.Graphics.Primitives;
 #endregion
 
 namespace DebuggerPrimitives

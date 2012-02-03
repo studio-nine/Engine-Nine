@@ -8,13 +8,10 @@
 
 #region Using Directives
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Nine.Animations;
 #endregion
@@ -137,6 +134,9 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public NotificationCollection<TransformBinding> TransformBindings { get; private set; }
 
+        internal List<TransformBinding> sortedTransformBindings;
+        private bool transformBindingNeedsSort = true;
+
         void transformBindings_Added(object sender, NotifyCollectionChangedEventArgs<TransformBinding> e)
         {
             if (e.Value == null)
@@ -190,9 +190,14 @@ namespace Nine.Graphics.ObjectModel
                 sourceModel.SharedSkeleton = targetModel.Skeleton;
             }
 
-            // TODO: Dependency sorting
+            transformBindingNeedsSort = true;
         }
-        
+
+        void transformBindings_Removed(object sender, NotifyCollectionChangedEventArgs<TransformBinding> e)
+        {
+            transformBindingNeedsSort = true;
+        }
+
         /// <summary>
         /// Binds the transformation of the source object to the target object.
         /// </summary>
@@ -292,6 +297,16 @@ namespace Nine.Graphics.ObjectModel
             TransformBindings = new NotificationCollection<TransformBinding>();
             TransformBindings.Sender = this;
             TransformBindings.Added += transformBindings_Added;
+            TransformBindings.Removed += transformBindings_Removed;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DisplayObject"/> class.
+        /// </summary>
+        public DisplayObject(IEnumerable children) : this()
+        {
+            foreach (var child in children)
+                Children.Add(child);
         }
         #endregion
 
@@ -304,8 +319,19 @@ namespace Nine.Graphics.ObjectModel
 
         private void UpdateTransformBindings()
         {
-            foreach (var binding in TransformBindings)
+            if (transformBindingNeedsSort)
             {
+                SortTransformBinding();
+                transformBindingNeedsSort = false;
+            }
+
+            if (sortedTransformBindings == null)
+                return;
+
+            for (int i = 0; i < sortedTransformBindings.Count; i++)
+            {
+                var binding = sortedTransformBindings[i];
+
                 if (binding.TargetBoneIndex < 0)
                 {
                     if (binding.Transform != null)
@@ -335,6 +361,54 @@ namespace Nine.Graphics.ObjectModel
                 }
             }
         }
+
+        private void SortTransformBinding()
+        {
+            if (TransformBindings.Count <= 0)
+                return;
+
+            if (DependencySortQueue == null)
+                DependencySortQueue = new Queue<TransformBinding>(TransformBindings.Count);
+            else
+                DependencySortQueue.Clear();
+
+            if (sortedTransformBindings == null)
+                sortedTransformBindings = new List<TransformBinding>(TransformBindings.Count);
+            else
+                sortedTransformBindings.Clear();
+
+            // Add nodes with no dependencies
+            int count = TransformBindings.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (!HasDependency(TransformBindings[i].Target))
+                    DependencySortQueue.Enqueue(TransformBindings[i]);
+            }
+
+            if (DependencySortQueue.Count <= 0)
+                throw new InvalidOperationException("Circular dependency found for transform bindings.");
+
+            while (DependencySortQueue.Count > 0)
+            {
+                var currentNode = DependencySortQueue.Dequeue();
+                sortedTransformBindings.Add(currentNode);
+
+                // Add incoming edges
+                for (int i = 0; i < TransformBindings.Count; i++)
+                    if (TransformBindings[i].Target == currentNode.Source)
+                        DependencySortQueue.Enqueue(TransformBindings[i]);
+            }
+        }
+
+        private bool HasDependency(Transformable target)
+        {
+            for (int i = 0; i < TransformBindings.Count; i++)
+                if (TransformBindings[i].Source == target)
+                    return true;
+            return false;
+        }
+
+        static Queue<TransformBinding> DependencySortQueue;
         #endregion
 
         #region IDisposable

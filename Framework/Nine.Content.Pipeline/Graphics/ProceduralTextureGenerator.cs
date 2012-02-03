@@ -7,17 +7,13 @@
 #endregion
 
 #region Using Directives
+#if MDX
 using System;
 using System.IO;
 using System.Windows.Forms;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-#if MDX
-using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
 #endif
-using Color = Microsoft.Xna.Framework.Color;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics

@@ -9,16 +9,16 @@
 
 #region Using Statements
 using System;
-using System.IO;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Framework;
-using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
 namespace Nine
@@ -177,6 +177,7 @@ namespace Nine
             {
                 buildProject.AddItem("Reference", pipelineAssembly);
             }
+            buildProject.AddItem("Reference", Path.Combine(Directory.GetCurrentDirectory(), "Nine.Test.dll"));
 
             // Hook up our custom error logger.
             errorLogger = new ErrorLogger();

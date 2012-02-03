@@ -8,15 +8,12 @@
 
 #region Using Directives
 using System;
-using System.IO;
 using System.ComponentModel;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using System.IO;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 #endregion
 
 namespace Nine.Content.Pipeline

@@ -15,8 +15,8 @@ These are the steps needed to use Engine Nine:
 
 4. In order to build the Engine Nine for Silverlight, you need to install
 
-- Silverlight 5 RC SDK (http://go.microsoft.com/fwlink/?LinkId=213907)
-- Silverlight 5 RC Tools for Visual Studio 2010 SP1 (http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=27220)
+- Silverlight 5 SDK (http://www.silverlight.net/downloads)
+- Silverlight 5 Tools for Visual Studio 2010 SP1 (http://www.silverlight.net/downloads)
 - Silverlight Toolkit (http://silverlight.codeplex.com/releases/view/74436)
 
 

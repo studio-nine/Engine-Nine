@@ -6,9 +6,8 @@
 
 
 // Input parameters.
-float4x4 World;
-float4x4 worldViewProjection;
-float4x4 textureTransform;
+float4x4 viewProjection;
+float4x4 TextureTransform;
 
 float Alpha = 1.0f;
 
@@ -27,7 +26,6 @@ sampler Sampler : register(s7) = sampler_state
 struct VS_INPUT
 {
     float4 Position : POSITION0;
-    float2 TexCoord : TEXCOORD0;
 };
 
 
@@ -42,14 +40,10 @@ struct VS_OUTPUT
 // Vertex shader program.
 VS_OUTPUT VS(VS_INPUT input)
 {
-    VS_OUTPUT output;
-    
+    VS_OUTPUT output;    
 
-    float4 position = mul(input.Position, World);
-    
-    output.Position = mul(input.Position, worldViewProjection);
-
-    output.TexCoord = mul(position, textureTransform).xy;
+    output.Position = mul(input.Position, viewProjection);
+    output.TexCoord = mul(input.Position, TextureTransform).xy;
     
     return output;
 }

@@ -8,13 +8,12 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 #endregion
@@ -22,7 +21,8 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 namespace Nine.Content.Pipeline.Processors
 {
     /// <summary>
-    /// Processes each property of the input object graph using the processor specified by DefaultContentProcessorAttribute.
+    /// Processes each property of the input object graph using the processor specified by 
+    /// DefaultContentProcessorAttribute or the method marked with SelfProcessAttribute.
     /// </summary>
     [ContentProcessor(DisplayName = "Content - Engine Nine")]
     public class DefaultContentProcessor : ContentProcessor<object, object>
@@ -33,87 +33,101 @@ namespace Nine.Content.Pipeline.Processors
         [DefaultValue(false)]
         public bool Debug { get; set; }
 
-        Stack<ContentProcessorContext> contextStack = new Stack<ContentProcessorContext>();
+        /// <summary>
+        /// A stack holding the current processor context.
+        /// </summary>
+        private Stack<ContentProcessorContext> contextStack = new Stack<ContentProcessorContext>();
 
-        static List<IContentProcessor> DefaultProcessors;
-
+        /// <summary>
+        /// Processes the specified input data and returns the result.
+        /// </summary>
         public override object Process(object input, ContentProcessorContext context)
         {
-            if (input == null)
-                return null;
-
-            if (DefaultProcessors == null)
-            {
-                DefaultProcessors = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes().Where(
-                    t => typeof(IContentProcessor).IsAssignableFrom(t) && t.GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).Count() > 0))
-                    .Select(t => Activator.CreateInstance(t)).OfType<IContentProcessor>().ToList();
-            }
-
-
             try
             {
                 contextStack.Push(context);
 
-                if (!Process(input.GetType(), input, out input))
-                    ObjectGraph.ForEachProperty(input, Process);
+                object output = Process(input);
+                if (output == input)
+                    ObjectGraph.TraverseProperties(input, Process);
+                else
+                    input = output;
             }
             finally
             {
                 contextStack.Pop();
             }
 
-            if (Debug)
+            SerializeOutput(input, context);
+            return input;
+        }
+        
+        private object Process(object input)
+        {
+            IContentProcessor processor = FindDefaultProcessor(input);
+            if (processor != null)
             {
-                var debugOutput = Path.Combine(context.IntermediateDirectory, "DefaultContent-" + Guid.NewGuid().ToString("B").ToUpperInvariant()) + ".xml";
-                var settings = new XmlWriterSettings { Indent = true, NewLineChars = Environment.NewLine };
-                using (var writer = XmlWriter.Create(debugOutput, settings))
+                var context = contextStack.Peek();
+                if (processor.InputType.IsAssignableFrom(input.GetType()))
                 {
-                    IntermediateSerializer.Serialize(writer, input, ".");
+                    context.Logger.LogImportantMessage("Processing {0} using {1}", input.GetType().Name, processor.GetType().Name);
+                    return processor.Process(input, context);
+                }
+                else
+                {
+                    context.Logger.LogWarning(null, null, "Processor type mismatch {0} -> {1} -> {2} -> {4}", input.GetType().Name, processor.InputType.Name, processor.OutputType.Name);
                 }
             }
             return input;
         }
         
-        private bool Process(Type type, object input, out object output)
+        private void SerializeOutput(object input, ContentProcessorContext context)
         {
-            output = input;
-            if (input == null)
-                return false;
-
-            IContentProcessor processor = null;
-            var defaultProcessorAttribute = input.GetType().GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false)
-                                                           .OfType<DefaultContentProcessorAttribute>().FirstOrDefault();
-
-            if (defaultProcessorAttribute != null)
-                processor = (IContentProcessor)Activator.CreateInstance(Type.GetType(defaultProcessorAttribute.DefaultProcessor));
-
-            if (processor == null)
+            if (Debug)
             {
-                var selfProcessMethod = input.GetType().GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-                                                       .Where(m => m.GetCustomAttributes(typeof(SelfProcessAttribute), false).Any())
-                                                       .FirstOrDefault();
-                if (selfProcessMethod != null)
-                    processor = new SelfProcessor(input, selfProcessMethod);
+                var debugOutput = Path.Combine(context.IntermediateDirectory, "DefaultContent-" + Guid.NewGuid().ToString("B").ToUpperInvariant()) + ".xml";
+                using (var writer = XmlWriter.Create(debugOutput))
+                {
+                    IntermediateSerializer.Serialize(writer, input, null);
+                }
             }
-
-            if (processor == null)
-                processor = DefaultProcessors.FirstOrDefault(p => p.InputType.IsAssignableFrom(input.GetType()));
-            if (processor == null)
-                return false;
-
-            var context = contextStack.Peek();
-            if (processor.InputType.IsAssignableFrom(input.GetType()))
-            {
-                context.Logger.LogImportantMessage("Processing {0} using {1}", input.GetType().Name, processor.GetType().Name);
-                output = processor.Process(input, context);
-                return output != input;
-            }
-            else
-            {
-                context.Logger.LogWarning(null, null, "Processor type mismatch {0} -> {1} -> {2} -> {4}", input.GetType().Name, processor.InputType.Name, processor.OutputType.Name, type.Name);
-            }
-            return false;
         }
+
+        #region FindDefaultProcessor
+        /// <summary>
+        /// Finds the default processor for the given input object
+        /// </summary>
+        private static IContentProcessor FindDefaultProcessor(object input)
+        {
+            if (input == null)
+                return null;
+
+            var inputType = input.GetType();
+
+            // Create processor from DefaultContentProcessorAttribute on the content type
+            var defaultProcessorAttribute = inputType.GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).OfType<DefaultContentProcessorAttribute>().FirstOrDefault();
+            if (defaultProcessorAttribute != null)
+                return (IContentProcessor)Activator.CreateInstance(Type.GetType(defaultProcessorAttribute.DefaultProcessor));
+
+            // Create processor from SelfProcessAttribute
+            var selfProcessMethod = inputType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                                             .Where(m => m.GetCustomAttributes(typeof(SelfProcessAttribute), false).Any())
+                                             .FirstOrDefault();
+
+            if (selfProcessMethod != null)
+                return new SelfProcessor(input, selfProcessMethod);
+
+            // Create processor from DefaultContentProcessorAttribute on the processor
+            if (DefaultProcessors == null)
+            {
+                DefaultProcessors = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes().Where(
+                    t => typeof(IContentProcessor).IsAssignableFrom(t) && t.GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).Count() > 0))
+                    .Select(t => Activator.CreateInstance(t)).OfType<IContentProcessor>().ToList();
+            }
+            return DefaultProcessors.FirstOrDefault(p => p.InputType.IsAssignableFrom(inputType));
+        }
+
+        static List<IContentProcessor> DefaultProcessors;
 
         class SelfProcessor : ContentProcessor<object, object>
         {
@@ -131,5 +145,6 @@ namespace Nine.Content.Pipeline.Processors
                 return processMethod.Invoke(input, new object[] { input, context });
             }
         }
+        #endregion
     }
 }

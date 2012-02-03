@@ -8,14 +8,12 @@
 
 #region Using Directives
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
-using Nine;
 using Nine.Navigation;
 #endregion
 

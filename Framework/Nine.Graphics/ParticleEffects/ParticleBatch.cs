@@ -8,7 +8,6 @@
 
 #region Using Directives
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -8,19 +8,15 @@
 
 #region Using Directives
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Nine;
+using Nine.Components;
 using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
 using Nine.Navigation;
-using Nine.Animations;
-using Nine.Components;
 using Model = Microsoft.Xna.Framework.Graphics.Model;
 #endregion
 

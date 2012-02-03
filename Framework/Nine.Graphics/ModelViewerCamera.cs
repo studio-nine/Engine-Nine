@@ -8,10 +8,6 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -144,7 +140,7 @@ namespace Nine.Graphics
 #else
             if (e.IsButtonDown(MouseButtons.Right))
 #endif
-			{
+            {
                 EndRotation(e.X, e.Y);
             }
         }
@@ -182,32 +178,32 @@ namespace Nine.Graphics
                 world = Matrix.Multiply(worldStart, rotate);
             }
         }
-		
-		private Vector3 ScreenToArcBall(float x, float y)
-		{
+        
+        private Vector3 ScreenToArcBall(float x, float y)
+        {
             Vector3 result = new Vector3();
 
-			x = x * 2 / GraphicsDevice.Viewport.Width - 1;
+            x = x * 2 / GraphicsDevice.Viewport.Width - 1;
             y = -y * 2 / GraphicsDevice.Viewport.Height + 1;
-			
-			float mag = x * x + y * y;
-			
-			if (mag > 1)
-			{
-				mag = (float)(1 / Math.Sqrt(mag));
-				
-				result.X = x * mag;
-				result.Y = y * mag;
-				result.Z = 0;
-			}
-			else
-			{
-				result.X = x;
-				result.Y = y;
-				result.Z = (float)(Math.Sqrt(1 - mag));
-			}
+            
+            float mag = x * x + y * y;
+            
+            if (mag > 1)
+            {
+                mag = (float)(1 / Math.Sqrt(mag));
+                
+                result.X = x * mag;
+                result.Y = y * mag;
+                result.Z = 0;
+            }
+            else
+            {
+                result.X = x;
+                result.Y = y;
+                result.Z = (float)(Math.Sqrt(1 - mag));
+            }
 
             return result;
-		}
+        }
     }
 }

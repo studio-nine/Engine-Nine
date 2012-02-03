@@ -8,19 +8,14 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Xml.Serialization;
+using System.IO;
 using System.Reflection;
 using System.Windows.Markup;
-using Microsoft.Xna.Framework.Content;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+
 #endregion
 
 namespace Nine
@@ -43,6 +38,14 @@ namespace Nine
             worldObjects = new NotificationCollection<WorldObject>() { Sender = this, EnableManipulationWhenEnumerating = true };
             worldObjects.Added += new EventHandler<NotifyCollectionChangedEventArgs<WorldObject>>(OnAdded);
             worldObjects.Removed += new EventHandler<NotifyCollectionChangedEventArgs<WorldObject>>(OnRemoved);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="World"/> class.
+        /// </summary>
+        public World(IEnumerable<WorldObject> worldObjects) : this()
+        {
+            WorldObjects.AddRange(worldObjects);
         }
         #endregion
 
@@ -70,10 +73,37 @@ namespace Nine
         /// <summary>
         /// Gets a dictionary of prototypes that can be created though the IObjectFactory service.
         /// </summary>
+        [XmlIgnore]
         public IDictionary<string, object> Prototypes { get; private set; }
+
+        /// <summary>
+        /// Creates a new instance of the object with the specified type name.
+        /// </summary>
+        public T Create<T>(string typeName)
+        {
+            if (objectFactory != null)
+                return objectFactory.Create<T>(typeName);
+            return default(T);
+        }
         #endregion
 
         #region WorldObjects
+        /// <summary>
+        /// Adds the specified world object to this world.
+        /// </summary>
+        public void Add(WorldObject worldObject)
+        {
+            WorldObjects.Add(worldObject);
+        }
+
+        /// <summary>
+        /// Removes the specified world object from this world.
+        /// </summary>
+        public void Remove(WorldObject worldObject)
+        {
+            WorldObjects.Remove(worldObject);
+        }
+
         /// <summary>
         /// Gets a collection of world objects managed by this world.
         /// </summary>
@@ -96,6 +126,12 @@ namespace Nine
 
         #region Content
         /// <summary>
+        /// Gets the content manager of this world.
+        /// </summary>
+        [XmlIgnore]
+        public ContentManager Content { get; private set; }
+
+        /// <summary>
         /// Creates the content manager used by this world.
         /// </summary>
         public void CreateContent(ContentManager content)
@@ -103,8 +139,11 @@ namespace Nine
             if (content == null)
                 throw new ArgumentNullException("content");
 
+            DestroyContent();
+
+            Content = content;
             Services.AddService(typeof(ContentManager), content);
-            Services.AddService(typeof(IObjectFactory), new ObjectFactory(Prototypes, content));
+            Services.AddService(typeof(IObjectFactory), objectFactory = new ObjectFactory(Prototypes, content));
         }
 
         /// <summary>
@@ -114,7 +153,13 @@ namespace Nine
         {
             Services.RemoveService(typeof(ContentManager));
             Services.RemoveService(typeof(IObjectFactory));
+
+            Content = null;
+            objectFactory = null;
         }
+
+        // TODO: Hook to service change?
+        private IObjectFactory objectFactory;
         #endregion
 
         #region Services

@@ -7,18 +7,10 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Collections.Generic;
 using System.Windows.Markup;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 namespace Nine.Content.Pipeline.Graphics.ParticleEffects

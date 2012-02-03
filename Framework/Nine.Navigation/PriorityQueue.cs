@@ -8,13 +8,7 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
 namespace Nine.Navigation

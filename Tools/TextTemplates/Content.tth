@@ -565,15 +565,14 @@
         
         IEnumerable<Type> FindEffectInstanceTypes(Assembly assembly)
         {
-            /*
             foreach (var t in from type in assembly.GetTypes()
-                              where type.BaseType == typeof(Effect) && type.IsPublic && HasDefaultPublicGraphicsDeviceConstructor(type) &&
-                                    type.FullName.IndexOf("ScreenEffect") > 0
+                              where type.BaseType == typeof(Effect) && HasDefaultPublicGraphicsDeviceConstructor(type) &&
+                                    type.Name == "DecalEffect"
                               select type)
             {
                 yield return t;
             }
-            */
+
             yield return typeof(BasicEffect);
             yield return typeof(SkinnedEffect);
             yield return typeof(EnvironmentMapEffect);

@@ -9,9 +9,9 @@
 #region Using Directives
 using System;
 using System.ComponentModel;
-using Microsoft.Xna.Framework;
 using System.Text;
-using Nine.Design;
+using Microsoft.Xna.Framework;
+
 #endregion
 
 namespace Nine.Content.Pipeline
@@ -61,19 +61,7 @@ namespace Nine.Content.Pipeline
             value.M33 = Scale.Z;
 
             Matrix temp;
-            if (RotationOrder == RotationOrder.Zxy)
-            {
-                Matrix.CreateFromYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z, out temp);
-            }
-            else
-            {
-                Matrix temp2;
-                Matrix.CreateRotationY(Rotation.Y, out temp);
-                Matrix.CreateRotationX(Rotation.X, out temp2);
-                Matrix.Multiply(ref temp, ref temp2, out temp);
-                Matrix.CreateRotationZ(Rotation.Z, out temp2);
-                Matrix.Multiply(ref temp, ref temp2, out temp);
-            }
+            MatrixHelper.CreateRotation(ref Rotation, RotationOrder, out temp);
             Matrix.Multiply(ref value, ref temp, out value);
 
             value.M41 = Translation.X;
@@ -110,7 +98,7 @@ namespace Nine.Content.Pipeline
 
         public override int GetHashCode()
         {
-            return Scale.GetHashCode() + Rotation.GetHashCode() + Translation.GetHashCode() + RotationOrder.GetHashCode();
+            return Scale.GetHashCode() ^ Rotation.GetHashCode() ^ Translation.GetHashCode() ^ RotationOrder.GetHashCode();
         }
 
         public override string ToString()

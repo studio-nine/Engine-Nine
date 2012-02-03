@@ -9,10 +9,8 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Nine.Graphics.Effects;
 #endregion
 
@@ -29,7 +27,12 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets whether this object is visible.
         /// </summary>
-        public bool Visible { get; set; }
+        public bool Visible
+        {
+            get { return visible && Surface.Visible; }
+            set { visible = value; }
+        }
+        private bool visible = true;
 
         /// <summary>
         /// Gets the number of segments of this patch.
@@ -217,7 +220,6 @@ namespace Nine.Graphics.ObjectModel
             if (!IsPowerOfTwo(patchSegmentCount))
                 throw new ArgumentOutOfRangeException("PatchSegmentCount must be a power of two.");
 
-            this.Visible = true;
             this.Surface = surface;
             this.heightmap = surface.Heightmap;
             this.GraphicsDevice = surface.GraphicsDevice;

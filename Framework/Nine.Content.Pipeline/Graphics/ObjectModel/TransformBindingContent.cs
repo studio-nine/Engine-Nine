@@ -7,7 +7,6 @@
 #endregion
 
 #region Using Directives
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 #endregion

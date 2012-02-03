@@ -8,22 +8,16 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Text;
-using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Nine.Graphics.Effects;
+using System.IO;
+using Microsoft.Xna.Framework.Content.Pipeline;
+using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Content.Pipeline.Graphics;
 using Nine.Content.Pipeline.Graphics.Effects;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
+using Nine.Graphics.Effects;
+
 #endregion
 
 namespace Nine.Content.Pipeline.Processors

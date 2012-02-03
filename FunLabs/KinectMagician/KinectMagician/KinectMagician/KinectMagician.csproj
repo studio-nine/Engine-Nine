@@ -129,8 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KinectMagicianContent\KinectMagicianContent.contentproj">
-      <Name>KinectMagicianContent</Name>
+      <Name>KinectMagicianContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{454FBC91-A5B2-4D22-9AC0-151E164E66CD}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

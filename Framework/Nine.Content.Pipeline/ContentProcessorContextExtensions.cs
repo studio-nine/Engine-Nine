@@ -8,24 +8,19 @@
 
 #region Using Directives
 using System;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.ComponentModel;
-using System.Security.Cryptography;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using Nine.Content.Pipeline.Processors;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics;
 #endregion
 

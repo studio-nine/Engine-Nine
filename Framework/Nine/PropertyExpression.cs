@@ -9,9 +9,6 @@
 #region Using Directives
 using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Reflection;
 #endregion
 
@@ -112,32 +109,35 @@ namespace Nine
                 if (string.IsNullOrEmpty(currentProperty))
                     invocationTarget = target;
                 else
-                    invocationTarget = GetValue(target, GetMember(target.GetType(), currentProperty));
+                    invocationTarget = GetValue(target, GetMember(targetType, currentProperty));
 
                 if ((content.StartsWith("\"") && content.EndsWith("\"")) ||
                     (content.StartsWith("'") && content.EndsWith("'")))
                 {
+                    // String dictionary
                     invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(string) });
                     invocationTarget = GetValue(invocationTarget, invocationMember, content.Substring(1, content.Length - 2));
                 }
                 else
                 {
+                    // List
                     invocationMember = invocationTarget.GetType().GetProperty("Item", null, new[] { typeof(int) });
                     invocationTarget = GetValue(invocationTarget, invocationMember, Convert.ToInt32(content));
                 }
             }
-            else if (dot < 0)
-            {
-                invocationTarget = target;
-                invocationMember = GetMember(target.GetType(), currentProperty);
-                if (invocationMember == null)
-                {
-                    throw new ArgumentException("Type " + targetType.FullName + " does not have a valid public property or field: " + currentProperty);
-                }
-            }
             else
             {
-                invocationTarget = GetValue(target, GetMember(target.GetType(), currentProperty));
+                invocationTarget = target;
+                invocationMember = GetMember(targetType, currentProperty);
+
+                if (invocationMember == null)
+                {
+                    throw new ArgumentException(string.Format(
+                        "Type {0} does not have a valid public property or field {1}.", targetType.FullName, currentProperty));
+                }
+
+                if (dot >= 0)
+                    invocationTarget = GetValue(target, invocationMember);
             }
 
             if (dot >= 0)

@@ -7,7 +7,6 @@
 #endregion
 
 #region Using Directives
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 #endregion
@@ -49,22 +48,12 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
 
         private void UpdateTransform()
         {
-            if (RotationOrder == RotationOrder.Zxy)
-            {
-                Transform = Matrix.CreateScale(scale) *
-                            Matrix.CreateRotationZ(MathHelper.ToRadians(rotation.Z)) *
-                            Matrix.CreateRotationY(MathHelper.ToRadians(rotation.Y)) *
-                            Matrix.CreateRotationX(MathHelper.ToRadians(rotation.X)) *
-                            Matrix.CreateTranslation(position);
-            }
-            else
-            {
-                Transform = Matrix.CreateScale(scale) *
-                            Matrix.CreateRotationY(MathHelper.ToRadians(rotation.Y)) *
-                            Matrix.CreateRotationX(MathHelper.ToRadians(rotation.X)) *
-                            Matrix.CreateRotationZ(MathHelper.ToRadians(rotation.Z)) *
-                            Matrix.CreateTranslation(position);
-            }
+            Transform = Matrix.CreateScale(scale) *
+                        MatrixHelper.CreateRotation(new Vector3(MathHelper.ToRadians(rotation.X)
+                                                              , MathHelper.ToRadians(rotation.Y)
+                                                              , MathHelper.ToRadians(rotation.Z))
+                                                              , RotationOrder) *
+                        Matrix.CreateTranslation(position);
         }
     }
 }

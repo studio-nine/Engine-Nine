@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics;
-using Nine.Components;
 using Nine;
+using Nine.Components;
+using Nine.Graphics;
+using Nine.Graphics.ObjectModel;
 using Model = Microsoft.Xna.Framework.Graphics.Model;
 
 namespace Navigators

@@ -6,13 +6,10 @@
 //=============================================================================
 #endregion
 
-using Nine;
-using Nine.Components;
-using Microsoft.Xna.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xna.Framework;
+using Nine.Components;
 
 namespace Nine.Test
 {

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 using Nine.Content.Pipeline.Properties;
+using StitchUp.Content.Pipeline.FragmentLinking.CodeModel;
 
 namespace StitchUp.Content.Pipeline.FragmentLinking.Parser
 {

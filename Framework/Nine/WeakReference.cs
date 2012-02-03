@@ -7,7 +7,6 @@
 #endregion
 
 using System;
-using System.Security;
 
 namespace Nine
 {
@@ -28,7 +27,7 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of the <see cref="WeakReference&lt;T&gt;"/> class.
         /// </summary>
-        [SecuritySafeCritical]
+        [System.Security.SecuritySafeCritical]
         protected WeakReference() { }
 #endif
         /// <summary>

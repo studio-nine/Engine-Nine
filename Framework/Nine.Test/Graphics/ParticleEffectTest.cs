@@ -6,10 +6,7 @@
 //=============================================================================
 #endregion
 
-using Nine.Graphics;
-using Nine.Animations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics.ParticleEffects.Test

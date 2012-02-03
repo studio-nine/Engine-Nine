@@ -8,22 +8,15 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
-using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Nine;
-using Nine.Graphics;
-using Nine.Graphics.Primitives;
-using Nine.Graphics.ObjectModel;
 using Nine.Components;
-using Nine.Graphics.Effects;
-using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
+using Nine.Graphics;
+using Nine.Graphics.ObjectModel;
+using Nine.Physics;
+
 #endregion
 
 namespace Tutorial
@@ -129,6 +122,9 @@ namespace Tutorial
                 // content and graphics of the world.
                 world.CreateContent(Content);
                 scene = world.CreateGraphics(GraphicsDevice);
+
+                // To enable phyiscs, explicitly create the physics world.
+                world.CreatePhysics(true);
             }
 
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, -40, 10));           

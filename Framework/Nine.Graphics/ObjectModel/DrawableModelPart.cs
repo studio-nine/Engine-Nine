@@ -8,17 +8,10 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
-using Nine.Animations;
 using Nine.Graphics.Effects;
 #if WINDOWS || XBOX
-using Nine.Graphics.Effects.Deferred;
+
 #endif
 #endregion
 
@@ -31,6 +24,11 @@ namespace Nine.Graphics.ObjectModel
     public class DrawableModelPart : IDrawableObject, ILightable, IContainedObject
     {
         #region Properties
+        /// <summary>
+        /// Gets the name of this model part.
+        /// </summary>
+        public string Name { get { return ModelMesh != null ? ModelMesh.Name : null; } }
+
         /// <summary>
         /// Gets the containing model.
         /// </summary>

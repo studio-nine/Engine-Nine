@@ -7,13 +7,9 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.ComponentModel;
-using Nine.Graphics.ParticleEffects;
 using Microsoft.Xna.Framework.Input;
 #if SILVERLIGHT
 using Keys = System.Windows.Input.Key;

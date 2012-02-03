@@ -8,13 +8,7 @@
 
 #region Using Directives
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.IO;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -124,7 +118,7 @@ namespace Nine.Graphics
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class EffectExtensions
     {
-        internal static T As<T>(this Effect effect) where T : class
+        internal static T Find<T>(this Effect effect) where T : class
         {
 #if WINDOWS_PHONE
             return effect as T;

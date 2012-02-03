@@ -8,13 +8,9 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.ComponentModel;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Nine.Graphics;
 #endregion

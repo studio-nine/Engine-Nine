@@ -8,18 +8,16 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Nine.Animations;
 using Nine.Graphics.Effects;
 #if WINDOWS || XBOX
-using Nine.Graphics.Effects.Deferred;
-using Nine.Graphics.Primitives;
+
 #endif
 #endregion
 
@@ -311,8 +309,16 @@ namespace Nine.Graphics.ObjectModel
         {
             get { return boundingBox; }
         }
-        private BoundingBox orientedBoundingBox;
         private BoundingBox boundingBox;
+
+        /// <summary>
+        /// Gets the oriented bounding box.
+        /// </summary>
+        public BoundingBox OrientedBoundingBox
+        {
+            get { return orientedBoundingBox; }
+        }
+        private BoundingBox orientedBoundingBox;
 
         /// <summary>
         /// Called when transform changed.
@@ -549,7 +555,7 @@ namespace Nine.Graphics.ObjectModel
 
             if (!overrideModelMaterial)
             {
-                IEffectMaterial source = part.Effect.As<IEffectMaterial>();
+                IEffectMaterial source = part.Effect.Find<IEffectMaterial>();
                 IEffectMaterial target = clonedMaterial.Find<IEffectMaterial>();
                 
                 if (source != null && target != null)

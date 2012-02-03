@@ -14,7 +14,6 @@ namespace Nine.Graphics.Effects.Deferred
 {
 #if !WINDOWS_PHONE
 
-    using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 

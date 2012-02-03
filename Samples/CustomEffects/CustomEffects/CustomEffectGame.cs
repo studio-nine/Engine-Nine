@@ -8,21 +8,14 @@
 
 #region Using Directives
 using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.ComponentModel;
+using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Input;
 using Nine;
-using Nine.Graphics;
-using Nine.Graphics.Effects;
-using Nine.Animations;
 using Nine.Components;
+using Nine.Graphics;
 #endregion
 
 namespace CustomEffects

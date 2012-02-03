@@ -10,15 +10,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
 namespace Nine
@@ -93,6 +87,19 @@ namespace Nine
 
                 ForEachRecursiveInternal<T>(target, action);
             }
+        }
+
+        internal static bool TryGetAttachedProperty<T>(object tag, string propertyName, out T propertyValue)
+        {
+            object value;
+            var dictionary = tag as IDictionary<string, object>;
+            if (dictionary != null && dictionary.TryGetValue(propertyName, out value) && value is T)
+            {
+                propertyValue = (T)value;
+                return true;
+            }
+            propertyValue = default(T);
+            return false;
         }
 
         private static void ForEachRecursiveInternal<T>(this IEnumerable target, Action<T> action)

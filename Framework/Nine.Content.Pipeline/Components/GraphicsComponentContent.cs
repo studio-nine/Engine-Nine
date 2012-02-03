@@ -7,20 +7,9 @@
 #endregion
 
 #region Using Directives
-using System;
-using System.IO;
-using System.Xaml;
-using System.Windows.Markup;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Content.Pipeline.Processors;
 using Nine.Content.Pipeline.Graphics.ObjectModel;
 using Nine.Graphics;
 #endregion

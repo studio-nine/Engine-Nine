@@ -86,8 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeometryContent\GeometryContent.contentproj">
-      <Name>GeometryContent</Name>
+      <Name>GeometryContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{E96B6BFD-EDFF-4623-AFFD-878F221C2435}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
