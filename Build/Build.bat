@@ -7,6 +7,7 @@ setlocal
 
 call Framework
 call Test
+call Editor
 call Samples
 call Tools
 call Documentation
