@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Drawing;
 
 
 #endregion
@@ -58,7 +59,6 @@ namespace Nine.Graphics.ObjectModel
 
         protected override void OnTransformChanged()
         {
-            base.OnTransformChanged();
             OnBoundingBoxChanged();
         }
         #endregion
@@ -101,15 +101,15 @@ namespace Nine.Graphics.ObjectModel
             Falloff = 1;
         }
 
-        protected internal override void FindAll(Scene scene, List<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        protected internal override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             var boundingFrustum = BoundingFrustum;
-            scene.FindAll(ref boundingFrustum, result);
+            //scene.FindAll(ref boundingFrustum, result);
         }
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
-        protected override bool GetShadowFrustum(GraphicsContext context,
+        protected override bool GetShadowFrustum(DrawingContext context,
                                                 HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
                                                 HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
                                                 out Matrix frustumMatrix)
@@ -176,9 +176,9 @@ namespace Nine.Graphics.ObjectModel
             return true;
         }
 
-        public override void DrawFrustum(GraphicsContext context)
+        public override void DrawFrustum(DrawingContext context)
         {
-            context.PrimitiveBatch.DrawFrustum(BoundingFrustum, null, context.Settings.Debug.LightFrustumColor);
+            //context.PrimitiveBatch.DrawFrustum(BoundingFrustum, null, context.Settings.Debug.LightFrustumColor);
         }
 
         protected override void Enable(ISpotLight light)

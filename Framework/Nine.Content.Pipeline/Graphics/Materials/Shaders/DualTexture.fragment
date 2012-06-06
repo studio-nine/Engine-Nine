@@ -1,0 +1,8 @@
+texture2D Texture : DUALTEXTURE;
+sampler BasicSampler = sampler_state { Texture = (Texture); };
+
+void PixelShader(inout float4 diffuse, float2 uv2:TEXCOORD1)
+{
+	diffuse.rgb *= 2;
+	diffuse *= tex2D(BasicSampler, uv2);
+}

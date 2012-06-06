@@ -1,0 +1,77 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:xna="clr-namespace:Microsoft.Xna.Framework;assembly=Microsoft.Xna.Framework">
+
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
+    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+    
+    <!--
+        Use MaterialGroup to define materials based on basic functional parts,
+        like vertex skinning, normal mapping.
+    -->
+    <Model Source="{ContentReference ../Models/Tank}">
+        <Model.Material>
+            <MaterialGroup>
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+
+    <Model Source="{ContentReference ../Models/Tank}" Transform.Position="-20,20,0">
+        <Model.Material>
+            <MaterialGroup>
+                <DiffuseMaterialPart DiffuseColor="1, 0.8, 0.8" Texture="{ContentReference ../Textures/box}" />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-40,20,0">
+        <Model.Material>
+            <MaterialGroup>
+                <SkinnedMaterialPart />
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+	
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="15,0,0">
+        <Model.Material>
+            <MaterialGroup>
+                <SkinnedMaterialPart />
+                <DiffuseMaterialPart />
+				<SpecularMaterialPart />
+				<DirectionalLightMaterialPart />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+	
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="20,0,0">
+        <Model.Material>
+            <MaterialGroup>
+                <SkinnedMaterialPart />
+                <DiffuseMaterialPart />
+				<SpecularMaterialPart />
+                <NormalMapMaterialPart />
+				<DirectionalLightMaterialPart />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+	
+    <Model Source="{ContentReference ../Models/Tank}" Transform.Position="20,20,0">
+        <Model.Material>
+            <MaterialGroup>
+                <CustomMaterialPart>
+                    <![CDATA[
+                        float Time:TIME;
+                        void PixelShader(inout float2 uv:TEXCOORD0)
+                        {
+                            uv += frac(Time * 0.05f);
+                        }
+                    ]]>
+                </CustomMaterialPart>
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+</Scene>

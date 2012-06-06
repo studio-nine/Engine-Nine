@@ -33,14 +33,17 @@ namespace Nine.Animations
         [ContentSerializer(ElementName = "Animations")]
         internal IDictionary<string, object> AnimationsSerializer
         {
-            get { throw new NotSupportedException(); }
+            get { return null; }
             set
             {
                 Animations.Clear();
-                foreach (var pair in value)
+                if (value != null)
                 {
-                    if (pair.Value is IAnimation)
-                        Animations.Add(pair.Key, (IAnimation)pair.Value);
+                    foreach (var pair in value)
+                    {
+                        if (pair.Value is IAnimation)
+                            Animations.Add(pair.Key, (IAnimation)pair.Value);
+                    }
                 }
             }
         }

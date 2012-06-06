@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Drawing;
 
 
 #endregion
@@ -60,7 +61,6 @@ namespace Nine.Graphics.ObjectModel
 
         protected override void OnTransformChanged()
         {
-            base.OnTransformChanged();
             OnBoundingBoxChanged();
         }
         #endregion
@@ -75,15 +75,15 @@ namespace Nine.Graphics.ObjectModel
             SpecularColor = Vector3.Zero;
         }
 
-        protected internal override void FindAll(Scene scene, List<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        protected internal override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             var boundingSphere = BoundingSphere;
-            scene.FindAll(ref boundingSphere, result);
+            //scene.FindAll(ref boundingSphere, result);
         }
 
-        public override void DrawFrustum(GraphicsContext context)
+        public override void DrawFrustum(DrawingContext context)
         {
-            context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
+            //context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
         }
 
         protected override void Enable(IPointLight light)

@@ -1,0 +1,6 @@
+float3 AmbientLightColor = { 0.2, 0.2, 0.2 };
+
+void PixelShader(inout float3 lightDiffuse)
+{
+    lightDiffuse += AmbientLightColor;
+}

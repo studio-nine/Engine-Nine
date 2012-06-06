@@ -250,43 +250,49 @@ namespace Nine
 
             return result;
         }
-
+        
         /// <summary>
         /// Compute the axis aligned bounding box from an oriented bounding box.
         /// </summary>
         public static BoundingBox CreateAxisAligned(this BoundingBox box, Matrix transform)
         {
-            const float FloatMax = float.MaxValue;
+            BoundingBox result;
+            CreateAxisAligned(box, ref transform, out result);
+            return result;
+        }
 
+        /// <summary>
+        /// Compute the axis aligned bounding box from an oriented bounding box.
+        /// </summary>
+        public static void CreateAxisAligned(this BoundingBox box, ref Matrix transform, out BoundingBox result)
+        {
             // Find the 8 corners
             box.GetCorners(corners);
 
             // Compute bounding box
-            Vector3 min = new Vector3(FloatMax, FloatMax, FloatMax);
-            Vector3 max = new Vector3(-FloatMax, -FloatMax, -FloatMax);
-            Vector3 v = new Vector3();
+            Vector3.Transform(ref corners[0], ref transform, out result.Max);
+            result.Min = result.Max;
 
-            for (int i = 0; i < corners.Length; i++)
+            var v = new Vector3();
+            for (int i = 1; i < corners.Length; i++)
             {
                 Vector3.Transform(ref corners[i], ref transform, out v);
 
-                if (v.X < min.X)
-                    min.X = v.X;
-                if (v.X > max.X)
-                    max.X = v.X;
+                if (v.X < result.Min.X)
+                    result.Min.X = v.X;
+                else if (v.X > result.Max.X)
+                    result.Max.X = v.X;
 
-                if (v.Y < min.Y)
-                    min.Y = v.Y;
-                if (v.Y > max.Y)
-                    max.Y = v.Y;
+                if (v.Y < result.Min.Y)
+                    result.Min.Y = v.Y;
+                else if (v.Y > result.Max.Y)
+                    result.Max.Y = v.Y;
 
-                if (v.Z < min.Z)
-                    min.Z = v.Z;
-                if (v.Z > max.Z)
-                    max.Z = v.Z;
+                if (v.Z < result.Min.Z)
+                    result.Min.Z = v.Z;
+                else if (v.Z > result.Max.Z)
+                    result.Max.Z = v.Z;
             }
-
-            return new BoundingBox(min, max);
         }
 
         public static BoundingBox Max = new BoundingBox(Vector3.One * float.MinValue, Vector3.One * float.MaxValue);

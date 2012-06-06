@@ -17,12 +17,19 @@ namespace Nine.Graphics
 {
     class GraphicsResources<T> where T : class
     {
+        static T defaultInstance;
+        static GraphicsDevice defaultGraphics;
         static Dictionary<GraphicsDevice, WeakReference<T>> resourceDictionary = new Dictionary<GraphicsDevice, WeakReference<T>>();
 
         public static T GetInstance(GraphicsDevice graphics)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
+
+            if (defaultGraphics == null)
+                return defaultInstance = (T)Activator.CreateInstance(typeof(T), defaultGraphics = graphics);
+            if (defaultGraphics == graphics)
+                return defaultInstance;
 
             T result;
             WeakReference<T> value;

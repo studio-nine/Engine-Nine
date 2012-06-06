@@ -198,19 +198,7 @@ namespace Nine
         public static void Transform(this Ray input, ref Matrix transform, out Ray result)
         {
             Vector3.Transform(ref input.Position, ref transform, out result.Position);
-
-            result.Direction = new Vector3();
-            result.Direction.X = input.Position.X + input.Direction.X;
-            result.Direction.Y = input.Position.Y + input.Direction.Y;
-            result.Direction.Z = input.Position.Z + input.Direction.Z;
-
-            Vector3.Transform(ref result.Direction, ref transform, out result.Direction);
-
-            result.Direction.X = result.Direction.X - result.Position.X;
-            result.Direction.Y = result.Direction.Y - result.Position.Y;
-            result.Direction.Z = result.Direction.Z - result.Position.Z;
-
-            result.Direction.Normalize();
+            Vector3.TransformNormal(ref input.Direction, ref transform, out result.Direction);
         }
     }
 }

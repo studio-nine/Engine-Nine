@@ -11,6 +11,8 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.ComponentModel;
 #endregion
 
 namespace Nine.Graphics.Primitives
@@ -19,8 +21,18 @@ namespace Nine.Graphics.Primitives
     /// Base class for primitives that are made out of cubic bezier patches
     /// (a type of curved surface). This is used by the TeapotPrimitive.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class Bezier : Primitive<VertexPositionNormal>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Bezier"/> class.
+        /// </summary>
+        /// <param name="graphics">The graphics.</param>
+        protected Bezier(GraphicsDevice graphics) : base(graphics)
+        {
+
+        }
+
         /// <summary>
         /// Creates indices for a patch that is tessellated at the specified level.
         /// </summary>

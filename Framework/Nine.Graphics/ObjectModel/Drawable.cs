@@ -10,7 +10,8 @@
 using System;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
+using Nine.Graphics.Materials;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -18,13 +19,17 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Base class for all drawables.
     /// </summary>
-    public abstract class Drawable : Transformable, IDrawableObject, IUpdateable, IDisposable
+    public abstract class Drawable : Transformable, IDrawableObject, IDisposable
     {
         /// <summary>
         /// Gets or sets whether the drawable is visible.
         /// </summary>
-        [ContentSerializer]
         public bool Visible { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is disposed.
+        /// </summary>
+        public bool IsDisposed { get; private set; }
         
         /// <summary>
         /// Gets the material used by this drawable.
@@ -45,32 +50,32 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
-        /// Updates the internal states of this drawable.
-        /// </summary>
-        public virtual void Update(TimeSpan elapsedTime) { }
-
-        /// <summary>
         /// Draws the object using the graphics context.
         /// </summary>
         /// <param name="context"></param>
-        public abstract void Draw(GraphicsContext context);
+        public virtual void Draw(DrawingContext context) { }
+
+        /// <summary>
+        /// Draws this object with the specified material.
+        /// </summary>
+        public abstract void Draw(DrawingContext context, Material material);
 
         /// <summary>
         /// Draws the object with the specified effect.
         /// </summary>
-        public virtual void Draw(GraphicsContext context, Effect effect) { }
+        public virtual void DrawEffect(DrawingContext context, Effect effect) { }
 
         /// <summary>
         /// Perform any updates before this object is rendered.
         /// </summary>
         /// <param name="context"></param>
-        public virtual void BeginDraw(GraphicsContext context) { }
+        public virtual void BeginDraw(DrawingContext context) { }
 
         /// <summary>
         /// Perform any updates after this object is rendered.
         /// </summary>
         /// <param name="context"></param>
-        public virtual void EndDraw(GraphicsContext context) { }
+        public virtual void EndDraw(DrawingContext context) { }
         
         #region IDisposable
         /// <summary>
@@ -79,8 +84,8 @@ namespace Nine.Graphics.ObjectModel
         public void Dispose()
         {
             Dispose(true);
-
             GC.SuppressFinalize(this);
+            IsDisposed = true;
         }
 
         /// <summary>
@@ -89,12 +94,13 @@ namespace Nine.Graphics.ObjectModel
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing) 
         {
-
+            IsDisposed = true;
         }
 
         ~Drawable()
         {
             Dispose(false);
+            IsDisposed = true;
         }
         #endregion
     }

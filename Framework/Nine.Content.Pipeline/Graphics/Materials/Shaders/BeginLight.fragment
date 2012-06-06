@@ -1,0 +1,6 @@
+float3 EyePosition;
+
+void PixelShader(float4 positionWorld, out float3 positionToEye)
+{
+	positionToEye = normalize(EyePosition - positionWorld.xyz);
+}

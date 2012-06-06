@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Nine
-{
-
-
+namespace Nine {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -160,11 +160,11 @@ namespace Nine
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Linked effect is not supported on Windows Phone..
+        ///   Looks up a localized string similar to Material group is not supported on Windows Phone..
         /// </summary>
-        internal static string LinkedEffectNotSupported {
+        internal static string MaterialGroupNotSupported {
             get {
-                return ResourceManager.GetString("LinkedEffectNotSupported", resourceCulture);
+                return ResourceManager.GetString("MaterialGroupNotSupported", resourceCulture);
             }
         }
         

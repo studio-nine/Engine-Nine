@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.ObjectModel;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics
@@ -32,7 +33,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Creates the graphics scene to render this world.
         /// </summary>
-        public static Scene CreateGraphics(this World world, GraphicsDevice graphics, GraphicsSettings settings, ISceneManager<ISpatialQueryable> sceneManager)
+        public static Scene CreateGraphics(this World world, GraphicsDevice graphics, DrawingSettings settings, ISceneManager sceneManager)
         {
             var scene = new Scene(graphics, settings, sceneManager);
             UpdateScene(world, scene);
@@ -70,6 +71,7 @@ namespace Nine.Graphics
                 world.Services.RemoveService(typeof(IGraphicsDeviceService));
 #endif
                 world.Drawing -= new EventHandler<TimeEventArgs>(Draw);
+                world.Updating -= new EventHandler<TimeEventArgs>(Update);
             }
 
             scene = newScene;
@@ -82,6 +84,7 @@ namespace Nine.Graphics
                 world.Services.AddService(typeof(IGraphicsDeviceService), new GraphicsDeviceServiceProvider(newScene.GraphicsDevice));
 #endif
                 world.Drawing += new EventHandler<TimeEventArgs>(Draw);
+                world.Updating += new EventHandler<TimeEventArgs>(Update);
 
                 foreach (var worldObject in world.WorldObjects)
                 {
@@ -92,6 +95,17 @@ namespace Nine.Graphics
                             graphicsComponent.CreateGraphicsObject();
                     }
                 }
+            }
+        }
+
+        private static void Update(object sender, TimeEventArgs e)
+        {
+            var world = sender as World;
+            if (world != null)
+            {
+                var scene = world.Services.GetService<Scene>();
+                if (scene != null)
+                    scene.Update(e.ElapsedTime);
             }
         }
 

@@ -7,8 +7,10 @@
 #endregion
 
 #region Using Directives
+using System;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
+using Nine.Graphics.Drawing;
+using Nine.Graphics.Materials;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -25,30 +27,25 @@ namespace Nine.Graphics.ObjectModel
 
         /// <summary>
         /// Gets the material of the object.
-        /// A value of null indicates the object does not have any materials
-        /// for external use.
+        /// A value of null indicates the object does not have any user specific
+        /// material settings, and should be drawn using the default method.
         /// </summary>
         Material Material { get; }
 
         /// <summary>
         /// Perform any updates before this object is drawed.
         /// </summary>
-        void BeginDraw(GraphicsContext context);
+        void BeginDraw(DrawingContext context);
 
         /// <summary>
-        /// Draws the object using the graphics context.
+        /// Draws this object with the specified material.
         /// </summary>
-        void Draw(GraphicsContext context);
-
-        /// <summary>
-        /// Draws the object with the specified effect.
-        /// </summary>
-        void Draw(GraphicsContext context, Effect effect);
+        void Draw(DrawingContext context, Material material);
 
         /// <summary>
         /// Perform any updates after this object is drawed.
         /// </summary>
-        void EndDraw(GraphicsContext context);
+        void EndDraw(DrawingContext context);
     }
 
     /// <summary>

@@ -1,0 +1,12 @@
+float3 FogColor = { 1, 1, 1 };
+float4 FogVector = { 0, 0, 0, 1 };
+
+void VertexShader(float4 position:POSITION0, out float fogFactor)
+{
+    fogFactor = saturate(dot(position, FogVector));
+}
+
+void PixelShader(float fogFactor, inout float4 color:COLOR0)
+{
+    color.rgb = lerp(color.rgb, FogColor * color.a, fogFactor);
+}

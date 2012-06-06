@@ -8,6 +8,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace Nine.Test
 {
@@ -37,6 +38,34 @@ namespace Nine.Test
 
             Assert.AreEqual<bool>(true, target.Intersects(box.Min, box.Min + Vector3.UnitZ * 4).HasValue);
             Assert.AreEqual<ContainmentType>(ContainmentType.Intersects, box.Contains(target));
+        }
+
+        struct P0
+        {
+            public int Field;
+        }
+
+        struct P1
+        {
+            public int Field { get; set; }
+        }
+
+        [TestMethod()]
+        public void AutoImplementedPropertyTest()
+        {
+            P0 p0 = new P0();
+            P1 p1 = new P1();
+
+            Stopwatch watch = new Stopwatch();
+            watch.Restart();
+            for (int i = 0; i < 100000000; i++)
+                p0.Field = i;
+            Trace.WriteLine(watch.ElapsedTicks);
+
+            watch.Restart();
+            for (int i = 0; i < 100000000; i++)
+                p1.Field = i;
+            Trace.WriteLine(watch.ElapsedTicks);
         }
     }
 }

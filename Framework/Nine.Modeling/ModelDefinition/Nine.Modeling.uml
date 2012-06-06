@@ -1,0 +1,5053 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="39101e56-597e-412a-a550-ef10eaa77a78"
+  name="ModelingProject1" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <ownedCommentsInternal>
+    <comment
+      Id="65c88dd4-daf4-484d-9453-f19731571038">
+      <body>This is for model batch.
+Where to find render states?</body>
+    </comment>
+    <comment
+      Id="bd2786c9-8d78-456a-a8b8-0732832037aa">
+      <body>Setup world/bone transform</body>
+    </comment>
+    <comment
+      Id="1ac6f446-a96a-4814-a406-ec5156adff79">
+      <body>Setup material parameters.
+Getting view/proj from context.</body>
+    </comment>
+    <comment
+      Id="058f5e18-09d6-4e66-85d5-4b147759fa43">
+      <body>Drawing primitives.
+Check for vertex buffer changes.</body>
+    </comment>
+    <comment
+      Id="c0907ec1-6af5-4486-bf2a-180ba4189e18">
+      <body>Rollback any non-default material changes.</body>
+    </comment>
+    <comment
+      Id="0725bb2f-6573-4a3d-9be9-3f49faefd2f7">
+      <body>If comparer is null, then the material doesn't have to be sorted.
+
+Material also has commonly used shader parameters like world to allow fast accessing.
+
+IServiceProvider interface of Material can be used to extend materials to support multi-pass effects like glow.</body>
+    </comment>
+    <comment
+      Id="587fc462-e9a0-49a3-9416-a989f65096c1">
+      <body>The render flow can be altered in the following ways:
+
+1. To fill a parameter in a material, typically render targets.
+
+2. To add/remove an object in a specific context, like disabling transparent objects in opaque context.
+
+3. To inject contexts. like tagging a model for glow post processing. 
+
+cntext injection:
+context.Add(new Context);
+
+object manipulation:
+context.SceneObjects</body>
+    </comment>
+    <comment
+      Id="ae7e63b6-1dcc-4e1d-9f34-7f146c320814">
+      <body>A material defines the look of a geometry. It is responsible to set up correct shader parameters for a single draw call. 
+
+It will actively retrieve global parameters like view/projection/lighting/fog/gbuffer/shadowmap from a parent drawing context provided these values are singleton.
+
+This enables material ifself to make sure only changed parameters are sent to the Gpu to reduce state changes.
+
+Materials should not change render states. But it is declared.</body>
+    </comment>
+    <comment
+      Id="ac3e8a2b-5373-4ba2-bc87-299c430cd31e">
+      <body>The IDrawableObject.Draw method draws the primitives of this object without changing any render states.
+
+This IDrawableObject.ApplyMaterial method provides a chance to update the material before drawing the object.
+
+The material supplied in the ApplyMaterial method may not be the same as the Material property. This allows drawing this object using different materials.
+
+If the target material is not supported, return false to skip drawing this geometry.
+
+World transform should be set by the drawable object during ApplyMaterial call.</body>
+    </comment>
+    <comment
+      Id="0775cda6-85a6-4dda-9f73-1a16ec6fc375">
+      <body>A drawing batch provides a way to optimize rendering by drawing objects of the same type together.
+
+The default drawing context will group each drawable object by their batch type.
+
+Dimensions: BS | RS | DS -&gt; Material (Sort by BS)
+
+Drawing context will create batches based on batch type and material render states (BS, RS, DS).</body>
+    </comment>
+    <comment
+      Id="ab96b8f3-71ab-40cd-abdc-119d8cb40180" />
+    <comment
+      Id="9e522ab7-9780-42b7-bba5-b85f3ebef7b9">
+      <body>We are using fixed drawing pass graph in this version.
+
+Materials should be passive if performance is not an issue.</body>
+    </comment>
+  </ownedCommentsInternal>
+  <profileInstances>
+    <packageHasProfileInstances
+      Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
+      <profileInstance
+        Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791"
+        name="StandardProfileL2" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="29349502-908c-4fda-9054-c48619c59ed0">
+      <profileInstance
+        Id="532ea607-fb19-44b8-8502-3351b05452be"
+        name="StandardProfileL3" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="5f62eea9-4068-443b-b332-a3a82eb18b84"
+        name="DrawingContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="8af956ae-3e32-4c7d-90d8-0a9fa0f734f0"
+            isDerived="false"
+            sourceEndRoleName="DrawingContext"
+            targetEndRoleName="LightingContext"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="658bf2ae-1840-4c9b-a1e5-4fa750e56d7b"
+              LastKnownName="LightingContext"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="eb7df82d-bc1d-4fa7-888e-be450b804f0c"
+                  name="DrawingContext"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Composite"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="d18e8091-b501-412b-90ba-9155d4f1f34f"
+                  name="LightingContext"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="true" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="30945b8c-187c-4f53-88b0-05784fe3e457"
+            isDerived="false"
+            sourceEndRoleName="DrawingContext"
+            targetEndRoleName="DrawingSettings"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="c1d8d929-4005-47c1-a54e-db2c0db1a753"
+              LastKnownName="DrawingSettings"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="e0995c43-56d0-44de-a7b7-7cba86cedb6c"
+                  name="DrawingContext"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Composite"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="17629fa6-d192-4bc0-a627-9b7a6f5fff8b"
+                  name="DrawingSettings"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="true" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="ea47d37f-fc7d-4b8b-9d70-de001f4c019b"
+            name="View"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="d3e4fce4-3390-4171-8740-c3887ee5a713"
+            name="Projection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="7681e784-1d83-495a-9c10-e867f4dc2d23"
+            name="Viewport"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3761cec2-3d94-4e63-bd72-59afaa739210"
+            name="ViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="b97f7f2b-abf4-4da1-9405-0d1be1576ba4"
+            name="EyePosition"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="08d56714-3d20-4091-8e29-86337fc06106"
+            name="Frame"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="f6c45d92-f4a5-4d0b-9e42-c3a5e7705d6b"
+            name="ElapsedTime"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="e562bfd3-6c6f-45e6-8d71-3d489a15746b"
+            name="ElapsedSeconds"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="40ce0c39-04bd-4f99-b753-b5401c12ca9c"
+            name="InvertView"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="ed3dfc53-ba27-4c3b-a6fd-563db1fded84"
+            name="InvertViewProjection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="1f960fc9-ec38-4622-bf5d-61b1b2f26884"
+            name="InvertProjection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="6ab46549-5724-4954-b4ec-fd9801d2ec34"
+            name="GetService"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+        name="Material"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="30c66d8d-4d3d-4107-886d-560da1de9802"
+            name="Comparer"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="1bae046a-3723-4669-8410-485826de408d"
+            name="World"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="d635012c-d56b-42cd-ba76-ddd2e429d178"
+            name="BlendState"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="e0fd50a7-dd09-45b8-b0cc-914398cc0f7d"
+            name="RasterizeState"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="8dc0506c-2b2e-46e5-af92-30f126925d66"
+            name="DepthStencilState"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="d87b3a84-4443-4b67-a118-b585fa78e803"
+            name="SortOrder"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="fe82c1f0-90e9-48f5-80ff-d6b4071d2314"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="05755292-4497-492e-8798-45ca2acdcbba"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="71e97d7e-237c-404f-9d40-6e6579685b45"
+                  name="previousMaterial"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="ae0e47cc-c8d8-4b19-aba5-6ad4a1bebf14"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="19ed3af7-08e9-4bdc-a892-94d769fc4057"
+            name="GetService"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="f63d1059-22f9-4b1f-8f3d-8e9df363ae02"
+            name="NotifyRenderStateChanged"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="0d55b5a8-a526-4897-b07d-1f40fd8d25df"
+        name="Scene"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="df832395-2fa6-4f27-b14a-ebb5a437e7c9">
+            <interfaceMoniker
+              Id="9270818a-f65b-4f31-884c-3770bf74a197"
+              LastKnownName="ISceneObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </dependency>
+        </suppliersInternal>
+        <targetEnds>
+          <association
+            Id="acf9d8c9-f531-4327-b198-b0e475b04d23"
+            isDerived="false"
+            sourceEndRoleName="Scene"
+            targetEndRoleName="DrawingPass"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="a734831c-d583-4a04-b74c-f5681daf9f74"
+              LastKnownName="DrawingPass"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="a8b814b0-fc5c-4a61-8dbc-8b13def903f1"
+                  name="Scene"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Composite"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="6e3f4443-51c3-4bc7-8bab-5f9c4b8bdf37"
+                  name="DrawingPass"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="true">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="7b2376b5-de56-4265-a054-2dde5d0390eb"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="68ec774e-ea1f-4cf8-80ee-cfa3592abb67"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="8ddb6f9d-0801-4a54-b193-882e1b1118c1"
+            name="SceneObjects"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="689809c5-2852-45e3-aede-f129461c849e"
+            name="Camera"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3b60b6f1-405c-4f2f-8bf0-08b72dde6f9a"
+            name="Tag"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="1fc579f2-e85c-4e69-834c-8726892c0013"
+            name="DrawingPasses"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="9e176229-51ac-4620-8da1-7b0887ed0cb7"
+            name="Add"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="417f95e5-a803-4fca-87cd-85729d9ddf58"
+                  name="object"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="c44a05d7-5115-4906-8a8e-8edbede94940"
+            name="Remove"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="62642fbd-b7dc-45fd-ab22-04c8715a8cec"
+                  name="object"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="6b968e6a-904f-4086-b3db-ef773b56c44f"
+            name="Find"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9371d32e-daa0-4cf6-a087-beb024ef8d55"
+                  name="volume"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="1e830189-5c16-4f19-9c9a-c31bb8ca563d"
+            name="Update"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="08912822-2b77-4cb6-8640-d07f66f59f2f"
+                  name="camera"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="cc0ea066-3024-45e2-8dd1-e609e1619d9a"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="e045c12f-3f08-4f3b-8042-59f0c53d9a46"
+        name="IDrawableObject"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedAttributes>
+          <property
+            Id="677327a4-d337-4d0e-8e9f-a580d929c2e7"
+            name="Material"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="a1111d1a-4b5b-4424-b5eb-6c0b3481699c"
+            name="Visible"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="30df65eb-ef0c-472d-b4ce-6f2f42f433f9"
+            name="BatchType"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributes>
+        <ownedOperations>
+          <operation
+            Id="8cc35ed0-0467-423b-9244-ee4bf99e27c9"
+            name="ApplyMaterial"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="3a001bb4-9381-4801-a196-d17af111bad5"
+                  name="material"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="2b5a3bed-c025-41a6-89bf-3a5def8f5e73"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="3c53b2c5-2ec9-454c-89fa-f1679644691b"
+                      LastKnownName="bool"
+                      LastKnownLocation="Nine.Modeling.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="25835ee6-dea3-45f4-b921-541cab1d0646"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperations>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <activity
+        Id="56f2143e-0dbf-455c-a690-907736d79af0"
+        name="SimpleDrawing"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false"
+        isReentrant="false"
+        isReadOnly="false"
+        isSingleExecution="false">
+        <nodes>
+          <initialNode
+            Id="ad28c6a9-ad1f-4ed6-b189-a56d1f7b2aff"
+            name="Initial1"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="cef3b091-68dd-44e4-af06-35d6d33508ee"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="870eed1e-b948-4cd5-94e0-1665ff05a31e"
+                  LastKnownName="Find all drawables in current view frustum"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </initialNode>
+          <activityFinalNode
+            Id="772037a1-e3ef-483d-91a3-c365a7ccc418"
+            name="ActivityFinal1"
+            isLeaf="false" />
+          <opaqueAction
+            Id="870eed1e-b948-4cd5-94e0-1665ff05a31e"
+            name="Find all drawables in current view frustum"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="3ca56018-7986-42ab-b233-02c7a4eb0237"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="e6b81d2d-9b70-4f01-8616-418b9f618c5d"
+                  LastKnownName="Group drawables by their batch type"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="e6b81d2d-9b70-4f01-8616-418b9f618c5d"
+            name="Group drawables by their batch type"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="faf7d1b0-3f4f-452c-b44e-09624df09024"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="947ebf0a-8934-41be-a467-34a30fd7bfe1"
+                  LastKnownName="Sort drawables based on render state"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="947ebf0a-8934-41be-a467-34a30fd7bfe1"
+            name="Sort drawables based on render state"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="87144dbb-ece6-4cc5-82b0-da2824dca599"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="030794fc-25df-4e03-a218-797ccbc0e121"
+                  LastKnownName="Sort drawables based on material rank."
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="030794fc-25df-4e03-a218-797ccbc0e121"
+            name="Sort drawables based on material rank."
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="16944225-87c1-484e-aa05-af29380d8b98"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="faa04bb9-e5ea-4c47-8940-e053121d3874"
+                  LastKnownName="Drawable ApplyMaterial"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="faa04bb9-e5ea-4c47-8940-e053121d3874"
+            name="Drawable ApplyMaterial"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="ac707f0b-6525-417e-951b-380db92c7c48"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="4963fdf5-ee69-4588-868f-3e1bd9f9288c"
+                  LastKnownName="Material.Begin"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="4963fdf5-ee69-4588-868f-3e1bd9f9288c"
+            name="Material.Begin"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="2c0b5ef5-e2cf-4b49-8465-90b49f11fdea"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="e29654ed-94bc-4b27-945b-40506f02e894"
+                  LastKnownName="Drawable.Draw"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="47001182-506e-480c-bfd7-561d165638b9"
+            name="Material.End"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="8282a9d9-1586-4b47-b21d-8020e955cad1"
+                isLeaf="false">
+                <activityFinalNodeMoniker
+                  Id="772037a1-e3ef-483d-91a3-c365a7ccc418"
+                  LastKnownName="ActivityFinal1"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="e29654ed-94bc-4b27-945b-40506f02e894"
+            name="Drawable.Draw"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="a026434f-4348-48d7-a314-4acaafb65a88"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="47001182-506e-480c-bfd7-561d165638b9"
+                  LastKnownName="Material.End"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+        </nodes>
+      </activity>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <activity
+        Id="b8e3413d-78db-4310-b1f3-3000529601fb"
+        name="TransparentDrawing"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false"
+        isReentrant="false"
+        isReadOnly="false"
+        isSingleExecution="false">
+        <nodes>
+          <initialNode
+            Id="b84cf96d-ca74-42fd-8283-2af24ad50f6c"
+            name="Initial1"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="390dded2-dc5e-47a1-8a73-38d5b6e2ce5e"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="fffeba73-8de9-476f-8146-3ad40f706ae0"
+                  LastKnownName="Find all drawables in current view frustum"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </initialNode>
+          <activityFinalNode
+            Id="256500b7-c86c-4d39-8af7-4308007d8735"
+            name="ActivityFinal1"
+            isLeaf="false" />
+          <opaqueAction
+            Id="fffeba73-8de9-476f-8146-3ad40f706ae0"
+            name="Find all drawables in current view frustum"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="af30143e-bcc2-40ef-880f-df1ba6c66347"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="33295c50-1ec7-4d68-8ab0-d663cc5b071f"
+                  LastKnownName="Create opaque context and transparent context"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="f1aadc0e-c5a4-4048-ade1-a8b19e55d134"
+            name="Group drawables by their batch type"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="3e322b3e-a1a5-4dc0-9af3-0d8214800226"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="faa4c427-3474-46bd-a3e0-292c8b7b824a"
+                  LastKnownName="Sort drawables based on render state"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="faa4c427-3474-46bd-a3e0-292c8b7b824a"
+            name="Sort drawables based on render state"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="575dce0a-bbf8-4043-957b-3433718d4614"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="8f28ff27-130e-487f-9edf-0ba7450bee76"
+                  LastKnownName="Sort drawables based on material rank."
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="8f28ff27-130e-487f-9edf-0ba7450bee76"
+            name="Sort drawables based on material rank."
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="2b7844f2-cf14-4515-b74c-160afbffaab4"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="53defb19-fd8f-4d51-a675-0287758e85d7"
+                  LastKnownName="Drawable ApplyMaterial"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="53defb19-fd8f-4d51-a675-0287758e85d7"
+            name="Drawable ApplyMaterial"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="30cc0f2d-1cad-43d4-a864-6b2d21d94f3d"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="8a350e6e-3d5a-4905-a8bb-050710c59aaa"
+                  LastKnownName="Material.Begin"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="8a350e6e-3d5a-4905-a8bb-050710c59aaa"
+            name="Material.Begin"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="03e96fa5-79be-4a52-a351-71cb30d16467"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="bc0cb6e3-89e4-4bd3-a550-bd5e9166f202"
+                  LastKnownName="Drawable.Draw"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="3f63c380-bd3b-43c4-aced-a493a97bcc17"
+            name="Material.End"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="15d49bc5-864d-465b-8576-b78a1856f142"
+                isLeaf="false">
+                <activityFinalNodeMoniker
+                  Id="256500b7-c86c-4d39-8af7-4308007d8735"
+                  LastKnownName="ActivityFinal1"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="bc0cb6e3-89e4-4bd3-a550-bd5e9166f202"
+            name="Drawable.Draw"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="2e09be8b-31ed-460f-911f-311592a7c8f2"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="3f63c380-bd3b-43c4-aced-a493a97bcc17"
+                  LastKnownName="Material.End"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction
+            Id="33295c50-1ec7-4d68-8ab0-d663cc5b071f"
+            name="Create opaque context and transparent context"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="ccf9c153-49b8-41a7-bf4f-10aec9b9f9e1"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="f1aadc0e-c5a4-4048-ade1-a8b19e55d134"
+                  LastKnownName="Group drawables by their batch type"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+        </nodes>
+      </activity>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="17e50a7a-3c20-4661-9f47-2d16f086d077"
+        name="IDrawingBatch"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedAttributes>
+          <property
+            Id="f0a15dc9-ce2d-4b12-bcae-39eb31490e84"
+            name="SortOrder"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="254eef1d-f5ad-4486-af93-e0faac8dad1b"
+            name="DrawingFlags"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributes>
+        <ownedOperations>
+          <operation
+            Id="427411cd-e182-4eaa-9813-2ff376719f2b"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b3722a89-65f7-4680-a507-e2ebc01e526f"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="0338b760-919e-4a11-8a16-b0513fdad816"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6dfd8e7d-9108-4af7-a2ea-2ec3158cc731"
+                  name="IDrawableObject"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="3b93ab1c-7203-4c84-bafb-5dc61f68f309"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperations>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="b0150a6c-8c13-49b1-a340-e8b257d04f3b"
+        name="RootContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="7d4cde9f-c103-472d-a4a9-e6c05c953f33"
+        name="OpaqueContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6166a1c9-66d8-4662-9bdb-929ef48827b1"
+        name="TransparentContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="1ea12010-535a-4ec7-936b-7cfed701b4b1"
+        name="DeferredContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="601bc6d6-d846-4213-9f03-31f6c2deed96"
+        name="DeferredContext1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <activity
+        Id="889b2add-5397-481d-8b53-92ef4f763692"
+        name="DrawingFlow"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false"
+        isReentrant="false"
+        isReadOnly="false"
+        isSingleExecution="false">
+        <nodes>
+          <initialNode
+            Id="15ea48e1-eac1-4de7-b29b-9ae2a2454de0"
+            name="Initial1"
+            isLeaf="false">
+            <flowNodeTargets>
+              <controlFlow
+                Id="067da31b-b3ab-462e-9d24-765a672a7776"
+                isLeaf="false">
+                <opaqueActionMoniker
+                  Id="47b3c4f1-876d-49a4-b318-de7bd0eb1cc5"
+                  LastKnownName="Find all objects in current view frustum"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </controlFlow>
+            </flowNodeTargets>
+          </initialNode>
+          <opaqueAction
+            Id="47b3c4f1-876d-49a4-b318-de7bd0eb1cc5"
+            name="Find all objects in current view frustum"
+            isLeaf="false" />
+          <opaqueAction
+            Id="c66e5c3b-de80-4815-8b81-f741de4f6cd3"
+            name="For each object with shadow material, find all lights and corresponding shadow casters."
+            isLeaf="false" />
+          <opaqueAction
+            Id="8a138881-4d89-456e-9977-b24969a5d719"
+            name="Generate shadow map for each light source"
+            isLeaf="false" />
+          <opaqueAction
+            Id="d3ad96bf-3ef8-4816-8984-b1c03844578b"
+            name="For each object with reflection material"
+            isLeaf="false" />
+          <opaqueAction
+            Id="77dc5d71-b0d8-454d-905d-40115bc55fe0"
+            name="Generate reflection map"
+            isLeaf="false" />
+          <opaqueAction
+            Id="54a99a4d-16f9-49b2-bd78-5a40acb21629"
+            name="For each object with refraction material"
+            isLeaf="false" />
+          <opaqueAction
+            Id="b8d95f2f-3368-4c37-bffe-72d78a7241af"
+            name="Generate refraction map"
+            isLeaf="false" />
+          <opaqueAction
+            Id="2d041b94-b939-4b91-85fc-fd389d9ea1c9"
+            name="Generate deferred depth/normal/light buffer"
+            isLeaf="false" />
+          <opaqueAction
+            Id="18a6dbe0-0e3d-412a-86b2-6f93cda138f8"
+            name="Draw opaque objects"
+            isLeaf="false" />
+          <opaqueAction
+            Id="1a1bc0b6-4b9a-4715-af4e-72772ec7a703"
+            name="Draw transparent objects"
+            isLeaf="false" />
+        </nodes>
+      </activity>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="9270818a-f65b-4f31-884c-3770bf74a197"
+        name="ISceneObject"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedOperations>
+          <operation
+            Id="bfb56bbe-8f8d-4803-adc9-dc615cb80790"
+            name="OnAddedToViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6073f324-8da8-4ad6-934b-6514a611eabd"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="3eabf004-2bbd-4d64-bb89-e366613933f3"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="2673eac6-6221-4baf-97b2-16e04208b84f"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="dc7fb0ad-d666-4026-ac86-24249a42ee7d"
+            name="OnRemoved"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="44cd7c6d-e781-4cbc-8104-7a893af77b14"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="890809dd-1638-40f5-a3be-5852a10d9bad"
+            name="OnRemovedFromViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="094709e2-6318-429d-a6ff-aa37567c9726"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="26c265f1-e319-42b5-b296-5a9aaad89028"
+        name="ModelBatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="21c91353-923d-447c-b686-c7338198ecaf">
+            <interfaceMoniker
+              Id="17e50a7a-3c20-4661-9f47-2d16f086d077"
+              LastKnownName="IDrawingBatch"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="03ada83e-2830-468f-9fa3-b3da638c9624"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="851e75e3-740f-4dc4-907a-8cfb0800aced"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="35493955-e64a-4a34-8ab0-daacc9dd6c60"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="06c494ec-9bd6-49f0-a655-6092f0c657db"
+                  name="IDrawableObject"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="ffe39155-9269-4e92-944b-97bbb8df66ea"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="9b9983c0-3dd5-4ff2-b281-a7339919f190"
+        name="PrimitiveBatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="84731492-6ae6-4a89-9b39-2f61390282e1">
+            <interfaceMoniker
+              Id="17e50a7a-3c20-4661-9f47-2d16f086d077"
+              LastKnownName="IDrawingBatch"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="4dda7ed7-8715-4540-99cf-3585c4895549"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="08dfded2-c05f-4b77-aef9-d6af7e425de5"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="0ef1ed6a-08ca-4d66-a544-6db451f4f981"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="dc4a4927-0011-481c-b3b1-8bd1cd47c615"
+                  name="IDrawableObject"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="65856fe2-14a0-488c-97e7-2c189e10b676"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="18a6dbcd-e6db-4b55-bbc5-568ad8e9668f"
+        name="ParticleBatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="658bf2ae-1840-4c9b-a1e5-4fa750e56d7b"
+        name="LightingContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="dca41bc8-6428-4d60-be02-a6947abc4a0d"
+            name="AmbientLightColor"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="98dd8a8a-9285-47bf-bda4-0a70aec43517"
+            name="DirectionalLights"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="4326c8a5-8b7f-4743-972a-5b76066a8baa"
+            name="PointLights"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="0befd706-4935-48e0-9450-b806a7db1323"
+            name="SpotLights"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a6b1778a-6a7b-4106-a02d-6011db1758aa"
+        name="BasicMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="224075be-79fc-4833-a5fe-4b25f2b68574"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="4b87a65d-4bc3-4485-ad31-ffd2f68b6955"
+        name="SkinnedMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="b79ab7f5-fd8c-46fc-b37f-dddefe7ef3e9"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="04f1ffd8-1e8b-4908-967c-a06dafc43d19"
+        name="ShaderMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="002cd59e-8f90-41d0-b2db-73e40b4d2c95"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="68b7716a-5131-4006-b653-1ca05cfbd812"
+            name="Source"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="7d003288-85a8-49cb-a3db-ffd133ed89b4"
+        name="MaterialGroup"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="d401ff84-b93e-4e93-9d65-a9ca0cfa6598"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association
+            Id="0a69e20e-00fa-4a25-b659-8d3cfe629d94"
+            isDerived="false"
+            sourceEndRoleName="MaterialGroup"
+            targetEndRoleName="MaterialPart"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="963a3850-b24a-4412-b043-df641673b535"
+                  name="MaterialGroup"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Composite"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="80951a32-72cb-4d7f-88d2-f4fc3280d8f1"
+                  name="MaterialPart"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="true">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="34f353e0-2db9-4211-a6cb-618f2f739985"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="69863812-a7cc-4950-a05b-4d7dbe47e67a"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="1d3cf121-5cad-4f6a-874b-3eb55cdf59fc"
+            name="MaterialParts"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="e5b4cdb8-cc5b-46f4-8b48-52db025217b5"
+        name="LeveledMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="651653c7-b5d2-46aa-8069-7e98681ebeb5"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="2331e422-d8ff-41dc-ae40-6c04d94bdf5f"
+            name="SortRank"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="14d70133-03a2-48bb-a4ef-4fe2fa6e24c2"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6d19f93a-9e25-4cb5-992d-3a230faff587"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="1b892258-6c6a-4159-973a-8063a72a61a7"
+                  name="previousMaterial"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="f84ab7a1-ca90-4586-81b6-16627c2e76cc"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+        name="Transformable"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="92a121cf-06ab-42d0-860f-da1e7efe3239"
+            name="Transform"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="8b948587-4de7-40d2-ab28-bc0e5760a7df"
+            name="AbsoluteTransform"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="05e0941a-00eb-4cb9-96dc-51e20d2fa568"
+            name="Name"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="5c220dc3-1495-406b-bca8-36812ba8f1cb"
+            name="Tag"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="da953fb2-daff-40b2-becf-8e18635d34fa"
+            name="Parent"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="a19656fe-0c3a-4db0-809f-5673d770b23f"
+            name="OnTransformChanged"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="119656ae-4aae-4a5c-ab49-1d422e850c11"
+        name="Model"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="4cda8fe6-0fcf-4494-88fd-1583f18c706a"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association
+            Id="904d0049-37a5-4af7-93dd-f2f7bf8de5ea"
+            isDerived="false"
+            sourceEndRoleName="Model"
+            targetEndRoleName="ModelPart"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="ee5096df-22d7-41f8-9844-010f7044f17f"
+              LastKnownName="ModelPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="2b7f1dec-b17f-43a5-9b41-677484a843c7"
+                  name="Model"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="c8c135f2-2656-4910-9c59-b4e02b40a706"
+                  name="ModelPart"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="2a5419f3-c69d-46d8-ae6b-f0bf9e0a6217"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="7498b9ac-9cea-4957-8b7f-71d0c0089d0f"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="3a115ed6-1591-4b69-8095-dee0fdb7d63d"
+            name="ModelParts"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="64d1c9ff-29e1-49c3-b80e-33ea10f980b9"
+            name="Skeleton"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="28636f79-b453-4693-80b5-d36a57ce1be9"
+            name="Material"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="28b345dd-be50-4343-9c5c-162fe3869ccf"
+            name="MaterialLevels"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="50b418da-5b89-4930-9b56-1763c1b2094c"
+            name="Source"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="ee5096df-22d7-41f8-9844-010f7044f17f"
+        name="ModelPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="24a124a0-d85b-4772-9277-b30e0bb5ea01">
+            <interfaceMoniker
+              Id="e045c12f-3f08-4f3b-8042-59f0c53d9a46"
+              LastKnownName="IDrawableObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+          <interfaceRealization
+            Id="4e5feb3a-9b1a-4082-a9eb-30d656d282f5">
+            <interfaceMoniker
+              Id="9270818a-f65b-4f31-884c-3770bf74a197"
+              LastKnownName="ISceneObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="2cf5026f-5bbb-4c85-9089-35436c870c99"
+            name="Material"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="265010f2-1362-4abc-969f-a039425aa44c"
+            name="Materiallevels"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="6dd45128-3898-4b74-b329-838165b56e4d"
+            name="ApplyMaterial"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="966ebc43-cde5-4c50-9c93-aead7a7afacc"
+                  name="material"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="e2a40d69-25d6-4b57-bbfc-6fb2f08ad18b"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="3c53b2c5-2ec9-454c-89fa-f1679644691b"
+                      LastKnownName="bool"
+                      LastKnownLocation="Nine.Modeling.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7c5294bb-cf39-4f9a-b77d-6c24bc858d33"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="59544c30-8f89-4b01-829a-3cf8c3dccba7"
+            name="OnAddedToViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="5cac2545-e02e-4d06-85eb-e44b9c63f844"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="3e8d3389-078b-4a4d-98e7-612edf8bb06c"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="041d4c4a-d139-476f-bcf7-3d52fc091b7f"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="26b09abd-37fb-48ab-be45-6f63d95b5bd6"
+            name="OnRemoved"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="41eed5fb-b6e5-4d59-9961-140862529b2d"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="7b76c933-6299-4f10-95d4-311d574773b2"
+            name="OnRemovedFromViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="278eabbe-1550-4056-a26d-1447aa955fa6"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="45f4e351-d479-4066-96db-a578eb1e98f8"
+        name="Surface"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="cb66b5bc-328b-43a0-a137-1f40a8cba51c"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association
+            Id="07a1df8c-d24d-4875-bfe9-6d9c36d12132"
+            isDerived="false"
+            sourceEndRoleName="Surface"
+            targetEndRoleName="SurfacePatch"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="94326911-98fb-4bdc-8fbc-0edbdf043b3a"
+              LastKnownName="SurfacePatch"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="ad9166b7-a6f7-4d00-ae9c-835b2b4b1a01"
+                  name="Surface"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="51adde54-6498-4611-a8bf-92cb0d5bc4ee"
+                  name="SurfacePatch"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="dce50b9a-7aba-4078-beb4-44a86f5736f5"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="cf24683a-5588-4731-aa11-5eec3a233ae0"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="9a5ba857-c6ba-4922-a7cf-28fed0a68d20"
+            name="Patches"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="bc68bfaf-f3d4-41d7-b15f-d8d21cded2bb"
+            name="Material"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="92825aed-f516-418d-a65c-782772c7b1c7"
+            name="Heightmap"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="a82f9d85-b3eb-46c6-b1cb-fcafe16e85f5"
+            name="MaterialLevels"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="0b1885c7-a59f-4561-a615-83e8826c1565"
+            name="LevelOfDetailStart"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="97c184a4-98f5-4f9f-bc75-b8c3d85c67a4"
+            name="LevelOfDetailEnd"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="94326911-98fb-4bdc-8fbc-0edbdf043b3a"
+        name="SurfacePatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="b8b7cc76-149f-4cdd-a6ff-7fe71f6d856d">
+            <interfaceMoniker
+              Id="e045c12f-3f08-4f3b-8042-59f0c53d9a46"
+              LastKnownName="IDrawableObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="7a4d05f8-7c5c-4f50-8b9d-5d78310999f9"
+            name="ApplyMaterial"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="87d484d6-b044-4d39-a0d7-fcc21d8b6567"
+                  name="material"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="8618eba0-2e17-4643-b179-239763f96a01"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="3c53b2c5-2ec9-454c-89fa-f1679644691b"
+                      LastKnownName="bool"
+                      LastKnownLocation="Nine.Modeling.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="4d9e3b3b-4b31-401e-9721-a10bd23846a6"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="faac6458-195a-451c-b0a7-ed715a3dacc4"
+        name="Surface1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="922efd9f-d474-4684-9a43-88df8562d3a2"
+            name="Patches"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="4e45d02c-69dd-489c-8223-c7705219b570"
+        name="Light"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="2f4bbeb3-8be7-457a-bda9-0e09ce0d92e7"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="681bf017-59f4-4f05-9427-4885cd12ba2f"
+        name="AmbientLight"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="9480391c-3c0e-4b6b-adcb-70c8ea6f2b2d">
+            <interfaceMoniker
+              Id="9270818a-f65b-4f31-884c-3770bf74a197"
+              LastKnownName="ISceneObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="f274799a-4593-46d2-b16c-2454a5ea4dcc"
+            name="Color"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="b95ae1a2-c8b5-44e7-9b28-9eb0f230da54"
+            name="OnAddedToViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="18893630-a474-4928-be50-354f66f688fb"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="a676ed48-cfc1-43f3-af95-a64345c1fce0"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="52d70a0c-b685-4ad7-bedf-fdc358f4e874"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="49f4a2de-279b-497c-8e86-326950f74555"
+            name="OnRemoved"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="21418236-77ea-4988-97bc-b148bc5e92da"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="8c7e8632-cfcb-4e03-96ce-5119fcd38e90"
+            name="OnRemovedFromViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="a1b4082f-c2e2-4496-8af5-7c9bd70f0000"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="e181d950-3c6e-46a3-a724-6e28302bdab8"
+        name="DirectionalLight"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="0b2f80c9-195a-44e3-82a1-21d86f70872d">
+            <interfaceMoniker
+              Id="9270818a-f65b-4f31-884c-3770bf74a197"
+              LastKnownName="ISceneObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="a684200d-d67c-4ae6-865d-db7000299e8d"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="63d695d8-33a2-40a8-ab39-6abbcd823a2f"
+            name="Color"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3807cc10-bff3-45f3-8cc3-0816aee0fe78"
+            name="SpecularColor"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="4e08b202-cb3f-478b-9a6b-0d211c70d5ca"
+            name="Direction"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="a626f37d-1bc5-49c8-9edb-2091ed64e567"
+            name="OnAddedToViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="f0c94ad4-1a66-4998-b87c-3a3377c44a60"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="ce54facb-c5d5-41be-9def-51e29d9ad89a"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="d530dc06-e2b5-4017-9f78-f0f875f27257"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="acdfb4b2-55dc-410e-9489-921e281d0220"
+            name="OnRemoved"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b73f75ea-c03a-4652-a16c-1e6339e24b75"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="6a9257d2-25ab-410b-82e3-0112b50a92d2"
+            name="OnRemovedFromViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="965cd7aa-278e-4bee-9bcb-55c6b8fb8ec7"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="dddfe019-ad07-49aa-ba11-9b68fee7879d"
+        name="PointLight"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="1dd892f9-42f5-4a9b-a97d-f339242a9217">
+            <interfaceMoniker
+              Id="9270818a-f65b-4f31-884c-3770bf74a197"
+              LastKnownName="ISceneObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="7eca3b09-4714-415b-b1ea-70ae46308b33"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="a85fec91-c84a-4e13-9439-ae9237e08529"
+            name="Color"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3eb644f6-7317-4c1a-9ca6-3e354b5cf218"
+            name="SpecularColor"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="fd6456f1-b8a2-405c-965b-e65430f75403"
+            name="Position"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="0cdabdb2-ec84-4f2a-8dfe-d99c306b865a"
+            name="Range"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="8d38e008-cb61-4f56-b4a6-51cfb305c0e3"
+            name="OnAddedToViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="ce8839f5-bd4c-467a-a342-50fc62186251"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="ffe69318-c8e1-4e50-b520-f54a15b26d74"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b095d268-7f16-4ee8-9e45-ad4a5b70a22a"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="aa25e493-404f-4660-a9fe-8712d2334ed9"
+            name="OnRemoved"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="85517aa0-8fea-4537-865a-8e353bdd9b11"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="233f2f99-8bad-484e-bac7-973259afda53"
+            name="OnRemovedFromViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="39d56bc0-ce1f-49d1-b192-960a07e3e09f"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="98d7e495-ddc5-42ef-ae95-1445dd6120fd"
+        name="SpotLight"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="d20cfe2d-9857-48b0-9de3-d221c1029381">
+            <interfaceMoniker
+              Id="9270818a-f65b-4f31-884c-3770bf74a197"
+              LastKnownName="ISceneObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="af766333-8e4e-4498-bea3-1acc19e3165e"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="a7b56a7a-f779-493c-a285-e3d30be2a970"
+            name="Color"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="59275add-a34c-4141-838b-2d86bcbb3095"
+            name="SpecularColor"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="9c04bbbb-0b23-44f0-919a-48dda1a5b020"
+            name="Direction"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="42b2a33a-3616-4a06-aa96-5f7fa19e5a0b"
+            name="Position"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="fc784fdc-48b1-4e6e-9021-594a1ed286db"
+            name="Range"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="80485c84-10ea-4665-8459-e50fc13bf308"
+            name="InnerAngle"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="509ceb43-9029-427c-86e2-7587d8cfa527"
+            name="OuterAngle"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="470a6dc2-e35c-4285-bad2-60311c828772"
+            name="OnAddedToViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="0a97606f-868d-4604-a172-5ec276df274c"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="2d9ee27a-f1fe-4c90-9e73-0b349473a9ce"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="4cb659d5-3498-4e5f-bbab-cf4390abe968"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="6156b571-a6a5-4b2b-86b3-1c0e459676f4"
+            name="OnRemoved"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="f6549ea3-3c1e-41a9-bc20-328bf46461e7"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="1e8b31dc-d110-46bf-8e25-b7e03ca0f8dd"
+            name="OnRemovedFromViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="d9c2ccb2-03e0-446e-b82c-edc26f5ecb1e"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="e65cb808-1740-4214-a21e-7f6fede15a1d"
+        name="Geometry"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="21ab6b3f-bb74-4e76-bade-c6aafb692740">
+            <interfaceMoniker
+              Id="e045c12f-3f08-4f3b-8042-59f0c53d9a46"
+              LastKnownName="IDrawableObject"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="7f151b39-9bff-4023-8b03-bb983bd4813d"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="0cfdd66a-8f2e-4316-baa9-82060bc1d848"
+            name="Material"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="cfd864c0-ceb9-42fb-8266-4602b0cb10f4"
+            name="ApplyMaterial"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="b5519434-d0a3-4174-87f2-ec85fc52dde8"
+                  name="material"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="7082b189-fa8c-4df6-8a82-e3ca3fc3eaa4"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="3c53b2c5-2ec9-454c-89fa-f1679644691b"
+                      LastKnownName="bool"
+                      LastKnownLocation="Nine.Modeling.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="b14fcf27-34f9-4381-be96-bf65755a3e3a"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="d6b40d98-7cfc-4c1a-8674-44797d257625"
+            name="Invalidate"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c5b44f48-8419-4225-bd7b-a5c248e7ea93"
+        name="Box"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="c8b36b3f-bf4d-4fab-bfa7-b5c75d55776e"
+            isSubstitutable="false">
+            <classMoniker
+              Id="e65cb808-1740-4214-a21e-7f6fede15a1d"
+              LastKnownName="Geometry"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="31098fda-7cdf-4cd2-b841-dfbbf4a3483e"
+        name="Sphere"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="536c200c-eb33-4113-8970-4ecf89f5862f"
+            isSubstitutable="false">
+            <classMoniker
+              Id="e65cb808-1740-4214-a21e-7f6fede15a1d"
+              LastKnownName="Geometry"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="fd8f988e-eaad-4c14-9332-b93930416102"
+        name="Cylinder"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="39286ee9-fa69-445c-96b7-796e780e1424"
+            isSubstitutable="false">
+            <classMoniker
+              Id="e65cb808-1740-4214-a21e-7f6fede15a1d"
+              LastKnownName="Geometry"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="804105aa-a082-487e-8fd4-ef3d327f570e"
+        name="Teaport"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="a23d1a26-58ec-4490-b0b0-8534d2aa2734"
+            isSubstitutable="false">
+            <classMoniker
+              Id="e65cb808-1740-4214-a21e-7f6fede15a1d"
+              LastKnownName="Geometry"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c7688812-d525-4683-8e5d-a2c4a5bb0edb"
+        name="Teaport1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="ab02bc3d-9871-412b-8e7c-33501aa46df2"
+        name="ParticleEffect"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="cf65852b-5762-4f2c-8fe8-cf4db43e1a79"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="74080c5e-cfa9-4266-9698-a9c15ec9a891"
+        name="PerspectiveCamera"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="0f20bd9e-ed84-4cef-94d4-4637045f4abd">
+            <interfaceMoniker
+              Id="5aad673e-70ad-4512-b43d-2c341a37a357"
+              LastKnownName="ICamera"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="2088904b-60e6-4682-9033-4637112b3e2f"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="b9d7dd59-8773-42db-8779-1431f068753b"
+            name="FieldOfView"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="5279dfea-a359-4c92-a037-9ae2e352cbf4"
+            name="NearPlane"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="eb3cdb2f-4c5b-4a82-a065-d568af09589f"
+            name="FarPlane"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="1bff3fe5-0821-443e-baee-de503384734f"
+            name="AspectRatio"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6100b854-a273-462c-bdf4-f1e531ab823c"
+        name="OrthographicCamera"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="dd904809-88e7-4d29-b144-071dbae16619">
+            <interfaceMoniker
+              Id="5aad673e-70ad-4512-b43d-2c341a37a357"
+              LastKnownName="ICamera"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="f004d2a2-8903-4c50-a6dc-c6652e5b1784"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="4bc1b163-5f19-4dcc-8507-6f69e6d98fac"
+            name="Width"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="540f886f-3995-4d2c-8ef0-133856bc5f6d"
+            name="Height"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="0c8b5ebd-3523-45a5-9248-3f3ba168d9d4"
+            name="AspectRatio"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="5aad673e-70ad-4512-b43d-2c341a37a357"
+        name="ICamera"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedAttributes>
+          <property
+            Id="bc5c8424-1ffd-4c3f-b15d-d47d0069690e"
+            name="Projection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="dbfbf4cb-ff03-4761-8a19-03fa62410d01"
+            name="View"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="15130058-6950-40ec-aa1c-c3aec0bb806c"
+            name="Viewport"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="14c00133-fd28-4f45-9650-49aac22ca4e4"
+            name="Enabled"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributes>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="66472842-2fc1-4e5e-b9be-99285ab3d561"
+        name="DrawingGroup"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="1de1fdf5-04e7-4172-a995-23fa6867168c"
+            isSubstitutable="false">
+            <classMoniker
+              Id="7e3f59ed-8e39-49bd-9948-137d2c10614a"
+              LastKnownName="Transformable"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="6721abb7-10f4-48d1-bd5b-a6f2f2b39758"
+            name="Animations"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="61213ad9-e6f0-4ee8-97b5-94cdb424f303"
+            name="TransformBindings"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="29529e75-78d9-413f-ad61-e119acb333c8"
+            name="Children"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <activity
+        Id="17e71786-a362-47d9-8777-e5dcca7a1bba"
+        name="Threading"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false"
+        isReentrant="false"
+        isReadOnly="false"
+        isSingleExecution="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <interaction
+        Id="4470415e-0881-4342-9321-7f5ed9fd139f"
+        name="Threading"
+        collapseFragmentsFlag="false"
+        isActiveClass="false"
+        isAbstract="false"
+        isLeaf="false"
+        isReentrant="false">
+        <ownedCommentsInternal>
+          <comment
+            Id="05052fd4-61eb-4b9c-b584-177fbbb83518">
+            <body>To update particle system asynchrnously without locking, create two buffers and swap the pointers.
+But update the buffer for twice the elapsed time to avoid copying memories back and forth.</body>
+          </comment>
+          <comment
+            Id="aafe4a63-7643-42b4-bda4-5c7271f7ae85">
+            <body>Read the xnb into memory asynchrnously but load them in the main thread.</body>
+          </comment>
+        </ownedCommentsInternal>
+        <fragments>
+          <behaviorExecutionSpecification
+            Id="cbf7b505-259a-4754-9da4-a1ed71321571"
+            name="BehaviorExecutionSpecification2">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="592630fa-f5ca-4665-bf5c-caf90b1ddba6"
+                LastKnownName="ExecutionOccurrenceSpecification4"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="085a0cdf-97b1-4a0a-8489-8674737d2cf2"
+                LastKnownName="ExecutionOccurrenceSpecification3"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="86c93486-c06a-44f9-b072-02a491add7a1"
+                LastKnownName="MessageOccurrenceSpecification6"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="c3febc1a-a981-4a6f-b9d3-22980f0b9a4c"
+                LastKnownName="MessageOccurrenceSpecification7"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="085a0cdf-97b1-4a0a-8489-8674737d2cf2"
+            name="ExecutionOccurrenceSpecification3">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="49644ff9-bb1a-4338-9741-41b982ce428e"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="86c93486-c06a-44f9-b072-02a491add7a1"
+            name="MessageOccurrenceSpecification6">
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="6f041bf7-51ac-4bda-8554-475a73f74fa6"
+            name="MessageOccurrenceSpecification5">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="931f5eb8-b9e3-47ea-ac07-509df75702ae"
+            name="MessageOccurrenceSpecification8">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="c3febc1a-a981-4a6f-b9d3-22980f0b9a4c"
+            name="MessageOccurrenceSpecification7">
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="592630fa-f5ca-4665-bf5c-caf90b1ddba6"
+            name="ExecutionOccurrenceSpecification4">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="be90fd5a-3d21-4fd3-a5ba-4937abf9de74"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="278514da-be0c-4a6c-a073-c8c35a3f84f3"
+            name="BehaviorExecutionSpecification3">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="d42400f2-c11b-4a2d-ac8a-b3aea0412e96"
+                LastKnownName="ExecutionOccurrenceSpecification6"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="d235a397-68cc-4d43-92a2-38866effa1e1"
+                LastKnownName="ExecutionOccurrenceSpecification5"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="bb2cc432-c7fa-4345-b763-177a680831a1"
+                LastKnownName="MessageOccurrenceSpecification10"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="3583516c-d66a-47f8-a44d-144939dacfa3"
+                LastKnownName="MessageOccurrenceSpecification21"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="d235a397-68cc-4d43-92a2-38866effa1e1"
+            name="ExecutionOccurrenceSpecification5">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="41827189-76f3-4e95-a853-9bc2450799a5"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="bb2cc432-c7fa-4345-b763-177a680831a1"
+            name="MessageOccurrenceSpecification10">
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="340fcbad-0e7e-4fbe-89a6-db888eabd841"
+            name="MessageOccurrenceSpecification9">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="84691db4-74fd-4607-9a87-dd63fec8489c"
+            name="BehaviorExecutionSpecification8">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="b63e4521-1927-4010-a2c7-a3b091db2066"
+                LastKnownName="ExecutionOccurrenceSpecification16"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="ef68af22-3524-4218-a285-00cde699f700"
+                LastKnownName="ExecutionOccurrenceSpecification15"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="e0380ea4-10fb-4641-ba40-75176b4c4ec2"
+                LastKnownName="MessageOccurrenceSpecification22"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="ef68af22-3524-4218-a285-00cde699f700"
+            name="ExecutionOccurrenceSpecification15">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="8809d240-02b4-4040-b8d7-f03aca24b874"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="e0380ea4-10fb-4641-ba40-75176b4c4ec2"
+            name="MessageOccurrenceSpecification22">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="3583516c-d66a-47f8-a44d-144939dacfa3"
+            name="MessageOccurrenceSpecification21">
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="b63e4521-1927-4010-a2c7-a3b091db2066"
+            name="ExecutionOccurrenceSpecification16">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="1a005f8f-8594-4d02-9016-c68d49115a0d"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="d42400f2-c11b-4a2d-ac8a-b3aea0412e96"
+            name="ExecutionOccurrenceSpecification6">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="ea7a58a1-d6e8-4ef8-8c49-6ef02c57295c"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+                LastKnownName="Loader Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="3195e1ad-e5f6-4607-953a-f0e9553b8201"
+            name="BehaviorExecutionSpecification4">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="199f832c-ee07-4b0a-89c2-4b93d4dfcd38"
+                LastKnownName="Physics Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="92ae73b0-f4d5-4830-a472-dcb5d265fe53"
+                LastKnownName="ExecutionOccurrenceSpecification8"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="8a094001-1e8f-457d-97fb-39961033d9db"
+                LastKnownName="ExecutionOccurrenceSpecification7"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="f1773d63-78e0-4230-a48a-ee864998838c"
+                LastKnownName="MessageOccurrenceSpecification12"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="8a094001-1e8f-457d-97fb-39961033d9db"
+            name="ExecutionOccurrenceSpecification7">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="11fd6e66-59c5-44b4-97b5-90399f62fac2"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="199f832c-ee07-4b0a-89c2-4b93d4dfcd38"
+                LastKnownName="Physics Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="31db9f79-3c5e-41c3-b6e6-a39f07f4b573"
+            name="MessageOccurrenceSpecification11">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="f1773d63-78e0-4230-a48a-ee864998838c"
+            name="MessageOccurrenceSpecification12">
+            <covered>
+              <lifelineMoniker
+                Id="199f832c-ee07-4b0a-89c2-4b93d4dfcd38"
+                LastKnownName="Physics Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="aad43468-3091-49e9-9848-beaffd34e002"
+            name="BehaviorExecutionSpecification5">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="14206b1a-6d2d-4777-9dfd-452b6e93fe25"
+                LastKnownName="ExecutionOccurrenceSpecification10"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="6fac47cd-7326-42b2-afb9-4ab66ce52ae4"
+                LastKnownName="ExecutionOccurrenceSpecification9"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="6d555ba4-15cf-4fa4-b234-a6398de26d52"
+                LastKnownName="MessageOccurrenceSpecification14"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="6fac47cd-7326-42b2-afb9-4ab66ce52ae4"
+            name="ExecutionOccurrenceSpecification9">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="bb723d46-6e1d-4c57-bb37-b25a41738b00"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="6d555ba4-15cf-4fa4-b234-a6398de26d52"
+            name="MessageOccurrenceSpecification14">
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="2ae8f1be-c38a-4013-9425-ec8ebf121ed2"
+            name="MessageOccurrenceSpecification13">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="92ae73b0-f4d5-4830-a472-dcb5d265fe53"
+            name="ExecutionOccurrenceSpecification8">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="31c8e983-c7df-4c5a-bae9-cd3b4e66d18b"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="199f832c-ee07-4b0a-89c2-4b93d4dfcd38"
+                LastKnownName="Physics Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="14206b1a-6d2d-4777-9dfd-452b6e93fe25"
+            name="ExecutionOccurrenceSpecification10">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="dcc7a8b6-75b9-4ada-a397-8c9c99b747f0"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="930e0e11-5477-4434-8291-abf0a41de510"
+            name="BehaviorExecutionSpecification7">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="4fb2959c-ae96-4ec3-9298-495b2f19afe2"
+                LastKnownName="ExecutionOccurrenceSpecification14"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="bcc0a182-a0c1-4d60-aafb-eea08df2b846"
+                LastKnownName="ExecutionOccurrenceSpecification13"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="bbab2f45-9c04-48fa-aab4-e77b09fd845d"
+                LastKnownName="MessageOccurrenceSpecification18"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="e4d165f6-ce40-40e8-a887-631bfde11ad2"
+                LastKnownName="MessageOccurrenceSpecification19"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="bcc0a182-a0c1-4d60-aafb-eea08df2b846"
+            name="ExecutionOccurrenceSpecification13">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="41c0edf1-6d01-4dcd-86e1-e698464cbb31"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="ad2f9902-bc44-4ff3-bf68-5a48a60941e8"
+            name="MessageOccurrenceSpecification17">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="bbab2f45-9c04-48fa-aab4-e77b09fd845d"
+            name="MessageOccurrenceSpecification18">
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="e4d165f6-ce40-40e8-a887-631bfde11ad2"
+            name="MessageOccurrenceSpecification19">
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="d8fcd1ac-6810-4e8f-8ff3-f82cc0b77c65"
+            name="MessageOccurrenceSpecification20">
+            <covered>
+              <lifelineMoniker
+                Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+                LastKnownName="Main Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="4fb2959c-ae96-4ec3-9298-495b2f19afe2"
+            name="ExecutionOccurrenceSpecification14">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="9cfea8b1-2ca9-4206-8ed6-934b9c827b1a"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="Nine.Modeling.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+                LastKnownName="Render Thread"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+        </fragments>
+        <lifelines>
+          <lifeline
+            Id="4e130028-cc72-43a6-b18d-ac10db6e28fb"
+            name="Main Thread"
+            isActor="false"
+            lifelineDisplayName="Main Thread">
+            <topLevelOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="6f041bf7-51ac-4bda-8554-475a73f74fa6"
+                LastKnownName="MessageOccurrenceSpecification5"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="931f5eb8-b9e3-47ea-ac07-509df75702ae"
+                LastKnownName="MessageOccurrenceSpecification8"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="340fcbad-0e7e-4fbe-89a6-db888eabd841"
+                LastKnownName="MessageOccurrenceSpecification9"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="ef68af22-3524-4218-a285-00cde699f700"
+                LastKnownName="ExecutionOccurrenceSpecification15"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="b63e4521-1927-4010-a2c7-a3b091db2066"
+                LastKnownName="ExecutionOccurrenceSpecification16"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="31db9f79-3c5e-41c3-b6e6-a39f07f4b573"
+                LastKnownName="MessageOccurrenceSpecification11"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="2ae8f1be-c38a-4013-9425-ec8ebf121ed2"
+                LastKnownName="MessageOccurrenceSpecification13"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="ad2f9902-bc44-4ff3-bf68-5a48a60941e8"
+                LastKnownName="MessageOccurrenceSpecification17"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="d8fcd1ac-6810-4e8f-8ff3-f82cc0b77c65"
+                LastKnownName="MessageOccurrenceSpecification20"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="199f832c-ee07-4b0a-89c2-4b93d4dfcd38"
+            name="Physics Thread"
+            isActor="false"
+            lifelineDisplayName="Physics Thread">
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="8a094001-1e8f-457d-97fb-39961033d9db"
+                LastKnownName="ExecutionOccurrenceSpecification7"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="92ae73b0-f4d5-4830-a472-dcb5d265fe53"
+                LastKnownName="ExecutionOccurrenceSpecification8"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="337e3166-12c2-4460-b8e4-1d810ac4c6ee"
+            name="Render Thread"
+            isActor="false"
+            lifelineDisplayName="Render Thread">
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="6fac47cd-7326-42b2-afb9-4ab66ce52ae4"
+                LastKnownName="ExecutionOccurrenceSpecification9"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="14206b1a-6d2d-4777-9dfd-452b6e93fe25"
+                LastKnownName="ExecutionOccurrenceSpecification10"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="bcc0a182-a0c1-4d60-aafb-eea08df2b846"
+                LastKnownName="ExecutionOccurrenceSpecification13"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="4fb2959c-ae96-4ec3-9298-495b2f19afe2"
+                LastKnownName="ExecutionOccurrenceSpecification14"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="b651a850-50eb-470d-ac07-c8dba8c15d8a"
+            name="Loader Thread"
+            isActor="false"
+            lifelineDisplayName="Loader Thread">
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="085a0cdf-97b1-4a0a-8489-8674737d2cf2"
+                LastKnownName="ExecutionOccurrenceSpecification3"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="592630fa-f5ca-4665-bf5c-caf90b1ddba6"
+                LastKnownName="ExecutionOccurrenceSpecification4"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="d235a397-68cc-4d43-92a2-38866effa1e1"
+                LastKnownName="ExecutionOccurrenceSpecification5"
+                LastKnownLocation="Nine.Modeling.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="d42400f2-c11b-4a2d-ac8a-b3aea0412e96"
+                LastKnownName="ExecutionOccurrenceSpecification6"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+        </lifelines>
+        <messages>
+          <message
+            Id="7f4a7319-5a96-4069-9ec7-e2c4914be14a"
+            name="ContentManager.Load"
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="6f041bf7-51ac-4bda-8554-475a73f74fa6"
+                LastKnownName="MessageOccurrenceSpecification5"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="86c93486-c06a-44f9-b072-02a491add7a1"
+                LastKnownName="MessageOccurrenceSpecification6"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="ee71173c-dc38-4fe1-a8fc-c478d1e2d281"
+            name="&lt;&lt;return&gt;&gt;"
+            messageKind="Complete"
+            messageSort="Reply"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="c3febc1a-a981-4a6f-b9d3-22980f0b9a4c"
+                LastKnownName="MessageOccurrenceSpecification7"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="931f5eb8-b9e3-47ea-ac07-509df75702ae"
+                LastKnownName="MessageOccurrenceSpecification8"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="d3baacb5-f150-445f-be27-694d4985d4d0"
+            name="ContentManager.LoadAsync"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="340fcbad-0e7e-4fbe-89a6-db888eabd841"
+                LastKnownName="MessageOccurrenceSpecification9"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="bb2cc432-c7fa-4345-b763-177a680831a1"
+                LastKnownName="MessageOccurrenceSpecification10"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="ead9755e-ea01-45e4-a131-41b47181d37a"
+            name="ContentManager.Load"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="3583516c-d66a-47f8-a44d-144939dacfa3"
+                LastKnownName="MessageOccurrenceSpecification21"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="e0380ea4-10fb-4641-ba40-75176b4c4ec2"
+                LastKnownName="MessageOccurrenceSpecification22"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="1333b831-8c7a-493a-a8c4-2e2356a54d24"
+            name="Space.Update"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="31db9f79-3c5e-41c3-b6e6-a39f07f4b573"
+                LastKnownName="MessageOccurrenceSpecification11"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="f1773d63-78e0-4230-a48a-ee864998838c"
+                LastKnownName="MessageOccurrenceSpecification12"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="60349870-33d7-4cf8-ae04-46368aa2372c"
+            name="Scene.Draw"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="2ae8f1be-c38a-4013-9425-ec8ebf121ed2"
+                LastKnownName="MessageOccurrenceSpecification13"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="6d555ba4-15cf-4fa4-b234-a6398de26d52"
+                LastKnownName="MessageOccurrenceSpecification14"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="d1e9f845-2b49-49bc-a9db-55050d8aa953"
+            name="WorldObject.UpdateVisual"
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="ad2f9902-bc44-4ff3-bf68-5a48a60941e8"
+                LastKnownName="MessageOccurrenceSpecification17"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="bbab2f45-9c04-48fa-aab4-e77b09fd845d"
+                LastKnownName="MessageOccurrenceSpecification18"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="564d695d-a267-4855-8f11-75b6e9b3e8e4"
+            name="&lt;&lt;return&gt;&gt;"
+            messageKind="Complete"
+            messageSort="Reply"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="e4d165f6-ce40-40e8-a887-631bfde11ad2"
+                LastKnownName="MessageOccurrenceSpecification19"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="d8fcd1ac-6810-4e8f-8ff3-f82cc0b77c65"
+                LastKnownName="MessageOccurrenceSpecification20"
+                LastKnownLocation="Nine.Modeling.uml" />
+            </receiveEvent>
+          </message>
+        </messages>
+      </interaction>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="49644ff9-bb1a-4338-9741-41b982ce428e"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="be90fd5a-3d21-4fd3-a5ba-4937abf9de74"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="41827189-76f3-4e95-a853-9bc2450799a5"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="ea7a58a1-d6e8-4ef8-8c49-6ef02c57295c"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="11fd6e66-59c5-44b4-97b5-90399f62fac2"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="31c8e983-c7df-4c5a-bae9-cd3b4e66d18b"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="bb723d46-6e1d-4c57-bb37-b25a41738b00"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="dcc7a8b6-75b9-4ada-a397-8c9c99b747f0"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="41c0edf1-6d01-4dcd-86e1-e698464cbb31"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="9cfea8b1-2ca9-4206-8ed6-934b9c827b1a"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="8809d240-02b4-4040-b8d7-f03aca24b874"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="1a005f8f-8594-4d02-9016-c68d49115a0d"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="3c53b2c5-2ec9-454c-89fa-f1679644691b"
+        name="bool" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="e59676c6-6833-433f-a857-142a7913ac6d"
+        name="DualTextureMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="b8bce01a-596b-4bf4-ba62-d03ff3c02f87"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="43182a11-cf88-4df0-ac29-7ed43c39828c"
+        name="AlphaTestMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="ffed9d79-49db-4cc1-9934-c29eda70cd5d"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="b59e884f-77a5-4588-bde4-ab715dd84372"
+        name="EnvironmentMapMaterial"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="ea737bbc-2a07-4427-91dd-508e6953aa7a"
+            isSubstitutable="false">
+            <classMoniker
+              Id="01b08513-ba6d-425b-b578-8e0810a0f2f4"
+              LastKnownName="Material"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c7ac72b5-ded0-4d8c-8b6d-12bf9ea91426"
+        name="DiffuseMaterialPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="b44ffd79-0ffd-4ea6-91f7-06fcc18e44f5"
+            isSubstitutable="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="251ae27f-4d4c-40e2-bd3d-b35a450c649d"
+        name="SkinnedMaterialPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="918d82d6-31d0-4947-800b-f7068f85b8f8"
+            isSubstitutable="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="b2a6a25a-a012-4f2d-8ecd-027d411ca05b"
+        name="TexturedMateralPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="04e0457e-9c29-4895-a890-b1f5c16efb39"
+            isSubstitutable="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="9a3de88b-b535-4e0b-a584-76bda2e54a4d"
+        name="TexturedMateralPart1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="27e9b08c-e0c9-43fd-9092-57a9c102ab2e"
+            name="MaterialParts"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+        name="MaterialPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a3397d3d-935d-41f4-bcb2-df454c651c08"
+        name="SpecularMaterialPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="7440c7af-4d67-44c9-9af2-efd39baa491f"
+            isSubstitutable="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="f1fad2dc-961e-49e5-9d41-54f715a8479f"
+        name="ShadowMaterialPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="addc2609-f8ce-4b22-b611-c7e38354f786"
+            isSubstitutable="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="4e58384e-7fcc-4920-8ca3-394d623671df"
+        name="NormalMapMaterialPart"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <generalsInternal>
+          <generalization
+            Id="fde04fd8-4f7b-41ed-8b81-7e3ffbfc70ca"
+            isSubstitutable="false">
+            <classMoniker
+              Id="0d5895e4-3c55-40e1-bbc9-0bee0b2b2a70"
+              LastKnownName="MaterialPart"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="20ae4425-a52b-4aa1-a828-42f48e316ad1"
+        name="InstanceModelBatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="b2e39a1f-f355-4f3d-ba89-5e499fc0b1bd">
+            <interfaceMoniker
+              Id="17e50a7a-3c20-4661-9f47-2d16f086d077"
+              LastKnownName="IDrawingBatch"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="f3e3ff5a-1d4c-406d-880f-2212de7cee96"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="df506c6c-ad38-47d8-a9d6-39cf58c33f93"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="4feac815-3900-45d7-9267-d4180cefe8ba"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="fec24cda-0e76-4970-a1b0-f2d0492c07af"
+                  name="IDrawableObject"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="5b32022d-04b4-4304-918c-447628d6a912"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a560940d-d254-4c62-a152-a034d965db03"
+        name="ParticleBatch"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <interfaceRealization
+            Id="0f1fd404-5fd5-4cb3-baa3-dab4979c87d7">
+            <interfaceMoniker
+              Id="17e50a7a-3c20-4661-9f47-2d16f086d077"
+              LastKnownName="IDrawingBatch"
+              LastKnownLocation="Nine.Modeling.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="7ccbc678-9233-4d47-8745-deb7b45ea526"
+            name="Begin"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="fc5185f0-1443-4274-95a2-d6516ae0e80b"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="128c58be-67b0-45e3-bfe2-ed1e3739e738"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="0c55b435-774e-46f9-bffb-88f366519ec5"
+                  name="IDrawableObject"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="a82f2ce1-d593-4267-9c0a-733a73e3e9be"
+            name="End"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="5379dd22-14ae-475d-bcac-39bcc5947e6b"
+        name="IAsyncOperation"
+        isAbstract="false"
+        isLeaf="false">
+        <ownedOperations>
+          <operation
+            Id="f86e9682-c7be-472c-9d5d-9cf86d0e0891"
+            name="OnBeginFrame"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="371f84c1-aa83-4e12-aace-b967d8beb1d7"
+            name="OnEndFrame"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperations>
+      </Interface>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="6a41b4d2-03df-4328-8db6-5ca3ced8a674"
+        name="ShadowContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="3a5da118-6aac-4361-89aa-4d8d9ec39836"
+            name="ShadowMap"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="11f09756-4428-4181-b25b-b9c824b566bf"
+            name="DepthBias"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="f650f452-7d10-44bf-ab12-f5837f475e37"
+            name="LightView"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="9c3c90f9-45ec-471b-8c06-6845d891644a"
+            name="LightProjection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="95be64df-f936-41d5-8353-935c5d928e35"
+        name="CascadeShadowContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="3c2060df-e976-4fcf-9833-2f05600072bc"
+        name="CascadeShadowMap1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="8835088a-556f-4ed7-9255-633867ea7875"
+        name="ReflectionContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c1d8d929-4005-47c1-a54e-db2c0db1a753"
+        name="DrawingSettings"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="83d1e2db-7c7d-4054-91e7-f09070fe0977"
+            name="MaterialQuanlity"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="7c459c3b-c980-4517-9678-c5680bc60236"
+            name="SamplerState"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a7c9b9ad-e88b-42b1-8bcc-a5981af4598e"
+        name="DeferredLightingContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="8f2c681e-cb6f-4601-bc47-47410c547ed8"
+            name="DepthBuffer"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="29da8532-dd30-40f2-ac71-207f92a859ff"
+            name="NormalBuffer"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="c8494830-4636-4db3-8859-54b205b2c4e3"
+            name="LightBuffer"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="a734831c-d583-4a04-b74c-f5681daf9f74"
+        name="DrawingPass"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="43e4ff10-6974-4acf-ae27-2f1ee79e1fd8"
+            isDerived="false"
+            sourceEndRoleName="DrawingPass"
+            targetEndRoleName="DrawingContext"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="5f62eea9-4068-443b-b332-a3a82eb18b84"
+              LastKnownName="DrawingContext"
+              LastKnownLocation="Nine.Modeling.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="110c68ed-98e1-4ec5-9048-0459af58a560"
+                  name="DrawingPass"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="Composite"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="65a9d5a9-3ef9-4592-9603-f8c75c151d51"
+                  name="DrawingContext"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="true" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="06da5b7b-644a-4ce1-8f10-e9eaddb63ac6"
+            name="View"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="0005188b-e374-4fcc-ba8d-387a771cd5af"
+            name="Projection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="7c235513-ad2b-4125-9bff-549f827b81b0"
+            name="Viewport"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="79a7615e-8901-4a2b-b15a-f901f3d8c1ad"
+            name="SceneObjects"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="edefaeed-b16d-4449-926b-3323c519de58"
+            name="ViewFrustum"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="514efdc4-feb1-4ed5-aeeb-3d536ad42528"
+            name="Scene"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="38a6dc49-ac46-4d9d-bef1-74efe16353c2"
+            name="DependentPasses"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="a6538894-b169-42e6-bbf4-61e77df1414e"
+            name="OnAdded"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="f5ce0230-15e9-4e6d-ba10-147a70cf3515"
+                  name="object"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="6af31641-1f08-4abd-aade-04b576458ff2"
+                  direction="Return"
+                  isUnique="false">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="3c53b2c5-2ec9-454c-89fa-f1679644691b"
+                      LastKnownName="bool"
+                      LastKnownLocation="Nine.Modeling.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="305f740e-733d-477d-ba43-bec8cec197ea"
+            name="Draw"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="11fcb280-75f1-47b3-bdf0-0884a42c5984"
+                  name="context"
+                  direction="In"
+                  isUnique="false" />
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="c53e0286-0d21-43d9-85a7-f0b0e49c158f"
+        name="ReflectionContext"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="c9f1fc96-4ec2-4642-ba30-8cf0a78f16ab"
+            name="ShadowMap"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="3474e8a1-37be-4f12-a665-a9c78ce9291b"
+            name="DepthBias"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="af8b4782-1363-4657-b595-0324959c9b3c"
+            name="LightView"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+          <property
+            Id="b3e870c4-7206-4c0b-8b48-7ae1df77e4de"
+            name="LightProjection"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+  <primitiveType
+    Id="220a3521-e091-4221-bae9-3ef9018e845c"
+    name="Integer"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+    name="Boolean"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+    name="String"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="3ab42e7d-4969-445a-b209-471f5cb8209c"
+    name="UnlimitedNatural"
+    isAbstract="false"
+    isLeaf="false" />
+</modelStoreModel>

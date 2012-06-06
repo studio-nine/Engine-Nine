@@ -15,17 +15,31 @@ using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Content.Pipeline.Graphics;
-using Nine.Content.Pipeline.Graphics.Effects;
-using Nine.Graphics.Effects;
+using Nine.Content.Pipeline.Graphics.Materials;
+using Nine.Graphics.Materials;
 
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
 {
     /// <summary>
+    /// Defines a list of effect parameter semantics supported by the rendering system.
+    /// </summary>
+    /// <remarks>
+    /// Prefix the enum value with "Sas", "SasEffect" or "SasUi" is also supported.
+    /// </remarks>
+    enum CustomEffectAnnotations
+    {
+        BindAddress,
+        ResourceName,
+        Function,
+        Dimensions,
+    }
+
+    /// <summary>
     /// Processes the input CustomEffectContent.
     /// </summary>
-    [ContentProcessor(DisplayName = "Custom Effect - Engine Nine")]
+    [ContentProcessor(DisplayName = "Effect - Engine Nine")]
     public class CustomEffectProcessor : ContentProcessor<EffectContent, CustomEffectContent>
     {
         public const string PrecedualTextureDirectory = "Textures\\Precedual";
@@ -66,31 +80,32 @@ namespace Nine.Content.Pipeline.Processors
             var opaqueData = new Dictionary<string, object>();
             var effectProcessor = new EffectProcessor { DebugMode = DebugMode, Defines = Defines };
             var compiledEffect = effectProcessor.Process(effectContent, new CustomEffectContentProcessorContext(context));
-            var effect = new Effect(ContentGraphics.GraphicsDevice, compiledEffect.GetEffectCode());
+            var effect = new Effect(PipelineGraphics.GraphicsDevice, compiledEffect.GetEffectCode());
+
             foreach (var parameter in effect.Parameters)
             {
                 // Semantic
                 if (!string.IsNullOrEmpty(parameter.Semantic))
                 {
-                    EffectSemantics sementic;
-                    if (!Enum.TryParse<EffectSemantics>(parameter.Semantic, true, out sementic))
+                    CustomEffectSemantics sementic;
+                    if (!Enum.TryParse<CustomEffectSemantics>(parameter.Semantic, true, out sementic))
                     {
                         context.Logger.LogWarning(null, identity, "Effect parameter semantic {0} is not supported", parameter.Semantic);
                     }
                 }
 
                 // Annotation
-                EffectAnnotations annotation;
-                var annotations = new Dictionary<EffectAnnotations, EffectAnnotation>();
+                CustomEffectAnnotations annotation;
+                var annotations = new Dictionary<CustomEffectAnnotations, EffectAnnotation>();
                 foreach (var a in parameter.Annotations)
                 {
-                    if (Enum.TryParse<EffectAnnotations>(a.Name, true, out annotation))
+                    if (Enum.TryParse<CustomEffectAnnotations>(a.Name, true, out annotation))
                         annotations.Add(annotation, a);
                 }
 
                 foreach (var a in annotations)
                 {
-                    if (a.Key == EffectAnnotations.ResourceName)
+                    if (a.Key == CustomEffectAnnotations.ResourceName)
                     {
                         if (a.Value.ParameterType != EffectParameterType.String)
                         {
@@ -124,7 +139,7 @@ namespace Nine.Content.Pipeline.Processors
                         }
                     }
 #if MDX
-                    else if (a.Key == EffectAnnotations.Function)
+                    else if (a.Key == CustomEffectAnnotations.Function)
                     {
                         if (a.Value.ParameterType != EffectParameterType.String)
                             throw new InvalidContentException("Function must be a string");
@@ -132,7 +147,7 @@ namespace Nine.Content.Pipeline.Processors
                             throw new NotSupportedException("Only 2D procedural textures are supported.");
                         
                         EffectAnnotation dimension;
-                        if (!annotations.TryGetValue(EffectAnnotations.Dimensions, out dimension))
+                        if (!annotations.TryGetValue(CustomEffectAnnotations.Dimensions, out dimension))
                             throw new InvalidContentException("Dimensions attribute must be specified when the texture is generated from a shader function.");
                         if (dimension.ParameterType != EffectParameterType.Single && dimension.RowCount != 2)
                             throw new InvalidContentException("Dimensions attribute must be a float2.");

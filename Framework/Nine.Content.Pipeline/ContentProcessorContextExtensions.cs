@@ -220,7 +220,6 @@ namespace Nine.Content.Pipeline
             try
             {
                 var asset = pipelineContext.BuildAndLoadAsset<TInput, object>(input, processorName, processorParameters, importerName);
-                //var asset = pipelineContext.Convert<TInput, object>(input, processorName, processorParameters);
 
                 Compile(asset, assetFilename, context);
 
@@ -335,9 +334,7 @@ namespace Nine.Content.Pipeline
 
             public override ExternalReference<TOutput> BuildAsset<TInput, TOutput>(ExternalReference<TInput> sourceAsset, string processorName, OpaqueDataDictionary processorParameters, string importerName, string assetName)
             {
-                var output = context.BuildAsset<TInput, TOutput>(sourceAsset, processorName, processorParameters, importerName, assetName);
-                context.Logger.LogImportantMessage("SSSSSSSSSSs {0} -> {1}", sourceAsset.Filename, output.Filename);
-                return output;
+                return context.BuildAsset<TInput, TOutput>(sourceAsset, processorName, processorParameters, importerName, assetName);
             }
 
             public override string BuildConfiguration

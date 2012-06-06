@@ -1,0 +1,6 @@
+float3x3 TextureTransform;
+
+void PixelShader(inout float2 uv:TEXCOORD0)
+{	
+    uv = mul(uv, TextureTransform);
+}

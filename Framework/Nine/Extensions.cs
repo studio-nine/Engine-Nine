@@ -29,7 +29,7 @@ namespace Nine
             return result is T ? (T)result : default(T);
         }
 
-        public static K GetService<T, K>(this IServiceProvider provider) where T : K
+        public static K GetService<T, K>(this IServiceProvider provider)
         {
             var result = provider.GetService(typeof(T));
             return result is K ? (K)result : default(K);
@@ -119,9 +119,21 @@ namespace Nine
                 }
             }
         }
+
+        internal static int UpperPowerOfTwo(int v)
+        {
+            v--;
+            v |= v >> 1;
+            v |= v >> 2;
+            v |= v >> 4;
+            v |= v >> 8;
+            v |= v >> 16;
+            v++;
+            return v;
+        }
         
 #if WINDOWS && UNSAFE
-        internal static unsafe void FastClear(int[] array)
+        internal static unsafe void FastClear(this int[] array)
         {
             fixed (int* pArray = array)
             {
@@ -132,7 +144,7 @@ namespace Nine
         [System.Runtime.InteropServices.DllImport("KERNEL32.DLL", EntryPoint = "RtlZeroMemory")]
         unsafe static extern bool ZeroMemory(byte* destination, int length);
 #else                
-        internal static void FastClear(int[] array)
+        internal static void FastClear(this int[] array)
         {
             int blockSize = 4096;
             int index = 0;

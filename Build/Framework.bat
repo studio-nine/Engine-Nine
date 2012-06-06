@@ -19,18 +19,6 @@ for /f "delims=" %%i in ('dir /b /a-d "*.tt"') do (
 
 popd
 
-call %msbuild% %flags% Framework\Nine\Nine.csproj
-call %msbuild% %flags% Framework\Nine.Graphics\Nine.Graphics.csproj
-
-pushd Tools\TextTemplates
-
-for /f "delims=" %%i in ('dir /b /a-d "*.tt"') do (
-"%CommonProgramFiles%\Microsoft Shared\TextTemplating\1.2\texttransform.exe" -out %%~ni.Generated.cs %%i
-"%CommonProgramFiles(x86)%\Microsoft Shared\TextTemplating\10.0\texttransform.exe" -out %%~ni.Generated.cs %%i
-)
-
-popd
-
 call %msbuild% %flags% Framework\Nine.sln
 call %msbuild% %flags% Framework\Nine.Silverlight.sln
 

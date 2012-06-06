@@ -37,7 +37,6 @@ namespace Nine.Graphics.ObjectModel
         protected override void OnTransformChanged()
         {
             view = Matrix.Invert(AbsoluteTransform);
-            base.OnTransformChanged();
         }
         #endregion
 

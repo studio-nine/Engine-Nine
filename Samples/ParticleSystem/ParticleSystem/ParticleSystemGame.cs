@@ -34,15 +34,11 @@ namespace ParticleSystem
         private const int BackBufferHeight = 720;
 #else
         private const int TargetFrameRate = 60;
-        private const int BackBufferWidth = 900;
-        private const int BackBufferHeight = 600;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 800;
 #endif
 
-        ModelViewerCamera camera;
-        ParticleEffect fireworks;
-        ParticleEffect galaxy;
-        ParticleBatch particlePatch;
-        PrimitiveBatch primitiveBatch;
+        Scene scene;
         SpriteBatch spriteBatch;
 
         public ParticleSystemGame()
@@ -57,9 +53,9 @@ namespace ParticleSystem
 
             Content.RootDirectory = "Content";
 
+            graphics.IsFullScreen = true;
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Window.AllowUserResizing = true;
         }
 
 
@@ -72,39 +68,25 @@ namespace ParticleSystem
             Components.Add(new FrameRate(GraphicsDevice, Content.Load<SpriteFont>("Consolas")));
             Components.Add(new InputComponent(Window.Handle));
 
-            camera = new ModelViewerCamera(GraphicsDevice);
-
-            particlePatch = new ParticleBatch(GraphicsDevice);
-            primitiveBatch = new PrimitiveBatch(GraphicsDevice);
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // You can either programatically create the effect or author the effect
-            // using xaml file and load it through the content pipeline.
-            //particleEffect = CreateParticleEffect();
-            galaxy = Content.Load<ParticleEffect>("Galaxy");
-            galaxy.Trigger();
+            scene = new Scene(GraphicsDevice);
 
-            // Trigger another wave of particles for 5 seconds
-            //particleEffect.Trigger(Vector3.One * 2, TimeSpan.FromSeconds(5));
-            //particleEffect.Trigger(Vector3.Zero, 10);
-
-            // Advanced particle effects can be composed through ChildEffects
-            // and EndingEffects property.
-            fireworks = Content.Load<ParticleEffect>("Fireworks");
-            fireworks.Trigger();
-            //fireworks.Trigger(-Vector3.One * 2, 5);
+            scene.Add(CreateParticleEffect());
         }
 
         private ParticleEffect CreateParticleEffect()
         {
-            ParticleEffect snow = new ParticleEffect(1024);
-            snow.Texture = Content.Load<Texture2D>("flake");
+            ParticleEffect snow = new ParticleEffect(GraphicsDevice);
+            snow.Texture = Content.Load<Texture2D>("Textures/flake");
             snow.Stretch = 10;
+            
+            ParticleEffect.IsAsync = true;
 
             snow.Emitter = new PointEmitter
             {
                 Duration = 4,
-                Emission = 100,
+                Emission = 10000,
                 Size = 0.2f,
                 Color = Color.White,
                 Speed = 8f,
@@ -128,38 +110,18 @@ namespace ParticleSystem
             return snow;
         }
 
+        protected override void Update(GameTime gameTime)
+        {
+            scene.Update(gameTime.ElapsedGameTime);
+            base.Update(gameTime);
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkSlateGray);
-
-            // Prepare render states used to draw particles.
-            GraphicsDevice.BlendState = BlendState.Additive;
-            GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
-
-            // Update effects
-            fireworks.Update(gameTime.ElapsedGameTime);
-            galaxy.Update(gameTime.ElapsedGameTime);
-
-            // Draw particle system using ParticleBatch
-            particlePatch.Begin(camera.View, camera.Projection);
-            particlePatch.Draw(fireworks);
-            particlePatch.Draw(galaxy);
-            particlePatch.End();
-
-            // Use SpriteBatch to draw 2D particles
-            // Scale up the effect since it's too small
-            spriteBatch.Begin(0, null, null, null, null, null, Matrix.CreateScale(20, 20, 1) * Matrix.CreateTranslation(100, 100, 0));
-            spriteBatch.DrawParticleEffect(galaxy);
-            spriteBatch.End();
-
-
-            // Draw particle system bounds
-            primitiveBatch.Begin(camera.View, camera.Projection);
-            //primitiveBatch.DrawBox(galaxy.BoundingBox, null, Color.Azure);
-            primitiveBatch.End();
+            scene.Draw(gameTime.ElapsedGameTime);
 
             base.Draw(gameTime);
         }

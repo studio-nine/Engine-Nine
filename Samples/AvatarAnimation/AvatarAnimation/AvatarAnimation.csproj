@@ -53,8 +53,8 @@
     <Reference Include="Microsoft.Xna.Framework.Net" />
     <Reference Include="Microsoft.Xna.Framework.Storage" />
     <Reference Include="mscorlib" />
-    <Reference Include="Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
-    <Reference Include="Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
+    <Reference Include="Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
+    <Reference Include="Nine.Graphics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />

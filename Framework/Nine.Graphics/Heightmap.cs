@@ -9,8 +9,11 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Xaml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Nine.Content;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Graphics
@@ -19,7 +22,6 @@ namespace Nine.Graphics
     /// The geometric representation of heightmap. 
     /// The up axis of the terrain is Vector.UnitY.
     /// </summary>
-    [NotContentSerializable]
     public class Heightmap
     {
         #region Fields
@@ -430,6 +432,81 @@ namespace Nine.Graphics
             return true;
         }
 
+        #endregion
+
+        #region AttachedProperty
+        private static AttachableMemberIdentifier SizeProperty = new AttachableMemberIdentifier(typeof(Heightmap), "Size");
+
+        /// <summary>
+        /// Gets the width of the heightmap.
+        /// </summary>
+        public static int GetWidth(Surface surface)
+        {
+            Vector3 value = Vector3.One;
+            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out value);
+            return (int)value.X;
+        }
+
+        /// <summary>
+        /// Sets the width of the heightmap.
+        /// </summary>
+        public static void SetWidth(Surface surface, int value)
+        {
+            Vector3 size = Vector3.One;
+            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size);
+            size.X = value;
+            AttachablePropertyServices.SetProperty(surface, SizeProperty, size);
+        }
+
+        /// <summary>
+        /// Gets the height of the heightmap.
+        /// </summary>
+        public static int GetHeight(Surface surface)
+        {
+            Vector3 value = Vector3.One;
+            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out value);
+            return (int)value.Y;
+        }
+
+        /// <summary>
+        /// Sets the height of the heightmap.
+        /// </summary>
+        public static void SetHeight(Surface surface, int value)
+        {
+            Vector3 size = Vector3.One;
+            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size);
+            size.Y = value;
+            AttachablePropertyServices.SetProperty(surface, SizeProperty, size);
+        }
+
+        /// <summary>
+        /// Gets the step of the heightmap.
+        /// </summary>
+        public static float GetStep(Surface surface)
+        {
+            Vector3 value = Vector3.One;
+            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out value);
+            return value.Z;
+        }
+
+        /// <summary>
+        /// Sets the step of the heightmap.
+        /// </summary>
+        public static void SetStep(Surface surface, float value)
+        {
+            Vector3 size = Vector3.One;
+            AttachablePropertyServices.TryGetProperty(surface, SizeProperty, out size);
+            size.Z = value;
+            AttachablePropertyServices.SetProperty(surface, SizeProperty, size);
+        }
+
+        /// <summary>
+        /// This method is called at runtime to adjust surface heightmap
+        /// </summary>
+        internal static void SetSize(Surface surface, Vector3 size)
+        {
+            surface.Heightmap = new Heightmap(size.Z, (int)size.X, (int)size.Y);
+        }
         #endregion
     }
 }

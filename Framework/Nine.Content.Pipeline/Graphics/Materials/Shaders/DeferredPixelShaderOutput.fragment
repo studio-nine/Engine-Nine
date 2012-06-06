@@ -1,0 +1,7 @@
+﻿float4 depth;
+
+void PixelShader(float4 positionProjection, inout float4 color:COLOR0, out float4 depth:COLOR1)
+{
+    color = color;
+    depth = float4(positionProjection.z / positionProjection.w, 0, 0, 0));
+}

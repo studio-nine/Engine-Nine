@@ -18,6 +18,7 @@ namespace Nine
     /// <summary>
     /// Basic 2D Space partition using uniform grids.
     /// </summary>
+    [NotContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class UniformGrid
     {

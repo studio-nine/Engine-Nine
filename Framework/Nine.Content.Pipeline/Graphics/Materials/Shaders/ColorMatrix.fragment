@@ -1,0 +1,12 @@
+float4x4 Transform =
+{
+	1, 0, 0, 0,
+	0, 1, 0, 0,
+	0, 0, 1, 0,
+	0, 0, 0, 1,
+};
+
+void PixelShader(inout float4 diffuse)
+{	
+	diffuse = mul(diffuse, Transform);
+}

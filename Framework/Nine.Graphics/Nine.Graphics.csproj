@@ -76,6 +76,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -113,129 +114,62 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
-    <Compile Include="Effects\LeveledMaterial.cs" />
+    <Compile Include="Drawing\DrawingContextTextureCollection.cs" />
+    <Compile Include="Drawing\PostDrawingPass.cs" />
+    <Compile Include="Drawing\DrawingContextMatrixCollection.cs" />
+    <Compile Include="Drawing\DrawingPass.cs" />
+    <Compile Include="Drawing\DrawingQueue.cs" />
+    <Compile Include="Materials\MaterialPaintGroup.cs" />
+    <Compile Include="Materials\CustomMaterialSemantics.cs" />
+    <Compile Include="Materials\CustomMaterialPart.cs" />
+    <Compile Include="Materials\MaterialLevelOfDetail.cs" />
+    <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
+    <Compile Include="Materials\MaterialUsage.cs" />
+    <Compile Include="Materials\MaterialHelper.cs" />
+    <Compile Include="Materials\SkyBoxMaterial.cs" />
+    <Compile Include="Interface.cs" />
+    <Compile Include="Materials\BasicMaterial.cs" />
+    <Compile Include="Materials\AlphaTestMaterial.cs" />
+    <Compile Include="Materials\EnvironmentMapMaterial.cs" />
+    <Compile Include="Materials\DualTextureMaterial.cs" />
+    <Compile Include="Materials\SkinnedMaterial.cs" />
+    <Compile Include="Materials\MaterialConstants.cs" />
+    <Compile Include="ObjectModel\DirectionalLightCollection.cs" />
+    <Compile Include="Materials\SoftParticleMaterial.cs" />
+    <Compile Include="Drawing\BasicDrawingPass.cs" />
+    <Compile Include="PostEffects\PostEffectGroup.cs" />
+    <Compile Include="Primitives\PrimitiveGroup.cs" />
+    <Compile Include="Versioned.cs" />
+    <Compile Include="Drawing\DrawingPassCollection.cs" />
     <Compile Include="GraphicsComponent.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="ObjectModel\Container.cs" />
     <Compile Include="ObjectModel\Decal.cs" />
-    <Compile Include="ParticleEffects\SoftParticleEffect.cs">
-      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ParticleEffects\SoftParticleEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SoftParticleEffect.fx</DependentUpon>
-    </Compile>
+    <Compile Include="ObjectModel\Model.cs" />
+    <Compile Include="ObjectModel\Surface.cs" />
+    <Compile Include="Services.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
-    <Compile Include="Effects\DepthEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DepthEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\EffectAnnotations.cs" />
-    <Compile Include="Effects\CustomMaterial.cs" />
-    <Compile Include="Effects\CustomEffect.cs" />
-    <Compile Include="Effects\EffectParts\MaterialEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\DetailTextureEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\DeferredLightsEffectPart.cs" />
-    <Compile Include="Effects\EffectSemantics.cs" />
-    <Compile Include="Effects\LinkedMaterial.cs" />
-    <Compile Include="Effects\ShadowEffect.cs">
-      <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\ShadowEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ShadowEffect.fx</DependentUpon>
-    </Compile>
+    <Compile Include="Materials\CustomMaterial.cs" />
+    <Compile Include="Materials\MaterialParts\DetailMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DeferredLightsMaterialPart.cs" />
+    <Compile Include="Materials\MaterialGroup.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="ObjectModel\Camera.cs" />
-    <Compile Include="ObjectModel\FindResult.cs" />
-    <Compile Include="ObjectModel\SceneQuery.cs" />
+    <Compile Include="FindResult.cs" />
+    <Compile Include="SceneQuery.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
     <Compile Include="ObjectModel\Fog.cs" />
-    <Compile Include="ObjectModel\DrawableSurfaceGeometry.cs" />
-    <Compile Include="ObjectModel\LightEngine.cs" />
+    <Compile Include="ObjectModel\SurfaceGeometry.cs" />
     <Compile Include="TextureUsage.cs" />
-    <Compile Include="Effects\AmbientLightEffect.cs">
-      <DependentUpon>AmbientLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\AmbientLightEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AmbientLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\DecalEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DecalEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\ClearEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ClearEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredAmbientLight.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredDirectionalLight.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredEffect.cs">
-      <DependentUpon>DeferredEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeferredEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredPointLight.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeferredPointLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredSpotLight.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeferredSpotLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\GraphicsBufferEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\DirectionalLightEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\EffectParts\EmissiveMapEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\SpecularMapEffectPart.cs" />
-    <Compile Include="Effects\PointLightEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PointLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\SkyBoxEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SkyBoxEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\SpotLightEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SpotLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Materials.cs" />
+    <Compile Include="Materials\MaterialParts\EmissiveMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\SpecularMaterialPart.cs" />
+    <Compile Include="Materials\Material.cs" />
     <Compile Include="ObjectModel\AmbientLight.cs" />
     <Compile Include="ObjectModel\AmbientLight.HiDef.cs">
       <DependentUpon>AmbientLight.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\DrawableModelPart.cs" />
+    <Compile Include="ObjectModel\ModelMesh.cs" />
     <Compile Include="ObjectModel\DirectionalLight.cs" />
     <Compile Include="ObjectModel\DirectionalLight.HiDef.cs">
       <DependentUpon>DirectionalLight.cs</DependentUpon>
@@ -248,40 +182,21 @@
     <Compile Include="ObjectModel\SpotLight.HiDef.cs">
       <DependentUpon>SpotLight.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\DisplayObject.cs" />
+    <Compile Include="ObjectModel\DrawingGroup.cs" />
     <Compile Include="ObjectModel\Drawable.cs" />
-    <Compile Include="ObjectModel\GraphicsContext.cs" />
-    <Compile Include="ObjectModel\GraphicsSettings.cs" />
-    <Compile Include="ObjectModel\GraphicsStatistics.cs" />
+    <Compile Include="Drawing\DrawingContext.cs" />
+    <Compile Include="Drawing\DrawingSettings.cs" />
+    <Compile Include="Drawing\DrawingStatistics.cs" />
     <Compile Include="ObjectModel\Interface.cs" />
     <Compile Include="ObjectModel\Light.cs" />
-    <Compile Include="ObjectModel\DrawableModel.cs" />
-    <Compile Include="ObjectModel\DrawableParticleEffect.cs" />
-    <Compile Include="ObjectModel\Scene.cs" />
+    <Compile Include="Scene.cs" />
     <Compile Include="ObjectModel\SkyBox.cs" />
-    <Compile Include="Effects\DirectionalLightEffect.cs">
-      <DependentUpon>DirectionalLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\PointLightEffect.cs">
-      <DependentUpon>PointLightEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\SpotLightEffect.cs">
-      <DependentUpon>SpotLightEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="Lights.cs" />
     <Compile Include="BlendStateReader.cs" />
-    <Compile Include="Effects\Deferred\ClearEffect.cs">
-      <DependentUpon>ClearEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredPointLight.cs">
-      <DependentUpon>DeferredPointLight.fx</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ObjectModel\Transformable.cs" />
     <Compile Include="Primitives\Centrum.cs" />
     <Compile Include="Primitives\Bezier.cs" />
-    <Compile Include="Primitives\Cube.cs" />
-    <Compile Include="Primitives\ModelBatchExtensions.cs" />
+    <Compile Include="Primitives\Box.cs" />
     <Compile Include="Primitives\Plane.cs" />
     <Compile Include="Primitives\Dome.cs" />
     <Compile Include="Primitives\Torus.cs" />
@@ -289,209 +204,59 @@
     <Compile Include="Primitives\Cylinder.cs" />
     <Compile Include="Primitives\Sphere.cs" />
     <Compile Include="Primitives\Quad.cs" />
-    <Compile Include="Effects\Deferred\GraphicsBufferEffect.cs">
-      <DependentUpon>GraphicsBufferEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\IDeferredLight.cs" />
-    <Compile Include="ObjectModel\ModelBatchExtensions.cs" />
+    <Compile Include="Materials\Deferred\IDeferredLight.cs" />
     <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenEffects\Adoption.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Adoption.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\AntiAliasEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AntiAliasEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\BlurEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ColorMatrixEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\DepthOfFieldEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DepthOfFieldEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\EmbossEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmbossEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\LuminanceEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LuminanceEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\NoiseEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NoiseEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\PixelateEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\RadialBlurEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ScaleEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ScaleEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ThresholdEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ThresholdEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ToneMappingEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ToneMappingEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\WiggleEffect.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WiggleEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Services.cs" />
-    <Compile Include="VertexPositionNormal.cs" />
-    <Compile Include="Effects\Deferred\DeferredAmbientLight.cs">
-      <DependentUpon>DeferredAmbientLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredDirectionalLight.cs">
-      <DependentUpon>DeferredDirectionalLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\DeferredSpotLight.cs">
-      <DependentUpon>DeferredSpotLight.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\Deferred\GraphicsBuffer.cs" />
-    <Compile Include="RenderTargetPool.cs" />
-    <Compile Include="Effects\EffectInterfaces.cs" />
-    <Compile Include="Effects\EffectParts\ColorMatrixEffectPart.cs" />
-    <Compile Include="ParticleEffects\ParticleEffectCollection.cs" />
+    <Compile Include="VertexTypes\VertexPositionNormal.cs" />
+    <Compile Include="Materials\Deferred\GraphicsBuffer.cs" />
+    <Compile Include="Drawing\RenderTargetPool.cs" />
+    <Compile Include="Materials\EffectInterfaces.cs" />
+    <Compile Include="Materials\MaterialParts\ColorMatrixMaterialPart.cs" />
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
-    <Compile Include="ParticleEffects\SpriteBatchExtensions.cs" />
     <Compile Include="QuaternionCamera.cs" />
-    <Compile Include="ScreenEffects\Adoption.cs">
-      <DependentUpon>Adoption.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\AntiAliasEffect.cs">
-      <DependentUpon>AntiAliasEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\BlurEffect.cs">
-      <DependentUpon>BlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ColorMatrixEffect.cs">
-      <DependentUpon>ColorMatrixEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\BasicScreenEffect.cs" />
-    <Compile Include="ScreenEffects\ChainedScreenEffect.cs" />
-    <Compile Include="ScreenEffects\AdoptionEffect.cs" />
-    <Compile Include="ScreenEffects\DepthOfFieldEffect.cs">
-      <DependentUpon>DepthOfFieldEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\LuminanceEffect.cs">
-      <DependentUpon>LuminanceEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\MultiPassScreenEffect.cs" />
-    <Compile Include="ScreenEffects\EmbossEffect.cs">
-      <DependentUpon>EmbossEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\NoiseEffect.cs">
-      <DependentUpon>NoiseEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\PixelateEffect.cs">
-      <DependentUpon>PixelateEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\RadialBlurEffect.cs">
-      <DependentUpon>RadialBlurEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ScaleEffect.cs">
-      <DependentUpon>ScaleEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\ToneMappingEffect.cs">
-      <DependentUpon>ToneMappingEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenEffects\WiggleEffect.cs">
-      <DependentUpon>WiggleEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="VertexPositionNormalTangentBinormalTexture.cs" />
-    <Compile Include="Effects\EffectParts\SpotLightEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\PointLightEffectPart.cs" />
-    <Compile Include="PrimitiveBatchExtensions.cs" />
+    <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
+    <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
+    <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
+    <Compile Include="Primitives\PrimitiveGroupExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
-    <Compile Include="PrimitiveBatch.cs" />
-    <Compile Include="Effects\EffectParts\AmbientLightEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\BasicTextureEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\SplatterTextureEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\NormalMapEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\ShadowMapEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\TextureTransformEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\OverlayTextureEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\FogEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\DualTextureEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\SkinTransformEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\VertexTransformEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\DirectionalLightEffectPart.cs" />
-    <Compile Include="Effects\EffectParts\BeginLightEffectPart.cs" />
-    <Compile Include="Effects\LinkedEffect.cs" />
-    <Compile Include="ScreenEffects\ScreenEffect.cs">
+    <Compile Include="Materials\MaterialParts\AmbientLightMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DiffuseMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\NormalMapMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\ShadowMapMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\TextureTransformMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\FogMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DualTextureMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\SkinnedMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\VertexTransformMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DirectionalLightMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\BeginLightMaterialPart.cs" />
+    <Compile Include="Materials\MaterialPart.cs" />
+    <Compile Include="PostEffects\PostEffect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ScreenEffects\ThresholdEffect.cs">
-      <DependentUpon>ThresholdEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="ScreenCamera.cs" />
-    <Compile Include="VertexPositionColorNormalTexture.cs" />
+    <Compile Include="VertexTypes\VertexPositionColorNormalTexture.cs" />
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="TextureList.cs" />
-    <Compile Include="Effects\DecalEffect.cs">
-      <DependentUpon>DecalEffect.fx</DependentUpon>
-    </Compile>
     <Compile Include="EffectExtensions.cs" />
-    <Compile Include="Effects\SkyBoxEffect.cs">
-      <DependentUpon>SkyBoxEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="ParticleEffects\ParticleBatch.cs" />
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="FreeCamera.cs" />
     <Compile Include="ModelViewerCamera.cs" />
     <Compile Include="TopDownEditorCamera.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="Heightmap.cs" />
-    <Compile Include="ModelBatch.cs" />
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="ModelSkeleton.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
-    <Compile Include="ParticleEffects\ParticleVertex.cs" />
-    <Compile Include="VertexPositionNormalDualTexture.cs" />
-    <Compile Include="Effects\DepthEffect.cs">
-      <DependentUpon>DepthEffect.fx</DependentUpon>
-    </Compile>
-    <Compile Include="Effects\ShadowMap.cs" />
-    <Compile Include="ObjectModel\DrawableSurfaceCollections.cs" />
-    <Compile Include="ObjectModel\DrawableSurface.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ObjectModel\DrawableSurfacePatch.cs" />
+    <Compile Include="VertexTypes\VertexPositionNormalDualTexture.cs" />
+    <Compile Include="Materials\ShadowMap.cs" />
+    <Compile Include="ObjectModel\SurfacePatchCollection.cs" />
+    <Compile Include="ObjectModel\SurfacePatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine\Nine.csproj">
@@ -510,140 +275,38 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
-    <None Include="Effects\AmbientLightEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>AmbientLightEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\ShadowEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ShadowEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\DecalEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DecalEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\ClearEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ClearEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\DeferredAmbientLight.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DeferredAmbientLight.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\DeferredDirectionalLight.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DeferredDirectionalLight.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\DeferredEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DeferredEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\DeferredLighting.fxh">
-      <Generator>EffectCustomTool</Generator>
-    </None>
-    <None Include="Effects\Deferred\DeferredPointLight.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DeferredPointLight.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\DeferredSpotLight.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DeferredSpotLight.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\Deferred\GraphicsBufferEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>GraphicsBufferEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\DepthEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DepthEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\DirectionalLightEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DirectionalLightEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\PointLightEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>PointLightEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\SkyBoxEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>SkyBoxEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Effects\SpotLightEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>SpotLightEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="HLSL\AlphaTestEffect.fx" />
-    <None Include="HLSL\BasicEffect.fx" />
-    <None Include="HLSL\Common.fxh" />
-    <None Include="HLSL\DualTextureEffect.fx" />
-    <None Include="HLSL\EnvironmentMapEffect.fx" />
-    <None Include="HLSL\Lighting.fxh" />
-    <None Include="HLSL\Macros.fxh" />
-    <None Include="HLSL\SkinnedEffect.fx" />
-    <None Include="HLSL\SpriteEffect.fx" />
-    <None Include="HLSL\Structures.fxh" />
+    <None Include="Shaders\AmbientLightEffect.fx" />
+    <None Include="Shaders\ShadowEffect.fx" />
+    <None Include="Shaders\DecalEffect.fx" />
+    <None Include="Shaders\ClearEffect.fx" />
+    <None Include="Shaders\DeferredAmbientLight.fx" />
+    <None Include="Shaders\DeferredDirectionalLight.fx" />
+    <None Include="Shaders\DeferredEffect.fx" />
+    <None Include="Shaders\DeferredLighting.fxh" />
+    <None Include="Shaders\DeferredPointLight.fx" />
+    <None Include="Shaders\DeferredSpotLight.fx" />
+    <None Include="Shaders\GraphicsBufferEffect.fx" />
+    <None Include="Shaders\DepthEffect.fx" />
+    <None Include="Shaders\DirectionalLightEffect.fx" />
+    <None Include="Shaders\PointLightEffect.fx" />
+    <None Include="Shaders\SkyBoxEffect.fx" />
+    <None Include="Shaders\SpotLightEffect.fx" />
     <None Include="Nine.snk" />
-    <None Include="ParticleEffects\SoftParticleEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>SoftParticleEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\Adoption.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>Adoption.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\AntiAliasEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>AntiAliasEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\BlurEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>BlurEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\ColorMatrixEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ColorMatrixEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\DepthOfFieldEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>DepthOfFieldEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\EmbossEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>EmbossEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\LuminanceEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>LuminanceEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\NoiseEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>NoiseEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\PixelateEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>PixelateEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\RadialBlurEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>RadialBlurEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\ScaleEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ScaleEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\ThresholdEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ThresholdEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\ToneMappingEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>ToneMappingEffect.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="ScreenEffects\WiggleEffect.fx">
-      <Generator>EffectCustomTool</Generator>
-      <LastGenOutput>WiggleEffect.Designer.cs</LastGenOutput>
-    </None>
+    <None Include="Shaders\SoftParticleEffect.fx" />
+    <None Include="Shaders\Adoption.fx" />
+    <None Include="Shaders\AntiAliasEffect.fx" />
+    <None Include="Shaders\BlurEffect.fx" />
+    <None Include="Shaders\ColorMatrixEffect.fx" />
+    <None Include="Shaders\DepthOfFieldEffect.fx" />
+    <None Include="Shaders\EmbossEffect.fx" />
+    <None Include="Shaders\LuminanceEffect.fx" />
+    <None Include="Shaders\NoiseEffect.fx" />
+    <None Include="Shaders\PixelateEffect.fx" />
+    <None Include="Shaders\RadialBlurEffect.fx" />
+    <None Include="Shaders\ScaleEffect.fx" />
+    <None Include="Shaders\ThresholdEffect.fx" />
+    <None Include="Shaders\ToneMappingEffect.fx" />
+    <None Include="Shaders\WiggleEffect.fx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

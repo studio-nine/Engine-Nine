@@ -38,7 +38,7 @@ namespace Nine
     }
 
     /// <summary>
-    /// Represents basic a space partition tree structure.
+    /// Represents a basic space partition tree structure.
     /// </summary>
     public abstract class SpacePartitionTree<T, TNode> : IEnumerable<TNode> where TNode : SpacePartitionTreeNode<T, TNode>
     {
@@ -296,7 +296,7 @@ namespace Nine
         public T Value;
 
         /// <summary>
-        /// Gets a value indicating whether the control contains child nodes.
+        /// Gets a value indicating whether this node contains any child nodes.
         /// </summary>
         public bool HasChildren { get; internal set; }
 

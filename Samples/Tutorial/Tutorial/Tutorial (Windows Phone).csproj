@@ -126,7 +126,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
     <Reference Include="mscorlib" />
     <Reference Include="Nine" />
-    <Reference Include="Nine.Game, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
+    <Reference Include="Nine.Game, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=MSIL" />
     <Reference Include="Nine.Graphics" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

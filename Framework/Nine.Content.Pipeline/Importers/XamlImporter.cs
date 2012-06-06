@@ -11,6 +11,9 @@ using System;
 using System.IO;
 using System.Xaml;
 using Microsoft.Xna.Framework.Content.Pipeline;
+using Nine.Content.Pipeline.Graphics;
+using Nine.Content.Pipeline.Xaml;
+using System.Collections;
 #endregion
 
 namespace Nine.Content.Pipeline.Importers
@@ -25,8 +28,14 @@ namespace Nine.Content.Pipeline.Importers
         {
             try
             {
-                filename = Path.GetFullPath(filename);
-                var result = XamlServices.Load(filename);
+                ContentProperties.IsContentBuild = true;
+
+                object result = null;
+                using (var xamlSerializer = new XamlSerializer())
+                {
+                    xamlSerializer.InstanceResolve += new Func<Type, object[], object>(OnResolveInstance);
+                    result = xamlSerializer.Load(Path.GetFullPath(filename));
+                }
 
                 ObjectGraph.TraverseProperties(result, input =>
                 {
@@ -60,6 +69,10 @@ namespace Nine.Content.Pipeline.Importers
                 catch { }
                 throw;
             }
+            finally
+            {
+                ContentProperties.IsContentBuild = false;
+            }
         }
 
         private void AddDependency(ContentImporterContext context, string directory, string filename)
@@ -86,6 +99,23 @@ namespace Nine.Content.Pipeline.Importers
             if (!dependenciesFound)
             {
                 context.Logger.LogWarning(null, null, "Content reference source asset not found for {0}", filename);
+            }
+        }
+
+        /// <summary>
+        /// Called when this xaml importer failed to create an instance of the specified type and arguments.
+        /// </summary>
+        protected virtual object OnResolveInstance(Type type, object[] arguments)
+        {
+            try
+            {
+                // Enable internal constructors.
+                return Activator.CreateInstance(type, true);
+            }
+            catch
+            {
+                // Enable constructors that takes a graphics device.
+                return Activator.CreateInstance(type, new object[] { PipelineGraphics.GraphicsDevice });
             }
         }
     }

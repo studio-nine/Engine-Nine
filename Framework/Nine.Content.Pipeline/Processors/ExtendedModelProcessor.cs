@@ -22,6 +22,7 @@ using Nine.Graphics;
 namespace Nine.Content.Pipeline.Processors
 {
     using Nine.Content.Pipeline.Graphics;
+    using Nine.Content.Pipeline.Xaml;
 
     /// <summary>
     /// Custom processor extends the builtin framework ModelProcessor class,
@@ -300,11 +301,10 @@ namespace Nine.Content.Pipeline.Processors
             {
                 foreach (ModelMeshPartContent part in mesh.MeshParts)
                 {
-                    part.Tag = new ModelMeshPartTagContent() 
-                    {
-                        Textures = part.Material.OpaqueData["AttachedTextures"] as Dictionary<TextureUsage, ContentReference<TextureContent>>,
-                        BoundingBox = new BoundingBox(),
-                    };
+                    part.Tag = new ModelMeshPartTag() { BoundingBox = new BoundingBox() };
+
+                    XamlSerializer.SerializationData.Add(new PropertyInstance(part.Tag, "Textures"),
+                        part.Material.OpaqueData["AttachedTextures"] as Dictionary<TextureUsage, ContentReference<TextureContent>>);
                 }
             }
         }

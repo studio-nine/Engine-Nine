@@ -12,14 +12,20 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Drawing;
 
 
 #endregion
 
 namespace Nine.Graphics.ObjectModel
 {
-    public partial class DirectionalLight : Light<IDirectionalLight>
+    public partial class DirectionalLight : Light<IDirectionalLight>, ISceneObject
     {
+        /// <summary>
+        /// Gets a the empty directional light
+        /// </summary>
+        public static readonly DirectionalLight Empty = new DirectionalLight(null) { DiffuseColor = Vector3.Zero, SpecularColor = Vector3.Zero, Direction = Vector3.Down };
+
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         public DirectionalLight(GraphicsDevice graphics)
@@ -31,7 +37,7 @@ namespace Nine.Graphics.ObjectModel
         
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
-        protected override bool GetShadowFrustum(GraphicsContext context,
+        protected override bool GetShadowFrustum(DrawingContext context,
                                                  HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
                                                  HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
                                                  out Matrix frustumMatrix)
@@ -96,17 +102,47 @@ namespace Nine.Graphics.ObjectModel
             light.SpecularColor = Vector3.Zero;
         }
 
-        public Vector3 Direction { get { return AbsoluteTransform.Forward; } }
+        public Vector3 Direction
+        {
+            get { return AbsoluteTransform.Forward; }
+            set { Transform = MatrixHelper.CreateWorld(Vector3.Zero, value); version++; }
+        }
 
         [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
+        public Vector3 SpecularColor
+        {
+            get { return specularColor; }
+            set { specularColor = value; version++; }
+        }
+        private Vector3 specularColor;
 
         [ContentSerializer(Optional = true)]
         public Vector3 DiffuseColor
         {
             get { return diffuseColor; }
-            set { diffuseColor = value; }
+            set { diffuseColor = value; version++; }
         }
         private Vector3 diffuseColor;
+
+        /// <summary>
+        /// Gets or sets the version of this light. This value increases each
+        /// time the color or direction property changed. It can be used to
+        /// detect whether this light has changed to a new state very quickly.
+        /// </summary>
+        public int Version
+        {
+            get { return version; }
+        }
+        internal int version;
+
+        void ISceneObject.OnAdded(DrawingContext context)
+        {
+            context.DirectionalLights.Add(this);
+        }
+
+        void ISceneObject.OnRemoved(DrawingContext context)
+        {
+            context.DirectionalLights.Remove(this);
+        }
     }
 }

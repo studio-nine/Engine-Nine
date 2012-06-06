@@ -18,28 +18,44 @@ namespace Nine.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing cylinders.
     /// </summary>
+    [ContentSerializable]
     public class Centrum : Primitive<VertexPositionNormal>
     {
         /// <summary>
-        /// Constructs a new cylinder primitive, using default settings.
+        /// Gets or sets the tessellation of this primitive.
         /// </summary>
-        public Centrum(GraphicsDevice graphicsDevice)
-            : this(graphicsDevice, 1, 1, 32)
+        public int Tessellation
         {
+            get { return tessellation; }
+            set
+            {
+                if (tessellation != value)
+                {
+                    if (value < 3)
+                        throw new ArgumentOutOfRangeException("tessellation");
+                    tessellation = value;
+                    Invalidate();
+                }
+            }
         }
-
+        private int tessellation = 32;
 
         /// <summary>
-        /// Constructs a new cylinder primitive,
-        /// with the specified size and tessellation level.
+        /// Constructs a new cylinder primitive, using default settings.
         /// </summary>
-        public Centrum(GraphicsDevice graphicsDevice,
-                                 float height, float radius, int tessellation)
+        public Centrum(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
-            if (tessellation < 3)
-                throw new ArgumentOutOfRangeException("tessellation");
 
-            AddVertex(Vector3.UnitZ * height, Vector3.UnitZ);
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        {
+            return primitive is Centrum && ((Centrum)primitive).tessellation == tessellation;
+        }
+
+        protected override void  OnBuild()
+        {
+            AddVertex(Vector3.UnitZ, Vector3.UnitZ);
             AddVertex(Vector3.Zero, -Vector3.UnitZ);
 
 
@@ -47,7 +63,7 @@ namespace Nine.Graphics.Primitives
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 
-                AddVertex(normal * radius, normal);
+                AddVertex(normal, normal);
                 
                 AddIndex(0);
                 AddIndex(2 + (i + 1) % tessellation);
@@ -57,9 +73,6 @@ namespace Nine.Graphics.Primitives
                 AddIndex(2 + i);
                 AddIndex(2 + (i + 1) % tessellation);
             }
-
-
-            InitializePrimitive(graphicsDevice);
         }
 
         /// <summary>

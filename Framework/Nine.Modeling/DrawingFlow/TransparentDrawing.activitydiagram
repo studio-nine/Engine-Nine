@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<activityRootModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm10="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" xmlns:dm11="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="2ea7af3c-bd5b-478c-9d2d-04dacc48947f" name="TransparentDrawing" linkedPackageId="611a421b-a2d9-40ba-a5ee-f225f172700c" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ActivityDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="a59d4c04-85c6-4b94-8876-230dd7cc67ad">
+      <profileInstance Id="4b482420-f212-4203-8324-27144e290abb" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="d52d9380-4aa6-48e7-8317-4609a46cb94b">
+      <profileInstance Id="bd0eec57-d4e0-426e-90ac-7035108b3faa" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <activityRootModelHasActivity>
+      <activity Id="dc6f618c-5ad5-4e3e-a10f-ab2234e97eb6" name="TransparentDrawing" isAbstract="false" isLeaf="false" isActiveClass="false" isReentrant="false" isReadOnly="false" isSingleExecution="false">
+        <elementDefinition Id="b8e3413d-78db-4310-b1f3-3000529601fb" />
+        <nodes>
+          <initialNode Id="d10068c2-2307-4a73-b42c-83154fec90b7" name="Initial1" isLeaf="false">
+            <elementDefinition Id="b84cf96d-ca74-42fd-8283-2af24ad50f6c" />
+            <flowNodeTargets>
+              <controlFlow Id="6138bf61-b842-4c9c-acfa-8d11d5f6bffd" isLeaf="false">
+                <opaqueActionMoniker Id="bf85c763-a4c7-440a-aa76-854c2f06a406" LastKnownName="Find all drawables in current view frustum" />
+                <elementDefinition Id="390dded2-dc5e-47a1-8a73-38d5b6e2ce5e" />
+              </controlFlow>
+            </flowNodeTargets>
+          </initialNode>
+          <activityFinalNode Id="fcc98a8c-1a26-474d-a568-17248892eb76" name="ActivityFinal1" isLeaf="false">
+            <elementDefinition Id="256500b7-c86c-4d39-8af7-4308007d8735" />
+          </activityFinalNode>
+          <opaqueAction Id="bf85c763-a4c7-440a-aa76-854c2f06a406" name="Find all drawables in current view frustum" isLeaf="false">
+            <elementDefinition Id="fffeba73-8de9-476f-8146-3ad40f706ae0" />
+            <flowNodeTargets>
+              <controlFlow Id="e3f7a975-4465-449e-9a24-35209ec2497d" isLeaf="false">
+                <opaqueActionMoniker Id="a435944a-67d7-499b-aa5e-d5dabb7ecce8" LastKnownName="Create opaque context and transparent context" />
+                <elementDefinition Id="af30143e-bcc2-40ef-880f-df1ba6c66347" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="f044a72d-83b6-4959-81b4-1acc4d9b3cf1" name="Group drawables by their batch type" isLeaf="false">
+            <elementDefinition Id="f1aadc0e-c5a4-4048-ade1-a8b19e55d134" />
+            <flowNodeTargets>
+              <controlFlow Id="8c0f7b51-b214-4c49-b085-6e57740dcd59" isLeaf="false">
+                <opaqueActionMoniker Id="228f4bb9-9bcf-4694-b7e9-18e771ddc545" LastKnownName="Sort drawables based on render state" />
+                <elementDefinition Id="3e322b3e-a1a5-4dc0-9af3-0d8214800226" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="228f4bb9-9bcf-4694-b7e9-18e771ddc545" name="Sort drawables based on render state" isLeaf="false">
+            <elementDefinition Id="faa4c427-3474-46bd-a3e0-292c8b7b824a" />
+            <flowNodeTargets>
+              <controlFlow Id="a14b6e2f-c64f-46ab-9ec2-ffbc634b7a3e" isLeaf="false">
+                <opaqueActionMoniker Id="08e93186-76ae-463c-9796-69ce5c19dcc0" LastKnownName="Sort drawables based on material rank." />
+                <elementDefinition Id="575dce0a-bbf8-4043-957b-3433718d4614" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="08e93186-76ae-463c-9796-69ce5c19dcc0" name="Sort drawables based on material rank." isLeaf="false">
+            <elementDefinition Id="8f28ff27-130e-487f-9edf-0ba7450bee76" />
+            <flowNodeTargets>
+              <controlFlow Id="ee9cd518-2413-4841-9352-b15bac76448a" isLeaf="false">
+                <opaqueActionMoniker Id="aee8544d-582b-4432-8eaf-3f1ac2b0d5bb" LastKnownName="Drawable ApplyMaterial" />
+                <elementDefinition Id="2b7844f2-cf14-4515-b74c-160afbffaab4" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="aee8544d-582b-4432-8eaf-3f1ac2b0d5bb" name="Drawable ApplyMaterial" isLeaf="false">
+            <elementDefinition Id="53defb19-fd8f-4d51-a675-0287758e85d7" />
+            <flowNodeTargets>
+              <controlFlow Id="2b96db18-5919-44a1-9c90-8f12ee9019b3" isLeaf="false">
+                <opaqueActionMoniker Id="de96e81c-9203-49f1-8ccd-579a2a6d8346" LastKnownName="Material.Begin" />
+                <elementDefinition Id="30cc0f2d-1cad-43d4-a864-6b2d21d94f3d" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="de96e81c-9203-49f1-8ccd-579a2a6d8346" name="Material.Begin" isLeaf="false">
+            <elementDefinition Id="8a350e6e-3d5a-4905-a8bb-050710c59aaa" />
+            <flowNodeTargets>
+              <controlFlow Id="9ef6010b-ff39-4dc2-9652-32b82c2d032a" isLeaf="false">
+                <opaqueActionMoniker Id="8c6d0290-858f-4122-b665-e96467261336" LastKnownName="Drawable.Draw" />
+                <elementDefinition Id="03e96fa5-79be-4a52-a351-71cb30d16467" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="7305aa2f-0eeb-42ea-844c-22e02a983c8f" name="Material.End" isLeaf="false">
+            <elementDefinition Id="3f63c380-bd3b-43c4-aced-a493a97bcc17" />
+            <flowNodeTargets>
+              <controlFlow Id="00d16518-b715-41db-b9e6-5472a505864f" isLeaf="false">
+                <activityFinalNodeMoniker Id="fcc98a8c-1a26-474d-a568-17248892eb76" LastKnownName="ActivityFinal1" />
+                <elementDefinition Id="15d49bc5-864d-465b-8576-b78a1856f142" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="8c6d0290-858f-4122-b665-e96467261336" name="Drawable.Draw" isLeaf="false">
+            <elementDefinition Id="bc0cb6e3-89e4-4bd3-a550-bd5e9166f202" />
+            <flowNodeTargets>
+              <controlFlow Id="739d53a5-f943-478e-84cc-5609f8733f46" isLeaf="false">
+                <opaqueActionMoniker Id="7305aa2f-0eeb-42ea-844c-22e02a983c8f" LastKnownName="Material.End" />
+                <elementDefinition Id="2e09be8b-31ed-460f-911f-311592a7c8f2" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+          <opaqueAction Id="a435944a-67d7-499b-aa5e-d5dabb7ecce8" name="Create opaque context and transparent context" isLeaf="false">
+            <elementDefinition Id="33295c50-1ec7-4d68-8ab0-d663cc5b071f" />
+            <flowNodeTargets>
+              <controlFlow Id="6ce53c0d-4e72-401f-8a71-e6724d22866b" isLeaf="false">
+                <opaqueActionMoniker Id="f044a72d-83b6-4959-81b4-1acc4d9b3cf1" LastKnownName="Group drawables by their batch type" />
+                <elementDefinition Id="ccf9c153-49b8-41a7-bf4f-10aec9b9f9e1" />
+              </controlFlow>
+            </flowNodeTargets>
+          </opaqueAction>
+        </nodes>
+      </activity>
+    </activityRootModelHasActivity>
+  </packagedElements>
+  <package Id="611a421b-a2d9-40ba-a5ee-f225f172700c" name="ModelingProject1">
+    <elementDefinition Id="39101e56-597e-412a-a550-ef10eaa77a78" />
+  </package>
+</activityRootModel>

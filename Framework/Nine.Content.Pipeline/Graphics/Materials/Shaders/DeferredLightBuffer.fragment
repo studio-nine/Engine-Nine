@@ -1,0 +1,6 @@
+float SpecularPower = 16;
+
+void PixelShader(float3 normal, out float4 color)
+{
+    color = float4(normal * 0.5 + 0.5, SpecularPower / 255);
+}

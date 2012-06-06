@@ -55,6 +55,12 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.AudioImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.EffectImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.FBXImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.TextureImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
@@ -77,19 +83,13 @@
     </Compile>
     <Compile Include="Content\DefaultContentProcessorTest.cs" />
     <Compile Include="ContentBuilder.cs" />
+    <Compile Include="Content\PipelineBuilderTest.cs" />
     <Compile Include="ErrorLogger.cs" />
     <Compile Include="ExpressionTest.cs" />
     <Compile Include="ContentPipelineTest.cs" />
     <Compile Include="GraphicsTest.cs" />
-    <Compile Include="Graphics\ObjectModel\DisplayObjectTest.cs" />
-    <Compile Include="Graphics\ParticleEffectTest.cs" />
-    <Compile Include="Graphics\Effects\TerrainMaterialTest.cs" />
-    <Compile Include="Graphics\Effects\ModelMaterialTest.cs" />
-    <Compile Include="Graphics\Effects\MaterialTest.cs" />
-    <Compile Include="Graphics\Effects\LinkedMaterialTest.cs" />
-    <Compile Include="Graphics\ObjectModel\DrawableModelTest.cs" />
-    <Compile Include="Graphics\ObjectModel\SceneTest.cs" />
-    <Compile Include="Graphics\ObjectModel\RendererTest.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupTest.cs" />
+    <Compile Include="Graphics\ObjectModel\SurfaceTest.cs" />
     <Compile Include="Navigation\GraphTest.cs" />
     <Compile Include="Navigation\Steering\WallAvoidanceTest.cs" />
     <Compile Include="Navigation\Steering\SteerableTest.cs" />
@@ -97,9 +97,7 @@
     <Compile Include="UniformGridTest.cs" />
     <Compile Include="GridObjectManagerTest.cs" />
     <Compile Include="QuadTreeTest.cs" />
-    <Compile Include="Graphics\BoneAnimationTest.cs" />
     <Compile Include="TestGame.cs" />
-    <Compile Include="Graphics\ObjectModel\DrawableSurfaceTest.cs" />
     <Compile Include="InputTest.cs" />
     <Compile Include="NotificationCollectionTest.cs" />
     <Compile Include="Animations\KeyframeAnimationTest.cs" />
@@ -128,6 +126,14 @@
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
       <Name>Nine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\TestWorld.xaml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Graphics\Materials\MaterialPart1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

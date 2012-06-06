@@ -15,31 +15,48 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics.Primitives
 {
+    [ContentSerializable]
     public class Sphere : Primitive<VertexPositionNormal>
-    {   
+    {
+        /// <summary>
+        /// Gets or sets the tessellation of this primitive.
+        /// </summary>
+        public int Tessellation
+        {
+            get { return tessellation; }
+            set
+            {
+                if (tessellation != value)
+                {
+                    if (value < 3)
+                        throw new ArgumentOutOfRangeException("tessellation");
+                    tessellation = value;
+                    Invalidate();
+                }
+            }
+        }
+        private int tessellation = 16;
+
         /// <summary>
         /// Constructs a new sphere primitive, using default settings.
         /// </summary>
-        public Sphere(GraphicsDevice graphicsDevice)
-            : this(graphicsDevice, 1, 16)
+        public Sphere(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
+
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        {
+            return primitive is Sphere && ((Sphere)primitive).tessellation == tessellation;
         }
         
-        /// <summary>
-        /// Constructs a new sphere primitive,
-        /// with the specified size and tessellation level.
-        /// </summary>
-        public Sphere(GraphicsDevice graphicsDevice,
-                               float radius, int tessellation)
+        protected override void  OnBuild()
         {
-            if (tessellation < 3)
-                throw new ArgumentOutOfRangeException("tessellation");
-
             int verticalSegments = tessellation;
             int horizontalSegments = tessellation * 2;
 
             // Start with a single vertex at the bottom of the sphere.
-            AddVertex(-Vector3.UnitZ * radius, -Vector3.UnitZ);
+            AddVertex(-Vector3.UnitZ, -Vector3.UnitZ);
 
             // Create rings of vertices at progressively higher latitudes.
             for (int i = 0; i < verticalSegments - 1; i++)
@@ -60,12 +77,12 @@ namespace Nine.Graphics.Primitives
 
                     Vector3 normal = new Vector3(dx, dy, dz);
 
-                    AddVertex(normal * radius, normal);
+                    AddVertex(normal, normal);
                 }
             }
 
             // Finish with a single vertex at the top of the sphere.
-            AddVertex(Vector3.UnitZ * radius, Vector3.UnitZ);
+            AddVertex(Vector3.UnitZ, Vector3.UnitZ);
 
             // Create a fan connecting the bottom vertex to the bottom latitude ring.
             for (int i = 0; i < horizontalSegments; i++)
@@ -100,8 +117,6 @@ namespace Nine.Graphics.Primitives
                 AddIndex(CurrentVertex - 2 - i);
                 AddIndex(CurrentVertex - 2 - (i + 1) % horizontalSegments);
             }
-
-            InitializePrimitive(graphicsDevice);
         }
 
         private void AddVertex(Vector3 position, Vector3 normal)

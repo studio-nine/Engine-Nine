@@ -29,48 +29,61 @@ namespace Nine.Graphics.Primitives
     /// graphics programmers have come to think of it as a standard geometric
     /// primitive, right up there with cubes and spheres!
     /// </summary>
+    [ContentSerializable]
     public class Teapot : Bezier
     {
         /// <summary>
-        /// Constructs a new teapot primitive, using default settings.
+        /// Gets or sets the tessellation of this primitive.
         /// </summary>
-        public Teapot(GraphicsDevice graphicsDevice)
-            : this(graphicsDevice, 1, 8)
+        public int Tessellation
         {
+            get { return tessellation; }
+            set
+            {
+                if (tessellation != value)
+                {
+                    if (value < 1)
+                        throw new ArgumentOutOfRangeException("tessellation");
+                    tessellation = value;
+                    Invalidate();
+                }
+            }
         }
-
+        private int tessellation = 8;
 
         /// <summary>
-        /// Constructs a new teapot primitive,
-        /// with the specified size and tessellation level.
+        /// Constructs a new teapot primitive, using default settings.
         /// </summary>
-        public Teapot(GraphicsDevice graphicsDevice,
-                               float size, int tessellation)
+        public Teapot(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
-            if (tessellation < 1)
-                throw new ArgumentOutOfRangeException("tessellation");
 
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        {
+            return primitive is Teapot && ((Teapot)primitive).tessellation == tessellation;
+        }
+        
+        protected override void OnBuild()
+        {
             foreach (TeapotPatch patch in TeapotPatches)
             {
                 // Because the teapot is symmetrical from left to right, we only store
                 // data for one side, then tessellate each patch twice, mirroring in X.
-                TessellatePatch(patch, tessellation, new Vector3(size, size, size));
-                TessellatePatch(patch, tessellation, new Vector3(-size, size, size));
+                TessellatePatch(patch, tessellation, new Vector3(1, 1, 1));
+                TessellatePatch(patch, tessellation, new Vector3(-1, 1, 1));
 
                 if (patch.MirrorZ)
                 {
                     // Some parts of the teapot (the body, lid, and rim, but not the
                     // handle or spout) are also symmetrical from front to back, so
                     // we tessellate them four times, mirroring in Z as well as X.
-                    TessellatePatch(patch, tessellation, new Vector3(size, size, -size));
-                    TessellatePatch(patch, tessellation, new Vector3(-size, size, -size));
+                    TessellatePatch(patch, tessellation, new Vector3(1, 1, -1));
+                    TessellatePatch(patch, tessellation, new Vector3(-1, 1, -1));
                 }
             }
-
-            InitializePrimitive(graphicsDevice);
         }
-
-
+        
         /// <summary>
         /// Tessellates the specified bezier patch.
         /// </summary>

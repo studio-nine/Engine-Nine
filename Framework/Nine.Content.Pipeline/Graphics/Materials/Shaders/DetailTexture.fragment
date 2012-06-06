@@ -1,0 +1,16 @@
+float2 DetailTextureScale = 1;
+texture2D Texture : DETAILTEXTURE;
+sampler BasicSampler = sampler_state
+{
+    Texture = (Texture);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+void PixelShader(float2 uv, inout float4 diffuse)
+{
+    diffuse *= tex2D(BasicSampler, uv * DetailTextureScale) * 2;
+}

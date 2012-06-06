@@ -1,0 +1,1 @@
+﻿sampler BasicSampler : register(s0);

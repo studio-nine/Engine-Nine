@@ -26,6 +26,7 @@
 
                 ExcludedTypes.Add("Microsoft.Xna.Framework.Graphics.EffectTechnique");
                 
+                PrimitiveTypes.Add(typeof(char), "Char");
                 PrimitiveTypes.Add(typeof(bool), "Boolean");
                 PrimitiveTypes.Add(typeof(int), "Int32");
                 PrimitiveTypes.Add(typeof(long), "Int64");
@@ -79,12 +80,15 @@
 
         IEnumerable<MemberInfo> FindContentSerializableMembers(Type type)
         {
-            return (from field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            var result = (from field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                     where IsContentSerializable(field)
                     select field).Cast<MemberInfo>().Concat(
                         from publicProperty in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                         where IsContentSerializable(publicProperty)
-                        select publicProperty);
+                        select publicProperty).ToArray();
+            
+            // Make sure attached properties are the last to serialize
+            return result.Where(m => m.Name != "AttachedProperties").Concat(result.Where(m => m.Name == "AttachedProperties"));
         }
 
         bool HasContentSerializableType(Type type)
@@ -120,7 +124,7 @@
                 return true;
             if (type.IsArray)
                 return IsContentSerializable(type.GetElementType());
-            return IsKnownType(type) || MemberHasContentSerializerAttribute(type);
+            return IsKnownType(type) || MemberHasContentSerializerAttribute(type) || HasContentSerializableAttribute(type);
         }
 
         bool IsContentSerializable(FieldInfo field)
@@ -138,6 +142,8 @@
                 return false;
             if (HasContentSerializerAttribute(property))
                 return true;
+            if (property.GetIndexParameters().Length > 0)
+                return false;
             if (property.GetGetMethod() != null)
             {
                 if (property.GetSetMethod() != null)
@@ -162,7 +168,7 @@
 
         bool HasContentSerializerAttribute(MemberInfo member)
         {
-            return member.IsDefined(typeof(ContentSerializerAttribute), false);
+            return member.IsDefined(typeof(ContentSerializerAttribute), true);
         }
 
         bool HasContentSerializerIgnoreAttribute(MemberInfo member)
@@ -573,7 +579,7 @@
                 yield return t;
             }
 
-            yield return typeof(BasicEffect);
+            //yield return typeof(BasicEffect);
             yield return typeof(SkinnedEffect);
             yield return typeof(EnvironmentMapEffect);
             yield return typeof(DualTextureEffect);

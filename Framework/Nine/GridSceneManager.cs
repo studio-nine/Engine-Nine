@@ -18,11 +18,11 @@ namespace Nine
     /// <summary>
     /// Manages a collection of objects using grids.
     /// </summary>
-    public class GridSceneManager<T> : UniformGrid, ISceneManager<T>
+    public class GridSceneManager : UniformGrid, ISceneManager
     {
-        private GridSceneManagerEntry<T>[] Data;
+        private GridSceneManagerEntry<ISpatialQueryable>[] Data;
         private float rayPickPrecision = float.MaxValue;
-        private T obj;
+        private ISpatialQueryable obj;
         private Ray ray;
         private BoundingBox box;
         private Predicate<Point> add;
@@ -64,17 +64,17 @@ namespace Nine
             findRay = new Predicate<Point>(FindRay);
         }
 
-        public void Add(T obj, Vector3 position, float radius)
+        public void Add(ISpatialQueryable obj, Vector3 position, float radius)
         {
             Add(obj, new BoundingSphere(position, radius));
         }
 
-        public void Add(T obj, BoundingSphere bounds)
+        public void Add(ISpatialQueryable obj, BoundingSphere bounds)
         {
             Add(obj, BoundingBox.CreateFromSphere(bounds));
         }
 
-        public void Add(T obj, BoundingBox box)
+        public void Add(ISpatialQueryable obj, BoundingBox box)
         {
             if (obj == null)
                 throw new ArgumentNullException("obj");
@@ -82,7 +82,7 @@ namespace Nine
             this.obj = obj;
             this.box = box;
             Traverse(box, add);
-            this.obj = default(T);
+            this.obj = default(ISpatialQueryable);
             Count++;
         }
 
@@ -91,14 +91,14 @@ namespace Nine
             var index = grid.X + SegmentCountX * grid.Y;
 
             if (Data == null)
-                Data = new GridSceneManagerEntry<T>[SegmentCountX * SegmentCountY];
+                Data = new GridSceneManagerEntry<ISpatialQueryable>[SegmentCountX * SegmentCountY];
             if (Data[index] == null)
-                Data[index] = new GridSceneManagerEntry<T>();
+                Data[index] = new GridSceneManagerEntry<ISpatialQueryable>();
 
             var entry = Data[index];
             if (entry.Objects == null)
             {
-                entry.Objects = new List<T>();
+                entry.Objects = new List<ISpatialQueryable>();
                 entry.ObjectBounds = new List<BoundingBox>();
 
                 BoundingRectangle bounds = GetSegmentBounds(grid.X, grid.Y);
@@ -149,7 +149,7 @@ namespace Nine
         }
 
         #region ISpatialQuery Members
-        public void FindAll(ref Ray ray, ICollection<T> result)
+        public void FindAll(ref Ray ray, ICollection<ISpatialQueryable> result)
         {
             this.ray = ray;
             Traverse(ray, rayPickPrecision, findRay);
@@ -173,7 +173,7 @@ namespace Nine
             return true;
         }
 
-        public void FindAll(ref BoundingBox boundingBox, ICollection<T> result)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<ISpatialQueryable> result)
         {
             this.box = boundingBox;
             Traverse(boundingBox, findBoundingBox);
@@ -197,14 +197,14 @@ namespace Nine
             return true;
         }
 
-        public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<ISpatialQueryable> result)
         {
             BoundingBox box = new BoundingBox();
             BoundingBox.CreateFromSphere(ref boundingSphere, out box);
             FindAll(ref box, result);
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
         {
             for (int x = 0; x < SegmentCountX; x++)
             {
@@ -227,8 +227,8 @@ namespace Nine
             FlushFindResult(result);
         }
 
-        static HashSet<T> HashSet = new HashSet<T>();
-        static void FlushFindResult(ICollection<T> result)
+        static HashSet<ISpatialQueryable> HashSet = new HashSet<ISpatialQueryable>();
+        static void FlushFindResult(ICollection<ISpatialQueryable> result)
         {
             foreach (var value in HashSet)
                 result.Add(value);
@@ -236,20 +236,20 @@ namespace Nine
         }
         #endregion
 
-        #region ICollection<T> Members
+        #region ICollection<ISpatialQueryable> Members
 
         /// <summary>
         /// This method will always throw an InvalidOperationException().
         /// Use the other overload instead.
         /// </summary>
-        void ICollection<T>.Add(T item)
+        void ICollection<ISpatialQueryable>.Add(ISpatialQueryable item)
         {
             throw new InvalidOperationException();
         }
 
-        public bool Contains(T item)
+        public bool Contains(ISpatialQueryable item)
         {
-            foreach (T o in this)
+            foreach (ISpatialQueryable o in this)
             {
                 if (o.Equals(item))
                     return true;
@@ -258,9 +258,9 @@ namespace Nine
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(ISpatialQueryable[] array, int arrayIndex)
         {
-            foreach (T o in this)
+            foreach (ISpatialQueryable o in this)
             {
                 array[arrayIndex++] = o;
             }
@@ -268,12 +268,12 @@ namespace Nine
 
         public int Count { get; private set; }
 
-        bool ICollection<T>.IsReadOnly
+        bool ICollection<ISpatialQueryable>.IsReadOnly
         {
             get { return false; }
         }
 
-        public bool Remove(T item)
+        public bool Remove(ISpatialQueryable item)
         {
             if (item == null)
                 return false;
@@ -310,14 +310,14 @@ namespace Nine
 
         #endregion
 
-        #region IEnumerable<T> Members
-        public IEnumerator<T> GetEnumerator()
+        #region IEnumerable<ISpatialQueryable> Members
+        public IEnumerator<ISpatialQueryable> GetEnumerator()
         {
             HashSet.Clear();
             if (Data != null)
-                foreach (GridSceneManagerEntry<T> entry in Data)
+                foreach (GridSceneManagerEntry<ISpatialQueryable> entry in Data)
                     if (entry.Objects != null)
-                        foreach (T e in entry.Objects)
+                        foreach (ISpatialQueryable e in entry.Objects)
                             HashSet.Add(e);
             return HashSet.GetEnumerator();
         }
@@ -334,10 +334,10 @@ namespace Nine
         #endregion
     }
 
-    class GridSceneManagerEntry<T>
+    class GridSceneManagerEntry<ISpatialQueryable>
     {
         public BoundingBox Bounds;
-        public List<T> Objects;
+        public List<ISpatialQueryable> Objects;
         public List<BoundingBox> ObjectBounds;
     }
 }

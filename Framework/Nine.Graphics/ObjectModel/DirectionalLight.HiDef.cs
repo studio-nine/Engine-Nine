@@ -11,13 +11,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 
 #if !WINDOWS_PHONE
-using Nine.Graphics.Effects;
-using Nine.Graphics.Effects.Deferred;
+using Nine.Graphics.Materials;
+using Nine.Graphics.Materials.Deferred;
 #endif
 #endregion
 
 namespace Nine.Graphics.ObjectModel
-{
+{/*
     public partial class DirectionalLight : IDeferredLight
     {
         DirectionalLightEffect multiPasseffect;
@@ -53,5 +53,5 @@ namespace Nine.Graphics.ObjectModel
         {
             get { return ((IDeferredLight)GetDeferredLight()).VertexBuffer; }
         }
-    }
+    }*/
 }

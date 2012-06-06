@@ -21,9 +21,9 @@ namespace Nine
     /// Manages a collection of objects using quad tree.
     /// </summary>
     [DebuggerDisplay("Count = {Count}")]
-    public class OctreeSceneManager<T> : ISceneManager<T> where T : ISpatialQueryable
+    public class OctreeSceneManager : ISceneManager
     {
-        internal Octree<List<T>> Tree;
+        internal Octree<List<ISpatialQueryable>> Tree;
 
         /// <summary>
         /// Gets the bounds of this OctreeSceneManager.
@@ -49,41 +49,41 @@ namespace Nine
         /// </summary>
         public OctreeSceneManager(BoundingBox bounds, int maxDepth)
         {
-            Tree = new Octree<List<T>>(bounds, maxDepth);
+            Tree = new Octree<List<ISpatialQueryable>>(bounds, maxDepth);
 
-            add = new Func<OctreeNode<List<T>>, TraverseOptions>(Add);
-            findAllRay = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllRay);
-            findAllBoundingBox = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllBoundingBox);
-            findAllBoundingSphere = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllBoundingSphere);
-            findAllBoundingFrustum = new Func<OctreeNode<List<T>>, TraverseOptions>(FindAllBoundingFrustum);
+            add = new Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions>(Add);
+            findAllRay = new Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions>(FindAllRay);
+            findAllBoundingBox = new Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions>(FindAllBoundingBox);
+            findAllBoundingSphere = new Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions>(FindAllBoundingSphere);
+            findAllBoundingFrustum = new Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions>(FindAllBoundingFrustum);
             boundingBoxChanged = new EventHandler<EventArgs>(BoundingBoxChanged);
         }
 
         private bool needResize;
         private bool addedToNode;
-        private T item;
-        private Func<OctreeNode<List<T>>, TraverseOptions> add;
+        private ISpatialQueryable item;
+        private Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions> add;
 
-        private ICollection<T> result;
+        private ICollection<ISpatialQueryable> result;
         private Ray ray;
         private BoundingBox boundingBox;
         private BoundingFrustum boundingFrustum;
         private BoundingSphere boundingSphere;
-        private Func<OctreeNode<List<T>>, TraverseOptions> findAllRay;
-        private Func<OctreeNode<List<T>>, TraverseOptions> findAllBoundingBox;
-        private Func<OctreeNode<List<T>>, TraverseOptions> findAllBoundingSphere;
-        private Func<OctreeNode<List<T>>, TraverseOptions> findAllBoundingFrustum;
+        private Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions> findAllRay;
+        private Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions> findAllBoundingBox;
+        private Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions> findAllBoundingSphere;
+        private Func<OctreeNode<List<ISpatialQueryable>>, TraverseOptions> findAllBoundingFrustum;
         private EventHandler<EventArgs> boundingBoxChanged;
         
         #region ICollection
-        public void Add(T item)
+        public void Add(ISpatialQueryable item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
             if (item.SpatialData != null)
                 throw new InvalidOperationException(Strings.AlreadyAddedToASceneManager);
 
-            item.SpatialData = new OctreeSceneManagerSpatialData<T>();
+            item.SpatialData = new OctreeSceneManagerSpatialData<ISpatialQueryable>();
 
             AddWithResize(Tree.Root, item);
 
@@ -92,7 +92,7 @@ namespace Nine
             Count++;
         }
 
-        private void AddWithResize(OctreeNode<List<T>> treeNode, T item)
+        private void AddWithResize(OctreeNode<List<ISpatialQueryable>> treeNode, ISpatialQueryable item)
         {
             needResize = false;
             Add(treeNode, item);
@@ -119,13 +119,13 @@ namespace Nine
             }
         }
         
-        private void Add(OctreeNode<List<T>> treeNode, T item)
+        private void Add(OctreeNode<List<ISpatialQueryable>> treeNode, ISpatialQueryable item)
         {
             addedToNode = false;
 
             this.item = item;
             Tree.Traverse(treeNode, add);
-            this.item = default(T);
+            this.item = default(ISpatialQueryable);
 
             if (!addedToNode && !needResize)
             {
@@ -134,7 +134,7 @@ namespace Nine
             }
         }
 
-        private TraverseOptions Add(OctreeNode<List<T>> node)
+        private TraverseOptions Add(OctreeNode<List<ISpatialQueryable>> node)
         {
             ContainmentType containment = node.Bounds.Contains(item.BoundingBox);
 
@@ -162,20 +162,20 @@ namespace Nine
             return Tree.Expand(node) ? TraverseOptions.Continue : TraverseOptions.Skip;
         }
 
-        private void AddToNode(T item, OctreeNode<List<T>> node)
+        private void AddToNode(ISpatialQueryable item, OctreeNode<List<ISpatialQueryable>> node)
         {
             if (node.Value == null)
-                node.Value = new List<T>();
-            var data = (OctreeSceneManagerSpatialData<T>)item.SpatialData;
+                node.Value = new List<ISpatialQueryable>();
+            var data = (OctreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
             data.Tree = Tree;
             data.Node = node;
             node.Value.Add(item);
             addedToNode = true;
         }
 
-        public bool Remove(T item)
+        public bool Remove(ISpatialQueryable item)
         {
-            OctreeSceneManagerSpatialData<T> data = item.SpatialData as OctreeSceneManagerSpatialData<T>;
+            OctreeSceneManagerSpatialData<ISpatialQueryable> data = item.SpatialData as OctreeSceneManagerSpatialData<ISpatialQueryable>;
             if (data == null || data.Tree != Tree)
                 return false;
 
@@ -204,12 +204,12 @@ namespace Nine
 
         private void BoundingBoxChanged(object sender, EventArgs e)
         {
-            T item = (T)sender;
+            ISpatialQueryable item = (ISpatialQueryable)sender;
 
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            var data = (OctreeSceneManagerSpatialData<T>)item.SpatialData;
+            var data = (OctreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
             if (data == null)
                 throw new InvalidOperationException();
 
@@ -251,19 +251,19 @@ namespace Nine
 
         private void Resize(BoundingBox boundingBox)
         {
-            var items = new T[Count];
+            var items = new ISpatialQueryable[Count];
 
             CopyTo(items, 0);
             Clear();
 
-            Tree = new Octree<List<T>>(boundingBox, MaxDepth);
+            Tree = new Octree<List<ISpatialQueryable>>(boundingBox, MaxDepth);
             foreach (var item in items)
             {
                 Add(item);
             }
         }
 
-        public bool Contains(T item)
+        public bool Contains(ISpatialQueryable item)
         {
             foreach (var val in this)
             {
@@ -273,7 +273,7 @@ namespace Nine
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(ISpatialQueryable[] array, int arrayIndex)
         {
             foreach (var val in this)
             {
@@ -284,7 +284,7 @@ namespace Nine
         public int Count { get; private set; }
         public bool IsReadOnly { get { return false; } }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<ISpatialQueryable> GetEnumerator()
         {
             foreach (var node in Tree)
             {
@@ -303,7 +303,7 @@ namespace Nine
         #endregion
 
         #region ISpatialQuery
-        public void FindAll(ref Ray ray, ICollection<T> result)
+        public void FindAll(ref Ray ray, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.ray = ray;
@@ -311,7 +311,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllRay(OctreeNode<List<T>> node)
+        private TraverseOptions FindAllRay(OctreeNode<List<ISpatialQueryable>> node)
         {
             float? intersection;
             bool skip = (node != Tree.Root);
@@ -343,7 +343,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingBox boundingBox, ICollection<T> result)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingBox = boundingBox;
@@ -351,7 +351,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllBoundingBox(OctreeNode<List<T>> node)
+        private TraverseOptions FindAllBoundingBox(OctreeNode<List<ISpatialQueryable>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
             boundingBox.Contains(ref node.boundingBox, out nodeContainment);
@@ -380,7 +380,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingSphere = boundingSphere;
@@ -388,7 +388,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllBoundingSphere(OctreeNode<List<T>> node)
+        private TraverseOptions FindAllBoundingSphere(OctreeNode<List<ISpatialQueryable>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
             boundingSphere.Contains(ref node.boundingBox, out nodeContainment);
@@ -417,7 +417,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingFrustum = boundingFrustum;
@@ -425,7 +425,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllBoundingFrustum(OctreeNode<List<T>> node)
+        private TraverseOptions FindAllBoundingFrustum(OctreeNode<List<ISpatialQueryable>> node)
         {
             var nodeContainment = ContainmentType.Intersects;
             boundingFrustum.Contains(ref node.boundingBox, out nodeContainment);
@@ -454,7 +454,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        private void AddAllDesedents(OctreeNode<List<T>> node)
+        private void AddAllDesedents(OctreeNode<List<ISpatialQueryable>> node)
         {
             DesedentsStack.Push(node);
             
@@ -475,16 +475,16 @@ namespace Nine
                     DesedentsStack.Push(children[i]);
             }
         }        
-        static Stack<OctreeNode<List<T>>> DesedentsStack = new Stack<OctreeNode<List<T>>>();
+        static Stack<OctreeNode<List<ISpatialQueryable>>> DesedentsStack = new Stack<OctreeNode<List<ISpatialQueryable>>>();
         #endregion
     }
     #endregion
 
     #region OctreeSceneManagerSpatialData
-    class OctreeSceneManagerSpatialData<T>
+    class OctreeSceneManagerSpatialData<ISpatialQueryable>
     {
-        public Octree<List<T>> Tree;
-        public OctreeNode<List<T>> Node;
+        public Octree<List<ISpatialQueryable>> Tree;
+        public OctreeNode<List<ISpatialQueryable>> Node;
     }
     #endregion
 }

@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
 
 namespace Nine.Navigation.Steering.Test
-{
+{/*
     [TestClass()]
     public class WallAvoidanceTest
     {
@@ -92,5 +92,5 @@ namespace Nine.Navigation.Steering.Test
             Assert.IsTrue(hasFullyStopped, string.Format("The entity didn't stop after {0} seconds", frames * ElapsedTime.TotalSeconds));
             Assert.IsTrue((steerer.Position - to).Length() <= steerer.BoundingRadius, "The entity isn't close enough to the expected target. ");
         }
-    }
+    }*/
 }

@@ -1,0 +1,11 @@
+float4x4 World : WORLD;
+float4x4 WorldViewProjection : WORLDVIEWPROJECTION;
+float4x4 WorldInverseTranspose : WORLDINVERSETRANSPOSE;
+
+void VertexShader(float4 position:POSITION0, out float4 positionProjection:POSITION0, inout float3 normal:NORMAL0, out float4 positionWorld, out float4x3 world)
+{
+    positionWorld = mul(position, World);
+    positionProjection = mul(position, WorldViewProjection);
+    normal = mul(normal, WorldInverseTranspose);
+    world = World;
+}

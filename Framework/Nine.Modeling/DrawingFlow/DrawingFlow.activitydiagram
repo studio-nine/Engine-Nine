@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<activityRootModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm10="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner" xmlns:dm11="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm12="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner" dslVersion="1.0.0.0" Id="7719ef52-7e69-444c-96d9-a6583f56c07e" name="DrawingFlow" linkedPackageId="dd34a790-4ef4-4fc8-9391-dd4448d1b0b6" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ActivityDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="dcac1a1c-c552-4e04-a48d-dbe946118cbb">
+      <profileInstance Id="3c86e940-b9b6-4b1e-adc1-a9ec2d84bb5f" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="0a2f286b-54e0-4d28-8961-5ee30495e0c9">
+      <profileInstance Id="8438727b-ad15-4e3d-9fa3-6f090ac2ff96" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <activityRootModelHasActivity>
+      <activity Id="914d8104-ca20-4ab5-aaf7-3cbc3a0eac8c" name="DrawingFlow" isAbstract="false" isLeaf="false" isActiveClass="false" isReentrant="false" isReadOnly="false" isSingleExecution="false">
+        <elementDefinition Id="889b2add-5397-481d-8b53-92ef4f763692" />
+        <nodes>
+          <initialNode Id="cb23c433-7c0d-47b0-87f4-9df4ece24afd" name="Initial1" isLeaf="false">
+            <elementDefinition Id="15ea48e1-eac1-4de7-b29b-9ae2a2454de0" />
+            <flowNodeTargets>
+              <controlFlow Id="39437905-dcc0-441a-a980-c6170b996f23" isLeaf="false">
+                <opaqueActionMoniker Id="e6e7e843-dd9a-4b5d-9f6b-fb4a8cab4e4f" LastKnownName="Find all objects in current view frustum" />
+                <elementDefinition Id="067da31b-b3ab-462e-9d24-765a672a7776" />
+              </controlFlow>
+            </flowNodeTargets>
+          </initialNode>
+          <opaqueAction Id="e6e7e843-dd9a-4b5d-9f6b-fb4a8cab4e4f" name="Find all objects in current view frustum" isLeaf="false">
+            <elementDefinition Id="47b3c4f1-876d-49a4-b318-de7bd0eb1cc5" />
+          </opaqueAction>
+          <opaqueAction Id="4523107c-fafc-4845-815e-25ad4f63dda8" name="For each object with shadow material, find all lights and corresponding shadow casters." isLeaf="false">
+            <elementDefinition Id="c66e5c3b-de80-4815-8b81-f741de4f6cd3" />
+          </opaqueAction>
+          <opaqueAction Id="2af67578-3a7c-4f9f-8afc-5d25a4ddb331" name="Generate shadow map for each light source" isLeaf="false">
+            <elementDefinition Id="8a138881-4d89-456e-9977-b24969a5d719" />
+          </opaqueAction>
+          <opaqueAction Id="eb969531-2b78-4eb1-853b-4777c4ddcdf7" name="For each object with reflection material" isLeaf="false">
+            <elementDefinition Id="d3ad96bf-3ef8-4816-8984-b1c03844578b" />
+          </opaqueAction>
+          <opaqueAction Id="e89c7b85-99ea-42cc-800c-ff38f97e5706" name="Generate reflection map" isLeaf="false">
+            <elementDefinition Id="77dc5d71-b0d8-454d-905d-40115bc55fe0" />
+          </opaqueAction>
+          <opaqueAction Id="b1813900-58e1-447c-b411-f697e26c8532" name="For each object with refraction material" isLeaf="false">
+            <elementDefinition Id="54a99a4d-16f9-49b2-bd78-5a40acb21629" />
+          </opaqueAction>
+          <opaqueAction Id="13b853d5-272b-4fd0-a0f8-dca879d0bf6e" name="Generate refraction map" isLeaf="false">
+            <elementDefinition Id="b8d95f2f-3368-4c37-bffe-72d78a7241af" />
+          </opaqueAction>
+          <opaqueAction Id="ad27be3f-2f1d-48b6-919c-e30cde76dd48" name="Generate deferred depth/normal/light buffer" isLeaf="false">
+            <elementDefinition Id="2d041b94-b939-4b91-85fc-fd389d9ea1c9" />
+          </opaqueAction>
+          <opaqueAction Id="d3665697-f70e-4488-af2b-ef02c2cf8013" name="Draw opaque objects" isLeaf="false">
+            <elementDefinition Id="18a6dbe0-0e3d-412a-86b2-6f93cda138f8" />
+          </opaqueAction>
+          <opaqueAction Id="392f93a8-07ad-4983-9b48-02ff028476d7" name="Draw transparent objects" isLeaf="false">
+            <elementDefinition Id="1a1bc0b6-4b9a-4715-af4e-72772ec7a703" />
+          </opaqueAction>
+        </nodes>
+      </activity>
+    </activityRootModelHasActivity>
+  </packagedElements>
+  <package Id="dd34a790-4ef4-4fc8-9391-dd4448d1b0b6" name="ModelingProject1">
+    <elementDefinition Id="39101e56-597e-412a-a550-ef10eaa77a78" />
+  </package>
+</activityRootModel>

@@ -52,7 +52,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <returns>
         /// Returns true when this emitter has stopped emitting new particles.
         /// </returns>
-        bool Update(float elapsedSeconds, ParticleAction emit);
+        bool Update(ParticleEffect particleEffect, float elapsedSeconds);
     }
     #endregion
 
@@ -233,7 +233,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Updates the emitter, emits any new particles during the update.
         /// </summary>
-        public bool Update(float elapsedSeconds, ParticleAction emit)
+        public bool Update(ParticleEffect particleEffect, float elapsedSeconds)
         {
             if (!Enabled || elapsedSeconds < 0)
                 return false;
@@ -251,14 +251,14 @@ namespace Nine.Graphics.ParticleEffects
             if (EmitCount > 0)
             {
                 for (int i = 0; i < EmitCount; i++)
-                    EmitNewParticle(0, ref particle, emit);
+                    EmitNewParticle(particleEffect, 0, ref particle);
                 return true;
             }
 
             // Emit when the particle emitter has just started.
             if (!firstParticleEmitted)
             {
-                EmitNewParticle(0, ref particle, emit);
+                EmitNewParticle(particleEffect, 0, ref particle);
                 firstParticleEmitted = true;
             }
 
@@ -284,7 +284,7 @@ namespace Nine.Graphics.ParticleEffects
                 float mu = currentTime / elapsedSeconds;
 
                 // Emit a new particle
-                EmitNewParticle(mu, ref particle, emit);
+                EmitNewParticle(particleEffect, mu, ref particle);
             }
 
             // Store any time we didn't use, so it can be part of the next update.
@@ -293,7 +293,7 @@ namespace Nine.Graphics.ParticleEffects
             return false;
         }
 
-        private void EmitNewParticle(float lerpAmount, ref Particle particle, ParticleAction emit)
+        private void EmitNewParticle(ParticleEffect particleEffect, float lerpAmount, ref Particle particle)
         {
             Emit(lerpAmount, ref particle.Position, ref particle.Velocity);
 
@@ -306,7 +306,7 @@ namespace Nine.Graphics.ParticleEffects
 
             Vector3.Add(ref particle.Position, ref position, out particle.Position);
 
-            emit(ref particle);
+            particleEffect.Emit(ref particle);
         }
 
         /// <summary>

@@ -18,18 +18,11 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class BounceCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.BounceCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance);
-        
         protected override Nine.BounceCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.BounceCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new BounceCurve();
-            }
             existingInstance.Strength = input.ReadSingle();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -41,14 +34,9 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class CustomCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.CustomCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance);
-        
         protected override Nine.CustomCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.CustomCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             existingInstance.Curve = input.ReadObject<Microsoft.Xna.Framework.Curve>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -60,18 +48,11 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ElasticCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.ElasticCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance);
-        
         protected override Nine.ElasticCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ElasticCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new ElasticCurve();
-            }
             existingInstance.Strength = input.ReadSingle();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -83,40 +64,28 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class ExponentialCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.ExponentialCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance);
-        
         protected override Nine.ExponentialCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.ExponentialCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new ExponentialCurve();
-            }
             existingInstance.Power = input.ReadSingle();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
     /// <summary>
-    /// Content reader for <c>GridSceneManager`1</c>.
+    /// Content reader for <c>GridSceneManager</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class GridSceneManagerReader<T> : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.GridSceneManager<T>>
+    partial class GridSceneManagerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.GridSceneManager>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager<T> existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager<T> existingInstance);
-        
-        protected override Nine.GridSceneManager<T> Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager<T> existingInstance)
+        protected override Nine.GridSceneManager Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager existingInstance)
         {
-            BeginRead(input, existingInstance);
             existingInstance.SegmentCountX = input.ReadInt32();
             existingInstance.SegmentCountY = input.ReadInt32();
             existingInstance.Position = input.ReadVector2();
             existingInstance.Size = input.ReadVector2();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -128,17 +97,10 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class LinearCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.LinearCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance);
-        
         protected override Nine.LinearCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.LinearCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new LinearCurve();
-            }
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -150,17 +112,10 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SinCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.SinCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance);
-        
         protected override Nine.SinCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SinCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new SinCurve();
-            }
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -172,43 +127,10 @@ namespace Nine
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SmoothCurveReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.SmoothCurve>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance);
-        
         protected override Nine.SmoothCurve Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.SmoothCurve existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new SmoothCurve();
-            }
-            EndRead(input, existingInstance);
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>UniformGrid</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class UniformGridReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.UniformGrid>
-    {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.UniformGrid existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.UniformGrid existingInstance);
-        
-        protected override Nine.UniformGrid Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.UniformGrid existingInstance)
-        {
-            BeginRead(input, existingInstance);
-            if (existingInstance == null)
-            {
-                existingInstance = new UniformGrid();
-            }
-            existingInstance.SegmentCountX = input.ReadInt32();
-            existingInstance.SegmentCountY = input.ReadInt32();
-            existingInstance.Position = input.ReadVector2();
-            existingInstance.Size = input.ReadVector2();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -223,19 +145,12 @@ namespace Nine.Animations
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class AnimationPlayerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.AnimationPlayer>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance);
-        
         protected override Nine.Animations.AnimationPlayer Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationPlayer existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new AnimationPlayer();
-            }
             existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IDictionary<System.String, System.Object>>();
             existingInstance.Tag = input.ReadObject<System.Object>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -247,18 +162,11 @@ namespace Nine.Animations
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class DelayAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.DelayAnimation>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance);
-        
         protected override Nine.Animations.DelayAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DelayAnimation existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new DelayAnimation();
-            }
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -270,19 +178,12 @@ namespace Nine.Animations
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class LayeredAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.LayeredAnimation>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance);
-        
         protected override Nine.Animations.LayeredAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new LayeredAnimation();
-            }
             existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
             existingInstance.Repeat = input.ReadInt32();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -294,19 +195,12 @@ namespace Nine.Animations
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class SequentialAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.SequentialAnimation>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance);
-        
         protected override Nine.Animations.SequentialAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new SequentialAnimation();
-            }
             existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
             existingInstance.Repeat = input.ReadInt32();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }
@@ -318,16 +212,10 @@ namespace Nine.Animations
     [System.Runtime.CompilerServices.CompilerGenerated()]
     partial class TweenAnimationReader<T> : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.TweenAnimation<T>>
     {
-        partial void BeginRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance);
-        partial void EndRead(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance);
-        
         protected override Nine.Animations.TweenAnimation<T> Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.TweenAnimation<T> existingInstance)
         {
-            BeginRead(input, existingInstance);
             if (existingInstance == null)
-            {
                 existingInstance = new TweenAnimation<T>();
-            }
             existingInstance.From = input.ReadObject<System.Nullable<T>>();
             existingInstance.To = input.ReadObject<System.Nullable<T>>();
             existingInstance.By = input.ReadObject<System.Nullable<T>>();
@@ -343,7 +231,6 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            EndRead(input, existingInstance);
             return existingInstance;
         }
     }

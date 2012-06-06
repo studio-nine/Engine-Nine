@@ -10,90 +10,62 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Materials;
+using Nine.Graphics.ObjectModel;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.Primitives
 {
     /// <summary>
-    /// Represents a custom primitive.
+    /// Base class for simple geometric primitive models. 
     /// </summary>
-    public interface ICustomPrimitive
+    [ContentProperty("Material")]
+    public abstract class Primitive<T> : Transformable, IDrawableObject, IDisposable where T : struct, IVertexType
     {
-        /// <summary>
-        /// Gets the vertex buffer of the primitive.
-        /// </summary>
-        VertexBuffer VertexBuffer { get; }
-
-        /// <summary>
-        /// Gets the index buffer of the primitive.
-        /// </summary>
-        IndexBuffer IndexBuffer { get; }
-
-        /// <summary>
-        /// Gets the optional bounding sphere of the primitive.
-        /// </summary>
-        BoundingSphere? BoundingSphere { get; }
-    }
-
-    #region Primitive
-    /// <summary>
-    /// Base class for simple geometric primitive models. This provides a vertex
-    /// buffer, an index buffer, plus methods for drawing the model. Classes for
-    /// specific types of primitive (CubePrimitive, SpherePrimitive, etc.) are
-    /// derived from this common base, and use the AddVertex and AddIndex methods
-    /// to specify their geometry.
-    /// </summary>
-    public abstract class Primitive<T> : IDisposable, ICustomPrimitive, IGeometry where T : struct, IVertexType
-    {
-        #region Fields
-
-        Matrix? IGeometry.Transform { get { return null; } }
-
-        /// <summary>
-        /// Gets a readonly list of vertex positions.
-        /// </summary>
-        public Vector3[] Positions { get; private set; }
-
-        /// <summary>
-        /// Gets a read-only list of geometry indices.
-        /// </summary>
-        public ushort[] Indices { get; private set; }
-
-
-        // During the process of constructing a primitive model, vertex
-        // and index data is stored on the CPU in these managed lists.
-        List<T> vertices;
-        List<Vector3> positions;
-        List<ushort> indices;
-
-
-        // Once all the geometry has been specified, the InitializePrimitive
-        // method copies the vertex and index data into these buffers, which
-        // store it on the GPU ready for efficient rendering.
-        public VertexBuffer VertexBuffer { get; private set; }
-        public IndexBuffer IndexBuffer { get; private set; }
-
-        /// <summary>
-        /// Gets the vertex count.
-        /// </summary>
-        public int VertexCount { get { return VertexBuffer.VertexCount; } }
-
-        /// <summary>
-        /// Gets the primitive count.
-        /// </summary>
-        public int PrimitiveCount { get { return IndexBuffer.IndexCount / 3; } }
-
         /// <summary>
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
+        /// Gets or sets whether the drawable is visible.
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this primitive resides inside the view frustum last frame.
+        /// </summary>
+        public bool InsideViewFrustum { get; internal set; }
+        
+        /// <summary>
+        /// Gets the material used by this drawable.
+        /// </summary>
+        public Material Material { get; set; }
+
+        /// <summary>
+        /// Gets a collection containning all the materials that are sorted based on level of detail.
+        /// </summary>
+        public MaterialLevelOfDetail MaterialLevels
+        {
+            get { return materialLevels; }
+            set { materialLevels = value ?? new MaterialLevelOfDetail(); }
+        }
+        private MaterialLevelOfDetail materialLevels = new MaterialLevelOfDetail();
+
+        Material IDrawableObject.Material
+        {
+            get { return materialForRendering; }
+        }
+        private Material materialForRendering;
+
+        /// <summary>
         /// Gets the optional bounding sphere of the primitive.
         /// </summary>
-        public BoundingSphere? BoundingSphere { get; private set; }
+        public BoundingBox BoundingBox { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether winding order will be inverted.
@@ -106,44 +78,191 @@ namespace Nine.Graphics.Primitives
                 if (invertWindingOrder != value)
                 {
                     invertWindingOrder = value;
-                    if (invertWindingOrder)
-                    {
-                        for (int i = 0; i < Indices.Length; i += 3)
-                        {
-                            var temp = Indices[i + 1];
-                            Indices[i + 1] = Indices[i + 2];
-                            Indices[i + 2] = temp;
-                        }
-                        IndexBuffer.SetData(Indices);
-                    }
+                    needsRebuild = true;
                 }
             }
         }
         private bool invertWindingOrder;
 
-        #endregion
+        /// <summary>
+        /// Gets the primitive type of this primitive.
+        /// </summary>
+        public PrimitiveType PrimitiveType
+        {
+            get { return primitiveType; }
+            protected set
+            {
+                if (primitiveType != value)
+                {
+                    primitiveType = value;
+                    needsRebuild = true;
+                }
+            }
+        }
+        private PrimitiveType primitiveType = PrimitiveType.TriangleList;
 
-        #region Initialization
+        private bool needsRebuild;
+        private PrimitiveCache cachedPrimitive;
+
+        /// <summary>
+        /// Properties used when building the primitives
+        /// </summary>
+        private static List<T> Vertices = new List<T>();
+        private static List<Vector3> Positions = new List<Vector3>();
+        private static List<ushort> Indices = new List<ushort>();
+
+        /// <summary>
+        /// Primitives sharing the same vb/ib are cached here.
+        /// </summary>
+        private static Dictionary<Type, List<PrimitiveCache>> PrimitiveCache = new Dictionary<Type, List<PrimitiveCache>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Primitive&lt;T&gt;"/> class.
         /// </summary>
-        protected Primitive()
+        protected Primitive(GraphicsDevice graphics)
         {
-            vertices = new List<T>();
-            indices = new List<ushort>();
-            positions = new List<Vector3>();
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            Visible = true;
+            needsRebuild = true;
+            GraphicsDevice = graphics;
         }
 
+        /// <summary>
+        /// Requests for a rebuild of the primitive vertices and indices.
+        /// </summary>
+        protected void Invalidate()
+        {
+            needsRebuild = true;
+        }
 
+        /// <summary>
+        /// Rebuilds the primitive vertices and indices.
+        /// </summary>
+        private void Rebuild()
+        {
+            try
+            {
+                Dispose();
+
+                // Check if we can find a cached vb/ib for this primitive
+                Type type = GetType();
+                List<PrimitiveCache> cachedPrimitives;
+                if (PrimitiveCache.TryGetValue(type, out cachedPrimitives))
+                {
+                    for (int i = 0; i < cachedPrimitives.Count; i++)
+                    {
+                        cachedPrimitive = cachedPrimitives[i];
+                        if (cachedPrimitive.IsDisposed)
+                        {
+                            cachedPrimitives[i] = cachedPrimitives[cachedPrimitives.Count - 1];
+                            cachedPrimitives.RemoveAt(cachedPrimitives.Count - 1);
+                            i--;
+                            continue;
+                        }
+
+                        var primitive = (Primitive<T>)cachedPrimitive.Primitive;
+                        if (primitive.GraphicsDevice == GraphicsDevice &&
+                            primitive.invertWindingOrder == invertWindingOrder &&
+                            CanShareBufferWith((Primitive<T>)cachedPrimitive.Primitive))
+                        {
+                            cachedPrimitive.RefCount++;
+                            UpdateBoundingBox();
+                            needsRebuild = false;
+                            return;
+                        }
+                    }
+                }
+
+                OnBuild();
+
+                cachedPrimitive = new PrimitiveCache();
+                cachedPrimitive.RefCount = 1;
+                cachedPrimitive.Primitive = this;
+
+                // Create a vertex buffer, and copy our vertex data into it.            
+                cachedPrimitive.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(T), Vertices.Count, BufferUsage.WriteOnly);
+                cachedPrimitive.VertexBuffer.SetData(Vertices.ToArray());
+
+                // Create an index buffer, and copy our index data into it.
+                if (Indices.Count > 0)
+                {
+                    cachedPrimitive.IndexBuffer = new IndexBuffer(GraphicsDevice, typeof(ushort), Indices.Count, BufferUsage.WriteOnly);
+
+                    // Handle winding order
+                    if (invertWindingOrder)
+                    {
+                        for (int i = 0; i < Indices.Count; i += 3)
+                        {
+                            var temp = Indices[i + 1];
+                            Indices[i + 1] = Indices[i + 2];
+                            Indices[i + 2] = temp;
+                        }
+                    }
+
+                    cachedPrimitive.IndexBuffer.SetData(Indices.ToArray());
+                }
+
+                cachedPrimitive.PrimitiveCount = Helper.GetPrimitiveCount(primitiveType,
+                    cachedPrimitive.IndexBuffer != null ? cachedPrimitive.IndexBuffer.IndexCount
+                                                        : cachedPrimitive.VertexBuffer.VertexCount);
+
+                cachedPrimitive.BoundingBox = BoundingBox.CreateFromPoints(Positions);
+                UpdateBoundingBox();
+
+                needsRebuild = false;
+
+                // Add to primitive cache
+                if (cachedPrimitives == null)
+                    PrimitiveCache.Add(type, cachedPrimitives = new List<PrimitiveCache>());
+                cachedPrimitives.Add(cachedPrimitive);
+            }
+            finally
+            {
+                // Free up the list.
+                Positions.Clear();
+                Indices.Clear();
+                Vertices.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Called when local or absolute transform changed.
+        /// </summary>
+        protected override void OnTransformChanged()
+        {
+            UpdateBoundingBox();
+            base.OnTransformChanged();
+        }
+
+        private void UpdateBoundingBox()
+        {
+            if (cachedPrimitive != null)
+                BoundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);
+        }
+
+        /// <summary>
+        /// Determines whether this instance can share its vertex and index buffers with the specified primitive.
+        /// </summary>
+        protected virtual bool CanShareBufferWith(Primitive<T> primitive)
+        {
+            return false;
+        }
+        
+        /// <summary>
+        /// When implemented by derived classes. Call the AddVertex or AddIndex methods to build the prmitive.
+        /// </summary>
+        protected abstract void OnBuild();
+        
         /// <summary>
         /// Adds a new vertex to the primitive model. This should only be called
         /// during the initialization process, before InitializePrimitive.
         /// </summary>
         protected void AddVertex(Vector3 position, T vertex)
         {
-            vertices.Add(vertex);
-            positions.Add(position);
+            Vertices.Add(vertex);
+            Positions.Add(position);
         }
 
 
@@ -156,7 +275,7 @@ namespace Nine.Graphics.Primitives
             if (index > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException("index");
 
-            indices.Add((ushort)index);
+            Indices.Add((ushort)index);
         }
 
         /// <summary>
@@ -165,8 +284,10 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         protected void AddIndex(params int[] indices)
         {
-            foreach (var index in indices)
-                AddIndex(index);
+            for (int i = 0; i < indices.Length; i++)
+            {
+                AddIndex(indices[i]);
+            }
         }
 
         /// <summary>
@@ -175,77 +296,49 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         protected int CurrentVertex
         {
-            get { return vertices.Count; }
-        }
-
-
-        /// <summary>
-        /// Once all the geometry has been specified by calling AddVertex and AddIndex,
-        /// this method copies the vertex and index data into GPU format buffers, ready
-        /// for efficient rendering.
-        /// </summary>
-        protected void InitializePrimitive(GraphicsDevice graphicsDevice)
-        {
-            GraphicsDevice = graphicsDevice;
-
-            Positions = positions.ToArray();
-            Indices = indices.ToArray();
-
-            // Create a vertex buffer, and copy our vertex data into it.
-            VertexBuffer = new VertexBuffer(graphicsDevice,
-                                            typeof(T),
-                                            vertices.Count, BufferUsage.WriteOnly);
-
-            VertexBuffer.SetData(vertices.ToArray());
-
-            // Create an index buffer, and copy our index data into it.
-            IndexBuffer = new IndexBuffer(graphicsDevice, typeof(ushort),
-                                          indices.Count, BufferUsage.WriteOnly);
-
-            IndexBuffer.SetData(Indices);
-
-            BoundingSphere = Microsoft.Xna.Framework.BoundingSphere.CreateFromPoints(positions);
-
-            // Free up the list.
-            positions = null;
-            indices = null;
-            vertices = null;
+            get { return Vertices.Count; }
         }
 
         /// <summary>
-        /// Draws the primitive model, using the specified effect. Unlike the other
-        /// Draw overload where you just specify the world/view/projection matrices
-        /// and color, this method does not set any renderstates, so you must make
-        /// sure all states are set to sensible values before you call it.
+        /// Draws this object with the specified material.
         /// </summary>
-        public void Draw(Effect effect)
+        public void BeginDraw(DrawingContext context)
         {
-            // Set our vertex declaration, vertex buffer, and index buffer.
-            GraphicsDevice.SetVertexBuffer(VertexBuffer);
-            GraphicsDevice.Indices = IndexBuffer;
+            InsideViewFrustum = true;
+            materialForRendering = Material ?? 
+                materialLevels.UpdateLevelOfDetail(
+                    Vector3.Distance(context.EyePosition, AbsoluteTransform.Translation));
+        }
 
-            // Draw the model, using the specified effect.
-            foreach (EffectPass effectPass in effect.CurrentTechnique.Passes)
+        /// <summary>
+        /// Draws this object with the specified material.
+        /// </summary>
+        public void Draw(DrawingContext context, Material material)
+        {
+            material.World = AbsoluteTransform;
+            material.BeginApply(context);
+
+            if (needsRebuild)
+                Rebuild();
+
+            context.SetVertexBuffer(cachedPrimitive.VertexBuffer, 0);
+
+            if (cachedPrimitive.IndexBuffer != null)
             {
-                effectPass.Apply();
-
-                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                                                     vertices.Count, 0, indices.Count / 3);
+                GraphicsDevice.Indices = cachedPrimitive.IndexBuffer;
+                GraphicsDevice.DrawIndexedPrimitives(primitiveType, 0, 0,
+                    cachedPrimitive.VertexBuffer.VertexCount, 0, cachedPrimitive.PrimitiveCount);
             }
+            else
+            {
+                GraphicsDevice.DrawPrimitives(primitiveType, 0, cachedPrimitive.PrimitiveCount);
+            }
+
+            material.EndApply(context);
         }
 
-
         /// <summary>
-        /// Finalizer.
-        /// </summary>
-        ~Primitive()
-        {
-            Dispose(false);
-        }
-
-
-        /// <summary>
-        /// Frees resources used by this object.
+        /// Disposes any resources associated with this instance.
         /// </summary>
         public void Dispose()
         {
@@ -253,27 +346,44 @@ namespace Nine.Graphics.Primitives
             GC.SuppressFinalize(this);
         }
 
-
         /// <summary>
-        /// Frees resources used by this object.
+        /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing) 
         {
             if (disposing)
             {
-                if (VertexBuffer != null)
-                {
-                    VertexBuffer.Dispose();
-                    VertexBuffer = null;
-                }
-                if (IndexBuffer != null)
-                {
-                    IndexBuffer.Dispose();
-                    IndexBuffer = null;
-                }
+                if (cachedPrimitive != null && !cachedPrimitive.IsDisposed && (--cachedPrimitive.RefCount) <= 0)
+                    cachedPrimitive.Dispose();
             }
         }
-        #endregion
+
+        ~Primitive()
+        {
+            Dispose(false);
+        }
+
+        void IDrawableObject.EndDraw(DrawingContext context) { }     
     }
-    #endregion
+
+    class PrimitiveCache : IDisposable
+    {
+        public int RefCount;
+        public bool IsDisposed;
+        public bool InvertWindingOrder;
+        public int PrimitiveCount;
+        public VertexBuffer VertexBuffer;
+        public IndexBuffer IndexBuffer;
+        public BoundingBox BoundingBox;
+        public object Primitive;
+
+        public void Dispose()
+        {
+            if (VertexBuffer != null)
+                VertexBuffer.Dispose();
+            if (IndexBuffer != null)
+                IndexBuffer.Dispose();
+            IsDisposed = true;
+        }
+    }
 }

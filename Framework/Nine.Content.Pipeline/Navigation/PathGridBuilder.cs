@@ -39,11 +39,12 @@ namespace Nine.Content.Pipeline.Navigation
 
         private static Heightmap CreateHeightmapFromScene(Scene scene, float step)
         {
-            var surfaces = new List<DrawableSurfacePatch>();
-            var obstacles = new List<DrawableModelPart>();
+            var surfaces = new List<SurfacePatch>();
+            var obstacles = new List<ModelMesh>();
 
-            scene.FindAll(surfaces);
-            scene.FindAll(obstacles);
+            // FIXME:
+            //scene.FindAll(surfaces);
+            //scene.FindAll(obstacles);
 
             var bounds = BoundingBoxExtensions.CreateMerged(
                 surfaces.Select(patch => patch.BoundingBox).Concat(obstacles.Select(obstacle => obstacle.Model.BoundingBox)));
@@ -74,7 +75,7 @@ namespace Nine.Content.Pipeline.Navigation
                     float min = float.MaxValue;
                     foreach (var pick in rayPicks)
                     {
-                        if (!(pick.OriginalTarget is DrawableSurfacePatch))
+                        if (!(pick.OriginalTarget is SurfacePatch))
                             continue;
 
                         var geometry = pick.OriginalTarget as IGeometry;
@@ -142,7 +143,7 @@ namespace Nine.Content.Pipeline.Navigation
             Parallel.For(0, heightmap.Height, y =>
             //for (int y = 0; y < heightmap.Height; y++)
             {
-                var obstacles = new List<DrawableModel>();
+                var obstacles = new List<Model>();
 
                 for (int x = 0; x < heightmap.Width; x++)
                 {
@@ -165,7 +166,8 @@ namespace Nine.Content.Pipeline.Navigation
 
                     lock (SyncRoot)
                     {
-                        scene.FindAll(ref boundingBox, obstacles);
+                        // FIXME:
+                        //scene.FindAll(ref boundingBox, obstacles);
                     }
 
                     foreach (IGeometry geometry in obstacles)

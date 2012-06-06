@@ -18,34 +18,50 @@ namespace Nine.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing cylinders.
     /// </summary>
+    [ContentSerializable]
     public class Cylinder : Primitive<VertexPositionNormal>
     {
         /// <summary>
-        /// Constructs a new cylinder primitive, using default settings.
+        /// Gets or sets the tessellation of this primitive.
         /// </summary>
-        public Cylinder(GraphicsDevice graphicsDevice)
-            : this(graphicsDevice, 1, 1, 32)
+        public int Tessellation
         {
+            get { return tessellation; }
+            set
+            {
+                if (tessellation != value)
+                {
+                    if (value < 3)
+                        throw new ArgumentOutOfRangeException("tessellation");
+                    tessellation = value;
+                    Invalidate();
+                }
+            }
         }
-
+        private int tessellation = 32;
 
         /// <summary>
-        /// Constructs a new cylinder primitive,
-        /// with the specified size and tessellation level.
+        /// Constructs a new cylinder primitive, using default settings.
         /// </summary>
-        public Cylinder(GraphicsDevice graphicsDevice,
-                                 float height, float radius, int tessellation)
+        public Cylinder(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {
-            if (tessellation < 3)
-                throw new ArgumentOutOfRangeException("tessellation");
 
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        {
+            return primitive is Cylinder && ((Cylinder)primitive).tessellation == tessellation;
+        }
+
+        protected override void  OnBuild()
+        {
             // Create a ring of triangles around the outside of the cylinder.
             for (int i = 0; i < tessellation; i++)
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 
-                AddVertex(normal * radius + Vector3.UnitZ * height, normal);
-                AddVertex(normal * radius, normal);
+                AddVertex(normal + Vector3.UnitZ, normal);
+                AddVertex(normal, normal);
 
                 AddIndex(i * 2);
                 AddIndex((i * 2 + 2) % (tessellation * 2));
@@ -57,10 +73,8 @@ namespace Nine.Graphics.Primitives
             }
 
             // Create flat triangle fan caps to seal the top and bottom.
-            CreateCap(tessellation, height, radius, Vector3.UnitZ);
-            CreateCap(tessellation, height, radius, -Vector3.UnitZ);
-
-            InitializePrimitive(graphicsDevice);
+            CreateCap(tessellation, 1, 1, Vector3.UnitZ);
+            CreateCap(tessellation, 1, 1, -Vector3.UnitZ);
         }
 
 

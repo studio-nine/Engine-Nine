@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using Microsoft.Xna.Framework;
+using Nine.Content.Pipeline.Xaml;
 #endregion
 
 namespace Nine.Content.Pipeline.Design
@@ -50,7 +51,7 @@ namespace Nine.Content.Pipeline.Design
                     if (components.Length > 1 && !string.IsNullOrEmpty(components[1]))
                         transform.Rotation = (Vector3)converter.ConvertFromInvariantString(context, components[1]);
                     if (components.Length > 2 && !string.IsNullOrEmpty(components[2]))
-                        transform.Translation = (Vector3)converter.ConvertFromInvariantString(context, components[2]);
+                        transform.Position = (Vector3)converter.ConvertFromInvariantString(context, components[2]);
                     if (components.Length > 3 && !string.IsNullOrEmpty(components[3]))
                         transform.RotationOrder = (RotationOrder)Enum.Parse(typeof(RotationOrder), components[3]);
                     return transform;

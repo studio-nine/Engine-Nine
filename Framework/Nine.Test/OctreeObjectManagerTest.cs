@@ -55,7 +55,7 @@ namespace Nine.Test
         [TestMethod()]
         public void AddUpdateRemoveTest()
         {
-            OctreeSceneManager<ISpatialQueryable> scene = new OctreeSceneManager<ISpatialQueryable>();
+            OctreeSceneManager scene = new OctreeSceneManager();
             Assert.AreEqual(1, scene.Tree.Count());
             var boundable = new TestBoundable() { BoundingBox = new BoundingBox(Vector3.One * 0.1f, Vector3.One) };
             scene.Add(boundable);
@@ -84,7 +84,7 @@ namespace Nine.Test
         [TestMethod()]
         public void AddUpdateToNewBoundsRemoveTest()
         {
-            OctreeSceneManager<ISpatialQueryable> scene = new OctreeSceneManager<ISpatialQueryable>();
+            OctreeSceneManager scene = new OctreeSceneManager();
 
             var boundable = new TestBoundable() { BoundingBox = new BoundingBox(Vector3.One * 0.1f, Vector3.One) };
             scene.Add(boundable);
@@ -106,7 +106,7 @@ namespace Nine.Test
         public void AddQueryUpdateRemoveTest()
         {
             // 1000 x 1000 x 1000
-            var scene = new OctreeSceneManager<ISpatialQueryable>();
+            var scene = new OctreeSceneManager();
             var bounds = new BoundingBox(Vector3.One * -500, Vector3.One * 1000);
             var objects = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(bounds, 50f)).ToArray();
             var updatedObjects = Enumerable.Range(0, 1000).Select(i => TestBoundable.CreateRandom(bounds, 50f)).ToArray();

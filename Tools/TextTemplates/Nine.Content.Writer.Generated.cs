@@ -17,27 +17,31 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class BounceCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<BounceCurveContent>
+    partial class BounceCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.BounceCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, BounceCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.BounceCurve value)
         {
-
-            BeginWrite(output, value);
             output.Write(value.Strength);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.BounceCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.BounceCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.BounceCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.BounceCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -47,27 +51,31 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class CustomCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<CustomCurveContent>
+    partial class CustomCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.CustomCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, CustomCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.CustomCurve value)
         {
-
-            BeginWrite(output, value);
-            output.WriteObject(value.Curve);
-            EndWrite(output, value);
+            WriteObject(output, value, "Curve", value.Curve);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.CustomCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.CustomCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.CustomCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.CustomCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -77,27 +85,31 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class ElasticCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ElasticCurveContent>
+    partial class ElasticCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.ElasticCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ElasticCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.ElasticCurve value)
         {
-
-            BeginWrite(output, value);
             output.Write(value.Strength);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ElasticCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ElasticCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ElasticCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ElasticCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -107,60 +119,68 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class ExponentialCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<ExponentialCurveContent>
+    partial class ExponentialCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.ExponentialCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, ExponentialCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.ExponentialCurve value)
         {
-
-            BeginWrite(output, value);
             output.Write(value.Power);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ExponentialCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ExponentialCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ExponentialCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ExponentialCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
-    /// Content writer for <c>GridSceneManager`1</c>.
+    /// Content writer for <c>GridSceneManager</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class GridSceneManagerContentWriter<T> : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<GridSceneManagerContent<T>>
+    partial class GridSceneManagerWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.GridSceneManager>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, GridSceneManagerContent<T> value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.GridSceneManager value)
         {
-
-            BeginWrite(output, value);
             output.Write(value.SegmentCountX);
             output.Write(value.SegmentCountY);
             output.Write(value.Position);
             output.Write(value.Size);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.GridSceneManagerReader`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.GridSceneManagerReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.GridSceneManager`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.GridSceneManager, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -170,26 +190,30 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class LinearCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LinearCurveContent>
+    partial class LinearCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.LinearCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LinearCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.LinearCurve value)
         {
-
-            BeginWrite(output, value);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.LinearCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.LinearCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.LinearCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.LinearCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -199,26 +223,30 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class SinCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SinCurveContent>
+    partial class SinCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.SinCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SinCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.SinCurve value)
         {
-
-            BeginWrite(output, value);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SinCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SinCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SinCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SinCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -228,59 +256,30 @@ namespace Nine.Content.Pipeline
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class SmoothCurveContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SmoothCurveContent>
+    partial class SmoothCurveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.SmoothCurve>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SmoothCurveContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.SmoothCurve value)
         {
-
-            BeginWrite(output, value);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SmoothCurveReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SmoothCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SmoothCurve, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
-    /// Content writer for <c>UniformGrid</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class UniformGridContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<UniformGridContent>
-    {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, UniformGridContent value)
-        {
-
-            BeginWrite(output, value);
-            output.Write(value.SegmentCountX);
-            output.Write(value.SegmentCountY);
-            output.Write(value.Position);
-            output.Write(value.Size);
-            EndWrite(output, value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.UniformGridReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.UniformGrid, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SmoothCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }
@@ -293,46 +292,32 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class AnimationPlayerContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<AnimationPlayerContent>
+    partial class AnimationPlayerWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.AnimationPlayer>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AnimationPlayerContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AnimationPlayerContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, AnimationPlayerContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.AnimationPlayer value)
         {
-            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
-            if (attachedPropertyStore != null)
-            {
-                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
-                if (dictionary == null)
-                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
-                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
-                attachedPropertyStore.CopyPropertiesTo(properties, 0);
-                foreach (var property in properties)
-                {
-                    var propertyName = new System.Text.StringBuilder();
-                    propertyName.Append(property.Key.DeclaringType.Name);
-                    propertyName.Append(".");
-                    propertyName.Append(property.Key.MemberName);
-                    dictionary.Add(propertyName.ToString(), property.Value);
-                }
-                value.Tag = dictionary;
-            }            
-
-            BeginWrite(output, value);
-            output.WriteObject(value.Animations);
-            output.WriteObject(value.Tag);
-            EndWrite(output, value);
+            WriteObject(output, value, "AnimationsSerializer", value.AnimationsSerializer);
+            WriteObject(output, value, "Tag", value.Tag);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.AnimationPlayerReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.AnimationPlayerReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.AnimationPlayer, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.AnimationPlayer, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -342,27 +327,31 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class DelayAnimationContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<DelayAnimationContent>
+    partial class DelayAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.DelayAnimation>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DelayAnimationContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DelayAnimationContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, DelayAnimationContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.DelayAnimation value)
         {
-
-            BeginWrite(output, value);
-            output.WriteObject(value.Duration);
-            EndWrite(output, value);
+            WriteObject(output, value, "Duration", value.Duration);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.DelayAnimationReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.DelayAnimationReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.DelayAnimation, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.DelayAnimation, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -372,28 +361,32 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class LayeredAnimationContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<LayeredAnimationContent>
+    partial class LayeredAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.LayeredAnimation>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LayeredAnimationContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LayeredAnimationContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, LayeredAnimationContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.LayeredAnimation value)
         {
-
-            BeginWrite(output, value);
-            output.WriteObject(value.Animations);
+            WriteObject(output, value, "AnimationsSerializer", value.AnimationsSerializer);
             output.Write(value.Repeat);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.LayeredAnimationReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.LayeredAnimationReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.LayeredAnimation, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.LayeredAnimation, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -403,28 +396,32 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class SequentialAnimationContentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<SequentialAnimationContent>
+    partial class SequentialAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.SequentialAnimation>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SequentialAnimationContent value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SequentialAnimationContent value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, SequentialAnimationContent value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.SequentialAnimation value)
         {
-
-            BeginWrite(output, value);
-            output.WriteObject(value.Animations);
+            WriteObject(output, value, "AnimationsSerializer", value.AnimationsSerializer);
             output.Write(value.Repeat);
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.SequentialAnimationReader, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.SequentialAnimationReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.SequentialAnimation, Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.SequentialAnimation, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -434,41 +431,45 @@ namespace Nine.Content.Pipeline.Animations
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class TweenAnimationContentWriter<T> : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<TweenAnimationContent<T>>
+    partial class TweenAnimationWriter<T> : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.TweenAnimation<T>>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TweenAnimationContent<T> value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TweenAnimationContent<T> value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, TweenAnimationContent<T> value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.TweenAnimation<T> value)
         {
-
-            BeginWrite(output, value);
             output.WriteObject(value.From);
             output.WriteObject(value.To);
             output.WriteObject(value.By);
-            output.WriteObject(value.Easing);
-            output.WriteObject(value.Curve);
-            output.WriteObject(value.Duration);
-            output.WriteObject(value.TargetProperty);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
             output.WriteObject(value.BeginTime);
             output.WriteObject(value.EndTime);
             output.Write(value.Speed);
             output.Write(value.AutoReverse);
-            output.WriteObject(value.StartupDirection);
-            output.WriteObject(value.Direction);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
             output.Write(value.Repeat);
-            output.WriteObject(value.Position);
-            EndWrite(output, value);
+            WriteObject(output, value, "Position", value.Position);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.TweenAnimationReader`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.TweenAnimationReader`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.TweenAnimation`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.TweenAnimation`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

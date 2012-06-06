@@ -7,18 +7,23 @@
 #endregion
 
 #region Using Directives
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
 {
-    public partial class AmbientLight : Light<IAmbientLight>
+    public partial class AmbientLight : Light<IAmbientLight>, ISceneObject
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
+        /// Keeps track of the owner drawing context.
+        /// </summary>
+        private DrawingContext context;
         
         public AmbientLight(GraphicsDevice graphics)
         {
@@ -40,8 +45,35 @@ namespace Nine.Graphics.ObjectModel
         public Vector3 AmbientLightColor
         {
             get { return ambientLightColor; }
-            set { ambientLightColor = value; }
+            set
+            {
+                if (context != null)
+                {
+                    // Updates ambient light color in the owner context
+                    context.AmbientLight.Value += (value - ambientLightColor);
+                }
+                ambientLightColor = value; 
+            }
         }
         private Vector3 ambientLightColor;
+
+
+        void ISceneObject.OnAdded(DrawingContext context)
+        {
+            if (this.context != null)
+                throw new InvalidOperationException();
+
+            this.context = context;
+            this.context.AmbientLight.Value = context.AmbientLight.Value + ambientLightColor;
+        }
+
+        void ISceneObject.OnRemoved(DrawingContext context)
+        {
+            if (this.context == null)
+                throw new InvalidOperationException();
+
+            this.context.AmbientLight.Value = context.AmbientLight.Value + ambientLightColor;
+            this.context = null;
+        }
     }
 }

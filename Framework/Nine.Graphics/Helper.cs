@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Microsoft.Xna.Framework.Toolkit
+namespace Nine.Graphics
 {
     internal static class Helper
     {
@@ -38,6 +40,27 @@ namespace Microsoft.Xna.Framework.Toolkit
             int blue = (value & 0x000000FF);
 
             return new Color(red, green, blue, alpha);
+        }
+
+        /// <summary>
+        /// NumVertsPerPrimitive is a boring helper function that tells how many vertices
+        /// it will take to draw each kind of primitive.
+        /// </summary>
+        public static int GetPrimitiveCount(PrimitiveType primitive, int indexCount)
+        {
+            switch (primitive)
+            {
+                case PrimitiveType.LineStrip:
+                    return indexCount - 1;
+                case PrimitiveType.LineList:
+                    return indexCount / 2;
+                case PrimitiveType.TriangleList:
+                    return indexCount / 3;
+                case PrimitiveType.TriangleStrip:
+                    return indexCount - 2;
+                default:
+                    throw new InvalidOperationException(Strings.InvalidPrimitive);
+            }
         }
     }
 }

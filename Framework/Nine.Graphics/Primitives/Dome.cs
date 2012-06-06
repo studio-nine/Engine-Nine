@@ -18,31 +18,51 @@ namespace Nine.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing spheres.
     /// </summary>
+    [ContentSerializable]
     public class Dome : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
-        /// Constructs a new sphere primitive, using default settings.
+        /// Gets or sets the tessellation of this primitive.
         /// </summary>
-        public Dome(GraphicsDevice graphicsDevice) : this(graphicsDevice, 1, 0.2f, 16) { }
-
+        public int Tessellation
+        {
+            get { return tessellation; }
+            set
+            {
+                if (tessellation != value)
+                {
+                    if (value < 3)
+                        throw new ArgumentOutOfRangeException("tessellation");
+                    tessellation = value;
+                    Invalidate();
+                }
+            }
+        }
+        private int tessellation = 16;
 
         /// <summary>
-        /// Constructs a new sphere primitive,
-        /// with the specified size and tessellation level.
+        /// Constructs a new sphere primitive, using default settings.
         /// </summary>
-        public Dome(GraphicsDevice graphicsDevice, float size, float height, int tessellation)
+        public Dome(GraphicsDevice graphicsDevice) : base(graphicsDevice)
+        {
+
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
+        {
+            return primitive is Dome && ((Dome)primitive).tessellation == tessellation;
+        }
+
+        protected override void OnBuild()
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
-            if (height > size || height < 0 || size <= 0)
-                throw new ArgumentOutOfRangeException();
-
-            float angle = (float)Math.Atan2(height, size / 2);
+            float angle = (float)Math.Atan2(1, 0.5);
             angle = MathHelper.PiOver2 - angle * 2;
-            float radius = (float)(size * 0.5f / Math.Cos(angle));
+            float radius = (float)(0.5f / Math.Cos(angle));
             float percentage = (MathHelper.PiOver2 - angle) / MathHelper.Pi;
-            Vector3 sink = -Vector3.Up * (radius - height);
+            Vector3 sink = -Vector3.Up * (radius - 1);
 
 
             int verticalSegments = tessellation / 2;
@@ -71,8 +91,8 @@ namespace Nine.Graphics.Primitives
 
                     Vector2 uv = new Vector2();
 
-                    uv.X = dx * radius / size + 0.5f;
-                    uv.Y = dz * radius / size + 0.5f;
+                    uv.X = dx * radius + 0.5f;
+                    uv.Y = dz * radius + 0.5f;
 
                     AddVertex(normal * radius + sink, normal, uv);
                 }
@@ -104,9 +124,6 @@ namespace Nine.Graphics.Primitives
                     AddIndex(1 + nextI * horizontalSegments + j);
                 }
             }
-
-
-            InitializePrimitive(graphicsDevice);
         }
 
         private void AddVertex(Vector3 position, Vector3 normal, Vector2 uv)

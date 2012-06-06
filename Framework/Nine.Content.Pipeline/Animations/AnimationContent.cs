@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
 namespace Nine.Content.Pipeline.Animations
 {
+    /*
     [ContentProperty("Animations")]
     partial class AnimationPlayerContent : Dictionary { }
 
@@ -23,10 +24,11 @@ namespace Nine.Content.Pipeline.Animations
 
     [ContentProperty("Animations")]
     partial class SequentialAnimationContent { }
-
+    
     partial class TweenAnimationContent<T> where T : struct { }
-    partial class TweenAnimationContentWriter<T> where T : struct { }
-
+    */
+    partial class TweenAnimationWriter<T> where T : struct { }
+    /*
     public class CharAnimationContent : TweenAnimationContent<char> { }
     public class ByteAnimationContent : TweenAnimationContent<byte> { }
     public class Int16AnimationContent : TweenAnimationContent<short> { }
@@ -44,7 +46,7 @@ namespace Nine.Content.Pipeline.Animations
     public class MatrixAnimationContent : TweenAnimationContent<Matrix> { }
     public class PointAnimationContent : TweenAnimationContent<Point> { }
     public class RectangleAnimationContent : TweenAnimationContent<Rectangle> { }
-
+     
     [ContentTypeWriter] class CharAnimationContentWriter : TweenAnimationContentWriter<char, CharAnimationContent> { }
     [ContentTypeWriter] class ByteAnimationContentWriter : TweenAnimationContentWriter<byte, ByteAnimationContent> { }
     [ContentTypeWriter] class Int16AnimationContentWriter : TweenAnimationContentWriter<short, Int16AnimationContent> { }
@@ -62,7 +64,7 @@ namespace Nine.Content.Pipeline.Animations
     [ContentTypeWriter] class MatrixAnimationContentWriter : TweenAnimationContentWriter<Matrix, MatrixAnimationContent> { }
     [ContentTypeWriter] class PointAnimationContentWriter : TweenAnimationContentWriter<Point, PointAnimationContent> { }
     [ContentTypeWriter] class RectangleAnimationContentWriter : TweenAnimationContentWriter<Rectangle, RectangleAnimationContent> { }
-    
+     
     class TweenAnimationContentWriter<T, TContent> : ContentTypeWriter<TContent> where T : struct
     {
         ContentTypeWriter writer = new TweenAnimationContentWriter<T>();
@@ -130,4 +132,5 @@ namespace Nine.Content.Pipeline.Animations
             return writer.GetRuntimeReader(targetPlatform);
         }
     }
+     */
 }

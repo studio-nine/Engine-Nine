@@ -21,9 +21,9 @@ namespace Nine
     /// Manages a collection of objects using quad tree.
     /// </summary>
     [DebuggerDisplay("Count = {Count}")]
-    public class QuadTreeSceneManager<T> : ISceneManager<T> where T : ISpatialQueryable
+    public class QuadTreeSceneManager : ISceneManager
     {
-        internal QuadTree<QuadTreeSceneManagerNodeData<T>> Tree;
+        internal QuadTree<QuadTreeSceneManagerNodeData<ISpatialQueryable>> Tree;
 
         /// <summary>
         /// Gets the bounds of this QuadTreeSceneManager.
@@ -56,41 +56,41 @@ namespace Nine
         /// </summary>
         public QuadTreeSceneManager(BoundingRectangle bounds, int maxDepth)
         {
-            Tree = new QuadTree<QuadTreeSceneManagerNodeData<T>>(bounds, maxDepth);
+            Tree = new QuadTree<QuadTreeSceneManagerNodeData<ISpatialQueryable>>(bounds, maxDepth);
 
-            add = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions>(Add);
-            findAllRay = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions>(FindAllRay);
-            findAllBoundingBox = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions>(FindAllBoundingBox);
-            findAllBoundingSphere = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions>(FindAllBoundingSphere);
-            findAllBoundingFrustum = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions>(FindAllBoundingFrustum);
+            add = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions>(Add);
+            findAllRay = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions>(FindAllRay);
+            findAllBoundingBox = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions>(FindAllBoundingBox);
+            findAllBoundingSphere = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions>(FindAllBoundingSphere);
+            findAllBoundingFrustum = new Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions>(FindAllBoundingFrustum);
             boundingBoxChanged = new EventHandler<EventArgs>(BoundingBoxChanged);
         }
 
         private bool needResize;
         private bool addedToNode;
-        private T item;
-        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions> add;
+        private ISpatialQueryable item;
+        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions> add;
 
-        private ICollection<T> result;
+        private ICollection<ISpatialQueryable> result;
         private Ray ray;
         private BoundingBox boundingBox;
         private BoundingFrustum boundingFrustum;
         private BoundingSphere boundingSphere;
-        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions> findAllRay;
-        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions> findAllBoundingBox;
-        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions> findAllBoundingSphere;
-        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>, TraverseOptions> findAllBoundingFrustum;
+        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions> findAllRay;
+        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions> findAllBoundingBox;
+        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions> findAllBoundingSphere;
+        private Func<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>, TraverseOptions> findAllBoundingFrustum;
         private EventHandler<EventArgs> boundingBoxChanged;
         
         #region ICollection
-        public void Add(T item)
+        public void Add(ISpatialQueryable item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
             if (item.SpatialData != null)
                 throw new InvalidOperationException(Strings.AlreadyAddedToASceneManager);
 
-            item.SpatialData = new QuadTreeSceneManagerSpatialData<T>();
+            item.SpatialData = new QuadTreeSceneManagerSpatialData<ISpatialQueryable>();
 
             AddWithResize(Tree.Root, item);
 
@@ -99,7 +99,7 @@ namespace Nine
             Count++;
         }
 
-        private void AddWithResize(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> treeNode, T item)
+        private void AddWithResize(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> treeNode, ISpatialQueryable item)
         {
             needResize = false;
             Add(treeNode, item);
@@ -126,13 +126,13 @@ namespace Nine
             }
         }
 
-        private void Add(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> treeNode, T item)
+        private void Add(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> treeNode, ISpatialQueryable item)
         {
             addedToNode = false;
 
             this.item = item;
             Tree.Traverse(treeNode, add);
-            this.item = default(T);
+            this.item = default(ISpatialQueryable);
 
             if (!addedToNode && !needResize)
             {
@@ -141,7 +141,7 @@ namespace Nine
             }
         }
 
-        private TraverseOptions Add(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private TraverseOptions Add(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             ContainmentType containment = node.Bounds.Contains(new BoundingRectangle(item.BoundingBox));
 
@@ -169,14 +169,14 @@ namespace Nine
             return Tree.Expand(node) ? TraverseOptions.Continue : TraverseOptions.Skip;
         }
 
-        private void AddToNode(T item, QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private void AddToNode(ISpatialQueryable item, QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             if (node.Value.List == null)
             {
-                node.Value.List = new List<T>();
+                node.Value.List = new List<ISpatialQueryable>();
             }
 
-            var data = (QuadTreeSceneManagerSpatialData<T>)item.SpatialData;
+            var data = (QuadTreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
             data.Tree = Tree;
             data.Node = node;
             node.Value.List.Add(item);
@@ -204,9 +204,9 @@ namespace Nine
             }
         }
 
-        public bool Remove(T item)
+        public bool Remove(ISpatialQueryable item)
         {
-            QuadTreeSceneManagerSpatialData<T> data = item.SpatialData as QuadTreeSceneManagerSpatialData<T>;
+            QuadTreeSceneManagerSpatialData<ISpatialQueryable> data = item.SpatialData as QuadTreeSceneManagerSpatialData<ISpatialQueryable>;
             if (data == null || data.Tree != Tree)
                 return false;
 
@@ -235,12 +235,12 @@ namespace Nine
 
         private void BoundingBoxChanged(object sender, EventArgs e)
         {
-            T item = (T)sender;
+            ISpatialQueryable item = (ISpatialQueryable)sender;
 
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            var data = (QuadTreeSceneManagerSpatialData<T>)item.SpatialData;
+            var data = (QuadTreeSceneManagerSpatialData<ISpatialQueryable>)item.SpatialData;
             if (data == null)
                 throw new InvalidOperationException();
 
@@ -282,19 +282,19 @@ namespace Nine
 
         private void Resize(BoundingRectangle boundingRectangle)
         {
-            var items = new T[Count];
+            var items = new ISpatialQueryable[Count];
 
             CopyTo(items, 0);
             Clear();
 
-            Tree = new QuadTree<QuadTreeSceneManagerNodeData<T>>(boundingRectangle, MaxDepth);
+            Tree = new QuadTree<QuadTreeSceneManagerNodeData<ISpatialQueryable>>(boundingRectangle, MaxDepth);
             foreach (var item in items)
             {
                 Add(item);
             }
         }
 
-        public bool Contains(T item)
+        public bool Contains(ISpatialQueryable item)
         {
             foreach (var val in this)
             {
@@ -304,7 +304,7 @@ namespace Nine
             return false;
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(ISpatialQueryable[] array, int arrayIndex)
         {
             foreach (var val in this)
             {
@@ -315,7 +315,7 @@ namespace Nine
         public int Count { get; private set; }
         public bool IsReadOnly { get { return false; } }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<ISpatialQueryable> GetEnumerator()
         {
             foreach (var node in Tree)
             {
@@ -334,7 +334,7 @@ namespace Nine
         #endregion
 
         #region ISpatialQuery
-        public void FindAll(ref Ray ray, ICollection<T> result)
+        public void FindAll(ref Ray ray, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.ray = ray;
@@ -342,7 +342,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllRay(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private TraverseOptions FindAllRay(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             if (!node.Value.Initialized)
                 return TraverseOptions.Skip;
@@ -380,7 +380,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingBox boundingBox, ICollection<T> result)
+        public void FindAll(ref BoundingBox boundingBox, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingBox = boundingBox;
@@ -388,7 +388,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllBoundingBox(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private TraverseOptions FindAllBoundingBox(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             if (!node.Value.Initialized)
                 return TraverseOptions.Skip;
@@ -423,7 +423,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
+        public void FindAll(ref BoundingSphere boundingSphere, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingSphere = boundingSphere;
@@ -431,7 +431,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllBoundingSphere(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private TraverseOptions FindAllBoundingSphere(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             if (!node.Value.Initialized)
                 return TraverseOptions.Skip;
@@ -466,7 +466,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
+        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingFrustum = boundingFrustum;
@@ -474,7 +474,7 @@ namespace Nine
             this.result = null;
         }
 
-        private TraverseOptions FindAllBoundingFrustum(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private TraverseOptions FindAllBoundingFrustum(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             if (!node.Value.Initialized)
                 return TraverseOptions.Skip;
@@ -509,7 +509,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        private void AddAllDesedents(QuadTreeNode<QuadTreeSceneManagerNodeData<T>> node)
+        private void AddAllDesedents(QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> node)
         {
             DesedentsStack.Push(node);
             
@@ -530,15 +530,15 @@ namespace Nine
                     DesedentsStack.Push(children[i]);
             }
         }
-        static Stack<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>> DesedentsStack = new Stack<QuadTreeNode<QuadTreeSceneManagerNodeData<T>>>();
+        static Stack<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>> DesedentsStack = new Stack<QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>>>();
         #endregion
     }
     #endregion
 
     #region QuadTreeSceneManagerNodeData
-    struct QuadTreeSceneManagerNodeData<T>
+    struct QuadTreeSceneManagerNodeData<ISpatialQueryable>
     {
-        public List<T> List;
+        public List<ISpatialQueryable> List;
         public float MinHeight;
         public float MaxHeight;
 
@@ -548,10 +548,10 @@ namespace Nine
     #endregion
 
     #region QuadTreeSceneManagerSpatialData
-    class QuadTreeSceneManagerSpatialData<T>
+    class QuadTreeSceneManagerSpatialData<ISpatialQueryable>
     {
-        public QuadTree<QuadTreeSceneManagerNodeData<T>> Tree;
-        public QuadTreeNode<QuadTreeSceneManagerNodeData<T>> Node;
+        public QuadTree<QuadTreeSceneManagerNodeData<ISpatialQueryable>> Tree;
+        public QuadTreeNode<QuadTreeSceneManagerNodeData<ISpatialQueryable>> Node;
     }
     #endregion
 }

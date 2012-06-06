@@ -33,8 +33,8 @@ namespace Tutorial
         private const int BackBufferHeight = 720;
 #else
         private const int TargetFrameRate = 60;
-        private const int BackBufferWidth = 1024;
-        private const int BackBufferHeight = 768;
+        private const int BackBufferWidth = 1280;
+        private const int BackBufferHeight = 720;
 #endif
 
         private World world;
@@ -130,6 +130,7 @@ namespace Tutorial
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, -40, 10));           
             scene.Settings.DefaultDebugControlEnabled = true;
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            scene.Settings.BackgroundColor = Color.Gray;
 
             Window.Title = tutorials[nextTutorial];
 
@@ -146,6 +147,8 @@ namespace Tutorial
 
             if (world != null)
                 world.Update(gameTime.ElapsedGameTime);
+            else if (scene != null)
+                scene.Update(gameTime.ElapsedGameTime);
 
             base.Update(gameTime);
         }

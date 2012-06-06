@@ -25,6 +25,7 @@ using BEPUphysics.PositionUpdating;
 using BEPUphysics.Settings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
 #endregion
 
@@ -225,7 +226,7 @@ namespace Nine.Physics
                     continue;
                 }
 
-                var displayObject = worldObject.Find<DisplayObject>();
+                var displayObject = worldObject.Find<DrawingGroup>();
                 if (displayObject != null)
                 {
                     foreach (var drawable in displayObject.Children)

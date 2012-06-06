@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Xml;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+using System.Diagnostics;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -117,17 +118,51 @@ namespace Nine.Content.Pipeline.Processors
             if (selfProcessMethod != null)
                 return new SelfProcessor(input, selfProcessMethod);
 
-            // Create processor from DefaultContentProcessorAttribute on the processor
-            if (DefaultProcessors == null)
-            {
-                DefaultProcessors = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes().Where(
-                    t => typeof(IContentProcessor).IsAssignableFrom(t) && t.GetCustomAttributes(typeof(DefaultContentProcessorAttribute), false).Count() > 0))
-                    .Select(t => Activator.CreateInstance(t)).OfType<IContentProcessor>().ToList();
-            }
             return DefaultProcessors.FirstOrDefault(p => p.InputType.IsAssignableFrom(inputType));
         }
 
         static List<IContentProcessor> DefaultProcessors;
+
+        static DefaultContentProcessor()
+        {
+            DefaultProcessors = new List<IContentProcessor>();
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.FullName.StartsWith("System") ||
+                    assembly.FullName.StartsWith("mscorlib") ||
+                   (assembly.FullName.StartsWith("Microsoft.") && !assembly.FullName.StartsWith("Microsoft.Xna.Framework.Content.Pipeline")))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    foreach (var type in assembly.GetTypes())
+                    {
+                        if (type.GetInterface(typeof(IContentProcessor).Name) != null &&
+                            type.GetCustomAttributes(false).OfType<DefaultContentProcessorAttribute>().Any())
+                        {
+                            try
+                            {
+                                DefaultProcessors.Add((IContentProcessor)Activator.CreateInstance(type));
+                            }
+                            catch (Exception e)
+                            {
+                                Trace.Write("Failed loading content processor ");
+                                Trace.WriteLine(type.FullName);
+                                Trace.WriteLine(e);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Trace.Write("Failed loading assembly ");
+                    Trace.WriteLine(assembly.FullName);
+                    Trace.WriteLine(e);
+                }
+            }
+        }
 
         class SelfProcessor : ContentProcessor<object, object>
         {

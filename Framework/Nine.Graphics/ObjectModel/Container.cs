@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 #endregion
@@ -21,14 +22,9 @@ namespace Nine.Graphics.ObjectModel
     public interface IContainer
     {
         /// <summary>
-        /// Gets the number of child objects
+        /// Gets a readonly list of children of this container.
         /// </summary>
-        int Count { get; }
-
-        /// <summary>
-        /// Copies all the child objects to the target array.
-        /// </summary>
-        void CopyTo(object[] array, int startIndex);
+        IList Children { get; }
     }
 
     /// <summary>
@@ -40,16 +36,11 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the parent container.
         /// </summary>
-        IContainer Parent { get; }
+        object Parent { get; }
     }
 
     static class ContainerTraverser
     {
-        // TODO: This array holds a strong reference to the traversed object,
-        //       they may never be disposed.
-        static object[] containedObjects;
-        static int startIndex;
-
         /// <summary>
         /// Finds the root of the target object in the scene tree.
         /// </summary>
@@ -85,93 +76,59 @@ namespace Nine.Graphics.ObjectModel
         private static object GetParent(object target)
         {
             var containedObject = target as IContainedObject;
-            return containedObject != null ? containedObject.Parent : target;
+            return containedObject != null ? containedObject.Parent : null;
         }
 
         /// <summary>
-        /// Finds all the child objects of the target.
+        /// Finds all the child objects of the target including the input target.
         /// </summary>
         public static void Traverse<T>(object target, ICollection<T> result) where T : class
         {
-            if (target == null)
+            var targetObject = target as T;
+            if (targetObject != null)
+                result.Add(targetObject);
+
+            var targetContainer = targetObject as IContainer;
+            if (targetContainer == null)
                 return;
 
-            var t = target as T;
-            if (t != null)
-                result.Add(t);
-
-            var targetObject = target as IContainer;
-            if (targetObject == null)
-                return;
-
-            var childCount = targetObject.Count;
-            if (childCount <= 0)
-                return;
-
-            if (containedObjects == null)
-                containedObjects = new object[childCount];
-            else if (containedObjects.Length < childCount + startIndex)
-                Array.Resize(ref containedObjects, childCount + startIndex);
-
-            targetObject.CopyTo(containedObjects, startIndex);
-
-            startIndex += childCount;
-
-            for (int i = 0; i < childCount; i++)
+            var children = targetContainer.Children;
+            if (children != null)
             {
-                Traverse(containedObjects[i + startIndex - childCount], result);
+                var count = children.Count;
+                for (int i = 0; i < count; i++)
+                    Traverse(children[i], result);
             }
-
-            startIndex -= childCount;
         }
         
         /// <summary>
-        /// Finds all the child objects of the target.
+        /// Finds all the child objects of the target including the input target.
         /// </summary>
         public static bool Traverse<T>(object target, Func<T, TraverseOptions> result) where T : class
         {
-            if (target == null)
-                return true;
-
             var traverseOptions = TraverseOptions.Continue;
-            var t = target as T;
-            if (t != null)
-                traverseOptions = result(t);
+            var targetObject = target as T;
+            if (targetObject != null)
+                traverseOptions = result(targetObject);
 
             if (traverseOptions == TraverseOptions.Stop)
                 return false;
             if (traverseOptions == TraverseOptions.Skip)
                 return true;
 
-            var targetObject = target as IContainer;
-            if (targetObject == null)
-                return true;
-
-            var childCount = targetObject.Count;
-            if (childCount <= 0)
+            var targetContainer = targetObject as IContainer;
+            if (targetContainer == null)
                 return true;
             
-            if (containedObjects == null)
-                containedObjects = new object[childCount];
-            else if (containedObjects.Length < childCount + startIndex)
-                Array.Resize(ref containedObjects, childCount + startIndex);
-
-            targetObject.CopyTo(containedObjects, startIndex);
-
-            bool continueTraverse = true;
-            startIndex += childCount;
-            
-            for (int i = 0; i < childCount; i++)
+            var children = targetContainer.Children;
+            if (children != null)
             {
-                if (!Traverse(containedObjects[i + startIndex - childCount], result))
-                {
-                    continueTraverse = false;
-                    break;
-                }
+                var count = children.Count;
+                for (int i = 0; i < count; i++)
+                    if (!Traverse(children[i], result))
+                        return false;
             }
-
-            startIndex -= childCount;
-            return continueTraverse;
+            return true;
         }
     }
 }

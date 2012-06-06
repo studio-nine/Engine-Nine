@@ -12,7 +12,8 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
+using Nine.Graphics.Materials;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -37,7 +38,12 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the order of this light when it's been process by the renderer.
         /// Light might be discarded when the max affecting lights are reached.
         /// </summary>
-        public float Order { get; set; }
+        public float Order
+        {
+            get { return order; }
+            set { order = value; }
+        }
+        internal float order;
 
         /// <summary>
         /// Gets the multi-pass lighting effect used to draw object.
@@ -75,7 +81,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Finds all the objects affected by this light.
         /// </summary>
-        protected internal virtual void FindAll(Scene scene, List<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        protected internal virtual void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             for (var i = 0; i < drawablesInViewFrustum.Count; i++)
                 result.Add(drawablesInViewFrustum[i]);
@@ -89,7 +95,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Draws the depth map of the specified drawables.
         /// </summary>
-        internal void DrawShadowMap(GraphicsContext context, Scene scene,
+        internal void DrawShadowMap(DrawingContext context, Scene scene,
                                     HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
                                     HashSet<ISpatialQueryable> shadowCastersInViewFrustum)
         {
@@ -107,7 +113,7 @@ namespace Nine.Graphics.ObjectModel
 
             if (AffectedShadowCasters == null)
                 AffectedShadowCasters = new List<IDrawableObject>();
-            scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
+            //scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
             if (AffectedShadowCasters.Count <= 0)
                 return;
 
@@ -122,21 +128,21 @@ namespace Nine.Graphics.ObjectModel
             {
                 context.View = Matrix.Identity;
                 context.Projection = shadowFrustumMatrix;
-                context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
+                //context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
                 {
                     DepthEffect depthEffect = (DepthEffect)ShadowMap.Effect;
                     
                     for (int currentShadowCaster = 0; currentShadowCaster < AffectedShadowCasters.Count; currentShadowCaster++)
                     {
                         var shadowCaster = AffectedShadowCasters[currentShadowCaster];
-                        if (Scene.CastShadow(shadowCaster))
+                        //if (Scene.CastShadow(shadowCaster))
                         {
-                            depthEffect.TextureEnabled = shadowCaster.Material != null && shadowCaster.Material.DepthAlphaEnabled;
-                            shadowCaster.Draw(context, depthEffect);
+                            //depthEffect.TextureEnabled = shadowCaster.Material != null && shadowCaster.Material.DepthAlphaEnabled;
+                            //shadowCaster.DrawEffect(context, depthEffect);
                         }
                     }
                 }
-                context.End();
+                //context.End();
                 context.View = view;
                 context.Projection = projection;
             }
@@ -152,7 +158,7 @@ namespace Nine.Graphics.ObjectModel
         /// <returns>
         /// Returns true when a shadow caster is found.
         /// </returns>
-        protected virtual bool GetShadowFrustum(GraphicsContext context,
+        protected virtual bool GetShadowFrustum(DrawingContext context,
                                                 HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
                                                 HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
                                                 out Matrix frustumMatrix)
@@ -164,7 +170,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Draws the light frustum using Settings.Debug.LightFrustumColor.
         /// </summary>
-        public virtual void DrawFrustum(GraphicsContext context) { }
+        public virtual void DrawFrustum(DrawingContext context) { }
     }
 
     /// <summary>

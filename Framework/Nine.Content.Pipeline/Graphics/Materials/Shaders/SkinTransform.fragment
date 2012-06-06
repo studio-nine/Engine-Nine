@@ -1,0 +1,18 @@
+float4x3 Bones[{$MAXBONES}];
+
+void VertexShader(
+          float4 boneIndices:BLENDINDICES0,
+          float4 boneWeights:BLENDWEIGHT0,
+          inout float4 position:POSITION0,
+          inout float3 normal:NORMAL0,
+          out float4x3 skin)
+{
+    skin = 0;    
+
+    [unroll]
+    for (int i = 0; i < {$BONECOUNT}; i++)
+        skin += Bones[boneIndices[i]] * boneWeights[i];
+    
+    position.xyz = mul(position, skin);
+    normal = mul(normal, (float3x3)skin);
+}

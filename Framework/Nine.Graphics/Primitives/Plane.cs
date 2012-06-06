@@ -10,6 +10,7 @@
 #region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 #endregion
 
 namespace Nine.Graphics.Primitives
@@ -17,19 +18,61 @@ namespace Nine.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing spheres.
     /// </summary>
+    [ContentSerializable]
     public class Plane : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
-        /// Constructs a new sphere primitive, using default settings.
+        /// Gets or sets the tessellation on x axis of this primitive.
         /// </summary>
-        public Plane(GraphicsDevice graphicsDevice) : this(graphicsDevice, 1, 1, 1, 1) { }
-
+        public int TessellationX
+        {
+            get { return tessellationX; }
+            set
+            {
+                if (tessellationX != value)
+                {
+                    if (value < 1)
+                        throw new ArgumentOutOfRangeException("tessellationX");
+                    tessellationX = value;
+                    Invalidate();
+                }
+            }
+        }
+        private int tessellationX = 1;
 
         /// <summary>
-        /// Constructs a new sphere primitive,
-        /// with the specified size and tessellation level.
+        /// Gets or sets the tessellation on y axis of this primitive.
         /// </summary>
-        public Plane(GraphicsDevice graphicsDevice, float width, float height, int tessellationX, int tessellationY)
+        public int TessellationY
+        {
+            get { return tessellationY; }
+            set
+            {
+                if (tessellationY != value)
+                {
+                    if (value < 1)
+                        throw new ArgumentOutOfRangeException("tessellationY");
+                    tessellationY = value;
+                    Invalidate();
+                }
+            }
+        }
+        private int tessellationY = 1;
+
+        /// <summary>
+        /// Constructs a new sphere primitive, using default settings.
+        /// </summary>
+        public Plane(GraphicsDevice graphicsDevice) : base(graphicsDevice) 
+        {
+
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
+        {
+            return primitive is Plane && ((Plane)primitive).tessellationX == tessellationX && ((Plane)primitive).tessellationY == tessellationY;
+        }
+        
+        protected override void OnBuild()
         {
             tessellationX++;
             tessellationY++;
@@ -40,8 +83,8 @@ namespace Nine.Graphics.Primitives
                 {
                     Vector3 position = new Vector3();
 
-                    position.X = width * x / (tessellationX - 1) - width / 2;
-                    position.Y = height * y / (tessellationY - 1) - height / 2;
+                    position.X = x / (tessellationX - 1) - 0.5f;
+                    position.Y = y / (tessellationY - 1) - 0.5f;
                     position.Z = 0;
 
                     Vector2 uv = new Vector2();
@@ -67,7 +110,8 @@ namespace Nine.Graphics.Primitives
                 }
             }
 
-            InitializePrimitive(graphicsDevice);
+            tessellationX--;
+            tessellationY--;
         }
 
         private void AddVertex(Vector3 position, Vector3 normal, Vector2 uv)

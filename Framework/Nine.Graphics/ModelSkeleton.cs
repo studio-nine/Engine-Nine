@@ -133,7 +133,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Copies the aboslute transforms of all the bones.
         /// </summary>
-        public  void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)
+        public void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)
         {
             if (destinationBoneTransforms == null)
                 throw new ArgumentNullException("destinationBoneTransforms");
@@ -150,7 +150,7 @@ namespace Nine.Graphics
                 }
                 else
                 {
-                    destinationBoneTransforms[i] = BoneTransforms[i] * destinationBoneTransforms[parent];
+                    Matrix.Multiply(ref BoneTransforms[i], ref destinationBoneTransforms[parent], out destinationBoneTransforms[i]);
                 }
             }
         }

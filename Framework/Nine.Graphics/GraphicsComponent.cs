@@ -53,7 +53,7 @@ namespace Nine.Graphics
         /// Gets the graphics object owned by this graphics component.
         /// </summary>
         [XmlIgnore]
-        public DisplayObject DisplayObject { get; private set; }
+        public DrawingGroup DisplayObject { get; private set; }
 
         /// <summary>
         /// Gets the scene that contains the graphics object owned by this graphics component.
@@ -101,7 +101,7 @@ namespace Nine.Graphics
                     var objectFactory = Parent.Find<IObjectFactory>();
                     if (objectFactory == null)
                         throw new InvalidOperationException(string.Format(Strings.ServiceNotFound, typeof(IObjectFactory)));
-                    DisplayObject = objectFactory.Create<DisplayObject>(Template);
+                    DisplayObject = objectFactory.Create<DrawingGroup>(Template);
                     DisplayObject.Transform = Parent.Transform;
                     Scene.Add(DisplayObject);
                 }
@@ -126,7 +126,7 @@ namespace Nine.Graphics
 
         object IServiceProvider.GetService(Type serviceType)
         {
-            if (DisplayObject != null && serviceType.IsAssignableFrom(typeof(DisplayObject)))
+            if (DisplayObject != null && serviceType.IsAssignableFrom(typeof(DrawingGroup)))
                 return DisplayObject;
             return null;
         }

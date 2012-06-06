@@ -55,7 +55,7 @@ namespace Nine
             //
             // If the extension DLL is not in the GAC, you should refer to it by
             // file path, eg. "c:/MyProject/bin/MyPipelineExtension.dll".
-            "Nine.Content.Pipeline, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86"
+            "Nine.Content.Pipeline, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86"
         };
 
 

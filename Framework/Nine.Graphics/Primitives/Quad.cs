@@ -14,9 +14,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics.Primitives
 {
-    public class Quad : Primitive<VertexPositionNormalTexture>
+    class Quad : Primitive<VertexPositionNormalTexture>
     {
-        public Quad(GraphicsDevice graphics)
+        public Quad(GraphicsDevice graphics) : base(graphics)
+        {
+        
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
+        {
+            return primitive is Quad;
+        }
+        
+
+        protected override void  OnBuild()
         {
             AddVertex(new Vector3(-1, 1, 0), new VertexPositionNormalTexture() { Position = new Vector3(-1, 1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(0, 0) });
             AddVertex(new Vector3(1, 1, 0), new VertexPositionNormalTexture() { Position = new Vector3(1, 1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(1, 0) });
@@ -24,8 +35,6 @@ namespace Nine.Graphics.Primitives
             AddVertex(new Vector3(-1, -1, 0), new VertexPositionNormalTexture() { Position = new Vector3(-1, -1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(0, 1) });
 
             AddIndex(0, 1, 2, 0, 2, 3);
-
-            InitializePrimitive(graphics);
         }
     }
 }

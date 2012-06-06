@@ -18,27 +18,46 @@ namespace Nine.Graphics.Primitives
     /// <summary>
     /// Geometric primitive class for drawing toruses.
     /// </summary>
+    [ContentSerializable]
     public class Torus : Primitive<VertexPositionNormal>
     {
         /// <summary>
-        /// Constructs a new torus primitive, using default settings.
+        /// Gets or sets the tessellation of this primitive.
         /// </summary>
-        public Torus(GraphicsDevice graphicsDevice)
-            : this(graphicsDevice, 1, 0.333f, 32)
+        public int Tessellation
         {
+            get { return tessellation; }
+            set
+            {
+                if (tessellation != value)
+                {
+                    if (value < 3)
+                        throw new ArgumentOutOfRangeException("tessellation");
+                    tessellation = value;
+                    Invalidate();
+                }
+            }
         }
-
+        private int tessellation = 32;
 
         /// <summary>
-        /// Constructs a new torus primitive,
-        /// with the specified size and tessellation level.
+        /// Constructs a new torus primitive, using default settings.
         /// </summary>
-        public Torus(GraphicsDevice graphicsDevice,
-                              float radius, float thickness, int tessellation)
+        public Torus(GraphicsDevice graphicsDevice) : base(graphicsDevice) 
         {
-            if (tessellation < 3)
-                throw new ArgumentOutOfRangeException("tessellation");
 
+        }
+
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        {
+            return primitive is Torus && ((Torus)primitive).tessellation == tessellation;
+        }
+
+        /// <summary>
+        /// Called when building this primitive.
+        /// </summary>
+        protected override void OnBuild()
+        {
             // First we loop around the main ring of the torus.
             for (int i = 0; i < tessellation; i++)
             {
@@ -46,7 +65,7 @@ namespace Nine.Graphics.Primitives
 
                 // Create a transform matrix that will align geometry to
                 // slice perpendicularly though the current ring position.
-                Matrix transform = Matrix.CreateTranslation(radius, 0, 0) *
+                Matrix transform = Matrix.CreateTranslation(1, 0, 0) *
                                    Matrix.CreateRotationY(outerAngle);
 
                 // Now we loop along the other axis, around the side of the tube.
@@ -59,7 +78,7 @@ namespace Nine.Graphics.Primitives
 
                     // Create a vertex.
                     Vector3 normal = new Vector3(dx, dy, 0);
-                    Vector3 position = normal * thickness / 2;
+                    Vector3 position = normal / 2;
 
                     position = Vector3.Transform(position, transform);
                     normal = Vector3.TransformNormal(normal, transform);
@@ -79,8 +98,6 @@ namespace Nine.Graphics.Primitives
                     AddIndex(nextI * tessellation + j);
                 }
             }
-
-            InitializePrimitive(graphicsDevice);
         }
 
         private void AddVertex(Vector3 position, Vector3 normal)

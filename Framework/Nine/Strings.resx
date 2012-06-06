@@ -168,8 +168,8 @@
   <data name="CustomEffectNotSupported" xml:space="preserve">
     <value>Custom effect is not supported on Windows Phone.</value>
   </data>
-  <data name="LinkedEffectNotSupported" xml:space="preserve">
-    <value>Linked effect is not supported on Windows Phone.</value>
+  <data name="MaterialGroupNotSupported" xml:space="preserve">
+    <value>Material group is not supported on Windows Phone.</value>
   </data>
   <data name="ServiceNotFound" xml:space="preserve">
     <value>Cannot find the required service: {0}</value>

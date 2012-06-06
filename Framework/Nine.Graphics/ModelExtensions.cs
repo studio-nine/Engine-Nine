@@ -26,7 +26,7 @@ namespace Nine.Graphics
     public class ModelTag
     {
         internal ModelTag() { }   
-        
+
         /// <summary>
         /// Gets the skinning data attached to the model.
         /// </summary>

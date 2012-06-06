@@ -49,7 +49,7 @@ namespace Nine.Content.Pipeline
             {
                 Trace.Indent();
                 InternalTraversePropertiesWorker(target, action);
-            }
+            }   
             finally
             {
                 if (target != null)

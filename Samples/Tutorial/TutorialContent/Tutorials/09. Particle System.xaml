@@ -1,0 +1,98 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
+    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+    
+    <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8" Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">        
+        <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
+    </Surface>
+
+    <!-- Create an instance of particle system using the ParticleEffect element -->
+    <ParticleEffect Name="Fire" Transform.Position="10, 10, 4" Texture="{ContentReference ../Textures/fire}">
+        <!-- 
+            An emitter is used to create new particles. It affects the initial properties of each particle, 
+            such as speed, position, color and size.
+            
+            You can define a range of values using the " ~ " syntax.
+        -->
+        <ParticleEffect.Emitter>
+            <PointEmitter Emission="50" Duration="1.5 ~ 3" Speed="4 ~ 5" Size="0.5 ~ 1" Spread="{Degrees 15}" />
+        </ParticleEffect.Emitter>
+
+        <!--
+            A particle effect can have multiple controllers that controls how a particle travels and looks
+            after it has been released.               
+        -->
+        <SizeController EndSize ="4 ~ 5" />
+        <SpeedController EndSpeed ="0" />
+
+        <!-- Fade controller makes each particle fades in and out.  -->
+        <FadeController />
+    </ParticleEffect>
+
+    <!-- Particle effects can also be combined using DrawingGroup -->
+    <DrawingGroup Transform.Position="0, 0, 6">
+	
+		<ParticleEffect Name="Snowball" Texture="{ContentReference ../Textures/flake}">
+            <ParticleEffect.Emitter>
+                <SphereEmitter Emission="1000" Duration="2 ~ 3" Speed="-0.2 ~ 0.2" Size="0.2 ~ 0.4" Shell="True" Radius="6" />
+            </ParticleEffect.Emitter>
+                
+            <FadeController />
+        </ParticleEffect>
+			
+        <!-- 
+            When particles are rendered as constrained billboard, they always travels along the moving
+            direction. This make it simple to create effects such as rains.
+        -->
+        <ParticleEffect Name="Spark" Texture="{ContentReference ../Textures/flake}" ParticleType="ConstrainedBillboard" Stretch="8">
+            <ParticleEffect.Emitter>
+                <PointEmitter Emission="10" Duration="2 ~ 3" Speed="-0.01 ~ 0.01" Size="1 ~ 1.5" />
+            </ParticleEffect.Emitter>
+            <FadeController />
+        </ParticleEffect>
+		
+        <!-- 
+        <ParticleEffect Name="Fireball">
+			<ParticleEffect.Emitter>
+                <PointEmitter Emission="50" Duration="0.5 ~ 1" Speed="0.2 ~ 0.4" Size="0.5 ~ 1" />
+            </ParticleEffect.Emitter>
+
+            <SizeController EndSize="1 ~ 2" />
+            <FadeController />
+        </ParticleEffect>
+        
+        Particle system can also be animated using tween animation
+        <DrawingGroup.Animations>
+            <LayeredAnimation x:Key="Default">
+                <Vector3Animation TargetProperty="['Fireball'].Position" Duration="00:00:03"
+                                         Curve="Sin" AutoReverse="True" Repeat="999999" From="-20, 15, 0" To="-10, 15, 0"/>
+                 -->
+                <!-- Animated textures can also be applied to the particle system using the following method
+                <SpriteAnimation TargetProperty="['Fireball'].ParticleEffect.TextureList" 
+                                        TextureList="..\Textures\fireball002" Repeat="999999"/>
+            </LayeredAnimation>            
+        </DrawingGroup.Animations>
+ -->
+    </DrawingGroup>
+
+    <ParticleEffect Transform.Position="20, -20, 0" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
+        <!-- 
+            Create an instance of soft particle effect by the SoftParticleEnabled flag. When drawing 3D soft
+            particles, each pixel of the particle is compare against the current depth buffer to eliminate the
+            intersection artifact between the particle geometry and world geometry.
+        -->
+		<ParticleEffect.Emitter>
+            <!-- Use cylinder emitter to emulate a ring -->
+            <CylinderEmitter Emission="50" Radiate="True" Shell="True" Radius="5" Height="0"
+                             Duration="1.5 ~ 3" Speed="0.5 ~ 1" Size="2 ~ 3" Spread="{Degrees 15}" />
+        </ParticleEffect.Emitter>
+            
+        <SizeController EndSize ="4 ~ 5" />
+        <SpeedController EndSpeed ="0" />
+        <FadeController />
+
+    </ParticleEffect>
+</Scene>

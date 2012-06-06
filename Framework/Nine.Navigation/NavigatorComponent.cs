@@ -80,7 +80,7 @@ namespace Nine.Navigation
         {
             if (!string.IsNullOrEmpty(StopAnimation))
             {
-                var displayObject = Parent.Find<DisplayObject>();
+                var displayObject = Parent.Find<DrawingGroup>();
                 if (displayObject != null)
                     displayObject.Animations.Play(StopAnimation);
             }
@@ -90,7 +90,7 @@ namespace Nine.Navigation
         {
             if (!string.IsNullOrEmpty(StopAnimation))
             {
-                var displayObject = Parent.Find<DisplayObject>();
+                var displayObject = Parent.Find<DrawingGroup>();
                 if (displayObject != null)
                     displayObject.Animations.Play(MoveAnimation);
             }

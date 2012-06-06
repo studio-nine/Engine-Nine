@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
@@ -126,9 +127,6 @@ namespace Nine.Graphics
             T result = effect as T;
             if (result != null)
                 return result;
-            var linked = effect as Nine.Graphics.Effects.LinkedEffect;
-            if (linked != null)
-                result = linked.Find<T>();
             return result;
 #endif
         }
@@ -361,7 +359,41 @@ namespace Nine.Graphics
             else if (value is Vector4[])
                 parameter.SetValue((Vector4[])value);
             else
-                throw new InvalidOperationException("Unexpected effect parameter type: " + value.GetType());
+                throw new NotSupportedException("Unexpected effect parameter type: " + value.GetType());
+        }
+        #endregion
+
+        #region GetValue
+        public static object GetValue(this EffectParameter parameter)
+        {
+            if (parameter.ParameterClass == EffectParameterClass.Object)
+            {
+                if (parameter.ParameterType == EffectParameterType.Texture2D)
+                    return parameter.GetValueTexture2D();
+                if (parameter.ParameterType == EffectParameterType.Texture3D)
+                    return parameter.GetValueTexture3D();
+                if (parameter.ParameterType == EffectParameterType.TextureCube)
+                    return parameter.GetValueTextureCube();
+            }
+
+            if (parameter.ParameterType == EffectParameterType.Int32)
+                return parameter.GetValueInt32();
+            if (parameter.ParameterClass == EffectParameterClass.Matrix)
+                return parameter.GetValueMatrix();
+
+            if (parameter.ParameterClass == EffectParameterClass.Vector)
+            {
+                if (parameter.ColumnCount == 1)
+                    return parameter.GetValueSingle();
+                if (parameter.ColumnCount == 2)
+                    return parameter.GetValueVector2();
+                if (parameter.ColumnCount == 3)
+                    return parameter.GetValueVector3();
+                if (parameter.ColumnCount == 4)
+                    return parameter.GetValueVector4();
+            }
+
+            throw new NotSupportedException();
         }
         #endregion
     }

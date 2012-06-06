@@ -10,6 +10,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Nine.Graphics.ObjectModel;
+using Nine.Graphics;
 #endregion
 
 namespace Nine.Navigation
@@ -26,8 +27,8 @@ namespace Nine.Navigation
         public static void CreateNavigation(this World world)
         {
             // Create ISpatialQuery<Navigator> service
-            var navigatorManager = new QuadTreeSceneManager<Navigator>();
-            world.Services.AddService(typeof(ISpatialQuery<Navigator>), navigatorManager);
+            var navigatorManager = new QuadTreeSceneManager();            
+            world.Services.AddService(typeof(ISpatialQuery<Navigator>), new SpatialQuery<ISpatialQueryable, Navigator>(navigatorManager));
 
             // Create IPathGraph service.
             foreach (var worldObject in world.WorldObjects)
@@ -50,7 +51,7 @@ namespace Nine.Navigation
                 if (scene != null)
                 {
                     var surfaces = new List<ISurface>();
-                    scene.FindAll(surfaces);
+                    //scene.FindAll(surfaces); FIXME:
                     if (surfaces.Count > 0)
                     {
                         var surfaceContainer = new SurfaceCollection();

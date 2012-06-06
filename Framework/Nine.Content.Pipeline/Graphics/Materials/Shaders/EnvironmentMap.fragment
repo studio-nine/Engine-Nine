@@ -1,0 +1,14 @@
+float3 DirLightDirection = { 0, -0.707107, -0.707107 };
+float3 DirLightDiffuseColor = { 1, 1, 1 };
+float3 DirLightSpecularColor = { 1, 1, 1 };
+
+void PixelShader(inout float3 lightDiffuse, inout float3 lightSpecular, float specularPower, float3 normal, float3 positionToEye)
+{
+    float3 L = -DirLightDirection;
+    float3 H = normalize(positionToEye + L);
+    float dt = max(0,dot(L, normal));
+    
+    lightDiffuse += DirLightDiffuseColor * dt;
+    if (dt != 0)
+        lightSpecular += DirLightSpecularColor * pow(max(0.00001f,dot(H, normal)), specularPower);
+}

@@ -12,7 +12,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Effects;
+using Nine.Graphics.Materials;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -70,10 +71,10 @@ namespace Nine.Graphics.ObjectModel
         {
             get { return material; }
 #if !TEXT_TEMPLATE && !WINDOWS_PHONE
-            set { material = value ?? (new DecalMaterial(GraphicsDevice)); UpdateDecalMaterial(); }
 #else
-            set { }
 #endif
+            //set { material = value ?? (new DecalMaterial(GraphicsDevice)); UpdateDecalMaterial(); }
+            set { }
         }
 
         /// <summary>
@@ -226,7 +227,7 @@ namespace Nine.Graphics.ObjectModel
             
 #if !TEXT_TEMPLATE
 #if !WINDOWS_PHONE
-            material = new DecalMaterial(graphics);
+            //material = new DecalMaterial(graphics);
 #else
             throw new NotSupportedException("Decals aren't supported on Windows Phone.");
 #endif
@@ -236,10 +237,18 @@ namespace Nine.Graphics.ObjectModel
 
         #region Methods
         /// <summary>
+        /// Draws this object with the specified material.
+        /// </summary>
+        public void Draw(DrawingContext context, Material material)
+        {
+
+        }
+
+        /// <summary>
         /// Draws the object using the graphics context.
         /// </summary>
         /// <param name="context"></param>
-        public void Draw(GraphicsContext context)
+        public void Draw(DrawingContext context)
         {
 #if !WINDOWS_PHONE
             if ((dirtyMask & GeometryDirtyMask) != 0)
@@ -250,6 +259,7 @@ namespace Nine.Graphics.ObjectModel
 
             if (vertexCount > 0 && indexCount > 0)
             {
+                /*
                 material.Apply();
 
                 var matrices = material.Effect.Find<IEffectMatrices>();
@@ -279,6 +289,7 @@ namespace Nine.Graphics.ObjectModel
                 GraphicsDevice.SetVertexBuffer(vertexBuffer);
                 GraphicsDevice.Indices = indexBuffer;
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexCount, 0, indexCount / 3);
+                 */
             }
 #endif
         }
@@ -286,7 +297,6 @@ namespace Nine.Graphics.ObjectModel
         protected override void OnTransformChanged()
         {
             dirtyMask |= (BoundingBoxDirtyMask | GeometryDirtyMask);
-            base.OnTransformChanged();
         }
 
         private void UpdateDecalMaterial()
@@ -485,9 +495,8 @@ namespace Nine.Graphics.ObjectModel
         static ushort[] Indices;
         static ushort[] IndexTracker;
 
-        void IDrawableObject.BeginDraw(GraphicsContext context) { }
-        void IDrawableObject.Draw(GraphicsContext context, Effect effect) { }
-        void IDrawableObject.EndDraw(GraphicsContext context) { }
+        void IDrawableObject.BeginDraw(DrawingContext context) { }
+        void IDrawableObject.EndDraw(DrawingContext context) { }
         #endregion
 
         #region Dispose

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<activityDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DrawingFlow">
+  <activityRootModelMoniker Id="7719ef52-7e69-444c-96d9-a6583f56c07e" />
+  <nestedChildShapes>
+    <initialNodeShape Id="62123512-5917-46dd-8fde-de7ab1211ecb" absoluteBounds="0.625, 0.875, 0.125, 0.125" customColor="89, 89, 89">
+      <initialNodeMoniker Id="cb23c433-7c0d-47b0-87f4-9df4ece24afd" LastKnownName="Initial1" />
+    </initialNodeShape>
+    <actionShape Id="12a9dd45-0c36-4321-bba4-a1194c9960e0" absoluteBounds="1.75, 0.75, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="e6e7e843-dd9a-4b5d-9f6b-fb4a8cab4e4f" LastKnownName="Find all objects in current view frustum" />
+    </actionShape>
+    <controlFlowConnector edgePoints="[(0.75 : 0.9375); (1.75 : 0.9375)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="Black">
+      <controlFlowMoniker Id="39437905-dcc0-441a-a980-c6170b996f23" />
+      <relativeChildShapes />
+      <nodes>
+        <initialNodeShapeMoniker Id="62123512-5917-46dd-8fde-de7ab1211ecb" />
+        <actionShapeMoniker Id="12a9dd45-0c36-4321-bba4-a1194c9960e0" />
+      </nodes>
+    </controlFlowConnector>
+    <actionShape Id="a045b999-695c-49c9-b613-918c51e985f8" absoluteBounds="1.75, 1.75, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="4523107c-fafc-4845-815e-25ad4f63dda8" LastKnownName="For each object with shadow material, find all lights and corresponding shadow casters." />
+    </actionShape>
+    <actionShape Id="8a402874-235d-452e-959f-6b9ebf652044" absoluteBounds="4.375, 1.75, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="2af67578-3a7c-4f9f-8afc-5d25a4ddb331" LastKnownName="Generate shadow map for each light source" />
+    </actionShape>
+    <actionShape Id="0ab5b932-3aa9-43d2-bc0b-e20227d92714" absoluteBounds="1.75, 2.25, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="eb969531-2b78-4eb1-853b-4777c4ddcdf7" LastKnownName="For each object with reflection material" />
+    </actionShape>
+    <actionShape Id="9344c5f4-5ee4-44cf-a541-7352871d5dde" absoluteBounds="4.375, 2.25, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="e89c7b85-99ea-42cc-800c-ff38f97e5706" LastKnownName="Generate reflection map" />
+    </actionShape>
+    <actionShape Id="05949f72-97b4-4441-8fa3-fede1f40b199" absoluteBounds="1.75, 2.75, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="b1813900-58e1-447c-b411-f697e26c8532" LastKnownName="For each object with refraction material" />
+    </actionShape>
+    <actionShape Id="1a705fa7-1a9b-46b1-92c6-3115c66abca9" absoluteBounds="4.375, 2.75, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="13b853d5-272b-4fd0-a0f8-dca879d0bf6e" LastKnownName="Generate refraction map" />
+    </actionShape>
+    <actionShape Id="b6181809-f2d0-4d91-9e48-e9a854848bf0" absoluteBounds="1.75, 1.25, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="ad27be3f-2f1d-48b6-919c-e30cde76dd48" LastKnownName="Generate deferred depth/normal/light buffer" />
+    </actionShape>
+    <actionShape Id="7630f2c5-54a0-4dd8-a17c-981c47b88217" absoluteBounds="1.75, 3.25, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="d3665697-f70e-4488-af2b-ef02c2cf8013" LastKnownName="Draw opaque objects" />
+    </actionShape>
+    <actionShape Id="cb82a448-1920-49f0-af21-007300524136" absoluteBounds="1.75, 3.75, 2.375, 0.375" customColor="161, 199, 231">
+      <opaqueActionMoniker Id="392f93a8-07ad-4983-9b48-02ff028476d7" LastKnownName="Draw transparent objects" />
+    </actionShape>
+  </nestedChildShapes>
+</activityDiagram>

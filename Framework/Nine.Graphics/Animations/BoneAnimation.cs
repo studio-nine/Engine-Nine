@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Nine.Animations
 {
+    using System.Diagnostics;
     using Nine.Graphics;
 
     #region BoneAnimationClip
@@ -204,9 +205,13 @@ namespace Nine.Animations
                     animation.Play();
             }
 
+            // Refresh the pose immediately so the skin transform is correct even if update is never called.
+            UpdateBoneTransforms(TimeSpan.Zero);
+
             base.OnStarted();
         }
 
+        [Conditional("DEBUG")]
         private void ValidateBlendTarget()
         {
             if (!(Skeleton.BoneTransforms != null && Skeleton.BoneTransforms.Length > 0 &&

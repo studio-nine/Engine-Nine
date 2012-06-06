@@ -21,10 +21,10 @@
 namespace <#= namespaceGroup.Key #>
 {
 <#
-    foreach (var type in namespaceGroup.OrderBy(t => GetContentClassConstructorName(t)))
+    foreach (var type in namespaceGroup.OrderBy(t => GetClassName(t)))
     {
-        var className = GetContentClassName(type);
-        var classConstructorName = GetContentClassConstructorName(type);
+        var className = GetClassName(type);
+        var classFullName = GetClassFullName(type);
         var members = FindContentSerializableMembers(type).ToArray();
 #>
     /// <summary>
@@ -34,45 +34,14 @@ namespace <#= namespaceGroup.Key #>
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class <#= AppendClassName(className, "Writer") #> : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<<#= className #>>
+    partial class <#= AppendClassName(className, "Writer") #> : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<<#= classFullName #>>
     {
-        partial void BeginWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, <#= className #> value);
-        partial void EndWrite(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, <#= className #> value);        
-        
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, <#= className #> value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, <#= classFullName #> value)
         {
-<# 
-    if (members.Any(m => m.Name == "Tag"))
-    {
-#>
-            var attachedPropertyStore = value as System.Xaml.IAttachedPropertyStore;
-            if (attachedPropertyStore != null)
-            {
-                var dictionary = value.Tag as System.Collections.Generic.IDictionary<string, object>;
-                if (dictionary == null)
-                    dictionary = new System.Collections.Generic.Dictionary<string, object>();
-                var properties = new System.Collections.Generic.KeyValuePair<System.Xaml.AttachableMemberIdentifier, object>[attachedPropertyStore.PropertyCount];
-                attachedPropertyStore.CopyPropertiesTo(properties, 0);
-                foreach (var property in properties)
-                {
-                    var propertyName = new System.Text.StringBuilder();
-                    propertyName.Append(property.Key.DeclaringType.Name);
-                    propertyName.Append(".");
-                    propertyName.Append(property.Key.MemberName);
-                    dictionary.Add(propertyName.ToString(), property.Value);
-                }
-                value.Tag = dictionary;
-            }            
-<#  
-    }
-#>
-
-            BeginWrite(output, value);
 <#
     foreach (var member in members)
     {
         var memberType = GetMemberType(member);
-        var memberName = GetMemberFieldName(member);
         var memberTypeName = GetMemberTypeName(member);
         var primitiveTypeName = GetPrimitiveTypeName(GetMemberType(member));
         var isSharedResource = IsMemberSharedResource(member);
@@ -80,34 +49,49 @@ namespace <#= namespaceGroup.Key #>
         if (primitiveTypeName != null)
         {
 #>
-            output.Write(value.<#= memberName #>);
+            output.Write(value.<#= member.Name #>);
 <#
         }
         else if (isSharedResource)
         {
 #>
-            output.Write(value.<#= memberName #> ?? "");
+            output.Write(value.<#= member.Name #> ?? "");
 <#
         }
         else if (IsCollection(memberType) && !CanSet(member) && !HasContentSerializerAttribute(member))
         {
 #>
             {
-                output.Write(value.<#= memberName #>.Count);
-                for (var i = 0; i < value.<#= memberName #>.Count; i++)
-                    output.WriteObject(value.<#= memberName #>[i]);
+                output.Write(value.<#= member.Name #>.Count);
+                for (var i = 0; i < value.<#= member.Name #>.Count; i++)
+                    output.WriteObject(value.<#= member.Name #>[i]);
             }
+<#
+        }
+        else if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        {
+#>
+            output.WriteObject(value.<#= member.Name #>);
 <#
         }
         else
         {
 #>
-            output.WriteObject(value.<#= memberName #>);
+            WriteObject(output, value, "<#= member.Name #>", value.<#= member.Name #>);
 <#
         }
     }
 #>
-            EndWrite(output, value);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
         }
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)

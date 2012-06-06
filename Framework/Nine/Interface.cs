@@ -131,7 +131,7 @@ namespace Nine
     /// Interface for a scene manager that manages the spatial relationships
     /// between objects.
     /// </summary>
-    public interface ISceneManager<T> : ICollection<T>, ISpatialQuery<T>
+    public interface ISceneManager : ICollection<ISpatialQueryable>, ISpatialQuery<ISpatialQueryable>
     {
 
     }

@@ -1,0 +1,10 @@
+texture2D Texture : EMISSIVEMAP;
+float3 EmissiveColor : EMISSIVE;
+sampler BasicSampler { Texture = (Texture); };
+
+void PixelShader(float2 uv:TEXCOORD0, out float3 emissive)
+{
+    {$E1}emissive = EmissiveColor;
+    {$E2}emissive = 0;
+    {$ET}emissive += tex2D(BasicSampler, uv).rgb;
+}

@@ -1,0 +1,5 @@
+void PixelShader(out float4 color:COLOR0, float3 lightDiffuse = 1, float3 lightSpecular = 0, float4 diffuse = 1, float3 specular = 0, float3 emissive = 0)
+{
+    diffuse.rgb = diffuse.rgb * (lightDiffuse + emissive)  + lightSpecular * specular * diffuse.a;
+    color = diffuse;
+}

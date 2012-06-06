@@ -1,18 +1,24 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
+﻿#region Copyright 2009 - 2012 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
 #region Using Directives
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Materials;
+using Nine.Graphics.ObjectModel;
+using Nine.Graphics.Primitives;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -38,12 +44,6 @@ namespace Nine.Graphics.ParticleEffects
         /// by the specified axis while still faces the camera.
         /// </summary>
         ConstrainedBillboardUp,
-
-        /// <summary>
-        /// The particle will be rendered as 3D ribbon trail.
-        /// </summary>
-        [Obsolete("This behavior has not been implemented")]
-        RibbonTrail,
     }
 
     /// <summary>
@@ -56,12 +56,33 @@ namespace Nine.Graphics.ParticleEffects
     /// Defines a special visual effect made up of particles.
     /// </summary>
     [ContentSerializable]
-    public class ParticleEffect : IDisposable
+    public class ParticleEffect : Transformable, ISpatialQueryable, IDrawableObject, IUpdateable, IDisposable
     {
+        #region Properties
+        /// <summary>
+        /// Gets the graphics device.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         /// <summary>
         /// Gets or sets the type of each particle.
         /// </summary>
-        public ParticleType ParticleType { get; set; }
+        public ParticleType ParticleType
+        {
+            get { return particleType; }
+            set { particleType = value; }
+        }
+        private ParticleType particleType;
+
+        /// <summary>
+        /// Gets whether this object is visible.
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this primitive resides inside the view frustum last frame.
+        /// </summary>
+        public bool InsideViewFrustum { get; internal set; }
 
         /// <summary>
         /// Gets or sets whether this particle effect is enabled.
@@ -75,11 +96,6 @@ namespace Nine.Graphics.ParticleEffects
         public float Stretch { get; set; }
 
         /// <summary>
-        /// Gets or sets the up axis of each particle.
-        /// </summary>
-        public Vector3 Up { get; set; }
-
-        /// <summary>
         /// Gets or sets the texture used by this particle effect.
         /// </summary>
         public Texture2D Texture { get; set; }
@@ -90,66 +106,114 @@ namespace Nine.Graphics.ParticleEffects
         public Rectangle? SourceRectangle { get; set; }
 
         /// <summary>
-        /// Gets or sets the texture and source rectangle using <see cref="TextureList"/>.
+        /// Gets or sets whether each particles with be blended using additive blending.
         /// </summary>
-        /// <remarks>
-        /// You can bind the TextureList property with a <see cref="SpriteAnimation"/>.
-        /// </remarks>
-        [ContentSerializerIgnore]
-        public TextureListItem TextureList
+        public bool IsAdditive
         {
-            get { return new TextureListItem(Texture, SourceRectangle); }
+            get { return isAdditive; }
             set
             {
-                Texture = value.Texture;
-                SourceRectangle = value.SourceRectangle;
+                if (isAdditive != value)
+                {
+                    isAdditive = value;
+                    UpdateMaterial();
+                }
             }
+        }
+        private bool isAdditive = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether particles should softly blends with other opaque scene objects.
+        /// </summary>
+        public bool SoftParticleEnabled
+        {
+            get { return softParticleEnabled; }
+            set
+            {
+                if (softParticleEnabled != value)
+                {
+                    softParticleEnabled = value;
+                    UpdateMaterial();
+                }
+            }
+        }
+        private bool softParticleEnabled;
+
+        /// <summary>
+        /// Gets or sets a fade factor whether when soft particle is enabled.
+        /// </summary>
+        public float SoftParticleFade
+        {
+            get { return softParticleFade; }
+            set
+            {
+                softParticleFade = value;
+                SoftParticleMaterial spm = material as SoftParticleMaterial;
+                if (spm != null)
+                    spm.DepthFade = softParticleFade;
+            }
+        }
+        private float softParticleFade = MaterialConstants.SoftParticleFade;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this particle effect will be updated asynchronously.
+        /// </summary>
+        public bool IsAsync
+        {
+            get { return isAsync; }
+            set 
+            {
+                // TODO: You should never modify this value after the particle system is updated or drawed.
+                isAsync = value;
+            }
+        }
+        private bool isAsync = true;
+
+        /// <summary>
+        /// Gets the absolute position of this particle effect.
+        /// </summary>
+        public Vector3 AbsolutePosition
+        {
+            get { return AbsoluteTransform.Translation; }
         }
 
         /// <summary>
-        /// Gets or sets the blend state between each particles of this particle effect.
+        /// Gets the axis aligned bounding box in world space.
         /// </summary>
-        public BlendState BlendState { get; set; }
+        public BoundingBox BoundingBox
+        {
+            get { return boundingBox; }
+        }
+        private BoundingBox boundingBox;
 
         /// <summary>
-        /// Gets or sets the blend state used to blend this particle effect with the background.
-        /// Specify null to use the current <c>BlendState</c>.
+        /// Gets or sets the data used for spatial query.
         /// </summary>
-        [ContentSerializerIgnore]
-        [Obsolete("This behavior has not been implemented")]
-        public BlendState BackgroundBlendState { get; set; }
+        object ISpatialQueryable.SpatialData { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether two pass rendering technique is used to sort each particle based on depth.
-        /// The default value is false. This flag is only available when you are drawing using ParticleBatch.
+        /// Gets the material of the object.
         /// </summary>
-        /// <remarks>
-        /// When depth sort is enabled, particles are not sorted based on their distance to the camera. Instead, a two pass
-        /// rendering technique is used to eliminate depth order problems.
-        /// During the first pass, depth stencial state is set to Default and alpha test is turned on, so the opaque part of the
-        /// particles are ordered using the depth buffer.
-        /// The second pass draws the particles with depth stencial state set to DepthRead and alpha blend is turned on, so the
-        /// transparent part of the particles are rendered.
-        /// </remarks>
-        public bool DepthSortEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets the reference alpha value used in two pass rendering.
-        /// </summary>
-        public int ReferenceAlpha { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether particles should softly blends with other scene objects.
-        /// </summary>
-        public bool SoftParticleEnabled { get; set; }
+        Material IDrawableObject.Material
+        {
+            get { return material; }
+        }
+        private Material material;
 
         /// <summary>
         /// Gets or sets the emitter prototype of this particle effect.
         /// </summary>
         public IParticleEmitter Emitter
         {
-            get { return emitter ?? (emitter = new PointEmitter()); }
-            set { emitter = value; }
+            get { return emitter; }
+            set
+            {
+                if (value != emitter)
+                {
+                    emitter = (value ?? new PointEmitter());
+                    OnEmitterChanged();
+                }
+            }
         }
         IParticleEmitter emitter;
 
@@ -159,33 +223,12 @@ namespace Nine.Graphics.ParticleEffects
         public ParticleControllerCollection Controllers { get; private set; }
 
         /// <summary>
-        /// Gets a collection of particle effects that is used as the appareance of each
-        /// particle spawned by this particle effect.
-        /// </summary>
-        public ParticleEffectCollection ChildEffects { get; private set; }
-
-        /// <summary>
-        /// Gets a collection of particle effects that is fired when each particle spawned
-        /// by this particle effect is about to die.
-        /// </summary>
-        public ParticleEffectCollection EndingEffects { get; private set; }
-
-        /// <summary>
-        /// Gets or sets user data.
-        /// </summary>
-        public object Tag { get; set; }
-
-        /// <summary>
         /// Gets the approximate particle count.
         /// </summary>
         public int ParticleCount { get; private set; }
-        
-        /// <summary>
-        /// Gets a list of triggers owned by this <c>ParticleEffect</c>.
-        /// </summary>
-        [ContentSerializerIgnore]
-        public IList<IParticleEmitter> ActiveEmitters { get; private set; }
+        #endregion
 
+        #region Events
         /// <summary>
         /// Occurs when a particle is about to die.
         /// </summary>
@@ -196,8 +239,15 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public event ParticleAction ParticleRetired;
 
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+        #endregion
+
+        #region Fields
         // An array of particles, treated as a circular queue.
-        internal int MaxParticleCount = 1024;
+        internal int MaxParticleCount = 0;
         internal int CurrentParticle = 0;
 
         private Particle[] particles;
@@ -205,161 +255,135 @@ namespace Nine.Graphics.ParticleEffects
         private int lastParticle = 0;
 
         private int CurrentController = 0;
-        private float elapsedSeconds = 0;
-        private TimeSpan elapsedTime = TimeSpan.Zero;
         private Random random = new Random();
 
-        private ParticleAction cachedEmit;
-        private ParticleAction cachedForEachAction;
-        private ParticleAction cachedForEachDelegate;
-        private ParticleAction cachedUpdateControllersDelegate;
-        private ParticleAction cachedUpdateParticlesDelegate;
+        private PrimitiveGroup primitive;
+        private float elapsedSeconds;
+        private Vector3 eyePosition;
+        private Matrix viewInverse;
 
+        private int toBeRemoved;
+        private int numFramesBehind;
+        private AutoResetEvent canDraw = new AutoResetEvent(true);
+        private AutoResetEvent canUpdate = new AutoResetEvent(true);
+        #endregion
+
+        #region Constructor
         /// <summary>
-        /// Creates a new particle effect.
+        /// Initializes a new instance of the <see cref="ParticleEffect"/> class.
         /// </summary>
-        public ParticleEffect() : this(32) 
+        public ParticleEffect(GraphicsDevice graphics)
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
 
-        }
-
-        /// <summary>
-        /// Creates a new particle effect.
-        /// </summary>
-        public ParticleEffect(int capacity)
-        {
-            this.MaxParticleCount = capacity;
-            this.particles = new Particle[MaxParticleCount];
-
-            this.Up = Vector3.UnitZ;
             this.Enabled = true;
+            this.Visible = true;
             this.Stretch = 1;
-            this.ReferenceAlpha = 128;
-            this.BackgroundBlendState = null;
-            this.BlendState = BlendState.Additive;
             this.SoftParticleEnabled = false;
+            this.GraphicsDevice = graphics;
             this.Emitter = new PointEmitter();
-            this.ActiveEmitters = new List<IParticleEmitter>();
 
             this.Controllers = new ParticleControllerCollection();
             this.Controllers.ParticleEffect = this;
-
-            this.ChildEffects = new ParticleEffectCollection();
-            this.EndingEffects = new ParticleEffectCollection();
-
-            this.cachedEmit = new ParticleAction(EmitNewParticle);
-            this.cachedForEachDelegate = new ParticleAction(ForEachDelegateMethod);
-            this.cachedUpdateControllersDelegate = new ParticleAction(UpdateControllersDelegateMethod);
-            this.cachedUpdateParticlesDelegate = new ParticleAction(UpdateParticlesDelegateMethod);
         }
+        #endregion
 
-        /// <summary>
-        /// Creates a merged effect from serveral input particle effects.
-        /// See http://nine.codeplex.com/discussions/272121
-        /// </summary>
-        public static ParticleEffect CreateMerged(IEnumerable<ParticleEffect> effects)
+        #region Methods
+        private void EnsureParticlesInitialized()
         {
-            if (effects == null)
-                throw new ArgumentNullException("effects");
-
-            var root = new ParticleEffect(4) 
+            if (particles == null)
             {
-                Emitter = new PointEmitter { EmitCount = 1, Duration = float.MaxValue } 
-            };
-
-            foreach (var effect in effects)
-            {
-                if (effect != null)
-                    root.ChildEffects.Add(effect);
+                this.MaxParticleCount = EstimateMaxParticleCount();
+                this.particles = new Particle[MaxParticleCount];
+                this.primitive = new PrimitiveGroup(GraphicsDevice, MaxParticleCount * 6, 32768);
+                UpdateMaterial();
             }
-            return root;
+        }
+
+        private void UpdateMaterial()
+        {
+#if !WINDOWS_PHONE
+            if (softParticleEnabled)
+                material = new SoftParticleMaterial(GraphicsDevice) { Texture = Texture, DepthFade = softParticleFade, IsTransparent = true, IsAdditive = isAdditive };
+            else
+#endif
+                material = new BasicMaterial(GraphicsDevice) { Texture = Texture, LightingEnabled = false, VertexColorEnabled = true, IsTransparent = true, IsAdditive = isAdditive };
         }
 
         /// <summary>
-        /// Creates an instance of the particle effect.
+        /// Estimates the max particle count base on emitter properties.
         /// </summary>
-        public IParticleEmitter Trigger()
+        private int EstimateMaxParticleCount()
         {
-            var result = Emitter.Clone();
-            ActiveEmitters.Add(result);
-            return result;
+            var particleEmitter = emitter as ParticleEmitter;
+            if (particleEmitter == null)
+                return 32;
+            return UtilityExtensions.UpperPowerOfTwo((int)(
+                particleEmitter.Emission * (particleEmitter.Duration.Max + particleEmitter.Duration.Min) * 0.8f));
         }
 
         /// <summary>
-        /// Creates an instance of the particle effect at the specified position.
+        /// Called when local or absolute transform changed.
         /// </summary>
-        public IParticleEmitter Trigger(Vector3 position)
+        protected override void OnTransformChanged()
         {
-            var result = Emitter.Clone();
-            result.Position = position;
-            ActiveEmitters.Add(result);
-            return result;
+            var absoluteTransform = AbsoluteTransform;
+            var absolutePosition = absoluteTransform.Translation;
+
+            emitter.Position = absolutePosition;
+            emitter.Direction = absoluteTransform.Forward;
+
+            var emitterBounds = emitter.BoundingBox;
+            boundingBox.Min = emitterBounds.Min + absolutePosition;
+            boundingBox.Max = emitterBounds.Max + absolutePosition;
+
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Creates an instance of the particle effect at the specified position.
-        /// </summary>
-        public IParticleEmitter Trigger(Vector3 position, TimeSpan lifetime)
+        private void OnEmitterChanged()
         {
-            var result = Emitter.Clone() as ParticleEmitter;
-            if (result == null)
-                throw new InvalidOperationException("Target must be an instance of ParticleEmitter");
-
-            result.Position = position;
-            result.Lifetime = lifetime;
-            ActiveEmitters.Add(result);
-            return result;
+            OnTransformChanged();
         }
+        #endregion
 
-        /// <summary>
-        /// Creates an instance of the particle effect at the specified position.
-        /// </summary>
-        public IParticleEmitter Trigger(Vector3 position, int emitCount)
-        {
-            var result = Emitter.Clone() as ParticleEmitter;
-            if (result == null)
-                throw new InvalidOperationException("Target must be an instance of ParticleEmitter");
-
-            result.Position = position;
-            result.EmitCount = emitCount;
-            ActiveEmitters.Add(result);
-            return result;
-        }
-
+        #region Update
         /// <summary>
         /// Traverses all active particles.
         /// </summary>
         public void ForEach(ParticleAction action)
         {
-            cachedForEachAction = action;
-            ForEachInternal(cachedForEachDelegate);
-            cachedForEachAction = null;
-        }
-
-        private void ForEachDelegateMethod(ref Particle particle)
-        {
-            if (particle.Age <= 1)
-                cachedForEachAction(ref particles[CurrentParticle]);
-        }
-
-        private void ForEachInternal(ParticleAction action)
-        {
-            if (ParticleCount > 0)
+            try
             {
-                if (firstParticle < lastParticle)
+                if (IsAsync)
+                    canDraw.WaitOne();
+
+                if (ParticleCount > 0)
                 {
-                    // ParticleConstroller<T>.Update requires the CurrentParticle to be the correct index.
-                    for (CurrentParticle = firstParticle; CurrentParticle < lastParticle; CurrentParticle++)
-                        action(ref particles[CurrentParticle]);
+                    if (firstParticle < lastParticle)
+                    {
+                        // ParticleConstroller<T>.Update requires the CurrentParticle to be the correct index.
+                        for (CurrentParticle = firstParticle; CurrentParticle < lastParticle; CurrentParticle++)
+                            if (particles[CurrentParticle].Age <= 1)
+                                action(ref particles[CurrentParticle]);
+                    }
+                    else
+                    {
+                        // UpdateParticles requires the enumeration to always start from firstParticle.
+                        for (CurrentParticle = firstParticle; CurrentParticle < MaxParticleCount; CurrentParticle++)
+                            if (particles[CurrentParticle].Age <= 1)
+                                action(ref particles[CurrentParticle]);
+                        for (CurrentParticle = 0; CurrentParticle < lastParticle; CurrentParticle++)
+                            if (particles[CurrentParticle].Age <= 1)
+                                action(ref particles[CurrentParticle]);
+                    }
                 }
-                else
-                {
-                    // UpdateParticles requires the enumeration to always start from firstParticle.
-                    for (CurrentParticle = firstParticle; CurrentParticle < MaxParticleCount; CurrentParticle++)
-                        action(ref particles[CurrentParticle]);
-                    for (CurrentParticle = 0; CurrentParticle < lastParticle; CurrentParticle++)
-                        action(ref particles[CurrentParticle]);
-                }
+            }
+            finally
+            {
+                if (isAsync)
+                    canUpdate.Set();
             }
         }
 
@@ -368,47 +392,99 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public void Update(TimeSpan elapsedTime)
         {
-            Update(elapsedTime, false);
-        }
-
-        private void Update(TimeSpan elapsedTime, bool supressEmitters)
-        {
-            float elapsedSeconds = (float)elapsedTime.TotalSeconds;
-            
-            if (!supressEmitters)
-                UpdateEmitters(elapsedSeconds);
-            UpdateControllers(elapsedSeconds);
-            UpdateParticles(elapsedTime);
-            RetireParticles();
-
-            for (int i = 0; i < ChildEffects.Count; i++)
+            if (toBeRemoved > 0)
             {
-                ChildEffects[i].Update(elapsedTime, true);
-            }
-
-            for (int i = 0; i < EndingEffects.Count; i++)
-            {
-                EndingEffects[i].Update(elapsedTime);
-            }
-        }
-
-        private void UpdateEmitters(float elapsedSeconds)
-        {
-            if (!Enabled)
+                // Remove this particle system from the parent container
+                var container = Parent as Nine.Graphics.ObjectModel.IContainer;
+                if (container != null && container.Children != null)
+                    container.Children.Remove(this);
                 return;
+            }
 
-            for (int i = 0; i < ActiveEmitters.Count; i++)
+            EnsureParticlesInitialized();
+            elapsedSeconds = (float)elapsedTime.TotalSeconds;
+
+            Interlocked.Increment(ref numFramesBehind);
+
+            if (isAsync)
+                UpdateAsync(this);
+            else
+                Update();
+
+            InsideViewFrustum = false;
+        }
+
+        /// <summary>
+        /// Updates using the elapsed time saved from last frame.
+        /// </summary>
+        private void Update()
+        {
+            try
             {
-                if (ActiveEmitters[i].Update(elapsedSeconds, cachedEmit))
+                if (isAsync)
+                    canUpdate.WaitOne();
+
+                var dt = Math.Min(1.0f / 30, elapsedSeconds);
+
+                UpdateEmitter(dt);
+                UpdateParticles(dt);
+                RetireParticles();
+                UpdateParticlePrimitive();
+                Thread.Sleep(100);
+            }
+            finally
+            {
+                if (isAsync && Interlocked.Decrement(ref numFramesBehind) <= maxFramesBehind)
+                    canDraw.Set();
+            }
+        }
+
+        private void UpdateParticles(float elapsedSeconds)
+        {
+            if (ParticleCount > 0)
+            {
+                if (firstParticle < lastParticle)
                 {
-                    ActiveEmitters.RemoveAt(i);
-                    i--;
-                    continue;
+                    // ParticleConstroller<T>.Update requires the CurrentParticle to be the correct index.
+                    for (CurrentParticle = firstParticle; CurrentParticle < lastParticle; CurrentParticle++)
+                        UpdateParticle(elapsedSeconds, ref particles[CurrentParticle]);
+                }
+                else
+                {
+                    // UpdateParticles requires the enumeration to always start from firstParticle.
+                    for (CurrentParticle = firstParticle; CurrentParticle < MaxParticleCount; CurrentParticle++)
+                        UpdateParticle(elapsedSeconds, ref particles[CurrentParticle]);
+                    for (CurrentParticle = 0; CurrentParticle < lastParticle; CurrentParticle++)
+                        UpdateParticle(elapsedSeconds, ref particles[CurrentParticle]);
                 }
             }
         }
 
-        private void EmitNewParticle(ref Particle particle)
+        private void UpdateParticle(float elapsedSeconds, ref Particle particle)
+        {
+            for (CurrentController = 0; CurrentController < Controllers.Count; CurrentController++)
+                Controllers[CurrentController].Update(elapsedSeconds, ref particles[CurrentParticle]);
+
+            particle.Update(elapsedSeconds);
+
+            if (particle.Age > 1 && particle.Age < float.MaxValue)
+            {
+                if (ParticleRetired != null)
+                    ParticleRetired(ref particle);
+                particle.Age = float.MaxValue;
+            }
+        }
+
+        private void UpdateEmitter(float elapsedSeconds)
+        {
+            if (Emitter != null && Emitter.Update(this, elapsedSeconds))
+                Interlocked.Exchange(ref toBeRemoved, 1);
+        }
+
+        /// <summary>
+        /// Emits a new particle.
+        /// </summary>
+        public void Emit(ref Particle particle)
         {
             CurrentParticle = lastParticle;
 
@@ -443,66 +519,6 @@ namespace Nine.Graphics.ParticleEffects
             lastParticle = (lastParticle + 1) % MaxParticleCount;
         }
         
-        private void UpdateControllers(float elapsedTime)
-        {   
-            if (ParticleCount <= 0)
-                return;
-
-            this.elapsedSeconds = elapsedTime;
-            for (CurrentController = 0; CurrentController < Controllers.Count; CurrentController++)
-            {                
-                ForEachInternal(cachedUpdateControllersDelegate);
-            }
-        }
-
-        private void UpdateControllersDelegateMethod(ref Particle particle)
-        {
-            Controllers[CurrentController].Update(elapsedSeconds, ref particle);
-        }
-
-        private void UpdateParticles(TimeSpan elapsedTime)
-        {
-            this.elapsedTime = elapsedTime;
-            this.elapsedSeconds = (float)(elapsedTime.TotalSeconds);
-
-            ForEachInternal(cachedUpdateParticlesDelegate);
-        }
-
-        private void UpdateParticlesDelegateMethod(ref Particle particle)
-        {
-            particle.Update(elapsedSeconds);
-
-            for (int i = 0; i < ChildEffects.Count; i++)
-            {
-                var childEffect = ChildEffects[i];
-                
-                if (childEffect.ActiveEmitters.Count > 1)
-                    throw new InvalidOperationException();
-                
-                if (childEffect.ActiveEmitters.Count <= 0)
-                    childEffect.Trigger();
-
-                childEffect.ActiveEmitters[0].Position = particle.Position;
-                childEffect.UpdateEmitters(elapsedSeconds);
-            }
-
-            if (particle.Age > 1 && particle.Age < float.MaxValue)
-            {
-                if (EndingEffects.Count > 0)
-                {
-                    for (int i = 0; i < EndingEffects.Count; i++)
-                        EndingEffects[i].Trigger(particle.Position);
-                }
-
-                if (ParticleRetired != null)
-                {
-                    ParticleRetired(ref particle);
-                }
-
-                particle.Age = float.MaxValue;
-            }
-        }
-
         private void RetireParticles()
         {
             while (ParticleCount > 0 && particles[firstParticle].Age > 1)
@@ -512,6 +528,146 @@ namespace Nine.Graphics.ParticleEffects
             }
         }
 
+        private void UpdateParticlePrimitive()
+        {
+            primitive.Clear();
+
+            if (ParticleCount > 0 && Texture != null)
+            {
+                if (firstParticle < lastParticle)
+                {
+                    // ParticleConstroller<T>.Update requires the CurrentParticle to be the correct index.
+                    for (CurrentParticle = firstParticle; CurrentParticle < lastParticle; CurrentParticle++)
+                        AddParticlePrimitive(ref particles[CurrentParticle]);
+                }
+                else
+                {
+                    // UpdateParticles requires the enumeration to always start from firstParticle.
+                    for (CurrentParticle = firstParticle; CurrentParticle < MaxParticleCount; CurrentParticle++)
+                        AddParticlePrimitive(ref particles[CurrentParticle]);
+                    for (CurrentParticle = 0; CurrentParticle < lastParticle; CurrentParticle++)
+                        AddParticlePrimitive(ref particles[CurrentParticle]);
+                }
+            }
+        }
+
+        private void AddParticlePrimitive(ref Particle particle)
+        {
+            if (particle.Age <= 1)
+            {
+                if (ParticleType == ParticleType.Billboard)
+                {
+                    primitive.AddBillboard(Texture,
+                             ref particle.Position,
+                             particle.Size,
+                             particle.Size,
+                             particle.Rotation,
+                             null, null,
+                             particle.Color * particle.Alpha, ref viewInverse);
+                }
+                else if (ParticleType == ParticleType.ConstrainedBillboard)
+                {
+                    Vector3 forward = Vector3.Normalize(particle.Velocity);
+                    forward *= 0.5f * particle.Size * Stretch * Texture.Width / Texture.Height;
+
+                    primitive.AddConstrainedBillboard(Texture,
+                                                particle.Position - forward,
+                                                particle.Position + forward,
+                                                particle.Size,
+                                                null, null,
+                                                particle.Color * particle.Alpha, eyePosition);
+                }
+                else if (ParticleType == ParticleType.ConstrainedBillboardUp)
+                {
+                    Vector3 forward = 0.5f * Vector3.Up * particle.Size * Stretch * Texture.Width / Texture.Height;
+
+                    primitive.AddConstrainedBillboard(Texture,
+                                                particle.Position - forward,
+                                                particle.Position + forward,
+                                                particle.Size,
+                                                null, null,
+                                                particle.Color * particle.Alpha, eyePosition);
+                }
+            }
+        }
+        #endregion
+
+        #region Draw
+        public void BeginDraw(DrawingContext context)
+        {
+            InsideViewFrustum = true;
+        }
+
+        public void Draw(DrawingContext context, Material material)
+        {
+            // Particle effect does not support other rendering modes.
+            if (material != this.material)
+                return;
+            
+            EnsureParticlesInitialized();
+
+            try
+            {
+                if (isAsync)
+                    canDraw.WaitOne();
+
+                eyePosition = context.EyePosition;
+                viewInverse = context.matrices.viewInverse;
+                primitive.Draw(context, material);
+            }
+            finally
+            {
+                if (isAsync)
+                    canUpdate.Set();
+            }
+        }
+
+        void IDrawableObject.EndDraw(DrawingContext context) { }
+        #endregion
+
+        #region Threading
+        /// <summary>
+        /// Gets or sets max number of frames the update frame can run behind the draw frame.
+        /// </summary>
+        public static int MaxFramesBehind
+        {
+            get { return maxFramesBehind; }
+            set { maxFramesBehind = value; }
+        }
+        public static int maxFramesBehind = 40000;
+
+        static AutoResetEvent ParticleQueueSyncEvent;
+        static Thread ParticleThread;
+        static ConcurrentQueue<ParticleEffect> PendingUpdates;
+        
+        static void UpdateAsync(ParticleEffect particleEffect)
+        {
+            if (ParticleThread == null)
+            {
+                ParticleQueueSyncEvent = new AutoResetEvent(false);
+                PendingUpdates = new ConcurrentQueue<ParticleEffect>();
+                ParticleThread = new Thread((ThreadStart)ParticleUpdateWorker);
+                ParticleThread.IsBackground = true;
+                ParticleThread.Name = "ParticleEffect";
+                ParticleThread.Start();
+            }
+            PendingUpdates.Enqueue(particleEffect);
+            ParticleQueueSyncEvent.Set();
+        }
+
+        static void ParticleUpdateWorker()
+        {
+            while (true)
+            {
+                ParticleQueueSyncEvent.WaitOne();
+                ParticleEffect particleEffect;
+                while (PendingUpdates.TryDequeue(out particleEffect))
+                    particleEffect.Update();
+            }
+        }
+        #endregion
+
+        #region Dispose
         public void Dispose()
         {
             Dispose(true);
@@ -523,6 +679,11 @@ namespace Nine.Graphics.ParticleEffects
         {
             if (disposing)
             {
+                if (primitive != null)
+                {
+                    primitive.Dispose();
+                    primitive = null;
+                }
             }
         }
 
@@ -530,5 +691,6 @@ namespace Nine.Graphics.ParticleEffects
         {
             Dispose(false);
         }
+        #endregion
     }
 }

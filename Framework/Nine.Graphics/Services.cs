@@ -17,17 +17,29 @@ namespace Nine.Graphics
     class GraphicsDeviceServiceProvider : IServiceProvider, IGraphicsDeviceService, IGraphicsDeviceManager
     {
         GraphicsDevice graphics;
-
+        IServiceProvider serviceProvider;
+        
         public GraphicsDeviceServiceProvider(GraphicsDevice graphics)
+            : this(graphics, null)
+        {
+
+        }
+
+        public GraphicsDeviceServiceProvider(GraphicsDevice graphics, IServiceProvider serviceProvider)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
             this.graphics = graphics;
+            this.serviceProvider = serviceProvider;
         }
 
         public object GetService(Type serviceType)
         {
+            var service = serviceProvider.GetService(serviceType);
+            if (service != null)
+                return service;
+
             if (serviceType == typeof(IGraphicsDeviceService) ||
                 serviceType == typeof(IGraphicsDeviceManager))
             {

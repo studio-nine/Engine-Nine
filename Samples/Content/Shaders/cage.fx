@@ -141,33 +141,14 @@ float4 strokeTexPS(vertexOutput IN) : COLOR {
 /*************/
 
 technique wires <
-	string Script = "Pass=p0; Pass=p1;";
+    string Script = "Pass=p0; Pass=p1;";
 > {
     pass p0  <
-		string Script = "Draw=geometry;";
+        string Script = "Draw=geometry;";
     > {        
         VertexShader = compile vs_2_0 mainVS();
-        ZEnable = true;
-        ZWriteEnable = false;
-        CullMode = CW;
-		AlphaBlendEnable = true;
-		SrcBlend = One;
-		DestBlend = InvSrcColor;
         PixelShader = compile ps_2_0 strokeTexPS();
     }
-    pass p1  <
-		string Script = "Draw=geometry;";
-    > {        
-        VertexShader = compile vs_2_0 mainVS();
-        ZEnable = true;
-        ZWriteEnable = false;
-        CullMode = CCW;
-		AlphaBlendEnable = true;
-		SrcBlend = One;
-		DestBlend = InvSrcColor;
-        PixelShader = compile ps_2_0 strokeTexPS();
-    }
-
 }
 
 /***************************** eof ***/

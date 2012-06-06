@@ -8,9 +8,12 @@
 
 #region Using Directives
 using System;
+using System.Collections.Generic;
+using System.Windows.Markup;
+using System.Xaml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-
+using Nine.Content;
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -18,7 +21,9 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Base class for all objects that has a transform and a bounds.
     /// </summary>
-    public abstract class Transformable : IContainer, IContainedObject
+    [RuntimeNameProperty("Name")]
+    [DictionaryKeyProperty("Name")]
+    public abstract class Transformable : IContainedObject, IAttachedPropertyStore
     {
         #region Properties
         /// <summary>
@@ -28,12 +33,14 @@ namespace Nine.Graphics.ObjectModel
         {
             get { return parent; }
 
-            // Don't allow externals to set parents
+            // To be used by DrawingGroup.
             internal set 
             {
-                parent = value; 
-                MarkAbsoluteTransformsDirty();
-                OnTransformChanged();
+                if (parent != value)
+                {
+                    parent = value; 
+                    NotifyTransformChanged();
+                }
             }
         }
         private Transformable parent;
@@ -44,7 +51,7 @@ namespace Nine.Graphics.ObjectModel
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets any custom data.
+        /// Gets or sets any user data.
         /// </summary>
         public object Tag { get; set; }
         #endregion
@@ -53,37 +60,24 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the transform of this object.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Matrix Transform
         {
             get { return transform; }
-            set
-            {
-                Matrix oldValue = transform;
-                transform = value;
-                MarkAbsoluteTransformsDirty();
-            }
+            set { transform = value; NotifyTransformChanged(); }
         }
         private Matrix transform = Matrix.Identity;
-
+        
         /// <summary>
         /// Called when local or absolute transform changed.
         /// </summary>
-        protected virtual void OnTransformChanged()
+        protected virtual void OnTransformChanged() 
         {
-            if (TransformChanged != null)
-                TransformChanged(this, EventArgs.Empty);
-        }
 
-        /// <summary>
-        /// Occurs when transform changed.
-        /// </summary>
-        public event EventHandler<EventArgs> TransformChanged;
+        }
         
         /// <summary>
         /// Gets the absolute transform of this drawable.
         /// </summary>
-        [ContentSerializerIgnore()]
         public Matrix AbsoluteTransform 
         {
             get 
@@ -94,45 +88,108 @@ namespace Nine.Graphics.ObjectModel
                         absoluteTransform = transform;
                     else
                         absoluteTransform = transform * Parent.AbsoluteTransform;
+                    isAbsoluteTransformDirty = false;
                 }
                 return absoluteTransform; 
             } 
         }
-        private Matrix absoluteTransform = Matrix.Identity;
-        private bool isAbsoluteTransformDirty = false; 
+        internal Matrix absoluteTransform = Matrix.Identity;
+        internal bool isAbsoluteTransformDirty = false;
 
-        private void MarkAbsoluteTransformsDirty()
+        // To be used by DrawingGroup only.
+        internal void NotifyTransformChanged()
         {
             isAbsoluteTransformDirty = true;
-            ContainerTraverser.Traverse<Transformable>(this, transformable =>
-            {
-                transformable.isAbsoluteTransformDirty = true;
-                transformable.OnTransformChanged();
-                return TraverseOptions.Continue;
-            });
+            OnTransformChanged();
         }
         #endregion
 
-        #region IContainer
-        IContainer IContainedObject.Parent
+        #region IContainedObject
+        object IContainedObject.Parent
         {
             get { return Parent; }
         }
+        #endregion
 
-        int IContainer.Count
+        #region IAttachedPropertyStore
+        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
         {
-            get { return ChildCount; }
+            if (attachedProperties != null)
+                ((ICollection<KeyValuePair<AttachableMemberIdentifier, object>>)attachedProperties).CopyTo(array, index);
         }
 
-        /// <summary>
-        /// Gets the number of child objects
-        /// </summary>
-        protected virtual int ChildCount { get { return 0; } }
+        int IAttachedPropertyStore.PropertyCount
+        {
+            get { return attachedProperties != null ? attachedProperties.Count : 0; }
+        }
+
+        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
+        {
+            if (attachedProperties == null)
+                return false;
+
+            object oldValue;
+            attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
+            AttachedPropertyChangedEventArgs.OldValue = oldValue;
+            if (attachedProperties.Remove(attachableMemberIdentifier))
+            {
+                if (AttachedPropertyChanged != null)
+                {
+                    AttachedPropertyChangedEventArgs.Property = attachableMemberIdentifier;
+                    AttachedPropertyChangedEventArgs.NewValue = null;
+                    AttachedPropertyChanged(this, AttachedPropertyChangedEventArgs);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value)
+        {
+            if (attachedProperties == null)
+                attachedProperties = new Dictionary<AttachableMemberIdentifier, object>();
+
+            object oldValue;
+            attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
+            AttachedPropertyChangedEventArgs.OldValue = oldValue;
+            attachedProperties[attachableMemberIdentifier] = value;
+
+            if (AttachedPropertyChanged != null)
+            {
+                AttachedPropertyChangedEventArgs.Property = attachableMemberIdentifier;
+                AttachedPropertyChangedEventArgs.NewValue = value;
+                AttachedPropertyChanged(this, AttachedPropertyChangedEventArgs);
+            }
+        }
+
+        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value)
+        {
+            value = null;
+            return attachedProperties != null && attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
+        }
+
+        [ContentSerializer]
+        internal Dictionary<AttachableMemberIdentifier, object> AttachedProperties
+        {
+            get { return attachedProperties; }
+            set 
+            {
+                if (value != null)
+                    foreach (var pair in value)
+                        pair.Key.Apply(this, pair.Value);
+            }
+        }
+        private Dictionary<AttachableMemberIdentifier, object> attachedProperties;
 
         /// <summary>
-        /// Copies all the child objects to the target array.
+        /// Reusing this same event args.
         /// </summary>
-        public virtual void CopyTo(object[] array, int startIndex) { }
+        private static AttachedPropertyChangedEventArgs AttachedPropertyChangedEventArgs = new AttachedPropertyChangedEventArgs(null, null, null);
+
+        /// <summary>
+        /// Occurs when any of the attached property changed.
+        /// </summary>
+        public event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
         #endregion
 
         #region ToString
@@ -141,7 +198,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public override string ToString()
         {
-            return Name != null ? Name.ToString() : base.ToString();
+            return Name != null ? Name : base.ToString();
         }
         #endregion
     }

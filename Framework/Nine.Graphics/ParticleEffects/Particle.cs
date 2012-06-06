@@ -67,6 +67,10 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public float Age;
 
+        /// <summary>
+        /// Gets or sets the animation frame of this particle.
+        /// </summary>
+        public int Frame;
 
         internal void Update(float elapsedTime)
         {

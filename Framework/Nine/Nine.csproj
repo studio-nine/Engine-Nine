@@ -92,6 +92,14 @@
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
     <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="Content\ContentReflector.cs" />
+    <Compile Include="AttachedPropertyChangedEventArgs.cs" />
+    <Compile Include="Content\ContentProperties.cs" />
+    <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="DependencyGraph.cs" />
+    <Compile Include="FastList.cs" />
+    <Compile Include="GarbageDetector.cs" />
+    <Compile Include="PerformanceCounter.cs" />
     <Compile Include="ObjectFactory.cs" />
     <Compile Include="QuadTreeSceneManager.cs" />
     <Compile Include="Component.cs" />
@@ -124,14 +132,11 @@
     <Compile Include="OctreeSceneManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SceneManager.cs" />
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="World.cs" />
     <Compile Include="WorldObject.cs" />
-    <None Include="..\..\Tools\TextTemplates\Content.Model.tth">
-      <Link>TextTempates\Content.Model.tth</Link>
-    </None>
+    <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
     <None Include="..\..\Tools\TextTemplates\Content.Reader.tth">
       <Link>TextTempates\Content.Reader.tth</Link>
     </None>
@@ -143,9 +148,6 @@
     </None>
     <None Include="..\..\Tools\TextTemplates\Document.tth">
       <Link>TextTempates\Document.tth</Link>
-    </None>
-    <None Include="..\..\Tools\TextTemplates\Materials.tth">
-      <Link>TextTempates\Materials.tth</Link>
     </None>
     <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">
       <Link>Nine.Content.Reader.tt</Link>

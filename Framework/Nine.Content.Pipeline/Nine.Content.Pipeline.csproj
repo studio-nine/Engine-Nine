@@ -101,23 +101,11 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Model.Generated.cs">
-      <Link>Nine.Content.Model.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Content.Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Content.Writer.Generated.cs">
       <Link>Nine.Content.Writer.Generated.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Writer.tt</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Model.Generated.cs">
-      <Link>Nine.Graphics.Content.Model.Generated.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Nine.Graphics.Content.Model.tt</DependentUpon>
     </Compile>
     <Compile Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.Generated.cs">
       <Link>Nine.Graphics.Content.Writer.Generated.cs</Link>
@@ -126,66 +114,46 @@
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
     <Compile Include="Animations\AnimationContent.cs" />
-    <Compile Include="Animations\AvatarAnimationContent.cs" />
-    <Compile Include="Components\GraphicsComponentContent.cs" />
     <Compile Include="ContentReference.cs" />
+    <Compile Include="Content\PipelineBuilder.cs" />
+    <Compile Include="Content\PipelineBuildLogger.cs" />
+    <Compile Include="Content\PipelineConstants.cs" />
+    <Compile Include="Content\PipelineContentManager.cs" />
+    <Compile Include="Content\PipelineImporterContext.cs" />
+    <Compile Include="Content\PipelineProcessorContext.cs" />
     <Compile Include="Design\TransformConverter.cs" />
-    <Compile Include="Graphics\Effects\LeveledMaterialContent.cs" />
-    <Compile Include="Graphics\ObjectModel\DecalContent.cs" />
-    <Compile Include="Graphics\ScreenEffects\ScreenEffectContent.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
+    <Compile Include="Graphics\Materials\MaterialGroupWriter.cs" />
+    <Compile Include="Graphics\Materials\CustomMaterialWriter.cs" />
+    <Compile Include="Graphics\Materials\CustomEffectContent.cs" />
+    <Compile Include="Graphics\PipelineGraphics.cs" />
     <Compile Include="Navigation\PathGridBuilder.cs" />
     <Compile Include="Navigation\PathGridContent.cs" />
     <Compile Include="Physics\PhysicsComponentContent.cs" />
     <Compile Include="Physics\PhysicsShapeContent.cs" />
+    <Compile Include="Processors\CustomEffectProcessor.cs" />
+    <Compile Include="Processors\DefaultContentProcessor.cs" />
+    <Compile Include="Processors\MaterialGroupProcessor.cs" />
     <Compile Include="SelfProcessAttribute.cs" />
-    <Compile Include="Design\CurveConverter.cs" />
-    <Compile Include="Graphics\ObjectModel\DrawableParticleEffectContent.cs" />
     <Compile Include="ObjectGraph.cs" />
     <Compile Include="Dictionary.cs" />
     <Compile Include="NotificationCollectionWriter.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
     <Compile Include="Design\BlendStateConverter.cs" />
-    <Compile Include="Graphics\ContentGraphics.cs" />
     <Compile Include="DefaultContentProcessorAttribute.cs" />
-    <Compile Include="Graphics\Effects\BasicLinkedMaterialContent.cs" />
-    <Compile Include="Graphics\Effects\LinkedMaterialContent.cs" />
-    <Compile Include="Graphics\Effects\LinkedEffectBuilder.cs" />
-    <Compile Include="Graphics\Effects\ModelMaterialContent.cs" />
-    <Compile Include="Graphics\Effects\TerrainMaterialContent.cs" />
-    <Compile Include="Graphics\ObjectModel\TransformBindingContent.cs" />
-    <Compile Include="Graphics\ObjectModel\SceneContent.cs" />
-    <Compile Include="Graphics\ObjectModel\DisplayObjectContent.cs" />
-    <Compile Include="Graphics\ObjectModel\SpotLightContent.cs" />
-    <Compile Include="Graphics\ObjectModel\PointlLightContent.cs" />
-    <Compile Include="Graphics\ObjectModel\DirectionalLightContent.cs" />
-    <Compile Include="Graphics\ObjectModel\DrawableModelContent.cs" />
-    <Compile Include="Graphics\ObjectModel\FogContent.cs" />
-    <Compile Include="Graphics\ObjectModel\DrawableSurfaceContent.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
-    <Compile Include="Graphics\Effects\CustomEffectContent.cs" />
-    <Compile Include="Graphics\ParticleEffects\MergedParticleEffectContent.cs" />
     <Compile Include="Importers\XamlImporter.cs" />
     <Compile Include="Importers\ManifestImporter.cs" />
     <Compile Include="ContentProcessorContextExtensions.cs" />
-    <Compile Include="Processors\AvatarAnimationProcessor.cs" />
-    <Compile Include="Processors\LinkedMaterialProcessor.cs" />
-    <Compile Include="Processors\ModelMaterialProcessor.cs" />
-    <Compile Include="Processors\DefaultContentProcessor.cs" />
-    <Compile Include="Processors\TerrainMaterialProcessor.cs" />
-    <Compile Include="Processors\CustomEffectProcessor.cs" />
     <Compile Include="Processors\ManifestProcessor.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Graphics\BlendStateSerializer.cs" />
     <Compile Include="RangeSerializer.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\LinkedEffectPartContents.cs" />
-    <Compile Include="Graphics\Effects\EffectParts\LinkedEffectParts.Designer.cs">
+    <Compile Include="Graphics\Materials\MaterialPartShaders.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>LinkedEffectParts.resx</DependentUpon>
+      <DependentUpon>MaterialPartShaders.resx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Effects\LinkedEffectContent.cs" />
-    <Compile Include="Graphics\ParticleEffects\ParticleEffectContent.cs" />
-    <Compile Include="Processors\LinkedEffectProcessor.cs" />
     <Compile Include="Processors\ModelCollisionProcessor.cs" />
     <Compile Include="Processors\NormalTextureProcessor.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -194,192 +162,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="WorldPart.cs" />
-    <Compile Include="StitchUp\FragmentImporter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\CodeBlockNodeBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\EnumExtensionMethods.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FloatToken.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentBlockNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\FragmentSource.cs" />
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\HeaderCodeBlockNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\IdentifierToken.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\IntToken.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralToken.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\LiteralTokenType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParameterBlockType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ParseNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeBlockNodeCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderCodeToken.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderProfile.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\ShaderType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\StitchedEffectNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\StringToken.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueBlockNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniqueNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TechniquePassNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\Token.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\TokenType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\CodeModel\VariableDeclarationNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Compiler\StitchedEffectBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedEffectSymbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\StitchedFragmentSymbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniquePassSymbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\EffectModel\TechniqueSymbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\EffectCodeGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\ExportedValueGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\GeneratorContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\HeaderCodeGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\ParameterGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\SamplerGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\ScriptTextWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\SemanticGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\ShaderGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\StructGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Generator\TechniqueGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\BufferPosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventArgs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\ErrorEventHandler.cs" />
-    <Compile Include="StitchUp\FragmentLinking\Parser\FragmentParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\Keywords.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\Lexer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\Parser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\ParserException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\StitchedEffectParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\Parser\TextBuffer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportDictionary.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\PreProcessor\ExportedValue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\FragmentLinking\PreProcessor\StitchedEffectPreProcessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\Graphics\FragmentContent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\Graphics\StitchedEffectContent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\ParsingImporter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\Processors\StitchedEffectModelProcessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\Processors\StitchedEffectProcessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StitchUp\StitchedEffectImporter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Transform.cs" />
+    <Compile Include="Xaml\Degrees.cs" />
+    <Compile Include="Xaml\ExternalReference.cs" />
+    <Compile Include="Xaml\TextureTransform.cs" />
+    <Compile Include="Xaml\Transform.cs" />
     <Compile Include="TreeWriter.cs" />
     <Compile Include="Graphics\TextureListContent.cs" />
     <Compile Include="Importers\SequentialTextureListImporter.cs" />
@@ -394,6 +180,10 @@
     <Compile Include="Processors\HeightmapProcessor.cs" />
     <Compile Include="Processors\GeometryProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xaml\ContentReference.cs" />
+    <Compile Include="Xaml\MarkupExtensionWriters.cs" />
+    <Compile Include="Xaml\PropertyInstance.cs" />
+    <Compile Include="Xaml\XamlSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nine.Graphics\Nine.Graphics.csproj">
@@ -432,10 +222,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Graphics\Effects\EffectParts\LinkedEffectParts.resx">
+    <EmbeddedResource Include="Graphics\Materials\MaterialPartShaders.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>LinkedEffectParts.Designer.cs</LastGenOutput>
+      <LastGenOutput>MaterialPartShaders.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -443,65 +233,43 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Tools\TextTemplates\Nine.Content.Model.tt">
-      <Link>Nine.Content.Model.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Content.Model.Generated.cs</LastGenOutput>
-    </None>
     <None Include="..\..\Tools\TextTemplates\Nine.Content.Writer.tt">
       <Link>Nine.Content.Writer.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Content.Writer.Generated.cs</LastGenOutput>
-    </None>
-    <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Model.tt">
-      <Link>Nine.Graphics.Content.Model.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Content.Model.Generated.cs</LastGenOutput>
+      <LastGenOutput>Nine.Content.Writer1.Generated.cs</LastGenOutput>
     </None>
     <None Include="..\..\Tools\TextTemplates\Nine.Graphics.Content.Writer.tt">
       <Link>Nine.Graphics.Content.Writer.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Nine.Graphics.Content.Writer.Generated.cs</LastGenOutput>
+      <LastGenOutput>Nine.Graphics.Content.Writer1.Generated.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Effects\EffectParts\Shaders\AmbientLight.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\BasicTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\BeginLight.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaOverlay.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaSpecular.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\BasicTextureAlphaNone.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLightBuffer.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\Material.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredPixelShaderOutput.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\NormalMappedSplatterTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DetailTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DeferredLights.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\EmissiveMap.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\SpecularMap.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\SpotLight.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PointLight.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\SplatterTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\ScreenEffect.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\NormalMap.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\Threshold.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\RadicalBlur.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\ShadowMap.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\EnvironmentMap.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DirectionalLight.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\DualTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\EndLight.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\Fog.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\OverlayTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PixelShaderOutput.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PositionColor.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PositionColorNormalTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PositionColorTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PositionNormalTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\PositionTexture.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\SkinTransform.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\ColorMatrix.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\TextureTransform.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\VertexShaderOutput.fragment" />
-    <None Include="Graphics\Effects\EffectParts\Shaders\VertexTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\AmbientLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DiffuseTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\BeginLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredLightBuffer.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredPixelShaderOutput.fragment" />
+    <None Include="Graphics\Materials\Shaders\NormalMappedSplatterTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\DetailTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\DeferredLights.fragment" />
+    <None Include="Graphics\Materials\Shaders\EmissiveMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\SpecularMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\SpotLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\PointLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\SplatterTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\ScreenEffect.fragment" />
+    <None Include="Graphics\Materials\Shaders\NormalMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\RadicalBlur.fragment" />
+    <None Include="Graphics\Materials\Shaders\ShadowMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\EnvironmentMap.fragment" />
+    <None Include="Graphics\Materials\Shaders\DirectionalLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\DualTexture.fragment" />
+    <None Include="Graphics\Materials\Shaders\EndLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\Fog.fragment" />
+    <None Include="Graphics\Materials\Shaders\SkinTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\ColorMatrix.fragment" />
+    <None Include="Graphics\Materials\Shaders\TextureTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\VertexShaderOutput.fragment" />
+    <None Include="Graphics\Materials\Shaders\VertexTransform.fragment" />
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
