@@ -36,12 +36,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.BounceCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.BounceCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.BounceCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.BounceCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -70,12 +70,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.CustomCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.CustomCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.CustomCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.CustomCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -104,12 +104,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ElasticCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ElasticCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ElasticCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ElasticCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -138,12 +138,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ExponentialCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ExponentialCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.ExponentialCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.ExponentialCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -175,12 +175,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.GridSceneManagerReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.GridSceneManagerReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.GridSceneManager, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.GridSceneManager, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -208,12 +208,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.LinearCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.LinearCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.LinearCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.LinearCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -241,12 +241,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SinCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SinCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SinCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SinCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -274,12 +274,12 @@ namespace Nine.Content.Pipeline
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SmoothCurveReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SmoothCurveReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.SmoothCurve, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.SmoothCurve, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }
@@ -312,12 +312,12 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.AnimationPlayerReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.AnimationPlayerReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.AnimationPlayer, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.AnimationPlayer, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -346,12 +346,12 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.DelayAnimationReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.DelayAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.DelayAnimation, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.DelayAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -381,12 +381,12 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.LayeredAnimationReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.LayeredAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.LayeredAnimation, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.LayeredAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -416,12 +416,12 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.SequentialAnimationReader, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.SequentialAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.SequentialAnimation, Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.SequentialAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -464,12 +464,12 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.TweenAnimationReader`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.TweenAnimationReader`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.TweenAnimation`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.TweenAnimation`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

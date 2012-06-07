@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Test", "Nine.Test\Nine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Physics", "Nine.Physics\Nine.Physics.csproj", "{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}"
 EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "Nine.Modeling", "Nine.Modeling\Nine.Modeling.modelproj", "{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,22 +133,6 @@ Global
 		{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}.Release|x86.ActiveCfg = Release|x86
 		{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}.Release|x86.Build.0 = Release|x86
 		{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}.Release|Xbox 360.ActiveCfg = Release|x86
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Win32.ActiveCfg = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Windows Phone.ActiveCfg = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|x86.ActiveCfg = Release|Any CPU
-		{54FD9FB7-F6DA-439C-BA2F-3F4DF690C1A0}.Release|Xbox 360.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

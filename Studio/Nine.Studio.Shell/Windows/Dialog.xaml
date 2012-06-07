@@ -1,0 +1,45 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:shell="http://schemas.microsoft.com/winfx/2006/xaml/presentation/shell"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+             xmlns:nine="clr-namespace:Nine.Studio.Shell.Behaviors" x:Name="userControl"
+             mc:Ignorable="d" x:Class="Nine.Studio.Shell.Windows.Dialog"
+             d:DesignHeight="300" d:DesignWidth="583">
+
+    <DockPanel Background="{x:Null}">
+        <Grid DockPanel.Dock="{Binding Dock, ElementName=userControl}" Background="Black" Width="445">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            
+            <Rectangle Grid.Column="1" Fill="{StaticResource Brush-Accent}" HorizontalAlignment="Left" Height="5" VerticalAlignment="Bottom" Width="120"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="NoWrap" Text="{Binding Header, Converter={StaticResource ToUpperConverter}, ElementName=userControl}" Foreground="{StaticResource Brush-HighlightText}" FontFamily="Segoe UI" FontSize="26.667" FontWeight="SemiBold" Margin="0,0,0,17.53" ClipToBounds="True" d:LayoutOverrides="Height"/>
+            <StackPanel Grid.Column="1" Grid.Row="2">
+                <TextBlock TextWrapping="Wrap" Text="{Binding Description, ElementName=userControl}" Foreground="{StaticResource Brush-HighlightText}" FontSize="13.333" Grid.RowSpan="2"/>
+                <wpf:PropertyGrid x:Name="PropertyGrid" Style="{StaticResource PropertyGrid-Metro}" />
+            </StackPanel>
+            <Rectangle Grid.Column="1" Grid.Row="3" Fill="{StaticResource Brush-Accent}" />
+            <StackPanel x:Name="buttons" Grid.Column="1" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <!--
+            <Border BorderThickness="10" Margin="-5" Grid.RowSpan="5" Grid.ColumnSpan="3" BorderBrush="Black" >
+                <Border.Effect>
+                    <BlurEffect Radius="8"/>
+                </Border.Effect>
+            </Border>
+            -->
+        </Grid>
+        <Rectangle Fill="Transparent" />
+    </DockPanel>
+    
+</UserControl>

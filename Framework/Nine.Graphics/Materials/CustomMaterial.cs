@@ -104,10 +104,14 @@ namespace Nine.Graphics.Materials
     }
     #endregion
 
-    #region CustomEffectReader
-    class CustomEffectReader : ContentTypeReader<Effect>
+    #region CustomEffectReader    
+    class CustomEffectReader : ContentTypeReader
     {
-        protected override Effect Read(ContentReader input, Effect existingInstance)
+        // To avoid conflict with the built-in effect reader, we walkaround this 
+        // by setting the target type of something unique.
+        public CustomEffectReader() : base(typeof(CustomEffectReader)) { }
+
+        protected override object Read(ContentReader input, object existingInstance)
         {
 #if SILVERLIGHT
             var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;

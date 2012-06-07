@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:Nine.Studio.Shell.Converters"
+                    xmlns:ec="clr-namespace:Microsoft.Windows.Controls.Core.Converters;assembly=WPFToolkit.Extended">
+
+    <c:IconConverter x:Key="IconConverter" />
+    <c:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+    <c:IntToVisibilityConverter x:Key="MoreThanOneToVisibilityConverter" VisibleCount="1" />
+    <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <c:StringToBooleanConverter x:Key="StringToBooleanConverter" />
+    <c:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <c:ToLowerConverter x:Key="ToLowerConverter" />
+    <c:ToUpperConverter x:Key="ToUpperConverter" />
+    <c:TruncatePathConverter x:Key="TruncatePathConverter" />
+    <c:EnumTypeConverter x:Key="EnumTypeConverter" />
+    <c:ColorToInvertBrushConverter x:Key="ColorToInvertBrushConverter" />
+    <ec:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    
+</ResourceDictionary>

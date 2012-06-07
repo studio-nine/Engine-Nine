@@ -189,12 +189,12 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.PhysicsComponentReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.PhysicsComponentReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.PhysicsComponent, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.PhysicsComponent, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

@@ -219,13 +219,7 @@ namespace Nine.Graphics.Drawing
         {
             get
             {
-                int count = 0;
-                foreach (var list in renderTargetPools.Values)
-                    if (list.refCount > 0)
-                        for (int i = 0; i < list.renderTargets.Count; i++)
-                            if (!list.renderTargets[i].IsDisposed && list.renderTargetUsageCount[i] > 0)
-                                count++;
-                return count;
+                throw new NotImplementedException();
             }
         }
         

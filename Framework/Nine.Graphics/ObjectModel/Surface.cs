@@ -100,6 +100,14 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
+        /// Gets the step of the surface heightmap.
+        /// </summary>
+        public float Step
+        {
+            get { return heightmap.Step; }
+        }
+
+        /// <summary>
         /// Gets or sets the transform matrix for vertex uv coordinates.
         /// </summary>
         public Matrix TextureTransform 

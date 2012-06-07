@@ -82,7 +82,7 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.CompoundShapeReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.CompoundShapeReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 
@@ -102,7 +102,7 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.BoxShapeReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.BoxShapeReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 
@@ -122,7 +122,7 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.SphereShapeReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.SphereShapeReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 
@@ -144,7 +144,7 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.CylinderShapeReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.CylinderShapeReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 
@@ -166,7 +166,7 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.CapsuleShapeReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.CapsuleShapeReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 
@@ -188,7 +188,7 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.ConeShapeReader, Nine.Physics, Version=1.2.1.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.ConeShapeReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

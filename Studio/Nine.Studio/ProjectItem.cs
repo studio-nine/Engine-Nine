@@ -1,0 +1,334 @@
+﻿#region Copyright 2009 - 2012 (c) Engine Nine
+//=============================================================================
+//
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+#endregion
+
+#region Using Directives
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using Nine.Studio.Extensibility;
+#endregion
+
+namespace Nine.Studio
+{
+    using Exporter = Lazy<IExporter, IMetadata>;
+    using Importer = Lazy<IImporter, IMetadata>;
+    using Visualizer = Lazy<IVisualizer, IMetadata>;
+
+    /// <summary>
+    /// Represents a single project managed by a project instance.
+    /// </summary>
+    public class ProjectItem : INotifyPropertyChanged, IDisposable
+    {
+        /// <summary>
+        /// Gets the filename of this document.
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the absolute filename of this document with full path.
+        /// </summary>
+        public string Filename { get; private set; }
+
+        /// <summary>
+        /// Gets the relative filename as to it's parent project.
+        /// </summary>
+        public string RelativeFilename { get; private set; }
+
+        /// <summary>
+        /// Gets the metadata of this document.
+        /// </summary>
+        public IMetadata Metadata { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance can be saved.
+        /// </summary>
+        public bool CanSave { get { return Exporter != null; } }
+
+        /// <summary>
+        /// Gets whether this document is ready only.
+        /// </summary>
+        public bool IsReadOnly { get; private set; }
+
+        /// <summary>
+        /// Gets whether this document is modified since last save.
+        /// </summary>
+        public bool IsModified
+        {
+            get { return _IsModified; }
+            set
+            {
+                if (value != _IsModified)
+                {
+                    _IsModified = value;
+                    NotifyPropertyChanged("IsModified");
+                }
+            }
+        }
+        private bool _IsModified;
+
+        /// <summary>
+        /// Gets the underlying object model.
+        /// </summary>
+        public object ObjectModel
+        {
+            get 
+            {
+                if (Interlocked.CompareExchange(ref objectModelNeedsReload, 0, 1) == 1)
+                {
+                    // TODO: Reload object model                    
+                    NotifyPropertyChanged("ObjectModel");
+                }
+                return objectModel;
+            }
+            private set { objectModel = value; }
+        }
+        private object objectModel;
+        
+        /// <summary>
+        /// Gets or sets the current selection.
+        /// </summary>
+        public object Selection { get; set; }
+
+        /// <summary>
+        /// Gets the handle to the host window.
+        /// </summary>
+        public IntPtr Window { get; private set; }
+
+        /// <summary>
+        /// Gets the containing project instance.
+        /// </summary>
+        public Project Project { get; private set; }
+         
+        /// <summary>
+        /// Gets the containing editor instance.
+        /// </summary>
+        public Editor Editor { get { return Project.Editor; } }
+
+        /// <summary>
+        /// Gets a list of documents referenced by this document.
+        /// </summary>
+        public ReadOnlyCollection<ProjectItem> References { get; private set; }
+
+        /// <summary>
+        /// Gets the default exporter of this project item.
+        /// </summary>
+        public Exporter Exporter { get; private set; }
+
+        /// <summary>
+        /// Gets the default importer of this project item.
+        /// </summary>
+        public Importer Importer { get; private set; }
+
+        /// <summary>
+        /// Gets the default visualizer of this project item.
+        /// </summary>
+        public Visualizer Visualizer { get; private set; }
+
+        /// <summary>
+        /// Gets a dictionary of the parameters used by the importer.
+        /// </summary>
+        public IDictionary<string, object> ImporterParameters { get; private set; }
+        
+        /// <summary>
+        /// Gets or sets any user data that will be saved with the project file.
+        /// </summary>
+        public object Tag { get; set; }
+
+        internal List<ProjectItem> InnerReferences;
+
+        private int objectModelNeedsReload;
+        private IDisposable sourceFileWatcher;
+
+        /// <summary>
+        /// Initializes a new document instance.
+        /// </summary>
+        internal ProjectItem(Project project, object objectModel, string filename)
+        {
+            Assert.CheckThread();
+            Verify.IsNotNull(project, "project");
+            Verify.IsNotNull(objectModel, "objectModel");
+
+            this.Project = project;
+            this.InnerReferences = new List<ProjectItem>();
+            this.References = new ReadOnlyCollection<ProjectItem>(InnerReferences);
+            this.ObjectModel = objectModel;
+            this.IsModified = string.IsNullOrEmpty(filename);
+            this.Exporter = Editor.Extensions.FindExporter(objectModel.GetType());
+            this.Importer = Editor.Extensions.FindImporter(objectModel.GetType());
+            this.Visualizer = Editor.Extensions.FindVisualizer(objectModel.GetType());
+
+            this.Metadata = new Metadata
+            {
+                DisplayName = Editor.GetDisplayName(objectModel),
+                Category = Editor.GetCategory(objectModel),
+                FolderName = Editor.GetFolderName(ObjectModel),
+            };
+
+            var extension = Exporter != null ? Exporter.Value.FileExtensions.FirstOrDefault() : null;
+            if (string.IsNullOrEmpty(filename))
+                filename = Global.NextName(Path.Combine(Metadata.FolderName, Metadata.DisplayName), extension);
+
+            Filename = Path.GetFullPath(filename);
+            Name = Path.GetFileNameWithoutExtension(Filename);
+            RelativeFilename = Global.GetRelativeFilename(Filename, Path.GetDirectoryName(Project.Filename));
+            Verify.IsFalse(Path.IsPathRooted(RelativeFilename), "RelativeFilename");
+
+            FileInfo info = new FileInfo(Filename);
+            IsReadOnly = info.Exists && info.IsReadOnly;
+
+            BeginWatchFileChanges();
+        }
+
+        /// <summary>
+        /// Adds a new reference by this projectItem
+        /// </summary>
+        public void AddReference(ProjectItem projectItem)
+        {
+            Assert.CheckThread();
+            Verify.IsNotNull(projectItem, "projectItem");
+            Verify.IsFalse(HasCircularDependency(projectItem, this), "Target object has a circular dependency");
+            
+            if (!InnerReferences.Contains(projectItem))
+            {
+                InnerReferences.Add(projectItem);
+                Project.AddReference(projectItem.Project);
+            }
+        }
+
+        /// <summary>
+        /// Removes an existing reference by this document
+        /// </summary>
+        public void RemoveReference(ProjectItem projectItem)
+        {
+            Assert.CheckThread();
+            Verify.IsNotNull(projectItem, "projectItem");
+
+            InnerReferences.Remove(projectItem);
+        }
+
+        private static bool HasCircularDependency(ProjectItem subtree, ProjectItem root)
+        {
+            return !subtree.InnerReferences.All(node => node != root && !HasCircularDependency(node, root));
+        }
+
+        /// <summary>
+        /// Closes this document
+        /// </summary>
+        public void Close()
+        {
+            Assert.CheckThread();
+
+            // Can't close this when any document references this one
+            if (Editor.Projects.SelectMany(proj => proj.ProjectItems).Any(doc => doc.References.Contains(this)))
+                throw new InvalidOperationException("Cannot close this project item because it is referenced by other project items");
+
+            Project.InnerProjectItems.Remove(this);
+            References.ForEach(doc => doc.Close());
+        }
+        
+        /// <summary>
+        /// Saves this document
+        /// </summary>
+        public void Save()
+        {
+            Assert.CheckThread();
+            Verify.IsNeitherNullNorEmpty(Filename, "Filename");
+
+            if (IsModified && CanSave)
+                Save(Filename);
+        }
+
+        /// <summary>
+        /// Saves this document
+        /// </summary>
+        public void Save(string filename)
+        {
+            Assert.CheckThread();
+            Verify.IsNeitherNullNorEmpty(filename, "filename");
+
+            Save(filename, null);
+        }
+
+        /// <summary>
+        /// Saves this document
+        /// </summary>
+        public void Save(string filename, IExporter exporter)
+        {
+            Assert.CheckThread();
+            Assert.IsNotNull(Exporter);
+            Assert.IsNotNull(Exporter.Value);
+            Verify.IsNeitherNullNorEmpty(filename, "filename");
+
+            FileOperation.BackupAndSave(filename, stream => Save(stream, exporter));
+        }
+
+        /// <summary>
+        /// Saves this document
+        /// </summary>
+        public void Save(Stream stream, IExporter exporter)
+        {
+            Assert.CheckThread();
+            Verify.IsNotNull(stream, "stream");
+
+            if (exporter != null)
+                exporter.Export(stream, ObjectModel);
+            else if (Exporter.Value != null)
+                Exporter.Value.Export(stream, ObjectModel);
+            else
+                throw new InvalidOperationException("No valid exporter found.");
+
+            stream.Flush();
+        }
+
+        private void BeginWatchFileChanges()
+        {
+            if (sourceFileWatcher == null && File.Exists(Filename))
+            {
+                sourceFileWatcher = FileOperation.WatchFileContentChange(Filename, filename =>
+                {
+                    Interlocked.Exchange(ref objectModelNeedsReload, 1);
+                });
+            }
+        }
+
+        private void EndWatchFileChanges()
+        {
+            if (sourceFileWatcher != null)
+            {
+                sourceFileWatcher.Dispose();
+                sourceFileWatcher = null;
+            }
+        }
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            Assert.CheckThread();
+
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Close();
+            EndWatchFileChanges();
+        }
+    }
+}

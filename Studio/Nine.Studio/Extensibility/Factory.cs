@@ -1,0 +1,57 @@
+﻿#region Copyright 2009 - 2011 (c) Engine Nine
+//=============================================================================
+//
+//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+#endregion
+
+#region Using Directives
+using System;
+
+#endregion
+
+namespace Nine.Studio.Extensibility
+{
+    /// <summary>
+    /// Represents a factory that can create a new document.
+    /// </summary>
+    public interface IFactory
+    {
+        /// <summary>
+        /// Gets the type of object that can be created.
+        /// </summary>
+        Type TargetType { get; }
+
+        /// <summary>
+        /// Creates a new object of this document type.
+        /// </summary>
+        object Create(Editor editor, object parent);
+    }
+
+    /// <summary>
+    /// Generic base class implementing IDocumentType
+    /// </summary>
+    public abstract class Factory<T, TParent> : IFactory
+    {
+        public Editor Editor { get; private set; }
+        public Type TargetType { get { return typeof(TParent); } }
+
+        public virtual object Create(TParent parent)
+        {
+            return Activator.CreateInstance<T>();
+        }
+
+        object IFactory.Create(Editor editor, object parent)
+        {
+            Verify.IsNotNull(editor, "editor");
+            Verify.IsAssignableFrom(parent, typeof(TParent), "parent");
+
+            Editor = editor;
+            var createdObject = Create((TParent)parent);
+
+            Verify.IsNotNull(createdObject, "createdObject");
+            return createdObject;
+        }
+    }
+}

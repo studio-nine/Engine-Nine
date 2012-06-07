@@ -231,7 +231,7 @@ namespace Nine.Physics
                 {
                     foreach (var drawable in displayObject.Children)
                     {
-                        var model = drawable as DrawableModel;
+                        var model = drawable as Nine.Graphics.ObjectModel.Model;
                         if (model != null && 
                             UtilityExtensions.TryGetAttachedProperty(model.Tag, PhysicsTypeProperty, out physicsType))
                         {
@@ -258,7 +258,7 @@ namespace Nine.Physics
                             break;
                         }
 
-                        var surface = drawable as DrawableSurface;
+                        var surface = drawable as Surface;
                         if (surface != null &&
                             UtilityExtensions.TryGetAttachedProperty(surface.Tag, PhysicsTypeProperty, out physicsType))
                         {
@@ -282,7 +282,7 @@ namespace Nine.Physics
             }
         }
 
-        private static Terrain CreateTerrain(Space space, DrawableSurface surface, PhysicsDebugger debugger)
+        private static Terrain CreateTerrain(Space space, Surface surface, PhysicsDebugger debugger)
         {
             int xLength = surface.Heightmap.Width + 1;
             int yLength = surface.Heightmap.Height + 1;
@@ -315,7 +315,7 @@ namespace Nine.Physics
             return terrain;
         }
 
-        private static PhysicsComponent CreateModel(Space space, DrawableModel model, string physicsType, string collisionMesh, float mass, PhysicsDebugger debugger)
+        private static PhysicsComponent CreateModel(Space space, Nine.Graphics.ObjectModel.Model model, string physicsType, string collisionMesh, float mass, PhysicsDebugger debugger)
         {
             Vector3[] vertices;
             int[] indices;
@@ -330,11 +330,11 @@ namespace Nine.Physics
             // Hide collision mesh
             if (!string.IsNullOrEmpty(collisionMesh))
             {
-                foreach (var part in model.ModelParts.Where(part => part.Name == collisionMesh))
+                foreach (var part in model.ModelMeshes.Where(part => part.Name == collisionMesh))
                     part.Visible = false;
             }
 
-            GetVerticesAndIndicesFromModel(model.Model, collisionMesh, out vertices, out indices);
+            GetVerticesAndIndicesFromModel(model.Source, collisionMesh, out vertices, out indices);
             var transform = new AffineTransform(scale, rotation, position);
             if (physicsType == "Dynamic")
             {
@@ -373,7 +373,7 @@ namespace Nine.Physics
             return result;
         }
 
-        private static void GetVerticesAndIndicesFromModel(Model collisionModel, string collisionMesh, out Vector3[] vertices, out int[] indices)
+        private static void GetVerticesAndIndicesFromModel(Microsoft.Xna.Framework.Graphics.Model collisionModel, string collisionMesh, out Vector3[] vertices, out int[] indices)
         {
             if (string.IsNullOrEmpty(collisionMesh) || !collisionModel.Meshes.Any(mesh => mesh.Name == collisionMesh))
             {
@@ -387,7 +387,7 @@ namespace Nine.Physics
             collisionModel.CopyAbsoluteBoneTransformsTo(transforms);
 
             Matrix transform;
-            foreach (ModelMesh mesh in collisionModel.Meshes)
+            foreach (Microsoft.Xna.Framework.Graphics.ModelMesh mesh in collisionModel.Meshes)
             {
                 if (mesh.Name == collisionMesh)
                 {
