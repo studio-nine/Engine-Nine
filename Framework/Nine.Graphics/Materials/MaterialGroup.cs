@@ -207,9 +207,10 @@ namespace Nine.Graphics.Materials
             
             base.InsertItem(index, item);
             item.MaterialGroup = materialGroup;
-            if (!MaterialPart.IsContentBuild)
+            if (!MaterialPart.IsContentBuild && materialGroup != null)
                 item.OnBind();
-            materialGroup.OnShaderChanged();
+            if (materialGroup != null)
+                materialGroup.OnShaderChanged();
         }
 
         protected override void SetItem(int index, MaterialPart item)
@@ -219,21 +220,24 @@ namespace Nine.Graphics.Materials
             
             base.SetItem(index, item);
             item.MaterialGroup = materialGroup;
-            if (!MaterialPart.IsContentBuild)
+            if (!MaterialPart.IsContentBuild && materialGroup != null)
                 item.OnBind();
-            materialGroup.OnShaderChanged();
+            if (materialGroup != null)
+                materialGroup.OnShaderChanged();
         }
 
         protected override void ClearItems()
         {
             base.ClearItems();
-            materialGroup.OnShaderChanged();
+            if (materialGroup != null)
+                materialGroup.OnShaderChanged();
         }
 
         protected override void RemoveItem(int index)
         {
             base.RemoveItem(index);
-            materialGroup.OnShaderChanged();
+            if (materialGroup != null)
+                materialGroup.OnShaderChanged();
         }
     }
 

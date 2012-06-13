@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using Nine.Content.Pipeline.Xaml;
 using Microsoft.Xna.Framework.Content;
+using System.Collections;
 #endregion
 
 namespace Nine.Content.Pipeline.Xaml
@@ -22,27 +23,13 @@ namespace Nine.Content.Pipeline.Xaml
     /// <summary>
     /// Defines a markup extension to reference external source asset.
     /// </summary>
+    [ContentProperty("FileName")]
     public class ExternalReference : MarkupExtension
     {
         /// <summary>
         /// Gets or sets the file name of the source asset.
         /// </summary>
         public string FileName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the result content or null to use the default value.
-        /// </summary>
-        public string AssetName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the importer for the source asset.
-        /// </summary>
-        public IContentImporter Importer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the processor for the source asset.
-        /// </summary>
-        public IContentProcessor Processor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentReference"/> class.
@@ -52,8 +39,8 @@ namespace Nine.Content.Pipeline.Xaml
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentReference"/> class.
         /// </summary>
-        /// <param name="name">The name of the asset.</param>
-        public ExternalReference(string name) { FileName = name; }
+        /// <param name="fileName">The name of the asset.</param>
+        public ExternalReference(string fileName) { FileName = fileName; }
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
@@ -64,9 +51,34 @@ namespace Nine.Content.Pipeline.Xaml
         /// </returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            PipelineBuilder builder = new PipelineBuilder();
-            builder.Build(FileName, Importer, Processor, AssetName);
-            return null;
+            if (string.IsNullOrEmpty(FileName))
+                return null;
+
+            Type destinationType = null;            
+            var destinationTypeProvider = serviceProvider.GetService<IDestinationTypeProvider>();
+            if (destinationTypeProvider != null)
+            {
+                try
+                {
+                    destinationType = destinationTypeProvider.GetDestinationType();
+                }
+                catch
+                {
+                    try
+                    {
+                        // Need to get destination type from the target object when it is a collection
+                        var provideValueTarget = serviceProvider.GetService<IProvideValueTarget>();
+                        if (provideValueTarget != null && provideValueTarget.TargetObject != null)
+                            destinationType = provideValueTarget.TargetObject.GetType().GetGenericArguments()[0];
+                    }
+                    catch
+                    {
+                        destinationType = null;
+                    }
+                }
+            }
+
+            return destinationType != null ? Activator.CreateInstance(destinationType, FileName) : null;
         }
     }
 }

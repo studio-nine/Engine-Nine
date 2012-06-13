@@ -33,7 +33,7 @@
     </Surface>
 
     <!--
-        Terrain material is dedicated for terrains with multiple layers. Each layer has its own texture, 
+        MaterialPaintGroup can be used to create materials with multiple layers. Each layer has its own texture, 
         normal map and color properties. A grayscale alpha map is used to determine which part of the layer
         is visible and how the layer blends with other texture.
     
@@ -41,26 +41,39 @@
         isn't enabled by default. You can set the VertexType property to the name of the vertex type and the
         vertex data will be converted into that format.
     -->
-    <Surface Heightmap="{ContentReference ../Textures/RF1}" Position="-128, -128, -20" LevelOfDetailEnabled="True" 
+    <Surface Heightmap="{ContentReference ../Textures/RF1}" Position="-128, -128, -20" LevelOfDetailEnabled="False" 
              TextureTransform.Scale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
 							
 		<!--
-            You should set the Scale to the inverse of TextureScale so that the layers will
-            map across the entire terrain.
+            You should set the MaterialPaintGroup.MaskTextureScale to the inverse of TextureTransform.Scale so 
+			that the layers will map across the entire terrain.
 		-->
 		<MaterialGroup MaterialPaintGroup.MaskTextureScale="5, 5">
 		
+			<MaterialPaintGroup.MaskTextures>
+				<!-- Specify the mask textures of each material paint group using a splatter. -->
+				<Splatter>
+					<ExternalReference />
+					<ExternalReference>../../Content/Terrain/2.bmp</ExternalReference>
+					<ExternalReference>../../Content/Terrain/3.bmp</ExternalReference>
+				</Splatter>
+			</MaterialPaintGroup.MaskTextures>
+		
 			<MaterialPaintGroup>
 				<DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+				<!--
 				<NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
+				-->
 			</MaterialPaintGroup>
 			
-			<MaterialPaintGroup MaskTexture="{ExternalReference ../../Content/Terrain/2.bmp}">
+			<MaterialPaintGroup>
 				<DiffuseMaterialPart Texture="{ContentReference ../Textures/grass}" />
+				<!--
 				<NormalMapMaterialPart NormalMap="{ContentReference ../Textures/grass_n}" />
+				-->
 			</MaterialPaintGroup>
 			
-			<MaterialPaintGroup MaskTexture="{ExternalReference ../../Content/Terrain/3.bmp}">
+			<MaterialPaintGroup>
 				<DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" DiffuseColor="1, 1, 0" />
 			</MaterialPaintGroup>
 			

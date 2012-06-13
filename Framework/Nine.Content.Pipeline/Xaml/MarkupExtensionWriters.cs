@@ -24,7 +24,7 @@ namespace Nine.Content.Pipeline.Xaml
     {
         protected override void Write(ContentWriter output, ContentReference value)
         {
-            output.Write(value.Name);
+            output.Write(value.AssetName);
         }
 
         public override string GetRuntimeReader(TargetPlatform targetPlatform)

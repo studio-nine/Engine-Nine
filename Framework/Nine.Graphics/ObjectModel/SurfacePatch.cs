@@ -59,14 +59,7 @@ namespace Nine.Graphics.ObjectModel
 
             // Do not allow set by externals since we need to make sure
             // lod difference between adjacent patches do not exceed 1.
-            internal set 
-            {
-                if (detailLevel != value)
-                {
-                    detailLevel = value;
-                    UpdateLevelOfDetail();
-                } 
-            }
+            internal set { detailLevel = value; }
         }
         private int detailLevel = 0;
 
@@ -140,7 +133,11 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the center position of the surface patch.
         /// </summary>
-        public Vector3 Center { get; private set; }
+        public Vector3 Center
+        {
+            get { return center; }
+        }
+        internal Vector3 center;
 
         private BoundingBox baseBounds;
         private Heightmap heightmap;
@@ -271,8 +268,8 @@ namespace Nine.Graphics.ObjectModel
 
             offset.X = 0.5f * heightmap.Step * SegmentCount;
             offset.Y = 0.5f * heightmap.Step * SegmentCount;
-
-            Center = Position + offset;
+                        
+            center = Position + offset;
 
             if (BoundingBoxChanged != null)
                 BoundingBoxChanged(this, EventArgs.Empty);
@@ -327,7 +324,7 @@ namespace Nine.Graphics.ObjectModel
 
             material.world = Surface.AbsoluteTransform;
             material.BeginApply(context);
-            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VertexCount, 0, PrimitiveCount);
+            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VertexCount, StartIndex, PrimitiveCount);
             material.EndApply(context);
         }
 

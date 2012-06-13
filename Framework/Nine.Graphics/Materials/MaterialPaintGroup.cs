@@ -32,7 +32,7 @@ namespace Nine.Graphics.Materials
 
         /// <summary>
         /// Gets or sets the color channel of the above mask texture.
-        /// Value 0, 1, 2, 3 represents r, g, b, a channels respectively.
+        /// Values 0, 1, 2, 3 represents r, g, b, a channels respectively.
         /// </summary>
         public int MaskTextureChannel { get; set; }
 
@@ -105,6 +105,31 @@ namespace Nine.Graphics.Materials
         public static void SetMaskTextureScale(MaterialGroup materialGroup, Vector2 value)
         {
             AttachablePropertyServices.SetProperty(materialGroup, MaskTextureScaleProperty, value);
+        }
+        #endregion
+
+        #region MaskTextures
+        private static AttachableMemberIdentifier MaskTexturesProperty = new AttachableMemberIdentifier(typeof(MaterialPaintGroup), "MaskTexturesProperty");
+
+        /// <summary>
+        /// Gets a list of mask textures of the material group.
+        /// </summary>
+        public static System.Collections.IList GetMaskTextures(MaterialGroup materialGroup)
+        {
+            System.Collections.IList value;
+            if (!AttachablePropertyServices.TryGetProperty(materialGroup, MaskTexturesProperty, out value))
+                AttachablePropertyServices.SetProperty(materialGroup, MaskTexturesProperty, value = new List<object>());
+            return value;
+        }
+
+        /// <summary>
+        /// Sets the mask textures of the material group.
+        /// </summary>
+        public static void SetMaskTextures(MaterialGroup materialGroup, System.Collections.IList value)
+        {
+            if (value == null)
+                throw new ArgumentNullException("value");
+            AttachablePropertyServices.SetProperty(materialGroup, MaskTexturesProperty, value);
         }
         #endregion
     }

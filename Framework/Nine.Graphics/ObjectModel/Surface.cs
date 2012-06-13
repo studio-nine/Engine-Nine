@@ -617,9 +617,11 @@ namespace Nine.Graphics.ObjectModel
             float distanceBetweenPatches = heightmap.Step * patchSegmentCount;
             float lodDistance = Math.Max(end - start, distanceBetweenPatches * MaxLevelOfDetail * 1.414f);
 
+            float patchDistance;
+
             for (int i = 0; i < patches.Count; i++)
             {
-                float patchDistance = Vector3.Distance(patches[i].Center, eyePosition);
+                Vector3.Distance(ref patches[i].center, ref eyePosition, out patchDistance);
                 
                 int patchLod = (int)(MaxLevelOfDetail * (patchDistance - start) / lodDistance);
                 if (patchLod < 0)

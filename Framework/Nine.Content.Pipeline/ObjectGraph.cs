@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.ComponentModel;
+using System.Xaml;
 #endregion
 
 namespace Nine.Content.Pipeline
@@ -136,9 +138,8 @@ namespace Nine.Content.Pipeline
                 return;
             }
 
-            // Browse each property value
-            BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.Instance;
-            foreach (PropertyInfo property in targetType.GetProperties(bindingFlags))
+            // Browse public properties
+            foreach (var property in targetType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (!property.CanRead)
                     continue;
@@ -179,6 +180,41 @@ namespace Nine.Content.Pipeline
                         InternalTraverseProperties(output, action);
                     }
                  }
+            }
+
+            // Browse attached properties
+            var attachedPropertyCount = AttachablePropertyServices.GetAttachedPropertyCount(target);
+            if (attachedPropertyCount > 0)
+            {
+                System.Diagnostics.Debugger.Launch();
+                var attachedProperties = new KeyValuePair<AttachableMemberIdentifier, object>[attachedPropertyCount];
+                AttachablePropertyServices.CopyPropertiesTo(target, attachedProperties, 0);
+
+                foreach (var attachedProperty in attachedProperties)
+                {
+                    var input = attachedProperty.Value;
+                    if (input != null && !IsBasicType(input.GetType()))
+                    {
+                        Trace.WriteLine(string.Format("{0}.{1} : {2}", attachedProperty.Key.DeclaringType, attachedProperty.Key.MemberName, input.GetType().Name));
+
+                        object output = action(input);
+                        if (input != output)
+                        {
+                            try
+                            {
+                                AttachablePropertyServices.SetProperty(target, attachedProperty.Key, output);
+                            }
+                            catch (Exception)
+                            {
+                                Trace.WriteLine(string.Format("Failed setting property value {0}.{1}", attachedProperty.Key.DeclaringType, attachedProperty.Key.MemberName));
+                            }
+                        }
+                        else
+                        {
+                            InternalTraverseProperties(output, action);
+                        }
+                    }
+                }
             }
         }
 

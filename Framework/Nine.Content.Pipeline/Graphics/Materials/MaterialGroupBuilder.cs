@@ -442,6 +442,18 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         }
     }
 
+    class MaterialGroupBuilderContext
+    {
+        public MaterialPartDeclaration[] MaterialPartDeclarations;
+        public Dictionary<string, ArgumentDeclaration> ArgumentDictionary;
+        public List<ArgumentDeclaration> VertexShaderInputs;
+        public List<ArgumentDeclaration> VertexShaderOutputs;
+        public List<ArgumentDeclaration> PixelShaderInputs;
+        public List<ArgumentDeclaration> PixelShaderOutputs;
+        public List<ArgumentDeclaration> TemporaryPixelShaderVariables;
+        public Dictionary<ArgumentDeclaration, string> VertexShaderOutputSemanticMapping;
+    }
+
     static class MaterialGroupBuilder
     {
         const string WorkingPath = "MaterialGroups";
@@ -460,23 +472,74 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             if (!materialGroup.MaterialParts.OfType<EndLightMaterialPart>().Any())
                 materialGroup.MaterialParts.Add(new EndLightMaterialPart());
 
-            // Step 1: Parse material part declarations from input material group.
-            var materialPartDeclarations = (from code in materialGroup.MaterialParts.Select(part => part.GetShaderCode(usage))
-                                            where !string.IsNullOrEmpty(code)
-                                            select new Lexer(code).Read()).ToArray();
+            var builderContext = CreateMaterialGroupBuilderContext(materialGroup, usage);
+            if (builderContext.PixelShaderOutputs.Count <= 0)
+                return null;
 
-            var argumentDictionary = new Dictionary<string, ArgumentDeclaration>();
-            
-            foreach (var arg in (from part in materialPartDeclarations select part.VertexShader).Concat(
-                                 from part in materialPartDeclarations select part.PixelShader).OfType<FunctionDeclaration>()
+            try
+            {
+                LastEffectCode = GetShaderCodeForProfile(builderContext, "2_0");
+                return BuildEffect(context);
+            }
+            catch
+            {
+                LastEffectCode = GetShaderCodeForProfile(builderContext, "3_0");
+                return BuildEffect(context);
+            }
+        }
+
+        private static CompiledEffectContent BuildEffect(ContentProcessorContext context)
+        {
+            var effectContent = new EffectContent { EffectCode = LastEffectCode };
+            var effectProcessor = new EffectProcessor();
+            var result = effectProcessor.Process(effectContent, context);
+
+            var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(LastEffectCode));
+            var hashString = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+                hashString.Append(hash[i].ToString("X2"));
+            LastIdentity = hashString.ToString();
+
+            try
+            {
+                if (!Directory.Exists(Path.Combine(context.IntermediateDirectory, WorkingPath)))
+                    Directory.CreateDirectory(Path.Combine(context.IntermediateDirectory, WorkingPath));
+
+                string resultEffectFile = Path.Combine(context.IntermediateDirectory, WorkingPath, LastIdentity + ".fx");
+                string resultAsmFile = Path.Combine(context.IntermediateDirectory, WorkingPath, LastIdentity + ".asm");
+                File.WriteAllText(resultEffectFile, MaterialGroupBuilder.LastEffectCode);
+                context.Logger.LogImportantMessage(string.Format("{0} : (double-click this message to view HLSL file).", resultEffectFile));
+
+                Disassemble(resultEffectFile, resultAsmFile, context);
+            }
+            catch
+            {
+
+            }
+            return result;
+        }
+
+        private static MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(MaterialGroup materialGroup, MaterialUsage usage)
+        {
+            var builderContext = new MaterialGroupBuilderContext();
+
+            // Step 1: Parse material part declarations from input material group.
+            builderContext.MaterialPartDeclarations = (from code in materialGroup.MaterialParts.Select(part => part.GetShaderCode(usage))
+                                        where !string.IsNullOrEmpty(code)
+                                        select new Lexer(code).Read()).ToArray();
+
+            builderContext.ArgumentDictionary = new Dictionary<string, ArgumentDeclaration>();
+
+            foreach (var arg in (from part in builderContext.MaterialPartDeclarations select part.VertexShader).Concat(
+                                 from part in builderContext.MaterialPartDeclarations select part.PixelShader).OfType<FunctionDeclaration>()
                                 .SelectMany(f => f.Arguments))
             {
                 ArgumentDeclaration argument;
-                if (argumentDictionary.TryGetValue(arg.Name, out argument))
+                if (builderContext.ArgumentDictionary.TryGetValue(arg.Name, out argument))
                 {
                     if (argument.Type != arg.Type)
                         throw new InvalidOperationException(string.Format("Paramter {0} has two different types {1}, {2}", arg.Name, argument, arg.Type));
-                    
+
                     if (!string.IsNullOrEmpty(argument.Semantic))
                     {
                         if (!string.IsNullOrEmpty(arg.Semantic) && arg.Semantic != argument.Semantic)
@@ -497,11 +560,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 }
                 else
                 {
-                    argumentDictionary.Add(arg.Name, arg);
+                    builderContext.ArgumentDictionary.Add(arg.Name, arg);
                 }
             }
 
-            foreach (var arg in argumentDictionary.Values)
+            foreach (var arg in builderContext.ArgumentDictionary.Values)
                 arg.DefaultValue = arg.DefaultValue ?? "0";
 
 
@@ -509,28 +572,28 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             var validPixelShaderOutputSemantic = new Regex("^COLOR[0-9]$");
             var validVertexShaderOutputSemantic = new Regex("^(COLOR[0-9]+)|(POSITION[0-9]+)|(TEXCOORD[0-9]+)$");
 
-            for (int i = 0; i < materialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
             {
-                var part = materialPartDeclarations[i];
+                var part = builderContext.MaterialPartDeclarations[i];
                 part.Index = materialGroup.MaterialParts[i].Index = i;
                 part.IsVertexShaderOutput = part.VertexShader != null && part.VertexShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validVertexShaderOutputSemantic.IsMatch(a.Semantic));
                 part.IsPixelShaderOutput = part.PixelShader != null && part.PixelShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validPixelShaderOutputSemantic.IsMatch(a.Semantic));
             }
 
-            foreach (var materialDeclaration in materialPartDeclarations)
+            foreach (var materialDeclaration in builderContext.MaterialPartDeclarations)
             {
                 materialDeclaration.Dependencies =
-                    (from part in materialPartDeclarations
+                    (from part in builderContext.MaterialPartDeclarations
                      where part != materialDeclaration && part.VertexShader != null &&
                            part.VertexShader.Arguments.Any(arg => arg.Out && (!arg.In || part.Index < materialDeclaration.Index) &&
                                materialDeclaration.VertexShader != null && materialDeclaration.VertexShader.Arguments.Any(a => a.In && a.Name == arg.Name))
                      select part).Concat
-                    (from part in materialPartDeclarations
+                    (from part in builderContext.MaterialPartDeclarations
                      where part != materialDeclaration && part.PixelShader != null &&
                            part.PixelShader.Arguments.Any(arg => arg.Out && (!arg.In || part.Index < materialDeclaration.Index) &&
                                materialDeclaration.PixelShader != null && materialDeclaration.PixelShader.Arguments.Any(a => a.In && a.Name == arg.Name))
                      select part).Concat
-                    (from part in materialPartDeclarations
+                    (from part in builderContext.MaterialPartDeclarations
                      where part != materialDeclaration && part.VertexShader != null &&
                            part.VertexShader.Arguments.Any(arg => arg.Out && (!arg.In || part.Index < materialDeclaration.Index) &&
                                materialDeclaration.PixelShader != null && materialDeclaration.PixelShader.Arguments.Any(a => a.In && a.Name == arg.Name))
@@ -538,12 +601,12 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             }
 
             // Step 3: Dependency sorting
-            int[] order = new int[materialPartDeclarations.Length];
-            DependencyGraph.Sort(materialPartDeclarations, order, new MaterialPartDeclarationDependencyProvider());
-            materialPartDeclarations = order.Select(i => materialPartDeclarations[i]).ToArray();
+            int[] order = new int[builderContext.MaterialPartDeclarations.Length];
+            DependencyGraph.Sort(builderContext.MaterialPartDeclarations, order, new MaterialPartDeclarationDependencyProvider());
+            builderContext.MaterialPartDeclarations = order.Select(i => builderContext.MaterialPartDeclarations[i]).ToArray();
 
             // Remove pixel shader parts that don't have a path to the pixel shader output         
-            foreach (var part in materialPartDeclarations.Reverse())
+            foreach (var part in builderContext.MaterialPartDeclarations.Reverse())
                 if (part.IsPixelShaderOutput || part.Tagged)
                 {
                     part.Tagged = true;
@@ -552,163 +615,163 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 }
 
             var offset = 0;
-            for (int i = 0; i < materialPartDeclarations.Length; i++)
-                if (!materialPartDeclarations[i].Tagged && materialPartDeclarations[i].PixelShader != null)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
+                if (!builderContext.MaterialPartDeclarations[i].Tagged && builderContext.MaterialPartDeclarations[i].PixelShader != null)
                     materialGroup.MaterialParts.RemoveAt(i + offset--);
 
-            materialPartDeclarations = (from part in materialPartDeclarations where part.Tagged || part.PixelShader == null select part).ToArray();            
+            builderContext.MaterialPartDeclarations = (from part in builderContext.MaterialPartDeclarations where part.Tagged || part.PixelShader == null select part).ToArray();
 
             // Step 4: Get shader input/output argument semantics
             var argumentEqualtyComparer = new ArgumentDeclarationEqualyComparer();
 
-            var vertexShaderInputs = new List<ArgumentDeclaration>();
-            var vertexShaderOutputs = new List<ArgumentDeclaration>();
+            builderContext.VertexShaderInputs = new List<ArgumentDeclaration>();
+            builderContext.VertexShaderOutputs = new List<ArgumentDeclaration>();
 
-            for (int i = 0; i < materialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
             {
-                if (materialPartDeclarations[i].VertexShader != null)
+                if (builderContext.MaterialPartDeclarations[i].VertexShader != null)
                 {
-                    vertexShaderInputs.AddRange(from arg in materialPartDeclarations[i].VertexShader.Arguments
-                                                 where arg.In && !materialPartDeclarations.Take(i).Select(p => p.VertexShader)
-                                                                 .OfType<FunctionDeclaration>().SelectMany(f => f.Arguments)
-                                                                 .Any(a => a.Out && a.Name == arg.Name)
-                                                 select arg);
-
-                    vertexShaderOutputs.AddRange(from arg in materialPartDeclarations[i].VertexShader.Arguments
-                                                where arg.Out && !materialPartDeclarations.Skip(i + 1).Select(p => p.VertexShader)
+                    builderContext.VertexShaderInputs.AddRange(from arg in builderContext.MaterialPartDeclarations[i].VertexShader.Arguments
+                                                               where arg.In && !builderContext.MaterialPartDeclarations.Take(i).Select(p => p.VertexShader)
                                                                 .OfType<FunctionDeclaration>().SelectMany(f => f.Arguments)
-                                                                .Any(a => a.In && a.Name == arg.Name)
+                                                                .Any(a => a.Out && a.Name == arg.Name)
                                                 select arg);
+
+                    builderContext.VertexShaderOutputs.AddRange(from arg in builderContext.MaterialPartDeclarations[i].VertexShader.Arguments
+                                                                where arg.Out && !builderContext.MaterialPartDeclarations.Skip(i + 1).Select(p => p.VertexShader)
+                                                                 .OfType<FunctionDeclaration>().SelectMany(f => f.Arguments)
+                                                                 .Any(a => a.In && a.Name == arg.Name)
+                                                 select arg);
                 }
             }
 
-            var pixelShaderInputs = new List<ArgumentDeclaration>();
-            var pixelShaderOutputs = new List<ArgumentDeclaration>();
+            builderContext.PixelShaderInputs = new List<ArgumentDeclaration>();
+            builderContext.PixelShaderOutputs = new List<ArgumentDeclaration>();
 
-            for (int i = 0; i < materialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
             {
-                if (materialPartDeclarations[i].PixelShader != null)
+                if (builderContext.MaterialPartDeclarations[i].PixelShader != null)
                 {
-                    pixelShaderInputs.AddRange(from arg in materialPartDeclarations[i].PixelShader.Arguments
-                                               where arg.In && !materialPartDeclarations.Take(i).Select(p => p.PixelShader)
+                    builderContext.PixelShaderInputs.AddRange(from arg in builderContext.MaterialPartDeclarations[i].PixelShader.Arguments
+                                                              where arg.In && !builderContext.MaterialPartDeclarations.Take(i).Select(p => p.PixelShader)
                                                                 .OfType<FunctionDeclaration>().SelectMany(f => f.Arguments)
                                                                 .Any(a => a.Out && a.Name == arg.Name)
                                                select arg);
 
-                    pixelShaderOutputs.AddRange(from arg in materialPartDeclarations[i].PixelShader.Arguments
-                                                where arg.Out && !materialPartDeclarations.Skip(i + 1).Select(p => p.PixelShader)
+                    builderContext.PixelShaderOutputs.AddRange(from arg in builderContext.MaterialPartDeclarations[i].PixelShader.Arguments
+                                                               where arg.Out && !builderContext.MaterialPartDeclarations.Skip(i + 1).Select(p => p.PixelShader)
                                                                  .OfType<FunctionDeclaration>().SelectMany(f => f.Arguments)
                                                                  .Any(a => a.In && a.Name == arg.Name)
                                                 select arg);
                 }
             }
 
-            pixelShaderInputs = pixelShaderInputs.Distinct(argumentEqualtyComparer).ToList();
-            pixelShaderOutputs = pixelShaderOutputs.Distinct(argumentEqualtyComparer).ToList();
-            vertexShaderInputs = vertexShaderInputs.Distinct(argumentEqualtyComparer).ToList();
-            vertexShaderOutputs = vertexShaderOutputs.Distinct(argumentEqualtyComparer).ToList();
+            builderContext.PixelShaderInputs = builderContext.PixelShaderInputs.Distinct(argumentEqualtyComparer).ToList();
+            builderContext.PixelShaderOutputs = builderContext.PixelShaderOutputs.Distinct(argumentEqualtyComparer).ToList();
+            builderContext.VertexShaderInputs = builderContext.VertexShaderInputs.Distinct(argumentEqualtyComparer).ToList();
+            builderContext.VertexShaderOutputs = builderContext.VertexShaderOutputs.Distinct(argumentEqualtyComparer).ToList();
 
             // Step 5: Argument simplification and validation
-            var temporaryPixelShaderVariables = (from arg in pixelShaderOutputs 
-                                                 where arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic) 
-                                                 select arg).ToList();
-            
+            builderContext.TemporaryPixelShaderVariables = (from arg in builderContext.PixelShaderOutputs
+                                             where arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic)
+                                             select arg).ToList();
+
             // Pixel shader inputs that does not have a matching vertes shader output and a valid semantic
-            for (int i = 0; i < pixelShaderInputs.Count; i++)
+            for (int i = 0; i < builderContext.PixelShaderInputs.Count; i++)
             {
-                var psi = pixelShaderInputs[i];			 
-                if (vertexShaderOutputs.Any(vso => vso.Name == psi.Name))
+                var psi = builderContext.PixelShaderInputs[i];
+                if (builderContext.VertexShaderOutputs.Any(vso => vso.Name == psi.Name))
                     continue;
                 if (string.IsNullOrEmpty(psi.Semantic))
                 {
-                    temporaryPixelShaderVariables.Add(psi);
-                    pixelShaderInputs.RemoveAt(i--);
+                    builderContext.TemporaryPixelShaderVariables.Add(psi);
+                    builderContext.PixelShaderInputs.RemoveAt(i--);
                 }
                 else
                 {
                     var arg = new ArgumentDeclaration { Name = psi.Name, Type = psi.Type, Semantic = psi.Semantic, In = true, Out = true };
-                    vertexShaderInputs.Add(arg);
-                    vertexShaderOutputs.Add(arg);
+                    builderContext.VertexShaderInputs.Add(arg);
+                    builderContext.VertexShaderOutputs.Add(arg);
                 }
             }
 
             // Valid vertex shader input semantic
-            foreach (var input in vertexShaderInputs)
+            foreach (var input in builderContext.VertexShaderInputs)
                 if (string.IsNullOrEmpty(input.Semantic))
                     throw new InvalidOperationException(string.Concat("Cannot find semantics for vertex shader input ", input.Name));
 
             // Remove vertex shader outputs that do not have a corresponding pixel shader input
-            vertexShaderOutputs.RemoveAll(vso => vso.Semantic != "POSITION0" && !pixelShaderInputs.Any(psi => psi.Name == vso.Name));
+            builderContext.VertexShaderOutputs.RemoveAll(vso => vso.Semantic != "POSITION0" && !builderContext.PixelShaderInputs.Any(psi => psi.Name == vso.Name));
 
             // Expand vertex shader outputs that do not have a valid semantic
             NextValidSemanticIndex = 0;
-            var vertexShaderOutputSemanticMapping = vertexShaderOutputs.Where(vso => vso.Semantic == null || !validVertexShaderOutputSemantic.IsMatch(vso.Semantic))
-                                                                       .ToDictionary(arg => arg, arg => NextValidSemantic(vertexShaderOutputs));
-            
-            vertexShaderOutputs.RemoveAll(vso => vertexShaderInputs.Any(vsi => vsi.Name == vso.Name && vsi.Out));
-            vertexShaderOutputs.RemoveAll(vso => vertexShaderOutputSemanticMapping.Any(m => m.Key.Name == vso.Name));
+            builderContext.VertexShaderOutputSemanticMapping = builderContext.VertexShaderOutputs.Where(vso => vso.Semantic == null || !validVertexShaderOutputSemantic.IsMatch(vso.Semantic))
+                                                       .ToDictionary(arg => arg, arg => NextValidSemantic(builderContext.VertexShaderOutputs));
 
-            if (vertexShaderOutputs.Any(vso => vso.Semantic == "POSITION0"))
-                vertexShaderInputs.Where(vsi => vsi.Semantic == "POSITION0").ForEach(vsi => vsi.Out = false);
+            builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderInputs.Any(vsi => vsi.Name == vso.Name && vsi.Out));
+            builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderOutputSemanticMapping.Any(m => m.Key.Name == vso.Name));
+
+            if (builderContext.VertexShaderOutputs.Any(vso => vso.Semantic == "POSITION0"))
+                builderContext.VertexShaderInputs.Where(vsi => vsi.Semantic == "POSITION0").ForEach(vsi => vsi.Out = false);
 
             // Fix vertex shader input modifier based on the above mapping
-            foreach (var vsi in vertexShaderInputs)
+            foreach (var vsi in builderContext.VertexShaderInputs)
             {
-                if ((!pixelShaderInputs.Any(psi => psi.Name == vsi.Name) && vsi.Semantic != "POSITION0") ||
-                    vertexShaderOutputSemanticMapping.Any(p => vsi.Name == p.Key.Name))
+                if ((!builderContext.PixelShaderInputs.Any(psi => psi.Name == vsi.Name) && vsi.Semantic != "POSITION0") ||
+                    builderContext.VertexShaderOutputSemanticMapping.Any(p => vsi.Name == p.Key.Name))
                     vsi.Out = false;
             }
 
             // Fix pixel shader input semantics based on the above mapping
-            foreach (var psi in pixelShaderInputs)
+            foreach (var psi in builderContext.PixelShaderInputs)
             {
-                psi.Out = pixelShaderOutputs.Any(pso => pso.Name == psi.Name);
-                foreach (var p in vertexShaderOutputSemanticMapping)
+                psi.Out = builderContext.PixelShaderOutputs.Any(pso => pso.Name == psi.Name);
+                foreach (var p in builderContext.VertexShaderOutputSemanticMapping)
                     if (psi.Name == p.Key.Name)
                     {
                         psi.Semantic = p.Value;
                         break;
                     }
             }
-            pixelShaderOutputs.RemoveAll(pso => pixelShaderInputs.Any(psi => psi.Name == pso.Name) || temporaryPixelShaderVariables.Any(t => t.Name == pso.Name));
+            builderContext.PixelShaderOutputs.RemoveAll(pso => builderContext.PixelShaderInputs.Any(psi => psi.Name == pso.Name) || builderContext.TemporaryPixelShaderVariables.Any(t => t.Name == pso.Name));
+            return builderContext;
+        }
 
-            if (pixelShaderOutputs.Count <= 0)
-                return null;
-
-            // Step 5: Build effect code
+        private static string GetShaderCodeForProfile(MaterialGroupBuilderContext builderContext, string profile)
+        {
             var builder = new StringBuilder();
-            foreach (var materialPart in materialPartDeclarations)
+            foreach (var materialPart in builderContext.MaterialPartDeclarations)
             {
                 builder.AppendLine(materialPart.ToString());
                 builder.AppendLine();
             }
 
             builder.Append("void VS(");
-            builder.Append(string.Join(", ", vertexShaderInputs.Select(arg => arg.ToString())
-                                 .Concat(vertexShaderOutputs.Select(arg => arg.ToString()))
-                                 .Concat(vertexShaderOutputSemanticMapping.Select(p => 
+            builder.Append(string.Join(", ", builderContext.VertexShaderInputs.Select(arg => arg.ToString())
+                                 .Concat(builderContext.VertexShaderOutputs.Select(arg => arg.ToString()))
+                                 .Concat(builderContext.VertexShaderOutputSemanticMapping.Select(p =>
                                      string.Concat("out ", p.Key.Type, " o_", p.Key.Name, ":", p.Value)))));
             builder.AppendLine(")");
             builder.AppendLine("{");
-            foreach (var vsi in vertexShaderInputs)
+            foreach (var vsi in builderContext.VertexShaderInputs)
             {
                 if (vsi.In && vsi.Out)
-                    builder.AppendLine(string.Concat("    ", vsi.Name, " = ", vsi.Name, ";"));                
+                    builder.AppendLine(string.Concat("    ", vsi.Name, " = ", vsi.Name, ";"));
             }
             builder.AppendLine();
-            foreach (var arg in argumentDictionary)
+            foreach (var arg in builderContext.ArgumentDictionary)
             {
-                if (!vertexShaderInputs.Any(vsi => vsi.Name == arg.Key) && !vertexShaderOutputs.Any(vso => vso.Name == arg.Key))
+                if (!builderContext.VertexShaderInputs.Any(vsi => vsi.Name == arg.Key) && !builderContext.VertexShaderOutputs.Any(vso => vso.Name == arg.Key))
                     builder.AppendLine(string.Concat("    ", arg.Value.Type, " ", arg.Value.Name, " = ", arg.Value.DefaultValue, ";"));
             }
             builder.AppendLine();
-            foreach (var materialPart in materialPartDeclarations)
+            foreach (var materialPart in builderContext.MaterialPartDeclarations)
             {
                 if (materialPart.VertexShader != null)
                     builder.AppendLine(materialPart.VertexShader.ToInvokeString(string.Concat("_", materialPart.Index)));
             }
             builder.AppendLine();
-            foreach (var p in vertexShaderOutputSemanticMapping)
+            foreach (var p in builderContext.VertexShaderOutputSemanticMapping)
             {
                 builder.AppendLine(string.Concat("    o_", p.Key.Name, " = ", p.Key.Name, ";"));
             }
@@ -717,32 +780,32 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             builder.AppendLine();
 
             builder.Append("void PS(");
-            builder.Append(string.Join(", ", pixelShaderInputs.Select(arg => arg.ToString())
-                                     .Concat(pixelShaderOutputs.Select(arg => string.Concat("out ", arg.Type, " ", arg.Name, ":", arg.Semantic)))));
+            builder.Append(string.Join(", ", builderContext.PixelShaderInputs.Select(arg => arg.ToString())
+                                     .Concat(builderContext.PixelShaderOutputs.Select(arg => string.Concat("out ", arg.Type, " ", arg.Name, ":", arg.Semantic)))));
             builder.AppendLine(")");
             builder.AppendLine("{");
-            foreach (var psi in temporaryPixelShaderVariables)
+            foreach (var psi in builderContext.TemporaryPixelShaderVariables)
             {
                 builder.AppendLine(string.Concat("    ", psi.Type, " ", psi.Name, " = ", psi.DefaultValue, ";"));
             }
             builder.AppendLine();
-            foreach (var psi in pixelShaderInputs)
+            foreach (var psi in builderContext.PixelShaderInputs)
             {
                 if (psi.In && psi.Out)
                     builder.AppendLine(string.Concat("    ", psi.Name, " = ", psi.Name, ";"));
             }
             builder.AppendLine();
-            foreach (var arg in argumentDictionary)
+            foreach (var arg in builderContext.ArgumentDictionary)
             {
-                if (!pixelShaderInputs.Any(psi => psi.Name == arg.Key) &&
-                    !pixelShaderOutputs.Any(t => t.Name == arg.Key) &&
-                    !temporaryPixelShaderVariables.Any(t => t.Name == arg.Key))
+                if (!builderContext.PixelShaderInputs.Any(psi => psi.Name == arg.Key) &&
+                    !builderContext.PixelShaderOutputs.Any(t => t.Name == arg.Key) &&
+                    !builderContext.TemporaryPixelShaderVariables.Any(t => t.Name == arg.Key))
                 {
                     builder.AppendLine(string.Concat("    ", arg.Value.Type, " ", arg.Value.Name, " = ", arg.Value.DefaultValue, ";"));
                 }
             }
             builder.AppendLine();
-            foreach (var materialPart in materialPartDeclarations)
+            foreach (var materialPart in builderContext.MaterialPartDeclarations)
             {
                 if (materialPart.PixelShader != null)
                     builder.AppendLine(materialPart.PixelShader.ToInvokeString(string.Concat("_", materialPart.Index)));
@@ -756,34 +819,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 "{" + Environment.NewLine +
                 "   pass Default" + Environment.NewLine +
                 "   {" + Environment.NewLine +
-                "       VertexShader = compile vs_2_0 VS();" + Environment.NewLine +
-                "       PixelShader = compile ps_2_0 PS();" + Environment.NewLine +
+                "       VertexShader = compile vs_" + profile + " VS();" + Environment.NewLine +
+                "       PixelShader = compile ps_" + profile + " PS();" + Environment.NewLine +
                 "   }" + Environment.NewLine +
                 "}" + Environment.NewLine
             );
 
-            LastEffectCode = builder.ToString();
-
-            var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(LastEffectCode));
-            var hashString = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-                hashString.Append(hash[i].ToString("X2"));
-            LastIdentity = hashString.ToString();
-
-            if (!Directory.Exists(Path.Combine(context.IntermediateDirectory, WorkingPath)))
-                Directory.CreateDirectory(Path.Combine(context.IntermediateDirectory, WorkingPath));
-
-            string resultEffectFile = Path.Combine(context.IntermediateDirectory, WorkingPath, LastIdentity + ".fx");
-            string resultAsmFile = Path.Combine(context.IntermediateDirectory, WorkingPath, LastIdentity + ".asm");
-            File.WriteAllText(resultEffectFile, MaterialGroupBuilder.LastEffectCode);
-            context.Logger.LogImportantMessage(string.Format("{0} : (double-click this message to view HLSL file).", resultEffectFile));
-            
-            Disassemble(resultEffectFile, resultAsmFile, context);
-
-            // Step 5: Compile effect
-            var effectContent = new EffectContent { EffectCode = LastEffectCode };
-            var effectProcessor = new EffectProcessor();
-            return effectProcessor.Process(effectContent, context);
+            return builder.ToString();
         }
         
 
