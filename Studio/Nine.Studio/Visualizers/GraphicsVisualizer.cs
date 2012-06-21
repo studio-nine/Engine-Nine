@@ -8,44 +8,51 @@
 
 #region Using Directives
 using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Nine.Studio.Controls;
-using Nine.Studio.Content;
-using Nine.Studio.Extensibility;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Nine.Content.Pipeline;
+using Nine.Studio.Controls;
+using Nine.Studio.Extensibility;
 #endregion
 
 namespace Nine.Studio.Visualizers
 {
-    public abstract class GraphicsDocumentVisualizer<T> : GraphicsDocumentVisualizer<T, T> { }
+    public abstract class GraphicsVisualizer<T> : GraphicsVisualizer<T, T> { }
 
-    public abstract class GraphicsDocumentVisualizer<TContent, TRunTime> : DocumentVisualizer<TContent>
+    public abstract class GraphicsVisualizer<TContent, TRunTime> : Visualizer<TContent>
     {
+        static DrawingSurface sharedDrawingSurface;
+
+        public string DisplayName { get; protected set; }
         public TContent Editable { get; private set; }
         public TRunTime Drawable { get; private set; }
-        public DrawingSurface Surface { get; private set; }
+        public DrawingSurface Surface { get { return sharedDrawingSurface; } }
 
         public ContentManager Content { get { return Surface.ContentManager; } }
         public GraphicsDevice GraphicsDevice { get { return Surface.GraphicsDevice; } }
 
+        public GraphicsVisualizer()
+        {
+            DisplayName = GetType().Name;
+        }
+
         protected override object Visualize(TContent targetObject)
         {
-            Surface = new DrawingSurface();
-            Surface.Draw += (sender, e) =>
+            if (sharedDrawingSurface == null)
             {
-                if (Editable == null)
+                sharedDrawingSurface = new DrawingSurface();
+                sharedDrawingSurface.Draw += (sender, e) =>
                 {
-                    Editable = (TContent)targetObject;
-                    Drawable = CreateRuntimeObject(e.GraphicsDevice, Editable);
-                    LoadContent();
-                }
-                Draw(e.DeltaTime);
-            };
-            return Surface;
+                    if (Editable == null)
+                    {
+                        Editable = (TContent)targetObject;
+                        Drawable = CreateRuntimeObject(e.GraphicsDevice, Editable);
+                        LoadContent();
+                    }
+                    Draw(e.DeltaTime);
+                };
+            }
+            return sharedDrawingSurface;
         }
 
         protected virtual TRunTime CreateRuntimeObject(GraphicsDevice graphics, TContent content)
@@ -53,7 +60,7 @@ namespace Nine.Studio.Visualizers
             if (typeof(TRunTime) == typeof(TContent))
                 return (TRunTime)(object)content;
 
-            return PipelineBuilder.Convert<TContent, TRunTime>(graphics, content);
+            throw new NotImplementedException();
         }
 
         protected virtual void LoadContent() { }

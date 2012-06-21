@@ -45,7 +45,7 @@ namespace Nine.Studio.Controls
     ///     maoren      (http://forums.create.msdn.com/forums/p/53048/321984.aspx#321984)
     ///     bozalina    (http://blog.bozalina.com/2010/11/xna-40-and-wpf.html)
     /// </remarks>
-    public class DrawingSurface : ContentControl
+    public class DrawingSurface : ContentControl, IDisposable
     {
         public event EventHandler<DrawEventArgs> Draw;
         
@@ -86,8 +86,14 @@ namespace Nine.Studio.Controls
             Image.Source = D3dImage = new D3DImage();
             D3dImage.IsFrontBufferAvailableChanged += new DependencyPropertyChangedEventHandler(D3dImage_IsFrontBufferAvailableChanged);
 
+            SizeChanged += new SizeChangedEventHandler(DrawingSurface_SizeChanged);
             Loaded += new RoutedEventHandler(DrawingSurface_Loaded);
             Unloaded += new RoutedEventHandler(DrawingSurface_Unloaded);
+        }
+
+        void DrawingSurface_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            contentNeedsRefresh = true;
         }
                 
         void DrawingSurface_Loaded(object sender, RoutedEventArgs e)
@@ -267,5 +273,35 @@ namespace Nine.Studio.Controls
         {
             contentNeedsRefresh = true;
         }
+
+        #region IDisposable
+        private bool isDisposed = false;
+
+        public bool IsDisposed
+        {
+            get { return isDisposed; }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed)
+            {
+                if (GraphicsDeviceService != null)
+                    GraphicsDeviceService.Release(disposing);
+                isDisposed = true;
+            }
+        }
+
+        ~DrawingSurface()
+        {
+            Dispose(false);
+        }
+        #endregion
     }
 }

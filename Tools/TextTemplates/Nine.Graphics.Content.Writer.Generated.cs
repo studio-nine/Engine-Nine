@@ -3593,15 +3593,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.WriteObject(value.SurfaceFormat);
             output.WriteObject(value.RenderTargetSize);
             output.Write(value.RenderTargetScale);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
-            output.Write(value.Enabled);
-            output.Write(value.Order);
             {
                 output.Write(value.Passes.Count);
                 for (var i = 0; i < value.Passes.Count; i++)
                     output.WriteObject(value.Passes[i]);
             }
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
             output.WriteObject(value.View);
             output.WriteObject(value.Projection);
         }
@@ -3644,19 +3644,15 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             }
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "BlendState", value.BlendState);
-            output.WriteObject(value.SurfaceFormat);
-            output.WriteObject(value.RenderTargetSize);
-            output.Write(value.RenderTargetScale);
-            WriteObject(output, value, "PreviousTexture", value.PreviousTexture);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
-            output.Write(value.Enabled);
-            output.Write(value.Order);
             {
                 output.Write(value.Passes.Count);
                 for (var i = 0; i < value.Passes.Count; i++)
                     output.WriteObject(value.Passes[i]);
             }
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
             output.WriteObject(value.View);
             output.WriteObject(value.Projection);
         }
@@ -4017,47 +4013,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Primitives.PrimitiveGroup, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
-    /// Content writer for <c>Quad</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class QuadWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Primitives.Quad>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Primitives.Quad value)
-        {
-            output.Write(value.Visible);
-            WriteObject(output, value, "Material", value.Material);
-            WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
-            output.Write(value.InvertWindingOrder);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
-            output.Write(value.Transform);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Primitives.QuadReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Primitives.Quad, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>

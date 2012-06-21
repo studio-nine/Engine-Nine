@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:nine="clr-namespace:Nine.Studio.Shell.Behaviors"
     xmlns:ctrl="clr-namespace:Nine.Studio.Shell.Windows"
-    xmlns:my="clr-namespace:Nine.Studio.Shell"    
+    xmlns:my="clr-namespace:Nine.Studio.Shell"        
     xmlns:sys="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
     mc:Ignorable="d" x:Class="Nine.Studio.Shell.Windows.MainWindow" x:Name="Window" Title="{Binding Title}"
@@ -41,6 +41,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
@@ -48,8 +49,8 @@
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        
-        <ContentPresenter x:Name="EditorCanvas" Content="{Binding ActiveDocument.DocumentWindow}" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
+
+        <ContentControl x:Name="EditorCanvas" Content="{Binding ActiveProjectItem, Converter={StaticResource ProjectItemViewToControlConverter}}" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
         
         <Rectangle x:Name="EditorCanvasMask" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" />
         
@@ -67,7 +68,7 @@
 
         <StackPanel x:Name="MainMenu" Grid.Row="1" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" HorizontalAlignment="Left" Orientation="Horizontal">
             <RadioButton x:Name="FileButton" Content="{x:Static my:Strings.Nine}" IsChecked="True" Style="{StaticResource RadioButton-Product}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" IsEnabled="{Binding DocumentFactories.Count}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" IsEnabled="{Binding Factories.Count}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
             <RadioButton x:Name="EditButton" Content="{x:Static my:Strings.Edit}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
             <RadioButton x:Name="ViewButton" Content="{x:Static my:Strings.View}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
             <RadioButton x:Name="SceneButton" Content="{x:Static my:Strings.Scene}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
@@ -81,7 +82,7 @@
                 <!-- CollectionViewSource for Create -->
                 <CollectionViewSource x:Key="FactoriesViewSource" Source="{Binding Factories}">
                     <CollectionViewSource.GroupDescriptions>
-                        <PropertyGroupDescription PropertyName="Factory.Category" />
+                        <PropertyGroupDescription PropertyName="Metadata.Category" />
                     </CollectionViewSource.GroupDescriptions>
                 </CollectionViewSource>
 
@@ -92,10 +93,10 @@
                     </CollectionViewSource.GroupDescriptions>                    
                     <CollectionViewSource.Source>
                         <sys:ArrayList>
-                            <Button x:Name="NewButton" Command="{Binding DataContext.NewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.New}" />
-                            <Button x:Name="OpenButton" Command="{Binding DataContext.OpenCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Open}" />
-                            <Button x:Name="SaveButton" Command="{Binding DataContext.SaveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Save}" />
-                            <Button x:Name="CloseButton" Command="{Binding DataContext.CloseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ListView}}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Close}" />
+                            <Button x:Name="NewButton" Command="{Binding EditorView.NewCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.New}" />
+                            <Button x:Name="OpenButton" Command="{Binding EditorView.OpenCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Open}" />
+                            <Button x:Name="SaveButton" Command="{Binding EditorView.SaveCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Save}" />
+                            <Button x:Name="CloseButton" Command="{Binding EditorView.CloseCommand, ElementName=Window}" Style="{StaticResource Button-ToolsMenu}" Content="{x:Static my:Strings.Close}" />
                         </sys:ArrayList>
                     </CollectionViewSource.Source>
                 </CollectionViewSource>
@@ -122,7 +123,8 @@
                       nine:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Button Style="{StaticResource Button-ToolsMenu}" Content="{Binding Converter={StaticResource TruncatePathConverter}}" Command="{Binding NewCommand}" />
+                        <Button Style="{StaticResource Button-ToolsMenu}" Content="{Binding Converter={StaticResource TruncatePathConverter}}"
+                                Command="{Binding EditorView.OpenCommand, ElementName=Window}" CommandParameter="{Binding}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -140,8 +142,9 @@
             </ListView>
         </StackPanel>
 
+        <!--
         <StackPanel Grid.Row="3" Grid.Column="1" Width="300"  Margin="0,50,50,50">
-            <wpf:WatermarkTextBox Watermark="{x:Static my:Strings.SearchProperties}" nine:HeaderBehavior.Header="Filename" Style="{DynamicResource WatermarkTextBox-Metro}"/>
+            <wpf:WatermarkTextBox Watermark="{x:Static my:Strings.SearchProperties}" nine:HeaderBehavior.Header="FileName" Style="{DynamicResource WatermarkTextBox-Metro}"/>
             <Rectangle Height="10" />
             <wpf:ColorCanvas nine:HeaderBehavior.Header="Diffuse Color" Style="{StaticResource ColorCanvas-Metro}"/>
             <Rectangle Height="10" />
@@ -151,13 +154,16 @@
             <Rectangle Height="10" />
             <ProgressBar Style="{StaticResource ProgressBar-Metro}" Value="60" IsIndeterminate="True"/>
         </StackPanel>
-        
+        -->
         <DockPanel x:Name="PropertiesMenu" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Margin="0,20,50,50">
-            <wpf:PropertyGrid x:Name="PropertyGrid" SelectedObject="{Binding}" Style="{StaticResource PropertyGrid-Metro}"
+            <wpf:PropertyGrid x:Name="PropertyGrid" SelectedObject="{Binding SelectedObject}" Style="{StaticResource PropertyGrid-Metro}"
                               Visibility="{Binding IsChecked, ElementName=PropertiesButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </DockPanel>
         <Grid x:Name="DialogContainer" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}"/>
-        <Border x:Name="ClientBorder" BorderThickness="1" BorderBrush="{StaticResource Brush-NormalText}" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" d:IsLocked="True" />
+        <Border x:Name="ClientBorder" BorderThickness="1" BorderBrush="{StaticResource Brush-Accent}" Grid.RowSpan="{Binding RowDefinitions.Count, ElementName=LayoutRoot}" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" d:IsLocked="True" />
+        <Grid x:Name="StatusBar" Grid.Row="5" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" Background="{StaticResource Brush-Accent}">
+            
+        </Grid>
         <!--
         
         

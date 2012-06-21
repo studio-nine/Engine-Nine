@@ -26,18 +26,18 @@ namespace Nine.Studio.Shell.Windows.Controls
             if (LibraryView == null) 
                 return;
 
-            ICollectionView view = CollectionViewSource.GetDefaultView(LibraryView.ProjectView.Documents);
+            ICollectionView view = CollectionViewSource.GetDefaultView(LibraryView.ProjectView.ProjectItems);
             view.Filter = (o) =>
             {
                 string searchPattern = SearchTextBox.Text;
-                return ((ProjectItemView)o).Filename.IndexOf(searchPattern, StringComparison.InvariantCultureIgnoreCase) >= 0;
+                return ((ProjectItemView)o).FileName.IndexOf(searchPattern, StringComparison.InvariantCultureIgnoreCase) >= 0;
             };
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (LibraryView != null)
-                CollectionViewSource.GetDefaultView(LibraryView.ProjectView.Documents).Refresh();
+                CollectionViewSource.GetDefaultView(LibraryView.ProjectView.ProjectItems).Refresh();
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
@@ -55,7 +55,7 @@ namespace Nine.Studio.Shell.Windows.Controls
             var doc = ((FrameworkElement)e.OriginalSource).DataContext as ProjectItemView;
             if (doc != null && LibraryView != null)
             {
-                LibraryView.ProjectView.DeleteDocument(doc);
+                LibraryView.ProjectView.DeleteProjectItem(doc);
             }
         }
     }

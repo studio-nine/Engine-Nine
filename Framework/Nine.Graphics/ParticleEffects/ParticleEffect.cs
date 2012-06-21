@@ -263,9 +263,6 @@ namespace Nine.Graphics.ParticleEffects
         private Matrix viewInverse;
 
         private int toBeRemoved;
-        private int numFramesBehind;
-        private AutoResetEvent canDraw = new AutoResetEvent(true);
-        private AutoResetEvent canUpdate = new AutoResetEvent(true);
         #endregion
 
         #region Constructor
@@ -404,11 +401,9 @@ namespace Nine.Graphics.ParticleEffects
             EnsureParticlesInitialized();
             elapsedSeconds = (float)elapsedTime.TotalSeconds;
 
-            Interlocked.Increment(ref numFramesBehind);
+            numFramesBehind++;
 
-            if (isAsync)
-                UpdateAsync(this);
-            else
+            if (!isAsync)
                 Update();
 
             InsideViewFrustum = false;
@@ -430,11 +425,10 @@ namespace Nine.Graphics.ParticleEffects
                 UpdateParticles(dt);
                 RetireParticles();
                 UpdateParticlePrimitive();
-                Thread.Sleep(100);
             }
             finally
             {
-                if (isAsync && Interlocked.Decrement(ref numFramesBehind) <= maxFramesBehind)
+                if (isAsync)
                     canDraw.Set();
             }
         }
@@ -618,7 +612,26 @@ namespace Nine.Graphics.ParticleEffects
             finally
             {
                 if (isAsync)
+                {
+                    // Once this particle effect is drawed, we start the update
+                    // asychroniously to maximize parallelism.
+
+                    // At least update once
+                    if (numFramesBehind == 1)
+                    {
+                        UpdateAsync(this);
+                        numFramesBehind = 0;
+                    }
+                    else
+                    {
+                        var updateCount = Math.Max(numFramesBehind - MaxFramesBehind, 0);
+                        for (int i = 0; i < updateCount; i++)
+                            UpdateAsync(this);
+                        numFramesBehind -= updateCount;
+                    }
+
                     canUpdate.Set();
+                }
             }
         }
 
@@ -626,6 +639,12 @@ namespace Nine.Graphics.ParticleEffects
         #endregion
 
         #region Threading
+        
+        // This number specifies how many frames we need to update before draw the object
+        private int numFramesBehind;
+        private AutoResetEvent canDraw = new AutoResetEvent(true);
+        private AutoResetEvent canUpdate = new AutoResetEvent(true);
+
         /// <summary>
         /// Gets or sets max number of frames the update frame can run behind the draw frame.
         /// </summary>
@@ -634,24 +653,24 @@ namespace Nine.Graphics.ParticleEffects
             get { return maxFramesBehind; }
             set { maxFramesBehind = value; }
         }
-        public static int maxFramesBehind = 40000;
+        private static int maxFramesBehind = 1;
 
         static AutoResetEvent ParticleQueueSyncEvent;
-        static Thread ParticleThread;
-        static ConcurrentQueue<ParticleEffect> PendingUpdates;
+        static Thread ParticleThread;        
+        static ConcurrentQueue<ParticleEffect> ActiveUpdates;
         
         static void UpdateAsync(ParticleEffect particleEffect)
         {
             if (ParticleThread == null)
             {
                 ParticleQueueSyncEvent = new AutoResetEvent(false);
-                PendingUpdates = new ConcurrentQueue<ParticleEffect>();
+                ActiveUpdates = new ConcurrentQueue<ParticleEffect>();
                 ParticleThread = new Thread((ThreadStart)ParticleUpdateWorker);
                 ParticleThread.IsBackground = true;
                 ParticleThread.Name = "ParticleEffect";
                 ParticleThread.Start();
             }
-            PendingUpdates.Enqueue(particleEffect);
+            ActiveUpdates.Enqueue(particleEffect);
             ParticleQueueSyncEvent.Set();
         }
 
@@ -661,7 +680,7 @@ namespace Nine.Graphics.ParticleEffects
             {
                 ParticleQueueSyncEvent.WaitOne();
                 ParticleEffect particleEffect;
-                while (PendingUpdates.TryDequeue(out particleEffect))
+                while (ActiveUpdates.TryDequeue(out particleEffect))
                     particleEffect.Update();
             }
         }

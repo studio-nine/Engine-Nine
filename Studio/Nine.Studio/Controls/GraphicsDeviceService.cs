@@ -41,8 +41,6 @@ namespace Nine.Studio.Controls
 
         // Keep track of how many controls are sharing the singletonInstance.
         static int referenceCount;
-
-        static Form form;
         #endregion
 
 
@@ -70,31 +68,40 @@ namespace Nine.Studio.Controls
         /// <summary>
         /// Gets a reference to the singleton instance.
         /// </summary>
-        public static GraphicsDeviceService AddRef(int width, int height)
+        public static GraphicsDeviceService AddRef()
         {
-            if (form == null)
-            {
-                form = new System.Windows.Forms.Form();
-                //form.Show();
-            }
-            return AddRef(form.Handle, width, height);
+            return AddRef(IntPtr.Zero, 0, 0);
         }
 
         /// <summary>
         /// Gets a reference to the singleton instance.
         /// </summary>
-        public static GraphicsDeviceService AddRef(IntPtr windowHandle,
-                                                   int width, int height)
+        public static GraphicsDeviceService AddRef(int width, int height)
+        {
+            return AddRef(IntPtr.Zero, width, height);
+        }
+
+        /// <summary>
+        /// Gets a reference to the singleton instance.
+        /// </summary>
+        public static GraphicsDeviceService AddRef(IntPtr windowHandle, int width, int height)
         {
             // Increment the "how many controls sharing the device" reference count.
             if (Interlocked.Increment(ref referenceCount) == 1)
             {
+                if (windowHandle == IntPtr.Zero)
+                    windowHandle = new System.Windows.Forms.Form().Handle;
+
+                if (width <= 0 || height <= 0)
+                {
+                    width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                    height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                }
+
                 // If this is the first control to start using the
                 // device, we must create the singleton instance.
-                singletonInstance = new GraphicsDeviceService(windowHandle,
-                                                              width, height);
+                singletonInstance = new GraphicsDeviceService(windowHandle, width, height);
             }
-
             return singletonInstance;
         }
 

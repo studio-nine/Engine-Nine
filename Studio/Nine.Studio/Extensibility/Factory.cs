@@ -8,6 +8,8 @@
 
 #region Using Directives
 using System;
+using System.Reflection;
+using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
@@ -34,11 +36,26 @@ namespace Nine.Studio.Extensibility
     /// </summary>
     public abstract class Factory<T, TParent> : IFactory
     {
+        public GraphicsDevice GraphicsDevice
+        {
+            get 
+            {
+                return graphicsDevice ?? 
+                      (graphicsDevice = Nine.Studio.Controls.GraphicsDeviceService.AddRef().GraphicsDevice);
+            }
+        }
+        private GraphicsDevice graphicsDevice;
+        
         public Editor Editor { get; private set; }
-        public Type TargetType { get { return typeof(TParent); } }
+        public Type TargetType { get { return typeof(T); } }
 
         public virtual object Create(TParent parent)
         {
+            var type = typeof(T);
+            var graphicsDeviceConstructor = type.GetConstructor(
+                BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(GraphicsDevice) }, null);
+            if (graphicsDeviceConstructor != null)
+                return graphicsDeviceConstructor.Invoke(new object[] { GraphicsDevice });
             return Activator.CreateInstance<T>();
         }
 

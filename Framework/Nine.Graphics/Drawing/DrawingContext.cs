@@ -56,13 +56,14 @@ namespace Nine.Graphics.Drawing
         public ISpatialQuery<IDrawableObject> Scene { get; private set; }
 
         /// <summary>
-        /// Gets a collection of passes that is used to render the scene.
+        /// Gets the main pass that is used to render the scene.
         /// </summary>
-        public DrawingPassCollection Passes
-        {
-            get { return rootPass.Passes; }
-        }
-        private DrawingPass rootPass = new DrawingPass();
+        public DrawingPassGroup MainPass { get; private set; }
+
+        /// <summary>
+        /// Gets the root pass of this drawing context composition chain.
+        /// </summary>
+        public DrawingPassChain RootPass { get; private set; }
 
         /// <summary>
         /// Gets the number of elapsed frames since the beginning of the draw context.
@@ -197,7 +198,10 @@ namespace Nine.Graphics.Drawing
             Fog.Value = new FogProperty(Fog);
             matrices = new DrawingContextMatrixCollection();
             textures = new DrawingContextTextureCollection();
-            Passes.Add(new BasicDrawingPass());
+            MainPass = new DrawingPassGroup();
+            MainPass.Passes.Add(new BasicDrawingPass());
+            RootPass = new DrawingPassChain();
+            RootPass.Passes.Add(MainPass);
         }
 
         /// <summary>
@@ -207,8 +211,6 @@ namespace Nine.Graphics.Drawing
         {
             if (isDrawing)
                 throw new InvalidOperationException("Cannot trigger another drawing of the scene while it's still been drawn");
-
-            GraphicsDevice.Clear(settings.BackgroundColor);
 
             Scene = scene;
             View = view;
@@ -222,11 +224,14 @@ namespace Nine.Graphics.Drawing
 
             try
             {   
-                DrawingPass.DynamicDrawables.Clear();
-                BoundingFrustum viewFrustum = ViewFrustum;
-                scene.FindAll(ref viewFrustum, DrawingPass.DynamicDrawables);
+                if (RootPass != null)
+                {
+                    DrawingPass.DynamicDrawables.Clear();
+                    BoundingFrustum viewFrustum = ViewFrustum;
+                    scene.FindAll(ref viewFrustum, DrawingPass.DynamicDrawables);
 
-                rootPass.Draw(this, DrawingPass.DynamicDrawables.Elements, 0, DrawingPass.DynamicDrawables.Count);
+                    RootPass.Draw(this, DrawingPass.DynamicDrawables.Elements, 0, DrawingPass.DynamicDrawables.Count);
+                }
             }
             finally
             {

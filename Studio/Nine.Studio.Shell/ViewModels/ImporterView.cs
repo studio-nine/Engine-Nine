@@ -45,9 +45,9 @@ namespace Nine.Studio.Shell.ViewModels
             bool? result = open.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                foreach (var filename in open.FileNames)
+                foreach (var fileName in open.FileNames)
                 {
-                    EditorView.ActiveProject.OpenDocument(filename);
+                    EditorView.ActiveProject.OpenProjectItem(fileName);
                 }
             }
         }

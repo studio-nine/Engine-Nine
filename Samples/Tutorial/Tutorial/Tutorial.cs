@@ -42,7 +42,7 @@ namespace Tutorial
         private string[] tutorials;
         private int nextTutorial;
         private Input input;
-
+        
         public Tutorial()
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
@@ -130,7 +130,6 @@ namespace Tutorial
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, -40, 10));           
             scene.Settings.DefaultDebugControlEnabled = true;
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
-            scene.Settings.BackgroundColor = Color.Gray;
 
             Window.Title = tutorials[nextTutorial];
 

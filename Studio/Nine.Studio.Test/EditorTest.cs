@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nine.Studio;
 using Nine.Studio.Extensibility;
 using Nine.Studio.Serializers;
+using System.IO;
 
 namespace Nine.Studio.Test
 {
@@ -13,6 +14,19 @@ namespace Nine.Studio.Test
     {
         const string ProjectName = "TestProject";
         const string WorldFactory = "WorldFactory";
+
+        [TestMethod]
+        public void TestNewProjectSaveLoad()
+        {
+            Editor editor = Editor.Launch();
+            editor.Extensions.LoadDefault();
+
+            var project = editor.CreateProject(ProjectName);
+            project.Save();
+            editor.Close();
+
+            Assert.IsTrue(File.Exists(project.FileName));
+        }
 
         [TestMethod]
         public void TestNewProjectNewWorldSaveLoad()
@@ -29,7 +43,7 @@ namespace Nine.Studio.Test
             editor.Close();
 
             Assert.AreEqual(0, editor.Projects.Count);
-            project = editor.OpenProject(project.Filename);
+            project = editor.OpenProject(project.FileName);
 
             Assert.IsNotNull(project.ProjectItems[0].ObjectModel);
         }
@@ -48,7 +62,7 @@ namespace Nine.Studio.Test
             editor.Close();
             
             Assert.AreEqual(0, editor.Projects.Count);
-            project = editor.OpenProject(project.Filename);
+            project = editor.OpenProject(project.FileName);
 
             Assert.IsNotNull(project.ProjectItems[0].ObjectModel);
         }

@@ -379,7 +379,7 @@ namespace Nine.Studio.Shell
             if (invalidChar != '0')
             {
                 Assert.Fail();
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The parameter contains illegal filename charactors {0}.", invalidChar.ToString()), parameterName);
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The parameter contains illegal fileName charactors {0}.", invalidChar.ToString()), parameterName);
             }
         }
 

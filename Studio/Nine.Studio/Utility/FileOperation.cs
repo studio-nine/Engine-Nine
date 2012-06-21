@@ -25,24 +25,24 @@ namespace Nine.Studio
 {
     static class FileOperation
     {
-        public static void BackupAndSave(string filename, Action<Stream> save)
+        public static void BackupAndSave(string fileName, Action<Stream> save)
         {
-            if (!Directory.Exists(Path.GetDirectoryName(filename)))
-                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            if (!File.Exists(filename))
+            if (!File.Exists(fileName))
             {
-                SaveAndDeleteFileOnError(filename, save);
+                SaveAndDeleteFileOnError(fileName, save);
             }
             else
             {
-                var tempFilename = filename + ".tmp";
-                var backupFilename = filename + ".bak";
+                var tempFilename = fileName + ".tmp";
+                var backupFilename = fileName + ".bak";
 
                 try
                 {
                     SaveAndDeleteFileOnError(tempFilename, save);
-                    File.Replace(tempFilename, filename, backupFilename);
+                    File.Replace(tempFilename, fileName, backupFilename);
                     DeleteFile(backupFilename);
                 }
                 finally
@@ -52,39 +52,39 @@ namespace Nine.Studio
             }
         }
 
-        public static void SaveAndDeleteFileOnError(string filename, Action<Stream> save)
+        public static void SaveAndDeleteFileOnError(string fileName, Action<Stream> save)
         {
             try
             {
-                using (FileStream stream = new FileStream(filename, FileMode.Create))
+                using (FileStream stream = new FileStream(fileName, FileMode.Create))
                 {
                     save(stream);
                 }
             }
             catch (Exception e)
             {
-                DeleteFile(filename);
+                DeleteFile(fileName);
                 throw e;
             }
         }
 
-        public static void DeleteFile(string filename)
+        public static void DeleteFile(string fileName)
         {
             try
             {
-                if (File.Exists(filename))
-                    File.Delete(filename);
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
             }
             catch (Exception) { }
         }
 
-        public static IDisposable WatchFileContentChange(string filename, Action<string> contentChanged)
+        public static IDisposable WatchFileContentChange(string fileName, Action<string> contentChanged)
         {
             Verify.IsNotNull(contentChanged, "contentChanged");
-            Verify.IsValidPath(filename, "filename");
+            Verify.IsValidPath(fileName, "fileName");
 
-            string directory = Path.GetDirectoryName(filename);
-            string filter = Path.GetFileName(filename);
+            string directory = Path.GetDirectoryName(fileName);
+            string filter = Path.GetFileName(fileName);
             
             FileSystemWatcher watcher = new FileSystemWatcher(directory, filter);
             watcher.NotifyFilter = NotifyFilters.LastWrite;

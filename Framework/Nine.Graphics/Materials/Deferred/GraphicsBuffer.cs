@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Primitives;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Graphics.Materials.Deferred
@@ -31,7 +32,7 @@ namespace Nine.Graphics.Materials.Deferred
         DepthStencilState greaterDepth;
 
         ClearEffect clearEffect;
-        Quad clearQuad;
+        FullScreenQuad clearQuad;
 
         Matrix view;
         Matrix projection;
@@ -308,7 +309,7 @@ namespace Nine.Graphics.Materials.Deferred
             if (clearEffect == null)
                 clearEffect = new ClearEffect(GraphicsDevice);
             if (clearQuad == null)
-                clearQuad = new Quad(GraphicsDevice);
+                clearQuad = new FullScreenQuad(GraphicsDevice);
 
             clearEffect.CurrentTechnique.Passes[0].Apply();
 

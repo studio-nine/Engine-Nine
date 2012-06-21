@@ -28,7 +28,7 @@ namespace Nine.Studio.Shell
         /// <summary>
         /// Shows a dialog.
         /// </summary>
-        Task<string> ShowDialogTaskAsync(string title, string description, object content, params string[] options);
+        Task<string> ShowDialogAsync(string title, string description, object content, params string[] options);
                 
         /// <summary>
         /// Queues a work item.

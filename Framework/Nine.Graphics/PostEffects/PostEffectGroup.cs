@@ -24,7 +24,7 @@ namespace Nine.Graphics.PostEffects
     /// </summary>
     [ContentSerializable]
     [ContentProperty("PostEffects")]
-    public class PostEffectGroup : PostDrawingPass, ISceneObject
+    public class PostEffectGroup : DrawingPassGroup, ISceneObject
     {
         /// <summary>
         /// Gets the materials used to draw this post effect.
@@ -48,7 +48,7 @@ namespace Nine.Graphics.PostEffects
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
-        public PostEffectGroup(GraphicsDevice graphics) : base(graphics)
+        public PostEffectGroup()
         {
             BlendState = BlendState.Opaque;
         }
@@ -66,7 +66,7 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.Passes.Add(this);
+            context.MainPass.Passes.Add(this);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.Passes.Remove(this);
+            context.MainPass.Passes.Remove(this);
         }
     }
 }

@@ -141,8 +141,7 @@ namespace Nine.Studio
             }
             catch (ReflectionTypeLoadException e)
             {
-                Trace.TraceError("Error loading assembly");
-                Trace.TraceError(e.ToString());
+                Trace.TraceError("Error loading extension assemblies");
                 foreach (var loaderException in e.LoaderExceptions)
                     Trace.TraceError(loaderException.ToString());
             }

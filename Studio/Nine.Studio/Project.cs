@@ -28,14 +28,19 @@ namespace Nine.Studio
     public class Project : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
-        /// Gets the filename of this project.
+        /// Gets the fileName of this project.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the absolute filename of this project with full path.
+        /// Gets the absolute fileName of this project with full path.
         /// </summary>
-        public string Filename { get; private set; }
+        public string FileName { get; private set; }
+
+        /// <summary>
+        /// Gets the absolute directory of this project.
+        /// </summary>
+        public string Directory { get; private set; }
         
         /// <summary>
         /// Gets whether this project is ready only.
@@ -85,27 +90,28 @@ namespace Nine.Studio
         /// <summary>
         /// Initializes a new project instance.
         /// </summary>
-        internal Project(Editor editor, string filename)
+        internal Project(Editor editor, string fileName)
         {
             Assert.CheckThread();
             Verify.IsNotNull(editor, "editor");
-            Verify.IsNeitherNullNorEmpty(filename, "filename");
+            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
             this.Editor = editor;
-            this.IsModified = false;
+            this.IsModified = true;
             this.InnerProjectItems = new ObservableCollection<ProjectItem>();
             this.InnerReferences = new ObservableCollection<Project>();
             this.ProjectItems = new ReadOnlyObservableCollection<ProjectItem>(InnerProjectItems);
             this.References = new ReadOnlyObservableCollection<Project>(InnerReferences);
 
-            if (!Path.HasExtension(filename))
-                filename = filename + Global.ProjectExtension;
-            Filename = Path.GetFullPath(filename);
-            Name =  Path.GetFileNameWithoutExtension(Filename);
-            if (File.Exists(Filename))
+            if (!Path.HasExtension(fileName))
+                fileName = fileName + Global.ProjectExtension;
+            FileName = Path.GetFullPath(fileName);
+            Name =  Path.GetFileNameWithoutExtension(FileName);
+            Directory = Path.GetDirectoryName(FileName);
+            if (File.Exists(FileName))
             {
                 Load();
-                FileInfo info = new FileInfo(Filename);
+                FileInfo info = new FileInfo(FileName);
                 IsReadOnly = info.Exists && info.IsReadOnly;
             }
         }
@@ -163,17 +169,17 @@ namespace Nine.Studio
         /// </summary>
         private void Load()
         {
-            Load(Filename);
+            Load(FileName);
         }
 
         /// <summary>
         /// Loads the project from the input file.
         /// </summary>
-        private void Load(string filename)
+        private void Load(string fileName)
         {
-            Verify.IsNeitherNullNorEmpty(filename, "filename");
+            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
-            using (FileStream stream = new FileStream(filename ?? Filename, FileMode.Open))
+            using (FileStream stream = new FileStream(fileName ?? FileName, FileMode.Open))
             {
                 Load(stream);
             }
@@ -201,11 +207,11 @@ namespace Nine.Studio
                 for (int i = 0; i < documents.Length; i++)
                 {
                     var doc = documents[i];
-                    var filename = doc.Descendants("Filename").Where(e => e.Parent == doc).First().Value;
+                    var fileName = doc.Descendants("FileName").Where(e => e.Parent == doc).First().Value;
 
-                    Editor.NotifyProgressChanged(filename, 1.0f * (i + 1) / documents.Length);
+                    Editor.NotifyProgressChanged(fileName, 1.0f * (i + 1) / documents.Length);
 
-                    var document = Import(Path.Combine(Path.GetDirectoryName(Filename), filename));
+                    var document = Import(Path.Combine(Directory, fileName));
                     var docReferences = doc.Descendants("References").Where(e => e.Parent == doc).FirstOrDefault();
                     if (docReferences != null)
                     {
@@ -213,7 +219,7 @@ namespace Nine.Studio
                         {
                             var projectName = docReference.Descendants("Project").FirstOrDefault();
                             var referenceProject = projectName == null ? this : Editor.OpenProject(projectName.Value);
-                            document.AddReference(referenceProject.Import(docReference.Descendants("Filename").First().Value));
+                            document.AddReference(referenceProject.Import(docReference.Descendants("FileName").First().Value));
                         }
                     }
                     document.Tag = LoadTag(doc);
@@ -251,12 +257,12 @@ namespace Nine.Studio
         public void Save()
         {
             Assert.CheckThread();
-            Assert.IsNeitherNullNorEmpty(Filename);
+            Assert.IsNeitherNullNorEmpty(FileName);
 
             if (IsModified)
-                FileOperation.BackupAndSave(Filename, Save);
+                FileOperation.BackupAndSave(FileName, Save);
             
-            Editor.RecentProject(Filename);
+            Editor.RecentProject(FileName);
         }
 
         /// <summary>
@@ -277,7 +283,7 @@ namespace Nine.Studio
                 }
                 catch (Exception e)
                 {
-                    Trace.TraceError("Failed saving {0}", projectItem.Filename);
+                    Trace.TraceError("Failed saving {0}", projectItem.FileName);
                     Trace.WriteLine(e.ToString());
                     throw;
                 }
@@ -309,19 +315,19 @@ namespace Nine.Studio
                 writer.WriteStartElement("ProjectItems");
                 foreach (var doc in ProjectItems)
                 {
-                    Assert.IsNeitherNullNorEmpty(doc.Filename);
+                    Assert.IsNeitherNullNorEmpty(doc.FileName);
 
                     writer.WriteStartElement("ProjectItem");
-                    writer.WriteElementString("Filename", doc.RelativeFilename);
+                    writer.WriteElementString("FileName", doc.RelativeFilename);
                     if (doc.References.Count > 0)
                     {
                         writer.WriteStartElement("References");
                         foreach (var reference in doc.References)
                         {
                             writer.WriteStartElement("Reference");
-                            writer.WriteElementString("Filename", reference.Filename);
+                            writer.WriteElementString("FileName", reference.FileName);
                             if (reference.Project != this)
-                                writer.WriteElementString("Project", reference.Project.Filename);
+                                writer.WriteElementString("Project", reference.Project.FileName);
                             writer.WriteEndElement();
                         }
                         writer.WriteEndElement();
@@ -340,7 +346,7 @@ namespace Nine.Studio
             {
                 writer.WriteStartElement("References");
                 foreach (var reference in References)
-                    writer.WriteElementString("Reference", reference.Filename);
+                    writer.WriteElementString("Reference", reference.FileName);
                 writer.WriteEndElement();
             }
         }
@@ -366,7 +372,6 @@ namespace Nine.Studio
         {
             Assert.CheckThread();
             Verify.IsNeitherNullNorEmpty(factoryTypeName, "factoryTypeName");
-
             return CreateProjectItem(Editor.Extensions.Factories.Single(x => x.Value.GetType().Name == factoryTypeName).Value);
         }
 
@@ -391,28 +396,28 @@ namespace Nine.Studio
             ProjectItem document = new ProjectItem(this, objectModel, null);
             InnerProjectItems.Add(document);
             IsModified = true;
-            Trace.TraceInformation("ProjectItem {0} of type {1} created at {2}", document.Name, document.Metadata.DisplayName, document.Filename);            
+            Trace.TraceInformation("ProjectItem {0} of type {1} created at {2}", document.Name, document.Metadata.DisplayName, document.FileName);            
             return document;
         }
 
         /// <summary>
         /// Opens a document from file with the specified serializer
         /// </summary>
-        public ProjectItem Import(string filename, IImporter importer)
+        public ProjectItem Import(string fileName, IImporter importer)
         {
             Assert.CheckThread();
             Verify.IsNotNull(importer, "importer");
-            Verify.IsValidPath(filename, "filename");
+            Verify.IsValidPath(fileName, "fileName");
 
             //ImporterParameters = ReflectionHelper.SaveProperties(importer);
 
-            using (FileStream stream = File.OpenRead(filename))
+            using (FileStream stream = File.OpenRead(fileName))
             {
                 List<string> dependencies = new List<string>();
                 var objectModel = importer.Import(stream, dependencies);
                 Verify.IsNotNull(objectModel, "objectModel");
 
-                ProjectItem document = new ProjectItem(this, objectModel, filename);
+                ProjectItem document = new ProjectItem(this, objectModel, fileName);
                 dependencies.ForEach(d => document.AddReference(Import(d)));
                 InnerProjectItems.Add(document);
                 IsModified = true;
@@ -423,16 +428,16 @@ namespace Nine.Studio
         /// <summary>
         /// Imports a document from file
         /// </summary>
-        public ProjectItem Import(string filename)
+        public ProjectItem Import(string fileName)
         {
             Assert.CheckThread();
-            Verify.FileExists(filename, "filename");
+            Verify.FileExists(fileName, "fileName");
 
             List<string> dependencies = new List<string>();
-            using (FileStream stream = File.OpenRead(filename))
+            using (FileStream stream = File.OpenRead(fileName))
             {
                 object documentObject = null;
-                string ext = Path.GetExtension(filename).ToLowerInvariant();
+                string ext = Path.GetExtension(fileName).ToLowerInvariant();
 
                 byte[] tempHeader = new byte[Constants.MaxHeaderBytes];                
                 int count = stream.Read(tempHeader, 0, tempHeader.Length);
@@ -457,16 +462,16 @@ namespace Nine.Studio
                         }
                         catch (Exception e)
                         {
-                            Trace.TraceInformation("Failed loading {0} using {1}", filename, documentSerializer.GetType());
+                            Trace.TraceInformation("Failed loading {0} using {1}", fileName, documentSerializer.GetType());
                             Trace.WriteLine(e);
                         }
                     }
                 }
 
                 if (documentObject == null)
-                    throw new InvalidOperationException(string.Format("Failed loading {0}", filename));
+                    throw new InvalidOperationException(string.Format("Failed loading {0}", fileName));
 
-                ProjectItem document = new ProjectItem(this, documentObject, filename);
+                ProjectItem document = new ProjectItem(this, documentObject, fileName);
                 dependencies.ForEach(d => document.AddReference(Import(d)));
                 InnerProjectItems.Add(document);
                 IsModified = true;

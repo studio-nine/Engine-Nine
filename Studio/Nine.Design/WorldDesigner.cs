@@ -24,7 +24,7 @@ namespace Nine.Design
     [Export(typeof(IImporter))]
     [LocalizedCategory("General")]
     [LocalizedDisplayName("World", typeof(Resources))]
-    public class WorldSerializer : XamlDocumentSerializer<World> { }
+    public class WorldSerializer : XamlDocumentSerializer { }
 
     [Export(typeof(IAttributeProvider))]
     public class WorldAttributeProvider : AttributeProvider<World>

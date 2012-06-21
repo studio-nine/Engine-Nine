@@ -10,7 +10,7 @@
 using System;
 using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Nine.Studio.Content;
+using Nine.Content.Pipeline;
 using Nine.Studio.Extensibility;
 #endregion
 
@@ -20,6 +20,8 @@ namespace Nine.Studio.Serializers
     {
         public abstract IContentImporter ContentImporter { get; }
         public abstract IContentProcessor ContentProcesser { get; }
+
+        static PipelineBuilder PipelineBuilder = new PipelineBuilder();
 
         protected override T Import(Stream input)
         {

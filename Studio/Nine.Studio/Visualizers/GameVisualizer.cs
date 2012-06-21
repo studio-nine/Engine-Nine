@@ -10,7 +10,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Studio.Content;
+using Nine.Content.Pipeline;
 using Nine.Studio.Controls;
 using Nine.Studio.Extensibility;
 #endregion
@@ -21,6 +21,7 @@ namespace Nine.Studio.Visualizers
 
     public abstract class GameVisualizer<TContent, TRunTime> : Game, IVisualizer
     {
+        public GameHost GameHost { get; private set; }
         public string DisplayName { get; protected set; }
         public Type TargetType { get { return typeof(TContent); } }
 
@@ -41,21 +42,24 @@ namespace Nine.Studio.Visualizers
 
         protected virtual object Visualize(TContent targetObject)
         {
-            GameHost gameHost = new GameHost();
-            gameHost.Loaded += (sender, e) =>
+            if (GameHost == null)
             {
-                if (gameHost.Game == null)
+                GameHost = new GameHost();
+                GameHost.Loaded += (sender, e) =>
                 {
-                    gameHost.Game = this;
-                    gameHost.GameLoaded += (sender1, e1) =>
+                    if (GameHost.Game == null)
                     {
-                        Content = new PipelineContentManager(GraphicsDevice);
-                        Editable = (TContent)targetObject;
-                        Drawable = CreateDrawable(GraphicsDevice, Editable);
-                    };
-                }
-            };
-            return gameHost;
+                        GameHost.Game = this;
+                        GameHost.GameLoaded += (sender1, e1) =>
+                        {
+                            Content = new PipelineContentManager(GraphicsDevice);
+                            Editable = (TContent)targetObject;
+                            Drawable = CreateDrawable(GraphicsDevice, Editable);
+                        };
+                    }
+                };
+            }
+            return GameHost;
         }
 
         protected internal virtual TRunTime CreateDrawable(GraphicsDevice graphics, TContent content)
@@ -63,7 +67,7 @@ namespace Nine.Studio.Visualizers
             if (typeof(TRunTime) == typeof(TContent))
                 return (TRunTime)(object)content;
 
-            return PipelineBuilder.Convert<TContent, TRunTime>(graphics, content);
+            throw new NotImplementedException();
         }
     }
 }

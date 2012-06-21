@@ -24,8 +24,9 @@ namespace Nine.Graphics.Drawing
     /// </summary>
     [RuntimeNameProperty("Name")]
     [DictionaryKeyProperty("Name")]
-    public class DrawingPass
+    public abstract class DrawingPass
     {
+        #region Properties
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
@@ -60,15 +61,6 @@ namespace Nine.Graphics.Drawing
         internal int order;
 
         /// <summary>
-        /// Gets the child passes of this drawing pass.
-        /// </summary>
-        public DrawingPassCollection Passes
-        {
-            get { return passes; }
-        }
-        private DrawingPassCollection passes = new DrawingPassCollection();
-
-        /// <summary>
         /// Gets or sets the view matrix that is specific for this pass. If this
         /// value is null, the view matrix in the drawing context is used, otherwise
         /// this value will override the matrix currently in the drawing context.
@@ -81,7 +73,9 @@ namespace Nine.Graphics.Drawing
         /// this value will override the matrix currently in the drawing context.
         /// </summary>        
         public Matrix? Projection { get; set; }
+        #endregion
 
+        #region Field
         /// <summary>
         /// Keeps a reference to a render target in case some drawing passes put 
         /// the result onto an intermediate render target.
@@ -107,6 +101,13 @@ namespace Nine.Graphics.Drawing
         internal FastList<DrawingPass> DependentPasses;
 
         /// <summary>
+        /// Stores drawables that are queried from the current view frustum each frame.
+        /// </summary>
+        internal static FastList<IDrawableObject> DynamicDrawables = new FastList<IDrawableObject>();
+        #endregion
+
+        #region Methods
+        /// <summary>
         /// Initializes a new instance of the <see cref="DrawingPass"/> class.
         /// </summary>
         public DrawingPass()
@@ -127,9 +128,15 @@ namespace Nine.Graphics.Drawing
         }
 
         /// <summary>
-        /// Stores drawables that are queried from the current view frustum each frame.
+        /// Prepares a preferred render target to hold the result of this drawing pass.
         /// </summary>
-        internal static FastList<IDrawableObject> DynamicDrawables = new FastList<IDrawableObject>();
+        /// <returns>
+        /// Returns null to use the default render target settings copied from the backbuffer.
+        /// </returns>
+        public virtual RenderTarget2D PrepareRenderTarget(Texture2D input)
+        {
+            return null;
+        }
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
@@ -137,47 +144,7 @@ namespace Nine.Graphics.Drawing
         /// <param name="drawables">
         /// A list of drawables about to be drawed in this drawing pass.
         /// </param>
-        public virtual void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
-        {
-            var passCount = Passes.Count;
-            var passOrder = Passes.GetSortedOrder();
-            var overrideViewFrustumLastPass = false;
-
-            for (int i = 0; i < passCount; i++)
-            {
-                var pass = Passes[passOrder[i]];
-                var overrideViewFrustum = false;
-
-                if (pass != null && pass.Enabled)
-                {
-                    // Query the drawables in the current view frustum only when the view frustum changed
-                    // or the pass overrides the frustum.
-                    var passView = pass.View;
-                    var passProjection = pass.Projection;
-
-                    if (passView.HasValue)
-                    {
-                        View = passView.Value;
-                        overrideViewFrustum = true;
-                    }
-
-                    if (passProjection.HasValue)
-                    {
-                        overrideViewFrustum = true;
-                        Projection = passProjection.Value;
-                    }
-
-                    if (overrideViewFrustum || overrideViewFrustumLastPass)
-                    {
-                        DynamicDrawables.Clear();
-                        BoundingFrustum viewFrustum = context.matrices.ViewFrustum;
-                        context.Scene.FindAll(ref viewFrustum, DynamicDrawables);
-                        overrideViewFrustumLastPass = overrideViewFrustum;
-                    }
-
-                    pass.Draw(context, DynamicDrawables.Elements, 0, DynamicDrawables.Count);
-                }
-            }
-        }
+        public abstract void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length);
+        #endregion
     }
 }

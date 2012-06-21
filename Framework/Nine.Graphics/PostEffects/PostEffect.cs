@@ -24,7 +24,7 @@ namespace Nine.Graphics.PostEffects
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Materials")]
-    public class PostEffect : DrawingPass, ISceneObject
+    public class PostEffect : DrawingPassChain, ISceneObject
     {
         #region Properties
         /// <summary>
@@ -106,10 +106,11 @@ namespace Nine.Graphics.PostEffects
         private int textureHeight;
         private bool renderTargetChanged;
         private RenderTargetPool renderTargetPool;
+
+        private FullScreenQuad fullScreenQuad;
         #endregion
 
         #region Methods
-        
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
@@ -120,6 +121,58 @@ namespace Nine.Graphics.PostEffects
             
             GraphicsDevice = graphics;
             BlendState = BlendState.Opaque;
+            fullScreenQuad = new FullScreenQuad(graphics);
+        }
+
+        public override RenderTarget2D PrepareRenderTarget(Texture2D input)
+        {
+            EnsureRenderTargetPool(input);
+            return renderTargetPool.Create();
+        }
+
+        private void EnsureRenderTargetPool(Texture2D input)
+        {
+            int w, h;
+            if (!renderTargetSize.HasValue)
+            {
+                if (input != null)
+                {
+                    w = input.Width;
+                    h = input.Height;
+                }
+                else
+                {
+                    w = GraphicsDevice.Viewport.Width;
+                    h = GraphicsDevice.Viewport.Height;
+                }
+
+                if (w != textureWidth || h != textureHeight)
+                {
+                    textureWidth = w; ;
+                    textureHeight = h;
+                    renderTargetChanged = true;
+                }
+            }
+
+            if (renderTargetChanged || renderTargetPool == null)
+            {
+                if (renderTargetSize.HasValue)
+                {
+                    w = (int)renderTargetSize.Value.X;
+                    h = (int)renderTargetSize.Value.Y;
+                }
+
+                var format = surfaceFormat.HasValue ? surfaceFormat.Value
+                                                    : input != null ? input.Format
+                                                    : GraphicsDevice.PresentationParameters.BackBufferFormat;
+
+                renderTargetPool = RenderTargetPool.AddRef(GraphicsDevice
+                                                        , (int)(textureWidth * renderTargetScale)
+                                                        , (int)(textureHeight * renderTargetScale)
+                                                        , false
+                                                        , format
+                                                        , DepthFormat.None);
+            }
         }
 
         /// <summary>
@@ -127,44 +180,38 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         public override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
         {
-            if (renderTargetChanged || renderTargetPool == null)
-            {
-                if (renderTargetPool != null)
-                    renderTargetPool.Release();
-                ;// renderTargetPool = RenderTargetPool.AddRef(GraphicsDevice, PreviousTexture, renderTargetSize, renderTargetScale, surfaceFormat);
-            }
-            ;// return renderTargetPool; 
-
-            RenderTarget2D renderTarget = null;
-
-            try
-            {
-                renderTarget = renderTargetPool.Lock();
-                renderTarget.Begin();
-
-                // Draw child passes
-                base.Draw(context, drawables, startIndex, length);
-            }
-            finally
-            {
-                renderTarget.End();
-                renderTargetPool.Unlock(renderTarget);
-
-                context.textures[TextureUsage.Previous] = renderTarget;
-            }
-
             var count = materials.Count;
             if (count <= 0)
                 return;
 
-            for (int i = 0; i < count; i++)
+            Material material;
+            RenderTarget2D intermediate = null;
+            Texture2D input = context.textures[TextureUsage.Previous] as Texture2D;
+            EnsureRenderTargetPool(input);
+                        
+            for (int i = 0; i < count - 1; i++)
             {
-                materials[i].BeginApply(context);
+                try
+                {
+                    RenderTargetPool.Lock(input as RenderTarget2D);
+                    intermediate = renderTargetPool.Create();
+                    intermediate.Begin();
 
-                ;// GraphicsDevice.DrawFullscreenQuad(PreviousTexture, SamplerState.PointClamp, Color.White, null);
-
-                materials[i].EndApply(context);
+                    material = materials[i];
+                    material.Texture = input;
+                    fullScreenQuad.Draw(context, material);
+                }
+                finally
+                {
+                    intermediate.End();
+                    RenderTargetPool.Unlock(input as RenderTarget2D);
+                    input = intermediate;
+                }
             }
+
+            material = materials[count - 1];
+            material.Texture = input;
+            fullScreenQuad.Draw(context, material);
         }
 
         /// <summary>
@@ -172,7 +219,7 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.Passes.Add(this);
+            context.RootPass.Passes.Add(this);
         }
 
         /// <summary>
@@ -180,9 +227,8 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.Passes.Remove(this);
+            context.RootPass.Passes.Remove(this);
         }
         #endregion
     }
 }
-

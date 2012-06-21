@@ -4,57 +4,13 @@
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
-    
+    <!--
     <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">
-        <BasicMaterial Texture="{ContentReference ..\Textures\checker}" />
+        <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
-
-
-    <PostEffectGroup Order="2">
-        <PostEffect Name="PassThrough" />
-        <PostEffect Name="BrightBlurPass" RenderTargetScale="0.5" BlendState="Additive">
-            <ThresholdMaterial BrightnessThreshold="0.5" />
-            <BlurMaterial Direction="{Degrees 0}"/>
-            <BlurMaterial Direction="{Degrees 90}"/>
-        </PostEffect>
-    </PostEffectGroup>
-    
-    <PostEffect RenderTargetScale="0.5" Order="0">
-        <WiggleMaterial />
-        <SaturateMaterial Saturation="0.5" />
+	-->
+    <PostEffect>
+        <BasicMaterial DiffuseColor="0.5, 0.5, 0.5" />
     </PostEffect>
-    
-    <DrawingGroup Visible="True">
-        <ModelDistorter>
-            <Model Name="Tank" Source="{ContentReference ../Models/Tank}" />
-        </ModelDistorter>
-
-        <PostEffectGroup Order="1">
-            <PostEffect Name="PassThrough" />
-            <PostEffect Name="BlurPass" RenderTargetScale="0.5">
-                <BlurMaterial Direction="{Degrees 0}"/>
-                <BlurMaterial Direction="{Degrees 90}"/>
-            </PostEffect>
-
-            <PostEffectGroup.Material>
-                <DepthOfFieldMaterial />
-            </PostEffectGroup.Material>
-        </PostEffectGroup>
-        
-        <PostEffect>
-            <DistorterMaterial />
-        </PostEffect>
-    </DrawingGroup>
-
-    <DrawingGroup Visible="False">
-        <ModelDistorter>
-            <Model Name="Dude" Source="{ContentReference ../Models/Dude}" />
-        </ModelDistorter>
-        
-        <PostEffect>
-            <DistorterMaterial />
-            <SaturateMaterial Saturation="0.2" />
-        </PostEffect>
-    </DrawingGroup>
 </Scene>

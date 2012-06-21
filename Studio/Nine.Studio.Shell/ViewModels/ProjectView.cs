@@ -19,44 +19,44 @@ namespace Nine.Studio.Shell.ViewModels
 {
     public class ProjectView : INotifyPropertyChanged
     {
-        public string Name { get { return Path.GetFileName(Filename); } }
-        public string Filename { get; private set; }
+        public string Name { get { return Path.GetFileName(FileName); } }
+        public string FileName { get; private set; }
         public Project Project { get; private set; }
         public Editor Editor { get { return EditorView.Editor; } }
         public EditorView EditorView { get; private set; }
-        public ObservableCollection<ProjectItemView> Documents { get; private set; }
+        public ObservableCollection<ProjectItemView> ProjectItems { get; private set; }
         public LibraryView LibraryView { get; private set; }
 
         public ProjectView(EditorView editorView, Project project)
         {
             this.Project = project;
             this.EditorView = editorView;
-            this.Filename = Project.Filename ?? Path.GetFullPath(Global.NextName(Strings.Untitled, Global.ProjectExtension));
-            //this.Documents = new ObservableCollection<ProjectItemView>(Project.Documents.Select(doc => new ProjectItemView(this,doc)));
+            this.FileName = Project.FileName ?? Path.GetFullPath(Global.NextName(Strings.Untitled, Global.ProjectExtension));
+            this.ProjectItems = new ObservableCollection<ProjectItemView>(Project.ProjectItems.Select(pi => new ProjectItemView(this, pi)));
             this.LibraryView = new LibraryView(this);
         }
 
-        public void CreateDocument(object documentObject)
+        public void CreateProjectItem(object objectModel)
         {
-            ProjectItem doc = EditorView.Project.CreateProjectItem(documentObject);
-            ProjectItemView docView = new ProjectItemView(this, doc);
-            Documents.Add(docView);
-            docView.Show();
+            ProjectItem projectItem = EditorView.Project.CreateProjectItem(objectModel);
+            ProjectItemView piView = new ProjectItemView(this, projectItem);
+            ProjectItems.Add(piView);
+            piView.Show();
         }
 
-        public void CreateDocument(IFactory documentFactory)
+        public void CreateProjectItem(IFactory factory)
         {
-            ProjectItem doc = EditorView.Project.CreateProjectItem(documentFactory);
-            ProjectItemView docView = new ProjectItemView(this, doc);
-            Documents.Add(docView);
-            docView.Show();
+            ProjectItem projectItem = EditorView.Project.CreateProjectItem(factory);
+            ProjectItemView piView = new ProjectItemView(this, projectItem);
+            ProjectItems.Add(piView);
+            piView.Show();
         }
 
-        public void OpenDocument(string filename)
+        public void OpenProjectItem(string fileName)
         {
-            ProjectItemView docView = new ProjectItemView(this, EditorView.Project.Import(filename));
-            Documents.Add(docView);
-            docView.Show();
+            ProjectItemView piView = new ProjectItemView(this, EditorView.Project.Import(fileName));
+            ProjectItems.Add(piView);
+            piView.Show();
             /*
             ProgressHelper.DoWork(
                 (e) =>
@@ -71,35 +71,35 @@ namespace Nine.Studio.Shell.ViewModels
                         Documents.Add(docView);
                         docView.Show();
                     }
-                }, filename, Strings.Loading, filename);
+                }, fileName, Strings.Loading, fileName);
              */
         }
 
-        public void OpenDocument(string filename, IImporter documentSerializer)
+        public void OpenProjectItem(string fileName, IImporter importer)
         {
             ProgressHelper.DoWork(
                 (e) =>
                 {
-                    return EditorView.Project.Import(e.ToString(), documentSerializer);
+                    return EditorView.Project.Import(e.ToString(), importer);
                 },
                 (e) =>
                 {
                     if (e != null)
                     {
                         ProjectItemView docView = new ProjectItemView(this, (ProjectItem)e);
-                        Documents.Add(docView);
+                        ProjectItems.Add(docView);
                         docView.Show();
                     }
-                }, filename, Strings.Loading, filename);
+                }, fileName, Strings.Loading, fileName);
         }
 
-        public void DeleteDocument(ProjectItemView doc)
+        public void DeleteProjectItem(ProjectItemView projectItem)
         {
-            if (Documents.Contains(doc))
+            if (ProjectItems.Contains(projectItem))
             {
-                doc.Hide();
-                doc.Document.Close();
-                Documents.Remove(doc);
+                projectItem.Hide();
+                projectItem.ProjectItem.Close();
+                ProjectItems.Remove(projectItem);
                 Project.IsModified = true;
             }
         }

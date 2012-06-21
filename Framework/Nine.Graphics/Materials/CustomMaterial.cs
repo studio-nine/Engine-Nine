@@ -47,6 +47,13 @@ namespace Nine.Graphics.Materials
         private Effect source;
 
         /// <summary>
+        /// Gets or sets the shader code for this custom material.
+        /// </summary>
+        [ContentSerializerIgnore]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public string Code { get; set; }
+
+        /// <summary>
         /// Gets the parameters unique to this custom material instance.
         /// </summary>
         public CustomMaterialParameterCollection Parameters
@@ -104,7 +111,7 @@ namespace Nine.Graphics.Materials
     }
     #endregion
 
-    #region CustomEffectReader    
+    #region CustomEffectReader
     class CustomEffectReader : ContentTypeReader
     {
         // To avoid conflict with the built-in effect reader, we walkaround this 

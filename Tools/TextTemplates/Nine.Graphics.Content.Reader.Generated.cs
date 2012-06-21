@@ -2407,15 +2407,15 @@ namespace Nine.Graphics.PostEffects
             existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
             existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
             existingInstance.RenderTargetScale = input.ReadSingle();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadInt32();
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
                     existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.Drawing.DrawingPass>());
             }
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
             existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             return existingInstance;
@@ -2433,15 +2433,7 @@ namespace Nine.Graphics.PostEffects
         protected override Nine.Graphics.PostEffects.PostEffectGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.PostEffectGroup existingInstance)
         {
             if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new PostEffectGroup(graphicsDevice);
-            }
+                existingInstance = new PostEffectGroup();
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
@@ -2449,19 +2441,15 @@ namespace Nine.Graphics.PostEffects
             }
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
-            existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
-            existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
-            existingInstance.RenderTargetScale = input.ReadSingle();
-            existingInstance.PreviousTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadInt32();
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
                     existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.Drawing.DrawingPass>());
             }
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
             existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             return existingInstance;
@@ -2722,37 +2710,6 @@ namespace Nine.Graphics.Primitives
                 for (var i = 0; i < count; i++)
                     existingInstance.Primitives.Add(input.ReadObject<Nine.Graphics.Primitives.Primitive<Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture>>());
             }
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Quad</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class QuadReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.Quad>
-    {
-        protected override Nine.Graphics.Primitives.Quad Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Quad existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new Quad(graphicsDevice);
-            }
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.InvertWindingOrder = input.ReadBoolean();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }

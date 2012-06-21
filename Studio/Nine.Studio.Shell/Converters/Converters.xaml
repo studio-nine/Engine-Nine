@@ -14,7 +14,8 @@
     <c:TruncatePathConverter x:Key="TruncatePathConverter" />
     <c:EnumTypeConverter x:Key="EnumTypeConverter" />
     <c:ColorToInvertBrushConverter x:Key="ColorToInvertBrushConverter" />
-    <ec:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
+    <c:ProjectItemViewToControlConverter x:Key="ProjectItemViewToControlConverter" />
+    <ec:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />    
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
 </ResourceDictionary>

@@ -32,7 +32,7 @@ namespace Nine.Studio.Shell.ViewModels
 
         public void New()
         {
-            EditorView.ActiveProject.CreateDocument(Factory);
+            EditorView.ActiveProject.CreateProjectItem(Factory);
         }
 
         public override string ToString()

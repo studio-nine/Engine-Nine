@@ -131,6 +131,7 @@
     <Compile Include="Navigation\PathGridContent.cs" />
     <Compile Include="Physics\PhysicsComponentContent.cs" />
     <Compile Include="Physics\PhysicsShapeContent.cs" />
+    <Compile Include="Processors\CustomMaterialProcessor.cs" />
     <Compile Include="Processors\CustomEffectProcessor.cs" />
     <Compile Include="Processors\DefaultContentProcessor.cs" />
     <Compile Include="Processors\MaterialGroupProcessor.cs" />

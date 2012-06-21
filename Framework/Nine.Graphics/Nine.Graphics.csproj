@@ -114,8 +114,9 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="Drawing\DrawingPassChain.cs" />
+    <Compile Include="Drawing\DrawingPassGroup.cs" />
     <Compile Include="Drawing\DrawingContextTextureCollection.cs" />
-    <Compile Include="Drawing\PostDrawingPass.cs" />
     <Compile Include="Drawing\DrawingContextMatrixCollection.cs" />
     <Compile Include="Drawing\DrawingPass.cs" />
     <Compile Include="Drawing\DrawingQueue.cs" />
@@ -203,7 +204,7 @@
     <Compile Include="Primitives\Teapot.cs" />
     <Compile Include="Primitives\Cylinder.cs" />
     <Compile Include="Primitives\Sphere.cs" />
-    <Compile Include="Primitives\Quad.cs" />
+    <Compile Include="ObjectModel\FullScreenQuad.cs" />
     <Compile Include="Materials\Deferred\IDeferredLight.cs" />
     <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

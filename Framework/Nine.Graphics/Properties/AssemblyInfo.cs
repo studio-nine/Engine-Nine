@@ -53,6 +53,6 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.Materials.MaterialParts")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.ObjectModel")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.ParticleEffects")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.ScreenEffects")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.PostEffects")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Graphics.Primitives")]
 #endif

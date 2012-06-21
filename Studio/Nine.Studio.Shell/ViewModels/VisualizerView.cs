@@ -21,15 +21,15 @@ namespace Nine.Studio.Shell.ViewModels
     public class VisualizerView : INotifyPropertyChanged
     {
         public ICommand ShowCommand { get; private set; }
-        public ProjectItem Document { get { return DocumentView.Document; } }
-        public ProjectItemView DocumentView { get; private set; }
-        public IVisualizer DocumentVisualizer { get; private set; }
+        public ProjectItem ProjectItem { get { return ProjectItemView.ProjectItem; } }
+        public ProjectItemView ProjectItemView { get; private set; }
+        public IVisualizer Visualizer { get; private set; }
         public Project Project { get { return ProjectView.Project; } }
-        public ProjectView ProjectView { get { return DocumentView.ProjectView; } }
+        public ProjectView ProjectView { get { return ProjectItemView.ProjectView; } }
         public Editor Editor { get { return EditorView.Editor; } }
         public EditorView EditorView { get { return ProjectView.EditorView; } }
         public ObservableCollection<PropertyView> Properties { get; private set; }
-        public bool IsDefault { get { return DocumentView.DefaultVisualizer == this; } }
+        public bool IsDefault { get { return ProjectItemView.DefaultVisualizer == this; } }
 
         /*
         public string DisplayName 
@@ -57,25 +57,24 @@ namespace Nine.Studio.Shell.ViewModels
         private bool _IsActive;
         
 
-        public VisualizerView(ProjectItemView documentView, IVisualizer documentVisualizer)
+        public VisualizerView(ProjectItemView projectItemView, IVisualizer visualizer)
         {
-            this.DocumentView = documentView;
-            this.DocumentVisualizer = documentVisualizer;
+            this.ProjectItemView = projectItemView;
+            this.Visualizer = visualizer;
             this.Properties = new ObservableCollection<PropertyView>();
-            this.Properties.AddRange(PropertyHelper.GetBrowsableProperties(documentVisualizer)
-                                                             .Select(p => new PropertyView(documentVisualizer, p)));
+            this.Properties.AddRange(PropertyHelper.GetBrowsableProperties(visualizer)
+                                                             .Select(p => new PropertyView(visualizer, p)));
             this.ShowCommand = new DelegateCommand(Show);
         }
 
         public void Show()
         {
-            DocumentView.ActiveVisualizer = this;
+            ProjectItemView.ActiveVisualizer = this;
         }
 
         public object Visualize()
         {
-            // FIXME: Set new visualizer property
-            return ((IVisualizer)Activator.CreateInstance(DocumentVisualizer.GetType())).Visualize(Document);
+            return Visualizer.Visualize(ProjectItem.ObjectModel);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

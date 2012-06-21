@@ -54,14 +54,12 @@
     <StartupObject>Nine.Studio.Shell.Bootstrapper</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -107,6 +105,7 @@
     <Compile Include="Behaviors\Standard\WindowExtensions.cs" />
     <Compile Include="Behaviors\SystemCommands.cs" />
     <Compile Include="Behaviors\SystemParameters2.cs" />
+    <Compile Include="Converters\ProjectItemViewToControlConverter.cs" />
     <Compile Include="Converters\InvertColorIntensityConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs" />
     <Compile Include="Converters\EnumTypeConverter.cs" />
@@ -195,10 +194,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\DocumentWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\LegacyMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -247,9 +242,6 @@
     </Compile>
     <Compile Include="Windows\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DocumentWindow.xaml.cs">
-      <DependentUpon>DocumentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\LegacyMainWindow.xaml.cs">
       <DependentUpon>LegacyMainWindow.xaml</DependentUpon>

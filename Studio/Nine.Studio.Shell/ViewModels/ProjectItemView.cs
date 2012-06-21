@@ -21,11 +21,11 @@ namespace Nine.Studio.Shell.ViewModels
     public class ProjectItemView : INotifyPropertyChanged
     {
         public ICommand ShowCommand { get; private set; }
-        public string Name { get { return Path.GetFileName(Filename); } }
-        public string Filename { get; private set; }
+        public string Name { get { return ProjectItem.Name; } }
+        public string FileName { get { return ProjectItem.FileName; } }
         public string Title { get { return Name; } }
 
-        public ProjectItem Document { get; private set; }
+        public ProjectItem ProjectItem { get; private set; }
         public Project Project { get { return ProjectView.Project; } }
         public ProjectView ProjectView { get; private set; }
         public Editor Editor { get { return EditorView.Editor; } }
@@ -51,33 +51,22 @@ namespace Nine.Studio.Shell.ViewModels
         }
         private VisualizerView _ActiveVisualizer;
 
-        public DocumentWindow DocumentWindow
+        public ProjectItemView(ProjectView projectView, ProjectItem projectItem)
         {
-            get { return documentWindow; }
-        }
-        private DocumentWindow documentWindow;
-
-        public ProjectItemView(ProjectView projectView, ProjectItem document)
-        {
-            /*
-            this.Document = document;
+            this.ProjectItem = projectItem;
             this.ProjectView = projectView;
-            this.Filename = document.Filename ?? Path.GetFullPath(Global.NextName(DocumentType.DisplayName, null));
             this.ShowCommand = new DelegateCommand(Show);
-            this.DocumentVisualizers = new ObservableCollection<VisualizerView>();
-            this.DocumentVisualizers.AddRange(Editor.Extensions.FindVisualizers(document.DocumentObject.GetType())
-                                                               .Select(v => new VisualizerView(this, v)));
-            this.DefaultVisualizer = DocumentVisualizers.FirstOrDefault(v => v.DocumentVisualizer == 
-                                       Editor.Extensions.FindVisualizer(document.DocumentObject.GetType())) ??
-                                     DocumentVisualizers.FirstOrDefault();
+            
+            this.Visualizers = new ObservableCollection<VisualizerView>(
+                Editor.Extensions.Visualizers.Where(v => v.Value.TargetType.IsAssignableFrom(projectItem.ObjectModel.GetType()))
+                                             .Select(v => new VisualizerView(this, v.Value)));
+            
+            this.DefaultVisualizer = Visualizers.SingleOrDefault(v => v.IsDefault) ?? Visualizers.FirstOrDefault();
             this.ActiveVisualizer = DefaultVisualizer;
-             */
         }
 
         public void Show()
         {
-            if (documentWindow == null)
-                documentWindow = new DocumentWindow() { DataContext = this };
             EditorView.ActiveProjectItem = this;
         }
 

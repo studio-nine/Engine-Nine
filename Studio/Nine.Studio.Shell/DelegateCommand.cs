@@ -59,6 +59,12 @@ namespace Nine.Studio.Shell
 
         }
 
+        public DelegateCommand(Action<object> execute)
+            : base(execute, null)
+        {
+
+        }
+
         public DelegateCommand(Action execute, Func<bool> canExecute)
             : base(o => execute(), o => canExecute())
         {

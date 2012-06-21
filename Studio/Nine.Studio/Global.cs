@@ -72,15 +72,15 @@ namespace Nine.Studio
             else if (!string.IsNullOrEmpty(ext))
                 ext = ext.GetNormalizedFileExtension();
 
-            var filename = "";
+            var fileName = "";
             var index = 1;
             do
             {
-                filename = string.Format("{0}{1}{2}", name, index++, ext);
+                fileName = string.Format("{0}{1}{2}", name, index++, ext);
             }
-            while (File.Exists(filename));
+            while (File.Exists(fileName));
 
-            return filename;
+            return fileName;
         }
 
         public static string GetNormalizedFileExtension(this string fileExtension)
@@ -161,24 +161,24 @@ namespace Nine.Studio
             return result;
         }
 
-        public static string NormalizeFilename(string filename)
+        public static string NormalizeFilename(string fileName)
         {
-            if (filename == null)
+            if (fileName == null)
                 return null;
-            return Path.GetFullPath(new Uri(Path.GetFullPath(filename)).LocalPath)
+            return Path.GetFullPath(new Uri(Path.GetFullPath(fileName)).LocalPath)
                        .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
 
-        public static string NormalizePath(string filename)
+        public static string NormalizePath(string fileName)
         {
             // This isn't correct at all.
-            if (filename == null)
+            if (fileName == null)
                 return null;
-            filename = Path.GetFullPath(new Uri(Path.GetFullPath(filename)).LocalPath)
+            fileName = Path.GetFullPath(new Uri(Path.GetFullPath(fileName)).LocalPath)
                            .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-            if (!filename.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                filename = filename + Path.DirectorySeparatorChar;
-            return filename;
+            if (!fileName.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                fileName = fileName + Path.DirectorySeparatorChar;
+            return fileName;
         }
 
         public static bool FilenameEquals(string filename1, string filename2)
@@ -188,9 +188,9 @@ namespace Nine.Studio
                                   StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        public static string GetRelativeFilename(string filename, string path)
+        public static string GetRelativeFilename(string fileName, string path)
         {
-            Uri uri = new Uri(NormalizeFilename(filename));
+            Uri uri = new Uri(NormalizeFilename(fileName));
             Uri dir = new Uri(NormalizePath(path));
             return dir.MakeRelativeUri(uri).OriginalString;
         }

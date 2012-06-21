@@ -45,9 +45,9 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.XImporter, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
-    <Reference Include="Nine, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
-    <Reference Include="Nine.Content.Pipeline, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
-    <Reference Include="Nine.Graphics, Version=1.2.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="Nine.Content.Pipeline, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core">
@@ -81,10 +81,6 @@
     <ProjectReference Include="..\Nine.Design\Nine.Design.csproj">
       <Project>{E4749787-541D-46B6-8762-F1711CD2807D}</Project>
       <Name>Nine.Design</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nine.Studio.Xna\Nine.Studio.Xna.csproj">
-      <Project>{ECE36DFF-ECA6-4C3C-A48C-74439999BF10}</Project>
-      <Name>Nine.Studio.Xna</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nine.Studio\Nine.Studio.csproj">
       <Project>{412AE201-B5E8-436E-9468-E6CC94739055}</Project>

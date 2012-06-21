@@ -36,7 +36,7 @@ namespace Nine.Studio.Shell.Windows
         {
             EditorView = (EditorView)DataContext;
             Editor = EditorView.Editor;
-            OpenFile = new DelegateCommand<string>(filename => {if (EnsureProjectSaved()) EditorView.OpenProject(filename);});
+            OpenFile = new DelegateCommand<string>(fileName => {if (EnsureProjectSaved()) EditorView.OpenProject(fileName);});
         }
 
         private void EditorWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -148,7 +148,7 @@ namespace Nine.Studio.Shell.Windows
             if (EditorView.Project == null)
                 return true;
 
-            if (!string.IsNullOrEmpty(EditorView.Project.Filename))
+            if (!string.IsNullOrEmpty(EditorView.Project.FileName))
             {
                 EditorView.SaveProject();
                 return true;

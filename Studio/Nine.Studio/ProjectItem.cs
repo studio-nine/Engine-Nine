@@ -29,17 +29,17 @@ namespace Nine.Studio
     public class ProjectItem : INotifyPropertyChanged, IDisposable
     {
         /// <summary>
-        /// Gets the filename of this document.
+        /// Gets the fileName of this document.
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the absolute filename of this document with full path.
+        /// Gets the absolute fileName of this document with full path.
         /// </summary>
-        public string Filename { get; private set; }
+        public string FileName { get; private set; }
 
         /// <summary>
-        /// Gets the relative filename as to it's parent project.
+        /// Gets the relative fileName as to it's parent project.
         /// </summary>
         public string RelativeFilename { get; private set; }
 
@@ -151,7 +151,7 @@ namespace Nine.Studio
         /// <summary>
         /// Initializes a new document instance.
         /// </summary>
-        internal ProjectItem(Project project, object objectModel, string filename)
+        internal ProjectItem(Project project, object objectModel, string fileName)
         {
             Assert.CheckThread();
             Verify.IsNotNull(project, "project");
@@ -161,7 +161,7 @@ namespace Nine.Studio
             this.InnerReferences = new List<ProjectItem>();
             this.References = new ReadOnlyCollection<ProjectItem>(InnerReferences);
             this.ObjectModel = objectModel;
-            this.IsModified = string.IsNullOrEmpty(filename);
+            this.IsModified = string.IsNullOrEmpty(fileName);
             this.Exporter = Editor.Extensions.FindExporter(objectModel.GetType());
             this.Importer = Editor.Extensions.FindImporter(objectModel.GetType());
             this.Visualizer = Editor.Extensions.FindVisualizer(objectModel.GetType());
@@ -174,15 +174,19 @@ namespace Nine.Studio
             };
 
             var extension = Exporter != null ? Exporter.Value.FileExtensions.FirstOrDefault() : null;
-            if (string.IsNullOrEmpty(filename))
-                filename = Global.NextName(Path.Combine(Metadata.FolderName, Metadata.DisplayName), extension);
+            if (string.IsNullOrEmpty(fileName))
+                fileName = Global.NextName(Path.Combine(Metadata.FolderName, Metadata.DisplayName), extension);
 
-            Filename = Path.GetFullPath(filename);
-            Name = Path.GetFileNameWithoutExtension(Filename);
-            RelativeFilename = Global.GetRelativeFilename(Filename, Path.GetDirectoryName(Project.Filename));
+            if (Path.IsPathRooted(fileName))
+                FileName = fileName;
+            else
+                FileName = Path.Combine(Project.Directory, fileName);
+
+            Name = Path.GetFileNameWithoutExtension(FileName);
+            RelativeFilename = Global.GetRelativeFilename(FileName, Project.Directory);
             Verify.IsFalse(Path.IsPathRooted(RelativeFilename), "RelativeFilename");
 
-            FileInfo info = new FileInfo(Filename);
+            FileInfo info = new FileInfo(FileName);
             IsReadOnly = info.Exists && info.IsReadOnly;
 
             BeginWatchFileChanges();
@@ -241,34 +245,34 @@ namespace Nine.Studio
         public void Save()
         {
             Assert.CheckThread();
-            Verify.IsNeitherNullNorEmpty(Filename, "Filename");
+            Verify.IsNeitherNullNorEmpty(FileName, "FileName");
 
             if (IsModified && CanSave)
-                Save(Filename);
+                Save(FileName);
         }
 
         /// <summary>
         /// Saves this document
         /// </summary>
-        public void Save(string filename)
+        public void Save(string fileName)
         {
             Assert.CheckThread();
-            Verify.IsNeitherNullNorEmpty(filename, "filename");
+            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
-            Save(filename, null);
+            Save(fileName, null);
         }
 
         /// <summary>
         /// Saves this document
         /// </summary>
-        public void Save(string filename, IExporter exporter)
+        public void Save(string fileName, IExporter exporter)
         {
             Assert.CheckThread();
             Assert.IsNotNull(Exporter);
             Assert.IsNotNull(Exporter.Value);
-            Verify.IsNeitherNullNorEmpty(filename, "filename");
+            Verify.IsNeitherNullNorEmpty(fileName, "fileName");
 
-            FileOperation.BackupAndSave(filename, stream => Save(stream, exporter));
+            FileOperation.BackupAndSave(fileName, stream => Save(stream, exporter));
         }
 
         /// <summary>
@@ -291,9 +295,9 @@ namespace Nine.Studio
 
         private void BeginWatchFileChanges()
         {
-            if (sourceFileWatcher == null && File.Exists(Filename))
+            if (sourceFileWatcher == null && File.Exists(FileName))
             {
-                sourceFileWatcher = FileOperation.WatchFileContentChange(Filename, filename =>
+                sourceFileWatcher = FileOperation.WatchFileContentChange(FileName, fileName =>
                 {
                     Interlocked.Exchange(ref objectModelNeedsReload, 1);
                 });

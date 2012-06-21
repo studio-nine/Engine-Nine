@@ -25,7 +25,8 @@ namespace Nine.Graphics.Drawing
     public class DrawingPassCollection : Collection<DrawingPass>, IComparer<DrawingPass>, IDependencyProvider<DrawingPass>
     {
         private int[] topologyReorder;
-        
+        private FastList<int> order;
+                
         internal bool TopologyChanged;
         internal bool PassOrderChanged;
 
@@ -66,10 +67,23 @@ namespace Nine.Graphics.Drawing
             PassOrderChanged = true;
         }
 
-        internal int[] GetSortedOrder()
+        internal FastList<int> GetEnabledAndSortedOrder()
         {
             EnsureTopology();
-            return topologyReorder;
+
+            if (order == null || order.Count < Count)
+                order = new FastList<int>(Count);
+            else
+                order.Clear();
+
+            for (int i = 0; i < topologyReorder.Length; i++)
+            {
+                var index = topologyReorder[i];
+                var pass = this[index];
+                if (pass != null && pass.Enabled)
+                    order.Add(index);
+            }
+            return order;
         }
 
         private void EnsureTopology()
@@ -78,8 +92,8 @@ namespace Nine.Graphics.Drawing
             {
                 if (PassOrderChanged)
                 {
-                    // Sort by pass order
-                    ((List<DrawingPass>)Items).Sort(this);
+                    // Sort by pass order using a stable sort algorithm.
+                    InsertionSort(Items, this);
                     PassOrderChanged = false;
                 }
 
@@ -92,6 +106,20 @@ namespace Nine.Graphics.Drawing
                 DependencyGraph.Sort(this, topologyReorder, this);
 
                 TopologyChanged = false;
+            }
+        }
+        
+        private static void InsertionSort<T>(IList<T> list, IComparer<T> comparer)
+        {
+            for (int j = 1; j < list.Count; j++)
+            {
+                T key = list[j];
+
+                int i = j - 1;
+                for (; i >= 0 && comparer.Compare(list[i], key) > 0; i--)
+                    list[i + 1] = list[i];
+
+                list[i + 1] = key;
             }
         }
 

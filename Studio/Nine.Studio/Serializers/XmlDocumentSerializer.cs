@@ -7,28 +7,46 @@
 #endregion
 
 #region Using Directives
+using System.ComponentModel.Composition;
 using System.IO;
-using System.Xml.Serialization;
+using System.Text;
+using System.Xml;
+using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
 using Nine.Studio.Extensibility;
 #endregion
 
 namespace Nine.Studio.Serializers
 {
-    public class XmlDocumentSerializer<T> : Serializer<T>
+    [Export(typeof(IImporter))]
+    [Export(typeof(IExporter))]
+    [LocalizedDisplayName("XnaXmlAssert")]
+    public class XmlDocumentSerializer : Serializer<object>
     {
         public XmlDocumentSerializer()
         {
             FileExtensions.Add(".xml");
         }
 
-        protected override void Serialize(Stream output, T value)
+        public override bool CheckSupported(byte[] header)
         {
-            new XmlSerializer(typeof(T)).Serialize(output, value);
+            string xml = Encoding.UTF8.GetString(header);
+            return xml.ToLowerInvariant().Contains("?xml");
         }
 
-        protected override T Deserialize(Stream input)
+        protected override void Serialize(Stream output, object value)
         {
-            return (T)new XmlSerializer(typeof(T)).Deserialize(input);
+            using (XmlWriter writer = XmlWriter.Create(output, new XmlWriterSettings() { Indent = true, CloseOutput = false }))
+            {
+                IntermediateSerializer.Serialize(writer, value, null);
+            }
+        }
+
+        protected override object Deserialize(Stream input)
+        {
+            using (XmlReader reader = XmlReader.Create(input))
+            {
+                return IntermediateSerializer.Deserialize<object>(reader, null);
+            }
         }
     }
 }

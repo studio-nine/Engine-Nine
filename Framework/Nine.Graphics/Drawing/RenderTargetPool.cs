@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 #endregion
 
@@ -24,9 +25,8 @@ namespace Nine.Graphics.Drawing
     public sealed class RenderTargetPool : IDisposable
     {
         private int refCount;
-        private int nextValidRenderTarget;
         private RenderTargetPoolKey key;
-        private List<RenderTarget2D> renderTargets = new List<RenderTarget2D>();
+        private FastList<RenderTarget2D> targets = new FastList<RenderTarget2D>();
 
         /// <summary>
         /// Prevents a default instance of the <see cref="RenderTargetPool"/> class from being created.
@@ -35,18 +35,21 @@ namespace Nine.Graphics.Drawing
 
         #region Lock & Unlock
         /// <summary>
-        /// Creates a render target from the pool and then lock it.
+        /// Creates a render target from the pool without locking it.
         /// </summary>
-        public RenderTarget2D Lock()
+        public RenderTarget2D Create()
         {
             RenderTarget2D result;
-            if (nextValidRenderTarget < renderTargets.Count)
+            for (int i = 0; i < targets.Count; i++)
             {
-                result = renderTargets[nextValidRenderTarget];
-                if (!result.IsDisposed && !result.IsContentLost)
-                    return result;
-
-                MakeInvalid(((RenderTargetPoolTag)(result.Tag)).Index);
+                result = targets[i];
+                if (((RenderTargetPoolTag)(result.Tag)).RefCount <= 0)
+                {
+                    if (!result.IsDisposed && !result.IsContentLost)
+                        return result;
+                    targets[i] = targets[--targets.Count];
+                    i--;
+                }
             }
 
             result = new RenderTarget2D(
@@ -55,71 +58,40 @@ namespace Nine.Graphics.Drawing
             
             result.Tag = new RenderTargetPoolTag()
             {
-                Index = nextValidRenderTarget++,
-                RefCount = 1,
+                RefCount = 0,
+                Pool = this,
             };
 
-            renderTargets.Add(result);
+            targets.Add(result);
             return result;
         }
 
         /// <summary>
         /// Locks the target render target to prevent it from being created from the pool.
         /// </summary>
-        public void Lock(RenderTarget2D target)
+        public static void Lock(RenderTarget2D target)
         {
             RenderTargetPoolTag tag = null;
             if (target == null || (tag = target.Tag as RenderTargetPoolTag) == null)
                 return;
 
+            Debug.Assert(tag.RefCount >= 0);
+
             tag.RefCount++;
-            nextValidRenderTarget++;
         }
 
         /// <summary>
         /// Unlocks the target render target.
         /// </summary>
-        public void Unlock(RenderTarget2D target)
+        public static void Unlock(RenderTarget2D target)
         {
             RenderTargetPoolTag tag = null;
             if (target == null || (tag = target.Tag as RenderTargetPoolTag) == null)
                 return;
 
-            if (--tag.RefCount == 0)
-                MakeAvailable(tag.Index);
-        }
+            tag.RefCount--;
 
-        private void MakeAvailable(int i)
-        {
-            nextValidRenderTarget--;
-            if (nextValidRenderTarget != i)
-            {
-                var temp = renderTargets[nextValidRenderTarget];
-                renderTargets[nextValidRenderTarget] = renderTargets[i];
-                renderTargets[i] = temp;
-
-                ((RenderTargetPoolTag)(renderTargets[i].Tag)).Index = i;
-                ((RenderTargetPoolTag)(renderTargets[nextValidRenderTarget].Tag)).Index = nextValidRenderTarget;
-            }
-        }
-
-        private void MakeInvalid(int i)
-        {
-            MakeAvailable(i);
-
-            if (nextValidRenderTarget < renderTargets.Count)
-            {
-                var last = renderTargets.Count - 1;
-                if (last != nextValidRenderTarget)
-                {
-                    var temp = renderTargets[nextValidRenderTarget];
-                    renderTargets[nextValidRenderTarget] = renderTargets[last];
-                    renderTargets[last] = temp;
-
-                    ((RenderTargetPoolTag)(renderTargets[nextValidRenderTarget].Tag)).Index = nextValidRenderTarget;
-                    renderTargets.RemoveAt(last);
-                }
-            }
+            Debug.Assert(tag.RefCount >= 0);
         }
         #endregion
 
@@ -147,7 +119,7 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public static RenderTargetPool AddRef(GraphicsDevice graphics, int width, int height, bool mipMap, SurfaceFormat surfaceFormat, DepthFormat depthFormat, int preferredMultiSampleCount, RenderTargetUsage renderTargetUsage)
         {
-            var key = new RenderTargetPoolKey();
+            var key = sharedKey;
             key.Graphics = graphics;
             key.Width = width;
             key.Height = height;
@@ -159,37 +131,24 @@ namespace Nine.Graphics.Drawing
 
             RenderTargetPool renderTargetPool;
             if (!renderTargetPools.TryGetValue(key, out renderTargetPool))
+            {
+                key = new RenderTargetPoolKey();
+                key.Graphics = graphics;
+                key.Width = width;
+                key.Height = height;
+                key.Mipmap = mipMap;
+                key.SurfaceFormat = surfaceFormat;
+                key.DepthFormat = depthFormat;
+                key.PreferredMultiSampleCount = preferredMultiSampleCount;
+                key.RenderTargetUsage = renderTargetUsage;
+
                 renderTargetPools.Add(key, renderTargetPool = new RenderTargetPool() { key = key });
+            }
             renderTargetPool.refCount++;
             return renderTargetPool;
         }
 
-        /// <summary>
-        /// Acquires a render target with the specified parameter.
-        /// </summary>
-        public static RenderTargetPool AddRef(GraphicsDevice graphicsDevice, Texture2D input, Vector2? renderTargetSize, float renderTargetScale, SurfaceFormat? surfaceFormat)
-        {
-            return AddRef(graphicsDevice, input, renderTargetSize, renderTargetScale, surfaceFormat, null);
-        }
-
-        /// <summary>
-        /// Acquires a render target with the specified parameter.
-        /// </summary>
-        public static RenderTargetPool AddRef(GraphicsDevice graphicsDevice, Texture2D input, Vector2? renderTargetSize, float renderTargetScale, SurfaceFormat? surfaceFormat, DepthFormat? depthFormat)
-        {
-            float width = input != null ? input.Width : graphicsDevice.Viewport.Width;
-            float height = input != null ? input.Height : graphicsDevice.Viewport.Height;
-            SurfaceFormat inputFormat = input != null ? input.Format : graphicsDevice.PresentationParameters.BackBufferFormat;
-
-            float renderTargetWidth = renderTargetSize.HasValue ? renderTargetSize.Value.X : width;
-            float renderTargetHeight = renderTargetSize.HasValue ? renderTargetSize.Value.Y : height;
-            SurfaceFormat sFormat = surfaceFormat.HasValue ? surfaceFormat.Value : inputFormat;
-            DepthFormat dFormat = depthFormat.HasValue ? depthFormat.Value : DepthFormat.None;
-
-            return AddRef(graphicsDevice, (int)(renderTargetWidth * renderTargetScale),
-                                          (int)(renderTargetHeight * renderTargetScale),
-                                          false, sFormat, dFormat);
-        }
+        private static RenderTargetPoolKey sharedKey = new RenderTargetPoolKey();
 
         /// <summary>
         /// Releases a reference to the render target pool.
@@ -205,8 +164,8 @@ namespace Nine.Graphics.Drawing
 
         void IDisposable.Dispose()
         {
-            for (int i = 0; i < renderTargets.Count; i++)
-                renderTargets[i].Dispose();
+            for (int i = 0; i < targets.Count; i++)
+                targets[i].Dispose();
         }
         #endregion
 
@@ -233,7 +192,7 @@ namespace Nine.Graphics.Drawing
                 int count = 0;
                 foreach (var list in renderTargetPools.Values)
                     if (list.refCount > 0)
-                        foreach (var value in list.renderTargets)
+                        foreach (var value in list.targets)
                             if (!value.IsDisposed)
                                 count++;
                 return count;
@@ -246,7 +205,7 @@ namespace Nine.Graphics.Drawing
     class RenderTargetPoolTag
     {
         public int RefCount;
-        public int Index;
+        public RenderTargetPool Pool;
     }
 
     class RenderTargetPoolKey
@@ -277,14 +236,13 @@ namespace Nine.Graphics.Drawing
 
         public int GetHashCode(RenderTargetPoolKey obj)
         {
-            return obj.Graphics.GetHashCode() ^
-                   obj.Width.GetHashCode() ^
+            return obj.Width.GetHashCode() ^
                    obj.Height.GetHashCode() ^
                    obj.Mipmap.GetHashCode() ^
                    obj.PreferredMultiSampleCount.GetHashCode() ^
-                   obj.SurfaceFormat.GetHashCode() ^
-                   obj.DepthFormat.GetHashCode() ^
-                   obj.RenderTargetUsage.GetHashCode();
+                   (int)obj.SurfaceFormat ^
+                   (int)obj.DepthFormat ^
+                   (int)obj.RenderTargetUsage;
         }
     }
 }

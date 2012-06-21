@@ -64,7 +64,8 @@ namespace Nine.Studio
         public static Editor Launch()
         {
             Assert.CheckThread();
-            Trace.TraceInformation("Lauching Editor {0}", DateTime.Now);
+            Trace.TraceInformation("Launching editor {0}", DateTime.Now);
+            Trace.TraceInformation("Working directory {0}", Directory.GetCurrentDirectory());
             return new Editor();
         }
 
@@ -109,7 +110,7 @@ namespace Nine.Studio
             projects = new ObservableCollection<Project>();
             Projects = new ReadOnlyObservableCollection<Project>(projects);
             recentFiles = new ObservableCollection<string>();
-            RecentProjects = new ReadOnlyObservableCollection<string>(recentFiles);
+            RecentProjects = new ReadOnlyObservableCollection<string>(recentFiles);           
 
             LoadRecentFiles();
         }
@@ -144,16 +145,16 @@ namespace Nine.Studio
             }
         }
 
-        internal void RecentProject(string filename)
+        internal void RecentProject(string fileName)
         {
-            if (!string.IsNullOrEmpty(filename))
+            if (!string.IsNullOrEmpty(fileName))
             {
-                recentFiles.Remove(filename);
-                recentFiles.Insert(0, filename);
+                recentFiles.Remove(fileName);
+                recentFiles.Insert(0, fileName);
                 while (RecentProjects.Count > Constants.MaxRecentFilesCount)
                     recentFiles.RemoveAt(RecentProjects.Count - 1);
 
-                //JumpList.AddToRecentCategory(filename);
+                System.Windows.Shell.JumpList.AddToRecentCategory(fileName);
             }
 
             SaveRecentFiles();
@@ -170,7 +171,7 @@ namespace Nine.Studio
         }
 
         /// <summary>
-        /// Creates a new project instance with a filename.
+        /// Creates a new project instance with a fileName.
         /// </summary>
         public Project CreateProject(string name)
         {
@@ -179,27 +180,27 @@ namespace Nine.Studio
 
             var project = new Project(this, name);
             projects.Add(project);
-            RecentProject(project.Filename);
-            Trace.TraceInformation("Project {0} created at {1}", project.Name, project.Filename);
+            RecentProject(project.FileName);
+            Trace.TraceInformation("Project {0} created at {1}", project.Name, project.FileName);
             return project;
         }
 
         /// <summary>
         /// Opens a new project instance from file.
         /// </summary>
-        public Project OpenProject(string filename)
+        public Project OpenProject(string fileName)
         {
             Assert.CheckThread();
-            Verify.FileExists(filename, "filename");
+            Verify.FileExists(fileName, "fileName");
 
-            var project = projects.FirstOrDefault(p => Global.FilenameEquals(p.Filename, filename));
+            var project = projects.FirstOrDefault(p => Global.FilenameEquals(p.FileName, fileName));
             if (project != null)
                 return project;
 
-            project = new Project(this, filename);
+            project = new Project(this, fileName);
             projects.Add(project);
-            RecentProject(filename);
-            Trace.TraceInformation("Project {0} opened at {1}", project.Name, project.Filename);
+            RecentProject(fileName);
+            Trace.TraceInformation("Project {0} opened at {1}", project.Name, project.FileName);
             return project;
         }
 
@@ -210,7 +211,7 @@ namespace Nine.Studio
             Verify.IsTrue(project.Editor == this, "");
 
             projects.Remove(project);
-            Trace.TraceInformation("Project {0} closed at {1}", project.Name, project.Filename);
+            Trace.TraceInformation("Project {0} closed at {1}", project.Name, project.FileName);
         }
 
         /// <summary>

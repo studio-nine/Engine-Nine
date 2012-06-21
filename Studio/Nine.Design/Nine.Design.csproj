@@ -88,10 +88,6 @@
     <None Include="Nine.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nine.Studio.Xna\Nine.Studio.Xna.csproj">
-      <Project>{ECE36DFF-ECA6-4C3C-A48C-74439999BF10}</Project>
-      <Name>Nine.Studio.Xna</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Nine.Studio\Nine.Studio.csproj">
       <Project>{412AE201-B5E8-436E-9468-E6CC94739055}</Project>
       <Name>Nine.Studio</Name>
