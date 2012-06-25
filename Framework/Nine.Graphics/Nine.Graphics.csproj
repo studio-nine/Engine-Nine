@@ -123,6 +123,8 @@
     <Compile Include="Materials\CustomMaterialSemantics.cs" />
     <Compile Include="Materials\CustomMaterialPart.cs" />
     <Compile Include="Materials\MaterialLevelOfDetail.cs" />
+    <Compile Include="Materials\MaterialParts\BeginPaintGroupMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
     <Compile Include="Materials\MaterialUsage.cs" />
     <Compile Include="Materials\MaterialHelper.cs" />

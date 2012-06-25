@@ -480,7 +480,7 @@ namespace Nine.Graphics.Materials
         {
             if (existingInstance == null)
                 existingInstance = new CustomMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.DefaultShaderCode = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
@@ -949,9 +949,7 @@ namespace Nine.Graphics.Materials
         {
             if (existingInstance == null)
                 existingInstance = new MaterialPaintGroup();
-            existingInstance.Index = input.ReadInt32();
-            existingInstance.MaskTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.MaskTextureChannel = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
@@ -1312,7 +1310,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new AmbientLightMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -1329,7 +1327,24 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new BeginLightMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>BeginPaintGroupMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BeginPaintGroupMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new BeginPaintGroupMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -1346,7 +1361,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new ColorMatrixMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ColorMatrix = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
@@ -1364,7 +1379,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new DetailMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.DetailTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.DetailTextureScale = input.ReadVector2();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -1383,7 +1398,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new DiffuseMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.DiffuseColorEnabled = input.ReadBoolean();
             existingInstance.TextureEnabled = input.ReadBoolean();
@@ -1408,7 +1423,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new DirectionalLightMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -1425,7 +1440,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new DualTextureMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Texture2 = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
@@ -1443,7 +1458,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new EmissiveMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.EmissiveMapEnabled = input.ReadBoolean();
             existingInstance.EmissiveColorEnabled = input.ReadBoolean();
             existingInstance.EmissiveMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
@@ -1464,7 +1479,24 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new EndLightMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>EndPaintGroupMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class EndPaintGroupMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new EndPaintGroupMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -1481,7 +1513,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new FogMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -1498,7 +1530,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new NormalMapMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
@@ -1516,7 +1548,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new ShadowMapMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ShadowColor = input.ReadVector3();
             existingInstance.DepthBias = input.ReadSingle();
             existingInstance.LightViewProjection = input.ReadMatrix();
@@ -1538,7 +1570,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new SkinnedMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.MaxBones = input.ReadInt32();
             existingInstance.WeightsPerVertex = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -1557,7 +1589,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new SpecularMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.SpecularMapEnabled = input.ReadBoolean();
             existingInstance.SpecularColorEnabled = input.ReadBoolean();
             existingInstance.SpecularMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
@@ -1579,7 +1611,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new TextureTransformMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.TextureTransform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
@@ -1597,7 +1629,7 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if (existingInstance == null)
                 existingInstance = new VertexTransformMaterialPart();
-            existingInstance.Index = input.ReadInt32();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }

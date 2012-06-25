@@ -1,0 +1,60 @@
+float2 MaskTextureScale;
+
+texture2D MaskTexture0;
+texture2D MaskTexture1;
+
+sampler MaskSampler0 = sampler_state
+{
+    Texture = (MaskTexture0);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+sampler MaskSampler1 = sampler_state
+{
+    Texture = (MaskTexture1);
+    MipFilter = Linear;
+    MagFilter = Linear;
+    MinFilter = Linear;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
+void PixelShader(float2 uv : TEXCOORD0
+               , out float paintBlend0
+               , out float paintBlend1
+               , out float paintBlend2
+               , out float paintBlend3
+               , out float paintBlend4
+               , out float paintBlend5
+               , out float paintBlend6
+               , out float paintBlend7
+
+               , out float4 paintDiffuse
+               , out float3 paintSpecular
+               , out float3 paintEmissive 
+               , out float3 paintNormal)
+{
+    uv *= MaskTextureScale;
+    
+    float4 mask0 = tex2D(MaskSampler0, uv);
+    float4 mask1 = tex2D(MaskSampler1, uv);
+
+    paintBlend0 = mask0.r;
+    paintBlend1 = mask0.g;
+    paintBlend2 = mask0.b;
+    paintBlend3 = mask0.a;
+    
+    paintBlend4 = mask1.r;
+    paintBlend5 = mask1.g;
+    paintBlend6 = mask1.b;
+    paintBlend7 = mask1.a;
+
+    paintDiffuse = 0;
+    paintSpecular = 0;
+    paintEmissive = 0;
+    paintNormal = 0;
+}

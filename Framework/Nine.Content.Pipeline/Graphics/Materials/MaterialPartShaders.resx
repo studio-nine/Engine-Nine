@@ -124,6 +124,9 @@
   <data name="BeginLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\beginlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="BeginPaintGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\beginpaintgroup.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ColorMatrix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\colormatrix.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -153,6 +156,9 @@
   </data>
   <data name="EndLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\endlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="EndPaintGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\endpaintgroup.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="EnvironmentMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\environmentmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

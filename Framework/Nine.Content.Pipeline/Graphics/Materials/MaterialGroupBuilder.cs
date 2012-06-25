@@ -103,6 +103,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         public bool IsVertexShaderOutput;
         public bool IsPixelShaderOutput;
         public VariableDeclaration[] Variables;
+        public FunctionDeclaration[] Functions;
         public FunctionDeclaration VertexShader;
         public FunctionDeclaration PixelShader;
         public MaterialPartDeclaration[] Dependencies;
@@ -125,21 +126,17 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                     sb.Append(str);
                 }
             }
-            if (VertexShader != null)
+            if (Functions != null)
             {
-                var str = VertexShader.Body;
-                foreach (var replace in Variables)
-                    str = Lexer.ReplaceMatchWord(str, replace.Name, string.Concat(replace.Name, surffix), false, false);
-                str = Lexer.ReplaceMatchWord(str, "VertexShader", string.Concat("VertexShader", surffix), true, false);
-                sb.Append(str);
-            }
-            if (PixelShader != null)
-            {
-                var str = PixelShader.Body;
-                foreach (var replace in Variables)
-                    str = Lexer.ReplaceMatchWord(str, replace.Name, string.Concat(replace.Name, surffix), false, false);
-                str = Lexer.ReplaceMatchWord(str, "PixelShader", string.Concat("PixelShader", surffix), true, false);
-                sb.Append(str);
+                foreach (var function in Functions)
+                {
+                    var str = function.Body;
+                    foreach (var replace in Variables)
+                        str = Lexer.ReplaceMatchWord(str, replace.Name, string.Concat(replace.Name, surffix), false, false);
+                    foreach (var replace in Functions)
+                        str = Lexer.ReplaceMatchWord(str, replace.Name, string.Concat(replace.Name, surffix), false, false);
+                    sb.Append(str);
+                }
             }
             return sb.ToString();
         }
@@ -395,6 +392,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 (declaration.PixelShader != null && declaration.PixelShader.ReturnType != "void"))
                 throw new NotSupportedException("Function does not support return types. Use out instead");
 
+            declaration.Functions = functions.ToArray();
             return declaration;
         }
 
@@ -467,12 +465,16 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             // Make sure we have the nesessary building blocks of a shader
             if (!materialGroup.MaterialParts.OfType<VertexTransformMaterialPart>().Any())
                 materialGroup.MaterialParts.Add(new VertexTransformMaterialPart());
+            if (!materialGroup.MaterialParts.OfType<BeginPaintGroupMaterialPart>().Any())
+                materialGroup.MaterialParts.Add(new BeginPaintGroupMaterialPart());
+            if (!materialGroup.MaterialParts.OfType<EndPaintGroupMaterialPart>().Any())
+                materialGroup.MaterialParts.Add(new EndPaintGroupMaterialPart());
             if (!materialGroup.MaterialParts.OfType<BeginLightMaterialPart>().Any())
                 materialGroup.MaterialParts.Add(new BeginLightMaterialPart());
             if (!materialGroup.MaterialParts.OfType<EndLightMaterialPart>().Any())
                 materialGroup.MaterialParts.Add(new EndLightMaterialPart());
 
-            var builderContext = CreateMaterialGroupBuilderContext(materialGroup, usage);
+            var builderContext = CreateMaterialGroupBuilderContext(materialGroup.MaterialParts, usage);
             if (builderContext.PixelShaderOutputs.Count <= 0)
                 return null;
 
@@ -488,8 +490,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             }
         }
 
-        private static CompiledEffectContent BuildEffect(ContentProcessorContext context)
+        internal static CompiledEffectContent BuildEffect(ContentProcessorContext context)
         {
+            System.Diagnostics.Trace.TraceInformation("Building Effect:");
+            System.Diagnostics.Trace.WriteLine(LastEffectCode);
+
             var effectContent = new EffectContent { EffectCode = LastEffectCode };
             var effectProcessor = new EffectProcessor();
             var result = effectProcessor.Process(effectContent, context);
@@ -519,12 +524,12 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             return result;
         }
 
-        private static MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(MaterialGroup materialGroup, MaterialUsage usage)
+        internal static MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(IList<MaterialPart> materialParts, MaterialUsage usage)
         {
             var builderContext = new MaterialGroupBuilderContext();
 
             // Step 1: Parse material part declarations from input material group.
-            builderContext.MaterialPartDeclarations = (from code in materialGroup.MaterialParts.Select(part => part.GetShaderCode(usage))
+            builderContext.MaterialPartDeclarations = (from code in materialParts.Select(part => part.GetShaderCode(usage))
                                         where !string.IsNullOrEmpty(code)
                                         select new Lexer(code).Read()).ToArray();
 
@@ -575,7 +580,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
             {
                 var part = builderContext.MaterialPartDeclarations[i];
-                part.Index = materialGroup.MaterialParts[i].Index = i;
+                part.Index = i;
+                materialParts[i].ParameterSuffix = string.Concat("_", i);
                 part.IsVertexShaderOutput = part.VertexShader != null && part.VertexShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validVertexShaderOutputSemantic.IsMatch(a.Semantic));
                 part.IsPixelShaderOutput = part.PixelShader != null && part.PixelShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validPixelShaderOutputSemantic.IsMatch(a.Semantic));
             }
@@ -617,7 +623,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             var offset = 0;
             for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
                 if (!builderContext.MaterialPartDeclarations[i].Tagged && builderContext.MaterialPartDeclarations[i].PixelShader != null)
-                    materialGroup.MaterialParts.RemoveAt(i + offset--);
+                    materialParts.RemoveAt(i + offset--);
 
             builderContext.MaterialPartDeclarations = (from part in builderContext.MaterialPartDeclarations where part.Tagged || part.PixelShader == null select part).ToArray();
 
@@ -737,7 +743,28 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             return builderContext;
         }
 
-        private static string GetShaderCodeForProfile(MaterialGroupBuilderContext builderContext, string profile)
+        internal static string GetShaderCodeForProfile(MaterialGroupBuilderContext builderContext, string profile)
+        {
+            var builder = new StringBuilder();
+            builder.Append(GetShaderCodeBody(builderContext, "VS", "PS"));
+
+            builder.AppendLine();
+            builder.AppendLine
+            (
+                "technique Default" + Environment.NewLine +
+                "{" + Environment.NewLine +
+                "   pass Default" + Environment.NewLine +
+                "   {" + Environment.NewLine +
+                "       VertexShader = compile vs_" + profile + " VS();" + Environment.NewLine +
+                "       PixelShader = compile ps_" + profile + " PS();" + Environment.NewLine +
+                "   }" + Environment.NewLine +
+                "}" + Environment.NewLine
+            );
+
+            return builder.ToString();
+        }
+
+        internal static string GetShaderCodeBody(MaterialGroupBuilderContext builderContext, string vsName, string psName)
         {
             var builder = new StringBuilder();
             foreach (var materialPart in builderContext.MaterialPartDeclarations)
@@ -746,7 +773,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 builder.AppendLine();
             }
 
-            builder.Append("void VS(");
+            builder.Append(string.Concat("void ", vsName, "("));
             builder.Append(string.Join(", ", builderContext.VertexShaderInputs.Select(arg => arg.ToString())
                                  .Concat(builderContext.VertexShaderOutputs.Select(arg => arg.ToString()))
                                  .Concat(builderContext.VertexShaderOutputSemanticMapping.Select(p =>
@@ -779,14 +806,17 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
             builder.AppendLine();
 
-            builder.Append("void PS(");
+            builder.Append(string.Concat("void ", psName, "("));
             builder.Append(string.Join(", ", builderContext.PixelShaderInputs.Select(arg => arg.ToString())
                                      .Concat(builderContext.PixelShaderOutputs.Select(arg => string.Concat("out ", arg.Type, " ", arg.Name, ":", arg.Semantic)))));
             builder.AppendLine(")");
             builder.AppendLine("{");
             foreach (var psi in builderContext.TemporaryPixelShaderVariables)
             {
-                builder.AppendLine(string.Concat("    ", psi.Type, " ", psi.Name, " = ", psi.DefaultValue, ";"));
+                if (string.IsNullOrEmpty(psi.DefaultValue))
+                    builder.AppendLine(string.Concat("    ", psi.Type, " ", psi.Name, ";"));
+                else
+                    builder.AppendLine(string.Concat("    ", psi.Type, " ", psi.Name, " = ", psi.DefaultValue, ";"));
             }
             builder.AppendLine();
             foreach (var psi in builderContext.PixelShaderInputs)
@@ -811,20 +841,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                     builder.AppendLine(materialPart.PixelShader.ToInvokeString(string.Concat("_", materialPart.Index)));
             }
             builder.AppendLine("}");
-
-            builder.AppendLine();
-            builder.AppendLine
-            (
-                "technique Default" + Environment.NewLine +
-                "{" + Environment.NewLine +
-                "   pass Default" + Environment.NewLine +
-                "   {" + Environment.NewLine +
-                "       VertexShader = compile vs_" + profile + " VS();" + Environment.NewLine +
-                "       PixelShader = compile ps_" + profile + " PS();" + Environment.NewLine +
-                "   }" + Environment.NewLine +
-                "}" + Environment.NewLine
-            );
-
             return builder.ToString();
         }
         

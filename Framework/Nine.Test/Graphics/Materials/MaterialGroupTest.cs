@@ -88,5 +88,21 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
             MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
+
+        [TestMethod()]
+        public void MaterialPaintGroupTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            MaterialPaintGroup layer0 = new MaterialPaintGroup();
+            MaterialPaintGroup layer1 = new MaterialPaintGroup();
+            
+            layer0.MaterialParts.Add(new DiffuseMaterialPart());
+            layer1.MaterialParts.Add(new DiffuseMaterialPart());
+            
+            materialGroup.MaterialParts.Add(layer0);
+            materialGroup.MaterialParts.Add(layer1);
+
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+        }
     }
 }

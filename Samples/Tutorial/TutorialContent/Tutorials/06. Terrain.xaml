@@ -79,8 +79,8 @@
 			
 			<!--
                 Terrain material also supports detailed texture in case you look at the terrain really close.
-			-->
 			<DetailMaterialPart DetailTexture="{ContentReference ..\Textures\LandscapeDetail}" DetailTextureScale="0.5, 0.5" />
+			-->
 		</MaterialGroup>
     </Surface>
 </Scene>

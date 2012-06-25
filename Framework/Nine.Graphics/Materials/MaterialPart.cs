@@ -33,7 +33,7 @@ namespace Nine.Graphics.Materials
     public abstract class MaterialPart
     {
         [ContentSerializer]
-        internal int Index;
+        internal string ParameterSuffix;
 
         /// <summary>
         /// Gets or sets the name of this material part.
@@ -98,7 +98,7 @@ namespace Nine.Graphics.Materials
         {
             if (IsContentBuild)
                 return null;
-            return MaterialGroup.Effect.Parameters[string.Concat(name, "_", Index)];
+            return MaterialGroup.Effect.Parameters[string.Concat(name, ParameterSuffix)];
         }
 
 #if !SILVERLIGHT
@@ -110,9 +110,8 @@ namespace Nine.Graphics.Materials
             if (IsContentBuild)
                 return null;
 
-            var suffix = string.Concat("_", Index);
             foreach (EffectParameter parameter in MaterialGroup.Effect.Parameters)
-                if (parameter.Semantic == semantic && parameter.Name.EndsWith(suffix))
+                if (parameter.Semantic == semantic && parameter.Name.EndsWith(ParameterSuffix))
                     return parameter;
             return null;
         }

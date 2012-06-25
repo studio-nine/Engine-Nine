@@ -1,7 +1,7 @@
 texture2D Texture : TEXTURE;
 float4 DiffuseColor : DIFFUSE = 1;
 float3 OverlayColor : OVERLAYCOLOR = 1;
-sampler BasicSampler : register(s0) { Texture = (Texture); };
+sampler BasicSampler { Texture = (Texture); };
 
 void PixelShader(float2 uv:TEXCOORD0, 
      {$V1}inout float4 diffuse:COLOR0

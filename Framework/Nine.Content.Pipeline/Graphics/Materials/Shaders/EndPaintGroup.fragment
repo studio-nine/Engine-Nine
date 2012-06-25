@@ -1,0 +1,7 @@
+void PixelShader(float4 paintDiffuse, float3 paintSpecular, float3 paintEmissive, float3 paintNormal, out float3 normal, inout float4 diffuse, inout float3 specular, inout float3 emissive)
+{
+    diffuse *= paintDiffuse;
+    specular += paintSpecular;
+    emissive += paintEmissive;
+    normal = paintNormal;
+}

@@ -28,9 +28,36 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 {
     static class MaterialPaintGroupBuilder
     {
-        public static string Build(MaterialPaintGroup materialGroup, MaterialUsage usage)
+        public static string Build(MaterialPaintGroup materialPaintGroup, MaterialUsage usage)
         {
-            return null;
+            var builder = new StringBuilder();
+            var index = materialPaintGroup.MaterialGroup.MaterialParts.OfType<MaterialPaintGroup>().ToList().IndexOf(materialPaintGroup);
+            var builderContext = MaterialGroupBuilder.CreateMaterialGroupBuilderContext(materialPaintGroup.MaterialParts, usage);
+
+            builder.AppendLine(MaterialGroupBuilder.GetShaderCodeBody(builderContext, "VSMain", "PSMain"));
+            builder.Append("void PixelShader(");
+            builder.Append(string.Join(", ", Enumerable.Range(0, 1).Select(i => string.Concat("float paintBlend", index))
+                                     .Concat(builderContext.PixelShaderInputs.Select(psi => string.Concat(psi.Type, " ", psi.Name)))
+                                     .Concat(builderContext.PixelShaderOutputs.Select(pso => string.Concat("inout ", pso.Type, " ", AppendWithCasingCorrection(pso.Name, "paint"))))));
+            builder.AppendLine(")");
+            builder.AppendLine("{");            
+            foreach (var psi in builderContext.PixelShaderInputs)
+                builder.AppendLine(string.Concat("    ", psi.Type, " _", psi.Name, " = ", psi.Name, ";"));
+            foreach (var pso in builderContext.PixelShaderOutputs)
+                builder.AppendLine(string.Concat("    ", pso.Type, " _", pso.Name, ";"));
+            builder.Append("    PSMain(");
+            builder.Append(string.Join(", ", builderContext.PixelShaderInputs.Select(psi => psi.Name)
+                                      .Concat(builderContext.PixelShaderOutputs.Select(pso => string.Concat("_", pso.Name)))));            
+            builder.AppendLine(");");
+            foreach (var pso in builderContext.PixelShaderOutputs)
+                builder.AppendLine(string.Concat("    ", AppendWithCasingCorrection(pso.Name, "paint"), " += _", pso.Name, " * paintBlend", index, ";"));
+            builder.AppendLine("}");
+            return builder.ToString();
+        }
+
+        private static string AppendWithCasingCorrection(string name, string prefix)
+        {
+            return string.Concat(prefix, name.Substring(0, 1).ToUpperInvariant(), name.Substring(1));
         }
     }
 }

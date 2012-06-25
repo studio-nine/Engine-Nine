@@ -34,9 +34,6 @@ namespace Nine.Content.Pipeline
 
             try
             {
-                if (Trace.Listeners.OfType<TextWriterTraceListener>().Count() <= 0)
-                    Trace.Listeners.Add(new TextWriterTraceListener("C:\\ObjectGraph.log"));
-
                 InternalTraverseProperties(target, action);
             }
             finally
@@ -186,7 +183,6 @@ namespace Nine.Content.Pipeline
             var attachedPropertyCount = AttachablePropertyServices.GetAttachedPropertyCount(target);
             if (attachedPropertyCount > 0)
             {
-                System.Diagnostics.Debugger.Launch();
                 var attachedProperties = new KeyValuePair<AttachableMemberIdentifier, object>[attachedPropertyCount];
                 AttachablePropertyServices.CopyPropertiesTo(target, attachedProperties, 0);
 

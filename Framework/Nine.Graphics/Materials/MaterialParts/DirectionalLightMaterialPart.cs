@@ -53,7 +53,7 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            var light = context.DirectionalLights[Index];
+            var light = context.DirectionalLights[lightIndex];
             if (light != null && light.version != lightVersion)
             {
                 directionParameter.SetValue(light.Direction);

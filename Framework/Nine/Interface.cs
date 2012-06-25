@@ -65,6 +65,8 @@ namespace Nine
     /// </summary>
     public interface IGeometry
     {
+        //void GetTriangles(int triangleUsage, ref BoundingBox bounds, out Vector3[] vertices, out ushort[] indices, out int[][] adjacencies);
+
         /// <summary>
         /// Gets the optional transformation matrix of this <see cref="IGeometry"/>.
         /// </summary>

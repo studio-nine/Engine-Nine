@@ -38,7 +38,6 @@ namespace Nine.Content.Pipeline.Processors
 
         public override Texture2DContent Process(Splatter splatter, ContentProcessorContext context)
         {
-            System.Diagnostics.Debugger.Launch();
             var input = splatter.Layers.Select(layer => layer != null ? layer.Filename : null).ToArray();
             if (input.Length > 4)
             {
