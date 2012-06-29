@@ -56,6 +56,19 @@ namespace Nine.Graphics.Materials
         }
 
         /// <summary>
+        /// Puts the dependent parts into the result list.
+        /// </summary>
+        protected internal override void GetDependentParts(IList<Type> result)
+        {
+            result.Add(typeof(MaterialParts.BeginPaintGroupMaterialPart));
+            result.Add(typeof(MaterialParts.EndPaintGroupMaterialPart));
+
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].GetDependentParts(result);
+        }
+
+        /// <summary>
         /// Applies all the global shader parameters before drawing any primitives.
         /// </summary>
         protected internal override void ApplyGlobalParameters(DrawingContext context)

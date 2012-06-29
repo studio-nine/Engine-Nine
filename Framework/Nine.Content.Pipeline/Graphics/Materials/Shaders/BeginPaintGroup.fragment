@@ -23,6 +23,8 @@ sampler MaskSampler1 = sampler_state
     AddressV = Wrap;
 };
 
+// TODO: Make this dynamic
+
 void PixelShader(float2 uv : TEXCOORD0
                , out float paintBlend0
                , out float paintBlend1
@@ -35,6 +37,7 @@ void PixelShader(float2 uv : TEXCOORD0
 
                , out float4 paintDiffuse
                , out float3 paintSpecular
+               , out float  paintSpecularPower
                , out float3 paintEmissive 
                , out float3 paintNormal)
 {
@@ -55,6 +58,7 @@ void PixelShader(float2 uv : TEXCOORD0
 
     paintDiffuse = 0;
     paintSpecular = 0;
+    paintSpecularPower = 0;
     paintEmissive = 0;
-    paintNormal = 0;
+    paintNormal = 0;    
 }

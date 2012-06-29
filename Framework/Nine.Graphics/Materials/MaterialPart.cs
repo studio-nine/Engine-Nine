@@ -56,6 +56,11 @@ namespace Nine.Graphics.Materials
         protected internal abstract string GetShaderCode(MaterialUsage usage);
 
         /// <summary>
+        /// Puts the dependent parts into the result list.
+        /// </summary>
+        protected internal virtual void GetDependentParts(IList<Type> result) { }
+
+        /// <summary>
         /// Sets the texture based on the texture usage.
         /// </summary>
         public virtual void SetTexture(TextureUsage textureUsage, Texture texture) { }

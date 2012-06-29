@@ -247,12 +247,12 @@
     </None>
     <None Include="Graphics\Materials\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\TangentTransform.fragment" />
     <None Include="Graphics\Materials\Shaders\EndPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\DiffuseTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\BeginLight.fragment" />
     <None Include="Graphics\Materials\Shaders\DeferredLightBuffer.fragment" />
     <None Include="Graphics\Materials\Shaders\DeferredPixelShaderOutput.fragment" />
-    <None Include="Graphics\Materials\Shaders\NormalMappedSplatterTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\DetailTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\DeferredLights.fragment" />
     <None Include="Graphics\Materials\Shaders\EmissiveMap.fragment" />

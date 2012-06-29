@@ -61,7 +61,7 @@
     <Model Source="{ContentReference ../Models/Tank}" Transform.Position="20,20,0">
         <Model.Material>
             <MaterialGroup>
-                <CustomMaterialPart>
+                <CustomMaterialPart xml:space="preserve">
                     <![CDATA[
                         float Time:TIME;
                         void PixelShader(inout float2 uv:TEXCOORD0)

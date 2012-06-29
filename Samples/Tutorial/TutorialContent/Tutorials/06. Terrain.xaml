@@ -35,7 +35,7 @@
     <!--
         MaterialPaintGroup can be used to create materials with multiple layers. Each layer has its own texture, 
         normal map and color properties. A grayscale alpha map is used to determine which part of the layer
-        is visible and how the layer blends with other texture.
+        is visible and how the layer blends with other layers.
     
         Normal mapping requires the vertices of the terrain to contain tangent and binormal channels, which
         isn't enabled by default. You can set the VertexType property to the name of the vertex type and the
@@ -61,26 +61,36 @@
 		
 			<MaterialPaintGroup>
 				<DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
-				<!--
+				<SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
 				<NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
-				-->
 			</MaterialPaintGroup>
 			
 			<MaterialPaintGroup>
-				<DiffuseMaterialPart Texture="{ContentReference ../Textures/grass}" />
-				<!--
+                <CustomMaterialPart xml:space="preserve">
+                    <![CDATA[
+                        float Time:TIME;
+                        void PixelShader(inout float2 uv:TEXCOORD0)
+                        {
+                            uv += frac(Time * 0.05f);
+                        }
+                    ]]>
+                </CustomMaterialPart>
 				<NormalMapMaterialPart NormalMap="{ContentReference ../Textures/grass_n}" />
-				-->
+				<DiffuseMaterialPart Texture="{ContentReference ../Textures/grass}" DiffuseColor="1, 0, 0" />
+				<SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
 			</MaterialPaintGroup>
 			
 			<MaterialPaintGroup>
-				<DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" DiffuseColor="1, 1, 0" />
+				<DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" />
+				<EmissiveMaterialPart EmissiveColor="0.2, 0.2, 0" />
 			</MaterialPaintGroup>
 			
 			<!--
                 Terrain material also supports detailed texture in case you look at the terrain really close.
 			<DetailMaterialPart DetailTexture="{ContentReference ..\Textures\LandscapeDetail}" DetailTextureScale="0.5, 0.5" />
 			-->
+			<DirectionalLightMaterialPart />
+			<AmbientLightMaterialPart />
 		</MaterialGroup>
     </Surface>
 </Scene>

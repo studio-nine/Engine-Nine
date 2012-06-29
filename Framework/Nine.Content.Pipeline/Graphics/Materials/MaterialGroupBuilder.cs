@@ -26,6 +26,16 @@ using System.Security.Cryptography;
 
 namespace Nine.Content.Pipeline.Graphics.Materials
 {
+    //--------------------------------------------------------------------------
+    //
+    //
+    //      WELCOME TO THE WORLD OF HOLLY SHIT! GOOD LUCK.
+    //
+    //
+    //                                                    MR. YUFEI    O(∩_∩)O
+    //
+    //--------------------------------------------------------------------------
+
     class VariableDeclaration
     {
         public string Type;
@@ -372,14 +382,19 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             
             VariableDeclaration variable;
             List<VariableDeclaration> variables = new List<VariableDeclaration>();
-            while ((variable = ReadVariableDeclaration()) != null)
-                variables.Add(variable);
-            declaration.Variables = variables.ToArray();
 
             FunctionDeclaration function;
             List<FunctionDeclaration> functions = new List<FunctionDeclaration>();
-            while ((function = ReadFunctionDeclaration()) != null)
-                functions.Add(function);
+
+            while (true)
+            {
+                if ((function = ReadFunctionDeclaration()) != null)
+                    functions.Add(function);
+                else if ((variable = ReadVariableDeclaration()) != null)
+                    variables.Add(variable);
+                else
+                    break;                    
+            }
 
             declaration.Variables = variables.ToArray();
             declaration.PixelShader = functions.SingleOrDefault(f => f.Name == "PixelShader");
@@ -463,18 +478,17 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         public static CompiledEffectContent Build(MaterialGroup materialGroup, MaterialUsage usage, ContentProcessorContext context)
         {
             // Make sure we have the nesessary building blocks of a shader
-            if (!materialGroup.MaterialParts.OfType<VertexTransformMaterialPart>().Any())
-                materialGroup.MaterialParts.Add(new VertexTransformMaterialPart());
-            if (!materialGroup.MaterialParts.OfType<BeginPaintGroupMaterialPart>().Any())
-                materialGroup.MaterialParts.Add(new BeginPaintGroupMaterialPart());
-            if (!materialGroup.MaterialParts.OfType<EndPaintGroupMaterialPart>().Any())
-                materialGroup.MaterialParts.Add(new EndPaintGroupMaterialPart());
-            if (!materialGroup.MaterialParts.OfType<BeginLightMaterialPart>().Any())
-                materialGroup.MaterialParts.Add(new BeginLightMaterialPart());
-            if (!materialGroup.MaterialParts.OfType<EndLightMaterialPart>().Any())
-                materialGroup.MaterialParts.Add(new EndLightMaterialPart());
+            var dependentPartTypes = new List<Type>();
+            dependentPartTypes.Add(typeof(VertexTransformMaterialPart));
+            if (materialGroup.MaterialParts.Count <= 0)
+                materialGroup.MaterialParts.Add(new DiffuseMaterialPart() { DiffuseColorEnabled = false, TextureEnabled = false });
 
-            var builderContext = CreateMaterialGroupBuilderContext(materialGroup.MaterialParts, usage);
+            materialGroup.MaterialParts.ForEach(p => p.GetDependentParts(dependentPartTypes));
+            foreach (var type in dependentPartTypes)
+                if (!materialGroup.MaterialParts.Any(p => p.GetType() == type))
+                    materialGroup.MaterialParts.Add((MaterialPart)Activator.CreateInstance(type));
+
+            var builderContext = CreateMaterialGroupBuilderContext(materialGroup.MaterialParts, usage, true);
             if (builderContext.PixelShaderOutputs.Count <= 0)
                 return null;
 
@@ -524,7 +538,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             return result;
         }
 
-        internal static MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(IList<MaterialPart> materialParts, MaterialUsage usage)
+        internal static MaterialGroupBuilderContext CreateMaterialGroupBuilderContext(IList<MaterialPart> materialParts, MaterialUsage usage, bool simplify)
         {
             var builderContext = new MaterialGroupBuilderContext();
 
@@ -574,8 +588,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
 
             // Step 2: Figure out the dependencies of material parts based on function input arguments
-            var validPixelShaderOutputSemantic = new Regex("^COLOR[0-9]$");
-            var validVertexShaderOutputSemantic = new Regex("^(COLOR[0-9]+)|(POSITION[0-9]+)|(TEXCOORD[0-9]+)$");
+            Regex validPixelShaderOutputSemantic;
+            Regex validVertexShaderOutputSemantic;
+
+            validPixelShaderOutputSemantic = new Regex("^COLOR[0-9]$");
+            validVertexShaderOutputSemantic = new Regex("^(COLOR[0-9]+)|(POSITION[0-9]+)|(TEXCOORD[0-9]+)$");            
 
             for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
             {
@@ -611,9 +628,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             DependencyGraph.Sort(builderContext.MaterialPartDeclarations, order, new MaterialPartDeclarationDependencyProvider());
             builderContext.MaterialPartDeclarations = order.Select(i => builderContext.MaterialPartDeclarations[i]).ToArray();
 
-            // Remove pixel shader parts that don't have a path to the pixel shader output         
+            // Remove pixel shader parts that don't have a path to the pixel shader output 
             foreach (var part in builderContext.MaterialPartDeclarations.Reverse())
-                if (part.IsPixelShaderOutput || part.Tagged)
+                if (!simplify || part.IsPixelShaderOutput || part.Tagged)
                 {
                     part.Tagged = true;
                     foreach (var d in part.Dependencies)
@@ -677,12 +694,17 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             builderContext.VertexShaderInputs = builderContext.VertexShaderInputs.Distinct(argumentEqualtyComparer).ToList();
             builderContext.VertexShaderOutputs = builderContext.VertexShaderOutputs.Distinct(argumentEqualtyComparer).ToList();
 
+            builderContext.PixelShaderInputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
+            builderContext.PixelShaderOutputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
+            builderContext.VertexShaderInputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
+            builderContext.VertexShaderOutputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
+
             // Step 5: Argument simplification and validation
             builderContext.TemporaryPixelShaderVariables = (from arg in builderContext.PixelShaderOutputs
-                                             where arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic)
+                                             where simplify && (arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic))
                                              select arg).ToList();
 
-            // Pixel shader inputs that does not have a matching vertes shader output and a valid semantic
+            // Pixel shader inputs that does not have a matching vertes shader output and a valid semantic            
             for (int i = 0; i < builderContext.PixelShaderInputs.Count; i++)
             {
                 var psi = builderContext.PixelShaderInputs[i];
@@ -706,16 +728,16 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 if (string.IsNullOrEmpty(input.Semantic))
                     throw new InvalidOperationException(string.Concat("Cannot find semantics for vertex shader input ", input.Name));
 
-            // Remove vertex shader outputs that do not have a corresponding pixel shader input
+            // Remove vertex shader outputs that do not have a corresponding pixel shader input            
             builderContext.VertexShaderOutputs.RemoveAll(vso => vso.Semantic != "POSITION0" && !builderContext.PixelShaderInputs.Any(psi => psi.Name == vso.Name));
 
             // Expand vertex shader outputs that do not have a valid semantic
             NextValidSemanticIndex = 0;
             builderContext.VertexShaderOutputSemanticMapping = builderContext.VertexShaderOutputs.Where(vso => vso.Semantic == null || !validVertexShaderOutputSemantic.IsMatch(vso.Semantic))
                                                        .ToDictionary(arg => arg, arg => NextValidSemantic(builderContext.VertexShaderOutputs));
-
-            builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderInputs.Any(vsi => vsi.Name == vso.Name && vsi.Out));
+            
             builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderOutputSemanticMapping.Any(m => m.Key.Name == vso.Name));
+            builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderInputs.Any(vsi => vsi.Name == vso.Name && vsi.Out));
 
             if (builderContext.VertexShaderOutputs.Any(vso => vso.Semantic == "POSITION0"))
                 builderContext.VertexShaderInputs.Where(vsi => vsi.Semantic == "POSITION0").ForEach(vsi => vsi.Out = false);
@@ -808,7 +830,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
             builder.Append(string.Concat("void ", psName, "("));
             builder.Append(string.Join(", ", builderContext.PixelShaderInputs.Select(arg => arg.ToString())
-                                     .Concat(builderContext.PixelShaderOutputs.Select(arg => string.Concat("out ", arg.Type, " ", arg.Name, ":", arg.Semantic)))));
+                                     .Concat(builderContext.PixelShaderOutputs.Select(arg =>
+                                         string.IsNullOrEmpty(arg.Semantic) ? string.Concat("out ", arg.Type, " ", arg.Name)
+                                                                            : string.Concat("out ", arg.Type, " ", arg.Name, ":", arg.Semantic)))));
             builder.AppendLine(")");
             builder.AppendLine("{");
             foreach (var psi in builderContext.TemporaryPixelShaderVariables)

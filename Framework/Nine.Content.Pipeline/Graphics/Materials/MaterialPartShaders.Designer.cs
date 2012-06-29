@@ -179,13 +179,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
             }
         }
         
-        internal static byte[] NormalMappedSplatterTexture {
-            get {
-                object obj = ResourceManager.GetObject("NormalMappedSplatterTexture", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
         internal static byte[] PointLight {
             get {
                 object obj = ResourceManager.GetObject("PointLight", resourceCulture);
@@ -238,6 +231,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         internal static byte[] SpotLight {
             get {
                 object obj = ResourceManager.GetObject("SpotLight", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        internal static byte[] TangentTransform {
+            get {
+                object obj = ResourceManager.GetObject("TangentTransform", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -1,0 +1,10 @@
+void VertexShader(inout float3 binormal:BINORMAL0, inout float3 tangent:TANGENT0, 
+    {$SKINNED} float4x3 skin,
+    float4x3 world)
+{
+    {$SKINNED} tangent = mul(tangent, skin);
+    {$SKINNED} binormal = mul(binormal, skin);
+
+    tangent = mul(tangent, world);
+    binormal = mul(binormal, world);
+}
