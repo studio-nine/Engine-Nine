@@ -172,6 +172,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
             }
         }
         
+        internal static byte[] Instanced {
+            get {
+                object obj = ResourceManager.GetObject("Instanced", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
         internal static byte[] NormalMap {
             get {
                 object obj = ResourceManager.GetObject("NormalMap", resourceCulture);

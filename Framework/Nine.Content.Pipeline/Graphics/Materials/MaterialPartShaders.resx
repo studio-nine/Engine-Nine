@@ -166,6 +166,9 @@
   <data name="Fog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\fog.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Instanced" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\instanced.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="NormalMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\normalmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

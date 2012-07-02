@@ -1,0 +1,320 @@
+#region Copyright 2012 (c) Engine Nine
+//=============================================================================
+//
+//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
+//
+//=============================================================================
+#endregion
+
+#region Using Directives
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Markup;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Nine.Animations;
+using Nine.Graphics.Drawing;
+using Nine.Graphics.Materials;
+using Nine.Graphics.Materials.MaterialParts;
+#endregion
+
+namespace Nine.Graphics.ObjectModel
+{
+    #region InstancedModel
+    /// <summary>
+    /// Defines an instanced model that can be rendered using hardware instancing.
+    /// </summary>
+    [ContentProperty("Template")]
+    public class InstancedModel : Transformable, IContainer, ISpatialQueryable, IUpdateable, IDisposable
+    {
+        #region Properties
+        /// <summary>
+        /// Gets the underlying GraphicsDevice.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="Model"/> should be visible.
+        /// </summary>
+        public bool Visible
+        {
+            get { return visible; }
+            set { visible = value; }
+        }
+        internal bool visible;
+
+        /// <summary>
+        /// Gets a value indicating whether this model resides inside the view frustum last frame.
+        /// </summary>
+        /// <remarks>
+        /// This value is only valid before the model is updated.
+        /// </remarks>
+        public bool InsideViewFrustum
+        {
+            get { return insideViewFrustum; }
+        }
+        internal bool insideViewFrustum;
+
+        /// <summary>
+        /// Gets the model meshes that made up of this model.
+        /// </summary>
+        public ISupportInstancing Template
+        {
+            get { return template; }
+            set 
+            {
+                if (template != value)
+                {
+                    template = value;
+                    UpdateTemplate();
+                }
+            }
+        }
+        internal ISupportInstancing template;
+                
+        /// <summary>
+        /// Gets the axis aligned bounding box in world space.
+        /// </summary>
+        public BoundingBox BoundingBox
+        {
+            get { return boundingBox; }
+        }
+        private BoundingBox boundingBox = new BoundingBox();
+
+        /// <summary>
+        /// Called when transform changed.
+        /// </summary>
+        protected override void OnTransformChanged()
+        {
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
+        }
+
+        object ISpatialQueryable.SpatialData { get; set; }
+
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+
+        IList IContainer.Children
+        {
+            get { return meshes; }
+        }
+
+        [ContentSerializer]
+        internal Matrix[] instanceTransforms;
+
+        private bool instanceTransformsNeedsUpdate;
+        private DynamicVertexBuffer instanceBuffer;
+        private VertexDeclaration vertexDeclaration;
+        private List<InstancedModelMesh> meshes = new List<InstancedModelMesh>();
+        #endregion
+        
+        #region Methods
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InstancedModel"/> class.
+        /// </summary>
+        public InstancedModel(GraphicsDevice graphicsDevice) : this(graphicsDevice, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InstancedModel"/> class.
+        /// </summary>
+        public InstancedModel(GraphicsDevice graphicsDevice, ISupportInstancing template)
+        {
+            if (graphicsDevice == null)
+                throw new ArgumentNullException("graphicsDevice");
+
+            Visible = true;
+            GraphicsDevice = graphicsDevice;
+            Template = template;
+        }
+
+        /// <summary>
+        /// Gets the instance transforms.
+        /// </summary>
+        public Matrix[] GetInstanceTransforms()
+        {
+            return instanceTransforms; 
+        }
+
+        /// <summary>
+        /// Sets the instance transforms.
+        /// </summary>
+        public void SetInstanceTransforms(Matrix[] transforms)
+        {
+            instanceTransforms = transforms;
+            instanceTransformsNeedsUpdate = true; 
+        }
+
+        /// <summary>
+        /// Updates the internal state of the object based on game time.
+        /// </summary>
+        public void Update(TimeSpan elapsedTime)
+        {
+            var updateable = template as IUpdateable;
+            if (updateable != null)
+                updateable.Update(elapsedTime);
+        }
+
+        private void UpdateTemplate()
+        {
+            meshes.Clear();
+            if (template != null)
+            {
+                var count = template.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    meshes.Add(new InstancedModelMesh() 
+                    {
+                        Model = this,
+                        Index = i,
+                    });
+                }
+            }
+        }
+
+        internal VertexBuffer GetInstanceBuffer()
+        {
+            if (instanceTransforms == null || instanceTransforms.Length <= 0)
+                return null;
+
+            if (instanceBuffer == null || instanceTransformsNeedsUpdate || instanceBuffer.VertexCount < instanceTransforms.Length)
+            {
+                if (vertexDeclaration == null)
+                {
+                    vertexDeclaration = new VertexDeclaration
+                    (
+                        new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 1),
+                        new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 2),
+                        new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 3)
+                    );
+                }
+
+                if (instanceBuffer != null)
+                    instanceBuffer.Dispose();                
+                instanceBuffer = new DynamicVertexBuffer(GraphicsDevice, vertexDeclaration, instanceTransforms.Length, BufferUsage.WriteOnly);
+                instanceBuffer.SetData(0, instanceTransforms, 0, instanceTransforms.Length, 16 * 4, SetDataOptions.Discard);
+                
+                instanceTransformsNeedsUpdate = false;
+            }
+            return instanceBuffer;
+        }
+
+        /// <summary>
+        /// Disposes any resources associated with this instance.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        protected virtual void Dispose(bool disposing) 
+        {
+            if (disposing)
+            {
+                if (instanceBuffer != null)
+                {
+                    instanceBuffer.Dispose();
+                    instanceBuffer = null;
+                }
+                if (vertexDeclaration != null)
+                {
+                    vertexDeclaration.Dispose();
+                    vertexDeclaration = null;
+                }
+                if (template is IDisposable)
+                {
+                    ((IDisposable)template).Dispose();
+                    template = null;
+                }
+            }
+        }
+
+        ~InstancedModel()
+        {
+            Dispose(false);
+        }
+        #endregion
+    }
+    #endregion
+
+    #region InstancedModelMesh
+    /// <summary>
+    /// Defines an instanced model that can be rendered using hardware instancing.
+    /// </summary>
+    class InstancedModelMesh : IDrawableObject
+    {
+        internal InstancedModel Model;
+        internal int Index;
+        
+        static VertexBufferBinding[] Bindings = new VertexBufferBinding[2];
+
+        /// <summary>
+        /// Draws this object with the specified material.
+        /// </summary>
+        public void Draw(DrawingContext context, Material material)
+        {
+            if (Model.template == null)
+                return;
+
+            var instanceBuffer = Model.GetInstanceBuffer();
+            if (instanceBuffer == null)
+                return;
+
+            var materialGroup = material as MaterialGroup;
+            if (materialGroup == null)
+                return;
+            if (materialGroup.Find<InstancedMaterialPart>() == null)
+                return;
+            
+            VertexBuffer vertexBuffer;
+            IndexBuffer indexBuffer;
+            int vertexOffset;
+            int numVertices;
+            int startIndex;
+            int primitiveCount;
+
+            Model.template.GetVertexBuffer(Index, out vertexBuffer, out vertexOffset, out numVertices);
+            Model.template.GetIndexBuffer(Index, out indexBuffer, out startIndex, out primitiveCount);
+
+            Bindings[0] = new VertexBufferBinding(vertexBuffer, vertexOffset, 0);
+            Bindings[1] = new VertexBufferBinding(instanceBuffer, 0, 1);
+
+            material.world = Model.AbsoluteTransform;
+            material.BeginApply(context);
+
+            context.SetVertexBuffer(null, 0);
+            Model.GraphicsDevice.SetVertexBuffers(Bindings);
+            Model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, Model.instanceTransforms.Length);
+
+            material.EndApply(context);
+        }
+
+        void IDrawableObject.BeginDraw(DrawingContext context) { }
+        void IDrawableObject.EndDraw(DrawingContext context) { }
+
+        bool IDrawableObject.Visible
+        {
+            get { return Model.visible; }
+        }
+
+        Material IDrawableObject.Material
+        {
+            get { return Model.template.GetMaterial(Index); }
+        }
+    }
+    #endregion
+}

@@ -59,14 +59,14 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Tutorials\06. Terrain.xaml">
+    <None Include="Tutorials\06. Terrain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Name>06. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">
@@ -260,10 +260,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\11. Hello World.xaml">
+    <None Include="Tutorials\12. Hello World.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>11. Hello World</Name>
+      <Name>12. Hello World</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </None>
@@ -329,10 +329,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\12. Physics.xaml">
+    <None Include="Tutorials\13. Physics.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <Name>12. Physics</Name>
+      <Name>13. Physics</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
@@ -355,6 +355,15 @@
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\11. Instancing.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Name>11. Instancing</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

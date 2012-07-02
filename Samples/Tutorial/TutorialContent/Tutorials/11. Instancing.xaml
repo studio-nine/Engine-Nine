@@ -1,0 +1,25 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
+    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
+    
+    <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
+             Transform.Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">
+        <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
+    </Surface>
+
+	<InstancedModel>		
+		<DistributionMap.DistributionMap>
+			<DistributionMap Texture="{ExternalReference ../Textures/checker}" />
+		</DistributionMap.DistributionMap>
+		<Box>
+			<MaterialGroup>
+				<InstancedMaterialPart />
+				<DiffuseMaterialPart TextureEnabled="False" />
+			</MaterialGroup>
+		</Box>
+	</InstancedModel>
+	
+</Scene>

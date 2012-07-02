@@ -95,4 +95,30 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         object LightingData { get; set; }
     }
+
+    /// <summary>
+    /// Defines an interface for objects that supports hardware instancing
+    /// </summary>
+    public interface ISupportInstancing
+    {
+        /// <summary>
+        /// Gets the subset count.
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
+        /// Gets the vertex buffer for the given subset.
+        /// </summary>
+        void GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
+        
+        /// <summary>
+        /// Gets the index buffer for the given subset.
+        /// </summary>
+        void GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
+
+        /// <summary>
+        /// Gets the material for the given subset.
+        /// </summary>
+        Material GetMaterial(int subset);
+    }
 }

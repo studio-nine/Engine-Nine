@@ -1519,6 +1519,23 @@ namespace Nine.Graphics.Materials.MaterialParts
         }
     }
     /// <summary>
+    /// Content reader for <c>InstancedMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class InstancedMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.InstancedMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new InstancedMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>NormalMapMaterialPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -1595,6 +1612,23 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.SpecularMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.SpecularPower = input.ReadSingle();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>TangentTransformMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class TangentTransformMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new TangentTransformMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -1692,6 +1726,7 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.FarPlane = input.ReadSingle();
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Transform = input.ReadMatrix();
@@ -1720,6 +1755,7 @@ namespace Nine.Graphics.ObjectModel
                 existingInstance = new Decal(graphicsDevice);
             }
             existingInstance.Visible = input.ReadBoolean();
+            existingInstance.IsDynamic = input.ReadBoolean();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.Color = input.ReadVector3();
             existingInstance.Size = input.ReadVector3();
@@ -1823,6 +1859,36 @@ namespace Nine.Graphics.ObjectModel
             existingInstance.FogEnd = input.ReadSingle();
             existingInstance.FogColor = input.ReadVector3();
             existingInstance.FogEnabled = input.ReadBoolean();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>InstancedModel</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class InstancedModelReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.InstancedModel>
+    {
+        protected override Nine.Graphics.ObjectModel.InstancedModel Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.InstancedModel existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new InstancedModel(graphicsDevice);
+            }
+            existingInstance.instanceTransforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[]>();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Template = input.ReadObject<Nine.Graphics.ObjectModel.ISupportInstancing>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Transform = input.ReadMatrix();
@@ -2585,6 +2651,38 @@ namespace Nine.Graphics.Primitives
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
                 existingInstance = new CentrumInvert(graphicsDevice);
+            }
+            existingInstance.Tessellation = input.ReadInt32();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
+            existingInstance.InvertWindingOrder = input.ReadBoolean();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Cross</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class CrossReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.Cross>
+    {
+        protected override Nine.Graphics.Primitives.Cross Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Cross existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Cross(graphicsDevice);
             }
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();

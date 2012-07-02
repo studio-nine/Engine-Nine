@@ -78,8 +78,8 @@ namespace Nine.Graphics.ObjectModel
             get { return material; }
             set { material = value; }
         }
-        private Material material;
-        private Material materialForRendering;
+        internal Material material;
+        internal Material materialForRendering;
 
         /// <summary>
         /// Gets a collection containning all the materials used by this model mesh that are sorted based on level of detail.
@@ -137,13 +137,13 @@ namespace Nine.Graphics.ObjectModel
         #endregion
 
         #region Fields
-        private int parentBoneIndex;
-        private VertexBuffer vertexBuffer;
-        private IndexBuffer indexBuffer;
-        private int vertexOffset;
-        private int numVertices;
-        private int primitiveCount;
-        private int startIndex;
+        internal int parentBoneIndex;
+        internal VertexBuffer vertexBuffer;
+        internal IndexBuffer indexBuffer;
+        internal int vertexOffset;
+        internal int numVertices;
+        internal int primitiveCount;
+        internal int startIndex;
         #endregion
 
         #region ILightable
