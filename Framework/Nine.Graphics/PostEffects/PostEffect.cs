@@ -9,22 +9,23 @@
 #region Using Statements
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Drawing;
-using Nine.Graphics.ObjectModel;
 using Nine.Graphics.Materials;
-using System.Windows.Markup;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Graphics.PostEffects
 {
     /// <summary>
-    /// Represents post processing effects.
+    /// Represents a post processing effect.
     /// </summary>
     [ContentSerializable]
-    [ContentProperty("Materials")]
-    public class PostEffect : DrawingPassChain, ISceneObject
+    [ContentProperty("Material")]
+    public class PostEffect : Pass, ISceneObject, IPostEffect
     {
         #region Properties
         /// <summary>
@@ -33,18 +34,14 @@ namespace Nine.Graphics.PostEffects
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
-        /// Gets the materials used to draw this post effect.
+        /// Gets or sets the material used by this post effect.
         /// </summary>
-        public IList<Material> Materials
-        {
-            get { return materials; }
-        }
-        private List<Material> materials = new List<Material>();
+        public Material Material { get; set; }
 
         /// <summary>
-        /// Gets or sets the state of the blend of this post effect.
+        /// Gets or sets the input texture to be processed.
         /// </summary>
-        public BlendState BlendState { get; set; }
+        public Texture2D InputTexture { get; set; }
 
         /// <summary>
         /// Gets or sets the surface format of the render target.
@@ -81,8 +78,7 @@ namespace Nine.Graphics.PostEffects
             }
         }
         private Vector2? renderTargetSize;
-
-
+        
         /// <summary>
         /// Gets or sets the render target scale. This value is multiplied by
         /// <c>RenderTargetSize</c> to determine the final size of the render target.
@@ -101,12 +97,13 @@ namespace Nine.Graphics.PostEffects
         }
         private float renderTargetScale = 1;
 
+        internal BlendState BlendState = BlendState.Opaque;
 
         private int textureWidth;
         private int textureHeight;
         private bool renderTargetChanged;
-        private RenderTargetPool renderTargetPool;
 
+        private Material vertexPassThrough;
         private FullScreenQuad fullScreenQuad;
         #endregion
 
@@ -120,17 +117,17 @@ namespace Nine.Graphics.PostEffects
                 throw new ArgumentNullException("graphics");
             
             GraphicsDevice = graphics;
-            BlendState = BlendState.Opaque;
             fullScreenQuad = new FullScreenQuad(graphics);
+            vertexPassThrough = GraphicsResources<VertexPassThroughMaterial>.GetInstance(graphics);
         }
 
-        public override RenderTarget2D PrepareRenderTarget(Texture2D input)
+        public override void GetActivePasses(IList<Pass> result)
         {
-            EnsureRenderTargetPool(input);
-            return renderTargetPool.Create();
+            if (Enabled && Material != null)
+                result.Add(this);
         }
 
-        private void EnsureRenderTargetPool(Texture2D input)
+        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
         {
             int w, h;
             if (!renderTargetSize.HasValue)
@@ -148,70 +145,53 @@ namespace Nine.Graphics.PostEffects
 
                 if (w != textureWidth || h != textureHeight)
                 {
-                    textureWidth = w; ;
+                    textureWidth = w;
                     textureHeight = h;
                     renderTargetChanged = true;
                 }
             }
 
-            if (renderTargetChanged || renderTargetPool == null)
+            if (renderTargetChanged)
             {
                 if (renderTargetSize.HasValue)
                 {
                     w = (int)renderTargetSize.Value.X;
                     h = (int)renderTargetSize.Value.Y;
                 }
-
-                var format = surfaceFormat.HasValue ? surfaceFormat.Value
-                                                    : input != null ? input.Format
-                                                    : GraphicsDevice.PresentationParameters.BackBufferFormat;
-
-                renderTargetPool = RenderTargetPool.AddRef(GraphicsDevice
-                                                        , (int)(textureWidth * renderTargetScale)
-                                                        , (int)(textureHeight * renderTargetScale)
-                                                        , false
-                                                        , format
-                                                        , DepthFormat.None);
             }
+
+            var format = surfaceFormat.HasValue ? surfaceFormat.Value
+                                                : input != null ? input.Format
+                                                : GraphicsDevice.PresentationParameters.BackBufferFormat;
+
+            return RenderTargetPool.GetRenderTarget(GraphicsDevice
+                                                 , (int)(textureWidth * renderTargetScale)
+                                                 , (int)(textureHeight * renderTargetScale)
+                                                 , format
+                                                 , DepthFormat.None);
         }
 
-        /// <summary>
-        /// Draws this pass using the specified drawing context.
-        /// </summary>
         public override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
         {
-            var count = materials.Count;
-            if (count <= 0)
-                return;
-
-            Material material;
-            RenderTarget2D intermediate = null;
-            Texture2D input = context.textures[TextureUsage.Previous] as Texture2D;
-            EnsureRenderTargetPool(input);
-                        
-            for (int i = 0; i < count - 1; i++)
+            try
             {
-                try
-                {
-                    RenderTargetPool.Lock(input as RenderTarget2D);
-                    intermediate = renderTargetPool.Create();
-                    intermediate.Begin();
+                RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
-                    material = materials[i];
-                    material.Texture = input;
-                    fullScreenQuad.Draw(context, material);
-                }
-                finally
-                {
-                    intermediate.End();
-                    RenderTargetPool.Unlock(input as RenderTarget2D);
-                    input = intermediate;
-                }
+                // Apply a vertex pass through material in case the specified material does
+                // not have a vertex shader.
+                vertexPassThrough.BeginApply(context);
+                vertexPassThrough.EndApply(context);
+
+                context.GraphicsDevice.BlendState = BlendState;
+                context.GraphicsDevice.Textures[0] = InputTexture;
+
+                Material.Texture = InputTexture;
+                fullScreenQuad.Draw(context, Material);
             }
-
-            material = materials[count - 1];
-            material.Texture = input;
-            fullScreenQuad.Draw(context, material);
+            finally
+            {
+                RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
+            }
         }
 
         /// <summary>

@@ -46,6 +46,13 @@ namespace Nine
             Count = 0;
         }
 
+        public void Resize(int length)
+        {
+            if (length > Count)
+                Array.Resize(ref Elements, Capacity = length);
+            Count = length;
+        }
+
         public T this[int index]
         {
             get { return Elements[index]; }

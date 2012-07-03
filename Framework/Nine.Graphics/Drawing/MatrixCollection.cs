@@ -23,9 +23,9 @@ namespace Nine.Graphics.Drawing
     /// Contains commonly used matrices in a drawing context.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DrawingContextMatrixCollection
+    public class MatrixCollection
     {
-        internal DrawingContextMatrixCollection() { }
+        internal MatrixCollection() { }
 
         private const int ViewFrustumDirty = 1 << 0;
         private const int ViewProjectionDirty = 1 << 1;

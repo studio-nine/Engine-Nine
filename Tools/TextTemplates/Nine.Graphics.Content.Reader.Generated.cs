@@ -217,6 +217,62 @@ namespace Nine.Graphics
         }
     }
 }
+namespace Nine.Graphics.Drawing
+{
+    /// <summary>
+    /// Content reader for <c>BasicPass</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BasicPassReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Drawing.BasicPass>
+    {
+        protected override Nine.Graphics.Drawing.BasicPass Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Drawing.BasicPass existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new BasicPass();
+            existingInstance.SortEnabled = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.DefaultMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.MaterialUsage = input.ReadObject<Nine.Graphics.Materials.MaterialUsage>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
+            existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>PassGroup</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class PassGroupReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Drawing.PassGroup>
+    {
+        protected override Nine.Graphics.Drawing.PassGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Drawing.PassGroup existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new PassGroup();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.Drawing.Pass>());
+            }
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
+            existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+}
 namespace Nine.Graphics.Materials
 {
 #if !WINDOWS_PHONE
@@ -399,6 +455,10 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new BlurMaterial(graphicsDevice);
             }
+            existingInstance.BlurAmount = input.ReadSingle();
+            existingInstance.Step = input.ReadSingle();
+            existingInstance.Direction = input.ReadSingle();
+            existingInstance.SampleCount = input.ReadInt32();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1228,6 +1288,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new ThresholdMaterial(graphicsDevice);
             }
+            existingInstance.Threshold = input.ReadSingle();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1269,14 +1330,14 @@ namespace Nine.Graphics.Materials
 #endif
 #if !WINDOWS_PHONE
     /// <summary>
-    /// Content reader for <c>WiggleMaterial</c>.
+    /// Content reader for <c>VertexPassThroughMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class WiggleMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.WiggleMaterial>
+    partial class VertexPassThroughMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.VertexPassThroughMaterial>
     {
-        protected override Nine.Graphics.Materials.WiggleMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.WiggleMaterial existingInstance)
+        protected override Nine.Graphics.Materials.VertexPassThroughMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.VertexPassThroughMaterial existingInstance)
         {
             if (existingInstance == null)
             {
@@ -1286,7 +1347,7 @@ namespace Nine.Graphics.Materials
                 var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
-                existingInstance = new WiggleMaterial(graphicsDevice);
+                existingInstance = new VertexPassThroughMaterial(graphicsDevice);
             }
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
@@ -2379,6 +2440,33 @@ namespace Nine.Graphics.PostEffects
 {
 #if !WINDOWS_PHONE
     /// <summary>
+    /// Content reader for <c>BloomEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BloomEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.BloomEffect>
+    {
+        protected override Nine.Graphics.PostEffects.BloomEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.BloomEffect existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new BloomEffect(graphicsDevice);
+            }
+            existingInstance.Threshold = input.ReadSingle();
+            existingInstance.BlurAmount = input.ReadSingle();
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
     /// Content reader for <c>PostEffect</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -2398,30 +2486,51 @@ namespace Nine.Graphics.PostEffects
 #endif
                 existingInstance = new PostEffect(graphicsDevice);
             }
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Materials.Add(input.ReadObject<Nine.Graphics.Materials.Material>());
-            }
-            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
             existingInstance.RenderTargetSize = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
             existingInstance.RenderTargetScale = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.Drawing.DrawingPass>());
-            }
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
 #endif
+    /// <summary>
+    /// Content reader for <c>PostEffectChain</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class PostEffectChainReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.PostEffectChain>
+    {
+        protected override Nine.Graphics.PostEffects.PostEffectChain Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.PostEffectChain existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new PostEffectChain();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Effects.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffect>());
+            }
+            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
+            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
+            existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
     /// <summary>
     /// Content reader for <c>PostEffectGroup</c>.
     /// </summary>
@@ -2437,21 +2546,17 @@ namespace Nine.Graphics.PostEffects
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
-                    existingInstance.PostEffects.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffect>());
+                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffectChain>());
             }
+            existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.Drawing.DrawingPass>());
-            }
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.View = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
             existingInstance.Projection = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -2541,6 +2646,38 @@ namespace Nine.Graphics.Primitives
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
                 existingInstance = new CentrumInvert(graphicsDevice);
+            }
+            existingInstance.Tessellation = input.ReadInt32();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
+            existingInstance.InvertWindingOrder = input.ReadBoolean();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Cross</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class CrossReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Primitives.Cross>
+    {
+        protected override Nine.Graphics.Primitives.Cross Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Primitives.Cross existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Cross(graphicsDevice);
             }
             existingInstance.Tessellation = input.ReadInt32();
             existingInstance.Visible = input.ReadBoolean();

@@ -19,10 +19,9 @@ using System.Collections.Generic;
 namespace Nine.Graphics.Drawing
 {
     /// <summary>
-    /// Represents a collection of <see cref="DrawingPass"/> that are sorted by dependency.
+    /// Represents a collection of <see cref="Pass"/> that are sorted by dependency.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class DrawingPassCollection : Collection<DrawingPass>, IComparer<DrawingPass>, IDependencyProvider<DrawingPass>
+    internal class PassCollection : Collection<Pass>, IComparer<Pass>, IDependencyProvider<Pass>
     {
         private int[] topologyReorder;
         private FastList<int> order;
@@ -39,7 +38,7 @@ namespace Nine.Graphics.Drawing
             TopologyChanged = true;            
         }
 
-        protected override void InsertItem(int index, DrawingPass item)
+        protected override void InsertItem(int index, Pass item)
         {
             base.InsertItem(index, item);
             item.Container = this;
@@ -56,7 +55,7 @@ namespace Nine.Graphics.Drawing
             TopologyChanged = true;
         }
 
-        protected override void SetItem(int index, DrawingPass item)
+        protected override void SetItem(int index, Pass item)
         {
             this[index].Container = null;
             base.SetItem(index, item);
@@ -76,12 +75,24 @@ namespace Nine.Graphics.Drawing
             else
                 order.Clear();
 
-            for (int i = 0; i < topologyReorder.Length; i++)
+            if (topologyReorder != null)
             {
-                var index = topologyReorder[i];
-                var pass = this[index];
-                if (pass != null && pass.Enabled)
-                    order.Add(index);
+                for (int i = 0; i < topologyReorder.Length; i++)
+                {
+                    var index = topologyReorder[i];
+                    var pass = this[index];
+                    if (pass != null && pass.Enabled)
+                        order.Add(index);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < Count; i++)
+                {
+                    var pass = this[i];
+                    if (pass != null && pass.Enabled)
+                        order.Add(i);
+                }
             }
             return order;
         }
@@ -123,7 +134,7 @@ namespace Nine.Graphics.Drawing
             }
         }
 
-        int IDependencyProvider<DrawingPass>.GetDependencies(IList<DrawingPass> elements, int index, int[] dependencies)
+        int IDependencyProvider<Pass>.GetDependencies(IList<Pass> elements, int index, int[] dependencies)
         {
             var pass = elements[index];
             if (pass.DependentPasses == null)
@@ -139,7 +150,7 @@ namespace Nine.Graphics.Drawing
             return num;
         }
 
-        int IComparer<DrawingPass>.Compare(DrawingPass x, DrawingPass y)
+        int IComparer<Pass>.Compare(Pass x, Pass y)
         {
             return x.order.CompareTo(y.order);
         }

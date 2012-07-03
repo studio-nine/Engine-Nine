@@ -75,15 +75,15 @@ namespace Nine.Graphics.ObjectModel
             if (!SharedBuffers.TryGetValue(graphics, out sharedBuffer))
             {
                 sharedBuffer = new KeyValuePair<VertexBuffer, IndexBuffer>(
-                    new VertexBuffer(graphics, typeof(VertexPositionNormalTexture), 4, BufferUsage.WriteOnly)
+                    new VertexBuffer(graphics, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly)
                   , new IndexBuffer(graphics, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly));
 
                 sharedBuffer.Key.SetData(new[] 
                 {
-                    new VertexPositionNormalTexture() { Position = new Vector3(-1, 1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(0, 0) },
-                    new VertexPositionNormalTexture() { Position = new Vector3(1, 1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(1, 0) },
-                    new VertexPositionNormalTexture() { Position = new Vector3(1, -1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(1, 1) },
-                    new VertexPositionNormalTexture() { Position = new Vector3(-1, -1, 0), Normal = Vector3.Up, TextureCoordinate = new Vector2(0, 1) },
+                    new VertexPositionTexture() { Position = new Vector3(-1, 1, 0), TextureCoordinate = new Vector2(0, 0) },
+                    new VertexPositionTexture() { Position = new Vector3(1, 1, 0), TextureCoordinate = new Vector2(1, 0) },
+                    new VertexPositionTexture() { Position = new Vector3(1, -1, 0), TextureCoordinate = new Vector2(1, 1) },
+                    new VertexPositionTexture() { Position = new Vector3(-1, -1, 0), TextureCoordinate = new Vector2(0, 1) },
                 });
 
                 sharedBuffer.Value.SetData<ushort>(new ushort[] { 0, 1, 2, 0, 2, 3 });

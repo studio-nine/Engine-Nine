@@ -22,7 +22,7 @@ namespace Nine.Graphics.Drawing
     /// Defines commonly used settings when drawing using the renderer.
     /// </summary>
     [System.Obsolete]
-    public class DrawingSettings
+    public class Settings
     {
         /// <summary>
         /// Gets or sets the color of the background.
@@ -92,7 +92,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of <c>GraphicsSettings</c>.
         /// </summary>
-        public DrawingSettings()
+        public Settings()
         {
             FogEnable = true;
             LightingEnabled = true;

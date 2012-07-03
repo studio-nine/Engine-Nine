@@ -42,7 +42,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the graphics settings
         /// </summary>
-        public DrawingSettings Settings { get; private set; }
+        public Settings Settings { get; private set; }
 
         /// <summary>
         /// Gets or sets the active camera.
@@ -58,7 +58,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the statistics of this renderer.
         /// </summary>
-        public DrawingStatistics Statistics { get; private set; }
+        public Statistics Statistics { get; private set; }
 
         /// <summary>
         /// Gets or sets the graphics context.
@@ -150,7 +150,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
-        public Scene(GraphicsDevice graphics, DrawingSettings settings, ISceneManager defaultSceneManager)
+        public Scene(GraphicsDevice graphics, Settings settings, ISceneManager defaultSceneManager)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
@@ -162,8 +162,8 @@ namespace Nine.Graphics
             this.flattenedQuery = CreateQuery<object>();
             this.detailedQuery = new DetailedQuery(this.defaultSceneManager);
             this.drawables = CreateQuery<IDrawableObject>();
-            this.Settings = settings ?? new DrawingSettings();
-            this.Statistics = new DrawingStatistics();
+            this.Settings = settings ?? new Settings();
+            this.Statistics = new Statistics();
             this.Context = Context ?? new DrawingContext(graphics, Settings);
         }
         #endregion

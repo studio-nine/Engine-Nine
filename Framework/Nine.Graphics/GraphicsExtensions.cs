@@ -80,21 +80,20 @@ namespace Nine.Graphics
         #region RenderTargetStack
         static Dictionary<GraphicsDevice, Stack<RenderTarget2D>> renderTargetStacks;
 
-        internal static RenderTarget2D PopRenderTarget(GraphicsDevice graphics)
+        private static void PopRenderTarget(GraphicsDevice graphics)
         {
-            if (renderTargetStacks == null)
-                return null;
-
-            Stack<RenderTarget2D> stack = null;
-            if (!renderTargetStacks.TryGetValue(graphics, out stack))
-                return null;
-
-            RenderTarget2D renderTarget = stack.Pop();
-            graphics.SetRenderTarget(renderTarget);
-            return renderTarget;
+            if (renderTargetStacks != null)
+            {
+                Stack<RenderTarget2D> stack = null;
+                if (renderTargetStacks.TryGetValue(graphics, out stack))
+                {
+                    stack.Pop();
+                    graphics.SetRenderTarget(stack.Peek());
+                }
+            }
         }
 
-        internal static void PushRenderTarget(RenderTarget2D renderTarget)
+        private static void PushRenderTarget(RenderTarget2D renderTarget)
         {
             if (renderTarget != null)
             {
@@ -108,18 +107,12 @@ namespace Nine.Graphics
 
                 Stack<RenderTarget2D> stack = null;
                 if (!renderTargetStacks.TryGetValue(graphicsDevice, out stack))
+                {
                     renderTargetStacks.Add(graphicsDevice, stack = new Stack<RenderTarget2D>());
+                    stack.Push(null);
+                }
 
-                // Get old render target
-                RenderTarget2D previous = null;
-
-                RenderTargetBinding[] bindings = graphicsDevice.GetRenderTargets();
-
-                if (bindings.Length > 0)
-                    previous = bindings[0].RenderTarget as RenderTarget2D;
-
-                stack.Push(previous);
-
+                stack.Push(renderTarget);
                 graphicsDevice.SetRenderTarget(renderTarget);
             }
         }

@@ -1,7 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
+﻿#region Copyright 2009 - 2012 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -10,12 +10,10 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Graphics;
-using Nine.Content.Pipeline.Graphics;
 #endregion
 
-namespace Nine.Content.Pipeline.Design
+namespace Nine.Graphics.Design
 {
     class BlendStateConverter : TypeConverter
     {
@@ -34,16 +32,16 @@ namespace Nine.Content.Pipeline.Design
             if (destinationType == typeof(string) && value is BlendState)
             {
                 var blendState = (BlendState)value;
-                if (BlendStateSerializer.BlendStateEquals(blendState, BlendState.Additive))
+                if (BlendStateEquals(blendState, BlendState.Additive))
                     return "Additive";
-                if (BlendStateSerializer.BlendStateEquals(blendState, BlendState.AlphaBlend))
+                if (BlendStateEquals(blendState, BlendState.AlphaBlend))
                     return "AlphaBlend";
-                if (BlendStateSerializer.BlendStateEquals(blendState, BlendState.NonPremultiplied))
+                if (BlendStateEquals(blendState, BlendState.NonPremultiplied))
                     return "NonPremultiplied";
-                if (BlendStateSerializer.BlendStateEquals(blendState, BlendState.Opaque))
+                if (BlendStateEquals(blendState, BlendState.Opaque))
                     return "Opaque";
-                
-                throw new InvalidContentException("Unknown BlendState: " + value);
+
+                throw new InvalidOperationException("Unknown BlendState: " + value);
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
@@ -62,9 +60,25 @@ namespace Nine.Content.Pipeline.Design
                 if (blendState == "Opaque")
                     return BlendState.Opaque;
 
-                throw new InvalidContentException("Unknown BlendState: " + value);
+                throw new InvalidOperationException("Unknown BlendState: " + value);
             }
             return base.ConvertFrom(context, culture, value);
+        }
+
+        private static bool BlendStateEquals(BlendState a, BlendState b)
+        {
+            return a.AlphaBlendFunction == b.AlphaBlendFunction &&
+                   a.AlphaDestinationBlend == b.AlphaDestinationBlend &&
+                   a.AlphaSourceBlend == b.AlphaSourceBlend &&
+                   a.BlendFactor == b.BlendFactor &&
+                   a.ColorBlendFunction == b.ColorBlendFunction &&
+                   a.ColorDestinationBlend == b.ColorDestinationBlend &&
+                   a.ColorSourceBlend == b.ColorSourceBlend &&
+                   a.ColorWriteChannels == b.ColorWriteChannels &&
+                   a.ColorWriteChannels1 == b.ColorWriteChannels1 &&
+                   a.ColorWriteChannels2 == b.ColorWriteChannels2 &&
+                   a.ColorWriteChannels3 == b.ColorWriteChannels3 &&
+                   a.MultiSampleMask == b.MultiSampleMask;
         }
     }
 }

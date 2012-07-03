@@ -4,13 +4,37 @@
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
-    <!--
+
     <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
-	-->
-    <PostEffect>
-        <BasicMaterial DiffuseColor="0.5, 0.5, 0.5" />
+	
+    <PostEffect>	
+		<CustomMaterial xml:space="preserve">
+			<CustomMaterial.Code>
+            <![CDATA[
+			sampler2D Texture:register(s0);
+			
+			float4 PS(float2 uv:TEXCOORD0):COLOR0
+			{
+				float4 color = tex2D(Texture, uv);
+				//color.r = 0;
+				return color;
+			}
+			
+			technique t0
+			{
+				pass p0
+				{
+					PixelShader = compile ps_2_0 PS();
+				}
+			}
+			]]>
+			</CustomMaterial.Code>
+		</CustomMaterial>
     </PostEffect>
+	
+	<BloomEffect />
+	
 </Scene>

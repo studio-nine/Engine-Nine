@@ -18,6 +18,8 @@ using Nine.Content.Pipeline.Graphics;
 using Nine.Content.Pipeline.Graphics.Materials;
 using Nine.Graphics.Materials;
 using Nine.Content.Pipeline.Xaml;
+using System.Text;
+using System.Security.Cryptography;
 
 #endregion
 
@@ -32,15 +34,29 @@ namespace Nine.Content.Pipeline.Processors
             {
                 if (input.Source != null)
                 {
-                    input.Source = null;
                     context.Logger.LogWarning(null, null, "Replacing custom material shaders");
+                    input.Source = null;
+                }
+                
+                var hashString = new StringBuilder();
+                var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input.Code));
+                for (int i = 0; i < hash.Length; i++)
+                {
+                    hashString.Append(hash[i].ToString("X2"));
                 }
 
-                var source = context.BuildAsset<EffectContent, CompiledEffectContent>(
-                    new EffectContent { EffectCode = input.Code }, "CustomEffectProcessor");
+                var name = hashString.ToString().ToUpperInvariant();
+                var assetName = Path.Combine(ContentProcessorContextExtensions.DefaultOutputDirectory, name);
+                var sourceFile = Path.Combine(context.IntermediateDirectory, input.GetType().Name + "-" + name + ".fx");
+
+                File.WriteAllText(sourceFile, input.Code);
+
+                var source = context.BuildAsset<EffectContent, CustomEffectContent>(
+                    new ExternalReference<EffectContent>(sourceFile), "CustomEffectProcessor", null, null, assetName);
                 
                 XamlSerializer.SerializationData[new PropertyInstance(input, "Source")] =
                     new ContentReference<CompiledEffectContent>(source.Filename);
+                input.Code = null;
             }
             return input;
         }

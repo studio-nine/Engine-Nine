@@ -456,5 +456,8 @@ namespace Nine.Graphics.ObjectModel
         }
         ushort[] indices;
         #endregion
+
+        #region ISupportInstancing
+        #endregion
     }
 }

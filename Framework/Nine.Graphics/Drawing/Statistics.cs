@@ -17,7 +17,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// Defines commonly used statistics of the renderer.
     /// </summary>
-    public class DrawingStatistics
+    public class Statistics
     {
         public int VisibleLightCount { get; internal set; }
         public int VisibleObjectCount { get; internal set; }
@@ -26,7 +26,7 @@ namespace Nine.Graphics.Drawing
         public int VertexCount { get; internal set; }
         public int PrimitiveCount { get; internal set; }
 
-        internal DrawingStatistics()
+        internal Statistics()
         {
             Reset();
         }

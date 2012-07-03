@@ -131,10 +131,5 @@ namespace Nine.Graphics
         /// Specifies the target texture is used as decal texture.
         /// </summary>
         Decal,
-
-        /// <summary>
-        /// Specifies the target texture is the rendered result of the previous pass.
-        /// </summary>
-        Previous,
     }
 }

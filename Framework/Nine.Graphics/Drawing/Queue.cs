@@ -22,7 +22,7 @@ namespace Nine.Graphics.Drawing
     /// By using a circular queue, chances are that any unused old references will be
     /// replaced by newly added objects as long as the render loop goes on.
     /// </summary>
-    class DrawingQueue
+    class Queue
     {
         private FastList<IDrawableObject> entries = new FastList<IDrawableObject>();
         private FastList<DrawingQueueEntry> sortingEntries = new FastList<DrawingQueueEntry>();

@@ -16,7 +16,7 @@ using System;
 namespace Nine.Graphics.Primitives
 {
     /// <summary>
-    /// Geometric primitive class for drawing spheres.
+    /// Geometric primitive class for drawing planes.
     /// </summary>
     [ContentSerializable]
     public class Plane : Primitive<VertexPositionNormalTexture>
@@ -60,7 +60,7 @@ namespace Nine.Graphics.Primitives
         private int tessellationY = 1;
 
         /// <summary>
-        /// Constructs a new sphere primitive, using default settings.
+        /// Initializes a new instance of the <see cref="Plane"/> class.
         /// </summary>
         public Plane(GraphicsDevice graphicsDevice) : base(graphicsDevice) 
         {

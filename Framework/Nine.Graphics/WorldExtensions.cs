@@ -33,7 +33,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Creates the graphics scene to render this world.
         /// </summary>
-        public static Scene CreateGraphics(this World world, GraphicsDevice graphics, DrawingSettings settings, ISceneManager sceneManager)
+        public static Scene CreateGraphics(this World world, GraphicsDevice graphics, Settings settings, ISceneManager sceneManager)
         {
             var scene = new Scene(graphics, settings, sceneManager);
             UpdateScene(world, scene);

@@ -140,7 +140,6 @@
     <Compile Include="Dictionary.cs" />
     <Compile Include="NotificationCollectionWriter.cs" />
     <Compile Include="Design\ContentReferenceConverter.cs" />
-    <Compile Include="Design\BlendStateConverter.cs" />
     <Compile Include="DefaultContentProcessorAttribute.cs" />
     <Compile Include="Graphics\ProceduralTextureGenerator.cs" />
     <Compile Include="Importers\XamlImporter.cs" />
