@@ -7,6 +7,8 @@
 #endregion
 
 #region Using Directives
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -39,6 +41,11 @@ namespace Nine.Graphics.Materials.MaterialParts
                 MaterialGroup.MaterialParts.Remove(this);
         }
 
+        protected internal override void GetDependentParts(IList<Type> result)
+        {
+            result.Add(typeof(TangentTransformMaterialPart));
+        }
+
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
             textureParameter.SetValue(NormalMap);
@@ -57,7 +64,7 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("NormalMap").Replace("{$SKINNED}", MaterialGroup.MaterialParts.Any(p => p is SkinnedMaterialPart) ? "" : "//") : null;
+            return usage == MaterialUsage.Default ? GetShaderCode("NormalMap") : null;
         }
     }
 }

@@ -37,26 +37,6 @@ namespace Nine.Content.Pipeline.Importers
                     xamlSerializer.InstanceResolve += new Func<Type, object[], object>(OnResolveInstance);
                     result = xamlSerializer.Load(Path.GetFullPath(filename));
                 }
-
-                ObjectGraph.TraverseProperties(result, input =>
-                {
-                    // Try to populate the identity of content items.
-                    var contentItem = input as ContentItem;
-                    if (contentItem != null)
-                    {
-                        contentItem.Identity = new ContentIdentity(filename, typeof(XamlImporter).Name, null);
-                    }
-
-                    // Add dependencies to content references
-                    var inputType = input.GetType();
-                    if (inputType.IsGenericType && inputType.GetGenericTypeDefinition() == typeof(ContentReference<>))
-                    {
-                        dynamic reference = input;
-                        AddDependency(context, Path.GetDirectoryName(filename), reference.Filename);
-                    }
-                    return input;
-                });
-
                 return result;
             }
             catch (Exception e)
@@ -74,6 +54,28 @@ namespace Nine.Content.Pipeline.Importers
             {
                 ContentProperties.IsContentBuild = false;
             }
+        }
+
+        private void AddDependencies(string filename, ContentImporterContext context, object result)
+        {
+            ObjectGraph.TraverseProperties(result, input =>
+            {
+                // Try to populate the identity of content items.
+                var contentItem = input as ContentItem;
+                if (contentItem != null)
+                {
+                    contentItem.Identity = new ContentIdentity(filename, typeof(XamlImporter).Name, null);
+                }
+
+                // Add dependencies to content references
+                var inputType = input.GetType();
+                if (inputType.IsGenericType && inputType.GetGenericTypeDefinition() == typeof(ContentReference<>))
+                {
+                    dynamic reference = input;
+                    AddDependency(context, Path.GetDirectoryName(filename), reference.Filename);
+                }
+                return input;
+            });
         }
 
         private void AddDependency(ContentImporterContext context, string directory, string filename)

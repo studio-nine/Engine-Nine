@@ -19,3 +19,8 @@ void VertexShader(float2 uv, inout float4 color:COLOR0)
 {
     color *= tex2D(BasicSampler, uv * DetailTextureScale) * 2;
 }
+
+void Function()
+{
+// Dummy
+}

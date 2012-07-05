@@ -217,7 +217,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                                                   .Replace("{$AN}", textureAlphaUsage == TextureAlphaUsage.None ? "" : "//")
                                                   .Replace("{$AS}", textureAlphaUsage == TextureAlphaUsage.Specular ? "" : "//")
                                                   .Replace("{$D1}", diffuseColorEnabled ? "" : "//")
-                                                  .Replace("{$D2}", diffuseColorEnabled ? "" : "//");
+                                                  .Replace("{$D2}", diffuseColorEnabled ? "//" : "")
+                                                  .Replace("{$TE}", textureEnabled ? "" : "//");
         }
     }
 }

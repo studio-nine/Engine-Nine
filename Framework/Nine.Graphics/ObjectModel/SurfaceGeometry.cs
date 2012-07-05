@@ -165,6 +165,8 @@ namespace Nine.Graphics.ObjectModel
                 lod++;
             }
 
+            if (IndexBuffer != null)
+                IndexBuffer.Dispose();
             IndexBuffer = new IndexBuffer(graphics, IndexElementSize.SixteenBits, indices.Length, BufferUsage.WriteOnly);
             IndexBuffer.SetData<ushort>(indices, 0, indices.Length);
         }

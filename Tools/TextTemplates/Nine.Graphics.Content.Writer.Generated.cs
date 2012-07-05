@@ -797,7 +797,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.CustomMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "DefaultShaderCode", value.DefaultShaderCode);
             WriteObject(output, value, "Name", value.Name);
         }
@@ -1418,9 +1418,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialPaintGroup value)
         {
-            output.Write(value.Index);
-            WriteObject(output, value, "MaskTexture", value.MaskTexture);
-            output.Write(value.MaskTextureChannel);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             {
                 output.Write(value.MaterialParts.Count);
                 for (var i = 0; i < value.MaterialParts.Count; i++)
@@ -1890,7 +1888,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.AmbientLightMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
         }
         
@@ -1925,7 +1923,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.BeginLightMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
         }
         
@@ -1950,6 +1948,41 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         }
     }
     /// <summary>
+    /// Content writer for <c>BeginPaintGroupMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BeginPaintGroupMaterialPartWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart value)
+        {
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            WriteObject(output, value, "Name", value.Name);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.BeginPaintGroupMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>ColorMatrixMaterialPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1960,7 +1993,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.ColorMatrixMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.ColorMatrix);
             WriteObject(output, value, "Name", value.Name);
         }
@@ -1996,7 +2029,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DetailMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "DetailTexture", value.DetailTexture);
             output.Write(value.DetailTextureScale);
             WriteObject(output, value, "Name", value.Name);
@@ -2033,7 +2066,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DiffuseMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.VertexColorEnabled);
             output.Write(value.DiffuseColorEnabled);
             output.Write(value.TextureEnabled);
@@ -2076,7 +2109,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DirectionalLightMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
         }
         
@@ -2111,7 +2144,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.DualTextureMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Texture2", value.Texture2);
             WriteObject(output, value, "Name", value.Name);
         }
@@ -2147,7 +2180,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.EmissiveMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.EmissiveMapEnabled);
             output.Write(value.EmissiveColorEnabled);
             WriteObject(output, value, "EmissiveMap", value.EmissiveMap);
@@ -2186,7 +2219,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.EndLightMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
         }
         
@@ -2211,6 +2244,41 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         }
     }
     /// <summary>
+    /// Content writer for <c>EndPaintGroupMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class EndPaintGroupMaterialPartWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart value)
+        {
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            WriteObject(output, value, "Name", value.Name);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.EndPaintGroupMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>FogMaterialPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -2221,7 +2289,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.FogMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
         }
         
@@ -2256,7 +2324,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.NormalMapMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "NormalMap", value.NormalMap);
             WriteObject(output, value, "Name", value.Name);
         }
@@ -2292,7 +2360,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.ShadowMapMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.ShadowColor);
             output.Write(value.DepthBias);
             output.Write(value.LightViewProjection);
@@ -2332,7 +2400,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.SkinnedMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.MaxBones);
             output.Write(value.WeightsPerVertex);
             WriteObject(output, value, "Name", value.Name);
@@ -2369,7 +2437,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.SpecularMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.SpecularMapEnabled);
             output.Write(value.SpecularColorEnabled);
             WriteObject(output, value, "SpecularMap", value.SpecularMap);
@@ -2409,7 +2477,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.TextureTransformMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.TextureTransform);
             WriteObject(output, value, "Name", value.Name);
         }
@@ -2445,7 +2513,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.VertexTransformMaterialPart value)
         {
-            output.Write(value.Index);
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
         }
         

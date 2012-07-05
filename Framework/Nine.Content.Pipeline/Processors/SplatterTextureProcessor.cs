@@ -9,9 +9,11 @@
 #region Using Directives
 using System;
 using System.ComponentModel;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+using Nine.Content.Pipeline.Xaml;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
@@ -20,7 +22,7 @@ namespace Nine.Content.Pipeline.Processors
     /// Processes texture splatter used for terrain rendering.
     /// </summary>
     [ContentProcessor(DisplayName="Splatter Texture - Engine Nine")]
-    public class SplatterTextureProcessor : ContentProcessor<string[], Texture2DContent>
+    public class SplatterTextureProcessor : ContentProcessor<Splatter, Texture2DContent>
     {
         /// <summary>
         /// Gets or sets a value indicating whether a base layer should be generated.
@@ -34,8 +36,9 @@ namespace Nine.Content.Pipeline.Processors
             GenerateBaseLayer = true;
         }
 
-        public override Texture2DContent Process(string[] input, ContentProcessorContext context)
+        public override Texture2DContent Process(Splatter splatter, ContentProcessorContext context)
         {
+            var input = splatter.Layers.Select(layer => layer != null ? layer.Filename : null).ToArray();
             if (input.Length > 4)
             {
                 context.Logger.LogWarning(null, null, "SplatterTextureProcessor supports at most 4 textures. Additional textures will be discarded");

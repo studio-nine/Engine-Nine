@@ -31,7 +31,14 @@ namespace Nine.Graphics.Materials.Test
     public class MaterialGroupTest
     {
         [TestMethod()]
-        //[DeploymentItem("Nine.Test/Graphics/Materials/MaterialPart1.txt")]
+        [DeploymentItem("Nine.Test/Graphics/Materials/MaterialPart1.txt")]
+        public void MaterialGroupLexerTest()
+        {
+            Lexer lexer = new Lexer(File.ReadAllText("MaterialPart1.txt"));
+            lexer.Read();
+        }
+
+        [TestMethod()]
         public void MaterialGroupEmptyTest()
         {
             MaterialGroup materialGroup = new MaterialGroup();
@@ -86,6 +93,60 @@ namespace Nine.Graphics.Materials.Test
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
             materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
+        public void MaterialPaintGroupTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            MaterialPaintGroup layer0 = new MaterialPaintGroup();
+            MaterialPaintGroup layer1 = new MaterialPaintGroup();
+            
+            layer0.MaterialParts.Add(new DiffuseMaterialPart());
+            layer1.MaterialParts.Add(new DiffuseMaterialPart());
+            
+            materialGroup.MaterialParts.Add(layer0);
+            materialGroup.MaterialParts.Add(layer1);
+
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
+        public void MaterialPaintGroupSpecularTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            MaterialPaintGroup layer0 = new MaterialPaintGroup();
+            MaterialPaintGroup layer1 = new MaterialPaintGroup();
+
+            layer0.MaterialParts.Add(new DiffuseMaterialPart());
+            layer0.MaterialParts.Add(new SpecularMaterialPart());
+            layer1.MaterialParts.Add(new DiffuseMaterialPart());
+
+            materialGroup.MaterialParts.Add(layer0);
+            materialGroup.MaterialParts.Add(layer1);
+            materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
+
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
+        public void MaterialPaintGroupNormalMappingTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            MaterialPaintGroup layer0 = new MaterialPaintGroup();
+            MaterialPaintGroup layer1 = new MaterialPaintGroup();
+
+            layer0.MaterialParts.Add(new DiffuseMaterialPart());
+            layer0.MaterialParts.Add(new SpecularMaterialPart());
+            layer0.MaterialParts.Add(new NormalMapMaterialPart());
+            layer1.MaterialParts.Add(new DiffuseMaterialPart());
+            layer1.MaterialParts.Add(new NormalMapMaterialPart());
+
+            materialGroup.MaterialParts.Add(layer0);
+            materialGroup.MaterialParts.Add(layer1);
+            materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
+
             MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
     }

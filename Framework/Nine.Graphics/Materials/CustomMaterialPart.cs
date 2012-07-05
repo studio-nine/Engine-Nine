@@ -115,9 +115,8 @@ namespace Nine.Graphics.Materials
         {
             if (MaterialGroup != null && MaterialGroup.Effect != null)
             {
-                var suffix = string.Concat("_", Index);
                 foreach (EffectParameter parameter in MaterialGroup.Effect.Parameters)
-                    if (parameter.Name.EndsWith(suffix))
+                    if (parameter.Name.EndsWith(ParameterSuffix))
                         yield return parameter;
             }
         }

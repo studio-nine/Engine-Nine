@@ -7,6 +7,8 @@
 #endregion
 
 #region Using Directives
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -51,9 +53,15 @@ namespace Nine.Graphics.Materials.MaterialParts
             }
         }
 
+        protected internal override void GetDependentParts(IList<Type> result)
+        {
+            result.Add(typeof(BeginLightMaterialPart));
+            result.Add(typeof(EndLightMaterialPart));
+        }
+
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            var light = context.DirectionalLights[Index];
+            var light = context.DirectionalLights[lightIndex];
             if (light != null && light.version != lightVersion)
             {
                 directionParameter.SetValue(light.Direction);

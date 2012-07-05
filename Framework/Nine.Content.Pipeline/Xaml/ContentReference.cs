@@ -30,13 +30,14 @@ namespace Nine.Content.Pipeline.Xaml
     /// <summary>
     /// Defines a markup extension to reference external content.
     /// </summary>
+    [ContentProperty("AssetNameName")]
     public class ContentReference : MarkupExtension
     {
         /// <summary>
         /// Gets or sets the name of the content.
         /// This value should be set to the asset name instead of filename when used with Xna content pipeline.
         /// </summary>
-        public string Name { get; set; }
+        public string AssetName { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentReference"/> class.
@@ -46,8 +47,8 @@ namespace Nine.Content.Pipeline.Xaml
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentReference"/> class.
         /// </summary>
-        /// <param name="name">The name of the asset.</param>
-        public ContentReference(string name) { Name = name; }
+        /// <param name="assetName">The name of the asset.</param>
+        public ContentReference(string assetName) { AssetName = assetName; }
 
         /// <summary>
         /// When implemented in a derived class, returns an object that is set as the value of the target property for this markup extension.
@@ -60,7 +61,7 @@ namespace Nine.Content.Pipeline.Xaml
         {
             var externalReferenceProvider = serviceProvider.GetService<IContentReferenceProvider>();
             if (externalReferenceProvider != null)
-                return externalReferenceProvider.ResolveContentReference(Name);
+                return externalReferenceProvider.ResolveContentReference(AssetName);
             return null;
         }
     }

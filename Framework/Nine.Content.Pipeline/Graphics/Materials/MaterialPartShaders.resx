@@ -124,6 +124,9 @@
   <data name="BeginLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\beginlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="BeginPaintGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\beginpaintgroup.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ColorMatrix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\colormatrix.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -154,6 +157,9 @@
   <data name="EndLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\endlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="EndPaintGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\endpaintgroup.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="EnvironmentMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\environmentmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -162,9 +168,6 @@
   </data>
   <data name="NormalMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\normalmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="NormalMappedSplatterTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>shaders\normalmappedsplattertexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="PointLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\pointlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -189,6 +192,9 @@
   </data>
   <data name="SpotLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\spotlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TangentTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\tangenttransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TextureTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\texturetransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

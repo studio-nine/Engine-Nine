@@ -59,14 +59,14 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <None Include="Tutorials\06. Terrain.xaml">
+    <Compile Include="Tutorials\06. Terrain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Name>06. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">

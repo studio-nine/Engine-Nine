@@ -9,12 +9,13 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Windows.Markup;
 using System.Xaml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Reflection;
+using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.Materials
@@ -25,17 +26,6 @@ namespace Nine.Graphics.Materials
     [ContentProperty("MaterialParts")]
     public class MaterialPaintGroup : MaterialPart
     {
-        /// <summary>
-        /// Gets or sets the mask texture used to splat this paint group.
-        /// </summary>
-        public Texture2D MaskTexture { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color channel of the above mask texture.
-        /// Value 0, 1, 2, 3 represents r, g, b, a channels respectively.
-        /// </summary>
-        public int MaskTextureChannel { get; set; }
-
         /// <summary>
         /// Gets a collection containing all the material parts use by this paint group.
         /// </summary>
@@ -58,7 +48,64 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override void OnBind()
         {
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].ParameterSuffix = string.Concat(materialParts[i].ParameterSuffix, ParameterSuffix);
+
             materialParts.Bind(MaterialGroup);
+        }
+
+        /// <summary>
+        /// Puts the dependent parts into the result list.
+        /// </summary>
+        protected internal override void GetDependentParts(IList<Type> result)
+        {
+            result.Add(typeof(MaterialParts.BeginPaintGroupMaterialPart));
+            result.Add(typeof(MaterialParts.EndPaintGroupMaterialPart));
+
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].GetDependentParts(result);
+        }
+
+        /// <summary>
+        /// Applies all the global shader parameters before drawing any primitives.
+        /// </summary>
+        protected internal override void ApplyGlobalParameters(DrawingContext context)
+        {
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].ApplyGlobalParameters(context);
+        }
+
+        /// <summary>
+        /// Applies all the local shader parameters before drawing any primitives.
+        /// </summary>
+        protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
+        {
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].BeginApplyLocalParameters(context, material);
+        }
+
+        /// <summary>
+        /// Restores any local shader parameters changes after drawing the promitive.
+        /// </summary>
+        protected internal override void EndApplyLocalParameters()
+        {
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].EndApplyLocalParameters();
+        }
+
+        /// <summary>
+        /// Sets the texture based on the texture usage.
+        /// </summary>
+        public override void SetTexture(TextureUsage textureUsage, Texture texture)
+        {
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].SetTexture(textureUsage, texture);
         }
 
         /// <summary>
@@ -105,6 +152,31 @@ namespace Nine.Graphics.Materials
         public static void SetMaskTextureScale(MaterialGroup materialGroup, Vector2 value)
         {
             AttachablePropertyServices.SetProperty(materialGroup, MaskTextureScaleProperty, value);
+        }
+        #endregion
+
+        #region MaskTextures
+        private static AttachableMemberIdentifier MaskTexturesProperty = new AttachableMemberIdentifier(typeof(MaterialPaintGroup), "MaskTextures");
+
+        /// <summary>
+        /// Gets a list of mask textures of the material group.
+        /// </summary>
+        public static System.Collections.IList GetMaskTextures(MaterialGroup materialGroup)
+        {
+            System.Collections.IList value;
+            if (!AttachablePropertyServices.TryGetProperty(materialGroup, MaskTexturesProperty, out value))
+                AttachablePropertyServices.SetProperty(materialGroup, MaskTexturesProperty, value = new List<object>());
+            return value;
+        }
+
+        /// <summary>
+        /// Sets the mask textures of the material group.
+        /// </summary>
+        public static void SetMaskTextures(MaterialGroup materialGroup, System.Collections.IList value)
+        {
+            if (value == null)
+                throw new ArgumentNullException("value");
+            AttachablePropertyServices.SetProperty(materialGroup, MaskTexturesProperty, value);
         }
         #endregion
     }

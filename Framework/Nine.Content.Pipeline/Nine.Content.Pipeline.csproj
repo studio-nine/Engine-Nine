@@ -122,6 +122,8 @@
     <Compile Include="Content\PipelineImporterContext.cs" />
     <Compile Include="Content\PipelineProcessorContext.cs" />
     <Compile Include="Design\TransformConverter.cs" />
+    <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
+    <Compile Include="Xaml\Splatter.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupWriter.cs" />
     <Compile Include="Graphics\Materials\CustomMaterialWriter.cs" />
@@ -244,11 +246,13 @@
       <LastGenOutput>Nine.Graphics.Content.Writer1.Generated.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Materials\Shaders\AmbientLight.fragment" />
+    <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\TangentTransform.fragment" />
+    <None Include="Graphics\Materials\Shaders\EndPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\DiffuseTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\BeginLight.fragment" />
     <None Include="Graphics\Materials\Shaders\DeferredLightBuffer.fragment" />
     <None Include="Graphics\Materials\Shaders\DeferredPixelShaderOutput.fragment" />
-    <None Include="Graphics\Materials\Shaders\NormalMappedSplatterTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\DetailTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\DeferredLights.fragment" />
     <None Include="Graphics\Materials\Shaders\EmissiveMap.fragment" />

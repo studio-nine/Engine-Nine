@@ -1,22 +1,24 @@
 texture2D Texture : TEXTURE;
 float4 DiffuseColor : DIFFUSE = 1;
 float3 OverlayColor : OVERLAYCOLOR = 1;
-sampler BasicSampler : register(s0) { Texture = (Texture); };
+sampler BasicSampler { Texture = (Texture); };
 
-void PixelShader(float2 uv:TEXCOORD0, 
+void PixelShader(
+     {$TE}float2 uv:TEXCOORD0, 
      {$V1}inout float4 diffuse:COLOR0
      {$V2}  out float4 diffuse:COLOR0
 )
 {
-    {$V1}diffuse *= DiffuseColor;
-    {$V2}diffuse = DiffuseColor;
+    {$D1}{$V1}diffuse *= DiffuseColor;
+    {$D1}{$V2}diffuse = DiffuseColor;    
+    {$D2}diffuse = 1;
 
-    float4 tex = tex2D(BasicSampler, uv);
+    {$TE}float4 tex = tex2D(BasicSampler, uv);
     {$AO}tex.rgb = lerp(tex.rgb, OverlayColor, tex.a);
     {$AS}specular = tex.a;
 
-    {$AO}diffuse.rgb *= tex.rgb;
-    {$AS}diffuse.rgb *= tex.rgb;
-    {$AN}diffuse.rgb *= tex.rgb;
-    {$AA}diffuse *= tex;
+    {$TE}{$AO}diffuse.rgb *= tex.rgb;
+    {$TE}{$AS}diffuse.rgb *= tex.rgb;
+    {$TE}{$AN}diffuse.rgb *= tex.rgb;
+    {$TE}{$AA}diffuse *= tex;
 }
