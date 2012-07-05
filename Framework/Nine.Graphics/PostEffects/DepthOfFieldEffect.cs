@@ -21,15 +21,26 @@ using Nine.Graphics.ObjectModel;
 namespace Nine.Graphics.PostEffects
 {
     /// <summary>
-    /// Represents a bloom post processing effect.
+    /// Represents a depth of field post processing effect.
     /// </summary>
-    [ContentSerializable]
-    public class BloomEffect : ISceneObject
-    {
-        public float Threshold
+    public class DepthOfFieldEffect : ISceneObject
+    {        
+        public float FocalLength
         {
-            get { return threshold.Threshold; }
-            set { threshold.Threshold = value; }
+            get { return material.FocalLength; }
+            set { material.FocalLength = value; }
+        }
+
+        public float FocalPlane
+        {
+            get { return material.FocalPlane; }
+            set { material.FocalPlane = value; }
+        }
+
+        public float FocalDistance
+        {
+            get { return material.FocalDistance; }
+            set { material.FocalDistance = value; }
         }
 
         public float BlurAmount
@@ -39,20 +50,20 @@ namespace Nine.Graphics.PostEffects
         }
 
         PostEffectGroup postEffect;
+        DepthOfFieldMaterial material;
         BlurMaterial blurH;
         BlurMaterial blurV;
-        ThresholdMaterial threshold;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BloomEffect"/> class.
+        /// Initializes a new instance of the <see cref="DepthOfFieldEffect"/> class.
         /// </summary>
-        public BloomEffect(GraphicsDevice graphics)
+        public DepthOfFieldEffect(GraphicsDevice graphics)
         {
             postEffect = new PostEffectGroup();
+            postEffect.Material = material = new DepthOfFieldMaterial(graphics);
             postEffect.Passes.Add(new PostEffectChain());
-            postEffect.Passes.Add(new PostEffectChain(BlendState.Additive,
+            postEffect.Passes.Add(new PostEffectChain(TextureUsage.Blur,
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
-                new PostEffect() { Material = threshold = new ThresholdMaterial(graphics) },
                 new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }

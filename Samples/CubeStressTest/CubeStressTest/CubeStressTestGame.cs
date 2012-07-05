@@ -20,6 +20,7 @@ using Nine.Graphics;
 using Nine.Graphics.Materials;
 using Nine.Graphics.ObjectModel;
 using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
+using Nine.Graphics.Primitives;
 #endregion
 
 namespace CubeStressTest

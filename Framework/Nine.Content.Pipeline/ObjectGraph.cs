@@ -32,9 +32,10 @@ namespace Nine.Content.Pipeline
 
             try
             {
-                if (Trace.Listeners.OfType<TextWriterTraceListener>().Count() <= 0)
-                    Trace.Listeners.Add(new TextWriterTraceListener("C:\\ObjectGraph.log"));
-
+#if DEBUG
+                //if (Trace.Listeners.OfType<TextWriterTraceListener>().Count() <= 0)
+                //    Trace.Listeners.Add(new TextWriterTraceListener("C:\\ObjectGraph.log"));
+#endif
                 InternalTraverseProperties(target, action);
             }
             finally
@@ -194,7 +195,7 @@ namespace Nine.Content.Pipeline
 
         private static bool IsBasicType(Type type)
         {
-            return type.IsPrimitive || type.IsValueType || type.IsEnum || type == typeof(string) ||
+            return type.IsPrimitive || type.IsValueType || type.IsEnum || type == typeof(string) || type == typeof(Type) ||
                    type.Assembly == typeof(Microsoft.Xna.Framework.Vector3).Assembly || 
                    type.Assembly == typeof(Microsoft.Xna.Framework.Graphics.GraphicsDevice).Assembly ||
                    type.Assembly == typeof(Microsoft.Xna.Framework.Content.Pipeline.IContentProcessor).Assembly;

@@ -28,6 +28,7 @@ namespace Nine.Content.Pipeline.Importers
         {
             try
             {
+                System.Diagnostics.Debugger.Launch();
                 ContentProperties.IsContentBuild = true;
 
                 object result = null;

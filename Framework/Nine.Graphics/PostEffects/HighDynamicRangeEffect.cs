@@ -21,10 +21,10 @@ using Nine.Graphics.ObjectModel;
 namespace Nine.Graphics.PostEffects
 {
     /// <summary>
-    /// Represents a bloom post processing effect.
+    /// Represents a high dynamic range (HDR) post processing effect.
     /// </summary>
     [ContentSerializable]
-    public class BloomEffect : ISceneObject
+    public class HighDynamicRangeEffect : ISceneObject
     {
         public float Threshold
         {
@@ -44,9 +44,9 @@ namespace Nine.Graphics.PostEffects
         ThresholdMaterial threshold;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BloomEffect"/> class.
+        /// Initializes a new instance of the <see cref="HighDynamicRangeEffect"/> class.
         /// </summary>
-        public BloomEffect(GraphicsDevice graphics)
+        public HighDynamicRangeEffect(GraphicsDevice graphics)
         {
             postEffect = new PostEffectGroup();
             postEffect.Passes.Add(new PostEffectChain());

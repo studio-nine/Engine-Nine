@@ -34,9 +34,19 @@ namespace Nine.Graphics.Materials
         ShadowMap,
 
         /// <summary>
+        /// The material is used to generate a depth map.
+        /// </summary>
+        Depth,
+
+        /// <summary>
+        /// The material is used to generate a normal map.
+        /// </summary>
+        Normal,
+
+        /// <summary>
         /// The material is used to generate the graphics buffer used in deferred lighting.
         /// </summary>
-        DeferredGraphicsBuffer,
+        DepthAndNormal,
 
         /// <summary>
         /// The material is used to draw multipass directional lights.

@@ -48,9 +48,11 @@ namespace Nine.Graphics.PostEffects
 
         private FastList<RenderTarget2D> passResults = new FastList<RenderTarget2D>();
         private FastList<PostEffect> lastEffects = new FastList<PostEffect>();
-        private FastList<BlendState> blendStates = new FastList<BlendState>();
         private FastList<Pass> workingPasses = new FastList<Pass>();
         private PostEffect basicPostEffect;
+
+        private Material vertexPassThrough;
+        private FullScreenQuad fullScreenQuad;
         
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
@@ -84,15 +86,24 @@ namespace Nine.Graphics.PostEffects
         {
             context.RootPass.Passes.Remove(this);
         }
-
+        
         /// <summary>
         /// Draws this pass using the specified drawing context.
         /// </summary>
         public override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
         {
+            if (Material == null)
+                DrawWithoutCombineMaterial(context, drawables, startIndex, length);
+            else
+                DrawWithCombineMaterial(context, drawables, startIndex, length);
+        }
+
+        private void DrawWithCombineMaterial(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        {
             RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
-            for (int p = 0; p < passes.Count; p++)
+            int i, p;
+            for (p = 0; p < passes.Count; p++)
             {
                 var pass = passes[p];
                 if (!pass.Enabled)
@@ -101,7 +112,72 @@ namespace Nine.Graphics.PostEffects
                 pass.GetActivePasses(workingPasses);
 
                 RenderTarget2D intermediate = InputTexture as RenderTarget2D;
-                for (int i = 0; i < workingPasses.Count - 1; i++)
+                for (i = 0; i < workingPasses.Count; i++)
+                {
+                    var workingPass = (PostEffect)workingPasses[i];
+
+                    RenderTarget2D previous = intermediate;
+                    RenderTargetPool.Lock(previous);
+                    intermediate = workingPass.PrepareRenderTarget(context, intermediate);
+                    intermediate.Begin();
+
+                    workingPass.InputTexture = previous;
+                    workingPass.Draw(context, drawables, startIndex, length);
+
+                    intermediate.End();
+                    RenderTargetPool.Unlock(previous);
+                }
+
+                passResults.Add(intermediate);
+                workingPasses.Clear();
+            }
+
+            RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
+
+            if (fullScreenQuad == null)
+            {
+                fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
+                vertexPassThrough = GraphicsResources<VertexPassThroughMaterial>.GetInstance(context.GraphicsDevice);
+            }
+
+            vertexPassThrough.BeginApply(context);
+            vertexPassThrough.EndApply(context);
+
+            context.GraphicsDevice.BlendState = BlendState.Opaque;
+            context.GraphicsDevice.Textures[0] = InputTexture;
+
+            Material.Texture = InputTexture;
+
+            for (i = 0, p = 0; p < passes.Count; p++)
+            {
+                if (passes[p].Enabled)
+                {
+                    Material.SetTexture(passes[p].TextureUsage, passResults[i]);
+                    i++;
+                }
+            }
+
+            fullScreenQuad.Draw(context, Material);
+
+            lastEffects.Clear();
+            passResults.Clear();
+        }
+
+        private void DrawWithoutCombineMaterial(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        {
+            RenderTargetPool.Lock(InputTexture as RenderTarget2D);
+
+            int i, p;
+            for (p = 0; p < passes.Count; p++)
+            {
+                var pass = passes[p];
+                if (!pass.Enabled)
+                    continue;
+
+                pass.GetActivePasses(workingPasses);
+
+                RenderTarget2D intermediate = InputTexture as RenderTarget2D;
+                for (i = 0; i < workingPasses.Count - 1; i++)
                 {
                     var workingPass = (PostEffect)workingPasses[i];
 
@@ -128,13 +204,12 @@ namespace Nine.Graphics.PostEffects
                 {
                     if (basicPostEffect == null)
                     {
-                        basicPostEffect = new PostEffect(context.GraphicsDevice);
+                        basicPostEffect = new PostEffect();
                         basicPostEffect.Material = new BasicMaterial(context.GraphicsDevice);
                     }
                     lastEffect = basicPostEffect;
                 }
 
-                blendStates.Add(pass.BlendState);
                 lastEffects.Add(lastEffect);
                 passResults.Add(intermediate);
 
@@ -143,18 +218,21 @@ namespace Nine.Graphics.PostEffects
 
             RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
 
-            for (int p = 0; p < passResults.Count; p++)
+            for (i = 0, p = 0; p < passes.Count; p++)
             {
-                lastEffects[p].BlendState = blendStates[p];
-                lastEffects[p].InputTexture = passResults[p];
-                lastEffects[p].Draw(context, drawables, startIndex, length);
+                if (passes[p].Enabled)
+                {
+                    lastEffects[i].BlendState = passes[p].BlendState;
+                    lastEffects[i].InputTexture = passResults[i];
+                    lastEffects[i].Draw(context, drawables, startIndex, length);
 
-                RenderTargetPool.Unlock(passResults[p]);
+                    RenderTargetPool.Unlock(passResults[i]);
+                    i++;
+                }
             }
 
             lastEffects.Clear();
             passResults.Clear();
-            blendStates.Clear();
         }
     }
 }

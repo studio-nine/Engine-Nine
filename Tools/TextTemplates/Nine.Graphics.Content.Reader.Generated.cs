@@ -2484,7 +2484,7 @@ namespace Nine.Graphics.PostEffects
                 var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
-                existingInstance = new PostEffect(graphicsDevice);
+                existingInstance = new PostEffect();
             }
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();

@@ -66,6 +66,16 @@ namespace Nine.Graphics.PostEffects
         }
 
         /// <summary>
+        /// Creates a new instance of ScreenEffect for post processing.
+        /// </summary>
+        public PostEffectChain(TextureUsage textureUsage, params PostEffect[] effects)
+        {
+            this.BlendState = BlendState.Opaque;
+            this.TextureUsage = textureUsage;
+            this.effects.AddRange(effects);
+        }
+
+        /// <summary>
         /// Gets all the passes that are going to be rendered.
         /// </summary>
         public override void GetActivePasses(IList<Pass> result)

@@ -29,11 +29,6 @@ namespace Nine.Graphics.PostEffects
     {
         #region Properties
         /// <summary>
-        /// Gets the GraphicsDevice associated with this instance.
-        /// </summary>
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
-        /// <summary>
         /// Gets or sets the material used by this post effect.
         /// </summary>
         public Material Material { get; set; }
@@ -111,14 +106,9 @@ namespace Nine.Graphics.PostEffects
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
-        public PostEffect(GraphicsDevice graphics)
+        public PostEffect()
         {
-            if (graphics == null)
-                throw new ArgumentNullException("graphics");
-            
-            GraphicsDevice = graphics;
-            fullScreenQuad = new FullScreenQuad(graphics);
-            vertexPassThrough = GraphicsResources<VertexPassThroughMaterial>.GetInstance(graphics);
+
         }
 
         public override void GetActivePasses(IList<Pass> result)
@@ -139,8 +129,8 @@ namespace Nine.Graphics.PostEffects
                 }
                 else
                 {
-                    w = GraphicsDevice.Viewport.Width;
-                    h = GraphicsDevice.Viewport.Height;
+                    w = context.GraphicsDevice.Viewport.Width;
+                    h = context.GraphicsDevice.Viewport.Height;
                 }
 
                 if (w != textureWidth || h != textureHeight)
@@ -162,9 +152,9 @@ namespace Nine.Graphics.PostEffects
 
             var format = surfaceFormat.HasValue ? surfaceFormat.Value
                                                 : input != null ? input.Format
-                                                : GraphicsDevice.PresentationParameters.BackBufferFormat;
+                                                : context.GraphicsDevice.PresentationParameters.BackBufferFormat;
 
-            return RenderTargetPool.GetRenderTarget(GraphicsDevice
+            return RenderTargetPool.GetRenderTarget(context.GraphicsDevice
                                                  , (int)(textureWidth * renderTargetScale)
                                                  , (int)(textureHeight * renderTargetScale)
                                                  , format
@@ -176,6 +166,12 @@ namespace Nine.Graphics.PostEffects
             try
             {
                 RenderTargetPool.Lock(InputTexture as RenderTarget2D);
+
+                if (fullScreenQuad == null)
+                {
+                    fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
+                    vertexPassThrough = GraphicsResources<VertexPassThroughMaterial>.GetInstance(context.GraphicsDevice);
+                }
 
                 // Apply a vertex pass through material in case the specified material does
                 // not have a vertex shader.

@@ -39,8 +39,8 @@ void VertDepth( float4 Pos : POSITION,
 // Desc: Process vertex for the shadow map
 //-----------------------------------------------------------------------------
 void VertDepthSkinned( float4 Pos : POSITION,
-						float4 BoneIndices : BLENDINDICES0,
-						float4 BoneWeights : BLENDWEIGHT0,
+                        float4 BoneIndices : BLENDINDICES0,
+                        float4 BoneWeights : BLENDWEIGHT0,
                  out float4 oPos : POSITION,
                  out float2 Depth : TEXCOORD1 )
 {
@@ -93,8 +93,8 @@ void VertDepthTexture( float4 Pos : POSITION,
 // Desc: Process vertex for the shadow map
 //-----------------------------------------------------------------------------
 void VertDepthSkinnedTexture( float4 Pos : POSITION,
-						float4 BoneIndices : BLENDINDICES0,
-						float4 BoneWeights : BLENDWEIGHT0,
+                        float4 BoneIndices : BLENDINDICES0,
+                        float4 BoneWeights : BLENDWEIGHT0,
                         float2 TexCoord : TEXCOORD0,
                  out float4 oPos : POSITION,
                  out float2 oTexCoord : TEXCOORD0,
@@ -155,27 +155,27 @@ int shaderIndex = 0;
 
 VertexShader VSArray[4] =
 {
-	compile vs_2_0 VertDepth(),
-	compile vs_2_0 VertDepthSkinned(),
-	compile vs_2_0 VertDepthTexture(),
-	compile vs_2_0 VertDepthSkinnedTexture(),
+    compile vs_2_0 VertDepth(),
+    compile vs_2_0 VertDepthSkinned(),
+    compile vs_2_0 VertDepthTexture(),
+    compile vs_2_0 VertDepthSkinnedTexture(),
 };
 
 
 PixelShader PSArray[4] =
 {
-	compile ps_2_0 PixDepth(),
-	compile ps_2_0 PixDepth(),
-	compile ps_2_0 PixDepthTexture(),
-	compile ps_2_0 PixDepthTexture(),
+    compile ps_2_0 PixDepth(),
+    compile ps_2_0 PixDepth(),
+    compile ps_2_0 PixDepthTexture(),
+    compile ps_2_0 PixDepthTexture(),
 };
 
 
 Technique BasicEffect
 {
-	Pass
-	{
-		VertexShader = (VSArray[shaderIndex]);
-		PixelShader	 = (PSArray[shaderIndex]);
-	}
+    Pass
+    {
+        VertexShader = (VSArray[shaderIndex]);
+        PixelShader	 = (PSArray[shaderIndex]);
+    }
 }

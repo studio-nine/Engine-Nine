@@ -20,6 +20,8 @@ namespace Nine.Graphics.Materials
     public class BasicMaterial : Material
     {
         #region Properties
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         public float Alpha
         {
             get { return alpha.HasValue ? alpha.Value : MaterialConstants.Alpha; }
@@ -86,6 +88,7 @@ namespace Nine.Graphics.Materials
         public BasicMaterial(GraphicsDevice graphics)
         {
             effect = GraphicsResources<BasicEffect>.GetInstance(graphics);
+            GraphicsDevice = graphics;
         }
 
         public override T Find<T>()
@@ -159,6 +162,13 @@ namespace Nine.Graphics.Materials
                 effect.SpecularColor = MaterialConstants.SpecularColor;
             if (specularPower.HasValue)
                 effect.SpecularPower = MaterialConstants.SpecularPower;
+        }
+
+        protected override Material OnResolveMaterial(MaterialUsage usage)
+        {
+            if (usage == MaterialUsage.Depth)
+                return new DepthMaterial(GraphicsDevice) { TextureEnabled = Texture != null && IsTransparent };
+            return null;
         }
         #endregion
     }
