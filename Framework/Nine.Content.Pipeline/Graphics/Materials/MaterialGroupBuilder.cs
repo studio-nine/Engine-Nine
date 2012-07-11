@@ -495,6 +495,10 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
             try
             {
+                // Force 3_0 when using instancing
+                if (materialGroup.MaterialParts.OfType<InstancedMaterialPart>().Any())
+                    throw new InvalidOperationException();
+
                 LastEffectCode = GetShaderCodeForProfile(builderContext, "2_0");
                 return BuildEffect(context);
             }

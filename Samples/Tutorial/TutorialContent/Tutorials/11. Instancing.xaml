@@ -12,7 +12,7 @@
 	-->
 	<InstancedModel>
 		<DistributionMap.DistributionMap>
-			<DistributionMap Step="1" Density="100" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
+			<DistributionMap Step="0.1" Density="100" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
 		</DistributionMap.DistributionMap>
 		<Cross>
 			<Cross.Transform>

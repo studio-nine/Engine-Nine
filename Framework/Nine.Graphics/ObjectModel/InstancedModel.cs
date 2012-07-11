@@ -345,20 +345,19 @@ namespace Nine.Graphics.ObjectModel
             model.template.GetVertexBuffer(index, out vertexBuffer, out vertexOffset, out numVertices);
             model.template.GetIndexBuffer(index, out indexBuffer, out startIndex, out primitiveCount);
 
-            Bindings[0] = new VertexBufferBinding(vertexBuffer, vertexOffset, 0);
-            Bindings[1] = new VertexBufferBinding(instanceBuffer, 0, 1);
-
-            // TODO: Support AbsoluteTransform of this InstanceModel
-
-            model.template.GetTransform(index, out material.world);
-            material.BeginApply(context);
-
             context.SetVertexBuffer(null, 0);
 
-            model.GraphicsDevice.Indices = indexBuffer;
+            Bindings[0] = new VertexBufferBinding(vertexBuffer, vertexOffset, 0);
+            Bindings[1] = new VertexBufferBinding(instanceBuffer, 0, 1);
+            
             model.GraphicsDevice.SetVertexBuffers(Bindings);
-            model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
+            model.GraphicsDevice.Indices = indexBuffer;
 
+            // TODO: Support AbsoluteTransform of this InstanceModel            
+            model.template.GetTransform(index, out material.world);
+
+            material.BeginApply(context);
+            model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
             material.EndApply(context);
         }
 
