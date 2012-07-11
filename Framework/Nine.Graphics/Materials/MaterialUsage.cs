@@ -41,16 +41,16 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// The material is used to draw multipass directional lights.
         /// </summary>
-        DirectionalLight,
+        //DirectionalLight,
         
         /// <summary>
         /// The material is used to draw multipass point lights.
         /// </summary>        
-        PointLight,
+        //PointLight,
 
         /// <summary>
         /// The material is used to draw multipass spot lights.
         /// </summary>
-        SpotLight,
+        //SpotLight,
     }
 }

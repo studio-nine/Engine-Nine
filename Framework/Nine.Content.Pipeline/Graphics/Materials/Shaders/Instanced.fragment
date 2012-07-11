@@ -1,5 +1,0 @@
-void VertexShader(inout float4 position:POSITION0, float4x3 instanceTransform : BLENDWEIGHT)
-{
-    //position = mul(position, instanceTransform);
-    position = position;
-}

@@ -166,8 +166,8 @@
   <data name="Fog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\fog.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Instanced" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>shaders\instanced.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="InstanceTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\instancetransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="NormalMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\normalmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -201,9 +201,6 @@
   </data>
   <data name="TextureTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\texturetransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="VertexShaderOutput" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>shaders\vertexshaderoutput.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="VertexTransform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\vertextransform.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

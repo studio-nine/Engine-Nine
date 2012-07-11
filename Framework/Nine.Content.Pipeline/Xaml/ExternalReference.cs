@@ -66,10 +66,15 @@ namespace Nine.Content.Pipeline.Xaml
                 {
                     try
                     {
-                        // Need to get destination type from the target object when it is a collection
                         var provideValueTarget = serviceProvider.GetService<IProvideValueTarget>();
                         if (provideValueTarget != null && provideValueTarget.TargetObject != null)
-                            destinationType = provideValueTarget.TargetObject.GetType().GetGenericArguments()[0];
+                        {
+                            if (provideValueTarget.TargetProperty is PropertyInfo)
+                                destinationType = ((PropertyInfo)provideValueTarget.TargetProperty).PropertyType;
+                            else
+                                // Need to get destination type from the target object when it is a collection
+                                destinationType = provideValueTarget.TargetObject.GetType().GetGenericArguments()[0];
+                        }
                     }
                     catch
                     {
@@ -78,7 +83,14 @@ namespace Nine.Content.Pipeline.Xaml
                 }
             }
 
-            return destinationType != null ? Activator.CreateInstance(destinationType, FileName) : null;
+            try
+            {
+                return Activator.CreateInstance(destinationType, FileName);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("Instanced") : null;
+            return null;
         }
     }
 }

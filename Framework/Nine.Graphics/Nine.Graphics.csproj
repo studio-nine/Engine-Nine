@@ -254,7 +254,7 @@
     <Compile Include="ModelViewerCamera.cs" />
     <Compile Include="TopDownEditorCamera.cs" />
     <Compile Include="Geometry.cs" />
-    <Compile Include="Heightmap.cs" />
+    <Compile Include="ObjectModel\Heightmap.cs" />
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="ModelSkeleton.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />

@@ -85,12 +85,16 @@ namespace Nine.Graphics.ObjectModel
             get { return boundingBox; }
         }
         private BoundingBox boundingBox = new BoundingBox();
+        private BoundingBox orientedBoundingBox = new BoundingBox();
 
         /// <summary>
         /// Called when transform changed.
         /// </summary>
         protected override void OnTransformChanged()
         {
+            Matrix transform = AbsoluteTransform;
+            orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
+
             if (BoundingBoxChanged != null)
                 BoundingBoxChanged(this, EventArgs.Empty);
         }
@@ -152,7 +156,8 @@ namespace Nine.Graphics.ObjectModel
         public void SetInstanceTransforms(Matrix[] transforms)
         {
             instanceTransforms = transforms;
-            instanceTransformsNeedsUpdate = true; 
+            instanceTransformsNeedsUpdate = true;
+            UpdateBounds();
         }
 
         /// <summary>
@@ -172,14 +177,53 @@ namespace Nine.Graphics.ObjectModel
             {
                 var count = template.Count;
                 for (int i = 0; i < count; i++)
-                {
-                    meshes.Add(new InstancedModelMesh() 
-                    {
-                        Model = this,
-                        Index = i,
-                    });
-                }
+                    meshes.Add(new InstancedModelMesh(this, i));
             }
+            UpdateBounds();
+        }
+
+        private void UpdateBounds()
+        {
+            IBoundable boundable = template as IBoundable;
+            if (boundable != null)
+                orientedBoundingBox = boundable.BoundingBox;
+            else
+                orientedBoundingBox = new BoundingBox();
+
+            if (instanceTransforms != null && instanceTransforms.Length > 0)
+            {
+                BoundingBox instanceBounds;
+                instanceBounds.Min = Vector3.One * float.MaxValue;
+                instanceBounds.Max = Vector3.One * float.MinValue;
+
+                for (int i = 0; i < instanceTransforms.Length; i++)
+                {
+                    // TODO: Include scale & rotation
+                    if (instanceTransforms[i].M41 > instanceBounds.Max.X)
+                        instanceBounds.Max.X = instanceTransforms[i].M41;
+                    else if (instanceTransforms[i].M41 < instanceBounds.Min.X)
+                        instanceBounds.Min.X = instanceTransforms[i].M41;
+
+                    if (instanceTransforms[i].M42 > instanceBounds.Max.Y)
+                        instanceBounds.Max.Y = instanceTransforms[i].M42;
+                    else if (instanceTransforms[i].M42 < instanceBounds.Min.Y)
+                        instanceBounds.Min.Y = instanceTransforms[i].M42;
+
+                    if (instanceTransforms[i].M43 > instanceBounds.Max.Z)
+                        instanceBounds.Max.Z = instanceTransforms[i].M43;
+                    else if (instanceTransforms[i].M43 < instanceBounds.Min.Z)
+                        instanceBounds.Min.Z = instanceTransforms[i].M43;
+                }
+
+                orientedBoundingBox.Min -= instanceBounds.Min;
+                orientedBoundingBox.Max += instanceBounds.Max;
+            }
+
+            Matrix transform = AbsoluteTransform;
+            orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
+
+            if (BoundingBoxChanged != null)
+                BoundingBoxChanged(this, EventArgs.Empty);
         }
 
         internal VertexBuffer GetInstanceBuffer()
@@ -193,22 +237,27 @@ namespace Nine.Graphics.ObjectModel
                 {
                     vertexDeclaration = new VertexDeclaration
                     (
-                        new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 1),
-                        new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 2),
-                        new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 3)
+                        new VertexElement(0, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 4),
+                        new VertexElement(16, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 5),
+                        new VertexElement(32, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 6),
+                        new VertexElement(48, VertexElementFormat.Vector4, VertexElementUsage.BlendWeight, 7)
                     );
                 }
 
                 if (instanceBuffer != null)
-                    instanceBuffer.Dispose();                
+                    instanceBuffer.Dispose();     
                 instanceBuffer = new DynamicVertexBuffer(GraphicsDevice, vertexDeclaration, instanceTransforms.Length, BufferUsage.WriteOnly);
-                instanceBuffer.SetData(0, instanceTransforms, 0, instanceTransforms.Length, 16 * 4, SetDataOptions.Discard);
-                
+                instanceTransformsNeedsUpdate = true;
+            }
+
+            if (instanceTransformsNeedsUpdate || instanceBuffer.IsContentLost)
+            {
+                instanceBuffer.SetData(instanceTransforms, 0, instanceTransforms.Length, SetDataOptions.Discard);
                 instanceTransformsNeedsUpdate = false;
             }
             return instanceBuffer;
         }
-
+        
         /// <summary>
         /// Disposes any resources associated with this instance.
         /// </summary>
@@ -257,20 +306,26 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     class InstancedModelMesh : IDrawableObject
     {
-        internal InstancedModel Model;
-        internal int Index;
+        private InstancedModel model;
+        private int index;
         
         static VertexBufferBinding[] Bindings = new VertexBufferBinding[2];
+
+        public InstancedModelMesh(InstancedModel model, int index)
+        {
+            this.model = model;
+            this.index = index;
+        }
 
         /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
-            if (Model.template == null)
+            if (model.template == null)
                 return;
 
-            var instanceBuffer = Model.GetInstanceBuffer();
+            var instanceBuffer = model.GetInstanceBuffer();
             if (instanceBuffer == null)
                 return;
 
@@ -287,18 +342,22 @@ namespace Nine.Graphics.ObjectModel
             int startIndex;
             int primitiveCount;
 
-            Model.template.GetVertexBuffer(Index, out vertexBuffer, out vertexOffset, out numVertices);
-            Model.template.GetIndexBuffer(Index, out indexBuffer, out startIndex, out primitiveCount);
+            model.template.GetVertexBuffer(index, out vertexBuffer, out vertexOffset, out numVertices);
+            model.template.GetIndexBuffer(index, out indexBuffer, out startIndex, out primitiveCount);
 
             Bindings[0] = new VertexBufferBinding(vertexBuffer, vertexOffset, 0);
             Bindings[1] = new VertexBufferBinding(instanceBuffer, 0, 1);
 
-            material.world = Model.AbsoluteTransform;
+            // TODO: Support AbsoluteTransform of this InstanceModel
+
+            model.template.GetTransform(index, out material.world);
             material.BeginApply(context);
 
             context.SetVertexBuffer(null, 0);
-            Model.GraphicsDevice.SetVertexBuffers(Bindings);
-            Model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, Model.instanceTransforms.Length);
+
+            model.GraphicsDevice.Indices = indexBuffer;
+            model.GraphicsDevice.SetVertexBuffers(Bindings);
+            model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
 
             material.EndApply(context);
         }
@@ -308,12 +367,12 @@ namespace Nine.Graphics.ObjectModel
 
         bool IDrawableObject.Visible
         {
-            get { return Model.visible; }
+            get { return model.visible; }
         }
 
         Material IDrawableObject.Material
         {
-            get { return Model.template.GetMaterial(Index); }
+            get { return model.template.GetMaterial(index); }
         }
     }
     #endregion

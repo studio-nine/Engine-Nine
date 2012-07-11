@@ -4,22 +4,24 @@
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
-    
+    <!--
     <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
-
-	<InstancedModel>		
+	-->
+	<InstancedModel>
 		<DistributionMap.DistributionMap>
-			<DistributionMap Texture="{ExternalReference ../Textures/checker}" />
+			<DistributionMap Step="1" Density="100" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
 		</DistributionMap.DistributionMap>
-		<Box>
-			<MaterialGroup>
-				<InstancedMaterialPart />
-				<DiffuseMaterialPart TextureEnabled="False" />
+		<Cross>
+			<Cross.Transform>
+				<Transform Position="0, 0, 0" />
+			</Cross.Transform>
+			<MaterialGroup TwoSided="True" IsTransparent="True">
+				<DiffuseMaterialPart Texture="{ContentReference ../Textures/fgrass}" />
 			</MaterialGroup>
-		</Box>
+		</Cross>
 	</InstancedModel>
 	
 </Scene>

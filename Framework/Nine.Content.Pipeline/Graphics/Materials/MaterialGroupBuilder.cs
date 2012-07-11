@@ -112,6 +112,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         public bool Tagged;
         public bool IsVertexShaderOutput;
         public bool IsPixelShaderOutput;
+        public MaterialPart MaterialPart;
         public VariableDeclaration[] Variables;
         public FunctionDeclaration[] Functions;
         public FunctionDeclaration VertexShader;
@@ -457,7 +458,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
     class MaterialGroupBuilderContext
     {
-        public MaterialPartDeclaration[] MaterialPartDeclarations;
+        public List<MaterialPartDeclaration> MaterialPartDeclarations;
         public Dictionary<string, ArgumentDeclaration> ArgumentDictionary;
         public List<ArgumentDeclaration> VertexShaderInputs;
         public List<ArgumentDeclaration> VertexShaderOutputs;
@@ -543,9 +544,17 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             var builderContext = new MaterialGroupBuilderContext();
 
             // Step 1: Parse material part declarations from input material group.
-            builderContext.MaterialPartDeclarations = (from code in materialParts.Select(part => part.GetShaderCode(usage))
-                                        where !string.IsNullOrEmpty(code)
-                                        select new Lexer(code).Read()).ToArray();
+            builderContext.MaterialPartDeclarations = new List<MaterialPartDeclaration>();
+            foreach (var part in materialParts)
+            {
+                var code = part.GetShaderCode(usage);
+                if (!string.IsNullOrEmpty(code))
+                {
+                    var newPart = new Lexer(code).Read();
+                    newPart.MaterialPart = part;
+                    builderContext.MaterialPartDeclarations.Add(newPart);
+                }
+            }
 
             builderContext.ArgumentDictionary = new Dictionary<string, ArgumentDeclaration>();
 
@@ -594,11 +603,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             validPixelShaderOutputSemantic = new Regex("^COLOR[0-9]$");
             validVertexShaderOutputSemantic = new Regex("^(COLOR[0-9]+)|(POSITION[0-9]+)|(TEXCOORD[0-9]+)$");            
 
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
             {
                 var part = builderContext.MaterialPartDeclarations[i];
                 part.Index = i;
-                materialParts[i].ParameterSuffix = string.Concat("_", i);
+                part.MaterialPart.ParameterSuffix = string.Concat("_", i);
                 part.IsVertexShaderOutput = part.VertexShader != null && part.VertexShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validVertexShaderOutputSemantic.IsMatch(a.Semantic));
                 part.IsPixelShaderOutput = part.PixelShader != null && part.PixelShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validPixelShaderOutputSemantic.IsMatch(a.Semantic));
             }
@@ -624,12 +633,12 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             }
 
             // Step 3: Dependency sorting
-            int[] order = new int[builderContext.MaterialPartDeclarations.Length];
+            int[] order = new int[builderContext.MaterialPartDeclarations.Count];
             DependencyGraph.Sort(builderContext.MaterialPartDeclarations, order, new MaterialPartDeclarationDependencyProvider());
-            builderContext.MaterialPartDeclarations = order.Select(i => builderContext.MaterialPartDeclarations[i]).ToArray();
+            builderContext.MaterialPartDeclarations = order.Select(i => builderContext.MaterialPartDeclarations[i]).ToList();
 
             // Remove pixel shader parts that don't have a path to the pixel shader output 
-            foreach (var part in builderContext.MaterialPartDeclarations.Reverse())
+            foreach (var part in Enumerable.Reverse(builderContext.MaterialPartDeclarations))
                 if (!simplify || part.IsPixelShaderOutput || part.Tagged)
                 {
                     part.Tagged = true;
@@ -638,11 +647,11 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                 }
 
             var offset = 0;
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
                 if (!builderContext.MaterialPartDeclarations[i].Tagged && builderContext.MaterialPartDeclarations[i].PixelShader != null)
                     materialParts.RemoveAt(i + offset--);
 
-            builderContext.MaterialPartDeclarations = (from part in builderContext.MaterialPartDeclarations where part.Tagged || part.PixelShader == null select part).ToArray();
+            builderContext.MaterialPartDeclarations = (from part in builderContext.MaterialPartDeclarations where part.Tagged || part.PixelShader == null select part).ToList();
 
             // Step 4: Get shader input/output argument semantics
             var argumentEqualtyComparer = new ArgumentDeclarationEqualyComparer();
@@ -650,7 +659,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             builderContext.VertexShaderInputs = new List<ArgumentDeclaration>();
             builderContext.VertexShaderOutputs = new List<ArgumentDeclaration>();
 
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
             {
                 if (builderContext.MaterialPartDeclarations[i].VertexShader != null)
                 {
@@ -671,7 +680,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             builderContext.PixelShaderInputs = new List<ArgumentDeclaration>();
             builderContext.PixelShaderOutputs = new List<ArgumentDeclaration>();
 
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Length; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
             {
                 if (builderContext.MaterialPartDeclarations[i].PixelShader != null)
                 {

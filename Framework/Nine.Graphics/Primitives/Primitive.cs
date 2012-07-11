@@ -380,6 +380,9 @@ namespace Nine.Graphics.Primitives
         {
             VerifyInstancingPrimitveType();
 
+            if (needsRebuild)
+                Rebuild();
+
             vertexBuffer = cachedPrimitive.VertexBuffer;
             numVertices = cachedPrimitive.VertexBuffer.VertexCount;
             vertexOffset = 0;
@@ -388,6 +391,9 @@ namespace Nine.Graphics.Primitives
         void ISupportInstancing.GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount)
         {
             VerifyInstancingPrimitveType();
+
+            if (needsRebuild)
+                Rebuild();
 
             indexBuffer = cachedPrimitive.IndexBuffer;
             primitiveCount = cachedPrimitive.PrimitiveCount;
@@ -400,6 +406,13 @@ namespace Nine.Graphics.Primitives
 
             // Material Lod is not enabled when using instancing.
             return Material;
+        }
+
+        void ISupportInstancing.GetTransform(int subset, out Matrix transform)
+        {
+            VerifyInstancingPrimitveType();
+
+            transform = this.transform;
         }
 
         void VerifyInstancingPrimitveType()

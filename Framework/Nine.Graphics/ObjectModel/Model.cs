@@ -481,6 +481,11 @@ namespace Nine.Graphics.ObjectModel
             primitiveCount = mesh.primitiveCount;
         }
 
+        void ISupportInstancing.GetTransform(int subset, out Matrix transform)
+        {
+            Matrix.Multiply(ref BoneTransforms[modelMeshes[subset].parentBoneIndex], ref this.transform, out transform);
+        }
+
         Material ISupportInstancing.GetMaterial(int subset)
         {
             // Material Lod is not enabled when using instancing.

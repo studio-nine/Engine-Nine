@@ -36,8 +36,9 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("TangentTransform").Replace(
-                "{$SKINNED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is SkinnedMaterialPart) ? "" : "//") : null;
+            return usage == MaterialUsage.Default ? GetShaderCode("TangentTransform")
+                .Replace("{$SKINNED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is SkinnedMaterialPart) ? "" : "//")
+                .Replace("{$INSTANCED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is InstancedMaterialPart) ? "" : "//") : null;
         }
     }
 }

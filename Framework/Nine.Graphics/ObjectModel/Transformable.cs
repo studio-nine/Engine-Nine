@@ -65,7 +65,7 @@ namespace Nine.Graphics.ObjectModel
             get { return transform; }
             set { transform = value; NotifyTransformChanged(); }
         }
-        private Matrix transform = Matrix.Identity;
+        internal Matrix transform = Matrix.Identity;
         
         /// <summary>
         /// Called when local or absolute transform changed.

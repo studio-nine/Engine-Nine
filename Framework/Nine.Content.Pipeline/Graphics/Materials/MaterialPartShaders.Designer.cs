@@ -172,9 +172,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
             }
         }
         
-        internal static byte[] Instanced {
+        internal static byte[] InstanceTransform {
             get {
-                object obj = ResourceManager.GetObject("Instanced", resourceCulture);
+                object obj = ResourceManager.GetObject("InstanceTransform", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -252,13 +252,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         internal static byte[] TextureTransform {
             get {
                 object obj = ResourceManager.GetObject("TextureTransform", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        internal static byte[] VertexShaderOutput {
-            get {
-                object obj = ResourceManager.GetObject("VertexShaderOutput", resourceCulture);
                 return ((byte[])(obj));
             }
         }

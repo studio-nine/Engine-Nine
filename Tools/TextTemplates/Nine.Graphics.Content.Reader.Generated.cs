@@ -81,30 +81,6 @@ namespace Nine.Graphics
         }
     }
     /// <summary>
-    /// Content reader for <c>Heightmap</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class HeightmapReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Heightmap>
-    {
-        protected override Nine.Graphics.Heightmap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Heightmap existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new Heightmap();
-            existingInstance.Size = input.ReadVector3();
-            existingInstance.Step = input.ReadSingle();
-            existingInstance.Heights = input.ReadObject<System.Single[]>();
-            existingInstance.Normals = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
-            existingInstance.Tangents = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
-            existingInstance.Width = input.ReadInt32();
-            existingInstance.Height = input.ReadInt32();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>ModelCollision</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -1867,6 +1843,30 @@ namespace Nine.Graphics.ObjectModel
         }
     }
     /// <summary>
+    /// Content reader for <c>Heightmap</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class HeightmapReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Heightmap>
+    {
+        protected override Nine.Graphics.ObjectModel.Heightmap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Heightmap existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Heightmap();
+            existingInstance.Size = input.ReadVector3();
+            existingInstance.Step = input.ReadSingle();
+            existingInstance.Heights = input.ReadObject<System.Single[]>();
+            existingInstance.Normals = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
+            existingInstance.Tangents = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
+            existingInstance.Width = input.ReadInt32();
+            existingInstance.Height = input.ReadInt32();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>InstancedModel</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -2083,7 +2083,7 @@ namespace Nine.Graphics.ObjectModel
             }
             existingInstance.PatchSegmentCount = input.ReadInt32();
             existingInstance.TextureTransform = input.ReadMatrix();
-            existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
+            existingInstance.Heightmap = input.ReadObject<Nine.Graphics.ObjectModel.Heightmap>();
             existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
             existingInstance.LevelOfDetailStart = input.ReadSingle();
             existingInstance.LevelOfDetailEnd = input.ReadSingle();
