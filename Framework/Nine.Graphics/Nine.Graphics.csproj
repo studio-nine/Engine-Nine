@@ -156,6 +156,7 @@
     <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
     <Compile Include="PostEffects\PostEffectChain.cs" />
     <Compile Include="PostEffects\PostEffectGroup.cs" />
+    <Compile Include="PostEffects\ThresholdMaterial.cs" />
     <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\PrimitiveGroup.cs" />
     <Compile Include="Versioned.cs" />
