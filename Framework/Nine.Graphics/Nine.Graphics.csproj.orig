@@ -119,14 +119,19 @@
     <Compile Include="Drawing\TextureCollection.cs" />
     <Compile Include="Drawing\MatrixCollection.cs" />
     <Compile Include="Drawing\Pass.cs" />
-    <Compile Include="Drawing\Queue.cs" />
+    <Compile Include="Drawing\DrawingQueue.cs" />
+    <Compile Include="GraphicsDeviceService.cs" />
     <Compile Include="Materials\DepthMaterial.cs" />
+    <Compile Include="PostEffects\BlurEffect.cs" />
     <Compile Include="PostEffects\LuminanceChain.cs" />
     <Compile Include="PostEffects\DepthOfFieldMaterial.cs" />
     <Compile Include="Materials\MaterialPaintGroup.cs" />
     <Compile Include="Materials\CustomMaterialSemantics.cs" />
     <Compile Include="Materials\CustomMaterialPart.cs" />
     <Compile Include="Materials\MaterialLevelOfDetail.cs" />
+    <Compile Include="Materials\MaterialParts\BeginPaintGroupMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\TangentTransformMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
     <Compile Include="Materials\MaterialUsage.cs" />
     <Compile Include="Materials\MaterialHelper.cs" />
@@ -221,7 +226,6 @@
     <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertexTypes\VertexPositionNormal.cs" />
-    <Compile Include="Materials\Deferred\GraphicsBuffer.cs" />
     <Compile Include="Drawing\RenderTargetPool.cs" />
     <Compile Include="Materials\EffectInterfaces.cs" />
     <Compile Include="Materials\MaterialParts\ColorMatrixMaterialPart.cs" />
@@ -267,7 +271,6 @@
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />
     <Compile Include="ParticleEffects\ParticleEffect.cs" />
     <Compile Include="VertexTypes\VertexPositionNormalDualTexture.cs" />
-    <Compile Include="Materials\ShadowMap.cs" />
     <Compile Include="ObjectModel\SurfacePatchCollection.cs" />
     <Compile Include="ObjectModel\SurfacePatch.cs" />
   </ItemGroup>
@@ -288,7 +291,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
-    <None Include="Shaders\AmbientLightEffect.fx" />
     <None Include="Shaders\VertexPassThrough.fx" />
     <None Include="Shaders\ShadowEffect.fx" />
     <None Include="Shaders\DecalEffect.fx" />
@@ -301,10 +303,7 @@
     <None Include="Shaders\DeferredSpotLight.fx" />
     <None Include="Shaders\GraphicsBufferEffect.fx" />
     <None Include="Shaders\DepthEffect.fx" />
-    <None Include="Shaders\DirectionalLightEffect.fx" />
-    <None Include="Shaders\PointLightEffect.fx" />
     <None Include="Shaders\SkyBoxEffect.fx" />
-    <None Include="Shaders\SpotLightEffect.fx" />
     <None Include="Nine.snk" />
     <None Include="Shaders\SoftParticleEffect.fx" />
     <None Include="Shaders\Adoption.fx" />

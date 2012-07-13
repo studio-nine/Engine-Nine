@@ -24,8 +24,9 @@ namespace Nine.Graphics.Primitives
     /// Base class for simple geometric primitive models. 
     /// </summary>
     [ContentProperty("Material")]
-    public abstract class Primitive<T> : Transformable, IDrawableObject, IDisposable where T : struct, IVertexType
+    public abstract class Primitive<T> : Transformable, IDrawableObject, IDisposable, ISupportInstancing where T : struct, IVertexType
     {
+        #region Properties
         /// <summary>
         /// Gets the graphics device.
         /// </summary>
@@ -115,7 +116,9 @@ namespace Nine.Graphics.Primitives
         /// Primitives sharing the same vb/ib are cached here.
         /// </summary>
         private static Dictionary<Type, List<PrimitiveCache>> PrimitiveCache = new Dictionary<Type, List<PrimitiveCache>>();
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="Primitive&lt;T&gt;"/> class.
         /// </summary>
@@ -264,8 +267,7 @@ namespace Nine.Graphics.Primitives
             Vertices.Add(vertex);
             Positions.Add(position);
         }
-
-
+        
         /// <summary>
         /// Adds a new index to the primitive model. This should only be called
         /// during the InitializePrimitive.
@@ -298,7 +300,9 @@ namespace Nine.Graphics.Primitives
         {
             get { return Vertices.Count; }
         }
+        #endregion
 
+        #region Draw
         /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
@@ -363,7 +367,60 @@ namespace Nine.Graphics.Primitives
             Dispose(false);
         }
 
-        void IDrawableObject.EndDraw(DrawingContext context) { }     
+        void IDrawableObject.EndDraw(DrawingContext context) { }
+        #endregion
+
+        #region ISupportInstancing
+        int ISupportInstancing.Count
+        {
+            get { return 1; }
+        }
+
+        void ISupportInstancing.GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices)
+        {
+            VerifyInstancingPrimitveType();
+
+            if (needsRebuild)
+                Rebuild();
+
+            vertexBuffer = cachedPrimitive.VertexBuffer;
+            numVertices = cachedPrimitive.VertexBuffer.VertexCount;
+            vertexOffset = 0;
+        }
+
+        void ISupportInstancing.GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount)
+        {
+            VerifyInstancingPrimitveType();
+
+            if (needsRebuild)
+                Rebuild();
+
+            indexBuffer = cachedPrimitive.IndexBuffer;
+            primitiveCount = cachedPrimitive.PrimitiveCount;
+            startIndex = 0;
+        }
+
+        Material ISupportInstancing.GetMaterial(int subset)
+        {
+            VerifyInstancingPrimitveType();
+
+            // Material Lod is not enabled when using instancing.
+            return Material;
+        }
+
+        void ISupportInstancing.GetTransform(int subset, out Matrix transform)
+        {
+            VerifyInstancingPrimitveType();
+
+            transform = this.transform;
+        }
+
+        void VerifyInstancingPrimitveType()
+        {
+            if (primitiveType != PrimitiveType.TriangleList)
+                throw new NotSupportedException("The current primitive cannot be used for instancing");
+        }
+        #endregion
     }
 
     class PrimitiveCache : IDisposable

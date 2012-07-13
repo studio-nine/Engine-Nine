@@ -39,7 +39,7 @@ namespace Nine.Graphics.Primitives
             }
         }
         private int tessellation = 1;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Cross"/> class.
         /// </summary>
@@ -57,31 +57,56 @@ namespace Nine.Graphics.Primitives
         {
             tessellation++;
 
-            for (int x = 0; x < tessellation; x++)
+            Vector2 uv = new Vector2();
+            Vector3 position = new Vector3();
+
+            for (int y = 0; y < tessellation; y++)
             {
-                Vector3 position = new Vector3();
+                for (int x = 0; x < 2; x++)
+                {
+                    position.X = x - 0.5f;
+                    position.Y = y / (tessellation - 1);
+                    position.Z = 0;
 
-                position.X = x / (tessellation - 1) - 0.5f;
-                position.Y = 0.5f;
-                position.Z = 0;
+                    uv.X = 1.0f * x;
+                    uv.Y = 1.0f * y / (tessellation - 1);
 
-                Vector2 uv = new Vector2();
-
-                uv.X = 1.0f * x / (tessellation - 1);
-                uv.Y = 1.0f;
-
-                AddVertex(position, Vector3.UnitZ, uv);
+                    AddVertex(position, Vector3.UnitZ, uv);
+                }
             }
 
-            for (int x = 0; x < tessellation - 1; x++)
+            for (int y = 0; y < tessellation; y++)
             {
-                AddIndex((ushort)(tessellation + x));
-                AddIndex((ushort)(2 * tessellation + x + 1));
-                AddIndex((ushort)(tessellation + x + 1));
+                for (int z = 0; z < 2; z++)
+                {
+                    position.Z = z - 0.5f;
+                    position.Y = y / (tessellation - 1);
+                    position.X = 0;
 
-                AddIndex((ushort)(tessellation + x));
-                AddIndex((ushort)(2 * tessellation + x));
-                AddIndex((ushort)(tessellation + x + 1));
+                    uv.X = 1.0f * z;
+                    uv.Y = 1.0f * y / (tessellation - 1);
+
+                    AddVertex(position, Vector3.UnitX, uv);
+                }
+            }
+
+            for (int y = 0; y < tessellation - 1; y++)
+            {
+                AddIndex((ushort)(y * tessellation));
+                AddIndex((ushort)((y + 1) * tessellation + 1));
+                AddIndex((ushort)(y * tessellation + 1));
+
+                AddIndex((ushort)(y * tessellation));
+                AddIndex((ushort)((y + 1) * tessellation));
+                AddIndex((ushort)((y + 1) * tessellation + 1));
+
+                AddIndex((ushort)(tessellation * 2 + y * tessellation));
+                AddIndex((ushort)(tessellation * 2 + (y + 1) * tessellation + 1));
+                AddIndex((ushort)(tessellation * 2 + y * tessellation + 1));
+
+                AddIndex((ushort)(tessellation * 2 + y * tessellation));
+                AddIndex((ushort)(tessellation * 2 + (y + 1) * tessellation));
+                AddIndex((ushort)(tessellation * 2 + (y + 1) * tessellation + 1));
             }
 
             tessellation--;

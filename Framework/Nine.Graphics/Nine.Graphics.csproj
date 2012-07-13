@@ -130,6 +130,7 @@
     <Compile Include="Materials\CustomMaterialPart.cs" />
     <Compile Include="Materials\MaterialLevelOfDetail.cs" />
     <Compile Include="Materials\MaterialParts\BeginPaintGroupMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\InstancedMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\TangentTransformMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Materials\DualTextureMaterial.cs" />
     <Compile Include="Materials\SkinnedMaterial.cs" />
     <Compile Include="Materials\MaterialConstants.cs" />
+    <Compile Include="ObjectModel\InstancedModel.cs" />
     <Compile Include="ObjectModel\DirectionalLightCollection.cs" />
     <Compile Include="Materials\SoftParticleMaterial.cs" />
     <Compile Include="Drawing\BasicPass.cs" />
@@ -154,7 +156,6 @@
     <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
     <Compile Include="PostEffects\PostEffectChain.cs" />
     <Compile Include="PostEffects\PostEffectGroup.cs" />
-    <Compile Include="PostEffects\ThresholdMaterial.cs" />
     <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\PrimitiveGroup.cs" />
     <Compile Include="Versioned.cs" />
@@ -265,7 +266,7 @@
     <Compile Include="ModelViewerCamera.cs" />
     <Compile Include="TopDownEditorCamera.cs" />
     <Compile Include="Geometry.cs" />
-    <Compile Include="Heightmap.cs" />
+    <Compile Include="ObjectModel\Heightmap.cs" />
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="ModelSkeleton.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />

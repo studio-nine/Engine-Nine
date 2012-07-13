@@ -7,7 +7,7 @@
 #endregion
 
 #region Using Directives
-using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Drawing;
 using Nine.Graphics.Materials;
@@ -94,5 +94,36 @@ namespace Nine.Graphics.ObjectModel
         /// Gets or sets the data used by the lighting and shadowing system.
         /// </summary>
         object LightingData { get; set; }
+    }
+
+    /// <summary>
+    /// Defines an interface for objects that supports hardware instancing
+    /// </summary>
+    public interface ISupportInstancing
+    {
+        /// <summary>
+        /// Gets the subset count.
+        /// </summary>
+        int Count { get; }
+
+        /// <summary>
+        /// Gets the vertex buffer for the given subset.
+        /// </summary>
+        void GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
+        
+        /// <summary>
+        /// Gets the index buffer for the given subset.
+        /// </summary>
+        void GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
+
+        /// <summary>
+        /// Gets the transform for the given subset.
+        /// </summary>
+        void GetTransform(int subset, out Matrix transform);
+
+        /// <summary>
+        /// Gets the material for the given subset.
+        /// </summary>
+        Material GetMaterial(int subset);
     }
 }

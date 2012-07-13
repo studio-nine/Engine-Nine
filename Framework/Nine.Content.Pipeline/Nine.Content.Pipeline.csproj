@@ -123,6 +123,8 @@
     <Compile Include="Content\PipelineProcessorContext.cs" />
     <Compile Include="Design\TransformConverter.cs" />
     <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
+    <Compile Include="Processors\InstancedModelProcessor.cs" />
+    <Compile Include="Xaml\DistributionMap.cs" />
     <Compile Include="Xaml\Splatter.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupWriter.cs" />
@@ -247,6 +249,7 @@
     </None>
     <None Include="Graphics\Materials\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
+    <None Include="Graphics\Materials\Shaders\InstanceTransform.fragment" />
     <None Include="Graphics\Materials\Shaders\TangentTransform.fragment" />
     <None Include="Graphics\Materials\Shaders\EndPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\DiffuseTexture.fragment" />
@@ -272,7 +275,6 @@
     <None Include="Graphics\Materials\Shaders\SkinTransform.fragment" />
     <None Include="Graphics\Materials\Shaders\ColorMatrix.fragment" />
     <None Include="Graphics\Materials\Shaders\TextureTransform.fragment" />
-    <None Include="Graphics\Materials\Shaders\VertexShaderOutput.fragment" />
     <None Include="Graphics\Materials\Shaders\VertexTransform.fragment" />
     <None Include="Nine.snk" />
   </ItemGroup>

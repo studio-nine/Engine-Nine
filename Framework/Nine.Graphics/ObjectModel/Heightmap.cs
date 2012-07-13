@@ -16,7 +16,7 @@ using Nine.Content;
 using Nine.Graphics.ObjectModel;
 #endregion
 
-namespace Nine.Graphics
+namespace Nine.Graphics.ObjectModel
 {
     /// <summary>
     /// The geometric representation of heightmap. 

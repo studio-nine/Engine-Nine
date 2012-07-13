@@ -1,5 +1,6 @@
 void VertexShader(inout float3 binormal:BINORMAL0, inout float3 tangent:TANGENT0, 
     {$SKINNED} float4x3 skin,
+    {$INSTANCED} float4x3 instance,
     float4x3 world)
 {
     {$SKINNED} tangent = mul(tangent, skin);
@@ -7,4 +8,7 @@ void VertexShader(inout float3 binormal:BINORMAL0, inout float3 tangent:TANGENT0
 
     tangent = mul(tangent, world);
     binormal = mul(binormal, world);
+    
+    {$INSTANCED} tangent = mul(tangent, instance);
+    {$INSTANCED} binormal = mul(binormal, instance);
 }

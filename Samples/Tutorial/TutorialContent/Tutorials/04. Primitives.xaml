@@ -6,7 +6,8 @@
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
-    
+
+    <Cross Transform.Position="-40,0,0" />
     <Box Transform.Position="-30,0,0" />
     <Centrum Transform.Position="-20,0,0" />
     <Cylinder Transform.Position="-10,0,0" />

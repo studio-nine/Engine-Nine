@@ -1,0 +1,13 @@
+float4x4 World : WORLD;
+float4x4 ViewProjection : VIEWPROJECTION;
+
+void VertexShader(float4 position:POSITION0, float4x4 instanceTransform:BLENDWEIGHT4, out float4 positionProjection:POSITION0, inout float3 normal:NORMAL0, out float4 positionWorld, out float4x3 world, out float4x3 instance)
+{
+    positionWorld = mul(position, World);
+    positionWorld = mul(positionWorld, transpose(instanceTransform));
+    positionProjection = mul(positionWorld, ViewProjection);
+    normal = mul(normal, World);
+    normal = mul(normal, instanceTransform);
+    world = World;
+    instance = instanceTransform;
+}

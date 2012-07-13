@@ -7,7 +7,6 @@
 #endregion
 
 #region Using Directives
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,24 +20,25 @@ using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEf
 
 namespace Nine.Graphics.Materials.MaterialParts
 {
+    /// <summary>
+    /// Defines a material part that is used for hardware instancing.
+    /// </summary>
     [ContentSerializable]
-    class TangentTransformMaterialPart : MaterialPart
+    public class InstancedMaterialPart : MaterialPart
     {
         protected internal override void OnBind()
         {
-            MaterialGroup.MaterialParts.Remove(this);
+            
         }
 
         protected internal override MaterialPart Clone()
         {
-            return new TangentTransformMaterialPart();
+            return new InstancedMaterialPart();
         }
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("TangentTransform")
-                .Replace("{$SKINNED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is SkinnedMaterialPart) ? "" : "//")
-                .Replace("{$INSTANCED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is InstancedMaterialPart) ? "" : "//") : null;
+            return null;
         }
     }
 }

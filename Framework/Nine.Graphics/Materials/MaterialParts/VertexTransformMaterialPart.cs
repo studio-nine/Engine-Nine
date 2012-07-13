@@ -1,12 +1,13 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
+﻿#region Copyright 2009 - 2012 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
 
 #region Using Directives
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,6 +25,7 @@ namespace Nine.Graphics.Materials.MaterialParts
     class VertexTransformMaterialPart : MaterialPart
     {
         private EffectParameter worldParameter;
+        private EffectParameter viewProjectionParameter;
         private EffectParameter worldViewProjectionParameter;
         private EffectParameter worldInverseTransposeParameter;
 
@@ -31,10 +33,16 @@ namespace Nine.Graphics.Materials.MaterialParts
         {
             if ((worldParameter = GetParameter("World")) == null)
                 MaterialGroup.MaterialParts.Remove(this);
-            if ((worldViewProjectionParameter = GetParameter("WorldViewProjection")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((worldInverseTransposeParameter = GetParameter("WorldInverseTranspose")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+
+            viewProjectionParameter = GetParameter("ViewProjection");
+            worldViewProjectionParameter = GetParameter("WorldViewProjection");
+            worldInverseTransposeParameter = GetParameter("WorldInverseTranspose");
+        }
+
+        protected internal override void ApplyGlobalParameters(DrawingContext context)
+        {
+            if (viewProjectionParameter != null)
+                viewProjectionParameter.SetValue(context.matrices.ViewProjection);
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
@@ -42,12 +50,13 @@ namespace Nine.Graphics.Materials.MaterialParts
             if (worldParameter != null)
                 worldParameter.SetValue(material.world);
             if (worldInverseTransposeParameter != null)
+                worldViewProjectionParameter.SetValue(material.World * context.Matrices.ViewProjection);
+            if (worldInverseTransposeParameter != null)
             {
                 Matrix worldInverse;
                 Matrix.Invert(ref material.world, out worldInverse);
                 worldInverseTransposeParameter.SetValueTranspose(worldInverse);
             }
-            worldViewProjectionParameter.SetValue(material.World * context.Matrices.ViewProjection);
         }
 
         protected internal override MaterialPart Clone()
@@ -57,7 +66,7 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("VertexTransform") : null;
+            return usage == MaterialUsage.Default ? GetShaderCode(MaterialGroup.MaterialParts.OfType<InstancedMaterialPart>().Any() ? "InstanceTransform" : "VertexTransform") : null;
         }
     }
 }

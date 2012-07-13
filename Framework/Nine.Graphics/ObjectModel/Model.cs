@@ -27,7 +27,7 @@ namespace Nine.Graphics.ObjectModel
     /// Defines a basic model that can be rendered using the renderer with a designated material.
     /// </summary>
     [ContentProperty("ModelMeshes")]
-    public class Model : Transformable, IContainer, ISpatialQueryable, IUpdateable, IPickable, IGeometry
+    public class Model : Transformable, IContainer, ISpatialQueryable, IUpdateable, IPickable, IGeometry, ISupportInstancing
     {
         #region Source
         /// <summary>
@@ -455,6 +455,42 @@ namespace Nine.Graphics.ObjectModel
             }
         }
         ushort[] indices;
+        #endregion
+
+        #region ISupportInstancing
+        int ISupportInstancing.Count
+        {
+            get { return modelMeshes.Count; }
+        }
+
+        void ISupportInstancing.GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices)
+        {
+            var mesh = modelMeshes[subset];
+            
+            vertexBuffer = mesh.vertexBuffer;
+            vertexOffset = mesh.vertexOffset;
+            numVertices = mesh.numVertices;
+        }
+
+        void ISupportInstancing.GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount)
+        {
+            var mesh = modelMeshes[subset];
+
+            indexBuffer = mesh.indexBuffer;
+            startIndex = mesh.startIndex;
+            primitiveCount = mesh.primitiveCount;
+        }
+
+        void ISupportInstancing.GetTransform(int subset, out Matrix transform)
+        {
+            Matrix.Multiply(ref BoneTransforms[modelMeshes[subset].parentBoneIndex], ref this.transform, out transform);
+        }
+
+        Material ISupportInstancing.GetMaterial(int subset)
+        {
+            // Material Lod is not enabled when using instancing.
+            return modelMeshes[subset].Material ?? Material;
+        }
         #endregion
 
         #region ISupportInstancing

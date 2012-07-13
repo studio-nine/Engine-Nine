@@ -42,6 +42,11 @@ namespace Nine.Graphics.ObjectModel
         public bool Visible { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this decal is dynamic.
+        /// </summary>
+        public bool IsDynamic { get; set; }
+
+        /// <summary>
         /// Gets or sets the opaque of this decal.
         /// </summary>
         public float Alpha { get; set; }

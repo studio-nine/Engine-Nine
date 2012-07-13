@@ -7,9 +7,9 @@
 #endregion
 
 #region Using Directives
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 #endregion
 
 namespace Nine.Graphics.ObjectModel
@@ -47,7 +47,7 @@ namespace Nine.Graphics.ObjectModel
         private float nearPlaneDistance = 1;
         private float farPlaneDistance = 1000;
         private Matrix projectionMatrix;
-        private bool needUpdateProjectionMatrix;
+        private bool projectionMatrixNeedsUpdate;
 
         /// <summary>
         /// Gets or sets the distance to the camera near clip plane.
@@ -55,7 +55,7 @@ namespace Nine.Graphics.ObjectModel
         public float NearPlane
         {
             get { return nearPlaneDistance; }
-            set { nearPlaneDistance = value; needUpdateProjectionMatrix = true; }
+            set { nearPlaneDistance = value; projectionMatrixNeedsUpdate = true; }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Nine.Graphics.ObjectModel
         public float FarPlane
         {
             get { return farPlaneDistance; }
-            set { farPlaneDistance = value; needUpdateProjectionMatrix = true; }
+            set { farPlaneDistance = value; projectionMatrixNeedsUpdate = true; }
         }
 
         /// <summary>
@@ -74,13 +74,9 @@ namespace Nine.Graphics.ObjectModel
         {
             get
             {
-                if (viewport.HasValue)
-                    return viewport.Value.AspectRatio;
-                if (GraphicsDevice != null)
-                    return (float)GraphicsDevice.Viewport.Width / GraphicsDevice.Viewport.Height;
-                
-                // Use this default aspect ratio if no viewport is specified.
-                return 4.0f / 3;
+                return (viewport.HasValue ? viewport.Value.AspectRatio : GraphicsDevice.Viewport.AspectRatio)
+                     * (viewportScale.Max.X - viewportScale.Min.X)
+                     / (viewportScale.Max.Y - viewportScale.Min.Y);
             }
         }
 
@@ -90,7 +86,7 @@ namespace Nine.Graphics.ObjectModel
         public float FieldOfView
         {
             get { return fieldOfView; }
-            set { fieldOfView = value; needUpdateProjectionMatrix = true; }
+            set { fieldOfView = value; projectionMatrixNeedsUpdate = true; }
         }
 
         /// <summary>
@@ -114,38 +110,44 @@ namespace Nine.Graphics.ObjectModel
                 {
                     previousDefaultViewportWidth = GraphicsDevice.Viewport.Width;
                     previousDefaultViewportHeight = GraphicsDevice.Viewport.Height;
-                    needUpdateProjectionMatrix = true;
+                    projectionMatrixNeedsUpdate = true;
                 }
             }
 
-            if (needUpdateProjectionMatrix)
+            if (projectionMatrixNeedsUpdate)
             {
                 Matrix.CreatePerspectiveFieldOfView(fieldOfView, AspectRatio, nearPlaneDistance, farPlaneDistance, out projectionMatrix);
-                needUpdateProjectionMatrix = false;
+                projectionMatrixNeedsUpdate = false;
             }
         }
         #endregion
 
         #region Viewport
-        private Viewport? viewport;
-
         /// <summary>
         /// Gets or sets the viewport of this camera.
         /// </summary>
         public Viewport? Viewport
         {
             get { return viewport; }
-            set { viewport = value; needUpdateProjectionMatrix = true; }
+            set { viewport = value; projectionMatrixNeedsUpdate = true; }
         }
+        private Viewport? viewport;
+
+        /// <summary>
+        /// Gets or sets the scale factor that is applied to the viewport.
+        /// </summary>
+        public BoundingRectangle ViewportScale
+        {
+            get { return viewportScale; }
+            set { viewportScale = value; projectionMatrixNeedsUpdate = true; }
+        }
+        private BoundingRectangle viewportScale = new BoundingRectangle(Vector2.Zero, Vector2.One);
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets a value indicating whether this <see cref="Camera"/> is enabled.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
-        /// </value>
         public bool Enabled { get; private set; }
 
         /// <summary>
@@ -157,20 +159,17 @@ namespace Nine.Graphics.ObjectModel
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="Camera"/> class.
-        /// You have to explicitly set the viewport property if no graphics device is specified.
-        /// </summary>
-        public Camera() : this(null) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Camera"/> class.
         /// If a valid graphics device is specified, the camera will automatically adjust 
         /// its aspect ratio based on the default viewport settings of the graphics device.
         /// </summary>
         public Camera(GraphicsDevice graphics)
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
             Enabled = true;
-            GraphicsDevice = graphics;
-            needUpdateProjectionMatrix = true;
+            GraphicsDevice = graphics;            
+            projectionMatrixNeedsUpdate = true;
         }
         #endregion
     }

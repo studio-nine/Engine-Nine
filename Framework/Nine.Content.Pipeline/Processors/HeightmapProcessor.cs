@@ -12,6 +12,7 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Nine.Graphics;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Content.Pipeline.Processors
