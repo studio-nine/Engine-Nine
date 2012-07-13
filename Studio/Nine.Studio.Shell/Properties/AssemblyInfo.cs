@@ -43,4 +43,4 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation/nine", "Nine.Studio.Shell.Converters")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation/nine", "Nine.Studio.Shell.Behaviors")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation/nine", "Nine.Studio.Shell.Windows")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation/nine", "Nine.Studio.Shell.Windows.Controls")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation/nine", "Nine.Studio.Shell.Windows")]

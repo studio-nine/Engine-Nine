@@ -15,10 +15,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Shell;
-using Nine.Studio.Shell.Windows.Controls;
+using Nine.Studio.Shell.Windows;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using Nine.Studio.Shell.ViewModels.Data;
+using System.Threading;
+using System.Windows.Threading;
 #endregion
 
 namespace Nine.Studio.Shell.ViewModels
@@ -41,6 +43,7 @@ namespace Nine.Studio.Shell.ViewModels
         public ObservableCollection<SettingsView> Settings { get; private set; }
         public ObservableCollection<ImporterView> Importers { get; private set; }
         public ObservableCollection<ExporterView> Exporters { get; private set; }
+        public ObservableCollection<object> Tools { get; private set; }
 
         public ReadOnlyObservableCollection<string> RecentProjects { get { return Editor.RecentProjects; } }
 
@@ -75,8 +78,8 @@ namespace Nine.Studio.Shell.ViewModels
 
                     if (activeProject != null)
                     {
-                        Importers.AddRange(Editor.Extensions.Importers.Select(s => new ImporterView(this, s.Value)));
-                        Exporters.AddRange(Editor.Extensions.Exporters.Select(s => new ExporterView(this, s.Value)));
+                        Importers.AddRange(Editor.Extensions.Importers.Select(s => new ImporterView(this, s.Value, s.Metadata)));
+                        Exporters.AddRange(Editor.Extensions.Exporters.Select(s => new ExporterView(this, s.Value, s.Metadata)));
                         Factories.AddRange(Editor.Extensions.Factories.Select(f => new FactoryView(this, f.Value, f.Metadata)));
                     }
 
@@ -147,6 +150,7 @@ namespace Nine.Studio.Shell.ViewModels
             this.Settings = new ObservableCollection<SettingsView>();
             this.Importers = new ObservableCollection<ImporterView>();
             this.Exporters = new ObservableCollection<ExporterView>();
+            this.Tools = new ObservableCollection<object>();
 
             NewCommand = new DelegateCommand(NewProject);
             OpenCommand = new DelegateCommand(OpenProject);
@@ -161,7 +165,7 @@ namespace Nine.Studio.Shell.ViewModels
 
         #region Commands
         public ICommand NewCommand { get; private set; }
-        public ICommand OpenCommand { get; private set; }        
+        public ICommand OpenCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand CloseCommand { get; private set; }
         public ICommand ExitCommand { get; private set; }
@@ -169,12 +173,12 @@ namespace Nine.Studio.Shell.ViewModels
         
         public bool Closing()
         {
-            EnsureProjectSavedAsync().ContinueWith(tr =>
+            EnsureProjectSavedAsync().Await(saved =>
             {
-                if (tr.IsCompleted && tr.Result)
+                if (saved)
                 {
                     shouldClose = true;
-                    Shell.Invoke((Action)delegate { Application.Current.Shutdown(); });
+                    Application.Current.Shutdown();
                 }
             });
             return !shouldClose;
@@ -188,54 +192,42 @@ namespace Nine.Studio.Shell.ViewModels
 
         private void NewProject()
         {
-            EnsureProjectSavedAsync().ContinueWith(tr =>
+            EnsureProjectSavedAsync().Await(saved =>
             {
-                if (tr.IsCompleted && tr.Result)
+                if (saved)
                 {
                     var creationParams = new ProjectCreationParameters();
-                    Shell.ShowDialogAsync(Strings.Create, null, creationParams, Strings.Create, Strings.Cancel)
-                         .ContinueWith(createResult =>
-                          {
-                                if (createResult.IsCompleted && createResult.Result == Strings.Create)
-                                {
-                                    Shell.Invoke((Action)delegate()
-                                    {
-                                        ActiveProject = new ProjectView(this, Editor.CreateProject(creationParams.ProjectFilename));
-                                    });
-                                }
-                          });
+                    Shell.ShowDialogAsync(Strings.Create, null, creationParams, Strings.Create, Strings.Cancel).Await(dr =>
+                    {
+                        if (dr == Strings.Create)
+                            ActiveProject = new ProjectView(this, Editor.CreateProject(creationParams.ProjectFilename));
+                    });
                 }
             });
         }
 
         private void OpenProject(object commandParameter)
         {
-            EnsureProjectSavedAsync().ContinueWith(tr =>
+            EnsureProjectSavedAsync().Await(saved =>
             {
-                if (tr.IsCompleted && tr.Result)
+                if (saved)
                 {
-                    Shell.Invoke((Action)delegate
+                    var fileName = commandParameter as string;
+                    if (string.IsNullOrEmpty(fileName))
                     {
-                        var fileName = commandParameter as string;
-                        if (string.IsNullOrEmpty(fileName))
-                        {
-                            var open = new Microsoft.Win32.OpenFileDialog();
-                            open.Title = Editor.Title;
-                            open.Filter = string.Format(@"{0}|*.nine|{1}|*.*", Strings.NineProject, Strings.AllFiles);
-                            bool? result = open.ShowDialog();
-                            if (result.HasValue && result.Value)
-                            {
-                                ActiveProject = new ProjectView(this, Editor.OpenProject(open.FileName));
-                            }
-                        }
-                        else
-                        {
-                            ActiveProject = new ProjectView(this, Editor.OpenProject(fileName));
-                        }
-                    });
+                        var open = new Microsoft.Win32.OpenFileDialog();
+                        open.Title = Editor.Title;
+                        open.Filter = string.Format(@"{0}|*.nine|{1}|*.*", Strings.NineProject, Strings.AllFiles);
+                        
+                        bool? result = open.ShowDialog();
+                        if (result.HasValue && result.Value)
+                            ActiveProject = new ProjectView(this, Editor.OpenProject(open.FileName));
+                        return;
+                    }
+                    ActiveProject = new ProjectView(this, Editor.OpenProject(fileName));
                 }
             });
-            
+
             /*
             try
             {
@@ -260,6 +252,15 @@ namespace Nine.Studio.Shell.ViewModels
             }
              */
         }
+        
+        private void ImportProjectItem()
+        {
+
+        }
+        
+        private void ExportProjectItem()
+        {
+        }
 
         private void SaveProject()
         {
@@ -270,17 +271,14 @@ namespace Nine.Studio.Shell.ViewModels
 
         private void CloseProject()
         {
-            EnsureProjectSavedAsync().ContinueWith(tr =>
+            EnsureProjectSavedAsync().Await(saved =>
             {
-                if (tr.IsCompleted && tr.Result && Project != null)
+                if (saved && Project != null)
                 {
-                    Shell.Invoke((Action)delegate
-                    {
-                        SelectedObject = null;
-                        Project.Close();
-                        ActiveProject = null;
-                        ActiveProjectItem = null;
-                    });
+                    SelectedObject = null;
+                    Project.Close();
+                    ActiveProject = null;
+                    ActiveProjectItem = null;
                 }
             });
         }
@@ -315,19 +313,11 @@ namespace Nine.Studio.Shell.ViewModels
         private Task<bool> EnsureProjectSavedAsync()
         {
             if (Project == null || !Project.IsModified)
-                return Task<bool>.Factory.StartNew(() => true);
+                return Async.FromResult(true);
 
             string description = string.Format(Strings.SaveChangesDescription, Name);
             return Shell.ShowDialogAsync(Strings.SaveChanges, description, null, Strings.Yes, Strings.No, Strings.Cancel)
-                        .ContinueWith(tr =>
-                        {
-                            if (tr.Result == Strings.Yes)
-                            {
-                                Shell.Invoke((Action)SaveProject);
-                                return true;
-                            }
-                            return tr.Result == Strings.No;
-                        });
+                        .Await(dr => { if (dr == Strings.Yes) { SaveProject(); return true; } return dr == Strings.No; });
         }
 
         private void Editor_ProgressChanged(object sender, ProgressChangedEventArgs e)

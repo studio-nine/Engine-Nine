@@ -160,7 +160,7 @@ namespace Nine.Graphics.Drawing
         /// <param name="drawables">
         /// A list of drawables about to be drawed in this drawing pass.
         /// </param>
-        public abstract void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length);
+        public abstract void Draw(DrawingContext context, IList<IDrawableObject> drawables);
         #endregion
 
         #region IAttachedPropertyStore

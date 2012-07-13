@@ -147,7 +147,7 @@ namespace Nine.Studio
 
         internal void RecentProject(string fileName)
         {
-            if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName))
             {
                 recentFiles.Remove(fileName);
                 recentFiles.Insert(0, fileName);
@@ -155,9 +155,9 @@ namespace Nine.Studio
                     recentFiles.RemoveAt(RecentProjects.Count - 1);
 
                 System.Windows.Shell.JumpList.AddToRecentCategory(fileName);
-            }
 
-            SaveRecentFiles();
+                SaveRecentFiles();
+            }
         }
         #endregion
 

@@ -12,13 +12,14 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
+using System.Windows.Markup;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Drawing;
 using Nine.Graphics.Materials;
 using Nine.Graphics.ObjectModel;
 using Nine.Graphics.Primitives;
-using Nine.Graphics.Drawing;
 #endregion
 
 namespace Nine.Graphics.ParticleEffects
@@ -56,6 +57,7 @@ namespace Nine.Graphics.ParticleEffects
     /// Defines a special visual effect made up of particles.
     /// </summary>
     [ContentSerializable]
+    [ContentProperty("Controllers")]
     public class ParticleEffect : Transformable, ISpatialQueryable, IDrawableObject, IUpdateable, IDisposable
     {
         #region Properties
@@ -160,14 +162,10 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public bool IsAsync
         {
-            get { return isAsync; }
-            set 
-            {
-                // TODO: You should never modify this value after the particle system is updated or drawed.
-                isAsync = value;
-            }
+            get { return isAsync == 1; }
+            set { Interlocked.Exchange(ref isAsync, value ? 1 : 0); }
         }
-        private bool isAsync = true;
+        private int isAsync = 1;
 
         /// <summary>
         /// Gets the absolute position of this particle effect.
@@ -351,11 +349,8 @@ namespace Nine.Graphics.ParticleEffects
         /// </summary>
         public void ForEach(ParticleAction action)
         {
-            try
+            lock (particles)
             {
-                if (IsAsync)
-                    canDraw.WaitOne();
-
                 if (ParticleCount > 0)
                 {
                     if (firstParticle < lastParticle)
@@ -376,60 +371,6 @@ namespace Nine.Graphics.ParticleEffects
                                 action(ref particles[CurrentParticle]);
                     }
                 }
-            }
-            finally
-            {
-                if (isAsync)
-                    canUpdate.Set();
-            }
-        }
-
-        /// <summary>
-        /// Updates the particle system.
-        /// </summary>
-        public void Update(TimeSpan elapsedTime)
-        {
-            if (toBeRemoved > 0)
-            {
-                // Remove this particle system from the parent container
-                var container = Parent as Nine.Graphics.ObjectModel.IContainer;
-                if (container != null && container.Children != null)
-                    container.Children.Remove(this);
-                return;
-            }
-
-            EnsureParticlesInitialized();
-            elapsedSeconds = (float)elapsedTime.TotalSeconds;
-
-            numFramesBehind++;
-
-            if (!isAsync)
-                Update();
-
-            InsideViewFrustum = false;
-        }
-
-        /// <summary>
-        /// Updates using the elapsed time saved from last frame.
-        /// </summary>
-        private void Update()
-        {
-            try
-            {
-                if (isAsync)
-                    canUpdate.WaitOne();
-
-                var dt = Math.Min(1.0f / 30, elapsedSeconds);
-
-                UpdateEmitter(dt);
-                UpdateParticles(dt);
-                RetireParticles();
-                UpdateParticlePrimitive();
-            }
-            finally
-            {
-                if (isAsync)
-                    canDraw.Set();
             }
         }
 
@@ -584,55 +525,95 @@ namespace Nine.Graphics.ParticleEffects
                 }
             }
         }
+
+        /// <summary>
+        /// Updates the particle system.
+        /// </summary>
+        public void Update(TimeSpan elapsedTime)
+        {
+            if (toBeRemoved > 0)
+            {
+                // Remove this particle system from the parent container
+                var container = Parent as Nine.Graphics.ObjectModel.IContainer;
+                if (container != null && container.Children != null)
+                    container.Children.Remove(this);
+                return;
+            }
+            EnsureParticlesInitialized();
+
+            elapsedSeconds = (float)elapsedTime.TotalSeconds;
+
+            numFramesBehind++;
+
+            if (isAsync == 0)
+            {
+                Update();
+            }
+            else
+            {
+                // Block the rendering thread if we are too far behind.
+                while (numFramesBehind > maxFramesBehind)
+                {
+                    Update();
+                    numFramesBehind--;
+                }
+            }
+
+            InsideViewFrustum = false;
+        }
+
+        /// <summary>
+        /// Updates using the elapsed time saved from last frame.
+        /// </summary>
+        private void Update()
+        {
+            var dt = Math.Min(1.0f / 30, elapsedSeconds);
+
+            lock (particles)
+            {
+                UpdateEmitter(dt);
+                UpdateParticles(dt);
+                RetireParticles();
+
+                lock (primitive)
+                {
+                    UpdateParticlePrimitive();
+                }
+            }
+        }
         #endregion
 
         #region Draw
-        public void BeginDraw(DrawingContext context)
-        {
-            InsideViewFrustum = true;
-        }
-
         public void Draw(DrawingContext context, Material material)
         {
             // Particle effect does not support other rendering modes.
             if (material != this.material)
                 return;
-            
+
             EnsureParticlesInitialized();
 
-            try
+            lock (primitive)
             {
-                if (isAsync)
-                    canDraw.WaitOne();
-
                 eyePosition = context.EyePosition;
                 viewInverse = context.matrices.viewInverse;
                 primitive.Draw(context, material);
-            }
-            finally
-            {
-                if (isAsync)
+
+                if (isAsync == 1)
                 {
                     // Once this particle effect is drawed, we start the update
                     // asychroniously to maximize parallelism.
-
-                    // At least update once
-                    if (numFramesBehind == 1)
+                    while (numFramesBehind > 0)
                     {
                         UpdateAsync(this);
-                        numFramesBehind = 0;
+                        numFramesBehind--;
                     }
-                    else
-                    {
-                        var updateCount = Math.Max(numFramesBehind - MaxFramesBehind, 0);
-                        for (int i = 0; i < updateCount; i++)
-                            UpdateAsync(this);
-                        numFramesBehind -= updateCount;
-                    }
-
-                    canUpdate.Set();
                 }
             }
+        }
+
+        public void BeginDraw(DrawingContext context)
+        {
+            InsideViewFrustum = true;
         }
 
         void IDrawableObject.EndDraw(DrawingContext context) { }

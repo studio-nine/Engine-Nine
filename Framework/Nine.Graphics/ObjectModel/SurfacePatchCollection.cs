@@ -39,12 +39,12 @@ namespace Nine.Graphics.ObjectModel
         {
             get
             { 
-                if (x < 0 || x >= surface.PatchCountX ||
-                    y < 0 || y >= surface.PatchCountY)
+                if (x < 0 || x >= surface.patchCountX ||
+                    y < 0 || y >= surface.patchCountY)
                 {
                     return null;
                 }
-                return this[y * surface.PatchCountX + x];
+                return this[y * surface.patchCountX + x];
             }
         }
     }

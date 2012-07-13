@@ -47,14 +47,18 @@ namespace Nine.Graphics.Materials
     foreach (var fxFile in Directory.GetFiles(Host.ResolvePath(@"..\..\Framework\Nine.Graphics\Shaders"), "*.fx", SearchOption.AllDirectories))
     {
         var className = Path.GetFileNameWithoutExtension(fxFile);
-        if (!className.EndsWith("Effect"))
-            className = className + "Effect";
-        var materialName = className.Replace("Effect", "Material");
+		if (className.EndsWith("Effect"))
+			className = className.Replace("Effect", "");
+        if (!className.EndsWith("Shader"))
+            className = className + "Shader";
+        var materialName = className.Replace("Shader", "Material");
         var compiler = new EffectCompiler();
         compiler.Build(fxFile);
 #>
     partial class <#= materialName #> : Material
     {
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         private <#= className #> effect;
 
         /// <summary>
@@ -62,6 +66,7 @@ namespace Nine.Graphics.Materials
         /// </summary>
         public <#= materialName #>(GraphicsDevice graphics)
         {
+            GraphicsDevice = graphics;
             effect = GraphicsResources<<#= className #>>.GetInstance(graphics);
 
             OnCreated();
@@ -307,10 +312,7 @@ namespace Nine.Graphics.Materials
 
         bool EffectParameterEquals(EffectParameter a, EffectParameter b)
         {
-            return a != null && b != null && a.Name == b.Name && a.ParameterType == b.ParameterType &&
-                   a.ParameterClass == b.ParameterClass && a.RowCount == b.RowCount && a.ColumnCount == b.ColumnCount &&
-                 ((a.Elements != null && b.Elements != null && a.Elements.Count == b.Elements.Count) ||
-                  (a.Elements == null && b.Elements == null));
+            return a != null && b != null && a.Name == b.Name;
         }
 
         public int GetHashCode(EffectParameter obj)

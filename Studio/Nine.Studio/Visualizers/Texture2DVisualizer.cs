@@ -19,7 +19,7 @@ namespace Nine.Studio.Visualizers
 {
     [Default]
     [Export(typeof(IVisualizer))]
-    public class Texture2DVisualizer : GraphicsVisualizer<Texture2DContent, Texture2D>
+    public class Texture2DVisualizer : GraphicsVisualizer<Texture2D>
     {
         SpriteBatch spriteBatch;
 

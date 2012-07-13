@@ -96,6 +96,7 @@ namespace Nine.Studio
         /// <summary>
         /// Gets or sets the current selection.
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public object Selection { get; set; }
 
         /// <summary>
@@ -153,7 +154,6 @@ namespace Nine.Studio
         /// </summary>
         internal ProjectItem(Project project, object objectModel, string fileName)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(project, "project");
             Verify.IsNotNull(objectModel, "objectModel");
 
@@ -197,7 +197,6 @@ namespace Nine.Studio
         /// </summary>
         public void AddReference(ProjectItem projectItem)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(projectItem, "projectItem");
             Verify.IsFalse(HasCircularDependency(projectItem, this), "Target object has a circular dependency");
             
@@ -213,7 +212,6 @@ namespace Nine.Studio
         /// </summary>
         public void RemoveReference(ProjectItem projectItem)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(projectItem, "projectItem");
 
             InnerReferences.Remove(projectItem);

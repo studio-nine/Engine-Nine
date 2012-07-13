@@ -19,37 +19,21 @@ namespace Nine
     [TestClass]
     public class GraphicsTest
     {
-        public Random Random { get; private set; }
-        public TestGame Game { get; private set; }
-        public GraphicsDevice GraphicsDevice { get { return Game.GraphicsDevice; } }
+        public Random Random
+        {
+            get { return random; }
+        }
+        Random random = new Random();
+
+        public GraphicsDevice GraphicsDevice 
+        {
+            get { return graphics; } 
+        }
+        static readonly GraphicsDevice graphics = GraphicsDeviceService.AddRef().GraphicsDevice;
 
         protected TimeSpan ElapsedTime
         {
             get { return TimeSpan.FromSeconds(1.0 / 60); }
-        }
-
-        [TestInitialize()]
-        public virtual void Initialize()
-        {
-            Random = new Random();
-            Game = new TestGame();
-            Game.Components.Add(new InputComponent());
-        }
-
-        [TestCleanup()]
-        public virtual void Cleanup()
-        {
-            Game.Dispose();
-        }
-
-        public void Test(Action test)
-        {
-            Game.Paint += (gameTime) =>
-            {
-                test();
-                Game.Exit();
-            };
-            Game.Run();
         }
 
         protected Color RandomColor()

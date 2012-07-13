@@ -54,14 +54,12 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         private IComparer<IDrawableObject> sortComparer;
 
-        private FastList<int> opaqueOneSided = new FastList<int>();
-        private FastList<int> opaqueTwoSided = new FastList<int>();
-        private FastList<int> alphaBlendOneSided = new FastList<int>();
-        private FastList<int> alphaBlendTwoSided = new FastList<int>();
-        private FastList<int> additiveOneSided = new FastList<int>();
-        private FastList<int> additiveTwoSided = new FastList<int>();
-        
-        private static Material[] materials = new Material[4];
+        // TODO: Enable additive blending
+        private DrawingQueue opaque = new DrawingQueue();
+        private DrawingQueue opaqueTwoSided = new DrawingQueue();
+
+        private DrawingQueue transparent = new DrawingQueue();
+        private DrawingQueue transparentTwoSided = new DrawingQueue();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pass"/> class.
@@ -69,7 +67,6 @@ namespace Nine.Graphics.Drawing
         public BasicPass()
         {
             this.SortEnabled = false;
-            this.sortComparer = new DrawableSortComparer();
         }
 
         /// <summary>
@@ -78,19 +75,19 @@ namespace Nine.Graphics.Drawing
         /// <param name="drawables">
         /// A list of drawables about to be drawed in this drawing pass.
         /// </param>
-        public override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            if (length <= 0)
+            var count = drawables.Count;
+            if (count <= 0)
                 return;
 
             var graphics = context.GraphicsDevice;
             var dominantMaterial = Material;
-            var endIndex = startIndex + length - 1;
             
             if (dominantMaterial != null)
             {
                 // Draw with uniform material
-                for (int i = startIndex; i <= endIndex; i++)
+                for (int i = 0; i < count; i++)
                 {
                     var drawable = drawables[i];
                     if (drawable != null && drawable.Visible)
@@ -107,77 +104,67 @@ namespace Nine.Graphics.Drawing
                     DefaultMaterial = new BasicMaterial(graphics) { LightingEnabled = true };
 
                 // Begin Draw
-                if (materials.Length < drawables.Length)
-                    Array.Resize(ref materials, drawables.Length);
-
-                for (int i = startIndex; i <= endIndex;)
+                for (int i = 0; i < count; i++)
                 {
                     var drawable = drawables[i];
-                    if (drawable == null || !drawable.Visible)
-                    {
-                        // Swap with the last element
-                        if (i != endIndex)
-                        {
-                            var temp = drawables[endIndex];
-                            drawables[endIndex] = drawables[i];
-                            drawables[i] = temp;
-                        }
-                        endIndex--;
-                    }
-                    else
+                    if (drawable != null && drawable.Visible)
                     {
                         drawable.BeginDraw(context);
-                        Material material = drawable.Material;
+                        
+                        var material = drawable.Material;
                         if (MaterialUsage != MaterialUsage.Default && material != null)
                             material = material[MaterialUsage];
-                        materials[i++] = material;
+
+                        if (material == null)
+                        {
+                            opaque.Add(drawable, DefaultMaterial);
+                            continue;
+                        }
+
+                        while (material != null)
+                        {
+                            var twoSided = material.TwoSided;
+                            if (material.IsTransparent)
+                            {
+                                if (twoSided)
+                                    transparentTwoSided.Add(drawable, material);
+                                else
+                                    transparent.Add(drawable, material);
+                            }
+                            else
+                            {
+                                if (twoSided)
+                                    opaqueTwoSided.Add(drawable, material);
+                                else
+                                    opaque.Add(drawable, material);
+                            }
+                            material = material.NextMaterial;
+                        }
                     }
                 }
 
-                // Sort drawable objects based on material.
-                // TODO: Disable sorting when drawing with multiple passes.
                 if (SortEnabled)
-                    Array.Sort(drawables, startIndex, length, sortComparer);
-
-                for (int i = startIndex; i <= endIndex; i++)
                 {
-                    var drawable = drawables[i];
-                    var material = materials[i];
-
-                    if (material == null)
-                    {
-                        materials[i] = DefaultMaterial;
-                        opaqueOneSided.Add(i);
-                        continue;
-                    }
-
-                    var twoSided = material.TwoSided;
-                    if (!material.IsTransparent)
-                    {
-                        if (twoSided)
-                            opaqueTwoSided.Add(i);
-                        else
-                            opaqueOneSided.Add(i);
-                    }
-                    else if (material.IsAdditive)
-                    {
-                        if (twoSided)
-                            additiveTwoSided.Add(i);
-                        else
-                            additiveOneSided.Add(i);
-                    }
-                    else
-                    {
-                        if (twoSided)
-                            alphaBlendTwoSided.Add(i);
-                        else
-                            alphaBlendOneSided.Add(i);
-                    }
+                    opaque.Sort();
+                    opaqueTwoSided.Sort();
+                    transparent.Sort();
+                    transparentTwoSided.Sort();
                 }
-                
+
                 // Draw opaque objects                
                 graphics.DepthStencilState = DepthStencilState.Default;
                 graphics.BlendState = BlendState.Opaque;
+
+                if (opaque.Count > 0)
+                {
+                    graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+
+                    for (int i = 0; i < opaque.Count; i++)
+                    {
+                        var entry = opaque.Elements[i];
+                        entry.Drawable.Draw(context, entry.Material);
+                    }                    
+                }
 
                 if (opaqueTwoSided.Count > 0)
                 {
@@ -185,114 +172,48 @@ namespace Nine.Graphics.Drawing
 
                     for (int i = 0; i < opaqueTwoSided.Count; i++)
                     {
-                        var index = opaqueTwoSided[i];
-                        var drawable = drawables[index];
-                        drawable.Draw(context, materials[index]);
-                    }                    
-                }
-                if (opaqueOneSided.Count > 0)
-                {
-                    graphics.RasterizerState = RasterizerState.CullCounterClockwise;
-
-                    for (int i = 0; i < opaqueOneSided.Count; i++)
-                    {
-                        var index = opaqueOneSided[i];
-                        var drawable = drawables[index];
-                        drawable.Draw(context, materials[index]);
+                        var entry = opaqueTwoSided.Elements[i];
+                        entry.Drawable.Draw(context, entry.Material);
                     }                    
                 }
 
-                // Draw transparent object backfaces using alpha blending
+                // Draw transparent objects
                 graphics.DepthStencilState = DepthStencilState.DepthRead;
                 graphics.BlendState = BlendState.AlphaBlend;
 
-                if (alphaBlendTwoSided.Count > 0)
+                if (transparent.Count > 0)
                 {
-                    graphics.RasterizerState = RasterizerState.CullClockwise;
+                    graphics.RasterizerState = RasterizerState.CullCounterClockwise;
 
-                    for (int i = 0; i < alphaBlendTwoSided.Count; i++)
+                    for (int i = 0; i < transparent.Count; i++)
                     {
-                        var index = alphaBlendTwoSided[i];
-                        var drawable = drawables[index];
-                        drawable.Draw(context, materials[index]);
+                        var entry = transparent.Elements[i];
+                        entry.Drawable.Draw(context, entry.Material);
                     }
                 }
 
-                // Draw transparent object front faces using alpha blending
                 graphics.RasterizerState = RasterizerState.CullCounterClockwise;
 
-                for (int i = 0; i < alphaBlendTwoSided.Count; i++)
+                if (transparentTwoSided.Count > 0)
                 {
-                    var index = alphaBlendTwoSided[i];
-                    var drawable = drawables[index];
-                    drawable.Draw(context, materials[index]);
-                }
-                for (int i = 0; i < alphaBlendOneSided.Count; i++)
-                {
-                    var index = alphaBlendOneSided[i];
-                    var drawable = drawables[index];
-                    drawable.Draw(context, materials[index]);
-                }
+                    graphics.RasterizerState = RasterizerState.CullNone;
 
-                // Draw transparent object backfaces using additive blending
-                graphics.BlendState = BlendState.Additive;
-
-                if (additiveTwoSided.Count > 0)
-                {
-                    graphics.RasterizerState = RasterizerState.CullClockwise;
-
-                    for (int i = 0; i < additiveTwoSided.Count; i++)
+                    for (int i = 0; i < transparentTwoSided.Count; i++)
                     {
-                        var index = additiveTwoSided[i];
-                        var drawable = drawables[index];
-                        drawable.Draw(context, materials[index]);
+                        var entry = transparentTwoSided.Elements[i];
+                        entry.Drawable.Draw(context, entry.Material);
                     }
                 }
 
-                // Draw transparent object front faces using additive blending
-                graphics.RasterizerState = RasterizerState.CullCounterClockwise;
-
-                for (int i = 0; i < additiveTwoSided.Count; i++)
-                {
-                    var index = additiveTwoSided[i];
-                    var drawable = drawables[index];
-                    drawable.Draw(context, materials[index]);
-                }
-                for (int i = 0; i < additiveOneSided.Count; i++)
-                {
-                    var index = additiveOneSided[i];
-                    var drawable = drawables[index];
-                    drawable.Draw(context, materials[index]);
-                }
-
-                opaqueOneSided.Clear();
+                opaque.Clear();
                 opaqueTwoSided.Clear();
-                alphaBlendOneSided.Clear();
-                alphaBlendTwoSided.Clear();
-                additiveOneSided.Clear();
-                additiveTwoSided.Clear();
+                transparent.Clear();
+                transparentTwoSided.Clear();
 
                 // End Draw
-                for (int i = startIndex; i <= endIndex; i++)
+                for (int i = 0; i < count; i++)
                     drawables[i].EndDraw(context);
             }
-        }
-    }
-
-    class DrawableSortComparer : IComparer<IDrawableObject>
-    {
-        public int Compare(IDrawableObject x, IDrawableObject y)
-        {
-            var materialX = x.Material;
-            var materialY = y.Material;
-
-            if (materialX == materialY)
-                return 0;
-
-            var materialSortOrderX = materialX != null ? materialX.SortOrder : 0;
-            var materialSortOrderY = materialY != null ? materialY.SortOrder : 0;
-
-            return materialSortOrderX.CompareTo(materialSortOrderY);
         }
     }
 }

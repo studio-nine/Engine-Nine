@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 using System.Windows.Data;
 using Nine.Studio.Shell.ViewModels;
-using Nine.Studio.Shell.Windows.Controls;
+using Nine.Studio.Shell.Windows;
 using System.Windows.Forms.Integration;
 using System.Windows;
 #endregion

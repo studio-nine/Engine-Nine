@@ -20,14 +20,6 @@ using Microsoft.Xna.Framework.Content;
 namespace Nine.Content.Pipeline.Xaml
 {
     /// <summary>
-    /// Defines an interface to resolve content references.
-    /// </summary>
-    internal interface IContentReferenceProvider
-    {
-        object ResolveContentReference(string name);
-    }
-
-    /// <summary>
     /// Defines a markup extension to reference external content.
     /// </summary>
     [ContentProperty("AssetNameName")]
@@ -59,9 +51,36 @@ namespace Nine.Content.Pipeline.Xaml
         /// </returns>
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var externalReferenceProvider = serviceProvider.GetService<IContentReferenceProvider>();
-            if (externalReferenceProvider != null)
-                return externalReferenceProvider.ResolveContentReference(AssetName);
+            return ResolveContentReference(AssetName);
+        }
+
+        /// <summary>
+        /// Occurs when this serializer failed to create an instance from a content reference.
+        /// </summary>
+        public event Func<string, object> Resolve;
+
+        /// <summary>
+        /// Resolves the external reference.
+        /// </summary>
+        private object ResolveContentReference(string referenceName)
+        {
+            if (Resolve != null)
+            {
+                foreach (var invocation in Resolve.GetInvocationList())
+                {
+                    var resolve = (Func<string, object>)invocation;
+                    if (resolve == null)
+                        continue;
+
+                    try
+                    {
+                        var result = resolve(referenceName);
+                        if (result != null)
+                            return result;
+                    }
+                    catch (Exception) { }
+                }
+            }
             return null;
         }
     }

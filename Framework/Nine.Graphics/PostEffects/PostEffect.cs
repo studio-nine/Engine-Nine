@@ -104,11 +104,19 @@ namespace Nine.Graphics.PostEffects
 
         #region Methods
         /// <summary>
-        /// Creates a new instance of ScreenEffect for post processing.
+        /// Creates a new instance of PostEffect for post processing.
         /// </summary>
         public PostEffect()
         {
 
+        }
+
+        /// <summary>
+        /// Creates a new instance of PostEffect for post processing.
+        /// </summary>
+        public PostEffect(Material material)
+        {
+            Material = material;
         }
 
         public override void GetActivePasses(IList<Pass> result)
@@ -161,7 +169,7 @@ namespace Nine.Graphics.PostEffects
                                                  , DepthFormat.None);
         }
 
-        public override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             try
             {
@@ -180,6 +188,7 @@ namespace Nine.Graphics.PostEffects
 
                 context.GraphicsDevice.BlendState = BlendState;
                 context.GraphicsDevice.Textures[0] = InputTexture;
+                context.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
 
                 Material.Texture = InputTexture;
                 fullScreenQuad.Draw(context, Material);

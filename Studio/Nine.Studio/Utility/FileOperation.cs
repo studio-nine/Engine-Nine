@@ -27,6 +27,9 @@ namespace Nine.Studio
     {
         public static void BackupAndSave(string fileName, Action<Stream> save)
         {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException("fileName");
+
             if (!Directory.Exists(Path.GetDirectoryName(fileName)))
                 Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
@@ -75,7 +78,10 @@ namespace Nine.Studio
                 if (File.Exists(fileName))
                     File.Delete(fileName);
             }
-            catch (Exception) { }
+            catch (Exception) 
+            {
+                Trace.WriteLine("Error deleting file " + fileName);
+            }
         }
 
         public static IDisposable WatchFileContentChange(string fileName, Action<string> contentChanged)

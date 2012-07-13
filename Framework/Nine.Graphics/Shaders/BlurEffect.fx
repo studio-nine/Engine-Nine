@@ -1,59 +1,25 @@
 //=============================================================================
 //
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 
 
 sampler TextureSampler : register(s0);
 
-#define SAMPLE_COUNT 15
+#define PROFILE ps_2_0
+#define MAXSAMPLECOUNT 15
 
-float2 sampleOffsets[SAMPLE_COUNT];
-float sampleWeights[SAMPLE_COUNT];
+float2 sampleOffsets[MAXSAMPLECOUNT];
+float sampleWeights[MAXSAMPLECOUNT];
 
-float4 PixelShader15(float2 texCoord : TEXCOORD0 = 1) : COLOR0
+float4 PS(float2 texCoord : TEXCOORD0, uniform int sampleCount) : COLOR0
 {
     float4 c = 0;
     
     // Combine a number of weighted image filter taps.
-    for (int i = 0; i < 15; i++)
-    {
-        c += tex2D(TextureSampler, texCoord + sampleOffsets[i]) * sampleWeights[i];
-    }
-    
-    return c;
-}
-float4 PixelShader11(float2 texCoord : TEXCOORD0) : COLOR0
-{
-    float4 c = 0;
-    
-    // Combine a number of weighted image filter taps.
-    for (int i = 0; i < 11; i++)
-    {
-        c += tex2D(TextureSampler, texCoord + sampleOffsets[i]) * sampleWeights[i];
-    }
-    
-    return c;
-}
-float4 PixelShader7(float2 texCoord : TEXCOORD0) : COLOR0
-{
-    float4 c = 0;
-    
-    // Combine a number of weighted image filter taps.
-    for (int i = 0; i < 7; i++)
-    {
-        c += tex2D(TextureSampler, texCoord + sampleOffsets[i]) * sampleWeights[i];
-    }
-    
-    return c;
-}
-float4 PixelShader3(float2 texCoord : TEXCOORD0) : COLOR0
-{
-    float4 c = 0;
-    
-    // Combine a number of weighted image filter taps.
-    for (int i = 0; i < 3; i++)
+	[unroll]
+    for (int i = 0; i < sampleCount; i++)
     {
         c += tex2D(TextureSampler, texCoord + sampleOffsets[i]) * sampleWeights[i];
     }
@@ -61,14 +27,18 @@ float4 PixelShader3(float2 texCoord : TEXCOORD0) : COLOR0
     return c;
 }
 
-int shaderIndex = 3;
+int shaderIndex = 0;
 
-PixelShader PSArray[4] =
+PixelShader PSArray[] =
 {
-    compile ps_2_0 PixelShader3(),
-    compile ps_2_0 PixelShader7(),
-    compile ps_2_0 PixelShader11(),
-    compile ps_2_0 PixelShader15(),
+    compile PROFILE PS(1),
+    compile PROFILE PS(3),
+    compile PROFILE PS(5),
+    compile PROFILE PS(7),
+    compile PROFILE PS(9),
+	compile PROFILE PS(11),
+	compile PROFILE PS(13),
+	compile PROFILE PS(15),
 };
 
 technique GaussianBlur

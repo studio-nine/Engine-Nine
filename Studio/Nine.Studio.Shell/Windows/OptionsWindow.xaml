@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:Nine.Studio.Shell"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:ctl="clr-namespace:Nine.Studio.Shell.Windows.Controls"
+        xmlns:ctl="clr-namespace:Nine.Studio.Shell.Windows"
         xmlns:c="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d" x:Class="Nine.Studio.Shell.Windows.OptionsWindow"
         Title="{x:Static local:Strings.Options}" Height="450" Width="700" ResizeMode="NoResize" 

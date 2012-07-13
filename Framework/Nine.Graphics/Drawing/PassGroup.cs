@@ -75,7 +75,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Draws this pass using the specified drawing context.
         /// </summary>
-        public sealed override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        public sealed override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             throw new InvalidOperationException();
         }

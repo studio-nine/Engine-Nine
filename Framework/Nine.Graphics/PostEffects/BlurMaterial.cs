@@ -23,35 +23,30 @@ namespace Nine.Graphics.Materials
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial class BlurMaterial
-    {       
+    {
         /// <summary>
         /// Gets or sets the amount of bluring.
         /// </summary>
-        public float BlurAmount { get; set; }
-
-        /// <summary>
-        /// Gets or sets the step of sampled points.
-        /// </summary>
-        public float Step { get; set; }
+        public float BlurAmount
+        {
+            get { return blurAmount; }
+            set { blurAmount = value; UpdateSampleCount(); }
+        }
 
         /// <summary>
         /// Gets or sets the direction of bluring in radians.
         /// </summary>
         public float Direction { get; set; }
 
-        /// <summary>
-        /// Gets or sets the blur sample count. Should be one of 3, 7, 11, 15.
-        /// </summary>
-        public int SampleCount { get; set; }
-
-        public const int MaxSampleCount = 15;
-        public const int MinSampleCount = 3;
+        private float blurAmount;
+        private int shaderIndex;
+        private int sampleCount;
+        private float[] sampleWeights;
+        private Vector2[] sampleOffsets;
 
         partial void OnCreated()
         {
-            Step = 1.0f;
-            BlurAmount = 1.0f;
-            SampleCount = 15;
+            BlurAmount = 2;
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, BlurMaterial previousMaterial)
@@ -67,13 +62,12 @@ namespace Nine.Graphics.Materials
         /// </summary>
         void SetBlurEffectParameters(float dx, float dy)
         {
-            // Look up how many samples our gaussian blur effect supports.
-            //int sampleCount = weightsParameter.Elements.Count;
-            int sampleCount = SampleCount;
-
             // Create temporary arrays for computing our filter 
-            float[] sampleWeights = new float[sampleCount];
-            Vector2[] sampleOffsets = new Vector2[sampleCount];
+            if (sampleWeights == null || sampleWeights.Length < sampleCount)
+            {
+                sampleWeights = new float[sampleCount];
+                sampleOffsets = new Vector2[sampleCount];
+            }
 
             // The first sample always has a zero offset.
             sampleWeights[0] = ComputeGaussian(0);
@@ -93,18 +87,8 @@ namespace Nine.Graphics.Materials
                 sampleWeights[i * 2 + 2] = weight;
 
                 totalWeights += weight * 2;
-
-                // To get the maximum amount of blurring from a limited number of
-                // pixel shader samples, we take advantage of the bilinear filtering
-                // hardware inside the texture fetch unit. If we position our texture
-                // coordinates exactly halfway between two texels, the filtering unit
-                // will average them for us, giving two samples for the price of one.
-                // This allows us to step in units of two texels per sample, rather
-                // than just one at a time. The 1.5 offset kicks things off by
-                // positioning us nicely in between two texels.
-                float sampleOffset = i * 2 + 1.5f;
-
-                Vector2 delta = new Vector2(dx, dy) * sampleOffset * Step;
+                
+                Vector2 delta = new Vector2(dx, dy) * (i + 1.0f);
 
                 // Store texture coordinate offsets for the positive and negative taps.
                 sampleOffsets[i * 2 + 1] = delta;
@@ -118,10 +102,10 @@ namespace Nine.Graphics.Materials
             }
 
             // Tell the effect about our new filter 
+            effect.shaderIndex.SetValue(shaderIndex);
             effect.sampleOffsets.SetValue(sampleOffsets);
             effect.sampleWeights.SetValue(sampleWeights);
         }
-
 
         /// <summary>
         /// Evaluates a single point on the gaussian falloff curve.
@@ -129,9 +113,24 @@ namespace Nine.Graphics.Materials
         /// </summary>
         private float ComputeGaussian(float n)
         {
-            float theta = BlurAmount;
+            float theta = Math.Max(BlurAmount, 0.0001f);
 
-            return (float)((1.0 / Math.Sqrt(2 * Math.PI * theta)) * Math.Exp(-(n * n) / (2 * theta * theta)));
+            // Gaussian filter http://en.wikipedia.org/wiki/Gaussian_filter
+            return (float)((1.0 / Math.Sqrt(2 * Math.PI) / theta) * Math.Exp(-(n * n) / (2 * theta * theta)));
+        }
+
+        /// <summary>
+        /// Estimate the sample count for the given blur amount.
+        /// </summary>
+        private void UpdateSampleCount()
+        {
+            float theta = Math.Max(BlurAmount, 0.0001f);
+
+            int MaxSampleCount = 15;
+
+            // 2.146 = Math.Sqrt(-2 * Math.Log(0.1))
+            shaderIndex = Math.Min((int)(blurAmount * 2.146f), (MaxSampleCount - 1) / 2);
+            sampleCount = shaderIndex * 2 + 1;
         }
     }
 }

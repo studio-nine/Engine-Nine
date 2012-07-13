@@ -53,7 +53,7 @@ namespace Nine.Content.Pipeline.Xaml
         {
             if (string.IsNullOrEmpty(FileName))
                 return null;
-
+            
             Type destinationType = null;            
             var destinationTypeProvider = serviceProvider.GetService<IDestinationTypeProvider>();
             if (destinationTypeProvider != null)

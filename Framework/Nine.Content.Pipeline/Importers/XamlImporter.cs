@@ -28,16 +28,11 @@ namespace Nine.Content.Pipeline.Importers
         {
             try
             {
-                System.Diagnostics.Debugger.Launch();
                 ContentProperties.IsContentBuild = true;
 
-                object result = null;
-                using (var xamlSerializer = new XamlSerializer())
-                {
-                    xamlSerializer.InstanceResolve += new Func<Type, object[], object>(OnResolveInstance);
-                    result = xamlSerializer.Load(Path.GetFullPath(filename));
-                }
-                return result;
+                var xamlSerializer = new XamlSerializer();
+                xamlSerializer.InstanceResolve += new Func<Type, object[], object>(OnResolveInstance);
+                return xamlSerializer.Load(Path.GetFullPath(filename));
             }
             catch (Exception e)
             {

@@ -12,7 +12,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Nine.Studio.Extensibility;
-using Nine.Studio.Shell.Windows.Controls;
+using Nine.Studio.Shell.Windows;
+using System;
 #endregion
 
 namespace Nine.Studio.Shell.ViewModels
@@ -25,7 +26,6 @@ namespace Nine.Studio.Shell.ViewModels
         public Editor Editor { get { return EditorView.Editor; } }
         public EditorView EditorView { get; private set; }
         public ObservableCollection<ProjectItemView> ProjectItems { get; private set; }
-        public LibraryView LibraryView { get; private set; }
 
         public ProjectView(EditorView editorView, Project project)
         {
@@ -33,7 +33,6 @@ namespace Nine.Studio.Shell.ViewModels
             this.EditorView = editorView;
             this.FileName = Project.FileName ?? Path.GetFullPath(Global.NextName(Strings.Untitled, Global.ProjectExtension));
             this.ProjectItems = new ObservableCollection<ProjectItemView>(Project.ProjectItems.Select(pi => new ProjectItemView(this, pi)));
-            this.LibraryView = new LibraryView(this);
         }
 
         public void CreateProjectItem(object objectModel)
@@ -86,9 +85,12 @@ namespace Nine.Studio.Shell.ViewModels
                 {
                     if (e != null)
                     {
-                        ProjectItemView docView = new ProjectItemView(this, (ProjectItem)e);
-                        ProjectItems.Add(docView);
-                        docView.Show();
+                        EditorView.Shell.Invoke((Action)delegate
+                        {
+                            ProjectItemView projectItemView = new ProjectItemView(this, (ProjectItem)e);
+                            ProjectItems.Add(projectItemView);
+                            //projectItemView.Show();
+                        });
                     }
                 }, fileName, Strings.Loading, fileName);
         }

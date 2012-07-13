@@ -38,13 +38,15 @@ namespace Nine.Studio.Extensibility
     {
         public GraphicsDevice GraphicsDevice
         {
-            get 
-            {
-                return graphicsDevice ?? 
-                      (graphicsDevice = Nine.Studio.Controls.GraphicsDeviceService.AddRef().GraphicsDevice);
-            }
+            get { return graphicsDevice; }
         }
-        private GraphicsDevice graphicsDevice;
+        private static GraphicsDevice graphicsDevice;
+
+        static Factory()
+        {
+            // Force graphics device service to be initialized upfront to walkaround a bug in Win8.
+            graphicsDevice = Nine.Graphics.GraphicsDeviceService.AddRef().GraphicsDevice;
+        }
         
         public Editor Editor { get; private set; }
         public Type TargetType { get { return typeof(T); } }

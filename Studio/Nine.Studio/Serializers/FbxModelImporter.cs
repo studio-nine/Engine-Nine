@@ -11,6 +11,7 @@ using System.ComponentModel.Composition;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using Nine.Studio.Extensibility;
+using Microsoft.Xna.Framework.Graphics;
 #endregion
 
 namespace Nine.Studio.Serializers
@@ -18,7 +19,7 @@ namespace Nine.Studio.Serializers
     [Export(typeof(IImporter))]
     [LocalizedDisplayName("FbxModel")]
     [LocalizedCategory("Model")]
-    public class FbxModelImporter : PipelineDocumentImporter<ModelContent>
+    public class FbxModelImporter : PipelineImporter<Model>
     {
         public FbxModelImporter()
         {

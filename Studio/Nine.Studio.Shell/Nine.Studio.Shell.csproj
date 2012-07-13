@@ -37,6 +37,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\Nine.ico</ApplicationIcon>
@@ -51,7 +52,7 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Nine.Studio.Shell.Bootstrapper</StartupObject>
+    <StartupObject>Nine.Studio.Shell.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero" />
@@ -125,6 +126,7 @@
     <Compile Include="Behaviors\WindowChrome.cs" />
     <Compile Include="Behaviors\WindowChromeWorker.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Async.cs" />
     <Compile Include="ViewModels\Data\ProjectCreationParameters.cs" />
     <Compile Include="ViewModels\EditorShell.cs" />
     <Compile Include="Settings\GeneralSettings.cs" />
@@ -143,9 +145,9 @@
     <Compile Include="Windows\WaitWindow.xaml.cs">
       <DependentUpon>WaitWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Controls\ProgressHelper.cs" />
-    <Compile Include="Windows\Controls\WindowHelper.cs" />
-    <Compile Include="Windows\Controls\StyleSelectors.cs" />
+    <Compile Include="Windows\ProgressHelper.cs" />
+    <Compile Include="Windows\WindowHelper.cs" />
+    <Compile Include="Windows\StyleSelectors.cs" />
     <Page Include="Converters\Converters.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -178,23 +180,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Controls\Scene.xaml">
+    <Page Include="Windows\Scene.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\Controls\Library.xaml">
+    <Page Include="Windows\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Controls\NoDesignView.xaml">
+    <Page Include="Windows\NoDesignView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\OptionsWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\LegacyMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -224,28 +222,23 @@
     </Compile>
     <Compile Include="ViewModels\ExporterView.cs" />
     <Compile Include="ViewModels\ProjectView.cs" />
-    <Compile Include="ViewModels\LibraryView.cs" />
     <Compile Include="ViewModels\ImporterView.cs" />
     <Compile Include="ViewModels\ProjectItemView.cs" />
     <Compile Include="ViewModels\FactoryView.cs" />
     <Compile Include="ViewModels\EditorView.cs" />
-    <Compile Include="Windows\Controls\Scene.xaml.cs">
+    <Compile Include="Windows\Scene.xaml.cs">
       <DependentUpon>Scene.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Controls\WatermarkAdorner.cs" />
-    <Compile Include="Windows\Controls\WatermarkService.cs" />
-    <Compile Include="Windows\Controls\Library.xaml.cs">
+    <Compile Include="Windows\WatermarkAdorner.cs" />
+    <Compile Include="Windows\WatermarkService.cs" />
+    <Compile Include="Windows\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Controls\NoDesignView.xaml.cs">
+    <Compile Include="Windows\NoDesignView.xaml.cs">
       <DependentUpon>NoDesignView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\OptionsWindow.xaml.cs">
       <DependentUpon>OptionsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\LegacyMainWindow.xaml.cs">
-      <DependentUpon>LegacyMainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

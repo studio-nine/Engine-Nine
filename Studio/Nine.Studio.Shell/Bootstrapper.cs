@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 #endregion
 
 namespace Nine.Studio.Shell
@@ -44,9 +45,8 @@ namespace Nine.Studio.Shell
                     return Assembly.Load(assemblyData);
                 }
             };
-
-            App.Main();
             
+            App.Main();
             Trace.Flush();
         }
 

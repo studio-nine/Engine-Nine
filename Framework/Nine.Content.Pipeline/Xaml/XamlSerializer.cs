@@ -17,16 +17,20 @@ using System.Xaml;
 using System.Xaml.Schema;
 using System.Xml;
 using System.Collections.Generic;
+using System.Reflection;
+using System.ComponentModel.Design.Serialization;
 #endregion
 
 namespace Nine.Content.Pipeline.Xaml
 {
+    #region XamlSerializer
     /// <summary>
     /// Provides extended Xaml load and save methods.
     /// </summary>
-    public class XamlSerializer : IDisposable
+    public class XamlSerializer
     {
-        SchemaContext schemaContext;
+        internal Stack<MarkupExtension> MarkupExtensions = new Stack<MarkupExtension>();
+        internal Stack<XamlMember> Members = new Stack<XamlMember>();
 
         /// <summary>
         /// Loads the object graph from a xaml file.
@@ -45,7 +49,7 @@ namespace Nine.Content.Pipeline.Xaml
         public object Load(Stream stream)
         {
             var reader = new XamlXmlReader(stream);
-            var writer = new ObjectWriter(this, schemaContext = new SchemaContext(this, reader.SchemaContext));
+            var writer = new ObjectWriter(this, new SchemaContext(this));
             XamlServices.Transform(reader, writer, false);
             return writer.Result;
         }
@@ -66,7 +70,7 @@ namespace Nine.Content.Pipeline.Xaml
         /// </summary>
         public void Save(Stream stream, object value)
         {
-            var reader = new ObjectReader(this, value, schemaContext);
+            var reader = new ObjectReader(this, value);
             var settings = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
             using (var xmlWriter = XmlWriter.Create(stream, settings))
             {
@@ -79,12 +83,7 @@ namespace Nine.Content.Pipeline.Xaml
         /// Occurs when this serializer failed to create an instance of the specified type and arguments.
         /// </summary>
         public event Func<Type, object[], object> InstanceResolve;
-
-        /// <summary>
-        /// Occurs when this serializer failed to create an instance from a content reference.
-        /// </summary>
-        public event Func<string, object> ContentReferenceResolve;
-
+        
         /// <summary>
         /// Resolves the instance using InstanceResolve event.
         /// </summary>
@@ -114,25 +113,30 @@ namespace Nine.Content.Pipeline.Xaml
         }
 
         /// <summary>
-        /// Resolves the external reference.
+        /// Occurs when this xaml serializer tried to save an object to markup extension.
         /// </summary>
-        internal object ResolveContentReference(string referenceName)
+        public event Func<object, MarkupExtension> MarkupExtensionResolve;
+
+        internal MarkupExtension ResolveMarkupExtension(object value)
         {
-            if (ContentReferenceResolve != null)
+            if (MarkupExtensionResolve != null)
             {
-                foreach (var invocation in ContentReferenceResolve.GetInvocationList())
+                foreach (var invocation in MarkupExtensionResolve.GetInvocationList())
                 {
-                    var resolve = (Func<string, object>)invocation;
+                    var resolve = (Func<object, MarkupExtension>)invocation;
                     if (resolve == null)
                         continue;
 
                     try
                     {
-                        var result = resolve(referenceName);
+                        var result = resolve(value);
                         if (result != null)
                             return result;
                     }
-                    catch (Exception) { }
+                    catch
+                    {
+
+                    }
                 }
             }
             return null;
@@ -141,24 +145,19 @@ namespace Nine.Content.Pipeline.Xaml
         /// <summary>
         /// Gets the serialization data used during the serialization.
         /// </summary>
-        public static Hashtable SerializationData { get; private set; }
+        public static IDictionary<PropertyInstance, object> SerializationData { get; private set; }
 
         static XamlSerializer()
         {
-            SerializationData = new Hashtable();
-        }
-        
-        public void Dispose()
-        {
-
+            SerializationData = new Dictionary<PropertyInstance, object>();
         }
     }
+    #endregion
 
+    #region ObjectWriter
     class ObjectWriter : XamlObjectWriter
     {
-        public static object LastContentReference;
-
-        private bool isContentReference;
+        private object currentObject;
         private XamlSerializer xamlSerializer;
 
         public ObjectWriter(XamlSerializer xamlSerializer, XamlSchemaContext schemaContext) : base(schemaContext)
@@ -166,53 +165,48 @@ namespace Nine.Content.Pipeline.Xaml
             this.xamlSerializer = xamlSerializer;
         }
 
-        protected override void OnBeforeProperties(object value)
-        {
-            base.OnBeforeProperties(value);
-        }
-
-        protected override void OnAfterProperties(object value)
-        {
-            base.OnAfterProperties(value);
-        }
-
         public override void WriteStartObject(XamlType xamlType)
         {
-            isContentReference = xamlType.UnderlyingType == typeof(ContentReference);
-            if (isContentReference || xamlType.ConstructionRequiresArguments)
-                base.WriteStartObject(new XamlFactoryType(xamlSerializer, xamlType));
-            else
-                base.WriteStartObject(xamlType);
+            base.WriteStartObject(new XamlFactoryType(xamlSerializer, xamlType));
         }
 
-        public override void WriteGetObject()
+        public override void WriteStartMember(XamlMember property)
         {
-            base.WriteGetObject();
+            xamlSerializer.Members.Push(property);
+            base.WriteStartMember(property);
+        }
+
+        public override void WriteEndMember()
+        {
+            base.WriteEndMember();
+
+            var member = xamlSerializer.Members.Pop();
+            if (xamlSerializer.MarkupExtensions.Count > 0)
+                XamlSerializer.SerializationData.Add(new PropertyInstance(currentObject, member.Name), xamlSerializer.MarkupExtensions.Pop());
         }
 
         protected override bool OnSetValue(object eventSender, XamlMember member, object value)
         {
-            if (isContentReference)
-            {
-                XamlSerializer.SerializationData.Add(new PropertyInstance(eventSender, member.Name), LastContentReference);
-                LastContentReference = null;
-                isContentReference = false;
-            }
+            currentObject = eventSender;
             return base.OnSetValue(eventSender, member, value);
         }
     }
+    #endregion
 
+    #region ObjectReader
     class ObjectReader : XamlObjectReader
     {
         private XamlSerializer xamlSerializer;
 
-        public ObjectReader(XamlSerializer xamlSerializer, object value, XamlSchemaContext schemaContext) 
-            : base(value, schemaContext)
+        public ObjectReader(XamlSerializer xamlSerializer, object value) 
+            : base(value, new SchemaContext(xamlSerializer))
         {
             this.xamlSerializer = xamlSerializer;
         }
     }
+    #endregion
 
+    #region XamlFactoryType
     class XamlFactoryType : XamlType
     {
         private XamlSerializer xamlSerializer;
@@ -222,25 +216,35 @@ namespace Nine.Content.Pipeline.Xaml
         {
             this.xamlSerializer = xamlSerializer;
         }
-        
+
+        private bool HasDefaultConstructor()
+        {
+            return !ConstructionRequiresArguments || UnderlyingType.IsPrimitive || UnderlyingType.IsValueType ||
+                    UnderlyingType == typeof(Enum) || UnderlyingType == typeof(ValueType);
+        }
+
         protected override XamlTypeInvoker LookupInvoker()
         {
-            return new XamlInvoker(xamlSerializer, base.LookupInvoker(), this);
+            return new XamlFactoryInvoker(xamlSerializer, base.LookupInvoker(), this);
         }
 
         protected override XamlValueConverter<TypeConverter> LookupTypeConverter()
         {
-            return new XamlValueConverter<TypeConverter>(typeof(MarkupExtensionConverter), this);
+            if (HasDefaultConstructor())
+                return base.LookupTypeConverter();
+            return new XamlValueConverter<TypeConverter>(typeof(InstanceDescriptorConverter), this);
         }
     }
+    #endregion
 
-    class XamlInvoker : XamlTypeInvoker
+    #region XamlFactoryInvoker
+    class XamlFactoryInvoker : XamlTypeInvoker
     {
         private XamlType xamlType;
         private XamlSerializer xamlSerializer;
         private XamlTypeInvoker xamlTypeInvoker;
 
-        public XamlInvoker(XamlSerializer xamlSerializer, XamlTypeInvoker xamlTypeInvoker, XamlType xamlType)
+        public XamlFactoryInvoker(XamlSerializer xamlSerializer, XamlTypeInvoker xamlTypeInvoker, XamlType xamlType)
         {
             this.xamlType = xamlType;
             this.xamlSerializer = xamlSerializer;
@@ -257,12 +261,12 @@ namespace Nine.Content.Pipeline.Xaml
             xamlTypeInvoker.AddToDictionary(instance, key, item);
         }
 
-        public override System.Reflection.MethodInfo GetAddMethod(XamlType contentType)
+        public override MethodInfo GetAddMethod(XamlType contentType)
         {
             return xamlTypeInvoker.GetAddMethod(contentType);
         }
 
-        public override System.Reflection.MethodInfo GetEnumeratorMethod()
+        public override MethodInfo GetEnumeratorMethod()
         {
             return xamlTypeInvoker.GetEnumeratorMethod();
         }
@@ -274,23 +278,27 @@ namespace Nine.Content.Pipeline.Xaml
 
         public override object CreateInstance(object[] arguments)
         {
+            object result = null;
             try
             {
-                if (xamlType.UnderlyingType == typeof(ContentReference))
-                    return (ObjectWriter.LastContentReference = xamlTypeInvoker.CreateInstance(arguments));
-                return xamlTypeInvoker.CreateInstance(arguments);
+                result = xamlTypeInvoker.CreateInstance(arguments);
             }
             catch (MissingMethodException e)
             {
-                var result = xamlSerializer.ResolveInstance(xamlType.UnderlyingType, arguments);
-                if (result == null)
-                    throw e;
-                return result;
+                result = xamlSerializer.ResolveInstance(xamlType.UnderlyingType, arguments);
             }
+
+            if (result == null)
+                throw new MissingMethodException();
+            if (result is MarkupExtension)
+                xamlSerializer.MarkupExtensions.Push((MarkupExtension)result);
+            return result;
         }
     }
+    #endregion
 
-    class SchemaContext : XamlSchemaContext, IContentReferenceProvider
+    #region SchemaContext
+    class SchemaContext : XamlSchemaContext
     {
         private XamlSerializer xamlSerializer;
 
@@ -300,38 +308,107 @@ namespace Nine.Content.Pipeline.Xaml
             this.xamlSerializer = xamlSerializer;
         }
 
+        public SchemaContext(XamlSerializer xamlSerializer)
+            : base(new XamlSchemaContext().ReferenceAssemblies)
+        {
+            this.xamlSerializer = xamlSerializer;
+        }
+
         public override XamlType GetXamlType(Type type)
         {
-            var xamlType = base.GetXamlType(type);
-            if (xamlType.ConstructionRequiresArguments && xamlType.UnderlyingType == typeof(Microsoft.Xna.Framework.Graphics.TextureCube))
-                return new XamlFactoryType(xamlSerializer, xamlType);
-            return xamlType;
-        }
-
-        object IContentReferenceProvider.ResolveContentReference(string name)
-        {
-            return xamlSerializer.ResolveContentReference(name);
+            return new XamlFactoryType(xamlSerializer, base.GetXamlType(type));
         }
     }
+    #endregion
 
-    class MarkupExtensionConverter : TypeConverter
+    #region InstanceDescriptorConverter
+    class InstanceDescriptorConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            if (destinationType == typeof(MarkupExtension))
+            if (destinationType == typeof(InstanceDescriptor))
                 return true;
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(MarkupExtension))
-            {
-                var markupExtension = XamlSerializer.SerializationData[value];
-                if (markupExtension != null)
-                    return markupExtension;
-            }
+            if (destinationType == typeof(InstanceDescriptor))
+                return new InstanceDescriptor(new NullConstructorInfo( value.GetType().GetConstructors()[0]), new object[0]);
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
+    #endregion
+
+    #region NullConstructorInfo
+    class NullConstructorInfo : ConstructorInfo
+    {
+        ConstructorInfo info;
+
+        public NullConstructorInfo(ConstructorInfo info)
+        {
+            this.info = info;
+        }
+
+        public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override MethodAttributes Attributes
+        {
+            get { return info.Attributes; }
+        }
+
+        public override MethodImplAttributes GetMethodImplementationFlags()
+        {
+            return info.GetMethodImplementationFlags();
+        }
+
+        public override ParameterInfo[] GetParameters()
+        {
+            return new ParameterInfo[0];
+        }
+
+        public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override RuntimeMethodHandle MethodHandle
+        {
+            get { return info.MethodHandle; }
+        }
+
+        public override Type DeclaringType
+        {
+            get { return info.DeclaringType; }
+        }
+
+        public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+        {
+            return info.GetCustomAttributes(attributeType, inherit);
+        }
+
+        public override object[] GetCustomAttributes(bool inherit)
+        {
+            return info.GetCustomAttributes(inherit);
+        }
+
+        public override bool IsDefined(Type attributeType, bool inherit)
+        {
+            return info.IsDefined(attributeType, inherit);
+        }
+
+        public override string Name
+        {
+            get { return info.Name; }
+        }
+
+        public override Type ReflectedType
+        {
+            get { return info.ReflectedType; }
+        }
+    }
+    #endregion
 }

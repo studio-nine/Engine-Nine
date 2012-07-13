@@ -22,17 +22,17 @@ namespace Nine.Studio.Shell.ViewModels
     public class ImporterView
     {
         public ICommand ImportCommand { get; private set; }
-        public string Category { get; private set; }
-        public IImporter Importers { get; private set; }
+        public IMetadata Metadata { get; private set; }
+        public IImporter Importer { get; private set; }
         public Editor Editor { get; private set; }
         public EditorView EditorView { get; private set; }
 
-        public ImporterView(EditorView editorView, IImporter importers)
+        public ImporterView(EditorView editorView, IImporter importer, IMetadata metadata)
         {
             this.EditorView = editorView;
             this.Editor = editorView.Editor;
-            this.Importers = importers;
-            //this.Category = importers.First().Category ?? importers.First().DisplayName;
+            this.Importer = importer;
+            this.Metadata = metadata;
             this.ImportCommand = new DelegateCommand(Import);
         }
 
@@ -41,44 +41,29 @@ namespace Nine.Studio.Shell.ViewModels
             OpenFileDialog open = new OpenFileDialog();
             open.Multiselect = true;
             open.Filter = BuildFilter();
-            open.Title = string.Format(Strings.ImportAsset, Category);
+            open.Title = string.Format(Strings.ImportAsset, Metadata.DisplayName);
             bool? result = open.ShowDialog();
             if (result.HasValue && result.Value)
             {
                 foreach (var fileName in open.FileNames)
                 {
-                    EditorView.ActiveProject.OpenProjectItem(fileName);
+                    EditorView.ActiveProject.OpenProjectItem(fileName, Importer);
                 }
             }
         }
 
         private string BuildFilter()
         {
-            throw new NotImplementedException();
-            /*
             StringBuilder result = new StringBuilder();
-            if (Importers.Count(d => d.FileExtensions != null && d.FileExtensions.Count() > 0) > 1)
+            if (Importer.FileExtensions != null && Importer.FileExtensions.Count() > 0)
             {
-                result.AppendFormat(Strings.AllSupportedFormat, Category);
+                result.AppendFormat(Strings.AssetDialogFilter, Metadata.DisplayName);
                 result.Append("|");
-                result.Append(string.Join("; ", Importers.SelectMany(i => i.FileExtensions ?? Enumerable.Empty<string>())
-                                                                 .Select(ext => "*" + ext.GetNormalizedFileExtension())
-                                                                 .Distinct()));
+                result.Append(string.Join("; ", Importer.FileExtensions.Select(ext => "*" + ext.GetNormalizedFileExtension())));
                 result.Append("|");
-            }
-            foreach (var documentImporter in Importers)
-            {
-                if (documentImporter.FileExtensions != null && documentImporter.FileExtensions.Count() > 0)
-                {
-                    result.AppendFormat(Strings.AssetDialogFilter, documentImporter.DisplayName);
-                    result.Append("|");
-                    result.Append(string.Join("; ", documentImporter.FileExtensions.Select(ext => "*" + ext.GetNormalizedFileExtension())));
-                    result.Append("|");
-                }
             }
             result.AppendFormat("{0}|*.*", Strings.AllFiles);
             return result.ToString();
-             */
         }
     }
 }

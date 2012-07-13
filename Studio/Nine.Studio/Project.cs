@@ -207,7 +207,7 @@ namespace Nine.Studio
                 for (int i = 0; i < documents.Length; i++)
                 {
                     var doc = documents[i];
-                    var fileName = doc.Descendants("FileName").Where(e => e.Parent == doc).First().Value;
+                    var fileName = doc.Attribute("FileName").Value;
 
                     Editor.NotifyProgressChanged(fileName, 1.0f * (i + 1) / documents.Length);
 
@@ -217,9 +217,9 @@ namespace Nine.Studio
                     {
                         foreach (var docReference in docReferences.Descendants("Reference"))
                         {
-                            var projectName = docReference.Descendants("Project").FirstOrDefault();
-                            var referenceProject = projectName == null ? this : Editor.OpenProject(projectName.Value);
-                            document.AddReference(referenceProject.Import(docReference.Descendants("FileName").First().Value));
+                            var projectName = docReference.Attribute("Project").Value;
+                            var referenceProject = projectName == null ? this : Editor.OpenProject(projectName);
+                            document.AddReference(referenceProject.Import(docReference.Attribute("FileName").Value));
                         }
                     }
                     document.Tag = LoadTag(doc);
@@ -294,73 +294,15 @@ namespace Nine.Studio
 
         private void SaveProject(Stream stream)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            XmlWriter writer = XmlWriter.Create(stream, settings);
-            writer.WriteStartDocument();
-            writer.WriteStartElement("Project");
-            writer.WriteAttributeString("Version", Global.VersionString);
-            WriteProjectItems(writer);
-            WriteReferences(writer);
-            WriteTag(writer, Tag);
-            writer.WriteEndElement();
-            writer.WriteEndDocument();
-            writer.Flush();
-        }
+            new XDocument(
+                new XElement("Project", new XAttribute("Version", Global.VersionString),
+                    new XElement("ProjectItems", from doc in ProjectItems select 
+                        new XElement("ProjectItem",
+                            new XAttribute("FileName", doc.RelativeFilename),
+                            new XElement("References", from reference in doc.References select
+                                new XElement("Reference", new XAttribute("FileName", reference.FileName)
+                                                        , new XAttribute("Project", reference.Project.FileName))))))).Save(stream);
 
-        private void WriteProjectItems(XmlWriter writer)
-        {
-            if (ProjectItems.Count > 0)
-            {
-                writer.WriteStartElement("ProjectItems");
-                foreach (var doc in ProjectItems)
-                {
-                    Assert.IsNeitherNullNorEmpty(doc.FileName);
-
-                    writer.WriteStartElement("ProjectItem");
-                    writer.WriteElementString("FileName", doc.RelativeFilename);
-                    if (doc.References.Count > 0)
-                    {
-                        writer.WriteStartElement("References");
-                        foreach (var reference in doc.References)
-                        {
-                            writer.WriteStartElement("Reference");
-                            writer.WriteElementString("FileName", reference.FileName);
-                            if (reference.Project != this)
-                                writer.WriteElementString("Project", reference.Project.FileName);
-                            writer.WriteEndElement();
-                        }
-                        writer.WriteEndElement();
-                    }
-                    WriteTag(writer, doc.Tag);
-                    writer.WriteEndElement();
-                    writer.Flush();
-                }
-                writer.WriteEndElement();
-            }
-        }
-
-        private void WriteReferences(XmlWriter writer)
-        {
-            if (References.Count > 0)
-            {
-                writer.WriteStartElement("References");
-                foreach (var reference in References)
-                    writer.WriteElementString("Reference", reference.FileName);
-                writer.WriteEndElement();
-            }
-        }
-
-        private void WriteTag(XmlWriter writer, object tag)
-        {
-            if (tag != null && tag.GetType().IsSerializable)
-            {
-                writer.WriteStartElement("Tag");
-                writer.WriteAttributeString("Type", tag.GetType().AssemblyQualifiedName);
-                new XmlSerializer(tag.GetType()).Serialize(writer, tag);
-                writer.WriteEndElement();
-                writer.Flush();
-            }
         }
         #endregion
 
@@ -405,7 +347,6 @@ namespace Nine.Studio
         /// </summary>
         public ProjectItem Import(string fileName, IImporter importer)
         {
-            Assert.CheckThread();
             Verify.IsNotNull(importer, "importer");
             Verify.IsValidPath(fileName, "fileName");
 
@@ -430,7 +371,6 @@ namespace Nine.Studio
         /// </summary>
         public ProjectItem Import(string fileName)
         {
-            Assert.CheckThread();
             Verify.FileExists(fileName, "fileName");
 
             List<string> dependencies = new List<string>();
@@ -487,8 +427,6 @@ namespace Nine.Studio
 
         private void NotifyPropertyChanged(string propertyName)
         {
-            Assert.CheckThread();
-
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }

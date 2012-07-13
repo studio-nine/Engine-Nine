@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 
 #endregion
 
@@ -46,6 +47,18 @@ namespace Nine.Studio.Extensibility
     /// </summary>
     public abstract class Importer<T> : IImporter
     {
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return graphicsDevice; }
+        }
+        private static GraphicsDevice graphicsDevice;
+
+        static Importer()
+        {
+            // Force graphics device service to be initialized upfront to walkaround a bug in Win8.
+            graphicsDevice = Nine.Graphics.GraphicsDeviceService.AddRef().GraphicsDevice;
+        }
+
         /// <summary>
         /// Gets the dependencies.
         /// </summary>

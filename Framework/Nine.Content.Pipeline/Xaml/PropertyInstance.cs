@@ -14,7 +14,7 @@ using System.Xaml;
 
 namespace Nine.Content.Pipeline.Xaml
 {
-    struct PropertyInstance : IEquatable<PropertyInstance>
+    public struct PropertyInstance : IEquatable<PropertyInstance>
     {
         public object Target;
         public string TargetProperty;

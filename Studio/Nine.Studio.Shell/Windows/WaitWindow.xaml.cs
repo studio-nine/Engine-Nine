@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Nine.Studio.Shell.Windows.Controls;
+using Nine.Studio.Shell.Windows;
 
 namespace Nine.Studio.Shell.Windows
 {

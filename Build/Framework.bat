@@ -19,8 +19,8 @@ for /f "delims=" %%i in ('dir /b /a-d "*.tt"') do (
 
 popd
 
-call %msbuild% %flags% Framework\Nine.sln
-call %msbuild% %flags% Framework\Nine.Silverlight.sln
+call %msbuild% %flags% Framework\Nine.Windows.sln
+REM call %msbuild% %flags% Framework\Nine.Silverlight.sln
 
 popd
 

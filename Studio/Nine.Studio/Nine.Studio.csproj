@@ -50,6 +50,7 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="Nine.Content.Pipeline, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
+    <Reference Include="Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -73,14 +74,13 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\DrawingSurface.cs" />
     <Compile Include="Controls\GameHost.cs" />
-    <Compile Include="Controls\GraphicsDeviceService.cs" />
     <Compile Include="Controls\Interop.cs" />
     <Compile Include="Controls\ServiceContainer.cs" />
     <Compile Include="Extensibility\Metadata.cs" />
     <Compile Include="Serializers\FbxModelImporter.cs" />
-    <Compile Include="Serializers\PipelineDocumentImporter.cs" />
+    <Compile Include="Serializers\PipelineImporter.cs" />
     <Compile Include="Serializers\TextureImporter.cs" />
-    <Compile Include="Serializers\XamlDocumentSerializer.cs" />
+    <Compile Include="Serializers\XamlSerializer.cs" />
     <Compile Include="Serializers\XModelImporter.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="Utility\Debug.cs" />
@@ -107,8 +107,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializers\TextDocumentSerializer.cs" />
-    <Compile Include="Serializers\XmlDocumentSerializer.cs" />
+    <Compile Include="Serializers\TextSerializer.cs" />
+    <Compile Include="Serializers\XmlSerializer.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

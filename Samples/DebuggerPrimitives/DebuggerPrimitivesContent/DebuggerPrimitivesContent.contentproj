@@ -33,15 +33,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Models\Peon\Peon.X">
-      <Link>Peon.X</Link>
-      <Name>Peon</Name>
-      <Importer>XImporter</Importer>
-      <Processor>GeometryProcessor</Processor>
-      <ProcessorParameters_Scale>0.06</ProcessorParameters_Scale>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Content\Textures\lightning.dds">
       <Link>lightning.dds</Link>
       <Name>lightning</Name>

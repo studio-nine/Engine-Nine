@@ -90,15 +90,15 @@ namespace Nine.Graphics.PostEffects
         /// <summary>
         /// Draws this pass using the specified drawing context.
         /// </summary>
-        public override void Draw(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             if (Material == null)
-                DrawWithoutCombineMaterial(context, drawables, startIndex, length);
+                DrawWithoutCombineMaterial(context, drawables);
             else
-                DrawWithCombineMaterial(context, drawables, startIndex, length);
+                DrawWithCombineMaterial(context, drawables);
         }
 
-        private void DrawWithCombineMaterial(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        private void DrawWithCombineMaterial(DrawingContext context, IList<IDrawableObject> drawables)
         {
             RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
@@ -122,7 +122,7 @@ namespace Nine.Graphics.PostEffects
                     intermediate.Begin();
 
                     workingPass.InputTexture = previous;
-                    workingPass.Draw(context, drawables, startIndex, length);
+                    workingPass.Draw(context, drawables);
 
                     intermediate.End();
                     RenderTargetPool.Unlock(previous);
@@ -163,7 +163,7 @@ namespace Nine.Graphics.PostEffects
             passResults.Clear();
         }
 
-        private void DrawWithoutCombineMaterial(DrawingContext context, IDrawableObject[] drawables, int startIndex, int length)
+        private void DrawWithoutCombineMaterial(DrawingContext context, IList<IDrawableObject> drawables)
         {
             RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
@@ -187,7 +187,7 @@ namespace Nine.Graphics.PostEffects
                     intermediate.Begin();
 
                     workingPass.InputTexture = previous;
-                    workingPass.Draw(context, drawables, startIndex, length);
+                    workingPass.Draw(context, drawables);
 
                     intermediate.End();
                     RenderTargetPool.Unlock(previous);
@@ -224,7 +224,7 @@ namespace Nine.Graphics.PostEffects
                 {
                     lastEffects[i].BlendState = passes[p].BlendState;
                     lastEffects[i].InputTexture = passResults[i];
-                    lastEffects[i].Draw(context, drawables, startIndex, length);
+                    lastEffects[i].Draw(context, drawables);
 
                     RenderTargetPool.Unlock(passResults[i]);
                     i++;

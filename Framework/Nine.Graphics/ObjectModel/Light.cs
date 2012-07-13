@@ -65,10 +65,6 @@ namespace Nine.Graphics.ObjectModel
         internal List<IDrawableObject> AffectedDrawables;
         internal List<IDrawableObject> AffectedShadowCasters;
 
-#if !WINDOWS_PHONE
-        internal ShadowMap ShadowMap;
-#endif
-
         /// <summary>
         /// For now we don't allow custom light types.
         /// </summary>
@@ -116,7 +112,7 @@ namespace Nine.Graphics.ObjectModel
             //scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
             if (AffectedShadowCasters.Count <= 0)
                 return;
-
+            /*
             if (ShadowMap == null || ShadowMap.Size != context.Settings.ShadowMapResolution)
             {
                 if (ShadowMap != null)
@@ -147,7 +143,7 @@ namespace Nine.Graphics.ObjectModel
                 context.Projection = projection;
             }
             ShadowMap.End();
-
+            */
             AffectedShadowCasters.Clear();
 #endif
         }

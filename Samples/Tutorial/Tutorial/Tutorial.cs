@@ -8,6 +8,7 @@
 
 #region Using Directives
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,7 +17,6 @@ using Nine.Components;
 using Nine.Graphics;
 using Nine.Graphics.ObjectModel;
 using Nine.Physics;
-
 #endregion
 
 namespace Tutorial

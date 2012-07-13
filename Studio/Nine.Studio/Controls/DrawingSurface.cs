@@ -16,6 +16,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics;
 #endregion
 
 namespace Nine.Studio.Controls
@@ -47,6 +48,9 @@ namespace Nine.Studio.Controls
     /// </remarks>
     public class DrawingSurface : ContentControl, IDisposable
     {
+        // TODO: Cannot change this profile after the surface is loaded
+        public GraphicsProfile GraphicsProfile { get; set; }
+
         public event EventHandler<DrawEventArgs> Draw;
         
         internal GraphicsDeviceService GraphicsDeviceService;
@@ -81,6 +85,7 @@ namespace Nine.Studio.Controls
 
         public DrawingSurface()
         {
+            GraphicsProfile = GraphicsProfile.HiDef;
             AddChild(Image = new Image() { Source = D3dImage = new D3DImage() });
             Image.Stretch = Stretch.None;
             Image.Source = D3dImage = new D3DImage();
@@ -100,7 +105,7 @@ namespace Nine.Studio.Controls
         {
             if (GraphicsDeviceService == null)
             {
-                GraphicsDeviceService = GraphicsDeviceService.AddRef((int)ActualWidth, (int)ActualHeight);
+                GraphicsDeviceService = GraphicsDeviceService.AddRef(IntPtr.Zero, (int)ActualWidth, (int)ActualHeight, GraphicsProfile);
                 GraphicsDeviceService.DeviceResetting += GraphicsDeviceService_DeviceResetting;
 
                 D3dImage.Lock();

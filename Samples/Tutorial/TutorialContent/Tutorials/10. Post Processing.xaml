@@ -9,13 +9,16 @@
              Transform.Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
-	
+
+<BlurEffect BlurAmount="5" />
+
+<!--
     <PostEffect>	
 		<CustomMaterial xml:space="preserve">
 			<CustomMaterial.Code>
             <![CDATA[
 			sampler2D Texture:register(s0);
-			
+		
 			float4 PS(float2 uv:TEXCOORD0):COLOR0
 			{
 				float4 color = tex2D(Texture, uv);
@@ -35,6 +38,6 @@
 		</CustomMaterial>
     </PostEffect>
 	
-	<BloomEffect />
-	
+	<BloomEffect BlurAmount="5" Threshold="0"/>
+	-->
 </Scene>

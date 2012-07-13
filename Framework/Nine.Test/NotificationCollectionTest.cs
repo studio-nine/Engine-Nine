@@ -321,7 +321,7 @@ namespace Nine.Test
                 1, 2, 3, 4, 5, 6, 7
             };
             target.EnableManipulationWhenEnumerating = true;
-            
+
             foreach (int a in target)
             {
                 target.Remove(1);
@@ -363,33 +363,31 @@ namespace Nine.Test
         [TestMethod]
         public void SerializationTest()
         {
-            Test(() =>
+            var world = new World();
+            world.Add(new WorldObject() { Name = "aaaa" });
+            //world.Add(new WorldObject(new object[] { 89, "xx", }) { Name = "Yan" });
+            //world.Add(new WorldObject(new object[] { 87, "xy", }) { Name = "Fei" });
+
+            var file = BuildObjectUsingDefaultContentProcessor(world);
+            RunTheBuild();
+
+            var loaded = Content.Load<World>(file);
+
+            /*
+            using (var writer = XmlWriter.Create("C:\\a.xml"))
             {
-                var world = new World();
-                world.Add(new WorldObject() { Name = "aaaa" });
-                //world.Add(new WorldObject(new object[] { 89, "xx", }) { Name = "Yan" });
-                //world.Add(new WorldObject(new object[] { 87, "xy", }) { Name = "Fei" });
+                IntermediateSerializer.Serialize(writer, world, null);
+            }
 
-                var file = BuildObjectUsingDefaultContentProcessor(world);
-                RunTheBuild();
-
-                using (var writer = XmlWriter.Create("C:\\a.xml"))
-                {
-                    IntermediateSerializer.Serialize(writer, world, null);
-                }
-
-                var loaded = Content.Load<World>(file);
-                /*
-                Assert.AreEqual(world.WorldObjects.Count, loaded.WorldObjects.Count);
-                Assert.AreEqual(world.WorldObjects[0].Name, loaded.WorldObjects[0].Name);
-                Assert.AreEqual(world.WorldObjects[0].Components.Count, loaded.WorldObjects[0].Components.Count);
-                Assert.AreEqual(world.WorldObjects[0].Components[0], loaded.WorldObjects[0].Components[0]);
-                Assert.AreEqual(world.WorldObjects[0].Components[1], loaded.WorldObjects[0].Components[1]);
-                Assert.AreEqual(world.WorldObjects[1].Name, loaded.WorldObjects[1].Name);
-                Assert.AreEqual(world.WorldObjects[1].Components.Count, loaded.WorldObjects[1].Components.Count);
-                Assert.AreEqual(world.WorldObjects[1].Components[0], loaded.WorldObjects[1].Components[0]);
-                 */
-            });
+            Assert.AreEqual(world.WorldObjects.Count, loaded.WorldObjects.Count);
+            Assert.AreEqual(world.WorldObjects[0].Name, loaded.WorldObjects[0].Name);
+            Assert.AreEqual(world.WorldObjects[0].Components.Count, loaded.WorldObjects[0].Components.Count);
+            Assert.AreEqual(world.WorldObjects[0].Components[0], loaded.WorldObjects[0].Components[0]);
+            Assert.AreEqual(world.WorldObjects[0].Components[1], loaded.WorldObjects[0].Components[1]);
+            Assert.AreEqual(world.WorldObjects[1].Name, loaded.WorldObjects[1].Name);
+            Assert.AreEqual(world.WorldObjects[1].Components.Count, loaded.WorldObjects[1].Components.Count);
+            Assert.AreEqual(world.WorldObjects[1].Components[0], loaded.WorldObjects[1].Components[0]);
+             */
         }
     }
 }

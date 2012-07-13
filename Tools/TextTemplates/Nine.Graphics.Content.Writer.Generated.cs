@@ -480,6 +480,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -523,6 +524,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -547,44 +549,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         }
     }
     /// <summary>
-    /// Content writer for <c>AmbientLightMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class AmbientLightMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.AmbientLightMaterial>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.AmbientLightMaterial value)
-        {
-            WriteObject(output, value, "Texture", value.Texture);
-            output.Write(value.IsTransparent);
-            output.Write(value.IsAdditive);
-            output.Write(value.TwoSided);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.AmbientLightMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.AmbientLightMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>AntiAliasMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -599,6 +563,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -645,6 +610,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -680,13 +646,12 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.BlurMaterial value)
         {
             output.Write(value.BlurAmount);
-            output.Write(value.Step);
             output.Write(value.Direction);
-            output.Write(value.SampleCount);
             WriteObject(output, value, "Texture", value.Texture);
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -725,6 +690,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -763,6 +729,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -837,6 +804,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -875,6 +843,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -913,6 +882,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -951,6 +921,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -989,6 +960,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1027,6 +999,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1061,10 +1034,14 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.DepthMaterial value)
         {
+            output.Write(value.SkinningEnabled);
+            output.Write(value.TextureEnabled);
+            output.Write(value.ReferenceAlpha);
             WriteObject(output, value, "Texture", value.Texture);
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1099,10 +1076,14 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.DepthOfFieldMaterial value)
         {
+            output.Write(value.FocalLength);
+            output.Write(value.FocalPlane);
+            output.Write(value.FocalDistance);
             WriteObject(output, value, "Texture", value.Texture);
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1127,44 +1108,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         }
     }
     /// <summary>
-    /// Content writer for <c>DirectionalLightMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class DirectionalLightMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.DirectionalLightMaterial>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.DirectionalLightMaterial value)
-        {
-            WriteObject(output, value, "Texture", value.Texture);
-            output.Write(value.IsTransparent);
-            output.Write(value.IsAdditive);
-            output.Write(value.TwoSided);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.DirectionalLightMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.DirectionalLightMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>DualTextureMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1184,6 +1127,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1222,6 +1166,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1267,6 +1212,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1305,6 +1251,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1343,6 +1290,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1462,6 +1410,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1500,6 +1449,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1524,44 +1474,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         }
     }
     /// <summary>
-    /// Content writer for <c>PointLightMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class PointLightMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.PointLightMaterial>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.PointLightMaterial value)
-        {
-            WriteObject(output, value, "Texture", value.Texture);
-            output.Write(value.IsTransparent);
-            output.Write(value.IsAdditive);
-            output.Write(value.TwoSided);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.PointLightMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.PointLightMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>RadialBlurMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1576,6 +1488,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1614,6 +1527,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1652,6 +1566,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1698,6 +1613,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1722,44 +1638,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         }
     }
     /// <summary>
-    /// Content writer for <c>SpotLightMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class SpotLightMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.SpotLightMaterial>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.SpotLightMaterial value)
-        {
-            WriteObject(output, value, "Texture", value.Texture);
-            output.Write(value.IsTransparent);
-            output.Write(value.IsAdditive);
-            output.Write(value.TwoSided);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.SpotLightMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.SpotLightMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>ThresholdMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1775,6 +1653,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1813,6 +1692,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1851,6 +1731,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -2464,6 +2345,41 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Materials.MaterialParts.SpecularMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>TangentTransformMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class TangentTransformMaterialPartWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart value)
+        {
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            WriteObject(output, value, "Name", value.Name);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.TangentTransformMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -3771,6 +3687,122 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.PostEffects.BloomEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>BlurEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BlurEffectWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.BlurEffect>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.BlurEffect value)
+        {
+            output.Write(value.BlurAmount);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.BlurEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.BlurEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>HighDynamicRangeEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class HighDynamicRangeEffectWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.HighDynamicRangeEffect>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.HighDynamicRangeEffect value)
+        {
+            output.Write(value.Threshold);
+            output.Write(value.BlurAmount);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.HighDynamicRangeEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.HighDynamicRangeEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>LuminanceChain</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class LuminanceChainWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.LuminanceChain>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.LuminanceChain value)
+        {
+            {
+                output.Write(value.Effects.Count);
+                for (var i = 0; i < value.Effects.Count; i++)
+                    output.WriteObject(value.Effects[i]);
+            }
+            WriteObject(output, value, "TextureUsage", value.TextureUsage);
+            WriteObject(output, value, "BlendState", value.BlendState);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
+            output.WriteObject(value.View);
+            output.WriteObject(value.Projection);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.LuminanceChainReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.LuminanceChain, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>

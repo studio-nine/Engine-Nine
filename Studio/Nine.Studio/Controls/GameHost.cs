@@ -24,6 +24,9 @@ namespace Nine.Studio.Controls
 {
     public partial class GameHost : ContentControl
     {
+        // TODO: Cannot change this profile after the surface is loaded
+        public GraphicsProfile GraphicsProfile { get; set; }
+
         public Game Game
         {
             get { return (Game)GetValue(GameProperty); }
@@ -42,11 +45,18 @@ namespace Nine.Studio.Controls
 
         public GameHost()
         {
-            AddChild(Surface = new DrawingSurface());
+            GraphicsProfile = GraphicsProfile.HiDef;
+            Loaded += new RoutedEventHandler(GameHost_Loaded);
+        }
 
-            Surface.Draw += Surface_Draw;
-
-            RedirectInput();
+        private void GameHost_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (Surface == null)
+            {
+                AddChild(Surface = new DrawingSurface() { GraphicsProfile = GraphicsProfile });
+                Surface.Draw += Surface_Draw;
+                RedirectInput();
+            }
         }
 
         public void SuppressUpdate()

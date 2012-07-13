@@ -81,6 +81,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="Content\XamlSerializerTest.cs" />
     <Compile Include="Content\DefaultContentProcessorTest.cs" />
     <Compile Include="ContentBuilder.cs" />
     <Compile Include="Content\PipelineBuilderTest.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="UniformGridTest.cs" />
     <Compile Include="GridObjectManagerTest.cs" />
     <Compile Include="QuadTreeTest.cs" />
-    <Compile Include="TestGame.cs" />
     <Compile Include="InputTest.cs" />
     <Compile Include="NotificationCollectionTest.cs" />
     <Compile Include="Animations\KeyframeAnimationTest.cs" />

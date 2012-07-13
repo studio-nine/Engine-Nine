@@ -92,6 +92,11 @@ namespace Nine.Graphics.Materials
         public bool TwoSided { get; set; }
 
         /// <summary>
+        /// Gets or sets the next material to form a multi pass material chain.
+        /// </summary>
+        public Material NextMaterial { get; set; }
+
+        /// <summary>
         /// Occurs when a material usage is not found.
         /// </summary>
         public event Func<MaterialUsage, Material, Material> MaterialResolve;

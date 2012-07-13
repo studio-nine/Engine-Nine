@@ -320,7 +320,7 @@ namespace Nine.Graphics.Drawing
                         if (i == lastPass)
                             GraphicsDevice.Clear(Settings.BackgroundColor);
 
-                        pass.Draw(this, dynamicDrawables.Elements, 0, dynamicDrawables.Count);
+                        pass.Draw(this, dynamicDrawables);
                     }
                     finally
                     {

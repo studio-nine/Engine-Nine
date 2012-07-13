@@ -354,7 +354,7 @@ namespace Nine.Content.Pipeline
 
         private static void ApplyParameters(object value, OpaqueDataDictionary parameters)
         {
-            if (value == null)
+            if (value == null || parameters == null)
                 return;
 
             var type = value.GetType();

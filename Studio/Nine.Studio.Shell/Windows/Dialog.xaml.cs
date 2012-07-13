@@ -72,7 +72,7 @@ namespace Nine.Studio.Shell.Windows
             PropertyGrid.SelectedObject = content;
             PropertyGrid.Visibility = content != null ? Visibility.Visible : Visibility.Collapsed;
 
-            return Task<string>.Factory.StartNew(RunDialog);
+            return Task<string>.Factory.StartNew(RunDialog, new CancellationToken(), TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 
         private void OptionButton_Click(object sender, RoutedEventArgs e)

@@ -217,13 +217,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\01. Empty Scene.xaml">
+    <Compile Include="Tutorials\01. Empty Scene.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>01. Empty Scene</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\Tutorials.manifest">
@@ -233,13 +233,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\02. Models.xaml">
+    <Compile Include="Tutorials\02. Models.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>02. Models</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\08. Shadows.xaml">
@@ -269,13 +269,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\09. Particle System.xaml">
+    <Compile Include="Tutorials\09. Particle System.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>09. Particle System</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\07. Lights.xaml">
@@ -339,22 +339,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\03. Materials.xaml">
+    <Compile Include="Tutorials\03. Materials.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>03. Materials</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\04. Primitives.xaml">
+    <Compile Include="Tutorials\04. Primitives.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>04. Primitives</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

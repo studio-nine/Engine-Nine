@@ -127,15 +127,6 @@ namespace Nine.Graphics
 
         private HashSet<ISpatialQueryable> shadowCastersInLightFrustum = new HashSet<ISpatialQueryable>();
         private HashSet<ISpatialQueryable> shadowCastersInViewFrustum = new HashSet<ISpatialQueryable>();
-        
-        private HashSet<ParticleEffect> particleEffects = new HashSet<ParticleEffect>();
-
-#if WINDOWS || XBOX
-        private GraphicsBuffer graphicsBuffer;
-        private DeferredEffect deferredEffect;
-#endif
-        private PostEffect screenEffect;
-
         #endregion
 
         #region Initialization

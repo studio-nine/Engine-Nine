@@ -68,13 +68,13 @@
 
         <StackPanel x:Name="MainMenu" Grid.Row="1" Grid.ColumnSpan="{Binding ColumnDefinitions.Count, ElementName=LayoutRoot}" HorizontalAlignment="Left" Orientation="Horizontal">
             <RadioButton x:Name="FileButton" Content="{x:Static my:Strings.Nine}" IsChecked="True" Style="{StaticResource RadioButton-Product}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" IsEnabled="{Binding Factories.Count}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <RadioButton x:Name="EditButton" Content="{x:Static my:Strings.Edit}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <RadioButton x:Name="ViewButton" Content="{x:Static my:Strings.View}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <RadioButton x:Name="SceneButton" Content="{x:Static my:Strings.Scene}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <RadioButton x:Name="LibraryButton" Content="{x:Static my:Strings.Library}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
-            <ToggleButton x:Name="PropertiesButton" IsChecked="True" Content="{x:Static my:Strings.Properties}" Style="{StaticResource ToggleButton-Menu}" nine:WindowChrome.IsHitTestVisibleInChrome="True" Background="{x:Null}" />
-            <Button x:Name="PlayButton" Content="{x:Static my:Strings.Play}" Style="{StaticResource Button-Menu}" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <RadioButton x:Name="CreateButton" Content="{x:Static my:Strings.Create}" Visibility="{Binding Factories.Count, Converter={StaticResource IntToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <RadioButton x:Name="EditButton" Content="{x:Static my:Strings.Edit}" Visibility="{Binding Tools.Count, Converter={StaticResource BooleanToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <RadioButton x:Name="ViewButton" Content="{x:Static my:Strings.View}" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <RadioButton x:Name="SceneButton" Content="{x:Static my:Strings.Scene}" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <RadioButton x:Name="LibraryButton" Content="{x:Static my:Strings.Library}" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Style="{StaticResource RadioButton-Menu}" GroupName="MainMenu" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
+            <ToggleButton x:Name="PropertiesButton" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Content="{x:Static my:Strings.Properties}" Style="{StaticResource ToggleButton-Menu}" nine:WindowChrome.IsHitTestVisibleInChrome="True" Background="{x:Null}" />
+            <Button x:Name="PlayButton" Visibility="{Binding ActiveProject, Converter={StaticResource NullToVisibilityConverter}}" Content="{x:Static my:Strings.Play}" Style="{StaticResource Button-Menu}" nine:WindowChrome.IsHitTestVisibleInChrome="True" />
         </StackPanel>
 
         <StackPanel x:Name="ToolsMenu" Grid.Row="3" Grid.Column="0" Margin="50,20,0,50">
@@ -101,6 +101,13 @@
                     </CollectionViewSource.Source>
                 </CollectionViewSource>
                 
+                <!-- CollectionViewSource for Importers -->
+                <CollectionViewSource x:Key="ImportersViewSource" Source="{Binding Importers}">
+                    <CollectionViewSource.GroupDescriptions>
+                        <nine:NamedGroupDescription GroupName="{x:Static my:Strings.Import}" />
+                    </CollectionViewSource.GroupDescriptions>
+                </CollectionViewSource>
+                
                 <!-- CollectionViewSource for Recent Files -->
                 <CollectionViewSource x:Key="RecentProjectsViewSource" Source="{Binding RecentProjects}">
                     <CollectionViewSource.GroupDescriptions>
@@ -114,6 +121,18 @@
                       Visibility="{Binding IsChecked, ElementName=FileButton, Converter={StaticResource BooleanToVisibilityConverter}}"
                       nine:GroupStyleBehavior.GroupStyle="{StaticResource GroupStyle-Metro}"
                       nine:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
+            </ListView>
+
+            <ListView x:Name="ImportMenu" Style="{StaticResource ListView-Tools}" 
+                      ItemsSource="{Binding Source={StaticResource ImportersViewSource}}"
+                      Visibility="{Binding IsChecked, ElementName=FileButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      nine:GroupStyleBehavior.GroupStyle="{StaticResource GroupStyle-Metro}"
+                      nine:ResourceBehavior.Resource="{StaticResource ListViewItem-Tools}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource Button-ToolsMenu}" Content="{Binding Metadata.DisplayName}" Command="{Binding ImportCommand}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
             
             <ListView x:Name="RecentProjectsMenu" Style="{StaticResource ListView-Tools}" 
@@ -140,6 +159,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+
+            <ctrl:Library x:Name="LibraryMenu" Visibility="{Binding IsChecked, ElementName=LibraryButton, Converter={StaticResource BooleanToVisibilityConverter}}"  />
+            
         </StackPanel>
 
         <!--

@@ -57,9 +57,8 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         internal bool AlwaysMergePrimitives = false;
 
-#if DEBUG
         private bool hasPrimitiveBegin = false;
-#endif
+
         private GraphicsDevice graphics;
         private List<Primitive<VertexPositionColorTexture>> primitives;
         
@@ -118,11 +117,10 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world)
         {
-#if DEBUG
-            if (!hasPrimitiveBegin)
+            if (hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
             hasPrimitiveBegin = true;
-#endif
+
             currentPrimitive = new PrimitiveGroupEntry();
             currentPrimitive.World = world;
             currentPrimitive.PrimitiveType = primitiveType;
@@ -149,10 +147,9 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void AddVertex(ref Vector3 position, Color color)
         {
-#if DEBUG
             if (!hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
-#endif
+
             var index = baseSegmentVertex + currentVertex;
             if (index >= vertexData.Length)
                 Array.Resize(ref vertexData, vertexData.Length * 2);
@@ -179,10 +176,9 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void AddVertex(ref Vector3 position, Color color, ref Vector2 texCoord)
         {
-#if DEBUG
             if (!hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
-#endif
+
             var index = baseSegmentVertex + currentVertex;
             if (index >= vertexData.Length)
                 Array.Resize(ref vertexData, vertexData.Length * 2);
@@ -201,10 +197,9 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void AddVertex(ref VertexPositionColorTexture vertex)
         {
-#if DEBUG
             if (!hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
-#endif
+
             var index = baseSegmentVertex + currentVertex;
             if (index >= vertexData.Length)
                 Array.Resize(ref vertexData, vertexData.Length * 2);
@@ -221,12 +216,11 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void AddIndex(int index)
         {
-#if DEBUG
             if (!hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);        
             if (index > ushort.MaxValue)
                 throw new ArgumentOutOfRangeException("index");
-#endif
+
             if (baseSegmentIndex + currentIndex >= indexData.Length)
                 Array.Resize(ref indexData, indexData.Length * 2);
 
@@ -263,6 +257,7 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void EndPrimitive()
         {
+            hasPrimitiveBegin = false;
             currentPrimitive.Segment = currentSegment;
             currentPrimitive.VertexCount = currentVertex - currentPrimitive.StartVertex;
             currentPrimitive.IndexCount = currentIndex - currentPrimitive.StartIndex;
@@ -280,9 +275,6 @@ namespace Nine.Graphics.Primitives
             }
 
             batches.Add(currentPrimitive);
-#if DEBUG
-            hasPrimitiveBegin = false;
-#endif
         }
 
         private static bool CanMerge(ref PrimitiveGroupEntry oldBatch, ref PrimitiveGroupEntry newBatch)
@@ -327,11 +319,9 @@ namespace Nine.Graphics.Primitives
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
-#if DEBUG
             if (hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);    
-#endif   
-         
+
             var count = batches.Count;
             for (int i = 0; i < count; i++)
                 DrawBatch(context, ref batches.Elements[i], material);

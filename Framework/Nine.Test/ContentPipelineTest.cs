@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+using Nine.Graphics;
 
 namespace Nine
 {
@@ -21,22 +22,19 @@ namespace Nine
     public class ContentPipelineTest : GraphicsTest
     {
         internal ContentBuilder ContentBuilder { get; private set; }
-        public ContentManager Content { get { return Game.Content; } }
+        public ContentManager Content { get; private set; }
 
         [TestInitialize()]
-        public override void Initialize()
+        public void Initialize()
         {
-            base.Initialize();
-
             ContentBuilder = new ContentBuilder();
+            Content = new ContentManager(GraphicsDeviceService.AddRef());
             Content.RootDirectory = ContentBuilder.OutputDirectory;
         }
 
         [TestCleanup()]
-        public override void Cleanup()
+        public void Cleanup()
         {
-            base.Cleanup();
-
             ContentBuilder.Clear();
             ContentBuilder.Dispose();
         }

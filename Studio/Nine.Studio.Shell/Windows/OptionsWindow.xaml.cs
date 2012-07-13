@@ -10,7 +10,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using Nine.Studio.Shell.Windows.Controls;
+using Nine.Studio.Shell.Windows;
 #endregion
 
 namespace Nine.Studio.Shell.Windows

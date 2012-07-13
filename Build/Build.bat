@@ -9,8 +9,8 @@ call Framework
 call Test
 call Editor
 call Samples
-call Tools
-call Documentation
-call Installer
+REM call Tools
+REM call Documentation
+REM call Installer
 
 endlocal

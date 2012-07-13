@@ -16,6 +16,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Nine.Studio.Shell.ViewModels;
+using System.Threading;
+using System.Windows.Threading;
 
 #endregion
 
@@ -38,17 +40,17 @@ namespace Nine.Studio.Shell.Windows
             InitializeComponent();
         }
 
-        public Task<string> ShowDialogTaskAsync(string title, string description, params string[] options)
+        public Task<string> ShowDialogAsync(string title, string description, params string[] options)
         {
-            return ShowDialogTaskAsync(title, description, null, dialogDock, options);
+            return ShowDialogAsync(title, description, null, dialogDock, options);
         }
 
         public Task<string> ShowDialogAsync(string title, string description, object content, params string[] options)
         {
-            return ShowDialogTaskAsync(title, description, content, dialogDock, options);
+            return ShowDialogAsync(title, description, content, dialogDock, options);
         }
 
-        public Task<string> ShowDialogTaskAsync(string title, string description, object content, Dock dock, params string[] options)
+        public Task<string> ShowDialogAsync(string title, string description, object content, Dock dock, params string[] options)
         {
             Dialog dialog = new Dialog();
             DialogContainer.Children.Add(dialog);

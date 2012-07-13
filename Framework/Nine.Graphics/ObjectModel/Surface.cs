@@ -60,25 +60,25 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public int PatchCountX
         {
-            get { return patchCountX; }
+            get { EnsureHeightmapUpToDate(); return patchCountX; }
         }
-        private int patchCountX;
+        internal int patchCountX;
 
         /// <summary>
         /// Gets the count of patches along the y axis.
         /// </summary>
         public int PatchCountY
         {
-            get { return patchCountY; }
+            get { EnsureHeightmapUpToDate(); return patchCountY; }
         }
-        private int patchCountY;
+        internal int patchCountY;
 
         /// <summary>
         /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
         /// </summary>
         public int SegmentCountX
         {
-            get { return segmentCountX; }
+            get { EnsureHeightmapUpToDate(); return segmentCountX; }
         }
         private int segmentCountX;
 
@@ -87,7 +87,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public int SegmentCountY
         {
-            get { return segmentCountY; }
+            get { EnsureHeightmapUpToDate(); return segmentCountY; }
         }
         private int segmentCountY;
 
