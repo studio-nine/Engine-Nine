@@ -19,7 +19,7 @@ namespace Nine.Graphics.Primitives
     /// Geometric primitive class for drawing cylinders.
     /// </summary>
     [ContentSerializable]
-    public class Cylinder : Primitive<VertexPositionNormal>
+    public class Cylinder : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
         /// Gets or sets the tessellation of this primitive.
@@ -48,7 +48,7 @@ namespace Nine.Graphics.Primitives
 
         }
 
-        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
             return primitive is Cylinder && ((Cylinder)primitive).tessellation == tessellation;
         }
@@ -60,21 +60,21 @@ namespace Nine.Graphics.Primitives
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 
-                AddVertex(normal + Vector3.UnitZ, normal);
+                AddVertex(normal + Vector3.Up, normal);
                 AddVertex(normal, normal);
 
                 AddIndex(i * 2);
-                AddIndex((i * 2 + 2) % (tessellation * 2));
                 AddIndex(i * 2 + 1);
+                AddIndex((i * 2 + 2) % (tessellation * 2));
 
                 AddIndex(i * 2 + 1);
-                AddIndex((i * 2 + 2) % (tessellation * 2));
                 AddIndex((i * 2 + 3) % (tessellation * 2));
+                AddIndex((i * 2 + 2) % (tessellation * 2));
             }
 
             // Create flat triangle fan caps to seal the top and bottom.
-            CreateCap(tessellation, 1, 1, Vector3.UnitZ);
-            CreateCap(tessellation, 1, 1, -Vector3.UnitZ);
+            CreateCap(tessellation, 1, 1, Vector3.Up);
+            CreateCap(tessellation, 1, 1, -Vector3.Up);
         }
 
 
@@ -86,17 +86,17 @@ namespace Nine.Graphics.Primitives
             // Create cap indices.
             for (int i = 0; i < tessellation - 2; i++)
             {
-                if (normal.Z > 0)
+                if (normal.Y > 0)
                 {
                     AddIndex(CurrentVertex);
-                    AddIndex(CurrentVertex + (i + 2) % tessellation);
                     AddIndex(CurrentVertex + (i + 1) % tessellation);
+                    AddIndex(CurrentVertex + (i + 2) % tessellation);
                 }
                 else
                 {
                     AddIndex(CurrentVertex);
-                    AddIndex(CurrentVertex + (i + 1) % tessellation);
                     AddIndex(CurrentVertex + (i + 2) % tessellation);
+                    AddIndex(CurrentVertex + (i + 1) % tessellation);
                 }
             }
 
@@ -104,7 +104,7 @@ namespace Nine.Graphics.Primitives
             for (int i = 0; i < tessellation; i++)
             {
                 Vector3 position = GetCircleVector(i, tessellation) * radius;
-                if (normal.Z > 0)
+                if (normal.Y > 0)
                     position += normal * height;
 
                 AddVertex(position, normal);
@@ -120,14 +120,20 @@ namespace Nine.Graphics.Primitives
             float angle = i * MathHelper.TwoPi / tessellation;
 
             float dx = (float)Math.Cos(angle);
-            float dy = (float)Math.Sin(angle);
+            float dz = (float)Math.Sin(angle);
 
-            return new Vector3(dx, dy, 0);
+            return new Vector3(dx, 0, dz);
         }
 
         private void AddVertex(Vector3 position, Vector3 normal)
         {
-            AddVertex(position, new VertexPositionNormal() { Position = position, Normal = normal });
+            AddVertex(position, new VertexPositionNormalTexture()
+            {
+                Position = position,
+                Normal = normal,
+                TextureCoordinate = new Vector2((float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5),
+                                                (float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5)),
+            });
         }
     }
 }

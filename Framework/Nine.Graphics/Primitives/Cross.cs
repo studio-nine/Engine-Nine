@@ -69,7 +69,7 @@ namespace Nine.Graphics.Primitives
                     position.Z = 0;
 
                     uv.X = 1.0f * x;
-                    uv.Y = 1.0f * y / (tessellation - 1);
+                    uv.Y = 1 - 1.0f * y / (tessellation - 1);
 
                     AddVertex(position, Vector3.UnitZ, uv);
                 }
@@ -84,7 +84,7 @@ namespace Nine.Graphics.Primitives
                     position.X = 0;
 
                     uv.X = 1.0f * z;
-                    uv.Y = 1.0f * y / (tessellation - 1);
+                    uv.Y = 1 - 1.0f * y / (tessellation - 1);
 
                     AddVertex(position, Vector3.UnitX, uv);
                 }

@@ -65,13 +65,13 @@ namespace Nine.Graphics.ObjectModel
         internal int patchCountX;
 
         /// <summary>
-        /// Gets the count of patches along the y axis.
+        /// Gets the count of patches along the z axis.
         /// </summary>
-        public int PatchCountY
+        public int PatchCountZ
         {
-            get { EnsureHeightmapUpToDate(); return patchCountY; }
+            get { EnsureHeightmapUpToDate(); return patchCountZ; }
         }
-        internal int patchCountY;
+        internal int patchCountZ;
 
         /// <summary>
         /// Gets the number of the smallest square block in X axis, or heightmap texture U axis.
@@ -83,13 +83,13 @@ namespace Nine.Graphics.ObjectModel
         private int segmentCountX;
 
         /// <summary>
-        /// Gets the number of the smallest square block in Y axis, or heightmap texture V axis.
+        /// Gets the number of the smallest square block in Z axis, or heightmap texture V axis.
         /// </summary>
-        public int SegmentCountY
+        public int SegmentCountZ
         {
-            get { EnsureHeightmapUpToDate(); return segmentCountY; }
+            get { EnsureHeightmapUpToDate(); return segmentCountZ; }
         }
-        private int segmentCountY;
+        private int segmentCountZ;
 
         /// <summary>
         /// Gets the size of the surface geometry in 3 axis.
@@ -405,8 +405,8 @@ namespace Nine.Graphics.ObjectModel
             if (heightmap == null)
             {
                 boundingBox = new BoundingBox();
-                patchCountX = patchCountY = 0;
-                segmentCountX = segmentCountY = 0;
+                patchCountX = patchCountZ = 0;
+                segmentCountX = segmentCountZ = 0;
                 patches = null;
 
                 if (Removed != null && removedPatches != null)
@@ -428,10 +428,10 @@ namespace Nine.Graphics.ObjectModel
 
             // Create patches
             var newPatchCountX = heightmap.Width / patchSegmentCount;
-            var newPatchCountY = heightmap.Height / patchSegmentCount;
+            var newPatchCountZ = heightmap.Height / patchSegmentCount;
 
             // Invalid patches when patch count has changed
-            if (newPatchCountX != patchCountX || newPatchCountY != patchCountY)
+            if (newPatchCountX != patchCountX || newPatchCountZ != patchCountZ)
             {
                 patches = null;
                 if (Removed != null && removedPatches != null)
@@ -440,11 +440,11 @@ namespace Nine.Graphics.ObjectModel
             }
 
             patchCountX = newPatchCountX;
-            patchCountY = newPatchCountY;
+            patchCountZ = newPatchCountZ;
 
             // Store these values in case they change
             segmentCountX = heightmap.Width;
-            segmentCountY = heightmap.Height;
+            segmentCountZ = heightmap.Height;
 
             // Convert vertex type
             if (vertexType == null || vertexType == typeof(VertexPositionNormalTexture))
@@ -491,11 +491,11 @@ namespace Nine.Graphics.ObjectModel
                 }
 
                 var i = 0;
-                var patchArray = new SurfacePatch[patchCountX * patchCountY];
+                var patchArray = new SurfacePatch[patchCountX * patchCountZ];
 
-                for (int y = 0; y < patchCountY; y++)
+                for (int z = 0; z < patchCountZ; z++)
                     for (int x = 0; x < patchCountX; x++)
-                        patchArray[i++] = new SurfacePatch<T>(this, x, y);
+                        patchArray[i++] = new SurfacePatch<T>(this, x, z);
                 patches = new SurfacePatchCollection(this, patchArray);
 
                 if (Added != null)
@@ -531,41 +531,41 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Populates a single vertex using default settings.
         /// </summary>
-        internal void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTexture vertex)
+        internal void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionNormalTexture vertex)
         {
             Vector2 uv = new Vector2();
 
             int xSurface = (x + (xPatch * patchSegmentCount));
-            int ySurface = (y + (yPatch * patchSegmentCount));
+            int zSurface = (z + (zPatch * patchSegmentCount));
 
             // Texture will map to the whole surface by default.
             uv.X = 1.0f * xSurface / segmentCountX;
-            uv.Y = 1.0f * ySurface / segmentCountY;
+            uv.Y = 1.0f * zSurface / segmentCountZ;
 
-            vertex.Position = heightmap.GetPosition(xSurface, ySurface);
-            vertex.Normal = heightmap.GetNormal(xSurface, ySurface);
+            vertex.Position = heightmap.GetPosition(xSurface, zSurface);
+            vertex.Normal = heightmap.GetNormal(xSurface, zSurface);
             vertex.TextureCoordinate = Nine.Graphics.TextureTransform.Transform(textureTransform, uv);
         }
 
-        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionColor vertex)
+        private void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionColor vertex)
         {
             vertex.Position = input.Position;
             vertex.Color = Color.White;
         }
 
-        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormal vertex)
+        private void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionNormal vertex)
         {
             vertex.Position = input.Position;
             vertex.Normal = input.Normal;
         }
 
-        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionTexture vertex)
+        private void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionTexture vertex)
         {
             vertex.Position = input.Position;
             vertex.TextureCoordinate = input.TextureCoordinate;
         }
 
-        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalDualTexture vertex)
+        private void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionNormalDualTexture vertex)
         {
             vertex.Position = input.Position;
             vertex.Normal = input.Normal;
@@ -573,10 +573,10 @@ namespace Nine.Graphics.ObjectModel
             vertex.TextureCoordinate1 = input.TextureCoordinate;
         }
 
-        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionNormalTangentBinormalTexture vertex)
+        private void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionNormalTangentBinormalTexture vertex)
         {
             int xSurface = (x + (xPatch * patchSegmentCount));
-            int ySurface = (y + (yPatch * patchSegmentCount));
+            int ySurface = (z + (zPatch * patchSegmentCount));
 
             vertex.Position = input.Position;
             vertex.TextureCoordinate = input.TextureCoordinate;
@@ -586,7 +586,7 @@ namespace Nine.Graphics.ObjectModel
             Vector3.Cross(ref vertex.Normal, ref vertex.Tangent, out vertex.Binormal);
         }
 
-        private void PopulateVertex(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref VertexPositionColorNormalTexture vertex)
+        private void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionColorNormalTexture vertex)
         {
             vertex.Position = input.Position;
             vertex.Normal = input.Normal;
@@ -645,17 +645,17 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public float GetHeight(Vector3 position)
         {
-            return GetHeight(position.X, position.Y);
+            return GetHeight(position.X, position.Z);
         }
 
         /// <summary>
         /// Gets the height.
         /// </summary>
-        public float GetHeight(float x, float y)
+        public float GetHeight(float x, float z)
         {
             if (heightmap == null)
                 return 0;
-            return AbsolutePosition.Z + heightmap.GetHeight(x - AbsolutePosition.X, y - AbsolutePosition.Y);
+            return AbsolutePosition.Z + heightmap.GetHeight(x - AbsolutePosition.X, z - AbsolutePosition.Z);
         }
 
         /// <summary>
@@ -663,17 +663,17 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public Vector3 GetNormal(Vector3 position)
         {
-            return GetNormal(position.X, position.Y);
+            return GetNormal(position.X, position.Z);
         }
 
         /// <summary>
         /// Gets the normal.
         /// </summary>
-        public Vector3 GetNormal(float x, float y)
+        public Vector3 GetNormal(float x, float z)
         {
             if (heightmap == null)
                 return Vector3.Zero;
-            return heightmap.GetNormal(x - AbsolutePosition.X, y - AbsolutePosition.Y);
+            return heightmap.GetNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z);
         }
 
         /// <summary>
@@ -682,17 +682,17 @@ namespace Nine.Graphics.ObjectModel
         /// <returns>False if the location is outside the boundary of the surface.</returns>
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
-            return TryGetHeightAndNormal(position.X, position.Y, out height, out normal);
+            return TryGetHeightAndNormal(position.X, position.Z, out height, out normal);
         }
 
         /// <summary>
         /// Gets the height and normal of the surface at a given location.
         /// </summary>
         /// <returns>False if the location is outside the boundary of the surface.</returns>
-        public bool TryGetHeightAndNormal(float x, float y, out float height, out Vector3 normal)
+        public bool TryGetHeightAndNormal(float x, float z, out float height, out Vector3 normal)
         {
             float baseHeight;
-            if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, y - AbsolutePosition.Y, out baseHeight, out normal))
+            if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z, out baseHeight, out normal))
             {
                 height = baseHeight + AbsolutePosition.Z;
                 return true;
@@ -707,13 +707,13 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the height of the surface at a given location.
         /// </summary>
         /// <returns>False if the location is outside the boundary of the surface.</returns>
-        public bool TryGetHeight(float x, float y, out float height)
+        public bool TryGetHeight(float x, float z, out float height)
         {
             Vector3 normal;
             float baseHeight;
-            if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, y - AbsolutePosition.Y, true, false, out baseHeight, out normal))
+            if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z, true, false, out baseHeight, out normal))
             {
-                height = baseHeight + AbsolutePosition.Z;
+                height = baseHeight + AbsolutePosition.Y;
                 return true;
             }
             height = float.MinValue;
@@ -727,7 +727,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public bool IsAbove(Vector3 point)
         {
-            return GetHeight(point.X, point.Y) <= point.Z;
+            return GetHeight(point.X, point.Z) <= point.Y;
         }
 
         /// <summary>
@@ -750,12 +750,12 @@ namespace Nine.Graphics.ObjectModel
             float? intersection = ray.Intersects(BoundingBox);
             if (intersection.HasValue)
             {
-                if (ray.Direction.X == 0 && ray.Direction.Y == 0)
+                if (ray.Direction.X == 0 && ray.Direction.Z == 0)
                 {
-                    if (TryGetHeight(ray.Position.X, ray.Position.Y, out height))
+                    if (TryGetHeight(ray.Position.X, ray.Position.Z, out height))
                     {
-                        float distance = ray.Position.Z - height;
-                        if (distance * ray.Direction.Z < 0)
+                        float distance = ray.Position.Y - height;
+                        if (distance * ray.Direction.Y < 0)
                             return distance;
                     }
                     return null;
@@ -765,10 +765,10 @@ namespace Nine.Graphics.ObjectModel
                 start += ray.Direction * intersection.Value;
                 while (true)
                 {
-                    if (!TryGetHeight(start.X, start.Y, out height))
+                    if (!TryGetHeight(start.X, start.Z, out height))
                         return null;
 
-                    bool isAbove = (height <= start.Z);
+                    bool isAbove = (height <= start.Y);
                     if (isAboveLastTime == null)
                     {
                         if (!isAbove)
@@ -852,11 +852,11 @@ namespace Nine.Graphics.ObjectModel
     /// </summary>
     /// <typeparam name="T">The target vertex type.</typeparam>
     /// <param name="x">The x index of the vertex on the target patch, ranged from 0 to PatchSegmentCount inclusive.</param>
-    /// <param name="y">The y index of the vertex on the target patch, ranged from 0 to PatchSegmentCount inclusive.</param>
+    /// <param name="z">The z index of the vertex on the target patch, ranged from 0 to PatchSegmentCount inclusive.</param>
     /// <param name="xPatch">The x index of the target patch.</param>
-    /// <param name="yPatch">The y index of the target patch.</param>
+    /// <param name="zPatch">The z index of the target patch.</param>
     /// <param name="input">The input vertex contains the default position, normal and texture coordinates for the target vertex.</param>
     /// <param name="output">The output vertex to be set.</param>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public delegate void SurfaceVertexConverter<T>(int xPatch, int yPatch, int x, int y, ref VertexPositionNormalTexture input, ref T output);
+    public delegate void SurfaceVertexConverter<T>(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref T output);
 }

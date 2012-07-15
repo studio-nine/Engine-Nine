@@ -104,7 +104,7 @@ namespace Nine.Graphics.ObjectModel
         /// Other than those specified in the material.
         /// The default behavior is to use the model default textures.
         /// </summary>
-        public bool UseModelTextures { get; set; }
+        public bool? UseModelTextures { get; set; }
 
         /// <summary>
         /// Gets the diffuse texture of this model mesh.
@@ -189,10 +189,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelMesh"/> class.
         /// </summary>
-        internal ModelMesh() 
-        {
-            UseModelTextures = true;
-        }
+        internal ModelMesh() { }
 
         /// <summary>
         /// Attaches this <see cref="ModelMesh"/> to a parent <see cref="Model"/>.
@@ -282,7 +279,7 @@ namespace Nine.Graphics.ObjectModel
 
         private void ApplyTextures(Material material)
         {
-            if (UseModelTextures)
+            if (UseModelTextures ?? model.UseModelTextures)
             {
                 material.Texture = diffuseTexture;
                 if (textures != null)

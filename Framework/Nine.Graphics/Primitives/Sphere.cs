@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Nine.Graphics.Primitives
 {
     [ContentSerializable]
-    public class Sphere : Primitive<VertexPositionNormal>
+    public class Sphere : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
         /// Gets or sets the tessellation of this primitive.
@@ -45,7 +45,7 @@ namespace Nine.Graphics.Primitives
 
         }
 
-        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
             return primitive is Sphere && ((Sphere)primitive).tessellation == tessellation;
         }
@@ -56,7 +56,7 @@ namespace Nine.Graphics.Primitives
             int horizontalSegments = tessellation * 2;
 
             // Start with a single vertex at the bottom of the sphere.
-            AddVertex(-Vector3.UnitZ, -Vector3.UnitZ);
+            AddVertex(-Vector3.Up, -Vector3.Up);
 
             // Create rings of vertices at progressively higher latitudes.
             for (int i = 0; i < verticalSegments - 1; i++)
@@ -64,16 +64,16 @@ namespace Nine.Graphics.Primitives
                 float latitude = ((i + 1) * MathHelper.Pi /
                                             verticalSegments) - MathHelper.PiOver2;
 
-                float dz = (float)Math.Sin(latitude);
-                float dxy = (float)Math.Cos(latitude);
+                float dy = (float)Math.Sin(latitude);
+                float dxz = (float)Math.Cos(latitude);
 
                 // Create a single ring of vertices at this latitude.
                 for (int j = 0; j < horizontalSegments; j++)
                 {
                     float longitude = j * MathHelper.TwoPi / horizontalSegments;
 
-                    float dx = (float)Math.Cos(longitude) * dxy;
-                    float dy = (float)Math.Sin(longitude) * dxy;
+                    float dx = (float)Math.Cos(longitude) * dxz;
+                    float dz = (float)Math.Sin(longitude) * dxz;
 
                     Vector3 normal = new Vector3(dx, dy, dz);
 
@@ -82,14 +82,14 @@ namespace Nine.Graphics.Primitives
             }
 
             // Finish with a single vertex at the top of the sphere.
-            AddVertex(Vector3.UnitZ, Vector3.UnitZ);
+            AddVertex(Vector3.Up, Vector3.Up);
 
             // Create a fan connecting the bottom vertex to the bottom latitude ring.
             for (int i = 0; i < horizontalSegments; i++)
             {
                 AddIndex(0);
-                AddIndex(1 + i);
                 AddIndex(1 + (i + 1) % horizontalSegments);
+                AddIndex(1 + i);
             }
 
             // Fill the sphere body with triangles joining each pair of latitude rings.
@@ -101,12 +101,12 @@ namespace Nine.Graphics.Primitives
                     int nextJ = (j + 1) % horizontalSegments;
 
                     AddIndex(1 + i * horizontalSegments + j);
-                    AddIndex(1 + nextI * horizontalSegments + j);
                     AddIndex(1 + i * horizontalSegments + nextJ);
+                    AddIndex(1 + nextI * horizontalSegments + j);
 
                     AddIndex(1 + i * horizontalSegments + nextJ);
-                    AddIndex(1 + nextI * horizontalSegments + j);
                     AddIndex(1 + nextI * horizontalSegments + nextJ);
+                    AddIndex(1 + nextI * horizontalSegments + j);
                 }
             }
 
@@ -114,14 +114,20 @@ namespace Nine.Graphics.Primitives
             for (int i = 0; i < horizontalSegments; i++)
             {
                 AddIndex(CurrentVertex - 1);
-                AddIndex(CurrentVertex - 2 - i);
                 AddIndex(CurrentVertex - 2 - (i + 1) % horizontalSegments);
+                AddIndex(CurrentVertex - 2 - i);
             }
         }
 
         private void AddVertex(Vector3 position, Vector3 normal)
         {
-            AddVertex(position, new VertexPositionNormal() { Position = position, Normal = normal });
+            AddVertex(position, new VertexPositionNormalTexture()
+            {
+                Position = position,
+                Normal = normal,
+                TextureCoordinate = new Vector2((float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5), 
+                                                (float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5)),
+            });
         }
     }
 

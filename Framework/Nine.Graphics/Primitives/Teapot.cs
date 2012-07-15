@@ -59,7 +59,7 @@ namespace Nine.Graphics.Primitives
 
         }
 
-        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
             return primitive is Teapot && ((Teapot)primitive).tessellation == tessellation;
         }

@@ -1,0 +1,9 @@
+float4 AlphaTest;
+
+void PixelShader(inout float4 diffuse:COLOR0)
+{
+    {$LTGT}clip((diffuse.a < AlphaTest.x) ? AlphaTest.z : AlphaTest.w); // LtGt
+    {$EQNE}clip((abs(diffuse.a - AlphaTest.x) < AlphaTest.y) ? AlphaTest.z : AlphaTest.w); // EqNe
+
+    diffuse = diffuse;
+}

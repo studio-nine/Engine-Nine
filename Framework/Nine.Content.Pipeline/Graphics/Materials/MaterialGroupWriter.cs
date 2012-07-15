@@ -25,10 +25,13 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             if (output.TargetPlatform == TargetPlatform.WindowsPhone)
                 return;
 
+            WriteObject(output, value, "Texture", value.Texture);
+            output.Write(value.IsTransparent);
+            output.Write(value.IsAdditive);
+            output.Write(value.TwoSided);
+            WriteObject(output, value, "NextMaterial", value.NextMaterial);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
 
-            output.Write(value.IsTransparent);
-            output.Write(value.TwoSided);
             output.WriteExternalReference(new ExternalReference<CompiledEffectContent>(value.Reference));
 
             output.Write(value.MaterialParts.Count);

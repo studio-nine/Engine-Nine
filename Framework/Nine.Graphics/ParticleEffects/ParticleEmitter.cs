@@ -107,7 +107,7 @@ namespace Nine.Graphics.ParticleEffects
             get { return direction; }
             set { direction = value; }
         }
-        private Vector3 direction = Vector3.UnitZ;
+        private Vector3 direction = Vector3.Up;
 
         /// <summary>
         /// Gets or sets the duration of each particle.
@@ -219,16 +219,16 @@ namespace Nine.Graphics.ParticleEffects
                 velocity.Y = (float)(r * Math.Sin(a));
                 velocity.Z = (float)(Math.Sin(b));
 
-                if (direction != Vector3.UnitZ)
+                if (direction != Vector3.Up)
                 {
                     Matrix rotation = new Matrix();
-                    MatrixHelper.CreateRotation(ref UnitZ, ref direction, out rotation);
+                    MatrixHelper.CreateRotation(ref Up, ref direction, out rotation);
                     Vector3.TransformNormal(ref velocity, ref rotation, out velocity);
                 }
             }
         }
 
-        static Vector3 UnitZ = Vector3.UnitZ;
+        static Vector3 Up = Vector3.Up;
         
         /// <summary>
         /// Updates the emitter, emits any new particles during the update.

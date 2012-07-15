@@ -208,7 +208,7 @@ namespace Nine.Graphics.Drawing
             matrices = new MatrixCollection();
             textures = new TextureCollection();
             MainPass = new PassGroup();
-            MainPass.Passes.Add(new BasicPass());
+            MainPass.Passes.Add(new DrawingPass());
             RootPass = new PassGroup();
             RootPass.Passes.Add(MainPass);
         }

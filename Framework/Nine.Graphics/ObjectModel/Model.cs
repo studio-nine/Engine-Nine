@@ -122,6 +122,13 @@ namespace Nine.Graphics.ObjectModel
         public bool AnimationCullingEnabled { get; private set; }
 
         /// <summary>
+        /// Gets or sets whether to use the default model diffuse texture, normal map, specular map, etc.
+        /// Other than those specified in the material.
+        /// The default behavior is to use the model default textures.
+        /// </summary>
+        public bool UseModelTextures { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether lighting is enabled.
         /// </summary>
         public bool LightingEnabled { get; set; }
@@ -253,6 +260,7 @@ namespace Nine.Graphics.ObjectModel
             CastShadow = true;
             ReceiveShadow = false;
             LightingEnabled = true;
+            UseModelTextures = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;
             GraphicsDevice = graphicsDevice;
@@ -479,11 +487,6 @@ namespace Nine.Graphics.ObjectModel
             indexBuffer = mesh.indexBuffer;
             startIndex = mesh.startIndex;
             primitiveCount = mesh.primitiveCount;
-        }
-
-        void ISupportInstancing.GetTransform(int subset, out Matrix transform)
-        {
-            Matrix.Multiply(ref BoneTransforms[modelMeshes[subset].parentBoneIndex], ref this.transform, out transform);
         }
 
         Material ISupportInstancing.GetMaterial(int subset)

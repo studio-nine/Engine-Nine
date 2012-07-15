@@ -19,7 +19,7 @@ namespace Nine.Graphics.Primitives
     /// Geometric primitive class for drawing cylinders.
     /// </summary>
     [ContentSerializable]
-    public class Centrum : Primitive<VertexPositionNormal>
+    public class Centrum : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
         /// Gets or sets the tessellation of this primitive.
@@ -48,15 +48,15 @@ namespace Nine.Graphics.Primitives
 
         }
 
-        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
             return primitive is Centrum && ((Centrum)primitive).tessellation == tessellation;
         }
 
         protected override void  OnBuild()
         {
-            AddVertex(Vector3.UnitZ, Vector3.UnitZ);
-            AddVertex(Vector3.Zero, -Vector3.UnitZ);
+            AddVertex(Vector3.Up, Vector3.Up);
+            AddVertex(Vector3.Zero, -Vector3.Up);
 
 
             for (int i = 0; i < tessellation; i++)
@@ -66,12 +66,12 @@ namespace Nine.Graphics.Primitives
                 AddVertex(normal, normal);
                 
                 AddIndex(0);
-                AddIndex(2 + (i + 1) % tessellation);
                 AddIndex(2 + i);
+                AddIndex(2 + (i + 1) % tessellation);
 
                 AddIndex(1);
-                AddIndex(2 + i);
                 AddIndex(2 + (i + 1) % tessellation);
+                AddIndex(2 + i);
             }
         }
 
@@ -83,14 +83,20 @@ namespace Nine.Graphics.Primitives
             float angle = i * MathHelper.TwoPi / tessellation;
 
             float dx = (float)Math.Cos(angle);
-            float dy = (float)Math.Sin(angle);
+            float dz = (float)Math.Sin(angle);
 
-            return new Vector3(dx, dy, 0);
+            return new Vector3(dx, 0, dz);
         }
 
         private void AddVertex(Vector3 position, Vector3 normal)
         {
-            AddVertex(position, new VertexPositionNormal() { Position = position, Normal = normal });
+            AddVertex(position, new VertexPositionNormalTexture()
+            {
+                Position = position,
+                Normal = normal,
+                TextureCoordinate = new Vector2((float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5),
+                                                (float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5)),
+            });
         }
     }
 

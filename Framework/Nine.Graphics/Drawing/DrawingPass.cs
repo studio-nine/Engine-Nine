@@ -21,7 +21,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// A drawing pass represents a single pass in the composition chain.
     /// </summary>
-    public class BasicPass : Pass
+    public class DrawingPass : Pass
     {
         /// <summary>
         /// Gets or sets a value indicating whether the drawable list will be 
@@ -64,7 +64,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="Pass"/> class.
         /// </summary>
-        public BasicPass()
+        public DrawingPass()
         {
             this.SortEnabled = false;
         }

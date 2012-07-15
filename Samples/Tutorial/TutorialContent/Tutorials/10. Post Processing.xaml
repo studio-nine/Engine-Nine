@@ -6,38 +6,54 @@
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
 
     <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
-             Transform.Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">
+             Transform.Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
 
-<BlurEffect BlurAmount="5" />
-
-<!--
     <PostEffect>	
 		<CustomMaterial xml:space="preserve">
 			<CustomMaterial.Code>
             <![CDATA[
-			sampler2D Texture:register(s0);
-		
-			float4 PS(float2 uv:TEXCOORD0):COLOR0
-			{
-				float4 color = tex2D(Texture, uv);
-				//color.r = 0;
-				return color;
-			}
-			
-			technique t0
-			{
-				pass p0
-				{
-					PixelShader = compile ps_2_0 PS();
-				}
-			}
-			]]>
+                // Contributed by ChFlashER 
+                sampler ColorMapSampler : register(s0);
+                float Wave = 4.188;
+                float Distortion = 1;
+                float2 Location = 0.5;    // ex Center of the Screen
+                float Time:TIME;
+
+                float4 RipplePS(float2 texCoord:TEXCOORD0):COLOR
+                {
+                    float2 distance = abs(texCoord - Location);
+                    float scalar = length(distance);
+
+                    // invert the scale so 1 is centerpoint
+                    scalar = abs(1 - scalar);
+        
+                    // calculate how far to distort for this pixel    
+                    float sinoffset = sin(Time + Wave / scalar);
+                    sinoffset = clamp(sinoffset, 0, 1);
+    
+                    // calculate which direction to distort
+                    float sinsign = cos(Time + Wave / scalar);    
+    
+                    // reduce the distortion effect
+                    sinoffset = sinoffset * Distortion/32;
+     
+                    // Pick the pixel, based on the offset and direction
+                    return tex2D(ColorMapSampler, texCoord+(sinoffset*sinsign));
+                }
+
+                technique Ripple
+                {
+                    pass Pass1
+                    {
+                        PixelShader = compile ps_2_0 RipplePS();
+                    }
+                }]]>
 			</CustomMaterial.Code>
 		</CustomMaterial>
     </PostEffect>
 	
 	<BloomEffect BlurAmount="5" Threshold="0"/>
-	-->
+    
 </Scene>

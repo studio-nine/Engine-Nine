@@ -10,9 +10,10 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.ObjectModel;
 #endregion
 
-namespace Nine.Graphics.ObjectModel
+namespace Nine.Graphics.Cameras
 {
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.

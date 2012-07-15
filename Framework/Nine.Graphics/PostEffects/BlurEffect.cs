@@ -24,7 +24,7 @@ namespace Nine.Graphics.PostEffects
     /// Represents a blur post processing effect.
     /// </summary>
     [ContentSerializable]
-    public class BlurEffect : ISceneObject
+    public class BlurEffect : PostEffectChain
     {
         public float BlurAmount
         {
@@ -32,7 +32,6 @@ namespace Nine.Graphics.PostEffects
             set { blurH.BlurAmount = blurV.BlurAmount = value; }
         }
 
-        PostEffectChain postEffect;
         BlurMaterial blurH;
         BlurMaterial blurV;
 
@@ -41,19 +40,8 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         public BlurEffect(GraphicsDevice graphics)
         {
-            postEffect = new PostEffectChain();
-            postEffect.Effects.Add(new PostEffect(blurH = new BlurMaterial(graphics)));
-            postEffect.Effects.Add(new PostEffect(blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 }));
-        }
-
-        void ISceneObject.OnAdded(DrawingContext context)
-        {
-            ((ISceneObject)postEffect).OnAdded(context);
-        }
-
-        void ISceneObject.OnRemoved(DrawingContext context)
-        {
-            ((ISceneObject)postEffect).OnRemoved(context);
+            Effects.Add(new PostEffect(blurH = new BlurMaterial(graphics)));
+            Effects.Add(new PostEffect(blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 }));
         }
     }
 }

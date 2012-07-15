@@ -71,9 +71,9 @@ namespace Nine.Graphics.ObjectModel
                 if (isBoundingFrustumDirty || boundingFrustum == null)
                 {
                     Matrix projection = new Matrix();
-                    Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);
+                    Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.Up);
                     if (float.IsNaN(view.M11))
-                        view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitY);
+                        view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitX);
                     Matrix.CreatePerspectiveFieldOfView(outerAngle, 1, NearPlane, Math.Max(NearPlane * 2, Range), out projection);
                     Matrix.Multiply(ref view, ref projection, out projection);
                     if (boundingFrustum == null)
@@ -120,9 +120,9 @@ namespace Nine.Graphics.ObjectModel
                 return false;
             }
 
-            Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitZ);
+            Matrix view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.Up);
             if (float.IsNaN(view.M11))
-                view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitY);
+                view = Matrix.CreateLookAt(Position, Position + Direction, Vector3.UnitX);
 
             Vector3 point;
             float nearZ = float.MaxValue;

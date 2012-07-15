@@ -29,8 +29,8 @@ namespace Nine.Content.Pipeline.Navigation
             var collisionMap = CreateCollisionMapFromHeightmap(heightmap, maxSlope);
             ObstacleCollisionTest(scene, heightmap, collisionMap, maxActorHeight);
 
-            var pathGrid = new PathGrid(heightmap.BoundingBox.Min.X, heightmap.BoundingBox.Min.Y,
-                                        heightmap.Size.X, heightmap.Size.Y, heightmap.Width, heightmap.Height);
+            var pathGrid = new PathGrid(heightmap.BoundingBox.Min.X, heightmap.BoundingBox.Min.Z,
+                                        heightmap.Size.X, heightmap.Size.Z, heightmap.Width, heightmap.Height);
             for (int i = 0; i < collisionMap.Length; i++)
                 if (collisionMap[i])
                     pathGrid.Mark(i % pathGrid.SegmentCountX, i / pathGrid.SegmentCountX);

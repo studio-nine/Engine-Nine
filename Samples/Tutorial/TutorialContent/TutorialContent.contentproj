@@ -59,14 +59,21 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <None Include="Tutorials\06. Terrain.xaml">
+    <Compile Include="..\..\Content\Textures\fgrass.tga">
+      <Link>Textures\fgrass.tga</Link>
+      <Name>fgrass</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
+    </Compile>
+    <Compile Include="Tutorials\06. Terrain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Name>06. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">
@@ -122,7 +129,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
       <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
-      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
       <ProcessorParameters_DefaultEffect>SkinnedEffect</ProcessorParameters_DefaultEffect>
       <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
     </Compile>
@@ -133,6 +139,7 @@
       <Name>Peon</Name>
       <Importer>XImporter</Importer>
       <Processor>ExtendedModelProcessor</Processor>
+      <ProcessorParameters_RotationX>-90</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -149,7 +156,6 @@
       <Name>AlphaPalm</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +165,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
       <ProcessorParameters_Scale>0.02</ProcessorParameters_Scale>
-      <ProcessorParameters_RotationX>90</ProcessorParameters_RotationX>
       <ProcessorParameters_PremultiplyTextureAlpha>False</ProcessorParameters_PremultiplyTextureAlpha>
     </Compile>
   </ItemGroup>
@@ -242,33 +247,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\08. Shadows.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Name>08. Shadows</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tutorials\05. Animations.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Name>05. Animations</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tutorials\12. Hello World.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Name>12. Hello World</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tutorials\09. Particle System.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -276,15 +254,6 @@
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Tutorials\07. Lights.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Name>07. Lights</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\LandscapeDetail.tga">
@@ -329,16 +298,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\13. Physics.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <Name>13. Physics</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-      <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Tutorials\03. Materials.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -366,11 +325,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Textures\fgrass.png">
-      <Link>Textures\fgrass.png</Link>
-      <Name>fgrass</Name>
+    <Compile Include="..\..\Content\Textures\nine.png">
+      <Link>Textures\nine.png</Link>
+      <Name>nine</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

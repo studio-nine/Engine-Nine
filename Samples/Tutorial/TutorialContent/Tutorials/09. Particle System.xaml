@@ -5,12 +5,12 @@
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
     
-    <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8" Position="-32, -32, 0" TextureTransform.Scale="0.2, 0.2">        
+    <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8" Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2">        
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
 
     <!-- Create an instance of particle system using the ParticleEffect element -->
-    <ParticleEffect Name="Fire" Transform.Position="10, 10, 4" Texture="{ContentReference ../Textures/fire}">
+    <ParticleEffect Name="Fire" Transform.Position="10, 4, 10" Texture="{ContentReference ../Textures/fire}">
         <!-- 
             An emitter is used to create new particles. It affects the initial properties of each particle, 
             such as speed, position, color and size.
@@ -33,7 +33,7 @@
     </ParticleEffect>
 
     <!-- Particle effects can also be combined using DrawingGroup -->
-    <DrawingGroup Transform.Position="0, 0, 6">
+    <DrawingGroup Transform.Position="0, 6, 0">
 	
 		<ParticleEffect Name="Snowball" Texture="{ContentReference ../Textures/flake}">
             <ParticleEffect.Emitter>
@@ -78,7 +78,7 @@
  -->
     </DrawingGroup>
 
-    <ParticleEffect Transform.Position="20, -20, 0" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
+    <ParticleEffect Transform.Position="20, 0, -20" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
         <!-- 
             Create an instance of soft particle effect by the SoftParticleEnabled flag. When drawing 3D soft
             particles, each pixel of the particle is compare against the current depth buffer to eliminate the

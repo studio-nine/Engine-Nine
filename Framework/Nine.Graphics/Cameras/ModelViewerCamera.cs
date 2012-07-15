@@ -13,29 +13,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 #endregion
 
-namespace Nine.Graphics
+namespace Nine.Graphics.Cameras
 {
-    /// <summary>
-    /// Interface for game camera
-    /// </summary>
-    public interface ICamera
-    {
-        /// <summary>
-        /// Gets the optional viewport of this cameara.
-        /// </summary>
-        Viewport? Viewport { get; }
-
-        /// <summary>
-        /// Gets the camera view matrix
-        /// </summary>
-        Matrix View { get; }
-
-        /// <summary>
-        /// Gets the camera projection matrix
-        /// </summary>
-        Matrix Projection { get; }
-    }
-
     /// <summary>
     /// Defines a camera used to view models.
     /// </summary>

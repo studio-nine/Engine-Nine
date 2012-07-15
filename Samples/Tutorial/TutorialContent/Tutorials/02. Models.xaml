@@ -24,32 +24,32 @@
         BasicMaterial, SkinnedMaterial, EnvironmentMapMaterial, AlphaTestMaterial and DualTextureMaterial.
         Unlike model material, these materials can be used for Windows Phone games.  
     -->
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-20,20,0">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-20,0,20">
         <Model.Material>
             <BasicMaterial DiffuseColor="1,0,0"/>
         </Model.Material>
     </Model>
 
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-10,20,0">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-10,0,20">
         <Model.Material>
             <SkinnedMaterial />
         </Model.Material>
     </Model>
 
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="0,20,0">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="0,0,20">
         <Model.Material>
             <EnvironmentMapMaterial EnvironmentMap="{ContentReference ../Textures/SkyCubeMap}" 
                                     EnvironmentMapAmount="1" EnvironmentMapSpecular="0, 0, 0" FresnelFactor="1"/>
         </Model.Material>
     </Model>
 
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="10,20,0">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="10,0,20">
         <Model.Material>
             <AlphaTestMaterial />
         </Model.Material>
     </Model>
 
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="20,20,0">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="20,0,20">
         <Model.Material>
             <DualTextureMaterial Texture2="{ContentReference ../Textures/Checker}" />
         </Model.Material>
@@ -58,7 +58,7 @@
     <!--    
         You can apply different materials to each part of the model and toggle their visibility seperately.
     -->
-    <Model Source="{ContentReference ../Models/AlphaPalm}" Transform.Position="10,20,0">
+    <Model Source="{ContentReference ../Models/AlphaPalm}" Transform.Position="10,0,20">
         <!-- Hide the trunk -->       
         <ModelMesh Visible="False" />     
         <!-- 
@@ -84,7 +84,7 @@
     -->  
     <Model Source="{ContentReference ../Models/Tank}">
         <Model.Transform>
-            <Transform Position="30, 20, 0" />
+            <Transform Position="30,0,20" />
         </Model.Transform>
 
         <Model.MaterialLevels>

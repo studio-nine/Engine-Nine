@@ -69,23 +69,23 @@ namespace Nine.Graphics.Primitives
             int horizontalSegments = tessellation * 2;
 
             // Start with a single vertex at the bottom of the sphere.
-            AddVertex(Vector3.UnitZ * radius + sink, Vector3.UnitZ, Vector2.One * 0.5f);
+            AddVertex(Vector3.Up * radius + sink, Vector3.Up, Vector2.One * 0.5f);
 
             // Create rings of vertices at progressively higher latitudes.
             for (int i = 0; i < verticalSegments; i++)
             {
                 float latitude = ((i + 1) * MathHelper.Pi / verticalSegments) * percentage + MathHelper.PiOver2;
 
-                float dz = (float)Math.Sin(latitude);
-                float dxy = (float)Math.Cos(latitude);
+                float dy = (float)Math.Sin(latitude);
+                float dxz = (float)Math.Cos(latitude);
 
                 // Create a single ring of vertices at this latitude.
                 for (int j = 0; j < horizontalSegments; j++)
                 {
                     float longitude = j * MathHelper.TwoPi / horizontalSegments;
 
-                    float dx = (float)Math.Cos(longitude) * dxy;
-                    float dy = (float)Math.Sin(longitude) * dxy;
+                    float dx = (float)Math.Cos(longitude) * dxz;
+                    float dz = (float)Math.Sin(longitude) * dxz;
 
                     Vector3 normal = new Vector3(dx, dy, dz);
 
@@ -103,8 +103,8 @@ namespace Nine.Graphics.Primitives
             for (int i = 0; i < horizontalSegments; i++)
             {
                 AddIndex(0);
-                AddIndex(1 + (i + 1) % horizontalSegments);
                 AddIndex(1 + i);
+                AddIndex(1 + (i + 1) % horizontalSegments);
             }
 
             // Fill the sphere body with triangles joining each pair of latitude rings.
@@ -116,12 +116,12 @@ namespace Nine.Graphics.Primitives
                     int nextJ = (j + 1) % horizontalSegments;
 
                     AddIndex(1 + i * horizontalSegments + j);
-                    AddIndex(1 + i * horizontalSegments + nextJ);
                     AddIndex(1 + nextI * horizontalSegments + j);
+                    AddIndex(1 + i * horizontalSegments + nextJ);
 
                     AddIndex(1 + i * horizontalSegments + nextJ);
-                    AddIndex(1 + nextI * horizontalSegments + nextJ);
                     AddIndex(1 + nextI * horizontalSegments + j);
+                    AddIndex(1 + nextI * horizontalSegments + nextJ);
                 }
             }
         }

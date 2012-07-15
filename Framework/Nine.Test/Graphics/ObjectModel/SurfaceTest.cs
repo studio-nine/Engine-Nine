@@ -34,7 +34,7 @@ namespace Nine.Graphics.ObjectModel.Test
                 GraphicsDevice, new Heightmap(1, 2, 2), 2);
 
             Assert.AreEqual<int>(1, surface.PatchCountX);
-            Assert.AreEqual<int>(1, surface.PatchCountY);
+            Assert.AreEqual<int>(1, surface.PatchCountZ);
             Assert.AreEqual<int>(1, surface.Patches.Count);
             Assert.AreEqual<int>(2, surface.PatchSegmentCount);
             Assert.AreEqual<Vector3>(new Vector3(2, 2, 0), surface.Size);

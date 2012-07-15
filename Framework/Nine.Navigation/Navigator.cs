@@ -70,9 +70,9 @@ namespace Nine.Navigation
         {
             get 
             {
-                return Matrix.CreateFromAxisAngle(Vector3.UnitZ, Rotation - MathHelper.PiOver2) *
+                return Matrix.CreateFromAxisAngle(Vector3.Up, Rotation - MathHelper.PiOver2) *
                        Matrix.CreateTranslation(Position);
-                //return Matrix.CreateFromAxisAngle(Vector3.UnitZ, (float)(Math.Atan2(steerable.Forward.Y, steerable.Forward.X)) - MathHelper.PiOver2) *
+                //return Matrix.CreateFromAxisAngle(Vector3.Up, (float)(Math.Atan2(steerable.Forward.Y, steerable.Forward.X)) - MathHelper.PiOver2) *
                 //       Matrix.CreateTranslation(Position);
             }
         }
@@ -82,8 +82,8 @@ namespace Nine.Navigation
         /// </summary>
         public Vector3 Position 
         {
-            get { return new Vector3(steerable.Position, realHeight); }
-            set { steerable.Position = new Vector2(value.X, value.Y); realHeight = value.Z; }
+            get { return new Vector3(steerable.Position.X, realHeight, steerable.Position.Y); }
+            set { steerable.Position = new Vector2(value.X, value.Z); realHeight = value.Y; }
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace Nine.Navigation
             // Compute the normal of the terrain. We don't want to our entity
             // to be moving too fast when climbing hills :)
             float height = 0;
-            Vector3 normal = Vector3.UnitZ;
+            Vector3 normal = Vector3.Up;
             
             // Test to see if we reached the border of the ground.
             if (Ground != null && !Ground.TryGetHeightAndNormal(Position, out height, out normal))

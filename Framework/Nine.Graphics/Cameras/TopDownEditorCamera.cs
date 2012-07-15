@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 #endregion
 
-namespace Nine.Graphics
+namespace Nine.Graphics.Cameras
 {
     /// <summary>
     /// Defines a camera used to edit worlds.
@@ -48,14 +48,14 @@ namespace Nine.Graphics
             {
                 Vector3 eye = new Vector3();
 
-                eye.Z = (float)Math.Sin(Pitch) * Radius;
-                eye.Y = (float)Math.Cos(Pitch) * Radius;
-                eye.X = (float)Math.Cos(Yaw) * eye.Y;
-                eye.Y = (float)Math.Sin(Yaw) * eye.Y;
+                eye.Y = (float)Math.Sin(Pitch) * Radius;
+                eye.Z = (float)Math.Cos(Pitch) * Radius;
+                eye.X = (float)Math.Cos(Yaw) * eye.Z;
+                eye.Z = (float)Math.Sin(Yaw) * eye.Z;
 
                 eye += target;
 
-                return Matrix.CreateLookAt(eye, target, Vector3.UnitZ);
+                return Matrix.CreateLookAt(eye, target, Vector3.Up);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Nine.Graphics
 
             Sensitivity = 1.0f;
 
-            Yaw = -MathHelper.PiOver2;
+            Yaw = MathHelper.PiOver2;
             Radius = radius;
             MinRadius = 1f;
             MaxRadius = 500f;
@@ -107,10 +107,10 @@ namespace Nine.Graphics
                 Radius = MaxRadius;
 
             float dx = -state.ThumbSticks.Right.X * Sensitivity;
-            float dy = state.ThumbSticks.Right.Y * Sensitivity;
-
-            target.X -= ((float)Math.Cos(Yaw) * dy - (float)Math.Sin(Yaw) * dx);
-            target.Y -= ((float)Math.Sin(Yaw) * dy + (float)Math.Cos(Yaw) * dx);
+            float dz = state.ThumbSticks.Right.Y * Sensitivity;
+            
+            target.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
+            target.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
 #endif
         }
 
@@ -147,13 +147,13 @@ namespace Nine.Graphics
 #endif
             {
                 float dx = e.X - startPoint.X;
-                float dy = e.Y - startPoint.Y;
+                float dz = e.Y - startPoint.Y;
 
                 startPoint.X = e.X;
                 startPoint.Y = e.Y;
 
-                target.X -= ((float)Math.Cos(Yaw) * dy - (float)Math.Sin(Yaw) * dx) * 0.1f;
-                target.Y -= ((float)Math.Sin(Yaw) * dy + (float)Math.Cos(Yaw) * dx) * 0.1f;
+                target.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
+                target.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
             }
             else if (e.IsMiddleButtonDown)
             {
@@ -161,7 +161,7 @@ namespace Nine.Graphics
 
                 startPoint.X = e.X;
 
-                Yaw -= dx * 0.002f * MathHelper.Pi;
+                Yaw += dx * 0.002f * MathHelper.Pi;
             }
         }
     }

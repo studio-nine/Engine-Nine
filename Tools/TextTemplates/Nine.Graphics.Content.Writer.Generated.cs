@@ -329,18 +329,63 @@ namespace Nine.Content.Pipeline.Graphics
         }
     }
 }
-namespace Nine.Content.Pipeline.Graphics.Drawing
+namespace Nine.Content.Pipeline.Graphics.Cameras
 {
     /// <summary>
-    /// Content writer for <c>BasicPass</c>.
+    /// Content writer for <c>Camera</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class BasicPassWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Drawing.BasicPass>
+    partial class CameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.Camera>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Drawing.BasicPass value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.Camera value)
+        {
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Transform);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.CameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.Camera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+}
+namespace Nine.Content.Pipeline.Graphics.Drawing
+{
+    /// <summary>
+    /// Content writer for <c>DrawingPass</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DrawingPassWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Drawing.DrawingPass>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Drawing.DrawingPass value)
         {
             output.Write(value.SortEnabled);
             WriteObject(output, value, "Material", value.Material);
@@ -367,12 +412,12 @@ namespace Nine.Content.Pipeline.Graphics.Drawing
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Drawing.BasicPassReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.Drawing.DrawingPassReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Drawing.BasicPass, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.Drawing.DrawingPass, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -1717,6 +1762,43 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
 {
     /// <summary>
+    /// Content writer for <c>AlphaTestMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class AlphaTestMaterialPartWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart value)
+        {
+            WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
+            WriteObject(output, value, "AlphaFunction", value.AlphaFunction);
+            output.Write(value.ReferenceAlpha);
+            WriteObject(output, value, "Name", value.Name);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPartReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Materials.MaterialParts.AlphaTestMaterialPart, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>AmbientLightMaterialPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -2491,48 +2573,6 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
         }
     }
     /// <summary>
-    /// Content writer for <c>Camera</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class CameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.ObjectModel.Camera>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ObjectModel.Camera value)
-        {
-            output.Write(value.NearPlane);
-            output.Write(value.FarPlane);
-            output.Write(value.FieldOfView);
-            output.WriteObject(value.Viewport);
-            WriteObject(output, value, "ViewportScale", value.ViewportScale);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
-            output.Write(value.Transform);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.ObjectModel.CameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.ObjectModel.Camera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>Decal</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -2822,6 +2862,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.Visible);
+            output.Write(value.UseModelTextures);
             output.Write(value.LightingEnabled);
             output.Write(value.MultiPassLightingEnabled);
             output.Write(value.MaxAffectingLights);
@@ -2870,7 +2911,7 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
             output.Write(value.Visible);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
-            output.Write(value.UseModelTextures);
+            output.WriteObject(value.UseModelTextures);
             WriteObject(output, value, "Tag", value.Tag);
         }
         
@@ -3744,6 +3785,20 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             output.Write(value.Threshold);
             output.Write(value.BlurAmount);
+            {
+                output.Write(value.Passes.Count);
+                for (var i = 0; i < value.Passes.Count; i++)
+                    output.WriteObject(value.Passes[i]);
+            }
+            WriteObject(output, value, "InputTexture", value.InputTexture);
+            WriteObject(output, value, "Material", value.Material);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
+            output.WriteObject(value.View);
+            output.WriteObject(value.Projection);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -3778,6 +3833,20 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.BlurEffect value)
         {
             output.Write(value.BlurAmount);
+            {
+                output.Write(value.Effects.Count);
+                for (var i = 0; i < value.Effects.Count; i++)
+                    output.WriteObject(value.Effects[i]);
+            }
+            WriteObject(output, value, "TextureUsage", value.TextureUsage);
+            WriteObject(output, value, "BlendState", value.BlendState);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
+            output.WriteObject(value.View);
+            output.WriteObject(value.Projection);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -3801,6 +3870,57 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         }
     }
     /// <summary>
+    /// Content writer for <c>DepthOfFieldEffect</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DepthOfFieldEffectWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.DepthOfFieldEffect>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.DepthOfFieldEffect value)
+        {
+            output.Write(value.FocalLength);
+            output.Write(value.FocalPlane);
+            output.Write(value.FocalDistance);
+            output.Write(value.BlurAmount);
+            {
+                output.Write(value.Passes.Count);
+                for (var i = 0; i < value.Passes.Count; i++)
+                    output.WriteObject(value.Passes[i]);
+            }
+            WriteObject(output, value, "InputTexture", value.InputTexture);
+            WriteObject(output, value, "Material", value.Material);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
+            output.WriteObject(value.View);
+            output.WriteObject(value.Projection);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.DepthOfFieldEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.PostEffects.DepthOfFieldEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>HighDynamicRangeEffect</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -3813,6 +3933,20 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             output.Write(value.Threshold);
             output.Write(value.BlurAmount);
+            {
+                output.Write(value.Passes.Count);
+                for (var i = 0; i < value.Passes.Count; i++)
+                    output.WriteObject(value.Passes[i]);
+            }
+            WriteObject(output, value, "InputTexture", value.InputTexture);
+            WriteObject(output, value, "Material", value.Material);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            output.Write(value.Enabled);
+            output.Write(value.Order);
+            output.WriteObject(value.View);
+            output.WriteObject(value.Projection);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -4330,7 +4464,7 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Primitives.Plane value)
         {
             output.Write(value.TessellationX);
-            output.Write(value.TessellationY);
+            output.Write(value.TessellationZ);
             output.Write(value.Visible);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);

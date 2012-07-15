@@ -408,13 +408,6 @@ namespace Nine.Graphics.Primitives
             return Material;
         }
 
-        void ISupportInstancing.GetTransform(int subset, out Matrix transform)
-        {
-            VerifyInstancingPrimitveType();
-
-            transform = this.transform;
-        }
-
         void VerifyInstancingPrimitveType()
         {
             if (primitiveType != PrimitiveType.TriangleList)

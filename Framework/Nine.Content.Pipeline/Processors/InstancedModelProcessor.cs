@@ -34,9 +34,14 @@ namespace Nine.Content.Pipeline.Processors
             {
                 for (int i = 0; i < input.Template.Count; i++)
                 {
-                    MaterialGroup mg = input.Template.GetMaterial(i) as MaterialGroup;
-                    if (mg != null && !mg.MaterialParts.OfType<InstancedMaterialPart>().Any())
-                        mg.MaterialParts.Add(new InstancedMaterialPart());
+                    var material = input.Template.GetMaterial(i);
+                    while (material != null)
+                    {
+                        var mg = material as MaterialGroup;
+                        if (mg != null && !mg.MaterialParts.OfType<InstancedMaterialPart>().Any())
+                            mg.MaterialParts.Add(new InstancedMaterialPart());
+                        material = material.NextMaterial;
+                    }
                 }
             }
             return input;

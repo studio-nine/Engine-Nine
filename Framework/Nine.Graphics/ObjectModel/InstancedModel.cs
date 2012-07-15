@@ -353,9 +353,7 @@ namespace Nine.Graphics.ObjectModel
             model.GraphicsDevice.SetVertexBuffers(Bindings);
             model.GraphicsDevice.Indices = indexBuffer;
 
-            // TODO: Support AbsoluteTransform of this InstanceModel            
-            model.template.GetTransform(index, out material.world);
-
+            material.world = model.AbsoluteTransform;
             material.BeginApply(context);
             model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
             material.EndApply(context);

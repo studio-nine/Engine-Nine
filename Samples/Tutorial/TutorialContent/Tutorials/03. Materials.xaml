@@ -18,19 +18,19 @@
         </Model.Material>
     </Model>
 
-    <Model Source="{ContentReference ../Models/Tank}" Transform.Position="-20,20,0">
+    <Model Source="{ContentReference ../Models/Tank}" Transform.Position="-20,0,20" UseModelTextures="False">
         <Model.Material>
-            <MaterialGroup>
-                <DiffuseMaterialPart DiffuseColor="1, 0.8, 0.8" Texture="{ContentReference ../Textures/box}" />
+            <MaterialGroup Texture="{ContentReference ../Textures/box}">
+                <DiffuseMaterialPart DiffuseColor="1, 0.8, 0.8" />
             </MaterialGroup>
         </Model.Material>
     </Model>
-
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-40,20,0">
+    
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-40,0,20" UseModelTextures="False">
         <Model.Material>
-            <MaterialGroup>
+            <MaterialGroup Texture="{ContentReference ../Textures/box}">
                 <SkinnedMaterialPart />
-                <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+                <DiffuseMaterialPart />
             </MaterialGroup>
         </Model.Material>
     </Model>
@@ -45,22 +45,34 @@
             </MaterialGroup>
         </Model.Material>
     </Model>
-	
+
     <Model Source="{ContentReference ../Models/Dude}" Transform.Position="20,0,0">
         <Model.Material>
             <MaterialGroup>
                 <SkinnedMaterialPart />
                 <DiffuseMaterialPart />
-				<SpecularMaterialPart />
+                <SpecularMaterialPart />
                 <NormalMapMaterialPart />
+                <DirectionalLightMaterialPart />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
+    
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="20,0,10" UseModelTextures="False">
+        <Model.Material>
+            <MaterialGroup Texture="{ContentReference ../Textures/box}">
+                <SkinnedMaterialPart />
+                <DiffuseMaterialPart />
+				<SpecularMaterialPart />
+                <NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
 				<DirectionalLightMaterialPart />
             </MaterialGroup>
         </Model.Material>
     </Model>
 	
-    <Model Source="{ContentReference ../Models/Tank}" Transform.Position="20,20,0">
+    <Model Source="{ContentReference ../Models/Tank}" Transform.Position="20,0,20">
         <Model.Material>
-            <MaterialGroup>
+            <MaterialGroup Texture="{ContentReference ../Textures/box}">
                 <CustomMaterialPart xml:space="preserve">
                     <![CDATA[
                         float Time:TIME;
@@ -70,8 +82,9 @@
                         }
                     ]]>
                 </CustomMaterialPart>
-                <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+                <DiffuseMaterialPart />
             </MaterialGroup>
         </Model.Material>
     </Model>
+    
 </Scene>

@@ -35,16 +35,16 @@ namespace Nine.Graphics.ObjectModel
         /// <returns>
         /// Returns null if the input is outside the bounds.
         /// </returns>
-        public SurfacePatch this[int x, int y]
+        public SurfacePatch this[int x, int z]
         {
             get
             { 
                 if (x < 0 || x >= surface.patchCountX ||
-                    y < 0 || y >= surface.patchCountY)
+                    z < 0 || z >= surface.patchCountZ)
                 {
                     return null;
                 }
-                return this[y * surface.patchCountX + x];
+                return this[z * surface.patchCountX + x];
             }
         }
     }

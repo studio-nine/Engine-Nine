@@ -48,9 +48,9 @@ namespace Nine.Graphics.ObjectModel
                 return false;
             }
 
-            Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitZ);
+            Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.Up);
             if (float.IsNaN(view.M11))
-                view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitY);
+                view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitX);
 
             Vector3 point;
             float nearZ = float.MaxValue;

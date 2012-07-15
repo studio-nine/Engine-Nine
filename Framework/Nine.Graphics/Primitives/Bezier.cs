@@ -22,7 +22,7 @@ namespace Nine.Graphics.Primitives
     /// (a type of curved surface). This is used by the TeapotPrimitive.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public abstract class Bezier : Primitive<VertexPositionNormal>
+    public abstract class Bezier : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bezier"/> class.
@@ -209,9 +209,15 @@ namespace Nine.Graphics.Primitives
             return result;
         }
 
-        protected void AddVertex(Vector3 position, Vector3 normal)
+        private void AddVertex(Vector3 position, Vector3 normal)
         {
-            AddVertex(position, new VertexPositionNormal() { Position = position, Normal = normal });
+            AddVertex(position, new VertexPositionNormalTexture()
+            {
+                Position = position,
+                Normal = normal,
+                TextureCoordinate = new Vector2((float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5),
+                                                (float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5)),
+            });
         }
     }
 }

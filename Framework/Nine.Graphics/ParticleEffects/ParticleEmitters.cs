@@ -193,7 +193,7 @@ namespace Nine.Graphics.ParticleEffects
 
         public CylinderEmitter()
         {
-            Up = Vector3.UnitZ;
+            Up = Vector3.Up;
             Radius = 100.0f;
             Height = 100.0f;
         }
@@ -212,10 +212,10 @@ namespace Nine.Graphics.ParticleEffects
 
             bool needTransform = false;
             Matrix transform = new Matrix();
-            if (Up != Vector3.UnitZ)
+            if (Up != Vector3.Up)
             {
                 needTransform = true;
-                transform = MatrixHelper.CreateRotation(Vector3.UnitZ, Up);
+                transform = MatrixHelper.CreateRotation(Vector3.Up, Up);
             }
 
             if (Radiate)

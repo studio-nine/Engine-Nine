@@ -250,10 +250,14 @@ namespace Nine.Graphics.Materials
                 existingInstance = new MaterialGroup();
 
             int count = 0;
-            existingInstance.AttachedProperties = input.ReadObject<Dictionary<System.Xaml.AttachableMemberIdentifier, Object>>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.Effect = input.ReadExternalReference<Effect>();
+            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.AttachedProperties = input.ReadObject<Dictionary<System.Xaml.AttachableMemberIdentifier, Object>>();
+
+            existingInstance.Effect = input.ReadExternalReference<Effect>();            
 
             try
             {

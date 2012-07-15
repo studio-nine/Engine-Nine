@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-namespace Nine.Graphics
+
+namespace Nine.Graphics.Cameras
 {
     /// <summary>
     /// Camera that can perform Quaternion rotation

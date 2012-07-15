@@ -20,12 +20,13 @@ using Nine.Graphics.PostEffects;
 using Nine.Graphics.Materials.Deferred;
 #endif
 using Nine.Graphics.Materials;
+using Nine.Graphics.Cameras;
+using Nine.Graphics.Drawing;
+using Nine.Graphics.ObjectModel;
 #endregion
 
 namespace Nine.Graphics
 {
-    using Nine.Graphics.ObjectModel;
-    using Nine.Graphics.Drawing;
 
     /// <summary>
     /// Defines a graphical scene that manages a set of objects, cameras and lights.

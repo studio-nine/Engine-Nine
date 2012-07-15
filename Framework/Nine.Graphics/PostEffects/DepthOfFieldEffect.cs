@@ -23,7 +23,7 @@ namespace Nine.Graphics.PostEffects
     /// <summary>
     /// Represents a depth of field post processing effect.
     /// </summary>
-    public class DepthOfFieldEffect : ISceneObject
+    public class DepthOfFieldEffect : PostEffectGroup
     {        
         public float FocalLength
         {
@@ -49,7 +49,6 @@ namespace Nine.Graphics.PostEffects
             set { blurH.BlurAmount = blurV.BlurAmount = value; }
         }
 
-        PostEffectGroup postEffect;
         DepthOfFieldMaterial material;
         BlurMaterial blurH;
         BlurMaterial blurV;
@@ -59,25 +58,14 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         public DepthOfFieldEffect(GraphicsDevice graphics)
         {
-            postEffect = new PostEffectGroup();
-            postEffect.Material = material = new DepthOfFieldMaterial(graphics);
-            postEffect.Passes.Add(new PostEffectChain());
-            postEffect.Passes.Add(new PostEffectChain(TextureUsage.Blur,
+            Material = material = new DepthOfFieldMaterial(graphics);
+            Passes.Add(new PostEffectChain());
+            Passes.Add(new PostEffectChain(TextureUsage.Blur,
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
                 new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));
-        }
-
-        void ISceneObject.OnAdded(DrawingContext context)
-        {
-            ((ISceneObject)postEffect).OnAdded(context);
-        }
-
-        void ISceneObject.OnRemoved(DrawingContext context)
-        {
-            ((ISceneObject)postEffect).OnRemoved(context);
         }
     }
 }

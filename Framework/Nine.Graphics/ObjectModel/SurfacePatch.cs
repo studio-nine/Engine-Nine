@@ -46,9 +46,9 @@ namespace Nine.Graphics.ObjectModel
         public int X { get; private set; }
 
         /// <summary>
-        /// Gets the y index of the patch on the parent surface.
+        /// Gets the z index of the patch on the parent surface.
         /// </summary>
-        public int Y { get; private set; }
+        public int Z { get; private set; }
 
         /// <summary>
         /// Gets the level of detail of this surface patch.
@@ -181,14 +181,14 @@ namespace Nine.Graphics.ObjectModel
                 {
                     int i = 0;
                     positions = new Vector3[(SegmentCount + 1) * (SegmentCount + 1)];
-                    for (int y = 0; y <= SegmentCount; y++)
+                    for (int z = 0; z <= SegmentCount; z++)
                     {
                         for (int x = 0; x <= SegmentCount; x++)
                         {
                             int xSurface = (x + (X * SegmentCount));
-                            int ySurface = (y + (Y * SegmentCount));
+                            int zSurface = (z + (Z * SegmentCount));
 
-                            positions[i++] = Surface.Heightmap.GetPosition(xSurface, ySurface);
+                            positions[i++] = Surface.Heightmap.GetPosition(xSurface, zSurface);
                         }
                     }
                 }
@@ -217,7 +217,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Constructor is for internal use only.
         /// </summary>
-        internal SurfacePatch(Surface surface, int xPatch, int yPatch)
+        internal SurfacePatch(Surface surface, int xPatch, int zPatch)
         {
             var patchSegmentCount = surface.PatchSegmentCount;
             if (6 * patchSegmentCount * patchSegmentCount > ushort.MaxValue)
@@ -231,7 +231,7 @@ namespace Nine.Graphics.ObjectModel
             this.GraphicsDevice = surface.GraphicsDevice;
             this.SegmentCount = patchSegmentCount;
             this.X = xPatch;
-            this.Y = yPatch;
+            this.Z = zPatch;
 
             // Compute bounding box
             baseBounds = BoundingBox.CreateFromPoints(EnumeratePositions());
@@ -246,7 +246,7 @@ namespace Nine.Graphics.ObjectModel
         private IEnumerable<Vector3> EnumeratePositions()
         {
             for (int x = X * SegmentCount; x <= (X + 1) * SegmentCount; x++)
-                for (int y = Y * SegmentCount; y <= (Y + 1) * SegmentCount; y++)
+                for (int y = Z * SegmentCount; y <= (Z + 1) * SegmentCount; y++)
                     yield return heightmap.GetPosition(x, y);
         }
 
@@ -261,13 +261,13 @@ namespace Nine.Graphics.ObjectModel
             
             var offset = new Vector3();
             offset.X = X * heightmap.Step * SegmentCount;
-            offset.Y = Y * heightmap.Step * SegmentCount;
-            offset.Z = 0;
+            offset.Z = Z * heightmap.Step * SegmentCount;
+            offset.Y = 0;
 
             Position = Surface.AbsolutePosition + offset;
 
             offset.X = 0.5f * heightmap.Step * SegmentCount;
-            offset.Y = 0.5f * heightmap.Step * SegmentCount;
+            offset.Z = 0.5f * heightmap.Step * SegmentCount;
                         
             center = Position + offset;
 
@@ -289,17 +289,17 @@ namespace Nine.Graphics.ObjectModel
             int startIndex, primitiveCount;
             {
                 Surface.Geometry.GetLevel(DetailLevel,
-                    GetLevelOfDetail(X - 1, Y), GetLevelOfDetail(X + 1, Y),
-                    GetLevelOfDetail(X, Y - 1), GetLevelOfDetail(X, Y + 1), out startIndex, out primitiveCount);
+                    GetLevelOfDetail(X - 1, Z), GetLevelOfDetail(X + 1, Z),
+                    GetLevelOfDetail(X, Z - 1), GetLevelOfDetail(X, Z + 1), out startIndex, out primitiveCount);
             }
             StartIndex = startIndex;
             PrimitiveCount = primitiveCount;
             IndexBuffer = Surface.Geometry.IndexBuffer;
         }
 
-        private int GetLevelOfDetail(int x, int y)
+        private int GetLevelOfDetail(int x, int z)
         {
-            var patch = Surface.Patches[x, y];
+            var patch = Surface.Patches[x, z];
             return patch != null ? patch.DetailLevel : DetailLevel;
         }
         #endregion
@@ -406,13 +406,13 @@ namespace Nine.Graphics.ObjectModel
             // Fill vertices
             int i = 0;
             VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
-            for (int y = 0; y <= SegmentCount; y++)
+            for (int z = 0; z <= SegmentCount; z++)
             {
                 for (int x = 0; x <= SegmentCount; x++)
                 {
-                    Surface.PopulateVertex(X, Y, x, y, ref vertex, ref vertex);
+                    Surface.PopulateVertex(X, Z, x, z, ref vertex, ref vertex);
                     if (FillVertex != null)
-                        FillVertex(X, Y, x, y, ref vertex, ref vertices[i]);
+                        FillVertex(X, Z, x, z, ref vertex, ref vertices[i]);
                     i++;
                 }
             }

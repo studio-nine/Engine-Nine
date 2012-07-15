@@ -41,23 +41,23 @@ namespace Nine.Graphics.Primitives
         private int tessellationX = 1;
 
         /// <summary>
-        /// Gets or sets the tessellation on y axis of this primitive.
+        /// Gets or sets the tessellation on z axis of this primitive.
         /// </summary>
-        public int TessellationY
+        public int TessellationZ
         {
-            get { return tessellationY; }
+            get { return tessellationZ; }
             set
             {
-                if (tessellationY != value)
+                if (tessellationZ != value)
                 {
                     if (value < 1)
                         throw new ArgumentOutOfRangeException("tessellationY");
-                    tessellationY = value;
+                    tessellationZ = value;
                     Invalidate();
                 }
             }
         }
-        private int tessellationY = 1;
+        private int tessellationZ = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plane"/> class.
@@ -69,49 +69,49 @@ namespace Nine.Graphics.Primitives
 
         protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
-            return primitive is Plane && ((Plane)primitive).tessellationX == tessellationX && ((Plane)primitive).tessellationY == tessellationY;
+            return primitive is Plane && ((Plane)primitive).tessellationX == tessellationX && ((Plane)primitive).tessellationZ == tessellationZ;
         }
         
         protected override void OnBuild()
         {
             tessellationX++;
-            tessellationY++;
+            tessellationZ++;
 
-            for (int y = 0; y < tessellationY; y++)
+            for (int z = 0; z < tessellationZ; z++)
             {
                 for (int x = 0; x < tessellationX; x++)
                 {
                     Vector3 position = new Vector3();
 
                     position.X = x / (tessellationX - 1) - 0.5f;
-                    position.Y = y / (tessellationY - 1) - 0.5f;
-                    position.Z = 0;
+                    position.Y = 0;
+                    position.Z = z / (tessellationZ - 1) - 0.5f;
 
                     Vector2 uv = new Vector2();
 
                     uv.X = 1.0f * x / (tessellationX - 1);
-                    uv.Y = 1.0f * y / (tessellationY - 1);
+                    uv.Y = 1.0f * z / (tessellationZ - 1);
 
-                    AddVertex(position, Vector3.UnitZ, uv);
+                    AddVertex(position, Vector3.Up, uv);
                 }
             }
 
-            for (int y = 0; y < tessellationY - 1; y++)
+            for (int z = 0; z < tessellationZ - 1; z++)
             {
                 for (int x = 0; x < tessellationX - 1; x++)
                 {
-                    AddIndex((ushort)(y * tessellationX + x));
-                    AddIndex((ushort)((y + 1) * tessellationX + x + 1));
-                    AddIndex((ushort)(y * tessellationX + x + 1));
+                    AddIndex((ushort)(z * tessellationX + x));
+                    AddIndex((ushort)(z * tessellationX + x + 1));
+                    AddIndex((ushort)((z + 1) * tessellationX + x + 1));
 
-                    AddIndex((ushort)(y * tessellationX + x));
-                    AddIndex((ushort)((y + 1) * tessellationX + x));
-                    AddIndex((ushort)((y + 1) * tessellationX + x + 1));
+                    AddIndex((ushort)(z * tessellationX + x));
+                    AddIndex((ushort)((z + 1) * tessellationX + x + 1));
+                    AddIndex((ushort)((z + 1) * tessellationX + x));
                 }
             }
 
             tessellationX--;
-            tessellationY--;
+            tessellationZ--;
         }
 
         private void AddVertex(Vector3 position, Vector3 normal, Vector2 uv)

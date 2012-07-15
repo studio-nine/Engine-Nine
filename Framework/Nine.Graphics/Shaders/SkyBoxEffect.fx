@@ -28,8 +28,7 @@ VS_OUTPUT VS(float4 Position  : POSITION)
     Out.Position = mul(Position, worldViewProjection).xyww;
     
     // Just use the positions to infer the texture coordinates
-    // Swap y and z because we use +z as up
-    Out.TexCoord = float3(Position.xzy);
+    Out.TexCoord = float3(Position.xyz);
 	
     return Out;
 }

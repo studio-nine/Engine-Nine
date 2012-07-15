@@ -76,11 +76,11 @@ namespace Nine.Content.Pipeline.Xaml
             
             var map = (PixelBitmapContent<float>)texture.Mipmaps[0];
 
-            for (int y = 0; y < map.Height; y++)
+            for (int z = 0; z < map.Height; z++)
             {
                 for (int x = 0; x < map.Width; x++)
                 {
-                    var probability = map.GetPixel(x, y) * Density * 0.0001 * Step * Step;
+                    var probability = map.GetPixel(x, z) * Density * 0.0001 * Step * Step;
                     var count = (int)Math.Floor(probability);
                     if (random.NextDouble() < probability - count)
                         count++;
@@ -88,12 +88,12 @@ namespace Nine.Content.Pipeline.Xaml
                     for (int i = 0; i < count; i++)
                     {
                         var xx = random.NextDouble();
-                        var yy = random.NextDouble();
+                        var zz = random.NextDouble();
 
                         Matrix transform = Matrix.Identity;
 
                         transform.M41 = (x * Step) + (float)(xx * Step);
-                        transform.M42 = (y * Step) + (float)(yy * Step);
+                        transform.M43 = (z * Step) + (float)(zz * Step);
 
                         transforms.Add(transform);
                     }

@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Input;
 using Nine;
 using Nine.Components;
 using Nine.Graphics;
+using Nine.Graphics.Cameras;
 using Nine.Graphics.ObjectModel;
 using Nine.Physics;
 #endregion
@@ -127,7 +128,9 @@ namespace Tutorial
                 world.CreatePhysics(true);
             }
 
-            scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, -40, 10));           
+            scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));           
+            //scene.Camera = new TopDownEditorCamera(GraphicsDevice);           
+            //scene.Camera = new ModelViewerCamera(GraphicsDevice);           
             scene.Settings.DefaultDebugControlEnabled = true;
             scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
 

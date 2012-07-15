@@ -24,7 +24,7 @@ namespace Nine.Graphics.PostEffects
     /// Represents a high dynamic range (HDR) post processing effect.
     /// </summary>
     [ContentSerializable]
-    public class HighDynamicRangeEffect : ISceneObject
+    public class HighDynamicRangeEffect : PostEffectGroup
     {
         public float Threshold
         {
@@ -38,7 +38,6 @@ namespace Nine.Graphics.PostEffects
             set { blurH.BlurAmount = blurV.BlurAmount = value; }
         }
 
-        PostEffectGroup postEffect;
         BlurMaterial blurH;
         BlurMaterial blurV;
         ThresholdMaterial threshold;
@@ -48,25 +47,14 @@ namespace Nine.Graphics.PostEffects
         /// </summary>
         public HighDynamicRangeEffect(GraphicsDevice graphics)
         {
-            postEffect = new PostEffectGroup();
-            postEffect.Passes.Add(new PostEffectChain());
-            postEffect.Passes.Add(new PostEffectChain(BlendState.Additive,
+            Passes.Add(new PostEffectChain());
+            Passes.Add(new PostEffectChain(BlendState.Additive,
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
                 new PostEffect() { Material = threshold = new ThresholdMaterial(graphics) },
                 new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));
-        }
-
-        void ISceneObject.OnAdded(DrawingContext context)
-        {
-            ((ISceneObject)postEffect).OnAdded(context);
-        }
-
-        void ISceneObject.OnRemoved(DrawingContext context)
-        {
-            ((ISceneObject)postEffect).OnRemoved(context);
         }
     }
 }

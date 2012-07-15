@@ -117,11 +117,6 @@ namespace Nine.Graphics.ObjectModel
         void GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
 
         /// <summary>
-        /// Gets the transform for the given subset.
-        /// </summary>
-        void GetTransform(int subset, out Matrix transform);
-
-        /// <summary>
         /// Gets the material for the given subset.
         /// </summary>
         Material GetMaterial(int subset);

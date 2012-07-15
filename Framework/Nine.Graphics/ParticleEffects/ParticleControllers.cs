@@ -144,7 +144,7 @@ namespace Nine.Graphics.ParticleEffects
 
         public ForceController()
         {
-            Force = -Vector3.UnitZ;
+            Force = -Vector3.Up;
         }
 
         protected override void OnReset(ref Particle particle) { }
@@ -180,7 +180,7 @@ namespace Nine.Graphics.ParticleEffects
 
         public TangentForceController()
         {
-            Up = Vector3.UnitZ;
+            Up = Vector3.Up;
         }
 
         protected override void OnReset(ref Particle particle) { }

@@ -7,14 +7,40 @@
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
 
-    <Cross Transform.Position="-40,0,0" />
-    <Box Transform.Position="-30,0,0" />
-    <Centrum Transform.Position="-20,0,0" />
-    <Cylinder Transform.Position="-10,0,0" />
-    <Dome Transform.Position="0,0,0" />
-    <Plane Transform.Position="10,0,0" />
-    <Sphere Transform.Position="20,0,0" />
-    <Teapot Transform.Position="30,0,0" />
-    <Torus Transform.Position="40,0,0" />
+    <Cross Transform.Position="-40,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Cross>
+
+    <Box Transform.Position="-30,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Box>
+    
+    <Centrum Transform.Position="-20,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Centrum>
+
+    <Cylinder Transform.Position="-10,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Cylinder>
+
+    <Dome Transform.Position="0,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Dome>
+
+    <Plane Transform.Position="10,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Plane>
+
+    <Sphere Transform.Position="20,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Sphere>
+
+    <Teapot Transform.Position="30,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Teapot>
+
+    <Torus Transform.Position="40,0,0">
+        <BasicMaterial LightingEnabled="True" Texture="{ContentReference ../Textures/nine}"  />
+    </Torus>
 
 </Scene>

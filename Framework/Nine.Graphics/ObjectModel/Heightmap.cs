@@ -96,27 +96,27 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         /// <param name="step">Size of the smallest square block that made up the terrain.</param>
         /// <param name="segmentCountX">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
-        /// <param name="segmentCountY">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
-        public Heightmap(float step, int segmentCountX, int segmentCountY)
-            : this(new float[(segmentCountX + 1) * (segmentCountY + 1)], step, segmentCountX, segmentCountY)
+        /// <param name="segmentCountZ">Number of the smallest square block in Z axis, or heightmap texture V axis.</param>
+        public Heightmap(float step, int segmentCountX, int segmentCountZ)
+            : this(new float[(segmentCountX + 1) * (segmentCountZ + 1)], step, segmentCountX, segmentCountZ)
         {
         }
 
         /// <summary>
         /// Creates a new instance of Heightmap.
         /// </summary>
-        /// <param name="heightmap">Heights of each points. The dimension of the array should be (segmentCountX + 1) * (segmentCountY + 1).</param>
+        /// <param name="heightmap">Heights of each points. The dimension of the array should be (segmentCountX + 1) * (segmentCountZ + 1).</param>
         /// <param name="step">Size of the smallest square block that made up the terrain.</param>
         /// <param name="segmentCountX">Number of the smallest square block in X axis, or heightmap texture U axis.</param>
-        /// <param name="segmentCountY">Number of the smallest square block in Y axis, or heightmap texture V axis.</param>
-        public Heightmap(float[] heightmap, float step, int segmentCountX, int segmentCountY)
+        /// <param name="segmentCountZ">Number of the smallest square block in Z axis, or heightmap texture V axis.</param>
+        public Heightmap(float[] heightmap, float step, int segmentCountX, int segmentCountZ)
         {
-            if (step <= 0 || segmentCountX <= 0 || segmentCountY <= 0)
+            if (step <= 0 || segmentCountX <= 0 || segmentCountZ <= 0)
                 throw new ArgumentOutOfRangeException();
 
             Step = step;
             Width = segmentCountX;
-            Height = segmentCountY;
+            Height = segmentCountZ;
 
             LoadHeightmap(heightmap);
         }
@@ -125,14 +125,14 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the position of the terrain on given point.
         /// </summary>
         /// <param name="x">Point on x axis.</param>
-        /// <param name="y">Point on y axis.</param>
-        public Vector3 GetPosition(int x, int y)
+        /// <param name="z">Point on z axis.</param>
+        public Vector3 GetPosition(int x, int z)
         {
             Vector3 result = new Vector3();
 
             result.X = Step * x;
-            result.Y = Step * y;
-            result.Z = Heights[GetIndex(x, y)];
+            result.Z = Step * z;
+            result.Y = Heights[GetIndex(x, z)];
 
             return result;
         }
@@ -140,25 +140,25 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the height of the terrain on given point.
         /// </summary>
-        public float GetHeight(int x, int y)
+        public float GetHeight(int x, int z)
         {
-            return Heights[GetIndex(x, y)];
+            return Heights[GetIndex(x, z)];
         }
 
         /// <summary>
         /// Gets the normal of the terrain on given point.
         /// </summary>
-        public Vector3 GetNormal(int x, int y)
+        public Vector3 GetNormal(int x, int z)
         {
-            return Normals[GetIndex(x, y)];
+            return Normals[GetIndex(x, z)];
         }
 
         /// <summary>
         /// Gets the tangent of the terrain on given point.
         /// </summary>
-        public Vector3 GetTangent(int x, int y)
+        public Vector3 GetTangent(int x, int z)
         {
-            return Tangents[GetIndex(x, y)];
+            return Tangents[GetIndex(x, z)];
         }
 
         /// <summary>
@@ -166,13 +166,13 @@ namespace Nine.Graphics.ObjectModel
         /// The return value can be used to index Heights, Normals and Tangents.
         /// </summary>
         /// <param name="x">Point on x axis.</param>
-        /// <param name="y">Point on y axis.</param>
-        public int GetIndex(int x, int y)
+        /// <param name="z">Point on z axis.</param>
+        public int GetIndex(int x, int z)
         {
-            if (x < 0 || y < 0 || x > Width || y > Height)
+            if (x < 0 || z < 0 || x > Width || z > Height)
                 throw new ArgumentOutOfRangeException();
 
-            return y * (Width + 1) + x;
+            return z * (Width + 1) + x;
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Nine.Graphics.ObjectModel
                 if (height > maxheight)
                     maxheight = height;
                         
-            Size = new Vector3(Step * Width, Step * Height, maxheight);
+            Size = new Vector3(Step * Width, maxheight, Step * Height);
 
             BoundingBox = BoundingBox.CreateFromPoints(EnumeratePositions());
 
@@ -211,7 +211,7 @@ namespace Nine.Graphics.ObjectModel
             // Compute normals and tangents
             CalculateNormalsAndTangents(
                 Width + 1, Height + 1, heightmap, 
-                Size.X, Size.Y, ref normals, ref tangents);
+                Size.X, Size.Z, ref normals, ref tangents);
 
             Normals = normals;
             Tangents = tangents;
@@ -226,25 +226,25 @@ namespace Nine.Graphics.ObjectModel
         {
             for (int x = 0; x <= Width; x++)
             {
-                for (int y = 0; y <= Height; y++)
+                for (int z = 0; z <= Height; z++)
                 {
-                    yield return GetPosition(x, y);
+                    yield return GetPosition(x, z);
                 }
             }
         }
 
         #region Terrain Normal & Tangent Data Generation
-        private static Vector3 CalculatePosition(int x, int y, int w, int h, float[] heights, float sizeX, float sizeY)
+        private static Vector3 CalculatePosition(int x, int z, int w, int h, float[] heights, float sizeX, float sizeZ)
         {
             // Make sure we stay on the valid map data
             int mapX = x < 0 ? 0 : x >= w ? w - 1 : x;
-            int mapY = y < 0 ? 0 : y >= h ? h - 1 : y;
+            int mapZ = z < 0 ? 0 : z >= h ? h - 1 : z;
 
             Vector3 result = new Vector3();
 
             result.X = x * sizeX / (w - 1);
-            result.Y = y * sizeY / (h - 1);
-            result.Z = heights[mapX + mapY * w];
+            result.Z = z * sizeZ / (h - 1);
+            result.Y = heights[mapX + mapZ * w];
 
             return result;
         }
@@ -254,32 +254,32 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Calculate normals from height data
         /// </summary>
-        private static void CalculateNormalsAndTangents(int w, int h, float[] heights, float sizeX, float sizeY, ref Vector3[] normals, ref Vector3[] tangents)
+        private static void CalculateNormalsAndTangents(int w, int h, float[] heights, float sizeX, float sizeZ, ref Vector3[] normals, ref Vector3[] tangents)
         {        
             #region Build tangent vertices
             // Build our tangent vertices
             for (int x = 0; x < w; x++)
-                for (int y = 0; y < h; y++)
+                for (int z = 0; z < h; z++)
                 {
                     // Step 1: Calculate position
-                    Vector3 pos = CalculatePosition(x, y, w, h, heights, sizeX, sizeY);
+                    Vector3 pos = CalculatePosition(x, z, w, h, heights, sizeX, sizeZ);
 
                     // Step 2: Calculate all edge vectors (for normals and tangents)
-                    Vector3 edge1 = pos - CalculatePosition(x, y + 1, w, h, heights, sizeX, sizeY);
-                    Vector3 edge2 = pos - CalculatePosition(x + 1, y, w, h, heights, sizeX, sizeY);
-                    Vector3 edge3 = pos - CalculatePosition(x, y - 1, w, h, heights, sizeX, sizeY);
-                    Vector3 edge4 = pos - CalculatePosition(x - 1, y, w, h, heights, sizeX, sizeY);
+                    Vector3 edge1 = pos - CalculatePosition(x, z - 1, w, h, heights, sizeX, sizeZ);
+                    Vector3 edge2 = pos - CalculatePosition(x + 1, z, w, h, heights, sizeX, sizeZ);
+                    Vector3 edge3 = pos - CalculatePosition(x, z + 1, w, h, heights, sizeX, sizeZ);
+                    Vector3 edge4 = pos - CalculatePosition(x - 1, z, w, h, heights, sizeX, sizeZ);
 
                     // Step 3: Calculate normal based on the edges (interpolate
                     // from 3 cross products we build from our edges).
-                    normals[x + y * w] = Vector3.Normalize(
+                    normals[x + z * w] = Vector3.Normalize(
                         Vector3.Cross(edge2, edge1) +
                         Vector3.Cross(edge3, edge2) +
                         Vector3.Cross(edge4, edge3) +
                         Vector3.Cross(edge1, edge4));
 
                     // Step 4: Set tangent data
-                    tangents[x + y * w] = Vector3.Normalize(edge4);
+                    tangents[x + z * w] = Vector3.Normalize(edge4);
                 }
             #endregion
             
@@ -293,18 +293,18 @@ namespace Nine.Graphics.ObjectModel
             // Time to smooth to normals we just saved
             for (int x = 1; x < w - 1; x++)
             {
-                for (int y = 1; y < h - 1; y++)
+                for (int z = 1; z < h - 1; z++)
                 {
                     // Smooth 3x3 normals, but still use old normal to 40% (5 of 13)
-                    Vector3 normal = normals[x + y * w] * 4;
+                    Vector3 normal = normals[x + z * w] * 4;
                     for (int xAdd = -1; xAdd <= 1; xAdd++)
                         for (int yAdd = -1; yAdd <= 1; yAdd++)
-                            normal += normalsForSmoothing[x + xAdd + (y + yAdd) * w];
-                    normals[x + y * w] = Vector3.Normalize(normal);
+                            normal += normalsForSmoothing[x + xAdd + (z + yAdd) * w];
+                    normals[x + z * w] = Vector3.Normalize(normal);
 
                     // Also recalculate tangent to let it stay 90 degrees on the normal
-                    Vector3 helperVector = Vector3.Cross(normals[x + y * w], tangents[x + y * w]);
-                    tangents[x + y * w] = Vector3.Cross(helperVector, normals[x + y * w]);
+                    Vector3 helperVector = Vector3.Cross(normals[x + z * w], tangents[x + z * w]);
+                    tangents[x + z * w] = Vector3.Cross(helperVector, normals[x + z * w]);
                 }
             }
             #endregion
@@ -319,12 +319,12 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the height of the terrain at a given location.
         /// </summary>
         /// <returns>Null if the location is outside the boundary of the terrain.</returns>
-        public float GetHeight(float x, float y)
+        public float GetHeight(float x, float z)
         {
             float result;
             Vector3 normal = new Vector3();
 
-            if (TryGetHeightAndNormal(x, y, true, false, out result, out normal))
+            if (TryGetHeightAndNormal(x, z, true, false, out result, out normal))
                 return result;
 
             throw new ArgumentOutOfRangeException();
@@ -334,12 +334,12 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the normal of the terrain at a given location.
         /// </summary>
         /// <returns>Null if the location is outside the boundary of the terrain.</returns>
-        public Vector3 GetNormal(float x, float y)
+        public Vector3 GetNormal(float x, float z)
         {
             float result;
             Vector3 normal = new Vector3();
 
-            if (TryGetHeightAndNormal(x, y, false, true, out result, out normal))
+            if (TryGetHeightAndNormal(x, z, false, true, out result, out normal))
                 return normal;
 
             throw new ArgumentOutOfRangeException();
@@ -349,26 +349,26 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the height and normal of the terrain at a given location.
         /// </summary>
         /// <returns>False if the location is outside the boundary of the terrain.</returns>
-        public bool TryGetHeightAndNormal(float x, float y, out float height, out Vector3 normal)
+        public bool TryGetHeightAndNormal(float x, float z, out float height, out Vector3 normal)
         {
-            return TryGetHeightAndNormal(x, y, true, true, out height, out normal);
+            return TryGetHeightAndNormal(x, z, true, true, out height, out normal);
         }
         
-        internal bool TryGetHeightAndNormal(float positionX, float positionY, bool getHeight, bool getNormal, out float height, out Vector3 normal)
+        internal bool TryGetHeightAndNormal(float positionX, float positionZ, bool getHeight, bool getNormal, out float height, out Vector3 normal)
         {
             // first we'll figure out where on the heightmap "position" is...
             if (positionX == Size.X)
                 positionX -= float.Epsilon;
-            if (positionY == Size.Y)
-                positionY -= float.Epsilon;
+            if (positionZ == Size.Z)
+                positionZ -= float.Epsilon;
 
             // ... and then check to see if that value goes outside the bounds of the
             // heightmap.
             if (!(positionX >= 0 && positionX < Size.X &&
-                  positionY >= 0 && positionY < Size.Y))
+                  positionZ >= 0 && positionZ < Size.Z))
             {
                 height = float.MinValue;
-                normal = Vector3.UnitZ;
+                normal = Vector3.Up;
 
                 return false;
             }
@@ -378,13 +378,13 @@ namespace Nine.Graphics.ObjectModel
             // down, so that the result of these divisions is the indices of the "upper
             // left" of the 4 corners of that cell.
             int left = (int)Math.Floor(positionX * Width / Size.X);
-            int top = (int)Math.Floor(positionY * Height / Size.Y);
+            int top = (int)Math.Floor(positionZ * Height / Size.Z);
 
             // next, we'll use modulus to find out how far away we are from the upper
             // left corner of the cell. Mod will give us a value from 0 to terrainScale,
             // which we then divide by terrainScale to normalize 0 to 1.
             float xNormalized = positionX - left * Size.X / Width;
-            float yNormalized = positionY - top * Size.Y / Height;
+            float zNormalized = positionZ - top * Size.Z / Height;
 
             if (getHeight)
             {
@@ -404,7 +404,7 @@ namespace Nine.Graphics.ObjectModel
 
                 // next, interpolate between those two values to calculate the height at our
                 // position.
-                height = MathHelper.Lerp(topHeight, bottomHeight, yNormalized);
+                height = MathHelper.Lerp(topHeight, bottomHeight, zNormalized);
             }
             else
             {
@@ -422,12 +422,12 @@ namespace Nine.Graphics.ObjectModel
                     Normals[GetIndex(left, top + 1)],
                     Normals[GetIndex(left + 1, top + 1)], xNormalized);
 
-                normal = Vector3.Lerp(topNormal, bottomNormal, yNormalized);
+                normal = Vector3.Lerp(topNormal, bottomNormal, zNormalized);
                 normal.Normalize();
             }
             else
             {
-                normal = Vector3.UnitZ;
+                normal = Vector3.Up;
             }
             return true;
         }

@@ -91,7 +91,7 @@ namespace Nine.Graphics.Materials.MaterialParts
             set { textureEnabled = value; NotifyShaderChanged(); }
         }
         private bool textureEnabled = true;
-
+        
         /// <summary>
         /// Gets or sets the diffuse texture.
         /// This value will override Material.Texture property when it's not null.
@@ -201,7 +201,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             result.DiffuseColor = this.DiffuseColor;
             result.Alpha = this.Alpha;
             result.diffuseColorEnabled = this.diffuseColorEnabled;
-            result.Texture = this.Texture;
             return result;
         }
 

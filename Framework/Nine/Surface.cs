@@ -49,7 +49,7 @@ namespace Nine
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {
             height = Height;
-            normal = Vector3.UnitZ;
+            normal = Vector3.Up;
 
             return true;
         }
@@ -76,7 +76,7 @@ namespace Nine
         {
             // TODO: Include object height
 
-            Vector3 v = Vector3.UnitZ;
+            Vector3 v = Vector3.Up;
             float h = 0;
             float min = float.MaxValue;
             bool result = false;
@@ -90,7 +90,7 @@ namespace Nine
                 if (surface != null &&
                     surface.TryGetHeightAndNormal(position, out h, out v))
                 {
-                    if (Math.Abs(position.Z - h) < min)
+                    if (Math.Abs(position.Y - h) < min)
                     {
                         height = h;
                         normal = v;

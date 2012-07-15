@@ -19,7 +19,7 @@ namespace Nine.Graphics.Primitives
     /// Geometric primitive class for drawing toruses.
     /// </summary>
     [ContentSerializable]
-    public class Torus : Primitive<VertexPositionNormal>
+    public class Torus : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
         /// Gets or sets the tessellation of this primitive.
@@ -48,7 +48,7 @@ namespace Nine.Graphics.Primitives
 
         }
 
-        protected override bool CanShareBufferWith(Primitive<VertexPositionNormal> primitive)
+        protected override bool CanShareBufferWith(Primitive<VertexPositionNormalTexture> primitive)
         {
             return primitive is Torus && ((Torus)primitive).tessellation == tessellation;
         }
@@ -102,7 +102,13 @@ namespace Nine.Graphics.Primitives
 
         private void AddVertex(Vector3 position, Vector3 normal)
         {
-            AddVertex(position, new VertexPositionNormal() { Position = position, Normal = normal });
+            AddVertex(position, new VertexPositionNormalTexture()
+            {
+                Position = position,
+                Normal = normal,
+                TextureCoordinate = new Vector2((float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5),
+                                                (float)(Math.Asin(normal.X) / MathHelper.Pi + 0.5)),
+            });
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Nine.Graphics
+namespace Nine.Graphics.Cameras
 {
     /// <summary>
     /// Defines the coordinate system used by ScreenCamera.

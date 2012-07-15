@@ -202,7 +202,7 @@ namespace Nine.Graphics.ObjectModel
                 {
                     for (int i = 0; i < lengh; i++)
                     {
-                        Point point = Indices[InvertWindingOrder(i)];
+                        Point point = Indices[i /*InvertWindingOrder(i)*/];
                         if (left && x == 0 && point.Y == 1 && point.X == 0)
                             point.Y = 0;
                         if (right && x == n - 1 && point.Y == 1 && point.X == 2)
