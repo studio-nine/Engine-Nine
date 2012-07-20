@@ -1,23 +1,11 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Xaml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Nine.Content;
-using Nine.Graphics.ObjectModel;
-#endregion
-
-namespace Nine.Graphics.ObjectModel
+﻿namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xaml;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// The geometric representation of heightmap. 
     /// The up axis of the terrain is Vector.UnitY.

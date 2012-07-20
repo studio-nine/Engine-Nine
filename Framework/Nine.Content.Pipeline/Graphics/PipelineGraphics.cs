@@ -1,19 +1,9 @@
-﻿#region Copyright 2011 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Linq;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Content.Pipeline.Graphics
+﻿namespace Nine.Content.Pipeline.Graphics
 {
+    using System.Linq;
+    using System.Windows.Forms;
+    using Microsoft.Xna.Framework.Graphics;
+
     static class PipelineGraphics
     {
         static GraphicsDevice graphics;

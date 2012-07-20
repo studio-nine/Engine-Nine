@@ -1,20 +1,9 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-
-#endregion
-
-namespace Nine.Content.Pipeline.Xaml
+﻿namespace Nine.Content.Pipeline.Xaml
 {
+    using System;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines a markup extension that converts from degrees to radians.
     /// </summary>

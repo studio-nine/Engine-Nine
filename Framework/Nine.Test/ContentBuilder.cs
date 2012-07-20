@@ -1,28 +1,16 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// ContentBuilder.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
-using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.IO;
+    using Microsoft.Build.Construction;
+    using Microsoft.Build.Evaluation;
+    using Microsoft.Build.Execution;
+    using Microsoft.Build.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     /// <summary>
     /// This class wraps the MSBuild functionality needed to build XNA Framework
     /// content dynamically at runtime. It creates a temporary MSBuild project
@@ -316,12 +304,14 @@ namespace Nine
                 Directory.Delete(buildDirectory, true);
 
                 // If there are no other instances of ContentBuilder still using their
+
                 // own temp directories, we can delete the process directory as well.
                 if (Directory.GetDirectories(processDirectory).Length == 0)
                 {
                     Directory.Delete(processDirectory);
 
                     // If there are no other copies of the program still using their
+
                     // own temp directories, we can delete the base directory as well.
                     if (Directory.GetDirectories(baseDirectory).Length == 0)
                     {
@@ -339,6 +329,7 @@ namespace Nine
         /// of Dispose or our finalizer) does exactly that. Trouble is, sometimes
         /// these cleanup methods may never execute. For instance if the program
         /// crashes, or is halted using the debugger, we never get a chance to do
+
         /// our deleting. The next time we start up, this method checks for any temp
         /// directories that were left over by previous runs which failed to shut
         /// down cleanly. This makes sure these orphaned directories will not just

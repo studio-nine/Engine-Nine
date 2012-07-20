@@ -1,9 +1,7 @@
-﻿
-
-using Microsoft.Xna.Framework;
-
-namespace BEPUphysicsDrawer.Models
+﻿namespace BEPUphysicsDrawer.Models
 {
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Superclass of display types that can draw themselves.
     /// These types do not use any instancing techniques.

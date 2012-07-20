@@ -1,23 +1,10 @@
-#region Copyright 2008 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Text;
-using Microsoft.Xna.Framework;
-using System.Windows.Markup;
-using System.Xaml;
-
-#endregion
-
 namespace Nine.Content.Pipeline.Xaml
 {
+    using System;
+    using System.Text;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+
     public class TextureTransform : MarkupExtension, IEquatable<TextureTransform>
     {
         /// <summary>

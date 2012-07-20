@@ -1,24 +1,12 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-
-
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     public partial class SpotLight : Light<ISpotLight>, ISpatialQueryable
     {
         const float NearPlane = 0.01f;

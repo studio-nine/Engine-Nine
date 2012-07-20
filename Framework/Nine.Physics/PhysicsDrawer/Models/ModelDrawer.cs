@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using BEPUphysics.Collidables;
-using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.CollisionShapes.ConvexShapes;
-using BEPUphysics.DataStructures;
-using BEPUphysics.Entities;
-using BEPUphysics.UpdateableSystems;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Models
+﻿namespace BEPUphysicsDrawer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using BEPUphysics.Collidables;
+    using BEPUphysics.Collidables.MobileCollidables;
+    using BEPUphysics.CollisionShapes.ConvexShapes;
+    using BEPUphysics.DataStructures;
+    using BEPUphysics.Entities;
+    using BEPUphysics.UpdateableSystems;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Manages and draws models.
     /// </summary>
@@ -103,6 +103,7 @@ namespace BEPUphysicsDrawer.Models
 
         /// <summary>
         /// Gets the GraphicsDevice using this ModelDrawer.
+
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
@@ -265,6 +266,7 @@ namespace BEPUphysicsDrawer.Models
 
         /// <summary>
         /// Draws the models managed by the drawer using the appropriate technique.
+
         /// </summary>
         /// <param name="viewMatrix">View matrix to use to draw the objects.</param>
         /// <param name="projectionMatrix">Projection matrix to use to draw the objects.</param>

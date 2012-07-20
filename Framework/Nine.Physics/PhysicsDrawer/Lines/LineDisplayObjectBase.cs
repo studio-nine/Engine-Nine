@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
     /// <summary>
     /// Base class of LineDisplayObjects.
     /// </summary>

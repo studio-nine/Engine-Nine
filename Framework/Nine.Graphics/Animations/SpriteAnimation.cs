@@ -1,22 +1,12 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Animations
+﻿namespace Nine.Animations
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
+    
 
     /// <summary>
     /// An animation player that plays TextureList based sprite animations.

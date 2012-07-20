@@ -1,19 +1,8 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Navigation.Steering
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines the behavior of the Steerer.
     /// </summary>

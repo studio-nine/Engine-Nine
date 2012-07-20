@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Markup;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Windows.Markup;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class Dictionary : IDictionary
     {

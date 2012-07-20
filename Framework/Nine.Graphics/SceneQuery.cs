@@ -1,24 +1,9 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-
-#if WINDOWS || XBOX
-
-#endif
-
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+
     #region SceneQuery
     class SceneQuery<T> : ISpatialQuery<T> where T : class
     {

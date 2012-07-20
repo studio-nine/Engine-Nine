@@ -1,22 +1,13 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Basic 2D Space partition using uniform grids.
+
     /// </summary>
     [NotContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]

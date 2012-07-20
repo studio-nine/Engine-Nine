@@ -1,18 +1,10 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-using Nine.Components;
-
-namespace Nine.Test
+﻿namespace Nine.Test
 {
+    using System;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+    using Nine.Components;
+
     [TestClass()]
     public class InputTest
     {

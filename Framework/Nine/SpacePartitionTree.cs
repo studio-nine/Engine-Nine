@@ -1,21 +1,11 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
+
     /// <summary>
     /// Determines how to traverse the next node when traversing a space partition tree.
     /// </summary>
@@ -210,6 +200,7 @@ namespace Nine
 
         /// <summary>
         /// Traverses the tree using Depth First Search (DFS). Compare each node 
+
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
         /// <param name="result">
@@ -222,6 +213,7 @@ namespace Nine
 
         /// <summary>
         /// Traverses the tree using Depth First Search (DFS) from the target. Compare each node 
+
         /// with the condition to determine whether the traverse should continue.
         /// </summary>
         /// <param name="result">

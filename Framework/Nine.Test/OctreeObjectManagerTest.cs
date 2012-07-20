@@ -1,20 +1,12 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-
-namespace Nine.Test
+﻿namespace Nine.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+
     class TestBoundable : ISpatialQueryable
     {
         public bool NoEventHandlerAttached { get { return BoundingBoxChanged == null; } }

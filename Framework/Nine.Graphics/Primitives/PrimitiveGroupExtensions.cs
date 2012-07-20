@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Contains extension method for <c>PrimitiveBatch</c>.
     /// </summary>

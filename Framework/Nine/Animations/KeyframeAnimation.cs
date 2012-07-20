@@ -1,19 +1,9 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+    using System.ComponentModel;
+
+
     /// <summary>
     /// Defines the behavior of the last ending keyframe.
     /// </summary>

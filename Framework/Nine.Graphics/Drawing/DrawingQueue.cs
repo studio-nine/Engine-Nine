@@ -1,22 +1,9 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ParticleEffects;
-using Nine.Graphics.ObjectModel;
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
+    using System;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Each item in the queue will hold a strong reference to the IDrawableObject.
     /// By using a circular queue, chances are that any unused old references will be

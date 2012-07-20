@@ -1,19 +1,8 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// CubePrimitive.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Geometric primitive class for drawing cubes.
     /// </summary>
@@ -27,6 +16,7 @@ namespace Nine.Graphics.Primitives
 
         /// <summary>
         /// Constructs a new cube primitive, using default settings.
+
         /// </summary>
         public Box(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

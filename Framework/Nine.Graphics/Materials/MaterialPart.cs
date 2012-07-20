@@ -1,30 +1,13 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-#if SILVERLIGHT
-using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
-using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
-using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
-#endif
-#endregion
-
 namespace Nine.Graphics.Materials
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     /// <summary>
     /// Represents a basic building block of a material group.
     /// </summary>

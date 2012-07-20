@@ -1,17 +1,7 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ManifestPipeline.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-using Microsoft.Xna.Framework.Content.Pipeline;
-
-namespace Nine.Content.Pipeline.Importers
+﻿namespace Nine.Content.Pipeline.Importers
 {
-    // the importer is just a passthrough that gives the processor the filepath
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     [ContentImporter(".manifest", DisplayName = "Manifest Importer - XNA Framework", DefaultProcessor = "ManifestProcessor")]
     public class ManifestImporter : ContentImporter<string>
     {

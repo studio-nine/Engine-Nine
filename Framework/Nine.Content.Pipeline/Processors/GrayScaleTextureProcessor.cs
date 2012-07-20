@@ -1,21 +1,10 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Microsoft.Xna.Framework.Graphics.PackedVector;
+
     /// <summary>
     /// This processor gray scales the input texture and produces an output texture with 8bit per pixel.
     /// </summary>

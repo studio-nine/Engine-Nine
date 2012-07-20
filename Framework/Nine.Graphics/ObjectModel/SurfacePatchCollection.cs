@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-
-#endregion
-
-namespace Nine.Graphics.ObjectModel
+﻿namespace Nine.Graphics.ObjectModel
 {    
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+
     /// <summary>
     /// A collection of all the pathes in a Surface.
     /// </summary>

@@ -1,20 +1,11 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Reflection;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+    using System.Reflection;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
+
     /// <summary>
     /// Defines in which direction will the transition be eased.
     /// </summary>
@@ -62,12 +53,14 @@ namespace Nine.Animations
         /// <summary>
         /// Gets or sets where then tween ends.
         /// Specify null to control the end position using <c>By</c>.
+
         /// </summary>
         public T? To { get; set; }
 
         /// <summary>
         /// Gets or sets where the tween ends relative to start position.
         /// Specify null to control the end position using <c>To</c>.
+
         /// </summary>
         public T? By { get; set; }
 
@@ -230,6 +223,7 @@ namespace Nine.Animations
         {
             // This is a generic limitaion,
             // we have to assign the lerp using reflection.
+
             FieldInfo field = typeof(TweenAnimation<T>).GetField("lerp", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))
@@ -274,6 +268,7 @@ namespace Nine.Animations
         {
             // This is a generic limitaion,
             // we have to assign the lerp using reflection.
+
             FieldInfo field = typeof(TweenAnimation<T>).GetField("add", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (typeof(T) == typeof(float))

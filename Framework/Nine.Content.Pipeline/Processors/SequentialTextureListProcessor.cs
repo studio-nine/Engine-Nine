@@ -1,25 +1,15 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Nine.Content.Pipeline.Graphics;
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+    using Nine.Content.Pipeline.Graphics;
+
     #region SequentialTextureListProcessor
     /// <summary>
     /// Processes image sequential

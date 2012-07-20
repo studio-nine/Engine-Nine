@@ -1,19 +1,8 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Defines commonly used statistics of the renderer.
     /// </summary>

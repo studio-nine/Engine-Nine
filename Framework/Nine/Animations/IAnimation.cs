@@ -1,20 +1,7 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//  oct 2011 -- dmb -- rework to fix some bugs and handle reversing better.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+
     /// <summary>
     /// Current state (playing, paused, or stopped) of an animation.
     /// </summary>

@@ -1,21 +1,11 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+
+
     /// <summary>
     /// Interface for a surface with Z axis facing up.
     /// </summary>

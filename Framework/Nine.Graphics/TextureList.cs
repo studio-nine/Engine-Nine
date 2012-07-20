@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics
+﻿namespace Nine.Graphics
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+
     #region TextureListItem
     /// <summary>
     /// Defines a texture and a source rectangle.

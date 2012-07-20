@@ -1,23 +1,13 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Nine.Content;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Markup;
+    using System.Xaml;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Nine.Content;
+
     /// <summary>
     /// Base class for all objects that has a transform and a bounds.
     /// </summary>
@@ -183,6 +173,7 @@ namespace Nine.Graphics.ObjectModel
 
         /// <summary>
         /// Reusing this same event args.
+
         /// </summary>
         private static AttachedPropertyChangedEventArgs AttachedPropertyChangedEventArgs = new AttachedPropertyChangedEventArgs(null, null, null);
 

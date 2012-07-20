@@ -1,25 +1,15 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.CollisionShapes;
-using BEPUphysics.Entities;
-using BEPUphysics.Entities.Prefabs;
-using BEPUphysics.MathExtensions;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine.Physics
 {
+    using System;
+    using System.Collections.Generic;
+    using BEPUphysics.Collidables.MobileCollidables;
+    using BEPUphysics.CollisionShapes;
+    using BEPUphysics.Entities;
+    using BEPUphysics.Entities.Prefabs;
+    using BEPUphysics.MathExtensions;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
     class PhysicsComponentReader : ContentTypeReader<PhysicsComponent>
     {
         protected override PhysicsComponent Read(ContentReader input, PhysicsComponent existingInstance)

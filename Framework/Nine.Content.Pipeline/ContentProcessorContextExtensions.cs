@@ -1,31 +1,21 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Xml;
+    using System.Xml.Linq;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics;
+
     /// <summary>
     /// Enables a centralized place where LinkedEffect can be compiled and cached.
     /// Use this library to eliminated duplicated LinkedEffects.
@@ -53,6 +43,7 @@ namespace Nine.Content.Pipeline
         /// </summary>
         /// <remarks>
         /// The input object will be serialized in to an Xml asset file using IntermediateSerializer. 
+
         /// Then that file is imported and processed though the content pipeline. If an asset name is specified,
         /// the processed object will use that asset name as the output. Otherwise, an MD5 hash string of the
         /// input object will be calculated as the asset name, and the asset will be written to the "Misc" 
@@ -77,8 +68,10 @@ namespace Nine.Content.Pipeline
 
             // There's currently no way to build from object, so we need to create a temperory file
             using (var stream = new MemoryStream())
+
             {
                 using (XmlWriter writer = XmlWriter.Create(stream))
+
                 {
                     try
                     {
@@ -113,6 +106,7 @@ namespace Nine.Content.Pipeline
                 }
 
                 using (var assetFile = new FileStream(sourceFile, FileMode.Create))
+
                 {
                     stream.Seek(0, SeekOrigin.Begin);
                     stream.WriteTo(assetFile);
@@ -155,6 +149,7 @@ namespace Nine.Content.Pipeline
         /// </summary>
         /// <remarks>
         /// The input object will be serialized in to an Xml asset file using IntermediateSerializer. 
+
         /// Then that file is imported and processed though the content pipeline. If an asset name is specified,
         /// the processed object will use that asset name as the output. Otherwise, an MD5 hash string of the
         /// input object will be calculated as the asset name, and the asset will be written to the "Misc" 
@@ -179,8 +174,10 @@ namespace Nine.Content.Pipeline
             var baseDirectory = Path.GetDirectoryName(context.OutputFilename);
 
             using (var graphicsDevice = GraphicsExtensions.CreateHiddenGraphicsDevice(profile))
+
             {
                 using (var contentManager = new PipelineContentManager(baseDirectory, new GraphicsDeviceServiceProvider(graphicsDevice)))
+
                 {
                     try
                     {
@@ -224,8 +221,10 @@ namespace Nine.Content.Pipeline
                 Compile(asset, assetFilename, context);
 
                 using (var graphicsDevice = GraphicsExtensions.CreateHiddenGraphicsDevice(profile))
+
                 {
                     using (var contentManager = new PipelineContentManager(baseDirectory, new GraphicsDeviceServiceProvider(graphicsDevice)))
+
                     {
                         try
                         {
@@ -269,6 +268,7 @@ namespace Nine.Content.Pipeline
             context.Logger.LogImportantMessage("Compiling {0}", outputFilename);
 
             using (var output = new FileStream(outputFilename, FileMode.Create))
+
             {
                 var constructor = typeof(ContentCompiler).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { }, null);
                 ContentCompiler compiler = (ContentCompiler)constructor.Invoke(null);

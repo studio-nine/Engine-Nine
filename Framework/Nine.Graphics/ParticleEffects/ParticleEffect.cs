@@ -1,29 +1,17 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics.Primitives;
-#endregion
-
-namespace Nine.Graphics.ParticleEffects
+﻿namespace Nine.Graphics.ParticleEffects
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.ComponentModel;
+    using System.Threading;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics.Primitives;
+
     /// <summary>
     /// Defines how each particle should be rendered.
     /// </summary>
@@ -58,7 +46,7 @@ namespace Nine.Graphics.ParticleEffects
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Controllers")]
-    public class ParticleEffect : Transformable, ISpatialQueryable, IDrawableObject, IUpdateable, IDisposable
+    public class ParticleEffect : Transformable, ISpatialQueryable, IDrawableObject, Nine.IUpdateable, IDisposable
     {
         #region Properties
         /// <summary>
@@ -94,6 +82,7 @@ namespace Nine.Graphics.ParticleEffects
         /// <summary>
         /// Gets or sets a scale factor along the forward axis when drawing this
         /// particle effect using constrained billboard.
+
         /// </summary>
         public float Stretch { get; set; }
 
@@ -109,6 +98,7 @@ namespace Nine.Graphics.ParticleEffects
 
         /// <summary>
         /// Gets or sets whether each particles with be blended using additive blending.
+
         /// </summary>
         public bool IsAdditive
         {
@@ -564,6 +554,7 @@ namespace Nine.Graphics.ParticleEffects
 
         /// <summary>
         /// Updates using the elapsed time saved from last frame.
+
         /// </summary>
         private void Update()
         {

@@ -1,26 +1,13 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Content.Pipeline.Processors;
-using Nine.Graphics.ObjectModel;
-#endregion
-
-namespace Nine.Content.Pipeline.Xaml
+﻿namespace Nine.Content.Pipeline.Xaml
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xaml;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Nine.Graphics.ObjectModel;
+
     public class DistributionMap
     {
         /// <summary>

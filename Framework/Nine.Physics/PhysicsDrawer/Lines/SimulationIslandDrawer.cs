@@ -1,16 +1,25 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using Microsoft.Xna.Framework.Graphics;
-//using BEPUphysics.DataStructures;
-//using BEPUphysics;
-//using BEPUphysics.NarrowPhaseSystems.Pairs;
-//using Microsoft.Xna.Framework;
-//using BEPUphysics.Entities;
-
-//namespace BEPUphysicsDrawer.Lines
+﻿//namespace BEPUphysicsDrawer.Lines
 //{
+    //using System;
+
+    //using System.Collections.Generic;
+
+    //using System.Linq;
+
+    //using System.Text;
+
+    //using Microsoft.Xna.Framework.Graphics;
+
+    //using BEPUphysics.DataStructures;
+
+    //using BEPUphysics;
+
+    //using BEPUphysics.NarrowPhaseSystems.Pairs;
+
+    //using Microsoft.Xna.Framework;
+
+    //using BEPUphysics.Entities;
+
 //    /// <summary>
 //    /// Renders bounding boxes of simulation islands.
 //    /// </summary>

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Models
+﻿namespace BEPUphysicsDrawer.Models
 {
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Manages and draws instanced models.
     /// </summary>
@@ -13,6 +13,7 @@ namespace BEPUphysicsDrawer.Models
         //display object.  This is due to the fact that each model being drawn can be completely unique.
         //Even two Capsules could require more than a simple scaling transform to be identical.
         //Instead of using a single set of vertex data and redrawing it, this 'instancing' system 
+
         //will get the GPU to do the transformation heavy lifting.
 
         private readonly List<ModelDisplayObjectBatch> batches = new List<ModelDisplayObjectBatch>();

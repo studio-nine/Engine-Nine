@@ -1,20 +1,7 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//  oct 2011 -- dmb -- rework to fix some bugs and handle reversing better.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+
     /// <summary>
     /// Defines whether the animation is playing forward or backward.
     /// </summary>

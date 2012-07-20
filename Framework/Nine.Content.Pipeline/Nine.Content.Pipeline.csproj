@@ -247,7 +247,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Content.Writer1.Generated.cs</LastGenOutput>
     </None>
-    <None Include="Graphics\Materials\Shaders\AmbientLight.fragment" />
     <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\AlphaTest.fragment" />
     <None Include="Graphics\Materials\Shaders\InstanceTransform.fragment" />

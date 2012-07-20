@@ -1,19 +1,7 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-
-#endregion
-
 namespace Nine
 {
+    using System;
+
     /// <summary>
     /// http://www.millermansworld.com/2011/08/27/garbage-detector-from-my-gamefest-slides/
     /// </summary>

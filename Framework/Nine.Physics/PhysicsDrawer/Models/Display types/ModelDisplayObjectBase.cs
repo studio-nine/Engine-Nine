@@ -1,11 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Models
+﻿namespace BEPUphysicsDrawer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Base class of ModelDisplayObjects.
     /// </summary>

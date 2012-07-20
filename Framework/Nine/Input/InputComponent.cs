@@ -1,26 +1,15 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-#if WINDOWS_PHONE
-using Keys = Microsoft.Xna.Framework.Input.Keys;
-using Microsoft.Xna.Framework.Input.Touch;
-#elif SILVERLIGHT
-using Keys = System.Windows.Input.Key;
-#endif
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+#if SILVERLIGHT
+    using Keys = System.Windows.Input.Key;
+#else
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
+#endif
+
     public enum InputRaiseMode
     {
         Tunneling,
@@ -89,6 +78,7 @@ namespace Nine
 
         /// <summary>
         /// Creates a new instance of InputComponent using the input system of windows forms.
+
         /// </summary>
         /// <param name="handle">Handle of the game window</param>
         public InputComponent(IntPtr handle)

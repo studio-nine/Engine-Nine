@@ -1,21 +1,9 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ObjectModel;
-using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics.Materials
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     [ContentSerializable]
     public class SkinnedMaterial : Material, IEffectSkinned
     {
@@ -57,8 +45,8 @@ namespace Nine.Graphics.Materials
 
         public Vector3 SpecularColor
         {
-            get { return specularColor.HasValue ? specularColor.Value : MaterialConstants.SpecularColor; }
-            set { specularColor = (value == MaterialConstants.SpecularColor ? (Vector3?)null : value); }
+            get { return specularColor.HasValue ? specularColor.Value : Vector3.One; }
+            set { specularColor = (value == Vector3.One ? (Vector3?)null : value); }
         }
         private Vector3? specularColor;
         
@@ -151,7 +139,7 @@ namespace Nine.Graphics.Materials
             if (emissiveColor.HasValue)
                 effect.EmissiveColor = MaterialConstants.EmissiveColor;
             if (specularColor.HasValue)
-                effect.SpecularColor = MaterialConstants.SpecularColor;
+                effect.SpecularColor = Vector3.One;
             if (specularPower.HasValue)
                 effect.SpecularPower = MaterialConstants.SpecularPower;
             if (weightsPerVertex.HasValue)

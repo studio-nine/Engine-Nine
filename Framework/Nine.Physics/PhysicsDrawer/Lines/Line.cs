@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Represents a graphical line in the ConstraintDrawer.
     /// </summary>

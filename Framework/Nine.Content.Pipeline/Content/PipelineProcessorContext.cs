@@ -1,20 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Graphics;
-
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Graphics;
+
     class PipelineProcessorContext : ContentProcessorContext
     {
         private OpaqueDataDictionary parameters;

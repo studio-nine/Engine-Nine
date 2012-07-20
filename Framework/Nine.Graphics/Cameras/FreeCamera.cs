@@ -1,27 +1,17 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-#if SILVERLIGHT
-using Keys = System.Windows.Input.Key;
-#endif
-#endregion
-
-namespace Nine.Graphics.Cameras
+﻿namespace Nine.Graphics.Cameras
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+#if SILVERLIGHT
+    using Keys = System.Windows.Input.Key;
+#endif
+
     /// <summary>
     /// A first person free camera.
     /// </summary>
-    public class FreeCamera : ICamera, IUpdateable
+    public class FreeCamera : ICamera, Nine.IUpdateable
     {
         Vector2 mouseDown;
 
@@ -57,8 +47,8 @@ namespace Nine.Graphics.Cameras
 
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        public FreeCamera(GraphicsDevice graphics) : this(graphics, Vector3.Zero, 30.0f, 20f) { }
-        public FreeCamera(GraphicsDevice graphics, Vector3 position) : this(graphics, position, 30.0f, 20f) { }
+        public FreeCamera(GraphicsDevice graphics) : this(graphics, Vector3.Zero, 10.0f, 20f) { }
+        public FreeCamera(GraphicsDevice graphics, Vector3 position) : this(graphics, position, 10.0f, 20f) { }
         public FreeCamera(GraphicsDevice graphics, Vector3 position, float speed, float turnSpeed)
         {
             if (graphics == null)

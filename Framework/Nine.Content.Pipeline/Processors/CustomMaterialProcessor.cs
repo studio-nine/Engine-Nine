@@ -1,30 +1,15 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Content.Pipeline.Graphics;
-using Nine.Content.Pipeline.Graphics.Materials;
-using Nine.Graphics.Materials;
-using Nine.Content.Pipeline.Xaml;
-using System.Text;
-using System.Security.Cryptography;
-
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System.IO;
+    using System.Security.Cryptography;
+    using System.Text;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+    using Nine.Content.Pipeline.Graphics.Materials;
+    using Nine.Content.Pipeline.Xaml;
+    using Nine.Graphics.Materials;
+
     [DefaultContentProcessor]    
     public class CustomMaterialProcessor : ContentProcessor<CustomMaterial, CustomMaterial>
     {

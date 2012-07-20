@@ -1,24 +1,11 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Primitives;
-using System.ComponentModel;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.Primitives;
+
     /// <summary>
     /// Defines a skybox.
     /// </summary>
@@ -62,6 +49,7 @@ namespace Nine.Graphics.ObjectModel
             if (material is SkyBoxMaterial)
             {
                 // Skybox cannot be rendered using other materials.
+
                 cube.Draw(context, material);
             }
         }

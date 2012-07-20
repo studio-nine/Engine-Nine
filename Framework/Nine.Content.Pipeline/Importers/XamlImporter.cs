@@ -1,23 +1,11 @@
-﻿#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.IO;
-using System.Xaml;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Nine.Content.Pipeline.Graphics;
-using Nine.Content.Pipeline.Xaml;
-using System.Collections;
-#endregion
-
-namespace Nine.Content.Pipeline.Importers
+﻿namespace Nine.Content.Pipeline.Importers
 {
+    using System;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Nine.Content.Pipeline.Graphics;
+    using Nine.Content.Pipeline.Xaml;
+
     /// <summary>
     /// Imports object graph from Xaml files.
     /// </summary>

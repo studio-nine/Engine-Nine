@@ -1,25 +1,9 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     class FastList<T> : IList<T>
     {
         public int Count;

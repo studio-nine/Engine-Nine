@@ -1,18 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Content.Pipeline;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using System.Diagnostics;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     class PipelineBuildLogger : ContentBuildLogger
     {
         public static PipelineBuildLogger Instance { get; private set; }

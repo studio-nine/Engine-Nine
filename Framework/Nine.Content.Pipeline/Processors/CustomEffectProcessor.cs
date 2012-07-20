@@ -1,27 +1,16 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Content.Pipeline.Graphics;
-using Nine.Content.Pipeline.Graphics.Materials;
-using Nine.Graphics.Materials;
-
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Content.Pipeline.Graphics;
+    using Nine.Content.Pipeline.Graphics.Materials;
+    using Nine.Graphics.Materials;
+
     /// <summary>
     /// Defines a list of effect parameter semantics supported by the rendering system.
     /// </summary>

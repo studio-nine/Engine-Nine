@@ -1,20 +1,9 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Navigation.Steering
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+
     public class SteerableAvoidanceBehavior : SteeringBehavior
     {
         static List<Steerable> Partners = new List<Steerable>();

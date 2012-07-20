@@ -1,20 +1,9 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Navigation.Steering
 {
+    using System;
+    using System.Diagnostics;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines how the final force of steering behaviors are blended.
     /// </summary>
@@ -34,7 +23,7 @@ namespace Nine.Navigation.Steering
     /// <summary>
     /// Represents a steerable moving entity that can with steering behaviors.
     /// </summary>
-    public class Steerable : IUpdateable
+    public class Steerable : Nine.IUpdateable
     {
         /// <summary>
         /// Gets or sets the target position of the moving entity.

@@ -1,25 +1,15 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
 namespace Nine.Components
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
+
 
     /// <summary>
     /// Frame rate profiler
     /// </summary>
-    public class FrameRate : IDrawable
+    public class FrameRate : Nine.IDrawable
     {
         private int updateCount = 0;
         private int currentFrame = 0;

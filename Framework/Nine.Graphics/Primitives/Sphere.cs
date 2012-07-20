@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     [ContentSerializable]
     public class Sphere : Primitive<VertexPositionNormalTexture>
     {
@@ -39,6 +28,7 @@ namespace Nine.Graphics.Primitives
 
         /// <summary>
         /// Constructs a new sphere primitive, using default settings.
+
         /// </summary>
         public Sphere(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

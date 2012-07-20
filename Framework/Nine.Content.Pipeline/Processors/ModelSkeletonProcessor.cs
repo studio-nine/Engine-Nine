@@ -1,22 +1,12 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Nine.Graphics;
-#endregion
-
 namespace Nine.Content.Pipeline.Processors
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Nine.Graphics;
+
     /// <summary>
     /// Custom processor that extract skinning info from a skinned model.
     /// </summary>

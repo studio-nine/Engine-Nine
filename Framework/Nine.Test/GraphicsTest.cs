@@ -1,21 +1,12 @@
-﻿#region Copyright 2008 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Components;
-using Nine.Graphics;
-
-namespace Nine
+﻿namespace Nine
 {
+    using System;
+    using System.IO;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics;
+
     [TestClass]
     public class GraphicsTest
     {
@@ -67,6 +58,7 @@ namespace Nine
 
             backBuffer.End();
             using (var output = new FileStream(filename + "-" + Guid.NewGuid().ToString("B").ToUpper() + ".png", FileMode.Create))
+
             {
                 backBuffer.SaveAsPng(output, backBuffer.Width, backBuffer.Height);
             }
@@ -98,6 +90,7 @@ namespace Nine
             frontBuffer.End();
 
             using (var output = new FileStream(filename, FileMode.Create))
+
             {
                 frontBuffer.SaveAsPng(output, frontBuffer.Width, frontBuffer.Height);
             }

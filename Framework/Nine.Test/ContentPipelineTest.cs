@@ -1,23 +1,15 @@
-﻿#region Copyright 2008 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using Nine.Graphics;
-
-namespace Nine
+﻿namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+    using Nine.Graphics;
+
     [TestClass]
     public class ContentPipelineTest : GraphicsTest
     {
@@ -58,6 +50,7 @@ namespace Nine
         {
             var filename = Guid.NewGuid().ToString("B");
             using (var writer = XmlWriter.Create(filename + ".xml"))
+
             {
                 IntermediateSerializer.Serialize(writer, input, null);
             }

@@ -1,19 +1,7 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics
+﻿namespace Nine.Graphics
 {
+    using System;
+
     /// <summary>
     /// Represents an object whose value is version controlled. Each time the
     /// value changes, the corresponding version increments by one.

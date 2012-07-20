@@ -32,7 +32,7 @@
 
     <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-10,0,20">
         <Model.Material>
-            <SkinnedMaterial />
+            <SkinnedMaterial SpecularColor="0,0,0" />
         </Model.Material>
     </Model>
 

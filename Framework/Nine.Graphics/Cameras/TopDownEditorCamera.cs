@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-#endregion
-
-namespace Nine.Graphics.Cameras
+﻿namespace Nine.Graphics.Cameras
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Defines a camera used to edit worlds.
     /// </summary>
@@ -31,6 +20,7 @@ namespace Nine.Graphics.Cameras
         public float MinRadius { get; set; }
         public float MaxRadius { get; set; }
         public float Sensitivity { get; set; }
+        public float Speed { get; set; }
 
         public Vector3 Target
         {
@@ -78,6 +68,7 @@ namespace Nine.Graphics.Cameras
             GraphicsDevice = graphics;
 
             Sensitivity = 1.0f;
+            Speed = 0.04f;
 
             Yaw = MathHelper.PiOver2;
             Radius = radius;
@@ -152,8 +143,8 @@ namespace Nine.Graphics.Cameras
                 startPoint.X = e.X;
                 startPoint.Y = e.Y;
 
-                target.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * 0.1f;
-                target.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * 0.1f;
+                target.X -= ((float)Math.Cos(Yaw) * dz + (float)Math.Sin(Yaw) * dx) * Speed;
+                target.Z -= ((float)Math.Sin(Yaw) * dz - (float)Math.Cos(Yaw) * dx) * Speed;
             }
             else if (e.IsMiddleButtonDown)
             {

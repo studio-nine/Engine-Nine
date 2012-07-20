@@ -1,21 +1,10 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TeapotPrimitive.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using System.Diagnostics;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Geometric primitive class for drawing teapots.
     /// 
@@ -53,6 +42,7 @@ namespace Nine.Graphics.Primitives
 
         /// <summary>
         /// Constructs a new teapot primitive, using default settings.
+
         /// </summary>
         public Teapot(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

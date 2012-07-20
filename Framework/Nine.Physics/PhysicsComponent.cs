@@ -1,27 +1,16 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Xml.Serialization;
-using BEPUphysics;
-using BEPUphysics.Entities;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Physics
 {
+    using System;
+    using System.Xml.Serialization;
+    using BEPUphysics;
+    using BEPUphysics.Entities;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines a navigation component that can be added to a game object container.
     /// </summary>
     [Serializable]
-    public class PhysicsComponent : Component, IUpdateable, IServiceProvider, ICloneable
+    public class PhysicsComponent : Component, Nine.IUpdateable, IServiceProvider, ICloneable
     {
         /// <summary>
         /// Gets the physics entity owned by this physics component.

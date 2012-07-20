@@ -152,7 +152,6 @@
     <Compile Include="PostEffects\BlurMaterial.cs" />
     <Compile Include="PostEffects\BloomEffect.cs" />
     <Compile Include="PostEffects\ScaleMaterial.cs" />
-    <Compile Include="PostEffects\MotionBlurEffect.cs" />
     <Compile Include="PostEffects\HighDynamicRangeEffect.cs" />
     <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
     <Compile Include="PostEffects\PostEffectChain.cs" />
@@ -241,7 +240,6 @@
     <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
     <Compile Include="Primitives\PrimitiveGroupExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
-    <Compile Include="Materials\MaterialParts\AmbientLightMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\DiffuseMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\NormalMapMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\ShadowMapMaterialPart.cs" />

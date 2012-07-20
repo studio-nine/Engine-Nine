@@ -1,20 +1,8 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Content;
-using System.Xaml;
-using System;
-using System.Reflection;
-#endregion
-
-namespace Nine.Content
+﻿namespace Nine.Content
 {
+    using System.Reflection;
+    using System.Xaml;
+
     static class AttachableMemberIdentifierExtensions
     {
         public static void Apply(this AttachableMemberIdentifier identifier, object target, object value)

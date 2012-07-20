@@ -1,19 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-
-#endregion
-
-namespace Nine.Graphics.ParticleEffects
+﻿namespace Nine.Graphics.ParticleEffects
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
     #region IParticleEmitter
     /// <summary>
     /// Defines an emitter that emit new particles for particle effect.

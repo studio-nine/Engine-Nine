@@ -1,19 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-
-#endregion
-
-namespace Nine.Graphics.ParticleEffects
+﻿namespace Nine.Graphics.ParticleEffects
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Represents each individual particle in a particle system effect.
     /// </summary>

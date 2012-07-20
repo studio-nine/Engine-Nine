@@ -1,20 +1,11 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Graphics.Materials;
-#endregion
-
-namespace Nine.Content.Pipeline.Graphics.Materials
+﻿namespace Nine.Content.Pipeline.Graphics.Materials
 {
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+    using Nine.Graphics.Materials;
+
+
     [ContentTypeWriter]
     class CustomMaterialWriter : ContentTypeWriter<CustomMaterial>
     {

@@ -1,9 +1,9 @@
-﻿using BEPUphysics.Constraints.SingleEntity;
-using BEPUphysics.Constraints.TwoEntity.Motors;
-using Microsoft.Xna.Framework;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using BEPUphysics.Constraints.SingleEntity;
+    using BEPUphysics.Constraints.TwoEntity.Motors;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Graphical representation of a single entity linear motor.
     /// </summary>

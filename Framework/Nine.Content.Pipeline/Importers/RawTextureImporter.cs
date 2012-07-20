@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-
-#endregion
-
-namespace Nine.Content.Pipeline.Importers
+﻿namespace Nine.Content.Pipeline.Importers
 {
+    using System;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+
+
     /// <summary>
     /// Imports grayscale raw texture.
     /// </summary>
@@ -29,6 +19,7 @@ namespace Nine.Content.Pipeline.Importers
         public override TextureContent Import(string filename, ContentImporterContext context)
         {
             using (FileStream file = new FileStream(filename, FileMode.Open))
+
             {
                 byte[] bytes = new byte[file.Length];
 

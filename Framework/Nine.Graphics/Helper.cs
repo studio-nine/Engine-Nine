@@ -1,10 +1,10 @@
-﻿using System;
-using System.Globalization;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Nine.Graphics
+﻿namespace Nine.Graphics
 {
+    using System;
+    using System.Globalization;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     internal static class Helper
     {
         public static T Convert<T>(this string value)

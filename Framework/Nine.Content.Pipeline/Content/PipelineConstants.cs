@@ -1,22 +1,13 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.IO;
-using System.Reflection;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Content.Pipeline.Graphics;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Content.Pipeline.Graphics;
+
+
     static class PipelineConstants
     {
         public static string IntermediateDirectory { get; set; }

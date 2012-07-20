@@ -1,18 +1,10 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using System.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-
-namespace Nine.Animations.Test
+﻿namespace Nine.Animations.Test
 {
+    using System;
+    using System.Linq.Expressions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+
     [TestClass()]
     public class TweenTest
     {

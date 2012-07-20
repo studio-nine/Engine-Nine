@@ -1,22 +1,13 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-#endregion
-
 namespace Nine.Components
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+
     /// <summary>
     /// EventArgs used by ScreenshotCapturer.
     /// </summary>
@@ -37,7 +28,7 @@ namespace Nine.Components
     /// <summary>
     /// Screenshot capturer component that captures screenshots.
     /// </summary>
-    public class ScreenshotCapturer : IDrawable
+    public class ScreenshotCapturer : Nine.IDrawable
     {
         #region Variables
         /// <summary>
@@ -121,6 +112,7 @@ namespace Nine.Components
         private int GetCurrentScreenshotNum()
         {
             // We must search for last screenshot we can found in list using own
+
             // fast filesearch
             int i = 0, j = 0, k = 0, l = -1;
             // First check if at least 1 screenshot exist
@@ -221,6 +213,7 @@ namespace Nine.Components
                         Directory.CreateDirectory(ScreenshotsDirectory);
 
                     using (FileStream savedFile = new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate))
+
                     {
                         screenshot.SaveAsPng(savedFile, width, height);
                     }

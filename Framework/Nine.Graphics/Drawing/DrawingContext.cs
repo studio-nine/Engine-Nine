@@ -1,25 +1,13 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics.ParticleEffects;
-using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+    using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
+
     /// <summary>
     /// A drawing context contains commonly used global parameters for rendering.
     /// </summary>

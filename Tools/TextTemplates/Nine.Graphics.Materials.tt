@@ -39,7 +39,7 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
 #if SILVERLIGHT
     using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
-    using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
+    using Microsoft.Xna.Framework.Graphics;
     using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
 #endif
 

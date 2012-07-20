@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Linq;
-using System.Reflection;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
     static class ReflectionHelper
     {
         public static T CreateInstance<T>(params object[] args)

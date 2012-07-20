@@ -1,19 +1,9 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Reflection;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.ComponentModel;
+    using System.Reflection;
+
     /// <summary>
     /// Represents a property access expression.
     /// </summary>
@@ -34,6 +24,7 @@ namespace Nine
         
         /// <summary>
         /// Gets or sets the value of the target evaluated using this expression.
+
         /// </summary>
         public T Value
         {

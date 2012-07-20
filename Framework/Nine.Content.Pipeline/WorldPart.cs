@@ -1,21 +1,12 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.Linq;
-using System.Xaml;
-#endregion
-
 namespace Nine.Content.Pipeline
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xaml;
+
+        /// Enables authoring world from several world parts using Xaml.
+
     /// <summary>
-    /// Enables authoring world from several world parts using Xaml.
     /// </summary>    
     public static class WorldPart
     {

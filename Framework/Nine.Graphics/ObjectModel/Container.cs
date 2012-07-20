@@ -1,20 +1,10 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
     /// <summary>
     /// Defines a generic object container.
     /// </summary>

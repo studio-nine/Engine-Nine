@@ -1,26 +1,15 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using System.Windows.Markup;
-using Nine.Graphics.Drawing;
-#endregion
-
-namespace Nine.Graphics.ObjectModel
+﻿namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+
     /// <summary>
     /// A triangle mesh constructed from heightmap to represent game surface. 
     /// The up axis of the surface is Vector.UnitY.
@@ -463,6 +452,7 @@ namespace Nine.Graphics.ObjectModel
                 ConvertVertexType<VertexPositionColorNormalTexture>(PopulateVertex);
             else
                 throw new NotSupportedException("Vertex type not supported. Try using Surface.ConvertVertexType<T> instead.");
+
         }
 
         /// <summary>
@@ -530,6 +520,7 @@ namespace Nine.Graphics.ObjectModel
 
         /// <summary>
         /// Populates a single vertex using default settings.
+
         /// </summary>
         internal void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionNormalTexture vertex)
         {
@@ -602,6 +593,7 @@ namespace Nine.Graphics.ObjectModel
         /// <param name="eyePosition">The eye position.</param>
         /// <remarks>
         /// If you are draw the surface using scene, level of details are automatically updated.
+
         /// </remarks>
         public void UpdateLevelOfDetail(Vector3 eyePosition)
         {

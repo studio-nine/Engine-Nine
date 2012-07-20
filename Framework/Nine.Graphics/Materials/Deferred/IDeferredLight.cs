@@ -1,18 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Graphics;
-
-#endregion
-
-namespace Nine.Graphics.Materials.Deferred
+﻿namespace Nine.Graphics.Materials.Deferred
 {
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Defines a light used by deferred rendering.
     /// </summary>

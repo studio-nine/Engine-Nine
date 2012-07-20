@@ -1,20 +1,9 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// CylinderPrimitive.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Geometric primitive class for drawing cylinders.
     /// </summary>
@@ -42,6 +31,7 @@ namespace Nine.Graphics.Primitives
 
         /// <summary>
         /// Constructs a new cylinder primitive, using default settings.
+
         /// </summary>
         public Cylinder(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

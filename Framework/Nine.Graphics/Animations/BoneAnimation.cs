@@ -1,25 +1,15 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
-namespace Nine.Animations
+﻿namespace Nine.Animations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Diagnostics;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Nine.Graphics;
+
 
     #region BoneAnimationClip
     /// <summary>
@@ -285,7 +275,7 @@ namespace Nine.Animations
             var currentController = 0;
             for (currentController = 0; currentController < Controllers.Count; currentController++)
             {
-                IUpdateable update = Controllers[currentController].Controller as IUpdateable;
+                var update = Controllers[currentController].Controller as Nine.IUpdateable;
                 if (update != null)
                     update.Update(elapsedTime);
             }

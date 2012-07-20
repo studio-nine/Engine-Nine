@@ -1,23 +1,13 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Nine.Content.Pipeline.Xaml;
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System;
+    using System.ComponentModel;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Nine.Content.Pipeline.Xaml;
+
     /// <summary>
     /// Processes texture splatter used for terrain rendering.
     /// </summary>

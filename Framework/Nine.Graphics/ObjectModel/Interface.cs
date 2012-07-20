@@ -1,20 +1,9 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    
     /// <summary>
     /// Represents a drawable object that can be rendered using the renderer.
     /// </summary>
@@ -29,6 +18,7 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the material of the object.
         /// A value of null indicates the object does not have any user specific
         /// material settings, and should be drawn using the default method.
+
         /// </summary>
         Material Material { get; }
 

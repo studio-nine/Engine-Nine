@@ -1,19 +1,9 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
+
     /// <summary>
     /// Represents a 2d curve.
     /// </summary>

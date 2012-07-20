@@ -1,20 +1,10 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ObjectModel;
-#endregion
-
 namespace Nine.Graphics.Cameras
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.
     /// </summary>

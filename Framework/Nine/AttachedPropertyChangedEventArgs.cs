@@ -1,19 +1,9 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Xaml;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.ComponentModel;
+    using System.Xaml;
+
     /// <summary>
     /// Provides data for various property changed events.
     /// </summary>

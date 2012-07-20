@@ -1,22 +1,11 @@
-#region Copyright 2010 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-
-#endregion
-
 namespace Nine
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Represents a space partition structure based on Octree.
     /// </summary>

@@ -1,24 +1,14 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-using System.Windows.Markup;
-using Nine.Graphics.Drawing;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Enables a group of dynamic primitives to be drawn.
     /// </summary>

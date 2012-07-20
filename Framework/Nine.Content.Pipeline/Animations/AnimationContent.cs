@@ -1,20 +1,6 @@
-﻿#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-#endregion
-
-namespace Nine.Content.Pipeline.Animations
+﻿namespace Nine.Content.Pipeline.Animations
 {
+
     /*
     [ContentProperty("Animations")]
     partial class AnimationPlayerContent : Dictionary { }

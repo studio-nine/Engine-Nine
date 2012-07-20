@@ -1,32 +1,11 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// ContentBuilder.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
-using Microsoft.Build.Execution;
-using Microsoft.Build.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nine.Content.Pipeline.Graphics.Materials;
-using Nine.Graphics.Materials.MaterialParts;
-using Nine.Content.Pipeline;
-
-#endregion
-
 namespace Nine.Graphics.Materials.Test
 {
+    using System.IO;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Nine.Content.Pipeline;
+    using Nine.Content.Pipeline.Graphics.Materials;
+    using Nine.Graphics.Materials.MaterialParts;
+
     [TestClass]
     public class MaterialGroupTest
     {

@@ -1,19 +1,9 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine.Navigation
 {
+    using System;
+    using System.Xml.Serialization;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Defines a path graph component that contains a path graph.
     /// </summary>

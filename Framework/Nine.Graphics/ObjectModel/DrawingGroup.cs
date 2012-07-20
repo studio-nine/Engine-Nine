@@ -1,25 +1,15 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Nine.Animations;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Nine.Animations;
+
     /// <summary>
     /// Defines a logic group of drawable objects.
     /// </summary>
@@ -27,7 +17,7 @@ namespace Nine.Graphics.ObjectModel
     /// DrawingGroup can be used to create transform hierarchy and bounding box hierarchy.
     /// </remarks>
     [ContentProperty("Children")]
-    public class DrawingGroup : Transformable, IContainer, ICollection<object>, INotifyCollectionChanged<object>, IUpdateable, IBoundable, IDisposable
+    public class DrawingGroup : Transformable, IContainer, ICollection<object>, INotifyCollectionChanged<object>, Nine.IUpdateable, IBoundable, IDisposable
     {
         #region Properties
         /// <summary>
@@ -495,7 +485,7 @@ namespace Nine.Graphics.ObjectModel
             var count = children.Count;
             for (int i = 0; i < count; i++)
             {
-                var updateable = children[i] as IUpdateable;
+                var updateable = children[i] as Nine.IUpdateable;
                 if (updateable != null)
                     updateable.Update(elapsedTime);
             }

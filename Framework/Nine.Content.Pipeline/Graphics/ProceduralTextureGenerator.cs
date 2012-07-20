@@ -1,24 +1,11 @@
-﻿#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-#if MDX
-using System;
-using System.IO;
-using System.Windows.Forms;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
-#endif
-#endregion
-
-namespace Nine.Content.Pipeline.Graphics
+﻿namespace Nine.Content.Pipeline.Graphics
 {
-#if MDX
+#if MDX    
+    using System;
+    using System.IO;
+    using System.Windows.Forms;
+    using Microsoft.DirectX;
+    using Microsoft.DirectX.Direct3D;
 
     class ProceduralTextureGenerator
     {

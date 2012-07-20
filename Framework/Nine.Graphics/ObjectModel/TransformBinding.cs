@@ -1,20 +1,9 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Binds the transform from the source object to the target object. Once a transform binding
     /// is set, the source object will be transformed based on the target object.

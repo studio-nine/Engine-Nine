@@ -1,19 +1,9 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Content;
-using System.Xaml;
-using System;
-#endregion
-
-namespace Nine.Content
+﻿namespace Nine.Content
 {
+    using System;
+    using System.Xaml;
+    using Microsoft.Xna.Framework.Content;
+
     class AttachableMemberIdentifierReader : ContentTypeReader<AttachableMemberIdentifier>
     {
         protected override AttachableMemberIdentifier Read(ContentReader input, AttachableMemberIdentifier existingInstance)

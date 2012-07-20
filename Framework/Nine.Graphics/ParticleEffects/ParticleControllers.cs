@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
-namespace Nine.Graphics.ParticleEffects
+﻿namespace Nine.Graphics.ParticleEffects
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Defines a basic controller that changes the color of the particle
     /// effect based on time.

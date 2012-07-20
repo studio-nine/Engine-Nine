@@ -1,17 +1,8 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Nine.Graphics.ObjectModel.Test
+﻿namespace Nine.Graphics.ObjectModel.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+
     [TestClass()]
     public class SurfaceTest : GraphicsTest
     {

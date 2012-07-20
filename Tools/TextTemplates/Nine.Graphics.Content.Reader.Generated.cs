@@ -1303,23 +1303,6 @@ namespace Nine.Graphics.Materials.MaterialParts
         }
     }
     /// <summary>
-    /// Content reader for <c>AmbientLightMaterialPart</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AmbientLightMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.AmbientLightMaterialPart>
-    {
-        protected override Nine.Graphics.Materials.MaterialParts.AmbientLightMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.AmbientLightMaterialPart existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new AmbientLightMaterialPart();
-            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>BeginLightMaterialPart</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]

@@ -1,25 +1,12 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#if WINDOWS
-using System.Windows.Forms;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
-using FormMouseButtons = System.Windows.Forms.MouseButtons;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-#endif
-using Microsoft.Xna.Framework.Input;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Windows.Forms;
+    using Microsoft.Xna.Framework.Input;
+    using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+    using FormMouseButtons = System.Windows.Forms.MouseButtons;
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
+    
     class WindowsInputSource : IInputSource, IUpdateable
     {
         MouseState mouseState;
@@ -139,6 +126,7 @@ namespace Nine
         void control_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             // FIXME: This is not correct. Avoid using it!!!
+
             if (KeyDown != null)
                 KeyDown(this, new KeyboardEventArgs((Keys)e.KeyValue));
         }
@@ -146,6 +134,7 @@ namespace Nine
         void control_KeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             // FIXME: This is not correct. Avoid using it!!!
+
             if (KeyUp != null)
                 KeyUp(this, new KeyboardEventArgs((Keys)e.KeyValue));
         }

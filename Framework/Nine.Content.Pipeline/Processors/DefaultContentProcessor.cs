@@ -1,28 +1,18 @@
-﻿#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Xml;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using System.Diagnostics;
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Xml;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+        /// Processes each property of the input object graph using the processor specified by 
+
     /// <summary>
-    /// Processes each property of the input object graph using the processor specified by 
     /// DefaultContentProcessorAttribute or the method marked with SelfProcessAttribute.
     /// </summary>
     [ContentProcessor(DisplayName = "Content - Engine Nine")]
@@ -72,6 +62,7 @@ namespace Nine.Content.Pipeline.Processors
                 if (processor.InputType.IsAssignableFrom(input.GetType()))
                 {
                     context.Logger.LogImportantMessage("Processing {0} using {1}", input.GetType().Name, processor.GetType().Name);
+
                     return processor.Process(input, context);
                 }
                 else
@@ -88,6 +79,7 @@ namespace Nine.Content.Pipeline.Processors
             {
                 var debugOutput = Path.Combine(context.IntermediateDirectory, "DefaultContent-" + Guid.NewGuid().ToString("B").ToUpperInvariant()) + ".xml";
                 using (var writer = XmlWriter.Create(debugOutput))
+
                 {
                     IntermediateSerializer.Serialize(writer, input, null);
                 }

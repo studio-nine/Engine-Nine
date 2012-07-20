@@ -1,18 +1,7 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-
-#endregion
-
-namespace Nine.Graphics
+﻿namespace Nine.Graphics
 {
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Helper class to create color matrices.
     /// </summary>

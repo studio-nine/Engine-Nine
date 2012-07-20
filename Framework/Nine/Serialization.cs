@@ -1,25 +1,14 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Xml.Serialization;
+    using Microsoft.Xna.Framework;
+
 
 #if WINDOWS_PHONE || XBOX || SILVERLIGHT
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Delegate, Inherited = false)]
@@ -38,12 +27,14 @@ namespace Nine
         /// Gets a collection of known assemblies.
         /// Types marked as Serializable in the known assemblies can be serialized and
         /// deserialized using <c>Save</c> and <c>FromFile</c>.
+
         /// </summary>
         public static ICollection<Assembly> KnownAssemblies { get { return KnownAssemblies; } }
 
         /// <summary>
         /// Gets a collection of known types that can be serialized and
         /// deserialized using <c>Save</c> and <c>FromFile</c>.
+
         /// </summary>
         public static ICollection<Type> KnownTypes { get { return knownTypes; } }
 
@@ -53,10 +44,12 @@ namespace Nine
 
         /// <summary>
         /// Clones the specified prototype object using xml serialization.
+
         /// </summary>
         internal static object Clone(object prototype)
         {
             // Clone using Xml serialization
+
             if (SerializationStream == null)
                 SerializationStream = new MemoryStream();
 

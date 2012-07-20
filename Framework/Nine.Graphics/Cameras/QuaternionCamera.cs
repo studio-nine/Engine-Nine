@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Nine.Graphics.Cameras
+﻿namespace Nine.Graphics.Cameras
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Camera that can perform Quaternion rotation
     /// and look in all six direction.
@@ -133,6 +133,7 @@ namespace Nine.Graphics.Cameras
 
         /// <summary>
         /// Rotate the camera around an arbitrary axis using a Quaternion.
+
         /// </summary>
         /// <param name="q"></param>
         public void Rotate(Quaternion q)
