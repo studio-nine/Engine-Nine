@@ -96,6 +96,7 @@
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Content\ContentProperties.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="Object.cs" />
     <Compile Include="DependencyGraph.cs" />
     <Compile Include="FastList.cs" />
     <Compile Include="GarbageDetector.cs" />

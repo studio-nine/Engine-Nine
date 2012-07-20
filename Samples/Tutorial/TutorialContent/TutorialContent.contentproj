@@ -66,14 +66,14 @@
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
     </Compile>
-    <Compile Include="Tutorials\06. Terrain.xaml">
+    <None Include="Tutorials\06. Terrain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Name>06. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">
@@ -238,22 +238,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\02. Models.xaml">
+    <None Include="Tutorials\02. Models.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>02. Models</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\09. Particle System.xaml">
+    <None Include="Tutorials\09. Particle System.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>09. Particle System</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\LandscapeDetail.tga">
@@ -298,31 +298,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\03. Materials.xaml">
+    <None Include="Tutorials\03. Materials.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>03. Materials</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\04. Primitives.xaml">
+    <None Include="Tutorials\04. Primitives.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>04. Primitives</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\11. Instancing.xaml">
+    <None Include="Tutorials\11. Instancing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>11. Instancing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\nine.png">

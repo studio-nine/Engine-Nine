@@ -105,6 +105,24 @@ namespace Nine
         }
     }
     /// <summary>
+    /// Content reader for <c>Object</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ObjectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Object>
+    {
+        protected override Nine.Object Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Object existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Object();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>SinCurve</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]

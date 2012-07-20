@@ -329,15 +329,9 @@ namespace Nine.Graphics.Materials
         Time,
         ElapsedTime,
         
+        Alpha,
         Opacity,
         Diffuse,
-        Specular,
-        Emissive,
-        Specularpower,
-
-        Refraction,
-        Environment,
-        EnvironmentNormal,        
     }
     #endregion
 
@@ -401,7 +395,8 @@ namespace Nine.Graphics.Materials
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.ElapsedTime.TotalSeconds) },
 
             // Materials and textures
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(0); /* TODO: */ } },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.Texture); } },
         };
     }

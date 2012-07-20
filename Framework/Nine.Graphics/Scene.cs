@@ -16,9 +16,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.ParticleEffects;
 using Nine.Graphics.PostEffects;
-#if WINDOWS || XBOX
-using Nine.Graphics.Materials.Deferred;
-#endif
 using Nine.Graphics.Materials;
 using Nine.Graphics.Cameras;
 using Nine.Graphics.Drawing;

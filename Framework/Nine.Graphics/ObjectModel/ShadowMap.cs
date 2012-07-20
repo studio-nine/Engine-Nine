@@ -11,27 +11,38 @@ using System;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Nine.Graphics.Drawing;
 using Nine.Graphics.PostEffects;
+using System.Collections.Generic;
+using Nine.Graphics.Materials;
 #endregion
 
-namespace Nine.Graphics.Materials
+namespace Nine.Graphics.ObjectModel
 {  
     /// <summary>
     /// Represents a shadow drawing technique using shadowmap.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ShadowMap : IDisposable
+    public class ShadowMap : Pass, IDisposable
     {
-        bool hasBegin;
-        Effect effect;
-        BlurEffect blur;
-        RenderTarget2D renderTarget;
-        RenderTarget2D depthBlur;
+        private bool hasBegin;
+        private BlurMaterial blur;
+        private DepthMaterial depthMaterial;
+        private RenderTarget2D renderTarget;
+        private RenderTarget2D depthBlur;
+        private FullScreenQuad fullScreenQuad;
+        private Material vertexPassThrough;
+        private BoundingFrustum shadowFrustum = new BoundingFrustum(Matrix.Identity);
+        private FastList<IDrawableObject> shadowCasters = new FastList<IDrawableObject>();
 
         /// <summary>
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+        /// <summary>
+        /// Gets the parent light that uses this shadow map.
+        /// </summary>
+        public Light Light { get; internal set; }
 
         /// <summary>
         /// Gets or sets the size of the shadow map texture.
@@ -55,40 +66,40 @@ namespace Nine.Graphics.Materials
         public bool BlurEnabled { get; set; }
 
         /// <summary>
-        /// Gets the effect used to draw models between Begin/End pair.
+        /// Gets or sets the blur amount.
         /// </summary>
-        public Effect Effect 
+        public float BlurAmount
         {
-            get { return effect ?? (effect = new DepthEffect(GraphicsDevice)); } 
-        }
-        /*
-        /// <summary>
-        /// Gets the underlying blur effect used to blur the final shadow map.
-        /// </summary>
-        public BlurEffect Blur
-        {
-            get { return blur ?? (blur = new BlurEffect(GraphicsDevice) 
-                { SampleCount = BlurEffect.MinSampleCount }); } 
-        }
-        */
-        /// <summary>
-        /// Initializes a new instance of ShadowMap.
-        /// </summary>
-        public ShadowMap(GraphicsDevice graphics, int size)
-        {
-            GraphicsDevice = graphics;
-            Size = size;
-#if SILVERLIGHT
-            SurfaceFormat = SurfaceFormat.Color;
-#else
-            SurfaceFormat = SurfaceFormat.Single;
-#endif
+            get { return blur.BlurAmount; }
+            set { blur.BlurAmount = value; }
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ShadowMap"/> class.
+        /// </summary>
+        public ShadowMap(GraphicsDevice graphics, int size)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            this.GraphicsDevice = graphics;
+            this.Size = size;
+            this.depthMaterial = new DepthMaterial(graphics);
+            this.blur = new BlurMaterial(graphics);
+            this.vertexPassThrough = new VertexPassThroughMaterial(graphics);
+            this.fullScreenQuad = new FullScreenQuad(graphics);
+
+#if SILVERLIGHT
+            this.SurfaceFormat = SurfaceFormat.Color;
+#else
+            this.SurfaceFormat = SurfaceFormat.Single;
+#endif
+        } 
+        
+        /// <summary>
         /// Begins the shadowmap generation process and clears the shadowmap to white.
         /// </summary>
-        public void Begin()
+        private void Begin()
         {
             if (hasBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
@@ -96,7 +107,7 @@ namespace Nine.Graphics.Materials
             hasBegin = true;
             if (renderTarget == null || renderTarget.IsDisposed ||
 #if !SILVERLIGHT
-                renderTarget.IsContentLost || 
+                                        renderTarget.IsContentLost ||
 #endif
                 renderTarget.Format != SurfaceFormat || renderTarget.Width != Size)
             {
@@ -112,20 +123,19 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Ends the shadowmap generation process and returns the result shadowmap texture.
         /// </summary>
-        public Texture2D End()
+        private Texture2D End(DrawingContext context)
         {
             if (!hasBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
             hasBegin = false;
-
             Texture2D map = renderTarget.End();
 
             if (BlurEnabled)
             {
                 if (depthBlur == null || depthBlur.IsDisposed ||
 #if !SILVERLIGHT
-                    depthBlur.IsContentLost ||
+                                         depthBlur.IsContentLost ||
 #endif
                     depthBlur.Format != SurfaceFormat || depthBlur.Width != Size)
                 {
@@ -133,29 +143,73 @@ namespace Nine.Graphics.Materials
                         depthBlur.Dispose();
                     depthBlur = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat,
                                                    GraphicsDevice.PresentationParameters.DepthStencilFormat);
-                }
+                } 
+                
+                vertexPassThrough.BeginApply(context);
+                vertexPassThrough.EndApply(context);
 
                 // Blur H
                 depthBlur.Begin();
-                //Blur.Direction = MathHelper.PiOver4;
-
-                //GraphicsDevice.DrawFullscreenQuad(map, SamplerState.PointWrap, Color.White, Blur);
-
+                blur.Texture = map;
+                blur.Direction = 0;
+                fullScreenQuad.Draw(context, blur);
                 map = depthBlur.End();
 
                 // Blur V
                 renderTarget.Begin();
-                //Blur.Direction = -MathHelper.PiOver4;
-
-                //GraphicsDevice.DrawFullscreenQuad(map, SamplerState.PointWrap, Color.White, Blur);
-
+                blur.Texture = map;
+                blur.Direction = MathHelper.PiOver2;
+                fullScreenQuad.Draw(context, blur);
                 map = renderTarget.End();
-
-                // Restore states
-                GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             }
 
             return Texture = map;
+        }
+
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
+        {
+            Matrix shadowFrustumMatrix;
+            Light.GetShadowFrustum(context.ViewFrustum, drawables, out shadowFrustumMatrix);
+
+            shadowFrustum.Matrix = shadowFrustumMatrix;
+            context.Scene.FindAll(ref shadowFrustum, shadowCasters);
+
+            if (shadowCasters.Count <= 0)
+                return;
+
+            try
+            {
+                Begin();
+
+                context.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+                context.GraphicsDevice.BlendState = BlendState.Opaque;
+                context.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+                for (int i = 0; i < shadowCasters.Count; i++)
+                {
+                    var shadowCaster = shadowCasters[i];
+                    if (shadowCaster == null || !shadowCaster.Visible)
+                        continue;
+
+                    shadowCaster.BeginDraw(context);
+
+                    var material = shadowCaster.Material;
+                    if (material == null)
+                        material = depthMaterial;
+                    else
+                        material = material[MaterialUsage.Depth];
+
+                    if (material != null)
+                        shadowCaster.Draw(context, material);
+
+                    shadowCaster.EndDraw(context);
+                }
+            }
+            finally
+            {
+                shadowCasters.Clear();
+                End(context);
+            }
         }
 
         public void Dispose()
@@ -172,7 +226,7 @@ namespace Nine.Graphics.Materials
                 {
                     renderTarget.Dispose();
                     renderTarget = null;
-                }
+                } 
                 if (depthBlur != null)
                 {
                     depthBlur.Dispose();

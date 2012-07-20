@@ -19,32 +19,63 @@ using Nine.Graphics.Drawing;
 
 namespace Nine.Graphics.ObjectModel
 {
+    [ContentSerializable]
     public partial class DirectionalLight : Light<IDirectionalLight>, ISceneObject
     {
-        /// <summary>
-        /// Gets a the empty directional light
-        /// </summary>
-        public static readonly DirectionalLight Empty = new DirectionalLight(null) { DiffuseColor = Vector3.Zero, SpecularColor = Vector3.Zero, Direction = Vector3.Down };
-
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
-        public DirectionalLight(GraphicsDevice graphics)
+        public Vector3 Direction
         {
-            GraphicsDevice = graphics;
+            get { return AbsoluteTransform.Forward; }
+            set { Transform = MatrixHelper.CreateWorld(Vector3.Zero, value); version++; }
+        }
+
+        public Vector3 SpecularColor
+        {
+            get { return specularColor; }
+            set { specularColor = value; version++; }
+        }
+        private Vector3 specularColor;
+
+        public Vector3 DiffuseColor
+        {
+            get { return diffuseColor; }
+            set { diffuseColor = value; version++; }
+        }
+        private Vector3 diffuseColor;
+
+        /// <summary>
+        /// Gets or sets the version of this light. This value increases each
+        /// time the color or direction property changed. It can be used to
+        /// detect whether this light has changed to a new state very quickly.
+        /// </summary>
+        public int Version
+        {
+            get { return version; }
+        }
+        internal int version;
+        
+        private FastList<ISpatialQueryable> shadowCasters;
+        private static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
+
+        /// <summary>
+        /// Gets the empty directional light.
+        /// </summary>
+        public static readonly DirectionalLight Empty = new DirectionalLight() { DiffuseColor = Vector3.Zero, SpecularColor = Vector3.Zero, Direction = Vector3.Down };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectionalLight"/> class.
+        /// </summary>
+        public DirectionalLight()
+        {
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
         }
         
-        static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
-
-        protected override bool GetShadowFrustum(DrawingContext context,
-                                                 HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
-                                                 HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
-                                                 out Matrix frustumMatrix)
+        public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
         {
+            var shadowCastersInViewFrustum = FindShadowCasters(drawablesInViewFrustum);
             if (shadowCastersInViewFrustum.Count <= 0)
             {
-                frustumMatrix = new Matrix();
+                shadowFrustum = Matrix.Identity;
                 return false;
             }
 
@@ -61,9 +92,9 @@ namespace Nine.Graphics.ObjectModel
             float bottom = float.MaxValue;
             float top = float.MinValue;
 
-            foreach (var shadowCaster in shadowCastersInViewFrustum)
+            for (int caster = 0; caster < shadowCastersInViewFrustum.Count; caster++)
             {
-                shadowCaster.BoundingBox.GetCorners(Corners);
+                shadowCastersInViewFrustum[caster].BoundingBox.GetCorners(Corners);
                 for (int i = 0; i < BoundingBox.CornerCount; i++)
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
@@ -85,8 +116,28 @@ namespace Nine.Graphics.ObjectModel
 
             Matrix projection;
             Matrix.CreateOrthographicOffCenter(left, right, bottom, top, nearZ, farZ, out projection);
-            Matrix.Multiply(ref view, ref projection, out frustumMatrix);
+            Matrix.Multiply(ref view, ref projection, out shadowFrustum);
             return true;
+        }
+        
+        private FastList<ISpatialQueryable> FindShadowCasters(IList<IDrawableObject> drawables)
+        {
+            if (shadowCasters == null)
+                shadowCasters = new FastList<ISpatialQueryable>();
+
+            shadowCasters.Clear();
+            for (int currentDrawable = 0; currentDrawable < drawables.Count; currentDrawable++)
+            {
+                var drawable = drawables[currentDrawable];
+                var lightable = drawable as ILightable;
+                if (lightable != null && lightable.CastShadow)
+                {
+                    var parentSpatialQueryable = ContainerTraverser.FindParentContainer<ISpatialQueryable>(drawable);
+                    if (parentSpatialQueryable != null)
+                        shadowCasters.Add(parentSpatialQueryable);
+                }
+            }
+            return shadowCasters;
         }
 
         protected override void Enable(IDirectionalLight light)
@@ -102,45 +153,12 @@ namespace Nine.Graphics.ObjectModel
             light.SpecularColor = Vector3.Zero;
         }
 
-        public Vector3 Direction
-        {
-            get { return AbsoluteTransform.Forward; }
-            set { Transform = MatrixHelper.CreateWorld(Vector3.Zero, value); version++; }
-        }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor
-        {
-            get { return specularColor; }
-            set { specularColor = value; version++; }
-        }
-        private Vector3 specularColor;
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor
-        {
-            get { return diffuseColor; }
-            set { diffuseColor = value; version++; }
-        }
-        private Vector3 diffuseColor;
-
-        /// <summary>
-        /// Gets or sets the version of this light. This value increases each
-        /// time the color or direction property changed. It can be used to
-        /// detect whether this light has changed to a new state very quickly.
-        /// </summary>
-        public int Version
-        {
-            get { return version; }
-        }
-        internal int version;
-
-        void ISceneObject.OnAdded(DrawingContext context)
+        protected override void OnAdded(DrawingContext context)
         {
             context.DirectionalLights.Add(this);
         }
 
-        void ISceneObject.OnRemoved(DrawingContext context)
+        protected override void OnRemoved(DrawingContext context)
         {
             context.DirectionalLights.Remove(this);
         }

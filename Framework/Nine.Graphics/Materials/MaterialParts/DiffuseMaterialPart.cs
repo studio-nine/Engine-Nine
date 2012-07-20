@@ -99,16 +99,6 @@ namespace Nine.Graphics.Materials.MaterialParts
         public Texture2D Texture { get; set; }
 
         /// <summary>
-        /// Gets or sets the opacity of this material.
-        /// </summary>
-        public float Alpha
-        {
-            get { return alpha; }
-            set { alpha = value; }
-        }
-        private float alpha = 1;
-
-        /// <summary>
         /// Gets or sets the diffuse color.
         /// </summary>
         public Vector3 DiffuseColor
@@ -171,10 +161,10 @@ namespace Nine.Graphics.Materials.MaterialParts
             if (diffuseColorEnabled)
             {
                 var diffuseColorWithAlpha = new Vector4();
-                diffuseColorWithAlpha.X = diffuseColor.X * alpha;
-                diffuseColorWithAlpha.Y = diffuseColor.Y * alpha;
-                diffuseColorWithAlpha.Z = diffuseColor.Z * alpha;
-                diffuseColorWithAlpha.W = alpha;
+                diffuseColorWithAlpha.X = diffuseColor.X * material.alpha;
+                diffuseColorWithAlpha.Y = diffuseColor.Y * material.alpha;
+                diffuseColorWithAlpha.Z = diffuseColor.Z * material.alpha;
+                diffuseColorWithAlpha.W = material.alpha;
                 diffuseColorParameter.SetValue(diffuseColorWithAlpha);
             }
         }
@@ -199,7 +189,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             result.textureEnabled = this.textureEnabled;
             result.textureAlphaUsage = this.textureAlphaUsage;
             result.DiffuseColor = this.DiffuseColor;
-            result.Alpha = this.Alpha;
             result.diffuseColorEnabled = this.diffuseColorEnabled;
             return result;
         }

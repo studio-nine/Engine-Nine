@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 #if !WINDOWS_PHONE
 using Nine.Graphics.Materials;
-using Nine.Graphics.Materials.Deferred;
 #endif
 #endregion
 

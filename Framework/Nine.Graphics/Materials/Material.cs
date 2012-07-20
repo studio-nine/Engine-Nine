@@ -25,7 +25,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Represents a local copy of settings of the specified effect.
     /// </summary>
-    public abstract class Material : IAttachedPropertyStore
+    public abstract class Material : Object
     {
         #region Fields
         private const int TransparencySortOrderFlag = 1 << 25;
@@ -76,14 +76,34 @@ namespace Nine.Graphics.Materials
         public Texture2D Texture { get; set; }
 
         /// <summary>
+        /// Gets or sets the alpha value of this material.
+        /// </summary>
+        public float Alpha
+        {
+            get { return alpha; }
+            set { alpha = MathHelper.Clamp(value, 0, 1); }
+        }
+        internal float alpha = 1;
+
+        /// <summary>
         /// Gets or sets whether this material is transparent.
         /// </summary>
-        public bool IsTransparent { get; set; }
+        public bool IsTransparent
+        {
+            get { return isTransparent || isAdditive || alpha < 1; }
+            set { isTransparent = value; }
+        }
+        private bool isTransparent;
 
         /// <summary>
         /// Gets or sets whether this material will blend with other materials using additive blending.
         /// </summary>
-        public bool IsAdditive { get; set; }
+        public bool IsAdditive
+        {
+            get { return isAdditive; }
+            set { isAdditive = value; }
+        }
+        internal bool isAdditive;
 
         /// <summary>
         /// Gets or sets a value indicating whether the underlying object rendered using
@@ -198,87 +218,6 @@ namespace Nine.Graphics.Materials
             // TODO:
             return null; 
         }
-        #endregion
-
-        #region IAttachedPropertyStore
-        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
-        {
-            if (attachedProperties != null)
-                ((ICollection<KeyValuePair<AttachableMemberIdentifier, object>>)attachedProperties).CopyTo(array, index);
-        }
-
-        int IAttachedPropertyStore.PropertyCount
-        {
-            get { return attachedProperties != null ? attachedProperties.Count : 0; }
-        }
-
-        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
-        {
-            if (attachedProperties == null)
-                return false;
-
-            object oldValue;
-            attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
-            AttachedPropertyChangedEventArgs.OldValue = oldValue;
-            if (attachedProperties.Remove(attachableMemberIdentifier))
-            {
-                if (AttachedPropertyChanged != null)
-                {
-                    AttachedPropertyChangedEventArgs.Property = attachableMemberIdentifier;
-                    AttachedPropertyChangedEventArgs.NewValue = null;
-                    AttachedPropertyChanged(this, AttachedPropertyChangedEventArgs);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value)
-        {
-            if (attachedProperties == null)
-                attachedProperties = new Dictionary<AttachableMemberIdentifier, object>();
-
-            object oldValue;
-            attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
-            AttachedPropertyChangedEventArgs.OldValue = oldValue;
-            attachedProperties[attachableMemberIdentifier] = value;
-
-            if (AttachedPropertyChanged != null)
-            {
-                AttachedPropertyChangedEventArgs.Property = attachableMemberIdentifier;
-                AttachedPropertyChangedEventArgs.NewValue = value;
-                AttachedPropertyChanged(this, AttachedPropertyChangedEventArgs);
-            }
-        }
-
-        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value)
-        {
-            value = null;
-            return attachedProperties != null && attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
-        }
-
-        [ContentSerializer]
-        internal Dictionary<AttachableMemberIdentifier, object> AttachedProperties
-        {
-            get { return attachedProperties; }
-            set
-            {
-                if (value != null)
-                    foreach (var pair in value)
-                        pair.Key.Apply(this, pair.Value);
-            }
-        }
-        private Dictionary<AttachableMemberIdentifier, object> attachedProperties;
-
-        /// <summary>
-        /// Reusing this same event args.
-        /// </summary>
-        private static AttachedPropertyChangedEventArgs AttachedPropertyChangedEventArgs = new AttachedPropertyChangedEventArgs(null, null, null);
-
-        /// <summary>
-        /// Occurs when any of the attached property changed.
-        /// </summary>
-        public event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
         #endregion
     }
 }

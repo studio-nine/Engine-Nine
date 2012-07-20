@@ -19,9 +19,42 @@ using Nine.Graphics.Drawing;
 
 namespace Nine.Graphics.ObjectModel
 {
+    [ContentSerializable]
     public partial class PointLight : Light<IPointLight>, ISpatialQueryable
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+        public Vector3 Position
+        {
+            get { return AbsoluteTransform.Translation; }
+        }
+
+        public Vector3 SpecularColor { get; set; }
+
+        public Vector3 DiffuseColor
+        {
+            get { return diffuseColor; }
+            set { diffuseColor = value; }
+        }
+        private Vector3 diffuseColor;
+
+        public float Range
+        {
+            get { return range; }
+            set
+            {
+                range = value;
+                OnBoundingBoxChanged();
+            }
+        }
+        private float range;
+
+        public float Attenuation
+        {
+            get { return attenuation; }
+            set { attenuation = value; }
+        }
+        private float attenuation;
 
         #region BoundingBox
         public BoundingBox BoundingBox
@@ -75,7 +108,7 @@ namespace Nine.Graphics.ObjectModel
             SpecularColor = Vector3.Zero;
         }
 
-        protected internal override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        public override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             var boundingSphere = BoundingSphere;
             //scene.FindAll(ref boundingSphere, result);
@@ -101,39 +134,9 @@ namespace Nine.Graphics.ObjectModel
             light.SpecularColor = Vector3.Zero;
         }
 
-        public Vector3 Position { get { return AbsoluteTransform.Translation; } }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor
+        public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
         {
-            get { return diffuseColor; }
-            set { diffuseColor = value; }
+            throw new NotImplementedException();
         }
-        private Vector3 diffuseColor;
-
-
-        [ContentSerializer(Optional = true)]
-        public float Range
-        {
-            get { return range; }
-            set
-            {
-                range = value;
-                OnBoundingBoxChanged();
-            }
-        }
-        private float range;
-
-
-        [ContentSerializer(Optional = true)]
-        public float Attenuation
-        {
-            get { return attenuation; }
-            set { attenuation = value; }
-        }
-        private float attenuation;
     }
 }

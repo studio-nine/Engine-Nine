@@ -22,27 +22,6 @@ namespace Nine.Graphics.Materials
         #region Properties
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        public float Alpha
-        {
-            get { return alpha.HasValue ? alpha.Value : MaterialConstants.Alpha; }
-            set 
-            {
-                if (value >= MaterialConstants.Alpha)
-                {
-                    alpha = null;
-                    IsTransparent = cachedIsTransparent;
-                }
-                else
-                {
-                    if (alpha == null)
-                        cachedIsTransparent = IsTransparent;
-                    alpha = System.Math.Max(value, 0);
-                }
-            }
-        }
-        private float? alpha;
-        private bool cachedIsTransparent;
-
         public Vector3 DiffuseColor
         {
             get { return diffuseColor.HasValue ? diffuseColor.Value : MaterialConstants.DiffuseColor; }
@@ -122,8 +101,8 @@ namespace Nine.Graphics.Materials
             // the default one. Remember to reset it back to defaults during EndApply.
             // Since most objects will have their materials left at the default state, 
             // most of these parameter won't be updated to the shader.
-            if (alpha.HasValue)
-                effect.Alpha = alpha.Value;
+            if (alpha != MaterialConstants.Alpha)
+                effect.Alpha = alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = diffuseColor.Value;
             if (emissiveColor.HasValue)
@@ -152,7 +131,7 @@ namespace Nine.Graphics.Materials
 
         public override void EndApply(DrawingContext context)
         {
-            if (alpha.HasValue)
+            if (alpha != MaterialConstants.Alpha)
                 effect.Alpha = MaterialConstants.Alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = MaterialConstants.DiffuseColor;

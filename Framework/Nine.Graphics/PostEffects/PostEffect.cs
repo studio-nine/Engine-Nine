@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Markup;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Graphics.Drawing;
 using Nine.Graphics.Materials;
@@ -36,6 +37,7 @@ namespace Nine.Graphics.PostEffects
         /// <summary>
         /// Gets or sets the input texture to be processed.
         /// </summary>
+        [ContentSerializerIgnore]
         public Texture2D InputTexture { get; set; }
 
         /// <summary>
@@ -189,6 +191,7 @@ namespace Nine.Graphics.PostEffects
                 context.GraphicsDevice.BlendState = BlendState;
                 context.GraphicsDevice.Textures[0] = InputTexture;
                 context.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                context.GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
                 Material.Texture = InputTexture;
                 fullScreenQuad.Draw(context, Material);

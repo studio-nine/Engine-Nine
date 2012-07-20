@@ -26,21 +26,9 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// A drawing pass represents a single pass in the composition chain.
     /// </summary>
-    [RuntimeNameProperty("Name")]
-    [DictionaryKeyProperty("Name")]
-    public abstract class Pass : IAttachedPropertyStore
+    public abstract class Pass : Object
     {
         #region Properties
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tag.
-        /// </summary>
-        public object Tag { get; set; }
-
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Pass"/> is enabled.
         /// </summary>
@@ -161,87 +149,6 @@ namespace Nine.Graphics.Drawing
         /// A list of drawables about to be drawed in this drawing pass.
         /// </param>
         public abstract void Draw(DrawingContext context, IList<IDrawableObject> drawables);
-        #endregion
-
-        #region IAttachedPropertyStore
-        void IAttachedPropertyStore.CopyPropertiesTo(KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
-        {
-            if (attachedProperties != null)
-                ((ICollection<KeyValuePair<AttachableMemberIdentifier, object>>)attachedProperties).CopyTo(array, index);
-        }
-
-        int IAttachedPropertyStore.PropertyCount
-        {
-            get { return attachedProperties != null ? attachedProperties.Count : 0; }
-        }
-
-        bool IAttachedPropertyStore.RemoveProperty(AttachableMemberIdentifier attachableMemberIdentifier)
-        {
-            if (attachedProperties == null)
-                return false;
-
-            object oldValue;
-            attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
-            AttachedPropertyChangedEventArgs.OldValue = oldValue;
-            if (attachedProperties.Remove(attachableMemberIdentifier))
-            {
-                if (AttachedPropertyChanged != null)
-                {
-                    AttachedPropertyChangedEventArgs.Property = attachableMemberIdentifier;
-                    AttachedPropertyChangedEventArgs.NewValue = null;
-                    AttachedPropertyChanged(this, AttachedPropertyChangedEventArgs);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        void IAttachedPropertyStore.SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value)
-        {
-            if (attachedProperties == null)
-                attachedProperties = new Dictionary<AttachableMemberIdentifier, object>();
-
-            object oldValue;
-            attachedProperties.TryGetValue(attachableMemberIdentifier, out oldValue);
-            AttachedPropertyChangedEventArgs.OldValue = oldValue;
-            attachedProperties[attachableMemberIdentifier] = value;
-
-            if (AttachedPropertyChanged != null)
-            {
-                AttachedPropertyChangedEventArgs.Property = attachableMemberIdentifier;
-                AttachedPropertyChangedEventArgs.NewValue = value;
-                AttachedPropertyChanged(this, AttachedPropertyChangedEventArgs);
-            }
-        }
-
-        bool IAttachedPropertyStore.TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value)
-        {
-            value = null;
-            return attachedProperties != null && attachedProperties.TryGetValue(attachableMemberIdentifier, out value);
-        }
-
-        [ContentSerializer]
-        internal Dictionary<AttachableMemberIdentifier, object> AttachedProperties
-        {
-            get { return attachedProperties; }
-            set
-            {
-                if (value != null)
-                    foreach (var pair in value)
-                        pair.Key.Apply(this, pair.Value);
-            }
-        }
-        private Dictionary<AttachableMemberIdentifier, object> attachedProperties;
-
-        /// <summary>
-        /// Reusing this same event args.
-        /// </summary>
-        private static AttachedPropertyChangedEventArgs AttachedPropertyChangedEventArgs = new AttachedPropertyChangedEventArgs(null, null, null);
-
-        /// <summary>
-        /// Occurs when any of the attached property changed.
-        /// </summary>
-        public event EventHandler<AttachedPropertyChangedEventArgs> AttachedPropertyChanged;
         #endregion
     }
 }
