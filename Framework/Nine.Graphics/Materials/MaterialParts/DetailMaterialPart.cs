@@ -8,36 +8,41 @@
     public class DetailMaterialPart : MaterialPart
     {
         private EffectParameter textureParameter;
-        private EffectParameter detailTextureScaleParameter;
+        private EffectParameter detailTextureSettingsParameter;
 
         public Texture2D DetailTexture { get; set; }
 
-        public Vector2 DetailTextureScale
+        public float Attenuation { get; set; }
+
+        public float Distance { get; set; }
+
+        public Vector2 DetailTextureScale { get; set; }
+
+        public DetailMaterialPart()
         {
-            get { return detailTextureScale.HasValue ? detailTextureScale.Value : Vector2.One; }
-            set { detailTextureScale = (value == Vector2.One ? (Vector2?)null : value); }
+            DetailTextureScale = Vector2.One;
+            Attenuation = MathHelper.E;
+            Distance = 10;
         }
-        private Vector2? detailTextureScale;
 
         protected internal override void OnBind()
         {
             if ((textureParameter = GetParameter("Texture")) == null)
                 MaterialGroup.MaterialParts.Remove(this);
-            if ((detailTextureScaleParameter = GetParameter("DetailTextureScale")) == null)
+            if ((detailTextureSettingsParameter = GetParameter("DetailTextureSettings")) == null)
                 MaterialGroup.MaterialParts.Remove(this);
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            if (detailTextureScale.HasValue)
-                detailTextureScaleParameter.SetValue(detailTextureScale.Value);
-            textureParameter.SetValue(DetailTexture);
-        }
+            Vector4 detailTextureSettings = new Vector4();
+            detailTextureSettings.X = DetailTextureScale.X;
+            detailTextureSettings.Y = DetailTextureScale.Y;
+            detailTextureSettings.Z = Attenuation;
+            detailTextureSettings.W = Distance;
 
-        protected internal override void EndApplyLocalParameters()
-        {
-            if (detailTextureScale.HasValue)
-                detailTextureScaleParameter.SetValue(Vector2.One);
+            detailTextureSettingsParameter.SetValue(detailTextureSettings);
+            textureParameter.SetValue(DetailTexture);
         }
 
         protected internal override MaterialPart Clone()
@@ -46,6 +51,8 @@
             {
                 DetailTexture = this.DetailTexture,
                 DetailTextureScale = this.DetailTextureScale,
+                Attenuation = this.Attenuation,
+                Distance = this.Distance,
             };
         }
 

@@ -1,13 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using Nine.Studio.Shell.ViewModels;
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using System.Windows.Input;
+    using Nine.Studio.Shell.ViewModels;
+
     /// <summary>
     /// Interaction logic for Library.xaml
     /// </summary>

@@ -1,20 +1,10 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Interop;
-#endregion
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Windows;
+    using System.Windows.Interop;
+
     /// <summary>
     /// Adopted from http://wpftutorial.net/RemoveIcon.html
     /// </summary>

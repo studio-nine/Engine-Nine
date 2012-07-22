@@ -1,10 +1,7 @@
-﻿
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Further LINQ extensions

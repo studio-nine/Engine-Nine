@@ -5,15 +5,11 @@
 // wincodec.idl
 namespace Nine.Studio.Shell
 {
+
     using System;
-    using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Runtime.InteropServices.ComTypes;
-    using System.Text;
-
-    using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
     using STATSTG = System.Runtime.InteropServices.ComTypes.STATSTG;
-
     #region WIC Values
     
     internal static class WicValues
@@ -281,6 +277,7 @@ namespace Nine.Studio.Shell
         /// <summary>Arbitrary custom palette provided by caller.</summary>
         Custom = 0x00000000,
         /// <summary>Optimal palette generated using a median-cut algorithm.</summary>
+
         MedianCut = 0x00000001,
         /// <summary>Black and white palette.</summary>
         FixedBW = 0x00000002,

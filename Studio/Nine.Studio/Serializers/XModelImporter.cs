@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel.Composition;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Nine.Studio.Extensibility;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Studio.Serializers
+﻿namespace Nine.Studio.Serializers
 {
+    using System.ComponentModel.Composition;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Studio.Extensibility;
+
     [Export(typeof(IImporter))]
     [LocalizedDisplayName("XModel")]
     [LocalizedCategory("Model")]

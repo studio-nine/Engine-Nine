@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
-
-namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell.Behaviors
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
+
     /// <summary>
     /// This class facilitates associating a key binding in XAML markup to a command
     /// defined in a View Model by exposing a Command dependency property.

@@ -7,12 +7,75 @@ namespace Nine.Graphics.ObjectModel
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
+    [ContentSerializable]
     public partial class SpotLight : Light<ISpotLight>, ISpatialQueryable
     {
         const float NearPlane = 0.01f;
 
         public GraphicsDevice GraphicsDevice { get; private set; }
+        
+        public Vector3 Position
+        {
+            get { return AbsoluteTransform.Translation; }
+        }
 
+        public Vector3 Direction
+        {
+            get { return AbsoluteTransform.Forward; }
+        }
+
+        public Vector3 SpecularColor { get; set; }
+
+        public Vector3 DiffuseColor
+        {
+            get { return diffuseColor; }
+            set { diffuseColor = value; }
+        }
+        private Vector3 diffuseColor;
+
+        public float Range
+        {
+            get { return range; }
+            set
+            {
+                range = value;
+                OnBoundingBoxChanged();
+            }
+        }
+        private float range;
+
+        public float Attenuation
+        {
+            get { return attenuation; }
+            set { attenuation = value; }
+        }
+        private float attenuation;
+
+        public float InnerAngle
+        {
+            get { return innerAngle; }
+            set { innerAngle = value; }
+        }
+        private float innerAngle;
+
+        public float OuterAngle
+        {
+            get { return outerAngle; }
+            set
+            {
+                outerAngle = value;
+                isBoundingFrustumDirty = true;
+            }
+        }
+        private float outerAngle;
+
+        public float Falloff
+        {
+            get { return falloff; }
+            set { falloff = value; }
+        }
+        private float falloff;
+        
         #region BoundingBox
         public BoundingBox BoundingBox
         {
@@ -89,7 +152,7 @@ namespace Nine.Graphics.ObjectModel
             Falloff = 1;
         }
 
-        protected internal override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        public override void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             var boundingFrustum = BoundingFrustum;
             //scene.FindAll(ref boundingFrustum, result);
@@ -97,11 +160,10 @@ namespace Nine.Graphics.ObjectModel
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
-        protected override bool GetShadowFrustum(DrawingContext context,
-                                                HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
-                                                HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
-                                                out Matrix frustumMatrix)
+        public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
         {
+            throw new NotImplementedException();
+            /*
             if (shadowCastersInLightFrustum.Count <= 0)
             {
                 frustumMatrix = new Matrix();
@@ -162,6 +224,7 @@ namespace Nine.Graphics.ObjectModel
                                                      Math.Max(NearPlane * 2, farZ), out projection);
             Matrix.Multiply(ref view, ref projection, out frustumMatrix);
             return true;
+             */
         }
 
         public override void DrawFrustum(DrawingContext context)
@@ -187,72 +250,5 @@ namespace Nine.Graphics.ObjectModel
             light.DiffuseColor = Vector3.Zero;
             light.SpecularColor = Vector3.Zero;
         }
-
-        public Vector3 Position { get { return AbsoluteTransform.Translation; } }
-        public Vector3 Direction { get { return AbsoluteTransform.Forward; } }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor { get; set; }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor
-        {
-            get { return diffuseColor; }
-            set { diffuseColor = value; }
-        }
-        private Vector3 diffuseColor;
-
-
-        [ContentSerializer(Optional = true)]
-        public float Range
-        {
-            get { return range; }
-            set
-            {
-                range = value;
-                OnBoundingBoxChanged();
-            }
-        }
-        private float range;
-
-
-        [ContentSerializer(Optional = true)]
-        public float Attenuation
-        {
-            get { return attenuation; }
-            set { attenuation = value; }
-        }
-        private float attenuation;
-
-
-        [ContentSerializer(Optional = true)]
-        public float InnerAngle
-        {
-            get { return innerAngle; }
-            set { innerAngle = value; }
-        }
-        private float innerAngle;
-
-
-        [ContentSerializer(Optional = true)]
-        public float OuterAngle
-        {
-            get { return outerAngle; }
-            set
-            {
-                outerAngle = value;
-                isBoundingFrustumDirty = true;
-            }
-        }
-        private float outerAngle;
-
-
-        [ContentSerializer(Optional = true)]
-        public float Falloff
-        {
-            get { return falloff; }
-            set { falloff = value; }
-        }
-        private float falloff;
     }
 }

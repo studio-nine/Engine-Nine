@@ -1,23 +1,13 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Linq;
-using System.Windows.Data;
-using Nine.Studio.Shell.ViewModels;
-using Nine.Studio.Shell.Windows;
-using System.Windows.Forms.Integration;
-using System.Windows;
-#endregion
-
-namespace Nine.Studio.Shell.Converters
+﻿namespace Nine.Studio.Shell.Converters
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Data;
+    using System.Windows.Forms.Integration;
+    using Nine.Studio.Shell.ViewModels;
+    using Nine.Studio.Shell.Windows;
+
+
     public class ProjectItemViewToControlConverter : IValueConverter
     {
         NoDesignView noDesignView;

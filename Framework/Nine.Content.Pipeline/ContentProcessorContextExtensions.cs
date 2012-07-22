@@ -68,10 +68,8 @@
 
             // There's currently no way to build from object, so we need to create a temperory file
             using (var stream = new MemoryStream())
-
             {
                 using (XmlWriter writer = XmlWriter.Create(stream))
-
                 {
                     try
                     {
@@ -106,7 +104,6 @@
                 }
 
                 using (var assetFile = new FileStream(sourceFile, FileMode.Create))
-
                 {
                     stream.Seek(0, SeekOrigin.Begin);
                     stream.WriteTo(assetFile);
@@ -177,7 +174,6 @@
 
             {
                 using (var contentManager = new PipelineContentManager(baseDirectory, new GraphicsDeviceServiceProvider(graphicsDevice)))
-
                 {
                     try
                     {
@@ -221,10 +217,8 @@
                 Compile(asset, assetFilename, context);
 
                 using (var graphicsDevice = GraphicsExtensions.CreateHiddenGraphicsDevice(profile))
-
                 {
                     using (var contentManager = new PipelineContentManager(baseDirectory, new GraphicsDeviceServiceProvider(graphicsDevice)))
-
                     {
                         try
                         {
@@ -268,7 +262,6 @@
             context.Logger.LogImportantMessage("Compiling {0}", outputFilename);
 
             using (var output = new FileStream(outputFilename, FileMode.Create))
-
             {
                 var constructor = typeof(ContentCompiler).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { }, null);
                 ContentCompiler compiler = (ContentCompiler)constructor.Invoke(null);

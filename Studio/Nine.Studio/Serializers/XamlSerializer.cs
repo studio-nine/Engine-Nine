@@ -1,22 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Text;
-using System.Xaml;
-using Nine.Studio.Extensibility;
-
-#endregion
-
-namespace Nine.Studio.Serializers
+﻿namespace Nine.Studio.Serializers
 {
+
+    using System.IO;
+    using System.Text;
+
+    using Nine.Studio.Extensibility;
+
     //[Export(typeof(IImporter))]
     //[Export(typeof(IExporter))]
     //[LocalizedDisplayName("XnaXamlAssert")]

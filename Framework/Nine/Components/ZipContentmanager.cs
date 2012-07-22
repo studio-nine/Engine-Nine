@@ -333,7 +333,6 @@ namespace Nine.Components
 
 
                 using (System.IO.MemoryStream memstream = new System.IO.MemoryStream(_FileData))
-
                 {
 
                     System.IO.Stream input = null;
@@ -590,7 +589,6 @@ namespace Nine.Components
                 CRC32 crc32 = new CRC32();
                 UInt32 crc = 0;
                 using (System.IO.Stream input = System.IO.File.OpenRead(FileName))
-
                 {
                     crc = crc32.GetCrc32AndCopy(input, CompressedStream);
                 }

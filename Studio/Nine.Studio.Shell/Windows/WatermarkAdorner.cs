@@ -1,11 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+    using System.Windows.Documents;
+    using System.Windows.Media;
+
     /// <summary>
     /// Adorner for the watermark
     /// </summary>

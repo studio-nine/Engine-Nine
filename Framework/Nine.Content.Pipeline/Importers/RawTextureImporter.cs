@@ -19,7 +19,6 @@
         public override TextureContent Import(string filename, ContentImporterContext context)
         {
             using (FileStream file = new FileStream(filename, FileMode.Open))
-
             {
                 byte[] bytes = new byte[file.Length];
 

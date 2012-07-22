@@ -2,27 +2,35 @@ namespace Nine.Graphics.ObjectModel
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
+using System;
 
     /// <summary>
     /// Defines a base class for a light used by the render system.
     /// </summary>
-    public abstract class Light : Transformable
+    [ContentProperty("Shadow")]
+    public abstract class Light : Transformable, ISceneObject
     {
         /// <summary>
         /// Gets whether the light is enabled.
         /// </summary>
-        [ContentSerializer(Optional = true)]
-        public bool Enabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether the light should cast a shadow.
-        /// </summary>
-        public bool CastShadow  { get; set; }
+        public bool Enabled
+        {
+            get { return enabled; }
+            set 
+            {
+                if (enabled != value)
+                {
+                    enabled = value;
+                }
+            }
+        }
+        internal bool enabled = true;
 
         /// <summary>
         /// Gets the order of this light when it's been process by the renderer.
@@ -36,9 +44,53 @@ namespace Nine.Graphics.ObjectModel
         internal float order;
 
         /// <summary>
-        /// Gets the multi-pass lighting effect used to draw object.
+        /// Gets the material usage to draw multi-pass lighting effect, or return 
+        /// null to indicate that this light does not support multi-pass lighting effect.
         /// </summary>
-        public virtual Effect MultiPassEffect { get { return null; } }
+        public virtual MaterialUsage? MultiPassMaterial
+        {
+            get { return null; } 
+        }
+
+        /// <summary>
+        /// Gets or sets whether the light should cast a shadow.
+        /// </summary>
+        public bool CastShadow
+        {
+            get { return castShadow; }
+            set { castShadow = value; }
+        }
+        internal bool castShadow = false;
+
+        /// <summary>
+        /// Gets or sets the shadow technique used by this light.
+        /// </summary>
+        public ShadowMap Shadow
+        {
+            get { return shadow; }
+            set
+            {
+                if (shadow != value)
+                {
+                    if (shadow != null)
+                    {
+                        if (shadow.Light == null)
+                            throw new InvalidOperationException();
+                        shadow.Light = null;
+                        Context.MainPass.Passes.Remove(shadow);
+                    }
+                    shadow = value;
+                    if (shadow != null)
+                    {
+                        if (shadow.Light != null)
+                            throw new InvalidOperationException();
+                        Context.MainPass.Passes.Insert(0, shadow);
+                        shadow.Light = this;
+                    }
+                }
+            }
+        }
+        private ShadowMap shadow;
 
         /// <summary>
         /// Gets the shadow frustum of this light.
@@ -48,26 +100,54 @@ namespace Nine.Graphics.ObjectModel
             get { return shadowFrustum; } 
         }
         private BoundingFrustum shadowFrustum;
+        
+        /// <summary>
+        /// Keeps track of the owner drawing context.
+        /// </summary>
+        protected DrawingContext Context { get; private set; }
 
         /// <summary>
-        /// Used by the rendering system to keep track of drawables affect by this light.
+        /// Initializes a new instance of the <see cref="Light"/> class.
         /// </summary>
-        internal List<IDrawableObject> AffectedDrawables;
-        internal List<IDrawableObject> AffectedShadowCasters;
-
-        /// <summary>
-        /// For now we don't allow custom light types.
-        /// </summary>
-        internal Light()
+        protected Light()
         {
-            Enabled = true;
             shadowFrustum = new BoundingFrustum(new Matrix());
+        }
+
+        /// <summary>
+        /// Called when this scene object is added to the scene.
+        /// </summary>
+        protected virtual void OnAdded(DrawingContext context) { }
+
+        /// <summary>
+        /// Called when this scene object is removed from the scene.
+        /// </summary>
+        protected virtual void OnRemoved(DrawingContext context) { }
+
+        void ISceneObject.OnAdded(DrawingContext context)
+        {
+            if (this.Context != null)
+                throw new InvalidOperationException();
+            if (shadow != null)
+                context.MainPass.Passes.Insert(0, shadow);
+            this.Context = context;
+            OnAdded(context);
+        }
+
+        void ISceneObject.OnRemoved(DrawingContext context)
+        {
+            if (this.Context == null || context != this.Context)
+                throw new InvalidOperationException();
+            if (shadow != null)
+                context.MainPass.Passes.Remove(shadow);
+            this.Context = null;
+            OnRemoved(context);
         }
 
         /// <summary>
         /// Finds all the objects affected by this light.
         /// </summary>
-        protected internal virtual void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
+        public virtual void FindAll(Scene scene, IList<IDrawableObject> drawablesInViewFrustum, ICollection<IDrawableObject> result)
         {
             for (var i = 0; i < drawablesInViewFrustum.Count; i++)
                 result.Add(drawablesInViewFrustum[i]);
@@ -76,67 +156,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// TODO:
         /// </summary>
-        protected internal abstract bool Apply(Material material, int index, bool last);
-
-        /// <summary>
-        /// Draws the depth map of the specified drawables.
-        /// </summary>
-        internal void DrawShadowMap(DrawingContext context, Scene scene,
-                                    HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
-                                    HashSet<ISpatialQueryable> shadowCastersInViewFrustum)
-        {
-#if !WINDOWS_PHONE
-            Matrix view = context.View;
-            Matrix projection = context.Projection;
-
-            Matrix shadowFrustumMatrix = new Matrix();
-            if (!GetShadowFrustum(context, shadowCastersInLightFrustum, shadowCastersInViewFrustum, out shadowFrustumMatrix))
-            {
-                // No shadow casters found, do not create the shadow map.
-                return;
-            }
-            ShadowFrustum.Matrix = shadowFrustumMatrix;
-
-            if (AffectedShadowCasters == null)
-                AffectedShadowCasters = new List<IDrawableObject>();
-            //scene.FindAll(ref shadowFrustum, AffectedShadowCasters);
-            if (AffectedShadowCasters.Count <= 0)
-                return;
-            /*
-            if (ShadowMap == null || ShadowMap.Size != context.Settings.ShadowMapResolution)
-            {
-                if (ShadowMap != null)
-                    ShadowMap.Dispose();
-                ShadowMap = new ShadowMap(context.GraphicsDevice, context.Settings.ShadowMapResolution);
-            }
-
-            ShadowMap.Begin();
-            {
-                context.View = Matrix.Identity;
-                context.Projection = shadowFrustumMatrix;
-                //context.Begin(BlendState.Opaque, null, DepthStencilState.Default, null);
-                {
-                    DepthEffect depthEffect = (DepthEffect)ShadowMap.Effect;
-                    
-                    for (int currentShadowCaster = 0; currentShadowCaster < AffectedShadowCasters.Count; currentShadowCaster++)
-                    {
-                        var shadowCaster = AffectedShadowCasters[currentShadowCaster];
-                        //if (Scene.CastShadow(shadowCaster))
-                        {
-                            //depthEffect.TextureEnabled = shadowCaster.Material != null && shadowCaster.Material.DepthAlphaEnabled;
-                            //shadowCaster.DrawEffect(context, depthEffect);
-                        }
-                    }
-                }
-                //context.End();
-                context.View = view;
-                context.Projection = projection;
-            }
-            ShadowMap.End();
-            */
-            AffectedShadowCasters.Clear();
-#endif
-        }
+        public abstract bool Apply(Material material, int index, bool last);
 
         /// <summary>
         /// Gets the shadow frustum of this light.
@@ -144,14 +164,7 @@ namespace Nine.Graphics.ObjectModel
         /// <returns>
         /// Returns true when a shadow caster is found.
         /// </returns>
-        protected virtual bool GetShadowFrustum(DrawingContext context,
-                                                HashSet<ISpatialQueryable> shadowCastersInLightFrustum,
-                                                HashSet<ISpatialQueryable> shadowCastersInViewFrustum,
-                                                out Matrix frustumMatrix)
-        {            
-            frustumMatrix = context.ViewFrustum.Matrix;
-            return shadowCastersInViewFrustum.Count > 0;
-        }
+        public abstract bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum);
 
         /// <summary>
         /// Draws the light frustum using Settings.Debug.LightFrustumColor.
@@ -166,7 +179,7 @@ namespace Nine.Graphics.ObjectModel
     [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class Light<T> : Light where T : class
     {
-        protected internal sealed override bool Apply(Material material, int index, bool last)
+        public sealed override bool Apply(Material material, int index, bool last)
         {
             IEffectLights<T> lightables = material.Find<IEffectLights<T>>();
             if (lightables == null || lightables.Lights == null || index >= lightables.Lights.Count)

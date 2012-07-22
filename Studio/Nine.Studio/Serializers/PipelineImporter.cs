@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Nine.Content.Pipeline;
-using Nine.Studio.Extensibility;
-#endregion
-
-namespace Nine.Studio.Serializers
+﻿namespace Nine.Studio.Serializers
 {
+    using System;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Nine.Content.Pipeline;
+    using Nine.Studio.Extensibility;
+
     public abstract class PipelineImporter<T> : Importer<T>
     {
         public abstract IContentImporter ContentImporter { get; }

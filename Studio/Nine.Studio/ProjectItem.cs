@@ -1,13 +1,4 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,13 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Nine.Studio.Extensibility;
-#endregion
+
 
 namespace Nine.Studio
 {
-    using Exporter = Lazy<IExporter, IMetadata>;
-    using Importer = Lazy<IImporter, IMetadata>;
-    using Visualizer = Lazy<IVisualizer, IMetadata>;
+using Exporter = Lazy<IExporter, IMetadata>;
+using Importer = Lazy<IImporter, IMetadata>;
+using Visualizer = Lazy<IVisualizer, IMetadata>;
+
 
     /// <summary>
     /// Represents a single project managed by a project instance.

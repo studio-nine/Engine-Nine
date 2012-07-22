@@ -1,28 +1,15 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using Microsoft.Win32;
-using System.ComponentModel;
-using Nine.Studio.Extensibility;
-using System.Diagnostics;
-
-#endregion
-
-namespace Nine.Studio
+﻿namespace Nine.Studio
 {
+
+    using System;
+    using System.Collections.Generic;
+
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using Microsoft.Win32;
+    using Nine.Studio.Extensibility;
+
     static class Global
     {
         public static readonly string Title = "Engine Nine";

@@ -13,6 +13,7 @@
 // might be included in multiple assemblies.
 namespace Nine.Studio.Shell
 {
+
     using System;
     using System.Diagnostics;
     using System.Threading;

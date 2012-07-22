@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Windows.Input;
-
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels
+﻿namespace Nine.Studio.Shell.ViewModels
 {
+    using System;
+    using System.ComponentModel;
+    using System.Windows.Input;
+
     /// <summary>
     /// Adopted from WPF Property Grid (http://wpg.codeplex.com)
     /// </summary>

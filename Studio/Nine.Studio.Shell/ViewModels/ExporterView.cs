@@ -1,19 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Windows.Input;
-using Nine.Studio.Extensibility;
-
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels
+﻿namespace Nine.Studio.Shell.ViewModels
 {
+    using System.Windows.Input;
+    using Nine.Studio.Extensibility;
+
     public class ExporterView
     {
         public ICommand ExportCommand { get; private set; }

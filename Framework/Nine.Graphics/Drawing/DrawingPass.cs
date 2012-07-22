@@ -38,11 +38,43 @@ namespace Nine.Graphics.Drawing
         public MaterialUsage MaterialUsage { get; set; }
 
         /// <summary>
-        /// The comparer for drawable object material sorting.
+        /// Gets or sets the texture filter quanlity for this drawing pass.
         /// </summary>
-        private IComparer<IDrawableObject> sortComparer;
+        public TextureFilter TextureFilter
+        {
+            get { return textureFilter; }
+            set 
+            {
+                if (textureFilter != value)
+                {
+                    textureFilter = value;
+                    samplerStateNeedsUpdate = true;
+                }
+            }
+        }
+        private TextureFilter textureFilter = TextureFilter.Linear;
+     
+        /// <summary>
+        /// Gets or sets the maximum anisotropy. The default value is 4.
+        /// </summary>
+        public int MaxAnisotropy
+        {
+            get { return maxAnisotropy; }
+            set
+            {
+                if (maxAnisotropy != value)
+                {
+                    maxAnisotropy = value;
+                    samplerStateNeedsUpdate = true;
+                }
+            }
+        }
+        private int maxAnisotropy = 4;
 
-        // TODO: Enable additive blending
+        private bool samplerStateNeedsUpdate = false;
+        private SamplerState samplerState = SamplerState.LinearWrap;
+
+
         private DrawingQueue opaque = new DrawingQueue();
         private DrawingQueue opaqueTwoSided = new DrawingQueue();
 
@@ -72,26 +104,12 @@ namespace Nine.Graphics.Drawing
 
             var graphics = context.GraphicsDevice;
             var dominantMaterial = Material;
-            
-            if (dominantMaterial != null)
-            {
-                // Draw with uniform material
-                for (int i = 0; i < count; i++)
-                {
-                    var drawable = drawables[i];
-                    if (drawable != null && drawable.Visible)
-                    {
-                        drawable.BeginDraw(context);
-                        drawable.Draw(context, dominantMaterial);
-                        drawable.EndDraw(context);
-                    }
-                }
-            }
-            else
-            {
-                if (DefaultMaterial == null)
-                    DefaultMaterial = new BasicMaterial(graphics) { LightingEnabled = true };
+            var defaultMaterial = DefaultMaterial ?? (DefaultMaterial = new BasicMaterial(graphics) { LightingEnabled = true });
 
+            UpdateSamplerState(graphics);
+
+            try
+            {
                 // Begin Draw
                 for (int i = 0; i < count; i++)
                 {
@@ -99,16 +117,10 @@ namespace Nine.Graphics.Drawing
                     if (drawable != null && drawable.Visible)
                     {
                         drawable.BeginDraw(context);
-                        
-                        var material = drawable.Material;
-                        if (MaterialUsage != MaterialUsage.Default && material != null)
-                            material = material[MaterialUsage];
 
-                        if (material == null)
-                        {
-                            opaque.Add(drawable, DefaultMaterial);
-                            continue;
-                        }
+                        var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
+                        if (MaterialUsage != MaterialUsage.Default)
+                            material = material[MaterialUsage];
 
                         while (material != null)
                         {
@@ -152,7 +164,7 @@ namespace Nine.Graphics.Drawing
                     {
                         var entry = opaque.Elements[i];
                         entry.Drawable.Draw(context, entry.Material);
-                    }                    
+                    }
                 }
 
                 if (opaqueTwoSided.Count > 0)
@@ -163,7 +175,7 @@ namespace Nine.Graphics.Drawing
                     {
                         var entry = opaqueTwoSided.Elements[i];
                         entry.Drawable.Draw(context, entry.Material);
-                    }                    
+                    }
                 }
 
                 // Draw transparent objects
@@ -177,6 +189,7 @@ namespace Nine.Graphics.Drawing
                     for (int i = 0; i < transparent.Count; i++)
                     {
                         var entry = transparent.Elements[i];
+                        graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
                         entry.Drawable.Draw(context, entry.Material);
                     }
                 }
@@ -190,10 +203,13 @@ namespace Nine.Graphics.Drawing
                     for (int i = 0; i < transparentTwoSided.Count; i++)
                     {
                         var entry = transparentTwoSided.Elements[i];
+                        graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
                         entry.Drawable.Draw(context, entry.Material);
                     }
                 }
-
+            }
+            finally
+            {
                 opaque.Clear();
                 opaqueTwoSided.Clear();
                 transparent.Clear();
@@ -203,6 +219,21 @@ namespace Nine.Graphics.Drawing
                 for (int i = 0; i < count; i++)
                     drawables[i].EndDraw(context);
             }
+        }
+
+        private void UpdateSamplerState(GraphicsDevice graphics)
+        {
+            if (samplerStateNeedsUpdate)
+            {
+                samplerState = new SamplerState();
+                samplerState.AddressU = TextureAddressMode.Wrap;
+                samplerState.AddressV = TextureAddressMode.Wrap;
+                samplerState.AddressW = TextureAddressMode.Wrap;
+                samplerState.Filter = textureFilter;
+                samplerState.MaxAnisotropy = maxAnisotropy;
+                samplerStateNeedsUpdate = false;
+            }
+            graphics.SamplerStates[0] = samplerState;
         }
     }
 }

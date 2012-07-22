@@ -5,6 +5,7 @@
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
 
+<!--
     <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
@@ -53,7 +54,12 @@
 			</CustomMaterial.Code>
 		</CustomMaterial>
     </PostEffect>
-	
-	<BloomEffect BlurAmount="5" Threshold="0"/>
+
+	<BloomEffect BlurAmount="5" Threshold="0.5"/>
+    <AdoptionEffect />
+
+    <HighDynamicRangeEffect />
+	-->
+    <LuminanceChain />
     
 </Scene>

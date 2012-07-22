@@ -1,6 +1,6 @@
-﻿
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

@@ -86,6 +86,7 @@
 
         public void Draw(DrawingContext context, Material material)
         {
+            var vp = context.GraphicsDevice.Viewport;
             var oldView = context.matrices.view;
             var oldProjection = context.matrices.projection;
 
@@ -94,7 +95,9 @@
                 context.matrices.view = Matrix.Identity;
                 context.matrices.projection = Matrix.Identity;
 
-                material.world = Matrix.Identity;                
+                material.world = Matrix.Identity;
+                material.world.M41 = -0.5f / vp.Width;
+                material.world.M42 = 0.5f / vp.Height;
                 material.BeginApply(context);
 
                 context.SetVertexBuffer(vertexBuffer, 0);

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
@@ -24,6 +25,7 @@
         /// <summary>
         /// Gets or sets the input texture to be processed.
         /// </summary>
+        [ContentSerializerIgnore]
         public Texture2D InputTexture { get; set; }
 
         /// <summary>
@@ -33,14 +35,7 @@
         public SurfaceFormat? SurfaceFormat
         {
             get { return surfaceFormat; }
-            set 
-            {
-                if (value != surfaceFormat)
-                {
-                    renderTargetChanged = true;
-                    surfaceFormat = value; 
-                }
-            }
+            set { surfaceFormat = value; }
         }
         private SurfaceFormat? surfaceFormat;
 
@@ -51,14 +46,7 @@
         public Vector2? RenderTargetSize
         {
             get { return renderTargetSize; }
-            set
-            {
-                if (value != renderTargetSize)
-                {
-                    renderTargetChanged = true;
-                    renderTargetSize = value;                    
-                }
-            }
+            set { renderTargetSize = value; }
         }
         private Vector2? renderTargetSize;
         
@@ -69,22 +57,12 @@
         public float RenderTargetScale
         {
             get { return renderTargetScale; }
-            set
-            {
-                if (value != renderTargetScale)
-                {
-                    renderTargetChanged = true;
-                    renderTargetScale = value;
-                }
-            }
+            set { renderTargetScale = value; }
         }
         private float renderTargetScale = 1;
 
         internal BlendState BlendState = BlendState.Opaque;
-
-        private int textureWidth;
-        private int textureHeight;
-        private bool renderTargetChanged;
+        internal SamplerState SamplerState = SamplerState.PointClamp;
 
         private Material vertexPassThrough;
         private FullScreenQuad fullScreenQuad;
@@ -116,7 +94,12 @@
         public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
         {
             int w, h;
-            if (!renderTargetSize.HasValue)
+            if (renderTargetSize.HasValue)
+            {
+                w = (int)renderTargetSize.Value.X;
+                h = (int)renderTargetSize.Value.Y;
+            }
+            else
             {
                 if (input != null)
                 {
@@ -128,22 +111,6 @@
                     w = context.GraphicsDevice.Viewport.Width;
                     h = context.GraphicsDevice.Viewport.Height;
                 }
-
-                if (w != textureWidth || h != textureHeight)
-                {
-                    textureWidth = w;
-                    textureHeight = h;
-                    renderTargetChanged = true;
-                }
-            }
-
-            if (renderTargetChanged)
-            {
-                if (renderTargetSize.HasValue)
-                {
-                    w = (int)renderTargetSize.Value.X;
-                    h = (int)renderTargetSize.Value.Y;
-                }
             }
 
             var format = surfaceFormat.HasValue ? surfaceFormat.Value
@@ -151,8 +118,8 @@
                                                 : context.GraphicsDevice.PresentationParameters.BackBufferFormat;
 
             return RenderTargetPool.GetRenderTarget(context.GraphicsDevice
-                                                 , (int)(textureWidth * renderTargetScale)
-                                                 , (int)(textureHeight * renderTargetScale)
+                                                 , (int)(w * renderTargetScale)
+                                                 , (int)(h * renderTargetScale)
                                                  , format
                                                  , DepthFormat.None);
         }
@@ -176,7 +143,8 @@
 
                 context.GraphicsDevice.BlendState = BlendState;
                 context.GraphicsDevice.Textures[0] = InputTexture;
-                context.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                context.GraphicsDevice.SamplerStates[0] = SamplerState;
+                context.GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
                 Material.Texture = InputTexture;
                 fullScreenQuad.Draw(context, Material);

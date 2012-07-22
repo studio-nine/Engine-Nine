@@ -1,18 +1,17 @@
 namespace Nine.Graphics.ObjectModel
 {
     using System;
+using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    public partial class AmbientLight : Light<IAmbientLight>, ISceneObject
+    [ContentSerializable]
+    public partial class AmbientLight : Nine.Object, ISceneObject
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        /// <summary>
-        /// Keeps track of the owner drawing context.
-        /// </summary>
         private DrawingContext context;
         
         public AmbientLight(GraphicsDevice graphics)
@@ -21,17 +20,26 @@ namespace Nine.Graphics.ObjectModel
             AmbientLightColor = Vector3.One * 0.2f;
         }
 
-        protected override void Enable(IAmbientLight light)
+        public bool Enabled
         {
-            light.AmbientLightColor = AmbientLightColor;
+            get { return enabled; }
+            set 
+            {
+                if (enabled != value)
+                {
+                    if (context != null)
+                    {
+                        if (value)
+                            context.AmbientLight.Value += ambientLightColor;
+                        else
+                            context.AmbientLight.Value -= ambientLightColor;
+                    }
+                    enabled = value; 
+                }
+            }
         }
+        private bool enabled = true;
 
-        protected override void Disable(IAmbientLight light)
-        {
-            light.AmbientLightColor = Vector3.Zero;
-        }
-
-        [ContentSerializer(Optional = true)]
         public Vector3 AmbientLightColor
         {
             get { return ambientLightColor; }
@@ -47,22 +55,17 @@ namespace Nine.Graphics.ObjectModel
         }
         private Vector3 ambientLightColor;
 
-
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            if (this.context != null)
-                throw new InvalidOperationException();
-
             this.context = context;
-            this.context.AmbientLight.Value = context.AmbientLight.Value + ambientLightColor;
+            if (enabled)
+                context.AmbientLight.Value = context.AmbientLight.Value + ambientLightColor;
         }
 
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            if (this.context == null)
-                throw new InvalidOperationException();
-
-            this.context.AmbientLight.Value = context.AmbientLight.Value + ambientLightColor;
+            if (enabled)
+                context.AmbientLight.Value = context.AmbientLight.Value - ambientLightColor;
             this.context = null;
         }
     }

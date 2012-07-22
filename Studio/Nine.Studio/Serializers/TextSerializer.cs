@@ -1,19 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.IO;
-using Nine.Studio.Extensibility;
-
-#endregion
-
-namespace Nine.Studio.Serializers
+﻿namespace Nine.Studio.Serializers
 {
+    using System.IO;
+    using Nine.Studio.Extensibility;
+
     public class TextSerializer : Serializer<string>
     {
         public TextSerializer()

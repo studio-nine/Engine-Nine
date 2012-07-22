@@ -1,25 +1,15 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel.Composition;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Studio.Extensibility;
-using XnaImporter = Microsoft.Xna.Framework.Content.Pipeline.TextureImporter;
-using XnaProcessor = Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor;
-using System;
-#endregion
-
-namespace Nine.Studio.Serializers
+﻿namespace Nine.Studio.Serializers
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Studio.Extensibility;
+    using XnaImporter = Microsoft.Xna.Framework.Content.Pipeline.TextureImporter;
+    using XnaProcessor = Microsoft.Xna.Framework.Content.Pipeline.Processors.TextureProcessor;
+
+
     [Export(typeof(IImporter))]
     [LocalizedDisplayName("Texture")]
     public class TextureImporter : PipelineImporter<Texture2D>

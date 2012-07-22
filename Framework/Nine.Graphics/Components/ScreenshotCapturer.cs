@@ -213,7 +213,6 @@ namespace Nine.Components
                         Directory.CreateDirectory(ScreenshotsDirectory);
 
                     using (FileStream savedFile = new FileStream(filename = ScreenshotNameBuilder(screenshotNum), FileMode.OpenOrCreate))
-
                     {
                         screenshot.SaveAsPng(savedFile, width, height);
                     }

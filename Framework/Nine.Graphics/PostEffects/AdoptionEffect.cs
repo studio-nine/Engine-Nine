@@ -1,81 +1,96 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.PostEffects
+﻿namespace Nine.Graphics.PostEffects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
 #if !WINDOWS_PHONE
     /// <summary>
     /// Defines a post processing effect that adopt scene changes.
     /// </summary>
     [ContentSerializable]
-    public class AdoptionEffect : BasicPostEffect
+    public class AdoptionEffect : PostEffect
     {
-        private bool processing;
-        private Texture2D lastFrameTexture;
-        /*
+        private RenderTarget2D lastFrame;
+        private RenderTarget2D currentFrame;
+        private AdoptionMaterial adoptionMaterial;
+        private BasicMaterial basicMaterial;
+
         /// <summary>
         /// Get or sets the speed of the adoptation.
         /// </summary>
-        public float Speed
-        {
-            get { return ((Adoption)Effect).Speed; }
-            set { ((Adoption)Effect).Speed = value; }
-        }
+        public float Speed { get; set; }
+
+        public Vector3 InitialColor { get; set; }
 
         /// <summary>
         /// Creates a new instance of <c>AdoptationEffect</c>.
         /// </summary>
-        public AdoptionEffect(GraphicsDevice graphics)
-        {   
-            Effect = new Adoption(graphics);
+        public AdoptionEffect()
+        {
             Speed = 10;
-        }
-        */
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override Texture2D Process(Texture2D input)
-        {
-            if (!Enabled)
-                return input;
-
-            processing = true;            
-            //((Adoption)Effect).LastFrameTexture = lastFrameTexture;
-            Texture2D adoptedTexture = base.Process(input);
-            processing = false;
-
-            RenderTargetPool.Release(lastFrameTexture as RenderTarget2D);
-            RenderTargetPool.AddRef(adoptedTexture as RenderTarget2D);
-
-            return lastFrameTexture = adoptedTexture;
+            SamplerState = SamplerState.PointClamp;
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public override void ProcessAndDraw(Texture2D input)
+        public override void GetActivePasses(IList<Pass> result)
         {
-            if (processing)
-            {
-                base.ProcessAndDraw(input);
-                return;
-            }
-
-            Texture2D adoptedTexture = Process(input);
-            RenderTargetPool.Release(lastFrameTexture as RenderTarget2D);
-            RenderTargetPool.AddRef(adoptedTexture as RenderTarget2D);
-
             if (Enabled)
+                result.Add(this);
+        }
+
+        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
+        {
+            currentFrame = base.PrepareRenderTarget(context, input);
+            RenderTargetPool.Lock(currentFrame);
+            return currentFrame;
+        }
+        
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
+        {
+            if (Material == null)
+                Material = adoptionMaterial = new AdoptionMaterial(context.GraphicsDevice);
+            else if (Material != adoptionMaterial)
+                throw new InvalidOperationException();
+
+            bool needLocalTexture = false;
+
+            try
             {
-                GraphicsDevice.DrawFullscreenQuad(lastFrameTexture = adoptedTexture, SamplerState.PointClamp, BlendState.Opaque, Color.White, null);
+                if (needLocalTexture = (currentFrame == null))
+                {
+                    PrepareRenderTarget(context, InputTexture);
+                    currentFrame.Begin();
+                }
+
+                context.GraphicsDevice.Textures[1] = lastFrame;
+                context.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+
+                adoptionMaterial.effect.delta.SetValue(context.ElapsedSeconds * Speed);
+                base.Draw(context, drawables);
             }
+            finally
+            {
+                if (needLocalTexture)
+                {
+                    currentFrame.End();
+
+                    InputTexture = currentFrame;                    
+                    if (basicMaterial == null)
+                        basicMaterial = new BasicMaterial(context.GraphicsDevice);
+                    Material = basicMaterial;
+                    base.Draw(context, drawables);
+                    Material = adoptionMaterial;
+                }
+
+                RenderTargetPool.Unlock(lastFrame);
+                lastFrame = currentFrame;
+                currentFrame = null;
+            }            
         }
     }
 #endif

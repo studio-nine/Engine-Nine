@@ -1,21 +1,10 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
-#endregion
-
-namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell.Behaviors
 {
+
+
+
+    using System.Windows.Input;
+
     public class CommandBinding : System.Windows.Input.CommandBinding
     {
         public ICommand TargetCommand { get; set; }

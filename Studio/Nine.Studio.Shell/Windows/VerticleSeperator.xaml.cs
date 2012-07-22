@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+    using System.Windows.Controls;
+
 	/// <summary>
 	/// Interaction logic for VerticleSeperator.xaml
 	/// </summary>

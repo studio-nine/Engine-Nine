@@ -22,23 +22,44 @@
             set { blurH.BlurAmount = blurV.BlurAmount = value; }
         }
 
+        public float AdoptionSpeed
+        {
+            get { return luminanceChain.AdoptionSpeed; }
+            set { luminanceChain.AdoptionSpeed = value; }
+        }
+
+        public float Exposure
+        {
+            get { return toneMapping.Exposure; }
+            set { toneMapping.Exposure = value; }
+        }
+
+        public float MaxLuminance
+        {
+            get { return toneMapping.MaxLuminance; }
+            set { toneMapping.MaxLuminance = value; }
+        }
+
         BlurMaterial blurH;
         BlurMaterial blurV;
         ThresholdMaterial threshold;
+        ToneMappingMaterial toneMapping;
+        LuminanceChain luminanceChain;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HighDynamicRangeEffect"/> class.
         /// </summary>
         public HighDynamicRangeEffect(GraphicsDevice graphics)
         {
-            Passes.Add(new PostEffectChain());
-            Passes.Add(new PostEffectChain(BlendState.Additive,
+            Material = toneMapping = new ToneMappingMaterial(graphics);
+            Passes.Add(new PostEffectChain(TextureUsage.Bloom,
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
                 new PostEffect() { Material = threshold = new ThresholdMaterial(graphics) },
                 new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));
+            Passes.Add(luminanceChain = new LuminanceChain(graphics));
         }
     }
 }

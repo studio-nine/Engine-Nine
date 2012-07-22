@@ -1,22 +1,11 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-
-#endregion
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+
     public partial class Dialog : UserControl
     {
         public Dialog()

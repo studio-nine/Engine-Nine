@@ -509,6 +509,7 @@ namespace Nine.Studio.Shell
 
         /// <summary>
         /// Is this using WPF4?
+
         /// </summary>
         /// <remarks>
         /// There are a few specific bugs in Window in 3.5SP1 and below that require workarounds

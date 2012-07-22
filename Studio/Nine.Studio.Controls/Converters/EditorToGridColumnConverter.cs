@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows.Controls;
-using System.Windows.Data;
-
-#endregion
-
-namespace Nine.Studio.Controls.Converters
+﻿namespace Nine.Studio.Controls.Converters
 {
+    using System;
+    using System.Windows.Controls;
+    using System.Windows.Data;
+
     public class EditorToGridColumnConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -1,5 +1,6 @@
 namespace Nine.Studio.Shell
 {
+
     using System;
     using System.Diagnostics;
     using System.Windows;
@@ -17,6 +18,7 @@ namespace Nine.Studio.Shell
 
     /// <summary>
     /// Animates the value of a CornerRadius property using linear interpolation
+
     /// between two values.  The values are determined by the combination of
     /// From, To, or By values that are set on the animation.
     /// </summary>
@@ -39,6 +41,7 @@ namespace Nine.Studio.Shell
         /// <summary>
         /// Static ctor for CornerRadiusAnimation establishes
         /// dependency properties, using as much shared data as possible.
+
         /// </summary>
         static CornerRadiusAnimation()
         {

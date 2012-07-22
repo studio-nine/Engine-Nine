@@ -1,23 +1,12 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Input;
-using Nine.Studio.Extensibility;
-
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels
+﻿namespace Nine.Studio.Shell.ViewModels
 {
+
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Windows.Input;
+    using Nine.Studio.Extensibility;
+
     public class VisualizerView : INotifyPropertyChanged
     {
         public ICommand ShowCommand { get; private set; }

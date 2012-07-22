@@ -1,8 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for Library.xaml
     /// </summary>

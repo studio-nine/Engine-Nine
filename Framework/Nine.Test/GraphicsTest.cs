@@ -58,7 +58,6 @@
 
             backBuffer.End();
             using (var output = new FileStream(filename + "-" + Guid.NewGuid().ToString("B").ToUpper() + ".png", FileMode.Create))
-
             {
                 backBuffer.SaveAsPng(output, backBuffer.Width, backBuffer.Height);
             }
@@ -90,7 +89,6 @@
             frontBuffer.End();
 
             using (var output = new FileStream(filename, FileMode.Create))
-
             {
                 frontBuffer.SaveAsPng(output, frontBuffer.Width, frontBuffer.Height);
             }

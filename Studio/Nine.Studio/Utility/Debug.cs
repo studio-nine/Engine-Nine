@@ -13,10 +13,10 @@
 // might be included in multiple assemblies.
 namespace Nine.Studio
 {
+
     using System;
     using System.Diagnostics;
     using System.Threading;
-    using System.Windows;
 
     /// <summary>A static class for verifying assumptions.</summary>
     internal static class Assert

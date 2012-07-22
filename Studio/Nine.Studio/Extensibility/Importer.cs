@@ -1,21 +1,10 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework.Graphics;
-
-#endregion
-
-namespace Nine.Studio.Extensibility
+﻿namespace Nine.Studio.Extensibility
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Represents a importer that can load an object from a stream.
     /// </summary>

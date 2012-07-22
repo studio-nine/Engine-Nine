@@ -79,7 +79,6 @@
             {
                 var debugOutput = Path.Combine(context.IntermediateDirectory, "DefaultContent-" + Guid.NewGuid().ToString("B").ToUpperInvariant()) + ".xml";
                 using (var writer = XmlWriter.Create(debugOutput))
-
                 {
                     IntermediateSerializer.Serialize(writer, input, null);
                 }

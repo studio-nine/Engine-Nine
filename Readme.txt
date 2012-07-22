@@ -19,6 +19,7 @@ These are the steps needed to use Engine Nine:
 - Silverlight 5 Tools for Visual Studio 2010 SP1 (http://www.silverlight.net/downloads)
 - Silverlight Toolkit (http://silverlight.codeplex.com/releases/view/74436)
 
+5. To build the editor, you'll need Visual Studio 2012 RC to support the async keyword.
 
 Special thanks to:
 

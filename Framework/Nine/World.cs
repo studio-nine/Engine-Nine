@@ -234,7 +234,6 @@ namespace Nine
         public static World FromFile(string filename)
         {
             using (var stream = File.Open(filename, FileMode.Open))
-
             {
                 return FromStream(stream);
             }
@@ -261,7 +260,6 @@ namespace Nine
         public void Save(string filename)
         {
             using (var stream = File.Open(filename, FileMode.Create))
-
             {
                 Save(stream);
             }

@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-#endregion
-
-namespace Nine.Studio.Extensibility
+﻿namespace Nine.Studio.Extensibility
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Defines an interface that provides custom attributes to a type.
     /// </summary>

@@ -1,23 +1,13 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using Nine.Studio.Extensibility;
-using Nine.Studio.Shell.Windows;
-using System;
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels
+﻿namespace Nine.Studio.Shell.ViewModels
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using Nine.Studio.Extensibility;
+    using Nine.Studio.Shell.Windows;
+
     public class ProjectView : INotifyPropertyChanged
     {
         public string Name { get { return Path.GetFileName(FileName); } }

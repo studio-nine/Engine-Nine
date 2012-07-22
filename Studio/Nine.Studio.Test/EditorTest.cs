@@ -1,14 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nine.Studio;
-using Nine.Studio.Extensibility;
-using Nine.Studio.Serializers;
-using System.IO;
-
-namespace Nine.Studio.Test
+﻿namespace Nine.Studio.Test
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Nine.Studio;
+    using Nine.Studio.Extensibility;
+
     [TestClass]
     public class EditorTest
     {

@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Diagnostics;
-using System.Windows.Input;
-#endregion
-
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows.Input;
+
     public class DelegateCommand<T> : ICommand
     {
         readonly Action<T> _execute;

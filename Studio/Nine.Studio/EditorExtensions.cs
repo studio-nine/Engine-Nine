@@ -1,13 +1,4 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -17,16 +8,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Nine.Studio.Extensibility;
-#endregion
 
 namespace Nine.Studio
 {
-    using Exporter = Lazy<IExporter,IMetadata>;
-    using Factory = Lazy<IFactory,IMetadata>;
-    using Importer = Lazy<IImporter,IMetadata>;
-    using Settings = Lazy<ISettings,IMetadata>;
-    using Tool = Lazy<ITool,IMetadata>;
-    using Visualizer = Lazy<IVisualizer,IMetadata>;
+
+using Exporter = Lazy<IExporter, IMetadata>;
+using Factory = Lazy<IFactory, IMetadata>;
+using Importer = Lazy<IImporter, IMetadata>;
+using Settings = Lazy<ISettings, IMetadata>;
+using Tool = Lazy<ITool, IMetadata>;
+using Visualizer = Lazy<IVisualizer, IMetadata>;
+
+
 
     /// <summary>
     /// Represents extensions to the editor.

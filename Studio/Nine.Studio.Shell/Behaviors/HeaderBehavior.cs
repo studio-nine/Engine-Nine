@@ -1,18 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Windows;
-
-#endregion
-
-namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell.Behaviors
 {
+    using System.Windows;
+
     public static class HeaderBehavior
     {
         public static readonly DependencyProperty HeaderProperty = DependencyProperty.RegisterAttached(

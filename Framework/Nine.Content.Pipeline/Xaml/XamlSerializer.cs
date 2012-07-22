@@ -27,7 +27,6 @@
         public object Load(string filename)
         {
             using (var stream = new FileStream(filename, FileMode.Open))
-
             {
                 return Load(stream);
             }
@@ -50,7 +49,6 @@
         public void Save(string filename, object value)
         {
             using (var stream = new FileStream(filename, FileMode.Create))
-
             {
                 Save(stream, value);
             }
@@ -64,7 +62,6 @@
             var reader = new ObjectReader(this, value);
             var settings = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
             using (var xmlWriter = XmlWriter.Create(stream, settings))
-
             {
                 var writer = new XamlXmlWriter(xmlWriter, reader.SchemaContext);
                 XamlServices.Transform(reader, writer, true);

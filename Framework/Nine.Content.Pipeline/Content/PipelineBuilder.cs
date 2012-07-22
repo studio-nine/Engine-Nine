@@ -248,7 +248,6 @@
                 Directory.CreateDirectory(Path.GetDirectoryName(outputFilename));
 
             using (var stream = new FileStream(outputFilename, FileMode.Create))
-
             {
                 Compile(stream, content);
             }

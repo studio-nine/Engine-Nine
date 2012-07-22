@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows.Data;
-using System.Windows.Media;
-
-#endregion
-
-namespace Nine.Studio.Shell.Converters
+﻿namespace Nine.Studio.Shell.Converters
 {
+    using System;
+    using System.Windows.Data;
+    using System.Windows.Media;
+
     public class ColorToInvertBrushConverter : IValueConverter
     {
         static readonly SolidColorBrush WhiteBrush = new SolidColorBrush(Color.FromRgb(192, 192, 192));

@@ -1,28 +1,13 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Microsoft.Win32;
-using Nine.Studio.Shell.ViewModels;
-using System.Threading;
-using System.Windows.Threading;
-
-#endregion
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System;
+    using System.ComponentModel;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Threading;
+    using Nine.Studio.Shell.ViewModels;
+
     public partial class MainWindow : Window, IEditorShell
     {
         public Editor Editor { get; private set; }
@@ -67,9 +52,9 @@ namespace Nine.Studio.Shell.Windows
             return Dispatcher.Invoke(method, args);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected async override void OnClosing(CancelEventArgs e)
         {
-            e.Cancel = EditorView.Closing();
+            e.Cancel = await EditorView.Closing();
             base.OnClosing(e);
         }
 

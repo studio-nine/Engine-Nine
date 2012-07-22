@@ -1,6 +1,6 @@
-﻿
-namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell.Behaviors
 {
+
     using System;
     using System.Windows;
     using System.Windows.Input;

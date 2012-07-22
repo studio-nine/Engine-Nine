@@ -1,22 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Content.Pipeline;
-using Nine.Studio.Controls;
-using Nine.Studio.Extensibility;
-#endregion
-
-namespace Nine.Studio.Visualizers
+﻿namespace Nine.Studio.Visualizers
 {
+    using System;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Studio.Controls;
+    using Nine.Studio.Extensibility;
+
     public abstract class GraphicsVisualizer<T> : GraphicsVisualizer<T, T> { }
 
     public abstract class GraphicsVisualizer<TContent, TRunTime> : Visualizer<TContent>

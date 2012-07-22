@@ -110,6 +110,10 @@ namespace Nine.Graphics.Drawing
         #endregion
 
         #region Accelerated Global Properties
+
+        internal Vector2 HalfPixel;
+        internal float ElapsedSeconds;
+
         /// <summary>
         /// Provides an optimization hint to opt-out parameters that are not 
         /// changed since last drawing operation.
@@ -217,7 +221,12 @@ namespace Nine.Graphics.Drawing
             VertexBuffer = null;
             PreviousMaterial = null;
             ElapsedTime = elapsedTime;
+            ElapsedSeconds = (float)elapsedTime.TotalSeconds;
             TotalTime += elapsedTime;
+
+            var viewport = GraphicsDevice.Viewport;
+            HalfPixel.X = 0.5f / viewport.Width;
+            HalfPixel.Y = 0.5f / viewport.Height;
 
             try
             {

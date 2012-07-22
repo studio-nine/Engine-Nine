@@ -11,7 +11,7 @@ namespace Nine.Graphics.Materials
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial class DepthMaterial : IEffectSkinned
     {
-        #region Properties      
+        #region Properties
         /// <summary>
         /// Gets or sets if vertex skinning is enabled by this effect.
         /// </summary>

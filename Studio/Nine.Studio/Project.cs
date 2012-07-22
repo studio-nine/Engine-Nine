@@ -1,27 +1,16 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using Nine.Studio.Extensibility;
-using System.ComponentModel;
-#endregion
-
-namespace Nine.Studio
+﻿namespace Nine.Studio
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Linq;
+    using System.Xml.Serialization;
+    using Nine.Studio.Extensibility;
+
     /// <summary>
     /// Represents project that manages multiple documents.
     /// </summary>
@@ -403,6 +392,7 @@ namespace Nine.Studio
                         catch (Exception e)
                         {
                             Trace.TraceInformation("Failed loading {0} using {1}", fileName, documentSerializer.GetType());
+
                             Trace.WriteLine(e);
                         }
                     }

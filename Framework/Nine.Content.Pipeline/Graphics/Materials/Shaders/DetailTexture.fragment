@@ -1,4 +1,4 @@
-float2 DetailTextureScale = 1;
+float4 DetailTextureSettings = 1;
 texture2D Texture : DETAILTEXTURE;
 sampler BasicSampler = sampler_state
 {
@@ -10,7 +10,9 @@ sampler BasicSampler = sampler_state
     AddressV = Wrap;
 };
 
-void PixelShader(float2 uv, inout float4 diffuse)
+void PixelShader(float2 uv, float4 positionProjection, inout float4 diffuse)
 {
-    diffuse *= tex2D(BasicSampler, uv * DetailTextureScale) * 2;
+    float depth = positionProjection.z / positionProjection.w;    
+    if(depth < 0.9f)
+        diffuse *= tex2D(BasicSampler, uv * DetailTextureSettings.xy) * 2;
 }

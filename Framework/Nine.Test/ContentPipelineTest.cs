@@ -50,7 +50,6 @@
         {
             var filename = Guid.NewGuid().ToString("B");
             using (var writer = XmlWriter.Create(filename + ".xml"))
-
             {
                 IntermediateSerializer.Serialize(writer, input, null);
             }

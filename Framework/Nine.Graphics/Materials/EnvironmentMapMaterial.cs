@@ -8,26 +8,6 @@ namespace Nine.Graphics.Materials
     public class EnvironmentMapMaterial : Material
     {
         #region Properties
-        public float Alpha
-        {
-            get { return alpha.HasValue ? alpha.Value : MaterialConstants.Alpha; }
-            set
-            {
-                if (value >= MaterialConstants.Alpha)
-                {
-                    alpha = null;
-                    IsTransparent = cachedIsTransparent;
-                }
-                else
-                {
-                    if (alpha == null)
-                        cachedIsTransparent = IsTransparent;
-                    alpha = System.Math.Max(value, 0);
-                }
-            }
-        }
-        private float? alpha;
-        private bool cachedIsTransparent;
         
         public float FresnelFactor
         {
@@ -103,8 +83,8 @@ namespace Nine.Graphics.Materials
                 fogHelper.Apply(context, effect);
             }
 
-            if (alpha.HasValue)
-                effect.Alpha = alpha.Value;
+            if (alpha != MaterialConstants.Alpha)
+                effect.Alpha = alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = diffuseColor.Value;
             if (emissiveColor.HasValue)
@@ -129,7 +109,7 @@ namespace Nine.Graphics.Materials
 
         public override void EndApply(DrawingContext context)
         {
-            if (alpha.HasValue)
+            if (alpha != MaterialConstants.Alpha)
                 effect.Alpha = MaterialConstants.Alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = MaterialConstants.DiffuseColor;

@@ -59,7 +59,7 @@ namespace Nine.Graphics.Materials
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
-        private <#= className #> effect;
+        internal <#= className #> effect;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="<#= materialName #>"/> class.
