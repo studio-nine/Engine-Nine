@@ -34,11 +34,10 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            var ambientLight = context.AmbientLight;
-            if (ambientLight.version != ambientLightVersion)
+            if (context.ambientLightColorVersion != ambientLightVersion)
             {
-                ambientLightColorParameter.SetValue(ambientLight.Value);
-                ambientLightVersion = ambientLight.version;
+                ambientLightColorParameter.SetValue(context.ambientLightColor);
+                ambientLightVersion = context.ambientLightColorVersion;
             }
         }
 

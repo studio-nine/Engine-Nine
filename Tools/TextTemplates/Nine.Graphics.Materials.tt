@@ -72,19 +72,18 @@ namespace Nine.Graphics.Materials
             OnCreated();
         }
 
-        public override void BeginApply(Nine.Graphics.Drawing.DrawingContext context)
+        protected override void OnBeginApply(Nine.Graphics.Drawing.DrawingContext context, Nine.Graphics.Materials.Material previousMaterial)
         {
-            <#= materialName #> previous = context.PreviousMaterial as <#= materialName #>;
+            <#= materialName #> previous = previousMaterial as <#= materialName #>;
             if (previous == null)
                 ApplyGlobalParameters(context);
             BeginApplyLocalParameters(context, previous);
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
-        public override void EndApply(Nine.Graphics.Drawing.DrawingContext context)
+        protected override void OnEndApply(Nine.Graphics.Drawing.DrawingContext context)
         {
             EndApplyLocalParameters();
-            context.PreviousMaterial = this;
         }
                 
         partial void OnCreated();

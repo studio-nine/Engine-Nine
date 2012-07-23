@@ -60,9 +60,9 @@ namespace Nine.Graphics.Materials
             return base.Find<T>();
         }
 
-        public override void BeginApply(DrawingContext context)
+        protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
-            var previousDualTextureMaterial = context.PreviousMaterial as DualTextureMaterial;
+            var previousDualTextureMaterial = previousMaterial as DualTextureMaterial;
             if (previousDualTextureMaterial == null)
             {
                 effect.View = context.View;
@@ -87,7 +87,7 @@ namespace Nine.Graphics.Materials
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
-        public override void EndApply(DrawingContext context)
+        protected override void OnEndApply(DrawingContext context)
         {
             if (alpha != MaterialConstants.Alpha)
                 effect.Alpha = MaterialConstants.Alpha;

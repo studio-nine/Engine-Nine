@@ -20,7 +20,7 @@ using Nine.Graphics.Drawing;
 namespace Nine.Graphics.ObjectModel
 {
     [ContentSerializable]
-    public partial class DirectionalLight : Light<IDirectionalLight>, ISceneObject
+    public partial class DirectionalLight : Light<IDirectionalLight>
     {
         public Vector3 Direction
         {

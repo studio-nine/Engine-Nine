@@ -79,11 +79,11 @@ namespace Nine.Graphics.Materials
             this.Source = source;
         }
 
-        public override void BeginApply(DrawingContext context)
+        protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
             if (source != null)
             {
-                var previous = context.PreviousMaterial as CustomMaterial;
+                var previous = previousMaterial as CustomMaterial;
                 if (previous == null || previous.source != source)
                     parameters.ApplyGlobalParameters(context, this);
                 parameters.BeginApplyLocalParameters(context, this);
@@ -91,7 +91,7 @@ namespace Nine.Graphics.Materials
             }
         }
 
-        public override void EndApply(DrawingContext context)
+        protected override void OnEndApply(DrawingContext context)
         {
             if (source != null)
                 parameters.EndApplyLocalParameters();

@@ -82,9 +82,9 @@ namespace Nine.Graphics.Materials
             return base.Find<T>();
         }
 
-        public override void BeginApply(DrawingContext context)
+        protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
-            var previousEnvironmentMapMaterial = context.PreviousMaterial as EnvironmentMapMaterial;
+            var previousEnvironmentMapMaterial = previousMaterial as EnvironmentMapMaterial;
             if (previousEnvironmentMapMaterial == null)
             {
                 effect.View = context.View;
@@ -118,7 +118,7 @@ namespace Nine.Graphics.Materials
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
-        public override void EndApply(DrawingContext context)
+        protected override void OnEndApply(DrawingContext context)
         {
             if (alpha != MaterialConstants.Alpha)
                 effect.Alpha = MaterialConstants.Alpha;

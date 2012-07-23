@@ -162,7 +162,6 @@
     <Compile Include="PostEffects\ThresholdMaterial.cs" />
     <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\PrimitiveGroup.cs" />
-    <Compile Include="Versioned.cs" />
     <Compile Include="Drawing\PassCollection.cs" />
     <Compile Include="GraphicsComponent.cs" />
     <Compile Include="Helper.cs" />

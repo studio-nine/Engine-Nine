@@ -66,9 +66,9 @@ namespace Nine.Graphics.Materials
             return base.Find<T>();
         }
 
-        public override void BeginApply(DrawingContext context)
+        protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
-            var previousAlphaTestMaterial = context.PreviousMaterial as AlphaTestMaterial;
+            var previousAlphaTestMaterial = previousMaterial as AlphaTestMaterial;
             if (previousAlphaTestMaterial == null)
             {
                 effect.View = context.View;
@@ -95,7 +95,7 @@ namespace Nine.Graphics.Materials
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
-        public override void EndApply(DrawingContext context)
+        protected override void OnEndApply(DrawingContext context)
         {
             if (alpha != MaterialConstants.Alpha)
                 effect.Alpha = MaterialConstants.Alpha;

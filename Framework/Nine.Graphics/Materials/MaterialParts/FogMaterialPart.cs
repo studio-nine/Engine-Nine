@@ -37,18 +37,17 @@ namespace Nine.Graphics.Materials.MaterialParts
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            if (fogVersion != context.Fog.version)
+            if (fogVersion != context.fogVersion)
             {
-                fogColorParameter.SetValue(context.Fog.Value.FogColor);
-                fogVersion = context.Fog.version;
+                fogColorParameter.SetValue(context.fogColor);
+                fogVersion = context.fogVersion;
             }
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            var fog = context.Fog.Value;
             Matrix worldView = Matrix.Multiply(material.World, context.View);
-            SetFogVector(ref worldView, fog.FogStart, fog.FogEnd, fogVectorParameter);
+            SetFogVector(ref worldView, context.fogStart, context.fogEnd, fogVectorParameter);
         }
 
         protected internal override MaterialPart Clone()

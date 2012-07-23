@@ -79,12 +79,12 @@ namespace Nine.Graphics.Materials
             return base.Find<T>();
         }
 
-        public override void BeginApply(DrawingContext context)
+        protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
             // Check if the previous material used is a also a BasicMaterial. If so, we can
             // guarantee that the current shader has all the correct global parameters, and
             // there's no need to set them again.
-            var previousBasicMaterial = context.PreviousMaterial as BasicMaterial;
+            var previousBasicMaterial = previousMaterial as BasicMaterial;
             if (previousBasicMaterial == null)
             {
                 // Update parameters that are global and shared between different instances.
@@ -129,7 +129,7 @@ namespace Nine.Graphics.Materials
             effect.CurrentTechnique.Passes[0].Apply();
         }
 
-        public override void EndApply(DrawingContext context)
+        protected override void OnEndApply(DrawingContext context)
         {
             if (alpha != MaterialConstants.Alpha)
                 effect.Alpha = MaterialConstants.Alpha;

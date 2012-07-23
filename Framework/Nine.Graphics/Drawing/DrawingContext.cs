@@ -4,7 +4,7 @@
 //  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
-#endregion
+#endregion  
 
 #region Using Directives
 using System;
@@ -47,6 +47,11 @@ namespace Nine.Graphics.Drawing
         public TimeSpan ElapsedTime { get; internal set; }
 
         /// <summary>
+        /// Gets the elapsed time from last frame in seconds.
+        /// </summary>
+        internal float ElapsedSeconds;
+
+        /// <summary>
         /// Gets the total seconds since the beginning of the draw context.
         /// </summary>
         public TimeSpan TotalTime { get; internal set; }
@@ -72,6 +77,17 @@ namespace Nine.Graphics.Drawing
         public int CurrentFrame { get; private set; }
 
         /// <summary>
+        /// Gets a collection of global textures.
+        /// </summary>
+        public TextureCollection Textures
+        {
+            get { return textures; }
+        }
+        internal TextureCollection textures;
+        #endregion
+
+        #region Matrices
+        /// <summary>
         /// Gets the view matrix for this drawing operation.
         /// </summary>
         public Matrix View
@@ -96,7 +112,7 @@ namespace Nine.Graphics.Drawing
         {
             get { return matrices.eyePosition; }
         }
-        
+
         /// <summary>
         /// Gets the view frustum for this drawing operation.
         /// </summary>
@@ -113,22 +129,112 @@ namespace Nine.Graphics.Drawing
             get { return matrices; }
         }
         internal MatrixCollection matrices;
-
-        public TextureCollection Textures
-        {
-            get { return textures; }
-        }
-        internal TextureCollection textures;
         #endregion
 
-        #region Accelerated Global Properties
-        internal float ElapsedSeconds;
+        #region Lights
+        /// <summary>
+        /// Gets the global ambient light color of this <see cref="DrawingContext"/>.
+        /// </summary>
+        public Vector3 AmbientLightColor
+        {
+            get { return ambientLightColor; }
+            set { ambientLightColor = value; ambientLightColorVersion++; }
+        }
+        internal Vector3 ambientLightColor;
+        internal int ambientLightColorVersion;
 
         /// <summary>
-        /// Provides an optimization hint to opt-out parameters that are not 
-        /// changed since last drawing operation.
+        /// Gets a global sorted collection of directional lights of this <see cref="DrawingContext"/>.
         /// </summary>
-        internal Material PreviousMaterial;
+        public DirectionalLightCollection DirectionalLights { get; private set; }
+
+        /// <summary>
+        /// Gets the default or main directional light of this <see cref="DrawingContext"/>.
+        /// </summary>
+        public DirectionalLight DirectionalLight
+        {
+            get { return DirectionalLights[0] ?? DirectionalLight.Empty; }
+        }
+        #endregion
+
+        #region Fog
+        /// <summary>
+        /// Gets the global fog color.
+        /// </summary>
+        public Vector3 FogColor
+        {
+            get { return fogColor; }
+            set { fogColor = value; fogVersion++; }
+        }
+        internal Vector3 fogColor = MaterialConstants.FogColor;
+
+        /// <summary>
+        /// Gets or sets the fog end.
+        /// </summary>
+        public bool FogEnabled
+        {
+            get { return fogEnabled; }
+            set { fogEnabled = value; fogVersion++; }
+        }
+        internal bool fogEnabled = true;
+
+        /// <summary>
+        /// Gets or sets the fog end.
+        /// </summary>
+        public float FogEnd
+        {
+            get { return fogEnd; }
+            set { fogEnd = value; fogVersion++; }
+        }
+        internal float fogEnd = MaterialConstants.FogEnd;
+
+        /// <summary>
+        /// Gets or sets the fog start.
+        /// </summary>
+        public float FogStart
+        {
+            get { return fogStart; }
+            set { fogStart = value; fogVersion++; }
+        }
+        internal float fogStart = MaterialConstants.FogStart;
+        internal int fogVersion;
+        #endregion
+
+        #region Fields
+        private bool isDrawing = false;
+        private FastList<Pass> activePasses = new FastList<Pass>();
+        private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
+        private FastList<IDrawableObject> dynamicDrawables = new FastList<IDrawableObject>();
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
+        /// </summary>
+        public DrawingContext(GraphicsDevice graphics) : this(graphics, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <c>DrawContext</c>.
+        /// </summary>
+        public DrawingContext(GraphicsDevice graphics, Settings settings)
+        {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            Settings = settings ?? new Settings();
+            GraphicsDevice = graphics;
+            Statistics = new Statistics();            
+            DirectionalLights = new DirectionalLightCollection();
+            matrices = new MatrixCollection();
+            textures = new TextureCollection();
+            MainPass = new PassGroup();
+            MainPass.Passes.Add(new DrawingPass());
+            RootPass = new PassGroup();
+            RootPass.Passes.Add(MainPass);
+        }
 
         /// <summary>
         /// SetVertexBuffer is not doing a good job filtering out duplicated vertex buffer due to
@@ -149,76 +255,19 @@ namespace Nine.Graphics.Drawing
                 VertexOffset = vertexOffset;
             }
         }
-
         private int VertexOffset;
         private VertexBuffer VertexBuffer;
 
         /// <summary>
-        /// Gets the global ambient light color of this <see cref="DrawingContext"/>.
+        /// Provides an optimization hint to opt-out parameters that are not 
+        /// changed since last drawing operation.
         /// </summary>
-        public Versioned<Vector3> AmbientLight
-        {
-            get { return ambientLight; }
-        }
-        internal Versioned<Vector3> ambientLight;
-
-        /// <summary>
-        /// Gets a global sorted collection of directional lights of this <see cref="DrawingContext"/>.
-        /// </summary>
-        public DirectionalLightCollection DirectionalLights { get; private set; }
-
-        /// <summary>
-        /// Gets the default or main directional light of this <see cref="DrawingContext"/>.
-        /// </summary>
-        public DirectionalLight DirectionalLight
-        {
-            get { return DirectionalLights[0] ?? DirectionalLight.Empty; }
-        }
-
-        /// <summary>
-        /// Gets the global fog settings of this <see cref="DrawingContext"/>.
-        /// </summary>
-        public Versioned<IEffectFog> Fog { get; private set; }
-        #endregion
-
-        #region Fields
-        private bool isDrawing = false;
-        private FastList<Pass> activePasses = new FastList<Pass>();
-        private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
-        
-        private FastList<IDrawableObject> dynamicDrawables = new FastList<IDrawableObject>();
-        #endregion
-
-        #region Methods
-        /// <summary>
-        /// Initializes a new instance of <c>DrawContext</c>.
-        /// </summary>
-        public DrawingContext(GraphicsDevice graphics, Settings settings)
-        {
-            if (graphics == null)
-                throw new ArgumentNullException("graphics");
-            if (settings == null)
-                throw new ArgumentNullException("settings");
-
-            Settings = settings;
-            GraphicsDevice = graphics;
-            Statistics = new Statistics();
-            ambientLight = new Versioned<Vector3>();
-            DirectionalLights = new DirectionalLightCollection();
-            Fog = new Versioned<IEffectFog>();
-            Fog.Value = new FogProperty(Fog);
-            matrices = new MatrixCollection();
-            textures = new TextureCollection();
-            MainPass = new PassGroup();
-            MainPass.Passes.Add(new DrawingPass());
-            RootPass = new PassGroup();
-            RootPass.Passes.Add(MainPass);
-        }
+        internal Material PreviousMaterial;
 
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
-        public void Draw(TimeSpan elapsedTime, ISpatialQuery<IDrawableObject> scene, Matrix view, Matrix projection, Settings settings)
+        public void Draw(TimeSpan elapsedTime, ISpatialQuery<IDrawableObject> scene, Matrix view, Matrix projection)
         {
             if (isDrawing)
                 throw new InvalidOperationException("Cannot trigger another drawing of the scene while it's still been drawn");
@@ -281,19 +330,12 @@ namespace Nine.Graphics.Drawing
 
                     // Query the drawables in the current view frustum only when the view frustum changed
                     // or the pass overrides the frustum.
-                    var passView = pass.View;
-                    var passProjection = pass.Projection;
-
-                    if (passView.HasValue)
+                    Matrix passView, passProjection;
+                    if (pass.TryGetViewFrustum(out passView, out passProjection))
                     {
-                        View = passView.Value;
+                        View = passView;
+                        Projection = passProjection;
                         overrideViewFrustum = true;
-                    }
-
-                    if (passProjection.HasValue)
-                    {
-                        overrideViewFrustum = true;
-                        Projection = passProjection.Value;
                     }
 
                     if (overrideViewFrustum || overrideViewFrustumLastPass)

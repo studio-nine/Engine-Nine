@@ -32,15 +32,9 @@ namespace Nine.Graphics.ObjectModel
         public bool Enabled
         {
             get { return enabled; }
-            set 
-            {
-                if (enabled != value)
-                {
-                    enabled = value;
-                }
-            }
+            set { enabled = value; }
         }
-        internal bool enabled = true;
+        private bool enabled = true;
 
         /// <summary>
         /// Gets the order of this light when it's been process by the renderer.
@@ -70,7 +64,7 @@ namespace Nine.Graphics.ObjectModel
             get { return castShadow; }
             set { castShadow = value; }
         }
-        internal bool castShadow = false;
+        private bool castShadow = false;
 
         /// <summary>
         /// Gets or sets the shadow technique used by this light.
@@ -87,6 +81,7 @@ namespace Nine.Graphics.ObjectModel
                         if (shadow.Light == null)
                             throw new InvalidOperationException();
                         shadow.Light = null;
+                        shadow.Dispose();
                         Context.MainPass.Passes.Remove(shadow);
                     }
                     shadow = value;
@@ -138,8 +133,9 @@ namespace Nine.Graphics.ObjectModel
         {
             if (this.Context != null)
                 throw new InvalidOperationException();
-            if (shadow != null)
-                context.MainPass.Passes.Insert(0, shadow);
+            if (shadow == null)
+                shadow = new ShadowMap(context.GraphicsDevice);
+            context.MainPass.Passes.Insert(0, shadow);
             this.Context = context;
             OnAdded(context);
         }
@@ -149,7 +145,11 @@ namespace Nine.Graphics.ObjectModel
             if (this.Context == null || context != this.Context)
                 throw new InvalidOperationException();
             if (shadow != null)
+            {
                 context.MainPass.Passes.Remove(shadow);
+                shadow.Dispose();
+                shadow = null;
+            }
             this.Context = null;
             OnRemoved(context);
         }

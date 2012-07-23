@@ -35,12 +35,10 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the underlying graphics device.
         /// </summary>
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
-        /// <summary>
-        /// Gets the graphics settings
-        /// </summary>
-        public Settings Settings { get; private set; }
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return Context.GraphicsDevice; }
+        }
 
         /// <summary>
         /// Gets or sets the active camera.
@@ -52,11 +50,6 @@ namespace Nine.Graphics
             set { camera = value; }
         }
         private ICamera camera;
-
-        /// <summary>
-        /// Gets the statistics of this renderer.
-        /// </summary>
-        public Statistics Statistics { get; private set; }
 
         /// <summary>
         /// Gets or sets the graphics context.
@@ -144,16 +137,13 @@ namespace Nine.Graphics
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            this.GraphicsDevice = graphics;
+            this.Context = Context ?? new DrawingContext(graphics);
             this.defaultSceneManager = defaultSceneManager ?? new OctreeSceneManager();
             this.sceneManagers = new List<ISceneManager>();
             this.sceneManagers.Add(this.defaultSceneManager);
             this.flattenedQuery = CreateQuery<object>();
             this.detailedQuery = new DetailedQuery(this.defaultSceneManager);
             this.drawables = CreateQuery<IDrawableObject>();
-            this.Settings = settings ?? new Settings();
-            this.Statistics = new Statistics();
-            this.Context = Context ?? new DrawingContext(graphics, Settings);
         }
         #endregion
 
@@ -492,16 +482,13 @@ namespace Nine.Graphics
         #endregion
 
         #region Update & Draw
-        /*
-        public void Update(TimeSpan elapsedTime)
+        private void UpdateCamera(TimeSpan elapsedTime)
         {
-            ContainerTraverser.Traverse<IUpdateable>(this, delegate(IUpdateable updateable)
-            {
+            IUpdateable updateable;
+            updateable = camera as IUpdateable;
+            if (updateable != null)
                 updateable.Update(elapsedTime);
-                return TraverseOptions.Continue;
-            });
         }
-        */
 
         /// <summary>
         /// Updates and draws the scene under the current camera and graphics setting.
@@ -517,7 +504,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection)
         {
-            Context.Draw(elapsedTime, drawables, view, projection, Settings);
+            Context.Draw(elapsedTime, drawables, view, projection);
         }
 
         /// <summary>
@@ -526,34 +513,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection, Material material)
         {
-            Context.Draw(elapsedTime, drawables, view, projection, Settings);
-        }
-
-        private void UpdateCamera(TimeSpan elapsedTime)
-        {
-            IUpdateable updateable;
-            updateable = camera as IUpdateable;
-            if (updateable != null)
-                updateable.Update(elapsedTime);
-        }
-
-        /// <summary>
-        /// Called when an object is added to view frustum each frame.
-        /// </summary>
-        protected virtual void OnAddedToViewFrustum(object item)
-        {
-
-        }
-
-        /// <summary>
-        /// Updates all the object in the scene.
-        /// </summary>
-        private void UpdateObjects(TimeSpan elapsedTime)
-        {
-            updateableObjects.Clear();
-            //FindAll(updateableObjects);
-            for (int i = 0; i < updateableObjects.Count; i++)
-                updateableObjects[i].Update(elapsedTime);
+            Context.Draw(elapsedTime, drawables, view, projection);
         }
         #endregion
 

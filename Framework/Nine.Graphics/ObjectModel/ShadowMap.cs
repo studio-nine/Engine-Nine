@@ -22,6 +22,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Represents a shadow drawing technique using shadowmap.
     /// </summary>
+    [ContentSerializable]
     public class ShadowMap : Pass, IDisposable
     {
         private bool hasBegin;
@@ -77,13 +78,12 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Initializes a new instance of the <see cref="ShadowMap"/> class.
         /// </summary>
-        public ShadowMap(GraphicsDevice graphics, int size)
+        public ShadowMap(GraphicsDevice graphics)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
             this.GraphicsDevice = graphics;
-            this.Size = size;
             this.depthMaterial = new DepthMaterial(graphics);
             this.blur = new BlurMaterial(graphics);
             this.vertexPassThrough = new VertexPassThroughMaterial(graphics);
@@ -94,7 +94,16 @@ namespace Nine.Graphics.ObjectModel
 #else
             this.SurfaceFormat = SurfaceFormat.Single;
 #endif
-        } 
+        }
+
+        /// <summary>
+        /// Gets all the passes that are going to be rendered.
+        /// </summary>
+        public override void GetActivePasses(IList<Pass> result)
+        {
+            if (Enabled && Light != null && Light.Enabled && Light.CastShadow)
+                result.Add(this);
+        }
         
         /// <summary>
         /// Begins the shadowmap generation process and clears the shadowmap to white.

@@ -27,10 +27,10 @@ namespace Nine.Graphics.Materials
         public void Apply(DrawingContext context, IEffectLights effect)
         {
             // Update ambient light color
-            if (ambientLightVersion != context.ambientLight.version)
+            if (ambientLightVersion != context.ambientLightColorVersion)
             {
-                effect.AmbientLightColor = context.ambientLight.value;
-                ambientLightVersion = context.ambientLight.version;
+                effect.AmbientLightColor = context.ambientLightColor;
+                ambientLightVersion = context.ambientLightColorVersion;
             }
 
             var light0 = context.DirectionalLights[0];
@@ -94,17 +94,14 @@ namespace Nine.Graphics.Materials
 
         public void Apply(DrawingContext context, IEffectFog effect)
         {
-            var contextFogVersion = context.Fog.version;
-            if (contextFogVersion != fogVersion)
+            if (context.fogVersion != fogVersion)
             {
-                var fog = context.Fog.Value;
+                effect.FogColor = context.FogColor;
+                effect.FogStart = context.FogStart;
+                effect.FogEnd = context.FogEnd;
+                effect.FogEnabled = context.FogEnabled;
 
-                effect.FogColor = fog.FogColor;
-                effect.FogStart = fog.FogStart;
-                effect.FogEnd = fog.FogEnd;
-                effect.FogEnabled = fog.FogEnabled;
-
-                fogVersion = contextFogVersion;
+                fogVersion = context.fogVersion;
             }
         }
     }

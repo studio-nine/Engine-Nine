@@ -203,12 +203,29 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Applies all the shader parameters before drawing any primitives.
         /// </summary>
-        public virtual void BeginApply(DrawingContext context) { }
+        public void BeginApply(DrawingContext context) 
+        {
+            OnBeginApply(context, context.PreviousMaterial);
+        }
 
         /// <summary>
         /// Restores any shader parameters changes after drawing the promitive.
         /// </summary>
-        public virtual void EndApply(DrawingContext context) { }
+        public void EndApply(DrawingContext context) 
+        {
+            OnEndApply(context);
+            context.PreviousMaterial = this;
+        }
+
+        /// <summary>
+        /// Applies all the shader parameters before drawing any primitives.
+        /// </summary>
+        protected abstract void OnBeginApply(DrawingContext context, Material previousMaterial);
+
+        /// <summary>
+        /// Applies all the shader parameters before drawing any primitives.
+        /// </summary>
+        protected abstract void OnEndApply(DrawingContext context);
 
         /// <summary>
         /// Creates a copy of this material.

@@ -105,10 +105,10 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Applies all the shader parameters before drawing any primitives.
         /// </summary>
-        public override void BeginApply(DrawingContext context)
+        protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
         {
             var count = materialParts.Count;
-            var previous = context.PreviousMaterial as MaterialGroup;
+            var previous = previousMaterial as MaterialGroup;
             if (previous == null || previous.Effect != Effect)
             {
                 for (int i = 0; i < count; i++)
@@ -124,7 +124,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Restores any shader parameters changes after drawing the promitive.
         /// </summary>
-        public override void EndApply(DrawingContext context)
+        protected override void OnEndApply(DrawingContext context)
         {
             var count = materialParts.Count;
             for (int i = 0; i < count; i++)

@@ -51,20 +51,6 @@ namespace Nine.Graphics.Drawing
             }
         }
         internal int order;
-
-        /// <summary>
-        /// Gets or sets the view matrix that is specific for this pass. If this
-        /// value is null, the view matrix in the drawing context is used, otherwise
-        /// this value will override the matrix currently in the drawing context.
-        /// </summary>
-        public Matrix? View { get; set; }
-
-        /// <summary>
-        /// Gets or sets the projection matrix that is specific for this pass. If this
-        /// value is null, the projection matrix in the drawing context is used, otherwise
-        /// this value will override the matrix currently in the drawing context.
-        /// </summary>        
-        public Matrix? Projection { get; set; }
         #endregion
 
         #region Field
@@ -105,6 +91,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Indicats this pass with be executed after the specified pass has been executed.
         /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void AddDependency(Pass pass)
         {
             if (DependentPasses == null)
@@ -112,6 +99,16 @@ namespace Nine.Graphics.Drawing
             DependentPasses.Add(pass);
             if (Container != null)
                 Container.TopologyChanged = true;
+        }
+
+        /// <summary>
+        /// Gets the view and projection matrices contains the objects to be rendered in this pass.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual bool TryGetViewFrustum(out Matrix view, out Matrix projection)
+        {
+            view = projection = new Matrix();
+            return false;
         }
 
         /// <summary>

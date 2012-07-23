@@ -40,9 +40,9 @@ namespace Nine.Graphics.ObjectModel
                     if (context != null)
                     {
                         if (value)
-                            context.AmbientLight.Value += ambientLightColor;
+                            context.AmbientLightColor += ambientLightColor;
                         else
-                            context.AmbientLight.Value -= ambientLightColor;
+                            context.AmbientLightColor -= ambientLightColor;
                     }
                     enabled = value; 
                 }
@@ -58,7 +58,7 @@ namespace Nine.Graphics.ObjectModel
                 if (context != null)
                 {
                     // Updates ambient light color in the owner context
-                    context.AmbientLight.Value += (value - ambientLightColor);
+                    context.AmbientLightColor += (value - ambientLightColor);
                 }
                 ambientLightColor = value; 
             }
@@ -69,13 +69,13 @@ namespace Nine.Graphics.ObjectModel
         {
             this.context = context;
             if (enabled)
-                context.AmbientLight.Value = context.AmbientLight.Value + ambientLightColor;
+                context.AmbientLightColor = context.AmbientLightColor + ambientLightColor;
         }
 
         void ISceneObject.OnRemoved(DrawingContext context)
         {
             if (enabled)
-                context.AmbientLight.Value = context.AmbientLight.Value - ambientLightColor;
+                context.AmbientLightColor = context.AmbientLightColor - ambientLightColor;
             this.context = null;
         }
     }
