@@ -1,16 +1,8 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Nine.Animations.Test
+﻿namespace Nine.Animations.Test
 {
+    using System;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     /// <summary>
     ///This is a test class for KeyframeAnimationTest and is intended
     ///to contain all KeyframeAnimationTest Unit Tests

@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-
-#endregion
-
-namespace Nine.Content.Pipeline.Importers
+﻿namespace Nine.Content.Pipeline.Importers
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     /// <summary>
     /// Imports sequential texture list content.
     /// </summary>

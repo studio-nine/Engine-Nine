@@ -1,22 +1,12 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Manages a collection of objects using grids.
+
     /// </summary>
     public class GridSceneManager : UniformGrid, ISceneManager
     {

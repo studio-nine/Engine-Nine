@@ -1,18 +1,7 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Xaml;
-
-#endregion
-
 namespace Nine.Content.Pipeline.Navigation
 {
+    using System.Xaml;
+
     /// <summary>
     /// Contains attached properties for path grid.
     /// </summary>

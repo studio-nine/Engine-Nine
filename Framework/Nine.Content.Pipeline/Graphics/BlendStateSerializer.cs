@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Content.Pipeline.Graphics
+﻿namespace Nine.Content.Pipeline.Graphics
 {    
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+    using Microsoft.Xna.Framework.Graphics;
+
     [ContentTypeSerializer]
     class BlendStateSerializer : ContentTypeSerializer<BlendState>
     {

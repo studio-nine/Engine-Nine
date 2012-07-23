@@ -1,7 +1,7 @@
-﻿using BEPUphysics.SolverSystems;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using BEPUphysics.SolverSystems;
+
     /// <summary>
     /// Line-based graphical representation of an object.
     /// </summary>

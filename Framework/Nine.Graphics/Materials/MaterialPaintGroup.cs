@@ -1,25 +1,14 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics.Materials
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Windows.Markup;
+    using System.Xaml;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     /// <summary>
     /// Defines a material part that is a layer of a material group.
     /// </summary>

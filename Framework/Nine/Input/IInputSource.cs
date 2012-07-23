@@ -1,22 +1,9 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#if WINDOWS
-
-#endif
-using Microsoft.Xna.Framework.Input;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using Microsoft.Xna.Framework.Input;
+
+
     /// <summary>
     /// Defines the source that triggers the input.
     /// </summary>

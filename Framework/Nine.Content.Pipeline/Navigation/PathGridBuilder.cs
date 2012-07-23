@@ -1,24 +1,14 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Nine.Graphics;
-using Nine.Graphics.ObjectModel;
-using Nine.Navigation;
-#endregion
-
 namespace Nine.Content.Pipeline.Navigation
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics;
+    using Nine.Graphics.ObjectModel;
+    using Nine.Navigation;
+
     public static class PathGridBuilder
     {
         static object SyncRoot = new object();

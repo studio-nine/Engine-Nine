@@ -1,20 +1,11 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows.Markup;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Windows.Markup;
+    using System.Xml.Serialization;
+    using Microsoft.Xna.Framework.Content;
+
+
     #region IComponent
     /// <summary>
     /// Defines the protocal for game objects to interact with each other.

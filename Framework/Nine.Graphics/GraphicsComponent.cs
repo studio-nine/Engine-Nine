@@ -1,20 +1,10 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
-using Nine.Graphics.ObjectModel;
-#endregion
-
 namespace Nine.Graphics
 {
+    using System;
+    using System.Xml.Serialization;
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Defines a graphics component that can be added to a game object container.
     /// </summary>

@@ -1,18 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel;
-
-#endregion
-
-namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell.Behaviors
 {
+    using System.ComponentModel;
+
     public class NamedGroupDescription : GroupDescription
     {
         public string GroupName { get; set; }

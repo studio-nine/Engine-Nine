@@ -1,23 +1,13 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+
     /// <summary>
     /// Defines a textured decal that can be projected to the triangle surfaces of the scene.
     /// </summary>
@@ -251,6 +241,7 @@ namespace Nine.Graphics.ObjectModel
 
         /// <summary>
         /// Draws the object using the graphics context.
+
         /// </summary>
         /// <param name="context"></param>
         public void Draw(DrawingContext context)
@@ -371,6 +362,7 @@ namespace Nine.Graphics.ObjectModel
                     Vector3.Transform(ref worldTriangle.V3, ref invertWorld, out localTriangle.V3);                    
                     
                     // Box triangle test using oriented bounding box
+
                     obb.Contains(ref localTriangle, out containmentType);
 
                     if (containmentType != ContainmentType.Disjoint)

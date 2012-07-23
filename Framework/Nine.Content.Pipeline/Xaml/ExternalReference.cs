@@ -1,25 +1,10 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Reflection;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Nine.Content.Pipeline.Xaml;
-using Microsoft.Xna.Framework.Content;
-using System.Collections;
-#endregion
-
-namespace Nine.Content.Pipeline.Xaml
+﻿namespace Nine.Content.Pipeline.Xaml
 {
+    using System;
+    using System.Reflection;
+    using System.Windows.Markup;
+    using System.Xaml;
+
     /// <summary>
     /// Defines a markup extension to reference external source asset.
     /// </summary>

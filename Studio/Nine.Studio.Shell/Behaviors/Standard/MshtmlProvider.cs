@@ -1,7 +1,7 @@
-﻿
-// Interface declarations for MSHTML objects.
+﻿// Interface declarations for MSHTML objects.
 namespace Nine.Studio.Shell
 {
+
     using System;
     using System.Collections.Generic;
     using System.Globalization;

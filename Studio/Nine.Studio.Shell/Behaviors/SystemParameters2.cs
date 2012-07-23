@@ -4,6 +4,7 @@
 
 namespace Nine.Studio.Shell.Behaviors
 {
+
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;

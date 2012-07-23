@@ -1,26 +1,14 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-#endregion
-
-namespace Nine.Graphics.PostEffects
+﻿namespace Nine.Graphics.PostEffects
 {
+    using System.Collections.Generic;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Represents a post processing effect.
     /// </summary>
@@ -47,14 +35,7 @@ namespace Nine.Graphics.PostEffects
         public SurfaceFormat? SurfaceFormat
         {
             get { return surfaceFormat; }
-            set 
-            {
-                if (value != surfaceFormat)
-                {
-                    renderTargetChanged = true;
-                    surfaceFormat = value; 
-                }
-            }
+            set { surfaceFormat = value; }
         }
         private SurfaceFormat? surfaceFormat;
 
@@ -65,14 +46,7 @@ namespace Nine.Graphics.PostEffects
         public Vector2? RenderTargetSize
         {
             get { return renderTargetSize; }
-            set
-            {
-                if (value != renderTargetSize)
-                {
-                    renderTargetChanged = true;
-                    renderTargetSize = value;                    
-                }
-            }
+            set { renderTargetSize = value; }
         }
         private Vector2? renderTargetSize;
         
@@ -83,22 +57,12 @@ namespace Nine.Graphics.PostEffects
         public float RenderTargetScale
         {
             get { return renderTargetScale; }
-            set
-            {
-                if (value != renderTargetScale)
-                {
-                    renderTargetChanged = true;
-                    renderTargetScale = value;
-                }
-            }
+            set { renderTargetScale = value; }
         }
         private float renderTargetScale = 1;
 
         internal BlendState BlendState = BlendState.Opaque;
-
-        private int textureWidth;
-        private int textureHeight;
-        private bool renderTargetChanged;
+        internal SamplerState SamplerState = SamplerState.PointClamp;
 
         private Material vertexPassThrough;
         private FullScreenQuad fullScreenQuad;
@@ -130,7 +94,12 @@ namespace Nine.Graphics.PostEffects
         public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
         {
             int w, h;
-            if (!renderTargetSize.HasValue)
+            if (renderTargetSize.HasValue)
+            {
+                w = (int)renderTargetSize.Value.X;
+                h = (int)renderTargetSize.Value.Y;
+            }
+            else
             {
                 if (input != null)
                 {
@@ -142,22 +111,6 @@ namespace Nine.Graphics.PostEffects
                     w = context.GraphicsDevice.Viewport.Width;
                     h = context.GraphicsDevice.Viewport.Height;
                 }
-
-                if (w != textureWidth || h != textureHeight)
-                {
-                    textureWidth = w;
-                    textureHeight = h;
-                    renderTargetChanged = true;
-                }
-            }
-
-            if (renderTargetChanged)
-            {
-                if (renderTargetSize.HasValue)
-                {
-                    w = (int)renderTargetSize.Value.X;
-                    h = (int)renderTargetSize.Value.Y;
-                }
             }
 
             var format = surfaceFormat.HasValue ? surfaceFormat.Value
@@ -165,8 +118,8 @@ namespace Nine.Graphics.PostEffects
                                                 : context.GraphicsDevice.PresentationParameters.BackBufferFormat;
 
             return RenderTargetPool.GetRenderTarget(context.GraphicsDevice
-                                                 , (int)(textureWidth * renderTargetScale)
-                                                 , (int)(textureHeight * renderTargetScale)
+                                                 , (int)(w * renderTargetScale)
+                                                 , (int)(h * renderTargetScale)
                                                  , format
                                                  , DepthFormat.None);
         }
@@ -190,7 +143,7 @@ namespace Nine.Graphics.PostEffects
 
                 context.GraphicsDevice.BlendState = BlendState;
                 context.GraphicsDevice.Textures[0] = InputTexture;
-                context.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                context.GraphicsDevice.SamplerStates[0] = SamplerState;
                 context.GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
                 Material.Texture = InputTexture;

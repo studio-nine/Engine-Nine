@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using BEPUphysics.UpdateableSystems;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace BEPUphysicsDrawer.Models
 {
+    using System.Collections.Generic;
+    using BEPUphysics.UpdateableSystems;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Simple display object for triangles.
     /// </summary>

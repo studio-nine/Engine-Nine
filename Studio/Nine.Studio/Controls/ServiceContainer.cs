@@ -1,19 +1,8 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// ServiceContainer.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-#endregion
-
 namespace Nine.Studio.Controls
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Container class implements the IServiceProvider interface. This is used
     /// to pass shared services between different components, for instance the

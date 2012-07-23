@@ -1,21 +1,12 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// ManifestPipeline.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
-using Microsoft.Xna.Framework.Content.Pipeline;
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Linq;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     // processor takes in a filename and returns a list of files in the content project being built or
     // copied to the output directory
     [ContentProcessor(DisplayName = "Manifest Processor - XNA Framework")]

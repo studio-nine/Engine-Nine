@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Models
+﻿namespace BEPUphysicsDrawer.Models
 {
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Stores vertex and index data for the brute force renderer.
     /// </summary>

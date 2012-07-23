@@ -1,6 +1,6 @@
-﻿
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+
     using System;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
@@ -14,8 +14,6 @@ namespace Nine.Studio.Shell
 
     // Some COM interfaces and Win32 structures are already declared in the framework.
     // Interesting ones to remember in System.Runtime.InteropServices.ComTypes are:
-    using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-    using IPersistFile = System.Runtime.InteropServices.ComTypes.IPersistFile;
     using IStream = System.Runtime.InteropServices.ComTypes.IStream;
 
     #region Native Values
@@ -1836,6 +1834,7 @@ namespace Nine.Studio.Shell
         }
 
         // Right now only using this for strings.
+
         [SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
         public string GetValue()
         {

@@ -1,24 +1,14 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-using System;
-#endregion
-
-namespace Nine.Graphics.PostEffects
+﻿namespace Nine.Graphics.PostEffects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
 #if !WINDOWS_PHONE
     /// <summary>
     /// Defines a post processing effect that adopt scene changes.
@@ -44,6 +34,7 @@ namespace Nine.Graphics.PostEffects
         public AdoptionEffect()
         {
             Speed = 10;
+            SamplerState = SamplerState.PointClamp;
         }
 
         public override void GetActivePasses(IList<Pass> result)
@@ -67,7 +58,6 @@ namespace Nine.Graphics.PostEffects
                 throw new InvalidOperationException();
 
             bool needLocalTexture = false;
-            SamplerState previousSamplerState = context.GraphicsDevice.SamplerStates[1];
 
             try
             {
@@ -78,7 +68,7 @@ namespace Nine.Graphics.PostEffects
                 }
 
                 context.GraphicsDevice.Textures[1] = lastFrame;
-                context.GraphicsDevice.SamplerStates[1] = SamplerState.LinearClamp;
+                context.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
 
                 adoptionMaterial.effect.delta.SetValue(context.ElapsedSeconds * Speed);
                 base.Draw(context, drawables);
@@ -100,8 +90,6 @@ namespace Nine.Graphics.PostEffects
                 RenderTargetPool.Unlock(lastFrame);
                 lastFrame = currentFrame;
                 currentFrame = null;
-
-                context.GraphicsDevice.SamplerStates[1] = previousSamplerState;
             }            
         }
     }

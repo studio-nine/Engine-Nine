@@ -1,25 +1,15 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Windows.Markup;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
+    using System.Windows.Markup;
+    using System.Xml.Serialization;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+
+
     /// <summary>
     /// Defines a world that contains objects to be updated and rendered.
     /// </summary>

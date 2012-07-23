@@ -1,29 +1,17 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-#if WINDOWS
-using Keys = Microsoft.Xna.Framework.Input.Keys;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-#endif
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-#if !SILVERLIGHT
-using Microsoft.Xna.Framework.Input.Touch;
-#else
-using Keys = System.Windows.Input.Key;
-#endif
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+    using Microsoft.Xna.Framework.Input.Touch;
+    using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+#if SILVERLIGHT
+    using Keys = System.Windows.Input.Key;
+#else
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
+#endif
+    
     #region KeyboardEventArgs
     /// <summary>
     /// Event args use for keyboard events.

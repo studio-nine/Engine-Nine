@@ -1,23 +1,10 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.ObjectModel;
-using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
-#endregion
-
 namespace Nine.Graphics.Materials
 {
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics.Drawing;
+
     /// <summary>    
     /// A post processing screen effect that blurs the whole screen.
     /// </summary>

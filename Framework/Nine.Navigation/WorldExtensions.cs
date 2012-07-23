@@ -1,20 +1,9 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.ComponentModel;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics;
-#endregion
-
 namespace Nine.Navigation
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Nine.Graphics;
+
     /// <summary>
     /// Extends <see cref="World"/> to be capable of moving objects.
     /// </summary>

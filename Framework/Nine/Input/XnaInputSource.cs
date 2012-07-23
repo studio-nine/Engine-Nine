@@ -1,27 +1,15 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-
-#if WINDOWS
-using Keys = Microsoft.Xna.Framework.Input.Keys;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-#endif
-using Microsoft.Xna.Framework.Input;
-#if SILVERLIGHT
-using Keys = System.Windows.Input.Key;
-#endif
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Input;
+    using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+#if SILVERLIGHT
+    using Keys = System.Windows.Input.Key;
+#else
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
+#endif
+    
     class XnaInputSource : IInputSource, IUpdateable
     {
         /// <summary>

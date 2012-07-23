@@ -1,26 +1,14 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Design;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-#endregion
-
-namespace Nine.Graphics.PostEffects
+﻿namespace Nine.Graphics.PostEffects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Design;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Represents post processing effects.
     /// </summary>
@@ -107,6 +95,7 @@ namespace Nine.Graphics.PostEffects
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
+
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {

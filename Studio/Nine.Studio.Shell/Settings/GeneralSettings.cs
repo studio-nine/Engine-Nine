@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using Nine.Studio.Extensibility;
-#endregion
-
-namespace Nine.Studio.Settings
+﻿namespace Nine.Studio.Settings
 {
+    using System.ComponentModel;
+    using System.ComponentModel.Composition;
+    using Nine.Studio.Extensibility;
+
     [Export(typeof(ISettings))]
     [LocalizedDisplayName("General")]
     [LocalizedCategory("General")]

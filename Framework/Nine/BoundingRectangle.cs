@@ -1,19 +1,9 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines an axis-aligned rectangle-shaped 2D volume.
     /// </summary>

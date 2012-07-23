@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using Microsoft.Xna.Framework;
-using Nine.Content.Pipeline.Xaml;
-#endregion
-
-namespace Nine.Content.Pipeline.Design
+﻿namespace Nine.Content.Pipeline.Design
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using Microsoft.Xna.Framework;
+    using Nine.Content.Pipeline.Xaml;
+
     class TransformConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

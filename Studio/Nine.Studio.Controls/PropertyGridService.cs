@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace Nine.Studio.Controls
+﻿namespace Nine.Studio.Controls
 {
+    using System.Windows;
+
     public class PropertyGridService : DependencyObject
     {
         

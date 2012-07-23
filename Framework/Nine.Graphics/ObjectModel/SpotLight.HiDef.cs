@@ -1,22 +1,6 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Graphics;
-
-
-#if !WINDOWS_PHONE
-using Nine.Graphics.Materials;
-#endif
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {/*
+
     public partial class SpotLight : IDeferredLight
     {
         SpotLightEffect multiPasseffect;

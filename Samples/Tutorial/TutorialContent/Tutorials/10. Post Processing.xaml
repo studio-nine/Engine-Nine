@@ -10,7 +10,7 @@
              Transform.Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
-	
+
     <PostEffect>	
 		<CustomMaterial xml:space="preserve">
 			<CustomMaterial.Code>
@@ -24,7 +24,6 @@
 
                 float4 RipplePS(float2 texCoord:TEXCOORD0):COLOR
                 {
-					return tex2D(ColorMapSampler, texCoord);
                     float2 distance = abs(texCoord - Location);
                     float scalar = length(distance);
 
@@ -55,9 +54,12 @@
 			</CustomMaterial.Code>
 		</CustomMaterial>
     </PostEffect>
-	
+
 	<BloomEffect BlurAmount="5" Threshold="0.5"/>
-	-->
     <AdoptionEffect />
-	
+
+    <HighDynamicRangeEffect />
+	-->
+    <LuminanceChain />
+    
 </Scene>

@@ -1,20 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Xaml;
-#endregion
-
-namespace Nine.Design
+﻿namespace Nine.Design
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Xaml;
+
+
     class RangeConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

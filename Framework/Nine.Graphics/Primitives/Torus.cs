@@ -1,20 +1,9 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// TorusPrimitive.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Geometric primitive class for drawing toruses.
     /// </summary>
@@ -42,6 +31,7 @@ namespace Nine.Graphics.Primitives
 
         /// <summary>
         /// Constructs a new torus primitive, using default settings.
+
         /// </summary>
         public Torus(GraphicsDevice graphicsDevice) : base(graphicsDevice) 
         {

@@ -1,32 +1,20 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Content;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics.ParticleEffects;
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Markup;
+    using System.Xaml;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Content;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// A drawing pass represents a single pass in the composition chain.
     /// </summary>
-    public abstract class Pass : Object
+    public abstract class Pass : Nine.Object
     {
         #region Properties
         /// <summary>
@@ -141,11 +129,13 @@ namespace Nine.Graphics.Drawing
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
+
         /// </summary>
         /// <param name="drawables">
         /// A list of drawables about to be drawed in this drawing pass.
         /// </param>
         public abstract void Draw(DrawingContext context, IList<IDrawableObject> drawables);
         #endregion
+
     }
 }

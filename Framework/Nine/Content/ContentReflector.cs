@@ -1,22 +1,12 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
-namespace Nine.Content
+﻿namespace Nine.Content
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Microsoft.Xna.Framework.Content;
+
     class ContentMember
     {
         PropertyInfo property;

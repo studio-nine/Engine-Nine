@@ -1,19 +1,8 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// ErrorLogger.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System.Collections.Generic;
-using Microsoft.Build.Framework;
-#endregion
-
 namespace Nine
 {
+    using System.Collections.Generic;
+    using Microsoft.Build.Framework;
+
     /// <summary>
     /// Custom implementation of the MSBuild ILogger interface records
     /// content build errors so we can later display them to the user.

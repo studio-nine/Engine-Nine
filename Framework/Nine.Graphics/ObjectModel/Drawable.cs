@@ -1,21 +1,10 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+
     /// <summary>
     /// Base class for all drawables.
     /// </summary>
@@ -51,6 +40,7 @@ namespace Nine.Graphics.ObjectModel
 
         /// <summary>
         /// Draws the object using the graphics context.
+
         /// </summary>
         /// <param name="context"></param>
         public virtual void Draw(DrawingContext context) { }

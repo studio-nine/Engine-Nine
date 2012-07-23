@@ -1,18 +1,9 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+
+
     /// <summary>
     /// Defines a dependency graph provider that provides the topology data for a give array of items.
     /// </summary>

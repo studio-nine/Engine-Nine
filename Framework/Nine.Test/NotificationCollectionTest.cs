@@ -1,20 +1,10 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-
-namespace Nine.Test
+﻿namespace Nine.Test
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     /// <summary>
     ///This is a test class for EnumerableCollectionTest and is intended
     ///to contain all EnumerableCollectionTest Unit Tests
@@ -375,6 +365,7 @@ namespace Nine.Test
 
             /*
             using (var writer = XmlWriter.Create("C:\\a.xml"))
+
             {
                 IntermediateSerializer.Serialize(writer, world, null);
             }

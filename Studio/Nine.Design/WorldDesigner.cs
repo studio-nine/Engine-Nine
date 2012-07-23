@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel.Composition;
-using Nine.Studio.Extensibility;
-using Nine.Studio.Serializers;
-#endregion
-
-namespace Nine.Design
+﻿namespace Nine.Design
 {
+    using System.ComponentModel.Composition;
+    using Nine.Studio.Extensibility;
+    using Nine.Studio.Serializers;
+
     [Export(typeof(IFactory))]
     [LocalizedCategory("General")]
     [LocalizedDisplayName("World", typeof(Resources))]

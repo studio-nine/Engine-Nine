@@ -1,18 +1,7 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines an operation on the specified type.
     /// </summary>

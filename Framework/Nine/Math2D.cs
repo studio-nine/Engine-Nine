@@ -1,18 +1,9 @@
-#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
+
     /// <summary>
     /// Helper class for 2D math and geometries
     /// 
@@ -29,6 +20,7 @@ namespace Nine
 
         /// <summary>
         /// Test to see if two float equals using epslion
+
         /// </summary>
         public static bool FloatEquals(float n1, float n2)
         {
@@ -48,6 +40,7 @@ namespace Nine
 
         /// <summary>
         /// Test to see if a float equals zero using epslion
+
         /// </summary>
         public static bool FloatEqualsZero(float n)
         {

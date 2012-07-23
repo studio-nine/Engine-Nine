@@ -1,20 +1,11 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Xna.Framework.Content;
+
+
     /// <summary>
     /// Contains several animation clips that are played concurrently.
     /// The animation completes when all of its containing animations

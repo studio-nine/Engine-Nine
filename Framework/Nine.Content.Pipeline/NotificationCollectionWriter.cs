@@ -1,18 +1,8 @@
-﻿#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-#endregion
-
-namespace Nine.Content
+﻿namespace Nine.Content
 {
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+
     [ContentTypeWriter()]
     class NotificationCollectionWriter<T> : ContentTypeWriter<NotificationCollection<T>>
     {

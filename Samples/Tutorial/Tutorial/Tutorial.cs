@@ -1,27 +1,17 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Nine;
-using Nine.Components;
-using Nine.Graphics;
-using Nine.Graphics.Cameras;
-using Nine.Graphics.ObjectModel;
-using Nine.Physics;
-#endregion
-
 namespace Tutorial
 {
+    using System;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using Nine;
+    using Nine.Components;
+    using Nine.Graphics;
+    using Nine.Graphics.Cameras;
+    using Nine.Graphics.ObjectModel;
+    using Nine.Physics;
+
     public class Tutorial : Microsoft.Xna.Framework.Game
     {
 #if WINDOWS_PHONE

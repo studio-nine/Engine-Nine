@@ -1,8 +1,8 @@
-﻿using BEPUphysics.Constraints.TwoEntity.Joints;
-using Microsoft.Xna.Framework;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using BEPUphysics.Constraints.TwoEntity.Joints;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Graphical representation of a PointOnPlaneConstraint
     /// </summary>

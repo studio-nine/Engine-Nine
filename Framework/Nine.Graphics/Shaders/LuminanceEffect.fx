@@ -8,10 +8,10 @@
 //=============================================================================
 
 
-float2  pixelSize;
+float2  halfPixel;
 sampler Sampler : register(s0);
 
-static const float KernelOffsets[2] = {-0.5f, 0.5f};
+static const float KernelOffsets[2] = {-1, 1};
 
 float4 LuminancePS(float2 TexCoord : TEXCOORD0) : COLOR0
 {
@@ -24,7 +24,7 @@ float4 LuminancePS(float2 TexCoord : TEXCOORD0) : COLOR0
         {
             for (int y = 0; y < 2; y++)
             {
-                float2 Offset = (KernelOffsets[x], KernelOffsets[y]) * pixelSize;
+                float2 Offset = (KernelOffsets[x], KernelOffsets[y]) * halfPixel;
                 color += tex2D(Sampler, TexCoord + Offset);
 
                 float GreyValue = dot( color.rgb, WEIGHT );

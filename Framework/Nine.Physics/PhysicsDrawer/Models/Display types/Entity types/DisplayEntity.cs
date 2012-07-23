@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using BEPUphysics.Entities;
-using BEPUphysics.MathExtensions;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Models
+﻿namespace BEPUphysicsDrawer.Models
 {
+    using System.Collections.Generic;
+    using BEPUphysics.Entities;
+    using BEPUphysics.MathExtensions;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Superclass of display objects that follow entities.
     /// </summary>

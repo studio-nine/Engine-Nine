@@ -1,19 +1,9 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Xml.Serialization;
-using Nine.Graphics.ObjectModel;
-#endregion
-
 namespace Nine.Navigation
 {
+    using System;
+    using System.Xml.Serialization;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Defines a navigation component that can be added to a game object container.
     /// </summary>

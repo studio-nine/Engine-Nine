@@ -1,21 +1,10 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Nine.Studio.Extensibility;
-
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels
+﻿namespace Nine.Studio.Shell.ViewModels
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using Nine.Studio.Extensibility;
+
     public class SettingsView
     {
         public ISettings DocumentSettings { get; private set; }

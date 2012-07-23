@@ -1,10 +1,10 @@
-﻿using BEPUphysics;
-using BEPUphysics.DataStructures;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using BEPUphysics;
+    using BEPUphysics.DataStructures;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Renders bounding boxes of entities.
     /// </summary>

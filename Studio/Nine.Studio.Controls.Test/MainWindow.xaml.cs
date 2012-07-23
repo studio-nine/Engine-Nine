@@ -1,7 +1,7 @@
-﻿using System.Windows;
-
-namespace Nine.Studio.Controls.Test
+﻿namespace Nine.Studio.Controls.Test
 {
+    using System.Windows;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

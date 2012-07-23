@@ -1,19 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows.Data;
-
-#endregion
-
-namespace Nine.Studio.Shell.Converters
+﻿namespace Nine.Studio.Shell.Converters
 {
+    using System;
+    using System.Windows.Data;
+
     public class StringToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

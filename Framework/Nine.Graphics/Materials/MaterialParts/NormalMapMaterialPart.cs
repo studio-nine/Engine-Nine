@@ -1,27 +1,10 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-#if SILVERLIGHT
-using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
-using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
-using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
-#endif
-#endregion
-
-namespace Nine.Graphics.Materials.MaterialParts
+﻿namespace Nine.Graphics.Materials.MaterialParts
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     /// <summary>
     /// Defines a material part that provides normals from normal maps
     /// </summary>

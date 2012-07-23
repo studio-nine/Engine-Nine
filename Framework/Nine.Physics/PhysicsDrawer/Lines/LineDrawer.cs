@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using BEPUphysics.Constraints;
-using BEPUphysics.Constraints.SingleEntity;
-using BEPUphysics.Constraints.SolverGroups;
-using BEPUphysics.Constraints.TwoEntity.JointLimits;
-using BEPUphysics.Constraints.TwoEntity.Joints;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using System;
+    using System.Collections.Generic;
+    using BEPUphysics.Constraints;
+    using BEPUphysics.Constraints.SingleEntity;
+    using BEPUphysics.Constraints.SolverGroups;
+    using BEPUphysics.Constraints.TwoEntity.JointLimits;
+    using BEPUphysics.Constraints.TwoEntity.Joints;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Manages the graphical representation of joints and constraints.
     /// </summary>

@@ -1,20 +1,11 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Reflection;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.ComponentModel;
+    using System.Reflection;
+    using Microsoft.Xna.Framework.Content;
+
+
     /// <summary>
     /// Contains extension methods for ContentManager.
     /// </summary>
@@ -37,6 +28,7 @@ namespace Nine
             throw new NotSupportedException("ContentManager.Create only works for ObjectFactoryContentManager");
 #else
             // Hack into ReadAsset using reflection.
+
             var readAsset = content.GetType().GetMethod("ReadAsset", BindingFlags.Instance | BindingFlags.NonPublic, null, ReadAssetParameterTypes, null);
             var genericReadAsset = readAsset.MakeGenericMethod(typeof(T));
             try

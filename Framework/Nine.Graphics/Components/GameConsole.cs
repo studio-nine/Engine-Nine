@@ -1,24 +1,15 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Nine.Graphics;
-#endregion
-
 namespace Nine.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Text;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+    using Nine.Graphics;
+
+
     /// <summary>
     /// Event args used by GameConsole.
     /// </summary>
@@ -48,7 +39,7 @@ namespace Nine.Components
     /// <summary>
     /// In game console
     /// </summary>
-    public class GameConsole : IUpdateable, IDrawable
+    public class GameConsole : Nine.IUpdateable, Nine.IDrawable
     {
         private float currentBlinkTime;
         private string lastLine = "";

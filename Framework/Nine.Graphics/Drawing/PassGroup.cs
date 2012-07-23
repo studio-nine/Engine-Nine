@@ -1,24 +1,10 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ParticleEffects;
-using System.Collections.Generic;
-using Nine.Graphics.ObjectModel;
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Defines an interface for post processing effect
     /// </summary>
@@ -74,6 +60,7 @@ namespace Nine.Graphics.Drawing
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
+
         /// </summary>
         public sealed override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {

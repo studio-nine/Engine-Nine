@@ -1,31 +1,21 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Xml;
+    using System.Xml.Linq;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics;
+
     /// <summary>
     /// Enables a centralized place where LinkedEffect can be compiled and cached.
     /// Use this library to eliminated duplicated LinkedEffects.
@@ -53,6 +43,7 @@ namespace Nine.Content.Pipeline
         /// </summary>
         /// <remarks>
         /// The input object will be serialized in to an Xml asset file using IntermediateSerializer. 
+
         /// Then that file is imported and processed though the content pipeline. If an asset name is specified,
         /// the processed object will use that asset name as the output. Otherwise, an MD5 hash string of the
         /// input object will be calculated as the asset name, and the asset will be written to the "Misc" 
@@ -155,6 +146,7 @@ namespace Nine.Content.Pipeline
         /// </summary>
         /// <remarks>
         /// The input object will be serialized in to an Xml asset file using IntermediateSerializer. 
+
         /// Then that file is imported and processed though the content pipeline. If an asset name is specified,
         /// the processed object will use that asset name as the output. Otherwise, an MD5 hash string of the
         /// input object will be calculated as the asset name, and the asset will be written to the "Misc" 
@@ -179,6 +171,7 @@ namespace Nine.Content.Pipeline
             var baseDirectory = Path.GetDirectoryName(context.OutputFilename);
 
             using (var graphicsDevice = GraphicsExtensions.CreateHiddenGraphicsDevice(profile))
+
             {
                 using (var contentManager = new PipelineContentManager(baseDirectory, new GraphicsDeviceServiceProvider(graphicsDevice)))
                 {

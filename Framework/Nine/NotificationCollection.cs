@@ -1,22 +1,13 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using Microsoft.Xna.Framework.Content;
+
+
     /// <summary>
     ///  Notifies clients that the collection has changed.
     /// </summary>

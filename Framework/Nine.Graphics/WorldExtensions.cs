@@ -1,21 +1,10 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics
 {
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     /// <summary>
     /// Extends <see cref="World"/> to be capable of drawing graphics.
     /// </summary>

@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
-namespace Nine.Graphics.ParticleEffects
+﻿namespace Nine.Graphics.ParticleEffects
 {
+    using System;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Defines an controller that controls the appearence and behavior of each
     /// individual particle.

@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows;
-using System.Windows.Controls;
-using Nine.Studio.Shell.Windows;
-#endregion
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Controls;
+
     public partial class OptionsWindow : Window
     {
         public OptionsWindow()

@@ -1,24 +1,13 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
-
-#endregion
-
 namespace Nine.Content.Pipeline.Physics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Windows.Markup;
+    using System.Xaml;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
+
     /// <summary>
     /// Defines the type of physics entity to be created.
     /// </summary>

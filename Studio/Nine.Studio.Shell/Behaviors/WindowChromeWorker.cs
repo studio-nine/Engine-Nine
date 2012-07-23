@@ -4,19 +4,17 @@
 
 namespace Nine.Studio.Shell.Behaviors
 {
+
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
-    using System.Threading;
     using System.Windows;
     using System.Windows.Interop;
     using System.Windows.Media;
     using System.Windows.Threading;
     using Nine.Studio.Shell;
-
     using HANDLE_MESSAGE = System.Collections.Generic.KeyValuePair<Nine.Studio.Shell.WM, Nine.Studio.Shell.MessageHandler>;
-
     internal class WindowChromeWorker : DependencyObject
     {
         // Delegate signature used for Dispatcher.BeginInvoke.
@@ -46,6 +44,7 @@ namespace Nine.Studio.Shell.Behaviors
 
         // Keep track of this so we can detect when we need to apply changes.  Tracking these separately
         // as I've seen using just one cause things to get enough out of sync that occasionally the caption will redraw.
+
         private WindowState _lastRoundingState;
         private WindowState _lastMenuState;
         private bool _isGlassEnabled;

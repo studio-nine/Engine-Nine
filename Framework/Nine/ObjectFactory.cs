@@ -1,19 +1,9 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework.Content;
+
     class ObjectFactory : IObjectFactory
     {
         ContentManager content;

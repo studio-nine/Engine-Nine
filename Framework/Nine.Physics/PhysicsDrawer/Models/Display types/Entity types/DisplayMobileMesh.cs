@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.CollisionShapes;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace BEPUphysicsDrawer.Models
 {
+    using System.Collections.Generic;
+    using BEPUphysics.Collidables.MobileCollidables;
+    using BEPUphysics.CollisionShapes;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Simple display object for triangles.
     /// </summary>

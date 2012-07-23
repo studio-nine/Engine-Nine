@@ -1,23 +1,13 @@
-﻿#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics
+﻿namespace Nine.Graphics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Animations;
+
 
     /// <summary>
     /// Tag used by models.
@@ -200,6 +190,7 @@ namespace Nine.Graphics
             }
 
             // Detect using collision tree.
+
             local = point - GetAbsoluteTransform(model.Meshes[0], world).Translation;
             return extensions.Collision.Contains(local);
         }
@@ -233,6 +224,7 @@ namespace Nine.Graphics
             }
 
             // Detect using collision tree.
+
             local = ray.Transform(Matrix.Invert(GetAbsoluteTransform(model.Meshes[0], world)));
             return extensions.Collision.Intersects(local);
         }

@@ -1,25 +1,14 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-#endregion
-
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+    using System;
+
+
+
+
+
+
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Defines the interactive editor shell.
     /// </summary>

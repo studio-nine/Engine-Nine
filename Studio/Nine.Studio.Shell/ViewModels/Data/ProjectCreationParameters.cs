@@ -1,19 +1,9 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Nine.Studio.Extensibility;
-using System.IO;
-using System;
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels.Data
+﻿namespace Nine.Studio.Shell.ViewModels.Data
 {
+    using System;
+    using System.IO;
+    using Nine.Studio.Extensibility;
+
     public class ProjectCreationParameters
     {
         [LocalizedDisplayName("ProjectName", typeof(Strings))]

@@ -1,20 +1,10 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
-namespace Nine.Graphics.Design
+﻿namespace Nine.Graphics.Design
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using Microsoft.Xna.Framework.Graphics;
+
     class BlendStateConverter : TypeConverter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)

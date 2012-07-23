@@ -1,20 +1,11 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics;
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics;
+
+
     #region IBoneAnimationController
     /// <summary>
     /// Represents a controller that manipulates the bone transforms of a model.
@@ -172,7 +163,7 @@ namespace Nine.Animations
     /// <summary>
     /// Controls the target bone to make it always look at the specified target.
     /// </summary>
-    public class LookAtController : IUpdateable, IBoneAnimationController
+    public class LookAtController : Nine.IUpdateable, IBoneAnimationController
     {
         /// <summary>
         /// Gets or sets the index of the controlled bone.

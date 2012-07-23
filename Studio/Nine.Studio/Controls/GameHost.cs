@@ -1,12 +1,3 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
 using System;
 using System.Linq;
 using System.Reflection;
@@ -18,7 +9,6 @@ using System.Windows.Media;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nine.Components;
-#endregion
 
 namespace Nine.Studio.Controls
 {
@@ -312,6 +302,7 @@ namespace Nine.Studio.Controls
         private Microsoft.Xna.Framework.Input.Keys ConvertKeys(Key key)
         {
             // FIXME: This is not correct. Avoid using it!!!
+
             return (Microsoft.Xna.Framework.Input.Keys)key;
         }
         #endregion

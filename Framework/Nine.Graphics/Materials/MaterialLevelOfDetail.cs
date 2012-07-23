@@ -1,22 +1,10 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-
-#endregion
-
 namespace Nine.Graphics.Materials
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Defines a list of materials that are sorted from lowest quanlity to highest quanlity.
     /// </summary>

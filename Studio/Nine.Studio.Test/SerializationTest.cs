@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Nine.Studio;
-using Nine.Studio.Extensibility;
-using Nine.Studio.Serializers;
-
-namespace Nine.Studio.Test
+﻿namespace Nine.Studio.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
+    using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+    using Nine.Studio;
+
+
     [TestClass]
     public class SerializationTest
     {

@@ -1,28 +1,17 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Windows.Markup;
-using System.Xaml;
-using System.Xaml.Schema;
-using System.Xml;
-using System.Collections.Generic;
-using System.Reflection;
-using System.ComponentModel.Design.Serialization;
-#endregion
-
-namespace Nine.Content.Pipeline.Xaml
+﻿namespace Nine.Content.Pipeline.Xaml
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.Design.Serialization;
+    using System.Globalization;
+    using System.IO;
+    using System.Reflection;
+    using System.Windows.Markup;
+    using System.Xaml;
+    using System.Xaml.Schema;
+    using System.Xml;
+
     #region XamlSerializer
     /// <summary>
     /// Provides extended Xaml load and save methods.
@@ -86,6 +75,7 @@ namespace Nine.Content.Pipeline.Xaml
         
         /// <summary>
         /// Resolves the instance using InstanceResolve event.
+
         /// </summary>
         internal object ResolveInstance(Type type, object[] arguments)
         {
@@ -167,6 +157,8 @@ namespace Nine.Content.Pipeline.Xaml
 
         public override void WriteStartObject(XamlType xamlType)
         {
+            if (xamlType.UnderlyingType == null)
+                throw new InvalidOperationException("Cannot create an object of type " + xamlType.Name);
             base.WriteStartObject(new XamlFactoryType(xamlSerializer, xamlType));
         }
 

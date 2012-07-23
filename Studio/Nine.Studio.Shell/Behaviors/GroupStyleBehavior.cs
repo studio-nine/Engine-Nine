@@ -1,19 +1,8 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Windows;
-using System.Windows.Controls;
-
-#endregion
-
-namespace Nine.Studio.Shell.Behaviors
+﻿namespace Nine.Studio.Shell.Behaviors
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
     /// <summary>
     /// http://social.msdn.microsoft.com/Forums/en-US/wpf/thread/73ac639f-afdc-4582-805d-9b3bc8a33fe5/
     /// </summary>

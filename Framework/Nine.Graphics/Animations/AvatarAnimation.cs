@@ -1,22 +1,12 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
-using Nine.Graphics;
-#endregion
-
-namespace Nine.Animations
+﻿namespace Nine.Animations
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.GamerServices;
+    using Nine.Graphics;
+
     #region AvatarSkeleton
     /// <summary>
     /// Defines the skeleton for avatar.
@@ -165,6 +155,7 @@ namespace Nine.Animations
     #region AvatarBoneAnimation
     /// <summary>
     /// Provides methods and properties for animating an avatar using custom animations.
+
     /// </summary>
     public class AvatarBoneAnimation : BoneAnimation, IAvatarAnimation
     {

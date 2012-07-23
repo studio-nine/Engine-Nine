@@ -1,11 +1,11 @@
-﻿using BEPUphysics;
-using BEPUphysics.DataStructures;
-using BEPUphysics.NarrowPhaseSystems.Pairs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace BEPUphysicsDrawer.Lines
+﻿namespace BEPUphysicsDrawer.Lines
 {
+    using BEPUphysics;
+    using BEPUphysics.DataStructures;
+    using BEPUphysics.NarrowPhaseSystems.Pairs;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Renders contact points.
     /// </summary>

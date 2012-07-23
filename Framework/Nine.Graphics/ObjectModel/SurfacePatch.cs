@@ -1,22 +1,12 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Drawing;
-#endregion
-
-namespace Nine.Graphics.ObjectModel
+﻿namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+
     #region SurfacePatch
     /// <summary>
     /// A square block made up of surface patch parts. The whole surface is rendered patch by patch.
@@ -362,6 +352,7 @@ namespace Nine.Graphics.ObjectModel
     #region SurfacePatch<T>
     /// <summary>
     /// To support ConvertVertexType, we need to store T using generic subclass.
+
     /// </summary>
     class SurfacePatch<T> : SurfacePatch where T: struct, IVertexType
     {

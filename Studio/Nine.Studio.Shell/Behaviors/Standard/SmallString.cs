@@ -1,6 +1,6 @@
-
 namespace Nine.Studio.Shell
 {
+
     using System;
 
     [System.Diagnostics.DebuggerDisplay("SmallString: { GetString() }")]

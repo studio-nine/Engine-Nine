@@ -1,17 +1,3 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 //=============================================================================
 //
 // Special Thanks to 
@@ -22,6 +8,9 @@ using Microsoft.Xna.Framework;
 //=============================================================================
 namespace Nine.Navigation.Steering
 {
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+
     #region CohesionBehavior
     public class CohesionBehavior : SteeringBehavior
     {

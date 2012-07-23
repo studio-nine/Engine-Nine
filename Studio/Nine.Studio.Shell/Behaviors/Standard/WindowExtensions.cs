@@ -1,6 +1,6 @@
-﻿
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+
     using System;
     using System.ComponentModel;
     using System.Windows;

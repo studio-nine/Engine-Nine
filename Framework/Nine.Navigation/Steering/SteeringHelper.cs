@@ -1,19 +1,8 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Navigation.Steering
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
     internal static class SteeringHelper
     {
         public const int MaxAffectingEntities = 4;

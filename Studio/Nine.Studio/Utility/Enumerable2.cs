@@ -1,10 +1,8 @@
-﻿
-namespace Nine.Studio
+﻿namespace Nine.Studio
 {
+
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Further LINQ extensions

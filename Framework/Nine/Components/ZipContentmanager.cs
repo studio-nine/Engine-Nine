@@ -1,41 +1,9 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//-----------------------------------------------------------------------------
-//
-//  Copyright (c) 2006, 2007 Microsoft Corporation.  All rights reserved.
-//
-//  Implements the CRC algorithm, which is used in zip files.  The zip format calls for
-//  the zipfile to contain a CRC for the unencrypted byte stream of each file.
-//
-//  It is based on example source code published at
-//    http://www.vbaccelerator.com/home/net/code/libraries/CRC32/Crc32_zip_CRC32_CRC32_cs.asp
-//
-//  This implementation adds a tweak of that code for use within zip creation.  While
-//  computing the CRC we also compress the byte stream, in the same read loop. This
-//  avoids the need to read through the uncompressed stream twice - once to computer CRC
-//  and another time to compress.
-//
-//
-//  Thu, 30 Mar 2006  13:58
-//-----------------------------------------------------------------------------
-//
-//  ZipContentManager Modified From EasyZip (Copyright?)
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.IO;
-using Microsoft.Xna.Framework.Content;
-
-#endregion
-
 namespace Nine.Components
 {
+    using System;
+    using System.IO;
+    using Microsoft.Xna.Framework.Content;
+
 #if WINDOWS
     #region Zip
     //-----------------------------------------------------------------------------
@@ -1263,6 +1231,7 @@ namespace Nine.Components
         #region CRC32
         /// <summary>
         /// Calculates a 32bit Cyclic Redundancy Checksum (CRC) using the
+
         /// same polynomial used by Zip.
         /// </summary>
         internal class CRC32

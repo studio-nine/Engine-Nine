@@ -1,19 +1,3 @@
-#region File Description
-//-----------------------------------------------------------------------------
-// GraphicsDeviceService.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using System.Threading;
-using System.Windows.Forms;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
-
 // The IGraphicsDeviceService interface requires a DeviceCreated event, but we
 // always just create the device inside our constructor, so we have no place to
 // raise that event. The C# compiler warns us that the event is never used, but
@@ -22,6 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Nine.Graphics
 {
+    using System;
+    using System.Threading;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Helper class responsible for creating and managing the GraphicsDevice.
     /// All GraphicsDeviceControl instances share the same GraphicsDeviceService,
@@ -97,6 +85,7 @@ namespace Nine.Graphics
                 }
 
                 // If this is the first control to start using the
+
                 // device, we must create the singleton instance.
                 singletonInstance = new GraphicsDeviceService(windowHandle, width, height, profile);                
             }
@@ -113,6 +102,7 @@ namespace Nine.Graphics
             if (Interlocked.Decrement(ref referenceCount) == 0)
             {
                 // If this is the last control to finish using the
+
                 // device, we should dispose the singleton instance.
                 if (disposing)
                 {

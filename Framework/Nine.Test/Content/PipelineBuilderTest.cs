@@ -1,18 +1,8 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Graphics;
-
-namespace Nine.Content.Pipeline.Test
+﻿namespace Nine.Content.Pipeline.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework.Graphics;
+
     [TestClass]
     public class PipelineBuilderTest
     {

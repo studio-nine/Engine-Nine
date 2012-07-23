@@ -1,18 +1,10 @@
-﻿#region Copyright 2008 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework.Content.Pipeline;
-
-namespace Nine.Content.Pipeline.Test
+﻿namespace Nine.Content.Pipeline.Test
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     [TestClass]
     public class DefaultContentProcessorTest : ContentPipelineTest
     {

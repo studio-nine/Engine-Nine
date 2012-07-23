@@ -1,19 +1,8 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Navigation.Steering
 {
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+
     public class WallAvoidanceBehavior : SteeringBehavior
     {
         static List<LineSegment> Lines = new List<LineSegment>();

@@ -12,15 +12,18 @@
 
 namespace Nine.Physics.PhysicsDrawer.Models
 {
+
 #if !WINDOWS_PHONE
 
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+
 #if SILVERLIGHT
     using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
-    using EffectParameter = Microsoft.Xna.Framework.Graphics.SilverlightEffectParameter;
+    using Microsoft.Xna.Framework.Graphics;
     using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
+
 #endif
 
     [System.CodeDom.Compiler.GeneratedCode("Nine.Tools.EffectCustomTool", "1.6.0.0")]

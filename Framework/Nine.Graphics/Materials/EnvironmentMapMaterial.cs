@@ -1,25 +1,14 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ObjectModel;
-using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
-using Nine.Graphics.Drawing;
-#endregion
-
 namespace Nine.Graphics.Materials
 {
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+
     [ContentSerializable]
     public class EnvironmentMapMaterial : Material
     {
         #region Properties
+        
         public float FresnelFactor
         {
             get { return fresnelFactor.HasValue ? fresnelFactor.Value : MaterialConstants.FresnelFactor; }

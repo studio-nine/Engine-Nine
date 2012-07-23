@@ -1,26 +1,16 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-#if WINDOWS_PHONE
-using Keys = Microsoft.Xna.Framework.Input.Keys;
-using Microsoft.Xna.Framework.Input.Touch;
-#elif SILVERLIGHT
-using Keys = System.Windows.Input.Key;
-#endif
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+#if SILVERLIGHT
+    using Keys = System.Windows.Input.Key;
+#else
+    using Keys = Microsoft.Xna.Framework.Input.Keys;
+#endif
+
+
     /// <summary>
     /// A basic class that pushes input events to the consumer.
     /// </summary>
@@ -132,11 +122,15 @@ namespace Nine
         /// </summary>
         /// <remarks>
         /// You can choose to handle gestures either using the method provided by <c>Input</c>
+
         /// or manually detect it using <c>TouchPanel</c>. But these two methods don't work
+
         /// together with each other. By setting this <c>Input.EnabledGestures</c> property,
         /// you indicate that you are going to handle gestures using the event model provided
+
         /// by Engine Nine across your whole application, in which case you may fail to read
         /// gestures using <c>TouchPanel.ReadGesture</c> method.
+
         /// </remarks>
         public GestureType EnabledGestures
         {

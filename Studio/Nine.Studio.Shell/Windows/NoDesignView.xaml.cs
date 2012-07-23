@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for NoDesignView.xaml
     /// </summary>

@@ -1,19 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Linq;
-using System.Windows.Data;
-#endregion
-
-namespace Nine.Studio.Shell.Converters
+﻿namespace Nine.Studio.Shell.Converters
 {
+    using System;
+    using System.Linq;
+    using System.Windows.Data;
+
     public class EqualtyToBooleanConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)

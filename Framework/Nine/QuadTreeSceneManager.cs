@@ -1,24 +1,15 @@
-#region Copyright 2010 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using Microsoft.Xna.Framework;
+
+
     #region QuadTreeSceneManager
     /// <summary>
     /// Manages a collection of objects using quad tree.
+
     /// </summary>
     [DebuggerDisplay("Count = {Count}")]
     public class QuadTreeSceneManager : ISceneManager

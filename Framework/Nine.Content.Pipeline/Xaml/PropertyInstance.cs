@@ -1,19 +1,7 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Windows.Markup;
-using System.Xaml;
-#endregion
-
-namespace Nine.Content.Pipeline.Xaml
+﻿namespace Nine.Content.Pipeline.Xaml
 {
+    using System;
+
     public struct PropertyInstance : IEquatable<PropertyInstance>
     {
         public object Target;

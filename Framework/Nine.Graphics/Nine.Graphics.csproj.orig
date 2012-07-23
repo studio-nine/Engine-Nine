@@ -122,7 +122,11 @@
     <Compile Include="Drawing\DrawingQueue.cs" />
     <Compile Include="GraphicsDeviceService.cs" />
     <Compile Include="Materials\DepthMaterial.cs" />
+    <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
+    <Compile Include="ObjectModel\ShadowMap.cs" />
+    <Compile Include="PostEffects\AdoptionEffect.cs" />
     <Compile Include="PostEffects\BlurEffect.cs" />
+    <Compile Include="PostEffects\VertexPassThroughMaterial.cs" />
     <Compile Include="PostEffects\LuminanceChain.cs" />
     <Compile Include="PostEffects\DepthOfFieldMaterial.cs" />
     <Compile Include="Materials\MaterialPaintGroup.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Materials\CustomMaterialPart.cs" />
     <Compile Include="Materials\MaterialLevelOfDetail.cs" />
     <Compile Include="Materials\MaterialParts\BeginPaintGroupMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\InstancedMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\TangentTransformMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
@@ -143,13 +148,13 @@
     <Compile Include="Materials\DualTextureMaterial.cs" />
     <Compile Include="Materials\SkinnedMaterial.cs" />
     <Compile Include="Materials\MaterialConstants.cs" />
+    <Compile Include="ObjectModel\InstancedModel.cs" />
     <Compile Include="ObjectModel\DirectionalLightCollection.cs" />
     <Compile Include="Materials\SoftParticleMaterial.cs" />
-    <Compile Include="Drawing\BasicPass.cs" />
+    <Compile Include="Drawing\DrawingPass.cs" />
     <Compile Include="PostEffects\BlurMaterial.cs" />
     <Compile Include="PostEffects\BloomEffect.cs" />
     <Compile Include="PostEffects\ScaleMaterial.cs" />
-    <Compile Include="PostEffects\MotionBlurEffect.cs" />
     <Compile Include="PostEffects\HighDynamicRangeEffect.cs" />
     <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
     <Compile Include="PostEffects\PostEffectChain.cs" />
@@ -157,7 +162,6 @@
     <Compile Include="PostEffects\ThresholdMaterial.cs" />
     <Compile Include="Primitives\Cross.cs" />
     <Compile Include="Primitives\PrimitiveGroup.cs" />
-    <Compile Include="Versioned.cs" />
     <Compile Include="Drawing\PassCollection.cs" />
     <Compile Include="GraphicsComponent.cs" />
     <Compile Include="Helper.cs" />
@@ -173,7 +177,7 @@
     <Compile Include="Materials\MaterialParts\DeferredLightsMaterialPart.cs" />
     <Compile Include="Materials\MaterialGroup.cs" />
     <Compile Include="GraphicsExtensions.cs" />
-    <Compile Include="ObjectModel\Camera.cs" />
+    <Compile Include="Cameras\Camera.cs" />
     <Compile Include="FindResult.cs" />
     <Compile Include="SceneQuery.cs" />
     <Compile Include="ObjectModel\TransformBinding.cs" />
@@ -222,7 +226,6 @@
     <Compile Include="Primitives\Cylinder.cs" />
     <Compile Include="Primitives\Sphere.cs" />
     <Compile Include="ObjectModel\FullScreenQuad.cs" />
-    <Compile Include="Materials\Deferred\IDeferredLight.cs" />
     <Compile Include="Primitives\Primitive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertexTypes\VertexPositionNormal.cs" />
@@ -232,7 +235,7 @@
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
-    <Compile Include="QuaternionCamera.cs" />
+    <Compile Include="Cameras\QuaternionCamera.cs" />
     <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
     <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
@@ -253,7 +256,7 @@
     <Compile Include="PostEffects\PostEffect.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ScreenCamera.cs" />
+    <Compile Include="Cameras\ScreenCamera.cs" />
     <Compile Include="VertexTypes\VertexPositionColorNormalTexture.cs" />
     <Compile Include="ModelCollision.cs" />
     <Compile Include="ColorMatrix.cs" />
@@ -261,11 +264,11 @@
     <Compile Include="TextureList.cs" />
     <Compile Include="EffectExtensions.cs" />
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
-    <Compile Include="FreeCamera.cs" />
-    <Compile Include="ModelViewerCamera.cs" />
-    <Compile Include="TopDownEditorCamera.cs" />
+    <Compile Include="Cameras\FreeCamera.cs" />
+    <Compile Include="Cameras\ModelViewerCamera.cs" />
+    <Compile Include="Cameras\TopDownEditorCamera.cs" />
     <Compile Include="Geometry.cs" />
-    <Compile Include="Heightmap.cs" />
+    <Compile Include="ObjectModel\Heightmap.cs" />
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="ModelSkeleton.cs" />
     <Compile Include="ParticleEffects\ParticleEmitters.cs" />

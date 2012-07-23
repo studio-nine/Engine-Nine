@@ -1,29 +1,12 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Nine.Content.Pipeline.Graphics.Materials;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Materials.MaterialParts;
-using Nine.Graphics.ObjectModel;
-#endregion
-
-namespace Nine.Content.Pipeline.Processors
+﻿namespace Nine.Content.Pipeline.Processors
 {
+    using System.ComponentModel;
+    using System.Linq;
+    using Microsoft.Xna.Framework.Content.Pipeline;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.Materials.MaterialParts;
+    using Nine.Graphics.ObjectModel;
+
     [DefaultContentProcessor]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class InstancedModelProcessor : ContentProcessor<InstancedModel, InstancedModel>

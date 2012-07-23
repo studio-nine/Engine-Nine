@@ -1,21 +1,10 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Navigation
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
     using Nine.Navigation.Steering;
+    
 
     /// <summary>
     /// Defines the state of a <see cref="Navigator"/>
@@ -36,7 +25,7 @@ namespace Nine.Navigation
     /// <summary>
     /// Represents a basic navigator to simulate game object movement.
     /// </summary>
-    public class Navigator : IUpdateable, ISpatialQueryable
+    public class Navigator : Nine.IUpdateable, ISpatialQueryable
     {
         #region Fields
         private Steerable steerable;

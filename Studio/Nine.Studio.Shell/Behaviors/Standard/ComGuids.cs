@@ -4,6 +4,7 @@
 
 namespace Nine.Studio.Shell
 {
+
     internal static partial class IID
     {
         /// <summary>IID_IApplicationAssociationRegistration</summary>

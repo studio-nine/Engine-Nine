@@ -1,18 +1,7 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#endregion
-
 namespace Nine.Navigation
 {        
+    using System;
+
     /// <summary>
     /// Use min heap to implement a priority queue.
     /// Used to implement Dijkstra's algorithm.

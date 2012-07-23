@@ -1,36 +1,24 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Animations;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Materials.MaterialParts;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.Materials.MaterialParts;        
+
+
     #region InstancedModel
     /// <summary>
     /// Defines an instanced model that can be rendered using hardware instancing.
+
     /// </summary>
     [ContentProperty("Template")]
-    public class InstancedModel : Transformable, IContainer, ISpatialQueryable, IUpdateable, IDisposable
+    public class InstancedModel : Transformable, IContainer, ISpatialQueryable, Nine.IUpdateable, IDisposable
     {
         #region Properties
         /// <summary>
@@ -165,7 +153,7 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public void Update(TimeSpan elapsedTime)
         {
-            var updateable = template as IUpdateable;
+            var updateable = template as Nine.IUpdateable;
             if (updateable != null)
                 updateable.Update(elapsedTime);
         }
@@ -303,6 +291,7 @@ namespace Nine.Graphics.ObjectModel
     #region InstancedModelMesh
     /// <summary>
     /// Defines an instanced model that can be rendered using hardware instancing.
+
     /// </summary>
     class InstancedModelMesh : IDrawableObject
     {

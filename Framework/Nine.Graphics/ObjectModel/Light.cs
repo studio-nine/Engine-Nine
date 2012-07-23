@@ -1,25 +1,15 @@
-#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.Materials;
-using System;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+using System;
+
     /// <summary>
     /// Defines a base class for a light used by the render system.
     /// </summary>
@@ -178,6 +168,7 @@ namespace Nine.Graphics.ObjectModel
 
         /// <summary>
         /// Draws the light frustum using Settings.Debug.LightFrustumColor.
+
         /// </summary>
         public virtual void DrawFrustum(DrawingContext context) { }
     }

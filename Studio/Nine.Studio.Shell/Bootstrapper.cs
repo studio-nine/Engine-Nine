@@ -1,28 +1,11 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-#endregion
-
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Threading;
+
     public class Bootstrapper
     {
         [STAThread]
@@ -32,6 +15,7 @@ namespace Nine.Studio.Shell
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
             {
+                
                 string resourceName = "Nine.Studio.Shell.References." + new AssemblyName(e.Name).Name + ".dll";
                 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
                 {

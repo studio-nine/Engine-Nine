@@ -73,16 +73,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] AmbientLight {
-            get {
-                object obj = ResourceManager.GetObject("AmbientLight", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] BeginLight {
             get {
                 object obj = ResourceManager.GetObject("BeginLight", resourceCulture);

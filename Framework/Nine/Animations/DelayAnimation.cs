@@ -1,18 +1,7 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+
     /// <summary>
     /// An dummy animation that completes after the specified duration.
     /// This is usually used with <c>SequentialAnimation</c> to delay

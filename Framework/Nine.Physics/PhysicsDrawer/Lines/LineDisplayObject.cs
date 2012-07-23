@@ -1,5 +1,6 @@
 ﻿namespace BEPUphysicsDrawer.Lines
 {
+
     /// <summary>
     /// Line-based graphical representation of an object.
     /// </summary>

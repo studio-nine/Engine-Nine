@@ -1,18 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#endregion
-
-namespace Nine.Studio.Extensibility
+﻿namespace Nine.Studio.Extensibility
 {
+
+
     /// <summary>
     /// Represents an interface that is used to store settings of a given document type.
     /// </summary>

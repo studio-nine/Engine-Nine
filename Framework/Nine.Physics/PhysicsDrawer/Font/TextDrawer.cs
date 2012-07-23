@@ -1,10 +1,10 @@
-using System;
-using System.Globalization;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace BEPUphysicsDrawer.Font
 {
+    using System;
+    using System.Globalization;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Simple text-drawing helper class.
     /// </summary>

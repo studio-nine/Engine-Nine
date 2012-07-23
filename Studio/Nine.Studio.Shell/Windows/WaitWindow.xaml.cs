@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows;
-using Nine.Studio.Shell.Windows;
-
-namespace Nine.Studio.Shell.Windows
+﻿namespace Nine.Studio.Shell.Windows
 {
+    using System;
+    using System.Windows;
+
+
     public partial class WaitWindow : Window
     {
         public WaitWindow()

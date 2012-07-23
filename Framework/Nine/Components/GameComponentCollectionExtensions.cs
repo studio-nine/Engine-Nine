@@ -1,21 +1,10 @@
-#region Copyright 2009 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using System.Linq;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine.Components
 {
+    using System;
+    using System.ComponentModel;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    
     /// <summary>
     /// Contains extension methods related to GameComponentCollection.
     /// </summary>
@@ -64,16 +53,15 @@ namespace Nine.Components
 
         public void Update(GameTime gameTime)
         {
-            if (Enabled && InnerComponent is IUpdateable)
-                ((IUpdateable)InnerComponent).Update(gameTime.ElapsedGameTime);
+            if (Enabled && InnerComponent is Nine.IUpdateable)
+                ((Nine.IUpdateable)InnerComponent).Update(gameTime.ElapsedGameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
-            if (Visible && InnerComponent is IDrawable)
-                ((IDrawable)InnerComponent).Draw(gameTime.ElapsedGameTime);
+            if (Visible && InnerComponent is Nine.IDrawable)
+                ((Nine.IDrawable)InnerComponent).Draw(gameTime.ElapsedGameTime);
         }
-
 
 
         public int DrawOrder

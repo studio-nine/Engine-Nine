@@ -1,9 +1,6 @@
-#region Using Statements
-
-#endregion
-
 namespace Nine.Physics.PhysicsDrawer.Models
 {
+
 #if !WINDOWS_PHONE
 
     partial class InstancedEffect

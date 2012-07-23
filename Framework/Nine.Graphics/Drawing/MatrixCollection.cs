@@ -1,24 +1,8 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ParticleEffects;
-using Nine.Graphics.ObjectModel;
-using System.Collections.Generic;
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+
     /// <summary>
     /// Contains commonly used matrices in a drawing context.
     /// </summary>

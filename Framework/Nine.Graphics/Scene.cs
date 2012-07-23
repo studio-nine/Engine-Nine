@@ -1,35 +1,22 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.ParticleEffects;
-using Nine.Graphics.PostEffects;
-using Nine.Graphics.Materials;
-using Nine.Graphics.Cameras;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.ObjectModel;
-#endregion
-
 namespace Nine.Graphics
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Cameras;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+    
 
     /// <summary>
     /// Defines a graphical scene that manages a set of objects, cameras and lights.
     /// </summary>
     [ContentSerializable]
-    public class Scene : DrawingGroup, ISpatialQuery<FindResult>, IDrawable
+    public class Scene : DrawingGroup, ISpatialQuery<FindResult>, Nine.IDrawable
     {
         #region Properties
         /// <summary>
@@ -113,7 +100,7 @@ namespace Nine.Graphics
         private List<Light> appliedMultiPassLights = new List<Light>();
         private List<Light> unAppliedMultiPassLights = new List<Light>();
         private List<FindResult> rayCastResult = new List<FindResult>();
-        private List<IUpdateable> updateableObjects = new List<IUpdateable>();
+        private List<Nine.IUpdateable> updateableObjects = new List<Nine.IUpdateable>();
         private List<IDrawableObject> drawableObjects = new List<IDrawableObject>();
 
         private HashSet<ISpatialQueryable> shadowCastersInLightFrustum = new HashSet<ISpatialQueryable>();
@@ -150,7 +137,9 @@ namespace Nine.Graphics
         #region Collection
         /// <summary>
         /// Adds a new item to the scene using the specified scene manager.
+
         /// All child objects are also added using that scene manager unless stated
+
         /// explicitly with a SceneManger attached property.
         /// The default scene manager is used if no scene manager is specified.
         /// </summary>
@@ -361,6 +350,7 @@ namespace Nine.Graphics
         /// </summary>
         /// <remarks>
         /// When an object tree is added to the scene using Scene.Add, 
+
         /// this find method will set the FindResult.OriginalTarget property to the original 
         /// <see cref="ISpatialQueryable"/> for the intersection test against the input bounding volumn.
         /// It will set the FindResult.Target property to the containing object that is added
@@ -509,12 +499,14 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Updates and draws all the drawable objects in the scene with the specified camera setting using the
+
         /// specified material.
         /// </summary>
         public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection, Material material)
         {
             Context.Draw(elapsedTime, drawables, view, projection);
         }
+            var updateable = camera as Nine.IUpdateable;
         #endregion
 
         #region Dispose

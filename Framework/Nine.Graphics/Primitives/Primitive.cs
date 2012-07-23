@@ -1,25 +1,14 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// GeometricPrimitive.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Materials;
-using Nine.Graphics.ObjectModel;
-using Nine.Graphics.Drawing;
-#endregion
-
-namespace Nine.Graphics.Primitives
+﻿namespace Nine.Graphics.Primitives
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
     /// Base class for simple geometric primitive models. 
     /// </summary>
@@ -405,6 +394,7 @@ namespace Nine.Graphics.Primitives
             VerifyInstancingPrimitveType();
 
             // Material Lod is not enabled when using instancing.
+
             return Material;
         }
 

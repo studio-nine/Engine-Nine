@@ -1,17 +1,3 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 //=============================================================================
 //
 // Special Thanks to 
@@ -22,6 +8,9 @@ using Microsoft.Xna.Framework;
 //=============================================================================
 namespace Nine.Navigation.Steering
 {
+    using System;
+    using Microsoft.Xna.Framework;
+
     #region SeekBehavior
     public class SeekBehavior : SteeringBehavior
     {
@@ -143,6 +132,7 @@ namespace Nine.Navigation.Steering
         {
             //this behavior is dependent on the update rate, so this line must
             //be included when using time independent framerate.
+
             float JitterThisTimeSlice = Jitter * elapsedTime;
 
             //first, add a small random vector to the target's position

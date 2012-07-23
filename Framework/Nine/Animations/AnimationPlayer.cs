@@ -1,21 +1,11 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Microsoft.Xna.Framework.Content;
-#endregion
-
 namespace Nine.Animations
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using Microsoft.Xna.Framework.Content;
+
     /// <summary>
     /// Represents a basic animation player that can play multiple animation
     /// sequences using different channels.

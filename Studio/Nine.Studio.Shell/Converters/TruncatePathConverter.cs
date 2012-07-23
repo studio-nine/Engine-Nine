@@ -1,20 +1,10 @@
-﻿#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Data;
-#endregion
-
-namespace Nine.Studio.Shell.Converters
+﻿namespace Nine.Studio.Shell.Converters
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Windows.Data;
+
     public class TruncatePathConverter : IValueConverter
     {
         /// <summary>

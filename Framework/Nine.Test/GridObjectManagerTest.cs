@@ -1,15 +1,7 @@
-﻿#region Copyright 2008 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Nine.Test
+﻿namespace Nine.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass()]
     public class GridSceneManagerTest
     {

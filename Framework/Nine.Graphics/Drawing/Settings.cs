@@ -1,26 +1,13 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-#if SILVERLIGHT
-using Keys = System.Windows.Input.Key;
-#endif
-#endregion
-
 namespace Nine.Graphics.Drawing
 {
-    /// <summary>
-    /// Defines commonly used settings when drawing using the renderer.
-    /// </summary>
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+#if SILVERLIGHT
+    using Keys = System.Windows.Input.Key;
+#endif
+
     [System.Obsolete]
     public class Settings
     {

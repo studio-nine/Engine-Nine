@@ -1,23 +1,10 @@
-﻿#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics;
-
-#endregion
-
-namespace Nine.Graphics.Drawing
+﻿namespace Nine.Graphics.Drawing
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Represents a pool of render targets.
     /// </summary>

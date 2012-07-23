@@ -1,19 +1,8 @@
-#region Copyright 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-
-#endregion
-
 namespace Nine.Navigation
 {
+    using System;
+    using System.Collections.Generic;
+
     #region GraphEdge
     /// <summary>
     /// Represents a graph edge.

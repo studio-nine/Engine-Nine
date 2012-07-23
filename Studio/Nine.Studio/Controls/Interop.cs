@@ -1,21 +1,10 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using Microsoft.Xna.Framework.Graphics;
-
-#endregion
-
 namespace Nine.Studio.Controls
 {
+    using System;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using Microsoft.Xna.Framework.Graphics;
+
     [ComImport, Guid("D0223B96-BF7A-43fd-92BD-A43B0D82B9EB"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     interface IDirect3DDevice9
     {

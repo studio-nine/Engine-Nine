@@ -126,6 +126,8 @@
     <Compile Include="ObjectModel\ShadowMap.cs" />
     <Compile Include="PostEffects\AdoptionEffect.cs" />
     <Compile Include="PostEffects\BlurEffect.cs" />
+    <Compile Include="PostEffects\LuminanceMaterial.cs" />
+    <Compile Include="PostEffects\ToneMappingMaterial.cs" />
     <Compile Include="PostEffects\VertexPassThroughMaterial.cs" />
     <Compile Include="PostEffects\LuminanceChain.cs" />
     <Compile Include="PostEffects\DepthOfFieldMaterial.cs" />
@@ -241,7 +243,6 @@
     <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
     <Compile Include="Primitives\PrimitiveGroupExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
-    <Compile Include="Materials\MaterialParts\AmbientLightMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\DiffuseMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\NormalMapMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\ShadowMapMaterialPart.cs" />

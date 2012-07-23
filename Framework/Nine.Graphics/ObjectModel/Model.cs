@@ -1,33 +1,20 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Markup;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Animations;
-using Nine.Graphics.Materials;
-#endregion
-
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Markup;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Animations;
+    using Nine.Graphics.Materials;
+
     /// <summary>
     /// Defines a basic model that can be rendered using the renderer with a designated material.
     /// </summary>
     [ContentProperty("ModelMeshes")]
-    public class Model : Transformable, IContainer, ISpatialQueryable, IUpdateable, IPickable, IGeometry, ISupportInstancing
+    public class Model : Transformable, IContainer, ISpatialQueryable, Nine.IUpdateable, IPickable, IGeometry, ISupportInstancing
     {
         #region Source
         /// <summary>
@@ -224,6 +211,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the shared skeleton.
         /// When a valid shared skeleton is set, the model will be rendered using this shared skeleton.
+
         /// </summary>
         public Skeleton SharedSkeleton
         {
@@ -492,6 +480,7 @@ namespace Nine.Graphics.ObjectModel
         Material ISupportInstancing.GetMaterial(int subset)
         {
             // Material Lod is not enabled when using instancing.
+
             return modelMeshes[subset].Material ?? Material;
         }
         #endregion

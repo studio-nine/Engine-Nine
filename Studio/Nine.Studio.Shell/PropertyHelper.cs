@@ -1,20 +1,9 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
-#endregion
-
-namespace Nine.Studio.Shell
+﻿namespace Nine.Studio.Shell
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+
     static class PropertyHelper
     {
         public static IEnumerable<PropertyDescriptor> GetBrowsableProperties(object value)

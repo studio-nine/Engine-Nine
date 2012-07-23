@@ -1,19 +1,9 @@
-#region Copyright 2009 - 2010 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-
-#endregion
-
 namespace Nine
 {
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+
+
     /// <summary>
     /// Interface for an object that can be picked by a given ray.
     /// </summary>
@@ -102,6 +92,7 @@ namespace Nine
         /// Intersection".
         /// 
         /// This method is implemented using the pass-by-reference versions of the
+
         /// XNA math functions. Using these overloads is generally not recommended,
         /// because they make the code less readable than the normal pass-by-value
         /// versions. This method can be called very frequently in a tight inner loop,

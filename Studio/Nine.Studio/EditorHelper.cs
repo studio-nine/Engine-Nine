@@ -1,21 +1,11 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Nine.Studio.Extensibility;
-#endregion
-
-namespace Nine.Studio
+﻿namespace Nine.Studio
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using Nine.Studio.Extensibility;
+
     internal static class EditorHelper
     {
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)

@@ -1,15 +1,7 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-
 namespace Nine
 {
+    using System;
+
     /// <summary>
     /// Represents a weak reference, which references an object while still allowing
     //  that object to be reclaimed by garbage collection.

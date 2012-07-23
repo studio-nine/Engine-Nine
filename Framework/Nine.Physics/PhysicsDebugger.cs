@@ -1,19 +1,15 @@
-#region Using Directives
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
-using BEPUphysics;
-#if WINDOWS
-using BEPUphysics.Entities;
-using BEPUphysicsDrawer.Models;
-using BEPUphysicsDrawer.Lines;
-
-#endif
-#endregion
-
 namespace Nine.Physics
 {
+    using System;
+    using BEPUphysics;
+    using BEPUphysics.Entities;
+    using BEPUphysicsDrawer.Lines;
+    using BEPUphysicsDrawer.Models;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
+
+
     class PhysicsDebugger
     {
 #if WINDOWS

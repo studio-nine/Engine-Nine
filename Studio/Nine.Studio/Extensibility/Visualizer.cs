@@ -1,18 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-
-#endregion
-
-namespace Nine.Studio.Extensibility
+﻿namespace Nine.Studio.Extensibility
 {
+    using System;
+
     /// <summary>
     /// Represents an interface that is used to visualize a document of the given type.
     /// </summary>

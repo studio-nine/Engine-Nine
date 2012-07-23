@@ -1,20 +1,11 @@
-#region Copyright 2008 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+
+
     /// <summary>
     /// Contains extension methods for BoundingBox.
     /// </summary>

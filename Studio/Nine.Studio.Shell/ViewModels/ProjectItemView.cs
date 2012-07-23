@@ -1,23 +1,13 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Windows.Input;
-using Nine.Studio.Extensibility;
-using Nine.Studio.Shell.Windows;
-#endregion
-
-namespace Nine.Studio.Shell.ViewModels
+﻿namespace Nine.Studio.Shell.ViewModels
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+
+    using System.Linq;
+    using System.Windows.Input;
+
+
+
     public class ProjectItemView : INotifyPropertyChanged
     {
         public ICommand ShowCommand { get; private set; }

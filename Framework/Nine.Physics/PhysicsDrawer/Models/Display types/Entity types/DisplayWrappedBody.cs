@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using BEPUphysics;
-using BEPUphysics.Collidables.MobileCollidables;
-using BEPUphysics.CollisionShapes.ConvexShapes;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
 namespace BEPUphysicsDrawer.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using BEPUphysics;
+    using BEPUphysics.Collidables.MobileCollidables;
+    using BEPUphysics.CollisionShapes.ConvexShapes;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+
     /// <summary>
     /// Helper class that can create shape mesh data.
     /// </summary>

@@ -1,19 +1,7 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.IO;
-using Microsoft.Xna.Framework.Content.Pipeline;
-#endregion
-
-namespace Nine.Content.Pipeline
+﻿namespace Nine.Content.Pipeline
 {
+    using Microsoft.Xna.Framework.Content.Pipeline;
+
     class PipelineImporterContext : ContentImporterContext
     {
         public PipelineImporterContext()

@@ -1,19 +1,6 @@
-﻿#region Copyright 2008 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2008 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xna.Framework;
-
-namespace Nine.Navigation.Steering.Test
+﻿namespace Nine.Navigation.Steering.Test
 {/*
+
     [TestClass()]
     public class WallAvoidanceTest
     {
