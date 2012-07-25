@@ -6,6 +6,7 @@ namespace Nine.Graphics.ObjectModel
     using System.ComponentModel;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Animations;
     using Nine.Graphics.Materials;
@@ -196,7 +197,11 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the animations.
         /// </summary>
-        public AnimationPlayer Animations { get { return animations ?? (animations = new AnimationPlayer()); } }
+        [ContentSerializerIgnore]
+        public AnimationPlayer Animations 
+        {
+            get { return animations; }
+        }
         private AnimationPlayer animations;
 
         /// <summary>
@@ -211,7 +216,6 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets or sets the shared skeleton.
         /// When a valid shared skeleton is set, the model will be rendered using this shared skeleton.
-
         /// </summary>
         public Skeleton SharedSkeleton
         {
@@ -285,9 +289,9 @@ namespace Nine.Graphics.ObjectModel
             skeleton = null;
             positions = null;
             indices = null;
+            animations = null;
             orientedBoundingBox = new BoundingBox();
             boundingBox = new BoundingBox();
-            animations = new AnimationPlayer();
 
             if (source != null)
             {
@@ -306,8 +310,7 @@ namespace Nine.Graphics.ObjectModel
                 if (animationNames.Count > 0)
                 {
                     animations = new AnimationPlayer();
-                    animationNames.ForEach(anim => animations.Animations.Add(
-                                       anim, new BoneAnimation(Skeleton, source.GetAnimation(anim))));
+                    animationNames.ForEach(anim => animations.Animations.Add(anim, new BoneAnimation(Skeleton, source.GetAnimation(anim))));
                     animations.Play();
                 }
 
@@ -456,13 +459,21 @@ namespace Nine.Graphics.ObjectModel
         #region ISupportInstancing
         int ISupportInstancing.Count
         {
-            get { return modelMeshes.Count; }
+            get { return Math.Max(modelMeshes.Count, 1); }
         }
 
         void ISupportInstancing.GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices)
         {
-            var mesh = modelMeshes[subset];
-            
+            if (modelMeshes.Count <= 0)
+            {
+                // If model meshes are not found, it means we are in content build mode.
+                vertexBuffer = null;
+                vertexOffset = 0;
+                numVertices = 0;
+                return;
+            }
+
+            var mesh = modelMeshes[subset];            
             vertexBuffer = mesh.vertexBuffer;
             vertexOffset = mesh.vertexOffset;
             numVertices = mesh.numVertices;
@@ -470,8 +481,15 @@ namespace Nine.Graphics.ObjectModel
 
         void ISupportInstancing.GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount)
         {
-            var mesh = modelMeshes[subset];
+            if (modelMeshes.Count <= 0)
+            {
+                indexBuffer = null;
+                startIndex = 0;
+                primitiveCount = 0;
+                return;
+            }
 
+            var mesh = modelMeshes[subset];
             indexBuffer = mesh.indexBuffer;
             startIndex = mesh.startIndex;
             primitiveCount = mesh.primitiveCount;
@@ -479,13 +497,12 @@ namespace Nine.Graphics.ObjectModel
 
         Material ISupportInstancing.GetMaterial(int subset)
         {
-            // Material Lod is not enabled when using instancing.
+            if (modelMeshes.Count <= 0)
+                return Material;
 
+            // Material Lod is not enabled when using instancing.
             return modelMeshes[subset].Material ?? Material;
         }
-        #endregion
-
-        #region ISupportInstancing
         #endregion
     }
 }

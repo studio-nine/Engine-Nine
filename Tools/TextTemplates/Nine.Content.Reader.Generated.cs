@@ -156,6 +156,30 @@ namespace Nine
 namespace Nine.Animations
 {
     /// <summary>
+    /// Content reader for <c>AnimationGroup</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AnimationGroupReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.AnimationGroup>
+    {
+        protected override Nine.Animations.AnimationGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationGroup existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new AnimationGroup();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
+            }
+            existingInstance.Repeat = input.ReadInt32();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>AnimationPlayer</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -167,8 +191,202 @@ namespace Nine.Animations
         {
             if (existingInstance == null)
                 existingInstance = new AnimationPlayer();
-            existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IDictionary<System.String, System.Object>>();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Animations.Add(
+                        input.ReadObject<System.String>(),
+                        input.ReadObject<Nine.Animations.IAnimation>());
+            }
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>AnimationSequence</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AnimationSequenceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.AnimationSequence>
+    {
+        protected override Nine.Animations.AnimationSequence Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AnimationSequence existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new AnimationSequence();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
+            }
+            existingInstance.Repeat = input.ReadInt32();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>BooleanAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BooleanAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.BooleanAnimation>
+    {
+        protected override Nine.Animations.BooleanAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.BooleanAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new BooleanAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Boolean>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Boolean>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Boolean>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ByteAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ByteAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.ByteAnimation>
+    {
+        protected override Nine.Animations.ByteAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.ByteAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new ByteAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Byte>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Byte>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Byte>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>CharAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class CharAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.CharAnimation>
+    {
+        protected override Nine.Animations.CharAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.CharAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new CharAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Char>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Char>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Char>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ColorAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ColorAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.ColorAnimation>
+    {
+        protected override Nine.Animations.ColorAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.ColorAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new ColorAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Color>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>DecimalAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DecimalAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.DecimalAnimation>
+    {
+        protected override Nine.Animations.DecimalAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DecimalAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new DecimalAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Decimal>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Decimal>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Decimal>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -185,40 +403,306 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new DelayAnimation();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
     /// <summary>
-    /// Content reader for <c>LayeredAnimation</c>.
+    /// Content reader for <c>DoubleAnimation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class LayeredAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.LayeredAnimation>
+    partial class DoubleAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.DoubleAnimation>
     {
-        protected override Nine.Animations.LayeredAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.LayeredAnimation existingInstance)
+        protected override Nine.Animations.DoubleAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.DoubleAnimation existingInstance)
         {
             if (existingInstance == null)
-                existingInstance = new LayeredAnimation();
-            existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
-            existingInstance.Repeat = input.ReadInt32();
+                existingInstance = new DoubleAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Double>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Double>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Double>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
     /// <summary>
-    /// Content reader for <c>SequentialAnimation</c>.
+    /// Content reader for <c>Int16Animation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class SequentialAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.SequentialAnimation>
+    partial class Int16AnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.Int16Animation>
     {
-        protected override Nine.Animations.SequentialAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SequentialAnimation existingInstance)
+        protected override Nine.Animations.Int16Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Int16Animation existingInstance)
         {
             if (existingInstance == null)
-                existingInstance = new SequentialAnimation();
-            existingInstance.AnimationsSerializer = input.ReadObject<System.Collections.Generic.IList<System.Object>>();
-            existingInstance.Repeat = input.ReadInt32();
+                existingInstance = new Int16Animation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Int16>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Int16>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Int16>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Int32Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class Int32AnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.Int32Animation>
+    {
+        protected override Nine.Animations.Int32Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Int32Animation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Int32Animation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Int32>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Int64Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class Int64AnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.Int64Animation>
+    {
+        protected override Nine.Animations.Int64Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Int64Animation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Int64Animation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Int64>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Int64>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Int64>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>MatrixAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class MatrixAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.MatrixAnimation>
+    {
+        protected override Nine.Animations.MatrixAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.MatrixAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new MatrixAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>PointAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class PointAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.PointAnimation>
+    {
+        protected override Nine.Animations.PointAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.PointAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new PointAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Point>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>QuaternionAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class QuaternionAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.QuaternionAnimation>
+    {
+        protected override Nine.Animations.QuaternionAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.QuaternionAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new QuaternionAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Quaternion>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>RectangleAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class RectangleAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.RectangleAnimation>
+    {
+        protected override Nine.Animations.RectangleAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.RectangleAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new RectangleAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Rectangle>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>SingleAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SingleAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.SingleAnimation>
+    {
+        protected override Nine.Animations.SingleAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.SingleAnimation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new SingleAnimation();
+            existingInstance.From = input.ReadObject<System.Nullable<System.Single>>();
+            existingInstance.To = input.ReadObject<System.Nullable<System.Single>>();
+            existingInstance.By = input.ReadObject<System.Nullable<System.Single>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -249,6 +733,108 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Vector2Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class Vector2AnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.Vector2Animation>
+    {
+        protected override Nine.Animations.Vector2Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Vector2Animation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Vector2Animation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector2>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Vector3Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class Vector3AnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.Vector3Animation>
+    {
+        protected override Nine.Animations.Vector3Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Vector3Animation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Vector3Animation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector3>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Vector4Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class Vector4AnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.Vector4Animation>
+    {
+        protected override Nine.Animations.Vector4Animation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.Vector4Animation existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Vector4Animation();
+            existingInstance.From = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
+            existingInstance.To = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
+            existingInstance.By = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Vector4>>();
+            existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
+            existingInstance.Curve = input.ReadObject<Nine.ICurve>();
+            existingInstance.Duration = input.ReadObject<System.TimeSpan>();
+            existingInstance.TargetProperty = input.ReadObject<System.String>();
+            existingInstance.BeginTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.EndTime = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.AutoReverse = input.ReadBoolean();
+            existingInstance.StartupDirection = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
+            existingInstance.Repeat = input.ReadSingle();
+            existingInstance.Position = input.ReadObject<System.TimeSpan>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }

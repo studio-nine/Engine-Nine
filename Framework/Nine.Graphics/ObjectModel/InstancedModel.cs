@@ -10,12 +10,10 @@ namespace Nine.Graphics.ObjectModel
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Materials.MaterialParts;        
-
-
+    
     #region InstancedModel
     /// <summary>
     /// Defines an instanced model that can be rendered using hardware instancing.
-
     /// </summary>
     [ContentProperty("Template")]
     public class InstancedModel : Transformable, IContainer, ISpatialQueryable, Nine.IUpdateable, IDisposable
@@ -291,7 +289,6 @@ namespace Nine.Graphics.ObjectModel
     #region InstancedModelMesh
     /// <summary>
     /// Defines an instanced model that can be rendered using hardware instancing.
-
     /// </summary>
     class InstancedModelMesh : IDrawableObject
     {

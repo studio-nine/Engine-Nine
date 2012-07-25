@@ -55,11 +55,11 @@
 		</CustomMaterial>
     </PostEffect>
 
-	<BloomEffect BlurAmount="5" Threshold="0.5"/>
-    <AdoptionEffect />
 
+    <AdoptionEffect />
     <HighDynamicRangeEffect />
-	-->
     <LuminanceChain />
+	-->
+	<BloomEffect BlurAmount="5" Threshold="0.5"/>
     
 </Scene>

@@ -20,11 +20,10 @@
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            var ambientLight = context.AmbientLight;
-            if (ambientLight.version != ambientLightVersion)
+            if (ambientLightVersion != context.ambientLightColorVersion)
             {
-                ambientLightColorParameter.SetValue(ambientLight.Value);
-                ambientLightVersion = ambientLight.version;
+                ambientLightColorParameter.SetValue(context.ambientLightColor);
+                ambientLightVersion = context.ambientLightColorVersion;
             }
             eyePositionParameter.SetValue(context.EyePosition);
         }

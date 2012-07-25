@@ -1,22 +1,12 @@
-#region Copyright 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using System.Windows.Markup;
-using System.Xaml;
-using Microsoft.Xna.Framework.Content;
-using Nine.Content;
-#endregion
-
 namespace Nine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Markup;
+    using System.Xaml;
+    using Microsoft.Xna.Framework.Content;
+    using Nine.Content;
+
     /// <summary>
     /// Defines a basic named object that can be extended using attached properties.
     /// </summary>

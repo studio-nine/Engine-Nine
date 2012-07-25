@@ -91,6 +91,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
+    <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="Content\ContentReflector.cs" />
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
@@ -122,8 +123,8 @@
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
-    <Compile Include="Animations\SequentialAnimation.cs" />
-    <Compile Include="Animations\LayeredAnimation.cs" />
+    <Compile Include="Animations\AnimationSequence.cs" />
+    <Compile Include="Animations\AnimationGroup.cs" />
     <Compile Include="AddHelper.cs" />
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />

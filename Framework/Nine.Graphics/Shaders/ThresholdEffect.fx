@@ -1,25 +1,28 @@
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-
-
-// Pixel shader extracts the brighter areas of an image.
-// This is the first step in applying a bloom postprocess.
-
 sampler TextureSampler : register(s0);
 
+float2 PixelSize;
+
 float Threshold = 0.5f;
+
+static const float KernelOffsets[2] = {-0.5f, 0.5f};
 
 
 float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 {
-    // Look up the original image color.
-    float4 c = tex2D(TextureSampler, texCoord);
-
-    // Adjust it to keep only values brighter than the specified threshold.
-    return max(c - Threshold, 0);
+    float4 color = 0;
+    for (int x = 0; x < 2; x++)
+    {
+        for (int y = 0; y < 2; y++)
+        {
+            float2 Offset = (KernelOffsets[x], KernelOffsets[y]) * PixelSize;
+            color += tex2D(TextureSampler, texCoord + Offset);
+        }
+    }
+    color *= (1.0f / 4.0f);
+    
+    float luminance = dot(color.rgb, float3(0.299f, 0.587f, 0.114f));
+    color.rgb = max(luminance - Threshold, 0);
+    return color;
 }
 
 

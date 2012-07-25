@@ -1,9 +1,3 @@
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-
 float2 Center
 <
     string SasUiDescription =  "Gets or sets the center of the radial blur.";

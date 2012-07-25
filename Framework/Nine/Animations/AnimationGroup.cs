@@ -3,29 +3,27 @@ namespace Nine.Animations
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content;
-
 
     /// <summary>
     /// Contains several animation clips that are played concurrently.
     /// The animation completes when all of its containing animations
     /// had finished playing.
     /// </summary>
-    public class LayeredAnimation : Animation, IEnumerable<IAnimation>
+    [ContentSerializable]
+    [ContentProperty("Animations")]
+    public class AnimationGroup : Animation, IEnumerable<IAnimation>
     {
         /// <summary>
-        /// Gets all the layers in the animation.
+        /// Gets all the animations in the animation group.
         /// </summary>
-        [ContentSerializerIgnore]
-        public IList<IAnimation> Animations { get; private set; }
-
-        [ContentSerializer(ElementName="Animations")]
-        internal IList<object> AnimationsSerializer
+        public IList<IAnimation> Animations
         {
-            get { throw new NotSupportedException(); }
-            set { Animations.Clear(); Animations.AddRange(value.OfType<IAnimation>()); }
+            get { return animations; }
         }
-        
+        private List<IAnimation> animations = new List<IAnimation>();
+
         /// <summary>
         /// Gets or sets the key animation of this LayeredAnimation.
         /// A LayeredAnimation ends either when the last contained 
@@ -48,13 +46,17 @@ namespace Nine.Animations
                 keyAnimation = value;
             }
         }
-
         private IAnimation keyAnimation;
 
         /// <summary>
         /// Gets or sets number of times this animation will be played.
         /// </summary>
-        public int Repeat { get; set; }
+        public int Repeat
+        {
+            get { return repeat; }
+            set { repeat = value; }
+        }
+        private int repeat = 1;
         private int repeatCounter = 0;
 
         /// <summary>
@@ -63,36 +65,29 @@ namespace Nine.Animations
         public event EventHandler Repeated;
 
         /// <summary>
-        /// Creates a new <c>LayeredAnimation</c>.
+        /// Creates a new <c>AnimationGroup</c>.
         /// </summary>
-        public LayeredAnimation() 
+        public AnimationGroup() 
         {
-            Repeat = 1;
-            Animations = new List<IAnimation>();
+            animations = new List<IAnimation>();
         }
 
         /// <summary>
-        /// Creates a new <c>LayeredAnimation</c> then fill each layer
+        /// Creates a new <c>AnimationGroup</c> then fill each layer
         /// with the input animations.
         /// </summary>
-        public LayeredAnimation(IEnumerable<IAnimation> animations)
+        public AnimationGroup(IEnumerable<IAnimation> animations)
         {
-            Repeat = 1;
-            Animations = new List<IAnimation>();
-            foreach (IAnimation animation in animations)
-                Animations.Add(animation);
+            this.animations.AddRange(animations);
         }
 
         /// <summary>
-        /// Creates a new <c>LayeredAnimation</c> then fill each layer
+        /// Creates a new <c>AnimationGroup</c> then fill each layer
         /// with the input animations.
         /// </summary>
-        public LayeredAnimation(params IAnimation[] animations)
+        public AnimationGroup(params IAnimation[] animations)
         {
-            this.Repeat = 1;
-            Animations = new List<IAnimation>();
-            foreach (IAnimation animation in animations)
-                Animations.Add(animation);
+            this.animations.AddRange(animations);
         }
 
         /// <summary>
@@ -101,10 +96,8 @@ namespace Nine.Animations
         protected override void OnStarted()
         {
             repeatCounter = 0;
-
-            for (int i = 0; i < Animations.Count; i++)
-                Animations[i].Play();
-
+            for (int i = 0; i < animations.Count; i++)
+                animations[i].Play();
             base.OnStarted();
         }
 
@@ -113,9 +106,8 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnStopped()
         {
-            for (int i = 0; i < Animations.Count; i++)
-                Animations[i].Stop();
-
+            for (int i = 0; i < animations.Count; i++)
+                animations[i].Stop();
             base.OnStopped();
         }
 
@@ -124,9 +116,8 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnPaused()
         {
-            for (int i = 0; i < Animations.Count; i++)
-                Animations[i].Pause();
-
+            for (int i = 0; i < animations.Count; i++)
+                animations[i].Pause();
             base.OnPaused();
         }
 
@@ -135,9 +126,8 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnResumed()
         {
-            for (int i = 0; i < Animations.Count; i++)
-                Animations[i].Resume();
-
+            for (int i = 0; i < animations.Count; i++)
+                animations[i].Resume();
             base.OnResumed();
         }
 
@@ -148,10 +138,9 @@ namespace Nine.Animations
         {
             if (State == AnimationState.Playing)
             {
-                for (int i = 0; i < Animations.Count; i++)
+                for (int i = 0; i < animations.Count; i++)
                 {
-                    IUpdateable update = Animations[i] as IUpdateable;
-
+                    IUpdateable update = animations[i] as IUpdateable;
                     if (update != null)
                         update.Update(elapsedTime);
                 }
@@ -164,9 +153,9 @@ namespace Nine.Animations
                 }
                 else
                 {
-                    for (int i = 0; i < Animations.Count; i++)
+                    for (int i = 0; i < animations.Count; i++)
                     {
-                        if (Animations[i].State != AnimationState.Stopped)
+                        if (animations[i].State != AnimationState.Stopped)
                         {
                             allStopped = false;
                         }
@@ -183,8 +172,8 @@ namespace Nine.Animations
                     }
                     else
                     {
-                        for (int i = 0; i < Animations.Count; i++)
-                            Animations[i].Play();
+                        for (int i = 0; i < animations.Count; i++)
+                            animations[i].Play();
                         OnRepeated();
                     }
                 }
@@ -196,8 +185,9 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnRepeated()
         {
-            if (Repeated != null)
-                Repeated(this, EventArgs.Empty);
+            var repeated = Repeated;
+            if (repeated != null)
+                repeated(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -205,12 +195,12 @@ namespace Nine.Animations
         /// </summary>
         public IEnumerator<IAnimation> GetEnumerator()
         {
-            return Animations.GetEnumerator();
+            return animations.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return Animations.GetEnumerator();
+            return animations.GetEnumerator();
         }
     }
 }

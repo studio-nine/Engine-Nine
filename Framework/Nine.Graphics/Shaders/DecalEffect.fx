@@ -1,11 +1,3 @@
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-
-
-// Input parameters.
 float4x4 viewProjection;
 float4x4 TextureTransform;
 

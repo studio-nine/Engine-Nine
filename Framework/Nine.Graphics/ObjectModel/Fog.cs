@@ -2,8 +2,8 @@ namespace Nine.Graphics.ObjectModel
 {
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
-using Nine.Graphics.Drawing;
 
     /// <summary>
     /// Defines an area of fog.
@@ -11,9 +11,9 @@ using Nine.Graphics.Drawing;
     [ContentSerializable]
     public class Fog : Object, ISceneObject
     {
-        public float Start { get; set; }
-        public float End { get; set; }
-        public Vector3 Color { get; set; }
+        public float FogStart { get; set; }
+        public float FogEnd { get; set; }
+        public Vector3 FogColor { get; set; }
         public bool Enabled { get; set; }
 
         private DrawingContext context;
@@ -23,19 +23,19 @@ using Nine.Graphics.Drawing;
         /// </summary>
         public Fog()
         {
-            Start = MaterialConstants.FogStart;
-            End = MaterialConstants.FogEnd;
+            FogStart = MaterialConstants.FogStart;
+            FogEnd = MaterialConstants.FogEnd;
             Enabled = MaterialConstants.FogEnabled;
-            Color = MaterialConstants.FogColor;
+            FogColor = MaterialConstants.FogColor;
         }
 
         void ISceneObject.OnAdded(DrawingContext context)
         {
             this.context = context;
-            this.context.FogStart = Start;
-            this.context.FogEnd = End;
+            this.context.FogStart = FogStart;
+            this.context.FogEnd = FogEnd;
             this.context.FogEnabled = Enabled;
-            this.context.FogColor = Color;
+            this.context.FogColor = FogColor;
         }
 
         void ISceneObject.OnRemoved(DrawingContext context)

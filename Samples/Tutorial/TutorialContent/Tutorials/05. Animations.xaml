@@ -1,4 +1,5 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
@@ -14,19 +15,28 @@
                 The following animation is a tween animation that changes the alpha property of the tank model.                
                 Note that tween animation can only reference the direct children of the diplay object.
             -->
-            <SingleAnimation x:Key="Animation1" TargetProperty="['Tank'].Alpha"
-			                 From="1" To="0" Curve="Sin" Repeat="999999" Easing="In" AutoReverse="True" />
+            <SingleAnimation x:Key="Animation1" TargetProperty="['Tank'].Material.Alpha"
+			                 From="1" To="0" Curve="{x:Static Curves.Sin}" Repeat="999999" Easing="In" AutoReverse="True" />
         </DrawingGroup.Animations>
         
         <!-- To enable animation, you have to give the object a name -->
-        <Model Name="Tank" Source="{ContentReference ../Models/Tank}" />
-
+        <Model Name="Tank" Source="{ContentReference ../Models/Tank}">
+            <Model.Material>
+                <BasicMaterial />
+            </Model.Material>
+        </Model>
+        
         <!-- Drawing group can also be nested to create a transform hierarchy. -->
-        <DrawingGroup Position="-10, 0, 0" Name="NestedObject">
+        <DrawingGroup Transform.Position="-10,0,0" Name="NestedObject">
 
-            <Model Name="Dude" Model="{ContentReference ../Models/Dude}" />
-            <Model Name="Dude2" Model="{ContentReference ../Models/Dude}"/>
-            <Model Name="Tree"  Model="{ContentReference ../Models/AlphaPalm}" />
+            <Model Name="Dude" Source="{ContentReference ../Models/Dude}">
+                <Model.Material>
+                    <SkinnedMaterial />
+                </Model.Material>
+            </Model>
+            
+            <Model Name="Dude2" Transform.Position="0,0,-10" Source="{ContentReference ../Models/Dude}"/>
+            <Model Name="Tree" Transform.Position="0,0,10"  Source="{ContentReference ../Models/AlphaPalm}" />
 
             <!--
             <Camera Name="MyCamera" />
@@ -35,36 +45,44 @@
                 model to the right hand of the dude model. You can also adjust the bind transform.
             -->
             <DrawingGroup.TransformBindings>
-                <TransformBinding Source="MyCamera" Target="Dude" TargetBone="R_Hand" />
-                <TransformBinding Source="Dude2" Target="Dude" ShareSkeleton="True" Position="-5, 0, 0" />
-                <TransformBinding Source="Tree" Target="Dude" TargetBone="R_Hand"
+                <!--
+                <TransformBinding Source="{x:Reference MyCamera}" Target="{x:Reference Dude}" TargetBone="R_Hand" />
+                <TransformBinding Source="{x:Reference Dude2}" Target="{x:Reference Dude}" ShareSkeleton="True" Position="-5, 0, 0" />
+                <TransformBinding Source="{x:Reference Tree}" Target="{x:Reference Dude}" TargetBone="R_Hand"
                                   Scale="0.25, 0.25, 0.25" Position="0.2, 0.3, -0.6" Rotation="15, 15, 0" />
+                -->
             </DrawingGroup.TransformBindings>
 
             <DrawingGroup.Animations>                
                 <!--
-                    LayeredAnimation plays the contained animations in parallel while SequentialAnimation 
+                    AnimationGroup plays the contained animations in parallel while AnimationSequence 
                     plays them one by one.
                 -->
-                <LayeredAnimation x:Key="Default">                    
-                    <SequentialAnimation Repeat="999999">
-                        <SingleAnimation TargetProperty="['Dude'].Alpha" To="0" />
+                <AnimationGroup x:Key="Default">                    
+                    <AnimationSequence Repeat="999999">
+                        <SingleAnimation TargetProperty="['Dude'].Material.Alpha" To="0" />
                         <DelayAnimation Duration="00:00:01" />
                         <!--
                             If from is not specified, the animation will use the current value of the target
                             property as the starting value.
                         -->
-                        <SingleAnimation TargetProperty="['Dude'].Alpha" To="1" />
-                    </SequentialAnimationContent>
+                        <SingleAnimation TargetProperty="['Dude'].Material.Alpha" To="1" />
+                    </AnimationSequence>
                     
                     <!-- 
                         A transform animation is designed to manipulate transforms. You can write a transform
                         using the format "Scale;Rotation;Translation"
                     -->
-                    <TransformAnimation TargetProperty="['Dude'].Transform" Repeat="99999999" Duration="00:00:05"
-                                        From=";" To=";0, 0, 360"/>
-                </LayeredAnimation>                
-            </DrawingGroup.Animations>            
+                    <MatrixAnimation TargetProperty="['Dude'].Transform" Repeat="99999999" Duration="00:00:05">
+                        <MatrixAnimation.From>
+                            <Transform />
+                        </MatrixAnimation.From>
+                        <MatrixAnimation.To>
+                            <Transform RotationY="{Degrees 180}" />
+                        </MatrixAnimation.To>
+                    </MatrixAnimation>
+                </AnimationGroup>
+            </DrawingGroup.Animations> 
         </DrawingGroup>
     </DrawingGroup>
 </Scene>

@@ -174,7 +174,11 @@
 
             var member = xamlSerializer.Members.Pop();
             if (xamlSerializer.MarkupExtensions.Count > 0)
-                XamlSerializer.SerializationData.Add(new PropertyInstance(currentObject, member.Name), xamlSerializer.MarkupExtensions.Pop());
+            {
+                var markupExtension = xamlSerializer.MarkupExtensions.Pop();
+                if (markupExtension != null && markupExtension.GetType().IsDefined(typeof(ContentSerializableAttribute), false))
+                    XamlSerializer.SerializationData.Add(new PropertyInstance(currentObject, member.Name), markupExtension);
+            }
         }
 
         protected override bool OnSetValue(object eventSender, XamlMember member, object value)

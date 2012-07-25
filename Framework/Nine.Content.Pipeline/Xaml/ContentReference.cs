@@ -6,6 +6,7 @@
     /// <summary>
     /// Defines a markup extension to reference external content.
     /// </summary>
+    [ContentSerializable]
     [ContentProperty("AssetNameName")]
     public class ContentReference : MarkupExtension
     {

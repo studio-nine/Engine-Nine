@@ -28,5 +28,19 @@
 			</MaterialGroup>
 		</Cross>
 	</InstancedModel>
+    
+    <InstancedModel Transform.Position="-64, 0, -64">
+        <DistributionMap.DistributionMap>
+            <DistributionMap Step="0.25" Density="20" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
+        </DistributionMap.DistributionMap>
+        <Model Source="{ContentReference ../Models/Dude}">
+            <Model.Material>
+                <MaterialGroup Texture="{ContentReference ../Textures/grass}">
+                    <DiffuseMaterialPart />
+                    <DirectionalLightMaterialPart />
+                </MaterialGroup>
+            </Model.Material>
+        </Model>
+    </InstancedModel>
 	
 </Scene>

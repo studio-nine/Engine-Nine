@@ -2,8 +2,7 @@ namespace Nine
 {
     using System;
     using Microsoft.Xna.Framework;
-
-
+    
     /// <summary>
     /// Represents a 2d curve.
     /// </summary>

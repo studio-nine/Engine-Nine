@@ -33,8 +33,7 @@
         {
             Passes.Add(new PostEffectChain());
             Passes.Add(new PostEffectChain(BlendState.Additive,
-                new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
-                new PostEffect() { Material = threshold = new ThresholdMaterial(graphics) },
+                new PostEffect() { Material = threshold = new ThresholdMaterial(graphics), RenderTargetScale = 0.5f },
                 new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }

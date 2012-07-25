@@ -1,33 +1,22 @@
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Nightin Games. All Rights Reserved.
-//
-//  Written By  : Mahdi Khodadadi Fard.
-//  Date        : 2010-Feb-19
-//  Edit        : -
-//=============================================================================
+sampler TextureSampler : register(s0);
 
-float2    pixelSize;
-
-sampler2D PointSampler0 : register(s0);
+float2 PixelSize;
 
 static const float KernelOffsets[4] = {-1.5f, -0.5f, 0.5f, 1.5f};
 
-float4 SoftwareScale4x4PS(float2 TexCoord : TEXCOORD0) : COLOR0
+float4 SoftwareScale4x4PS(float2 texCoord:TEXCOORD0) : COLOR0
 {
-    float4 Color = 0;
+    float4 color = 0;
     for (int x = 0; x < 4; x++)
     {
         for (int y = 0; y < 4; y++)
         {
-            float2 Offset = (KernelOffsets[x], KernelOffsets[y]) * pixelSize;
-            Color += tex2D(PointSampler0, TexCoord + Offset);;
+            float2 Offset = (KernelOffsets[x], KernelOffsets[y]) * PixelSize;
+            color += tex2D(TextureSampler, texCoord + Offset);
         }
     }
-
-    Color /= 16.0f;
-    
-    return Color;
+    color *= (1.0f / 16.0f);
+    return color;
 }
 
 technique Scale4x4

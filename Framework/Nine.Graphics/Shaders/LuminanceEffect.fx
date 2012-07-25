@@ -1,13 +1,3 @@
-//=============================================================================
-//
-//  Copyright 2009 - 2010 (c) Engine Nine. All Rights Reserved.
-//
-//  Written By  : Mahdi Khodadadi Fard.
-//  Date        : 2010-Feb-19
-//  Edit        : -
-//=============================================================================
-
-
 float2  halfPixel;
 sampler Sampler : register(s0);
 

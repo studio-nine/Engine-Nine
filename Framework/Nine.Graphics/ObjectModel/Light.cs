@@ -1,14 +1,14 @@
 namespace Nine.Graphics.ObjectModel
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-using System.Windows.Markup;
+    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
-using System;
 
     /// <summary>
     /// Defines a base class for a light used by the render system.
@@ -16,6 +16,7 @@ using System;
     [ContentProperty("Shadow")]
     public abstract class Light : Transformable, ISceneObject
     {
+        #region Properties
         /// <summary>
         /// Gets whether the light is enabled.
         /// </summary>
@@ -47,6 +48,13 @@ using System;
         }
 
         /// <summary>
+        /// Keeps track of the owner drawing context.
+        /// </summary>
+        protected DrawingContext Context { get; private set; }
+        #endregion
+
+        #region Shadow
+        /// <summary>
         /// Gets or sets whether the light should cast a shadow.
         /// </summary>
         public bool CastShadow
@@ -72,14 +80,16 @@ using System;
                             throw new InvalidOperationException();
                         shadow.Light = null;
                         shadow.Dispose();
-                        Context.MainPass.Passes.Remove(shadow);
+                        if (Context != null)
+                            Context.MainPass.Passes.Remove(shadow);
                     }
                     shadow = value;
                     if (shadow != null)
                     {
                         if (shadow.Light != null)
                             throw new InvalidOperationException();
-                        Context.MainPass.Passes.Insert(0, shadow);
+                        if (Context != null)
+                            Context.MainPass.Passes.Insert(0, shadow);
                         shadow.Light = this;
                     }
                 }
@@ -95,12 +105,9 @@ using System;
             get { return shadowFrustum; } 
         }
         private BoundingFrustum shadowFrustum;
-        
-        /// <summary>
-        /// Keeps track of the owner drawing context.
-        /// </summary>
-        protected DrawingContext Context { get; private set; }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="Light"/> class.
         /// </summary>
@@ -167,10 +174,10 @@ using System;
         public abstract bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum);
 
         /// <summary>
-        /// Draws the light frustum using Settings.Debug.LightFrustumColor.
-
+        /// Draws the light frustum using Settings.Debug.LightFrustumColor
         /// </summary>
         public virtual void DrawFrustum(DrawingContext context) { }
+        #endregion
     }
 
     /// <summary>

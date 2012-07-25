@@ -3,32 +3,57 @@ namespace Nine.Animations
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content;
-
-
+    
     /// <summary>
     /// Contains several animation clips that are played one after another.
     /// The animation completes when the last animation has finished playing.
     /// </summary>
-    public class SequentialAnimation : Animation, IEnumerable<IAnimation>
+    [ContentSerializable]
+    [ContentProperty("Animations")]
+    public class AnimationSequence : Animation, IEnumerable<IAnimation>
     {
         /// <summary>
-        /// Gets all the layers in the animation.
+        /// Gets all the animations in the animation sequence.
         /// </summary>
-        [ContentSerializerIgnore]
-        public IList<IAnimation> Animations { get; private set; }
-
-        [ContentSerializer(ElementName = "Animations")]
-        internal IList<object> AnimationsSerializer
+        public IList<IAnimation> Animations
         {
-            get { throw new NotSupportedException(); }
-            set { Animations.Clear(); Animations.AddRange(value.OfType<IAnimation>()); }
+            get { return animations; }
+        }
+        private List<IAnimation> animations = new List<IAnimation>();
+
+        /// <summary>
+        /// Gets the index of the current animation clip been played.
+        /// </summary>
+        public int CurrentIndex
+        {
+            get { return currentIndex; }
+        }
+        private int currentIndex;
+
+        /// <summary>
+        /// Gets the current animation clip been played
+        /// </summary>
+        public IAnimation Current
+        {
+            get
+            {
+                if (currentIndex >= 0 && currentIndex < animations.Count)
+                    return animations[currentIndex];
+                return null;
+            }
         }
 
         /// <summary>
         /// Gets or sets number of times this animation will be played.
         /// </summary>
-        public int Repeat { get; set; }
+        public int Repeat
+        {
+            get { return repeat; }
+            set { repeat = value; }
+        }
+        private int repeat = 1;
         private int repeatCounter = 0;
         
         /// <summary>
@@ -37,53 +62,27 @@ namespace Nine.Animations
         public event EventHandler Repeated;
 
         /// <summary>
-        /// Creates a new <c>SequentialAnimation</c>.
+        /// Creates a new <c>AnimationSequence</c>.
         /// </summary>
-        public SequentialAnimation()
+        public AnimationSequence()
         {
-            Repeat = 1;
-            Animations = new List<IAnimation>();
+
         }
 
         /// <summary>
-        /// Creates a new <c>SequentialAnimation</c> with the specified animations.
+        /// Creates a new <c>AnimationSequence</c> with the specified animations.
         /// </summary>
-        public SequentialAnimation(IEnumerable<IAnimation> animations)
+        public AnimationSequence(IEnumerable<IAnimation> animations)
         {
-            Repeat = 1;
-            Animations = new List<IAnimation>();
-            foreach (IAnimation animation in animations)
-                Animations.Add(animation);
+            this.animations.AddRange(animations);
         }
         
         /// <summary>
-        /// Creates a new <c>SequentialAnimation</c> with the specified animations.
+        /// Creates a new <c>AnimationSequence</c> with the specified animations.
         /// </summary>
-        public SequentialAnimation(params IAnimation[] animations)
+        public AnimationSequence(params IAnimation[] animations)
         {
-            Repeat = 1;
-            Animations = new List<IAnimation>();
-            foreach (IAnimation animation in animations)
-                Animations.Add(animation);
-        }
-
-        /// <summary>
-        /// Gets the index of the current animation clip been played.
-        /// </summary>
-        public int CurrentIndex { get; private set; }
-
-        /// <summary>
-        /// Gets the current animation clip been played
-        /// </summary>
-        public IAnimation Current 
-        {
-            get
-            {
-                if (CurrentIndex >= 0 && CurrentIndex < Animations.Count)
-                    return Animations[CurrentIndex];
-
-                return null;
-            }
+            this.animations.AddRange(animations);
         }
 
         /// <summary>
@@ -91,12 +90,10 @@ namespace Nine.Animations
         /// </summary>
         public void Play(IAnimation animation)
         {
-            int index = Animations.IndexOf(animation);
-
+            int index = animations.IndexOf(animation);
             if (index < 0)
                 throw new ArgumentOutOfRangeException(
-                    "The specified animation must be added to this animation.");
-            
+                    "The specified animation must be added to this animation.");            
             Play(index);
         }
 
@@ -117,7 +114,7 @@ namespace Nine.Animations
             if (CurrentIndex != index && Current != null)
                 Current.Stop();
 
-            CurrentIndex = index;
+            currentIndex = index;
 
             if (Current != null)
                 Current.Play();
@@ -143,7 +140,7 @@ namespace Nine.Animations
             if (Current != null)
             {
                 Current.Stop();
-                CurrentIndex = 0;
+                currentIndex = 0;
             }
 
             base.OnStopped();
@@ -184,11 +181,9 @@ namespace Nine.Animations
                 if (update != null)
                     update.Update(elapsedTime);
 
-
-                if (Current != null &&
-                    Current.State != AnimationState.Playing)
+                if (Current != null && Current.State != AnimationState.Playing)
                 {
-                    CurrentIndex++;
+                    currentIndex++;
 
                     if (CurrentIndex < Animations.Count)
                         Current.Play();
@@ -216,8 +211,9 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnRepeated()
         {
-            if (Repeated != null)
-                Repeated(this, EventArgs.Empty);
+            var repeated = Repeated;
+            if (repeated != null)
+                repeated(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -225,12 +221,12 @@ namespace Nine.Animations
         /// </summary>
         public IEnumerator<IAnimation> GetEnumerator()
         {
-            return Animations.GetEnumerator();
+            return animations.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return Animations.GetEnumerator();
+            return animations.GetEnumerator();
         }
     }
 }

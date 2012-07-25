@@ -5,7 +5,7 @@ namespace Nine.Animations
     /// <summary>
     /// Base class for all playable animations.
     /// </summary>
-    public abstract class Animation : IUpdateable, IAnimation
+    public abstract class Animation : Nine.Object, IUpdateable, IAnimation
     {
         /// <summary>
         /// Gets the current state of the animation.
@@ -64,8 +64,9 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnStarted()
         {
-            if (Started != null)
-                Started(this, EventArgs.Empty);
+            var started = Started;
+            if (started != null)
+                started(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -73,8 +74,9 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnStopped()
         {
-            if (Stopped != null)
-                Stopped(this, EventArgs.Empty);
+            var stopped = Started;
+            if (stopped != null)
+                stopped(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -82,8 +84,9 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnPaused()
         {
-            if (Paused != null)
-                Paused(this, EventArgs.Empty);
+            var paused = Started;
+            if (paused != null)
+                paused(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -91,14 +94,16 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnResumed()
         {
-            if (Resumed != null)
-                Resumed(this, EventArgs.Empty);
+            var resumed = Started;
+            if (resumed != null)
+                resumed(this, EventArgs.Empty);
         }
 
         protected virtual void OnCompleted()
         {
-            if (Completed != null)
-                Completed(this, EventArgs.Empty);
+            var completed = Started;
+            if (completed != null)
+                completed(this, EventArgs.Empty);
         }
 
         /// <summary>

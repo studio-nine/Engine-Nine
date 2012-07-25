@@ -136,6 +136,5 @@ namespace Nine.Graphics.Drawing
         /// </param>
         public abstract void Draw(DrawingContext context, IList<IDrawableObject> drawables);
         #endregion
-
     }
 }

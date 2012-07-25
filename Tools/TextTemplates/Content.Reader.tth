@@ -102,6 +102,19 @@ namespace <#= namespaceGroup.Key #>
             }
 <#
         }
+        else if (IsDictionary(memberType) && !CanSet(member) && !HasContentSerializerAttribute(member))
+        {
+            var dictionaryType = GetDictionaryType(memberType);
+#>
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.<#= member.Name #>.Add(
+                        input.ReadObject<<#= GetClassFullName(dictionaryType[0]) #>>(),
+                        input.ReadObject<<#= GetClassFullName(dictionaryType[1]) #>>());
+            }
+<#
+        }
         else
         {
 #>

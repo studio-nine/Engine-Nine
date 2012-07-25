@@ -322,6 +322,48 @@ namespace Nine.Content.Pipeline
 namespace Nine.Content.Pipeline.Animations
 {
     /// <summary>
+    /// Content writer for <c>AnimationGroup</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class AnimationGroupWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.AnimationGroup>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.AnimationGroup value)
+        {
+            {
+                output.Write(value.Animations.Count);
+                for (var i = 0; i < value.Animations.Count; i++)
+                    output.WriteObject(value.Animations[i]);
+            }
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.AnimationGroupReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.AnimationGroup, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>AnimationPlayer</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -332,8 +374,14 @@ namespace Nine.Content.Pipeline.Animations
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.AnimationPlayer value)
         {
-            WriteObject(output, value, "AnimationsSerializer", value.AnimationsSerializer);
-            WriteObject(output, value, "Tag", value.Tag);
+            {
+                output.Write(value.Animations.Count);
+                foreach (var pair in value.Animations)
+                {
+                    output.WriteObject(pair.Key);
+                    output.WriteObject(pair.Value);
+                }
+            }
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -357,6 +405,303 @@ namespace Nine.Content.Pipeline.Animations
         }
     }
     /// <summary>
+    /// Content writer for <c>AnimationSequence</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class AnimationSequenceWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.AnimationSequence>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.AnimationSequence value)
+        {
+            {
+                output.Write(value.Animations.Count);
+                for (var i = 0; i < value.Animations.Count; i++)
+                    output.WriteObject(value.Animations[i]);
+            }
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.AnimationSequenceReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.AnimationSequence, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>BooleanAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BooleanAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.BooleanAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.BooleanAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.BooleanAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.BooleanAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ByteAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ByteAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.ByteAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.ByteAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.ByteAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.ByteAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>CharAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class CharAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.CharAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.CharAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.CharAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.CharAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ColorAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ColorAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.ColorAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.ColorAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.ColorAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.ColorAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>DecimalAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DecimalAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.DecimalAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.DecimalAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.DecimalAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.DecimalAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>DelayAnimation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -368,6 +713,9 @@ namespace Nine.Content.Pipeline.Animations
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.DelayAnimation value)
         {
             WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -391,18 +739,34 @@ namespace Nine.Content.Pipeline.Animations
         }
     }
     /// <summary>
-    /// Content writer for <c>LayeredAnimation</c>.
+    /// Content writer for <c>DoubleAnimation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class LayeredAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.LayeredAnimation>
+    partial class DoubleAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.DoubleAnimation>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.LayeredAnimation value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.DoubleAnimation value)
         {
-            WriteObject(output, value, "AnimationsSerializer", value.AnimationsSerializer);
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
             output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -417,27 +781,43 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.LayeredAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.DoubleAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.LayeredAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.DoubleAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
-    /// Content writer for <c>SequentialAnimation</c>.
+    /// Content writer for <c>Int16Animation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class SequentialAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.SequentialAnimation>
+    partial class Int16AnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.Int16Animation>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.SequentialAnimation value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.Int16Animation value)
         {
-            WriteObject(output, value, "AnimationsSerializer", value.AnimationsSerializer);
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
             output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -452,12 +832,369 @@ namespace Nine.Content.Pipeline.Animations
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.SequentialAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.Int16AnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Animations.SequentialAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Animations.Int16Animation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>Int32Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class Int32AnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.Int32Animation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.Int32Animation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Int32AnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Int32Animation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>Int64Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class Int64AnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.Int64Animation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.Int64Animation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Int64AnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Int64Animation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>MatrixAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class MatrixAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.MatrixAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.MatrixAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.MatrixAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.MatrixAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>PointAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class PointAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.PointAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.PointAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.PointAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.PointAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>QuaternionAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class QuaternionAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.QuaternionAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.QuaternionAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.QuaternionAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.QuaternionAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>RectangleAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class RectangleAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.RectangleAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.RectangleAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.RectangleAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.RectangleAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>SingleAnimation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class SingleAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.SingleAnimation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.SingleAnimation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.SingleAnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.SingleAnimation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -486,6 +1223,9 @@ namespace Nine.Content.Pipeline.Animations
             WriteObject(output, value, "Direction", value.Direction);
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -506,6 +1246,159 @@ namespace Nine.Content.Pipeline.Animations
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Animations.TweenAnimation`1[" + string.Format("[{0}]", typeof(T).AssemblyQualifiedName) + "], Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>Vector2Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class Vector2AnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.Vector2Animation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.Vector2Animation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Vector2AnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Vector2Animation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>Vector3Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class Vector3AnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.Vector3Animation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.Vector3Animation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Vector3AnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Vector3Animation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>Vector4Animation</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class Vector4AnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.Vector4Animation>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.Vector4Animation value)
+        {
+            output.WriteObject(value.From);
+            output.WriteObject(value.To);
+            output.WriteObject(value.By);
+            WriteObject(output, value, "Easing", value.Easing);
+            WriteObject(output, value, "Curve", value.Curve);
+            WriteObject(output, value, "Duration", value.Duration);
+            WriteObject(output, value, "TargetProperty", value.TargetProperty);
+            output.WriteObject(value.BeginTime);
+            output.WriteObject(value.EndTime);
+            output.Write(value.Speed);
+            output.Write(value.AutoReverse);
+            WriteObject(output, value, "StartupDirection", value.StartupDirection);
+            WriteObject(output, value, "Direction", value.Direction);
+            output.Write(value.Repeat);
+            WriteObject(output, value, "Position", value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Vector4AnimationReader, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Animations.Vector4Animation, Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

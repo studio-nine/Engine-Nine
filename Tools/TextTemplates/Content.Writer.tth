@@ -68,6 +68,19 @@ namespace <#= namespaceGroup.Key #>
             }
 <#
         }
+        else if (IsDictionary(memberType) && !CanSet(member) && !HasContentSerializerAttribute(member))
+        {
+#>
+            {
+                output.Write(value.<#= member.Name #>.Count);
+                foreach (var pair in value.<#= member.Name #>)
+                {
+                    output.WriteObject(pair.Key);
+                    output.WriteObject(pair.Value);
+                }
+            }
+<#
+        }
         else if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
 #>

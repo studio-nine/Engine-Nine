@@ -18,16 +18,14 @@
     {
         private RenderTarget2D lastFrame;
         private RenderTarget2D currentFrame;
-        private AdoptionMaterial adoptionMaterial;
+        private AdoptionMaterial adoptionMaterial;        
         private BasicMaterial basicMaterial;
 
         /// <summary>
         /// Get or sets the speed of the adoptation.
         /// </summary>
         public float Speed { get; set; }
-
-        public Vector3 InitialColor { get; set; }
-
+        
         /// <summary>
         /// Creates a new instance of <c>AdoptationEffect</c>.
         /// </summary>
@@ -39,6 +37,7 @@
 
         public override void GetActivePasses(IList<Pass> result)
         {
+            // Enable this adoption effect even when Material is set to null.
             if (Enabled)
                 result.Add(this);
         }
@@ -67,11 +66,20 @@
                     currentFrame.Begin();
                 }
 
-                context.GraphicsDevice.Textures[1] = lastFrame;
-                context.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+                // Disable the adoption effect when we don't have a valid last frame texture
+                // or when the adoption effect has been suspended for several frames.
+                if (lastFrame == null || lastFrame.IsDisposed || lastFrame.IsContentLost)
+                {
+                    CopyToScreen(context, drawables);
+                }
+                else
+                {
+                    context.GraphicsDevice.Textures[1] = lastFrame;
+                    context.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
 
-                adoptionMaterial.effect.delta.SetValue(context.ElapsedSeconds * Speed);
-                base.Draw(context, drawables);
+                    adoptionMaterial.effect.Delta.SetValue(context.ElapsedSeconds * Speed);
+                    base.Draw(context, drawables);
+                }
             }
             finally
             {
@@ -79,18 +87,29 @@
                 {
                     currentFrame.End();
 
-                    InputTexture = currentFrame;                    
-                    if (basicMaterial == null)
-                        basicMaterial = new BasicMaterial(context.GraphicsDevice);
-                    Material = basicMaterial;
-                    base.Draw(context, drawables);
-                    Material = adoptionMaterial;
+                    InputTexture = currentFrame;
+                    CopyToScreen(context, drawables);
                 }
 
                 RenderTargetPool.Unlock(lastFrame);
                 lastFrame = currentFrame;
-                currentFrame = null;
+                currentFrame = null;                
             }            
+        }
+
+        private void CopyToScreen(DrawingContext context, IList<IDrawableObject> drawables)
+        {
+            try
+            {
+                if (basicMaterial == null)
+                    basicMaterial = new BasicMaterial(context.GraphicsDevice);
+                Material = basicMaterial;
+                base.Draw(context, drawables);
+            }
+            finally
+            {
+                Material = adoptionMaterial;
+            }
         }
     }
 #endif

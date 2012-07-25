@@ -474,8 +474,7 @@ namespace Nine.Graphics
         #region Update & Draw
         private void UpdateCamera(TimeSpan elapsedTime)
         {
-            IUpdateable updateable;
-            updateable = camera as IUpdateable;
+            var updateable = camera as Nine.IUpdateable;
             if (updateable != null)
                 updateable.Update(elapsedTime);
         }
@@ -499,14 +498,12 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Updates and draws all the drawable objects in the scene with the specified camera setting using the
-
         /// specified material.
         /// </summary>
         public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection, Material material)
         {
             Context.Draw(elapsedTime, drawables, view, projection);
         }
-            var updateable = camera as Nine.IUpdateable;
         #endregion
 
         #region Dispose

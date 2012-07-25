@@ -1,9 +1,3 @@
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-
 float4x4 worldView;
 float4x4 Projection;
 float4x4 projectionInverse;

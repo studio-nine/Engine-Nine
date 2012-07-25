@@ -5,34 +5,131 @@ namespace Nine.Content.Pipeline.Xaml
     using System.Text;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
+    using Nine.Content.Pipeline.Design;
 
     /// <summary>
     /// Defines a markup extension that constructs a 3D transform from scale,
     /// rotation and translation components.
     /// </summary>
     [MarkupExtensionReturnType(typeof(Matrix))]
-    [TypeConverter(typeof(Nine.Content.Pipeline.Design.TransformConverter))]
+    [TypeConverter(typeof(TransformConverter))]
     public class Transform : MarkupExtension, IEquatable<Transform>
     {
         /// <summary>
-        /// Gets or sets the scale.
+        /// Gets or sets scale on x, y, z axis.
         /// </summary>
-        public Vector3 Scale { get; set; }
+        public Vector3 Scale
+        {
+            get { return scale; }
+            set { scale = value; }
+        }
+        private Vector3 scale;
+
+        /// <summary>
+        /// Gets or sets scale on x axis.
+        /// </summary>
+        public float ScaleX
+        {
+            get { return scale.X; }
+            set { scale.X = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets scale on y axis.
+        /// </summary>
+        public float ScaleY
+        {
+            get { return scale.Y; }
+            set { scale.Y = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets scale on z axis.
+        /// </summary>
+        public float ScaleZ
+        {
+            get { return scale.Z; }
+            set { scale.Z = value; }
+        }
         
         /// <summary>
         /// Gets or sets rotation on x, y, z axis.
         /// </summary>
-        public Vector3 Rotation { get; set; }
+        public Vector3 Rotation 
+        {
+            get { return rotation; }
+            set { rotation = value; }
+        }
+        private Vector3 rotation;
+
+        /// <summary>
+        /// Gets or sets rotation on x axis.
+        /// </summary>
+        public float RotationX
+        {
+            get { return rotation.X; }
+            set { rotation.X = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets rotation on y axis.
+        /// </summary>
+        public float RotationY
+        {
+            get { return rotation.Y; }
+            set { rotation.Y = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets rotation on z axis.
+        /// </summary>
+        public float RotationZ
+        {
+            get { return rotation.Z; }
+            set { rotation.Z = value; }
+        }
 
         /// <summary>
         /// Gets or sets the order of rotation.
         /// </summary>
         public RotationOrder RotationOrder { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the translation
+        /// Gets or sets position on x, y, z axis.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public Vector3 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+        private Vector3 position;
+
+        /// <summary>
+        /// Gets or sets position on x axis.
+        /// </summary>
+        public float PositionX
+        {
+            get { return position.X; }
+            set { position.X = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets position on y axis.
+        /// </summary>
+        public float PositionY
+        {
+            get { return position.Y; }
+            set { position.Y = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets position on z axis.
+        /// </summary>
+        public float PositionZ
+        {
+            get { return position.Z; }
+            set { position.Z = value; }
+        }
 
         /// <summary>
         /// Gets the identity transform.

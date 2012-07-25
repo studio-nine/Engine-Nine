@@ -4,60 +4,24 @@ namespace Nine.Animations
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content;
 
     /// <summary>
     /// Represents a basic animation player that can play multiple animation
     /// sequences using different channels.
     /// </summary>
+    [ContentSerializable]
     public class AnimationPlayer : AnimationPlayerChannel
     {
-        Dictionary<object, AnimationPlayerChannel> channels;
-
-        /// <summary>
-        /// Gets the dictionary that stores any animation data.
-        /// </summary>
-        [ContentSerializerIgnore]
-        public IDictionary<string, IAnimation> Animations { get; private set; }
-        
-        [ContentSerializer(ElementName = "Animations")]
-        internal IDictionary<string, object> AnimationsSerializer
-        {
-            get { return null; }
-            set
-            {
-                Animations.Clear();
-                if (value != null)
-                {
-                    foreach (var pair in value)
-                    {
-                        if (pair.Value is IAnimation)
-                            Animations.Add(pair.Key, (IAnimation)pair.Value);
-                    }
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Gets or sets user data.
-        /// </summary>
-        public object Tag { get; set; }
+        private Dictionary<object, AnimationPlayerChannel> channels;
 
         /// <summary>
         /// Creates a new instance of AnimationPlayer.
         /// </summary>
-        public AnimationPlayer()
+        public AnimationPlayer() : base(new Dictionary<string, IAnimation>())
         {
-            this.Animations = new Dictionary<string, IAnimation>();
-            base.SharedAnimations = this.Animations;
-        }
 
-        /// <summary>
-        /// Determines whether this animation player contains an animation with the specified name.
-        /// </summary>
-        public bool Contains(string name)
-        {
-            return Animations.ContainsKey(name);
         }
 
         /// <summary>
@@ -74,27 +38,11 @@ namespace Nine.Animations
 
                 if (!channels.TryGetValue(channelIdentifier, out channel))
                 {
-                    channel = new AnimationPlayerChannel();
-                    channel.SharedAnimations = Animations;
+                    channel = new AnimationPlayerChannel(Animations);
                     channels.Add(channelIdentifier, channel);
                 }
-
                 return channel;
             }
-        }
-
-        /// <summary>
-        /// Called when the animation player has started.
-        /// </summary>
-        protected override void OnStarted()
-        {
-            if (Current == null)
-            {
-                CurrentName = Animations.Keys.FirstOrDefault();
-                if (CurrentName != null)
-                    Current = Animations[CurrentName];
-            }
-            base.OnStarted();
         }
 
         /// <summary>
@@ -115,180 +63,197 @@ namespace Nine.Animations
     /// <summary>
     /// Represents a channel used by <c>AnimationPlayer</c>.
     /// </summary>
+    [ContentProperty("Animations")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class AnimationPlayerChannel : Animation
+    public class AnimationPlayerChannel : IUpdateable, IDictionary<string, IAnimation>
     {
-        internal IDictionary<string, IAnimation> SharedAnimations;
+        /// <summary>
+        /// Gets the dictionary that stores any animation data.
+        /// </summary>
+        public IDictionary<string, IAnimation> Animations
+        {
+            get { return animations; }
+        }
+        private IDictionary<string, IAnimation> animations;
 
         /// <summary>
         /// Gets the name of the current animation.
         /// </summary>
-        public string CurrentName { get; internal set; }
+        public string CurrentName
+        {
+            get { return currentName; }
+        }
+        private string currentName;
 
         /// <summary>
         /// Gets the current animation.
         /// </summary>
-        public IAnimation Current { get; internal set; }
+        public IAnimation Current
+        {
+            get { return current; }
+        }
+        private IAnimation current;
+
+        /// <summary>
+        /// Initializes a new instance of AnimationPlayerChannel.
+        /// </summary>
+        internal AnimationPlayerChannel(IDictionary<string, IAnimation> animations) 
+        {
+            this.animations = animations;
+        }
+
+        /// <summary>
+        /// Plays the first or default animation.
+        /// </summary>
+        /// <returns></returns>
+        public IAnimation Play()
+        {
+            return Play(animations.Values.FirstOrDefault());
+        }
 
         /// <summary>
         /// Plays the animation with the specified name.
         /// </summary>
-        public void Play(string animationName)
+        public IAnimation Play(string animationName)
         {
-            IAnimation current;
+            if (current != null)
+                current.Stop();
+            currentName = null;
 
-            if (!SharedAnimations.TryGetValue(animationName, out current))
+            IAnimation animation;
+            if (animations.TryGetValue(animationName, out animation))
             {
-                throw new KeyNotFoundException(string.Format("Animation not found {0}", animationName));
+                current = animation;
+                currentName = animationName;
+                current.Play();
             }
-
-            if (Current != null)
-                Current.Stop();
-
-            Current = current;
-            CurrentName = animationName;
-
-            Play();
-        }
-
-        /// <summary>
-        /// Tries to play the animation with the specified name.
-        /// </summary>
-        public void TryPlay(string animationName)
-        {
-            IAnimation current;
-
-            if (SharedAnimations.TryGetValue(animationName, out current))
-            {
-
-                if (Current != null)
-                    Current.Stop();
-
-                Current = current;
-                CurrentName = animationName;
-
-                Play();
-            }
+            return animation;
         }
 
         /// <summary>
         /// Plays the specified animation.
         /// </summary>
-        public void Play(IAnimation animation)
+        public IAnimation Play(IAnimation animation)
         {
-            IAnimation current = animation;
-
-            if (Current != null)
-                Current.Stop();
-
-            Current = current;
-            CurrentName = null;
-
-            Play();
+            if (current != null)
+                current.Stop();
+            currentName = null;
+            if (animation != null)
+            {
+                current = animation;
+                current.Play();
+            }
+            return current;
         }
 
         /// <summary>
         /// Plays the specified animation with a delay.
         /// </summary>
-        public void Play(IAnimation animation, TimeSpan delay)
+        public IAnimation Play(IAnimation animation, TimeSpan delay)
         {
-            if (animation == null)
-                throw new ArgumentNullException("animation");
-
-            IAnimation current = animation;
-
-            if (Current != null)
-                Current.Stop();
-
-            Current = new SequentialAnimation(new DelayAnimation(delay), current);
-            CurrentName = null;
-
-            Play();
-        }
-
-        /// <summary>
-        /// Plays the specified animation and adds it to the animation collection.
-        /// </summary>
-        public void Play(string animationName, IAnimation animation)
-        {
-            IAnimation current = animation;
-
-            if (SharedAnimations.ContainsKey(animationName))
-                throw new ArgumentException(
-                    string.Format("An animation with the name {0} already exists.", animationName));
-            
-            if (Current != null)
-                Current.Stop();
-
-            Current = current;
-            CurrentName = animationName;
-
-            Play();
-        }
-
-        /// <summary>
-        /// Plays the animation from start.
-        /// </summary>
-        protected override void OnStarted()
-        {
-            if (Current != null)
+            if (current != null)
+                current.Stop();
+            currentName = null;
+            if (animation != null)
             {
-                Current.Play();
-                base.OnStarted();
+                current = new AnimationSequence(new DelayAnimation(delay), animation);
+                current.Play();
             }
-        }
-
-        /// <summary>
-        /// Pauses the animation.
-        /// </summary>
-        protected override void OnPaused()
-        {
-            if (Current != null)
-            {
-                Current.Pause();
-                base.OnPaused();
-            }
-        }
-
-        /// <summary>
-        /// Stops the animation.
-        /// </summary>
-        protected override void OnStopped()
-        {
-            if (Current != null)
-            {
-                Current.Stop();
-                base.OnStopped();
-            }
-        }
-
-        /// <summary>
-        /// Resumes the animation.
-        /// </summary>
-        protected override void OnResumed()
-        {
-            if (Current != null)
-            {
-                Current.Resume();
-                base.OnResumed();
-            }
+            return current;
         }
 
         /// <summary>
         /// Updates the internal state of the object based on game time.
         /// </summary>
-        public override void Update(TimeSpan elapsedTime)
+        public virtual void Update(TimeSpan elapsedTime)
         {
-            if (Current is IUpdateable && State == AnimationState.Playing)
-            {
-                ((IUpdateable)Current).Update(elapsedTime);
-
-                if (Current.State == AnimationState.Stopped)
-                {
-                    Stop();
-                    OnCompleted();
-                }
-            }
+            var updateable = Current as IUpdateable;
+            if (updateable != null)
+                updateable.Update(elapsedTime);
         }
+
+        #region Dictionary
+        // Implements Dictionary interface to make it more xaml friendly.
+        void IDictionary<string, IAnimation>.Add(string key, IAnimation value)
+        {
+            animations.Add(key, value);
+        }
+
+        bool IDictionary<string, IAnimation>.ContainsKey(string key)
+        {
+            return animations.ContainsKey(key);
+        }
+
+        ICollection<string> IDictionary<string, IAnimation>.Keys
+        {
+            get { return animations.Keys; }
+        }
+
+        bool IDictionary<string, IAnimation>.Remove(string key)
+        {
+            return animations.Remove(key);
+        }
+
+        bool IDictionary<string, IAnimation>.TryGetValue(string key, out IAnimation value)
+        {
+            return animations.TryGetValue(key, out value);
+        }
+
+        ICollection<IAnimation> IDictionary<string, IAnimation>.Values
+        {
+            get { return animations.Values; }
+        }
+
+        IAnimation IDictionary<string, IAnimation>.this[string key]
+        {
+            get { return animations[key]; }
+            set { animations[key] = value; }
+        }
+
+        void ICollection<KeyValuePair<string, IAnimation>>.Add(KeyValuePair<string, IAnimation> item)
+        {
+            ((ICollection<KeyValuePair<string, IAnimation>>)animations).Add(item);
+        }
+
+        void ICollection<KeyValuePair<string, IAnimation>>.Clear()
+        {
+            animations.Clear();
+        }
+
+        bool ICollection<KeyValuePair<string, IAnimation>>.Contains(KeyValuePair<string, IAnimation> item)
+        {
+            return ((ICollection<KeyValuePair<string, IAnimation>>)animations).Contains(item);
+        }
+
+        void ICollection<KeyValuePair<string, IAnimation>>.CopyTo(KeyValuePair<string, IAnimation>[] array, int arrayIndex)
+        {
+            ((ICollection<KeyValuePair<string, IAnimation>>)animations).CopyTo(array, arrayIndex);
+        }
+
+        int ICollection<KeyValuePair<string, IAnimation>>.Count
+        {
+            get { return animations.Count; }
+        }
+
+        bool ICollection<KeyValuePair<string, IAnimation>>.IsReadOnly
+        {
+            get { return false; }
+        }
+
+        bool ICollection<KeyValuePair<string, IAnimation>>.Remove(KeyValuePair<string, IAnimation> item)
+        {
+            return ((ICollection<KeyValuePair<string, IAnimation>>)animations).Remove(item);
+        }
+
+        IEnumerator<KeyValuePair<string, IAnimation>> IEnumerable<KeyValuePair<string, IAnimation>>.GetEnumerator()
+        {
+            return animations.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return animations.GetEnumerator();
+        }
+        #endregion
     }
 }

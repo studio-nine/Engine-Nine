@@ -42,7 +42,7 @@ namespace Nine.Animations
         private PropertyExpression<T> expression;
         private Interpolate<T> lerp;
         private Operator<T> add;
-        private ICurve curve = Curves.Linear;
+        private ICurve curve;
 
         /// <summary>
         /// Gets or sets where the tween starts.
@@ -81,7 +81,7 @@ namespace Nine.Animations
         public ICurve Curve
         {
             get { return curve; }
-            set { curve = value ?? Curves.Linear; }
+            set { curve = value; }
         }
 
         /// <summary>
@@ -137,7 +137,6 @@ namespace Nine.Animations
 
             this.add = add;
             this.Easing = Easing.In;
-            this.Curve = new LinearCurve();
             this.Repeat = 1;
             this.Duration = TimeSpan.FromSeconds(1);
         }
@@ -184,15 +183,16 @@ namespace Nine.Animations
             float percentage = 0;
             float position = (float)(Position.TotalSeconds / Duration.TotalSeconds);
 
+            ICurve evaluator = curve ?? Curves.Linear;
             if (!float.IsNaN(position))
             {
                 switch (Easing)
                 {
                     case Easing.In:
-                        percentage = Curve.Evaluate(position);
+                        percentage = evaluator.Evaluate(position);
                         break;
                     case Easing.Out:
-                        percentage = 1.0f - Curve.Evaluate(1.0f - position);
+                        percentage = 1.0f - evaluator.Evaluate(1.0f - position);
                         break;
                     case Easing.InOut:
                         percentage = position < 0.5f ? (0.5f - Curve.Evaluate(1.0f - position * 2) * 0.5f) :

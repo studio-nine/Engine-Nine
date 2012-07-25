@@ -117,6 +117,9 @@ namespace Nine.Graphics.Drawing
             get { return matrices; }
         }
         internal MatrixCollection matrices;
+
+        internal Vector2 HalfPixel;
+        internal Vector2 PixelSize;
         #endregion
 
         #region Lights
@@ -132,7 +135,6 @@ namespace Nine.Graphics.Drawing
         internal int ambientLightColorVersion;
 
 
-        internal Vector2 HalfPixel;
         /// <summary>
         /// Gets a global sorted collection of directional lights of this <see cref="DrawingContext"/>.
         /// </summary>
@@ -274,8 +276,12 @@ namespace Nine.Graphics.Drawing
             TotalTime += elapsedTime;
 
             var viewport = GraphicsDevice.Viewport;
+
             HalfPixel.X = 0.5f / viewport.Width;
             HalfPixel.Y = 0.5f / viewport.Height;
+
+            PixelSize.X = HalfPixel.X * 2;
+            PixelSize.Y = HalfPixel.Y * 2;
 
             try
             {

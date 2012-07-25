@@ -16,6 +16,7 @@ namespace Nine.Graphics.Materials
         partial void BeginApplyLocalParameters(DrawingContext context, ThresholdMaterial previousMaterial)
         {
             effect.Threshold.SetValue(Threshold);
+            effect.PixelSize.SetValue(context.PixelSize);
         }
     }
 }

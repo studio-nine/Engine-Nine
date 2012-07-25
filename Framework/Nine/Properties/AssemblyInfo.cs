@@ -12,7 +12,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Engine Nine")]
-[assembly: AssemblyCopyright("Copyright © 2009 - 2011 Engine Nine")]
+[assembly: AssemblyCopyright("Copyright © 2009 - 2012 Engine Nine")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -57,4 +57,5 @@ using System.Windows.Markup;
 #if WINDOWS
 [assembly: XmlnsPrefix("http://schemas.microsoft.com/nine/2011/xaml", "nine")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/nine/2011/xaml", "Nine.Animations")]
 #endif

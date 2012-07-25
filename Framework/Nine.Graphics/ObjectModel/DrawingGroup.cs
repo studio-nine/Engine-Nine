@@ -388,18 +388,27 @@ namespace Nine.Graphics.ObjectModel
         }
         #endregion
 
+        #region Level Of Detail
+        /// <summary>
+        /// Gets a collection of objects containing all the detail levels.
+        /// </summary>
+        public IList<object> DetailLevels
+        {
+            get { return detailLevels ?? (detailLevels = new List<object>()); }
+        }
+        private IList<object> detailLevels;
+        #endregion
+
         #region Animations
         /// <summary>
         /// Gets all the animations in this display object.
         /// </summary>
-        [ContentSerializer]
         public AnimationPlayer Animations
         {
             get { return animations; }
-            
-            // For serialization
-            internal set 
+            set 
             {
+                animations.Animations.Clear();
                 if (value != null && value.Animations != null)
                 {
                     UpdateTweenAnimationTargets(value.Animations.Values);
@@ -415,17 +424,6 @@ namespace Nine.Graphics.ObjectModel
         }
 
         private AnimationPlayer animations = new AnimationPlayer();
-        #endregion
-
-        #region Level Of Detail
-        /// <summary>
-        /// Gets a collection of objects containing all the detail levels.
-        /// </summary>
-        public IList<object> DetailLevels
-        {
-            get { return detailLevels ?? (detailLevels = new List<object>()); }
-        }
-        private IList<object> detailLevels;
         #endregion
 
         #region Find

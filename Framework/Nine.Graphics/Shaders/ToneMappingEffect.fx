@@ -36,7 +36,6 @@ float4 PS(float2 TexCoord : TEXCOORD0) : COLOR0
     float4 final = color + bloom;
     
     float4 lum = tex2D( LuminanceSampler, float2( 0.5f, 0.5f ) );
-    return lum;
     float Lp = (Exposure / lum.r) * dot(final, LUM_CONVERT);
     
     float LmSqr = MaxLuminanceSq;

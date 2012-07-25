@@ -72,7 +72,6 @@
       <Name>06. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-      <ProcessorParameters_Debug>True</ProcessorParameters_Debug>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -222,13 +221,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\01. Empty Scene.xaml">
+    <None Include="Tutorials\01. Empty Scene.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>01. Empty Scene</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\Tutorials.manifest">
@@ -283,13 +282,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\10. Post Processing.xaml">
+    <None Include="Tutorials\10. Post Processing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>10. Post Processing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TutorialData\TutorialData.csproj">
@@ -316,13 +315,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\11. Instancing.xaml">
+    <Compile Include="Tutorials\11. Instancing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>11. Instancing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\nine.png">
@@ -331,6 +330,15 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\05. Animations.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Name>05. Animations</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

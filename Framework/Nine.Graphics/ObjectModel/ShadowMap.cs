@@ -1,24 +1,14 @@
-﻿#region Copyright 2009 - 2012 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
+﻿namespace Nine.Graphics.ObjectModel
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.PostEffects;
 
-#region Using Directives
-using System;
-using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Drawing;
-using Nine.Graphics.PostEffects;
-using System.Collections.Generic;
-using Nine.Graphics.Materials;
-#endregion
-
-namespace Nine.Graphics.ObjectModel
-{  
     /// <summary>
     /// Represents a shadow drawing technique using shadowmap.
     /// </summary>

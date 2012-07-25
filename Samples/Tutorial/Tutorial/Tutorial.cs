@@ -121,8 +121,8 @@ namespace Tutorial
             scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));           
             //scene.Camera = new TopDownEditorCamera(GraphicsDevice);           
             //scene.Camera = new ModelViewerCamera(GraphicsDevice);           
-            scene.Settings.DefaultDebugControlEnabled = true;
-            scene.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            scene.Context.Settings.DefaultDebugControlEnabled = true;
+            scene.Context.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
 
             Window.Title = tutorials[nextTutorial];
 

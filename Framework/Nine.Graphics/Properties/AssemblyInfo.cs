@@ -9,7 +9,7 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("Nine.Graphics")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyProduct("Engine Nine")]
-[assembly: AssemblyCopyright("Copyright © 2009 - 2011 Engine Nine")]
+[assembly: AssemblyCopyright("Copyright © 2009 - 2012 Engine Nine")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
