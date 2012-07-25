@@ -34,7 +34,6 @@ namespace Nine.Graphics.ObjectModel
             this.context = context;
             this.context.FogStart = FogStart;
             this.context.FogEnd = FogEnd;
-            this.context.FogEnabled = Enabled;
             this.context.FogColor = FogColor;
         }
 

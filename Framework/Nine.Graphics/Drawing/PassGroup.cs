@@ -14,6 +14,11 @@ namespace Nine.Graphics.Drawing
         /// Gets or sets the input texture to be processed.
         /// </summary>
         Texture2D InputTexture { get; set; }
+
+        /// <summary>
+        /// Gets the preferred surface format for the input texture.
+        /// </summary>
+        SurfaceFormat? InputFormat { get; }
     }
 
     /// <summary>
@@ -53,7 +58,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Prepares a render target to hold the result of this pass.
         /// </summary>
-        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
+        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
         {
             throw new InvalidOperationException();
         }

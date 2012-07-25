@@ -43,14 +43,6 @@ namespace Nine.Graphics.Drawing
 
         #region Field
         /// <summary>
-        /// Keeps a reference to a render target in case some drawing passes put 
-        /// the result onto an intermediate render target.
-        /// This value is set to null when the drawing pass should draw everything
-        /// onto the screen directly.
-        /// </summary>
-        private RenderTarget2D renderTarget;
-
-        /// <summary>
         /// Id for this pass, used for dependency sorting.
         /// </summary>
         internal int Id;
@@ -113,23 +105,22 @@ namespace Nine.Graphics.Drawing
         /// Prepares a render target to hold the result of this pass.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public virtual RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
+        public virtual RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
         {
             GraphicsDevice graphics = context.GraphicsDevice;
 
             if (input != null)
             {
                 // Create a render target similar to the input texture and draw the scene onto it.
-                return RenderTargetPool.GetRenderTarget(graphics, input.Width, input.Height, input.Format, DepthFormat.Depth24Stencil8);
+                return RenderTargetPool.GetRenderTarget(graphics, input.Width, input.Height, preferredFormat ?? input.Format, DepthFormat.Depth24Stencil8);
             }
             
             // Create a render target similar to the back buffer and draw the scene onto it.
-            return RenderTargetPool.GetRenderTarget(graphics, graphics.Viewport.Width, graphics.Viewport.Height, graphics.PresentationParameters.BackBufferFormat, DepthFormat.Depth24Stencil8);
+            return RenderTargetPool.GetRenderTarget(graphics, graphics.Viewport.Width, graphics.Viewport.Height, preferredFormat ?? graphics.PresentationParameters.BackBufferFormat, DepthFormat.Depth24Stencil8);
         }
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
-
         /// </summary>
         /// <param name="drawables">
         /// A list of drawables about to be drawed in this drawing pass.

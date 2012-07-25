@@ -11,11 +11,12 @@ namespace Nine.Graphics.Materials
     {
         partial void ApplyGlobalParameters(DrawingContext context)
         {
-            context.HalfPixel.X = -context.HalfPixel.X;
+            var halfPixel = new Vector2();
+            var viewport = GraphicsDevice.Viewport;
+            halfPixel.X = -0.5f / viewport.Width;
+            halfPixel.Y = 0.5f / viewport.Height;
 
-            effect.halfPixel.SetValue(context.HalfPixel);
-
-            context.HalfPixel.X = -context.HalfPixel.X;
+            effect.HalfPixel.SetValue(halfPixel);
         }
     }
 }

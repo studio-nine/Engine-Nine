@@ -74,7 +74,7 @@ namespace Nine.Graphics.ObjectModel
                 var count = children.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    var transformable = children[i] as Transformable;
+                    var transformable = children[i] as Nine.Object;
                     if (transformable != null && transformable.Name == name)
                         return transformable;
                 }

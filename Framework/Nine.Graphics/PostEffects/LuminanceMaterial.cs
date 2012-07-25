@@ -7,9 +7,17 @@ namespace Nine.Graphics.Materials
 
     partial class LuminanceMaterial
     {
-        partial void ApplyGlobalParameters(DrawingContext context)
+        public bool IsDownScale;
+
+        partial void BeginApplyLocalParameters(DrawingContext context, LuminanceMaterial previousMaterial)
         {
-            effect.halfPixel.SetValue(context.HalfPixel);
+            var halfPixel = new Vector2();
+            var viewport = context.GraphicsDevice.Viewport;
+            halfPixel.X = 0.5f / viewport.Width;
+            halfPixel.Y = 0.5f / viewport.Height;
+
+            effect.HalfPixel.SetValue(halfPixel);
+            effect.shaderIndex.SetValue(IsDownScale ? 1 : 0);
         }
     }
 }

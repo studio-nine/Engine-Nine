@@ -47,8 +47,8 @@ namespace Nine.Graphics.Materials
     foreach (var fxFile in Directory.GetFiles(Host.ResolvePath(@"..\..\Framework\Nine.Graphics\Shaders"), "*.fx", SearchOption.AllDirectories))
     {
         var className = Path.GetFileNameWithoutExtension(fxFile);
-		if (className.EndsWith("Effect"))
-			className = className.Replace("Effect", "");
+        if (className.EndsWith("Effect"))
+            className = className.Replace("Effect", "");
         if (!className.EndsWith("Shader"))
             className = className + "Shader";
         var materialName = className.Replace("Shader", "Material");
@@ -83,13 +83,13 @@ namespace Nine.Graphics.Materials
 
         protected override void OnEndApply(Nine.Graphics.Drawing.DrawingContext context)
         {
-            EndApplyLocalParameters();
+            EndApplyLocalParameters(context);
         }
                 
         partial void OnCreated();
         partial void ApplyGlobalParameters(Nine.Graphics.Drawing.DrawingContext context);
         partial void BeginApplyLocalParameters(Nine.Graphics.Drawing.DrawingContext context, <#= materialName #> previousMaterial);
-        partial void EndApplyLocalParameters();
+        partial void EndApplyLocalParameters(Nine.Graphics.Drawing.DrawingContext context);
     }
     
     [System.CodeDom.Compiler.GeneratedCode("Nine.Graphics.Materials.tt", "1.0.0.0")]

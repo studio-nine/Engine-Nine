@@ -648,15 +648,15 @@ namespace Nine.Content.Pipeline.Graphics.Drawing
 namespace Nine.Content.Pipeline.Graphics.Materials
 {
     /// <summary>
-    /// Content writer for <c>AdoptionMaterial</c>.
+    /// Content writer for <c>AdaptionMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class AdoptionMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.AdoptionMaterial>
+    partial class AdaptionMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.AdaptionMaterial>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.AdoptionMaterial value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.AdaptionMaterial value)
         {
             WriteObject(output, value, "Texture", value.Texture);
             output.Write(value.Alpha);
@@ -681,12 +681,12 @@ namespace Nine.Content.Pipeline.Graphics.Materials
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Materials.AdoptionMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.Materials.AdaptionMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.Materials.AdoptionMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.Materials.AdaptionMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -1379,48 +1379,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         }
     }
     /// <summary>
-    /// Content writer for <c>EmbossMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class EmbossMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.EmbossMaterial>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.EmbossMaterial value)
-        {
-            WriteObject(output, value, "Texture", value.Texture);
-            output.Write(value.Alpha);
-            output.Write(value.IsTransparent);
-            output.Write(value.IsAdditive);
-            output.Write(value.TwoSided);
-            WriteObject(output, value, "NextMaterial", value.NextMaterial);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.EmbossMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.EmbossMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>EnvironmentMapMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1521,6 +1479,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.LuminanceMaterial value)
         {
+            output.Write(value.IsDownScale);
             WriteObject(output, value, "Texture", value.Texture);
             output.Write(value.Alpha);
             output.Write(value.IsTransparent);
@@ -1673,48 +1632,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Materials.NoiseMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
-    /// Content writer for <c>PixelateMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class PixelateMaterialWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Materials.PixelateMaterial>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.PixelateMaterial value)
-        {
-            WriteObject(output, value, "Texture", value.Texture);
-            output.Write(value.Alpha);
-            output.Write(value.IsTransparent);
-            output.Write(value.IsAdditive);
-            output.Write(value.TwoSided);
-            WriteObject(output, value, "NextMaterial", value.NextMaterial);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.PixelateMaterialReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Materials.PixelateMaterial, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -1947,7 +1864,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.ToneMappingMaterial value)
         {
             output.Write(value.Exposure);
-            output.Write(value.MaxLuminance);
             WriteObject(output, value, "Texture", value.Texture);
             output.Write(value.Alpha);
             output.Write(value.IsTransparent);
@@ -4043,15 +3959,15 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
 namespace Nine.Content.Pipeline.Graphics.PostEffects
 {
     /// <summary>
-    /// Content writer for <c>AdoptionEffect</c>.
+    /// Content writer for <c>AdaptionEffect</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class AdoptionEffectWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.AdoptionEffect>
+    partial class AdaptionEffectWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.PostEffects.AdaptionEffect>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.AdoptionEffect value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.AdaptionEffect value)
         {
             output.Write(value.Speed);
             WriteObject(output, value, "Material", value.Material);
@@ -4077,12 +3993,12 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.PostEffects.AdoptionEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.PostEffects.AdaptionEffectReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Graphics.PostEffects.AdoptionEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Graphics.PostEffects.AdaptionEffect, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -4098,11 +4014,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             output.Write(value.Threshold);
             output.Write(value.BlurAmount);
-            {
-                output.Write(value.Passes.Count);
-                for (var i = 0; i < value.Passes.Count; i++)
-                    output.WriteObject(value.Passes[i]);
-            }
             WriteObject(output, value, "InputTexture", value.InputTexture);
             WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
@@ -4144,11 +4055,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.BlurEffect value)
         {
             output.Write(value.BlurAmount);
-            {
-                output.Write(value.Effects.Count);
-                for (var i = 0; i < value.Effects.Count; i++)
-                    output.WriteObject(value.Effects[i]);
-            }
             WriteObject(output, value, "TextureUsage", value.TextureUsage);
             WriteObject(output, value, "BlendState", value.BlendState);
             output.Write(value.Enabled);
@@ -4193,11 +4099,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.FocalPlane);
             output.Write(value.FocalDistance);
             output.Write(value.BlurAmount);
-            {
-                output.Write(value.Passes.Count);
-                for (var i = 0; i < value.Passes.Count; i++)
-                    output.WriteObject(value.Passes[i]);
-            }
             WriteObject(output, value, "InputTexture", value.InputTexture);
             WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
@@ -4240,14 +4141,8 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             output.Write(value.Threshold);
             output.Write(value.BlurAmount);
-            output.Write(value.AdoptionSpeed);
+            output.Write(value.AdaptionSpeed);
             output.Write(value.Exposure);
-            output.Write(value.MaxLuminance);
-            {
-                output.Write(value.Passes.Count);
-                for (var i = 0; i < value.Passes.Count; i++)
-                    output.WriteObject(value.Passes[i]);
-            }
             WriteObject(output, value, "InputTexture", value.InputTexture);
             WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
@@ -4288,12 +4183,7 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.PostEffects.LuminanceChain value)
         {
-            output.Write(value.AdoptionSpeed);
-            {
-                output.Write(value.Effects.Count);
-                for (var i = 0; i < value.Effects.Count; i++)
-                    output.WriteObject(value.Effects[i]);
-            }
+            output.Write(value.AdaptionSpeed);
             WriteObject(output, value, "TextureUsage", value.TextureUsage);
             WriteObject(output, value, "BlendState", value.BlendState);
             output.Write(value.Enabled);

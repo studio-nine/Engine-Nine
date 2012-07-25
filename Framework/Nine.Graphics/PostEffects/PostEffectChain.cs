@@ -19,7 +19,7 @@
         /// <summary>
         /// Gets a list of post processing effects contained by this chain.
         /// </summary>
-        public IList<PostEffect> Effects
+        public virtual IList<PostEffect> Effects
         {
             get { return effects; }
         }

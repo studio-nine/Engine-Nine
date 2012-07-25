@@ -29,6 +29,14 @@
         public Texture2D InputTexture { get; set; }
 
         /// <summary>
+        /// Gets the preferred surface format for the input texture.
+        /// </summary>
+        public virtual SurfaceFormat? InputFormat
+        {
+            get { return null; }
+        }
+
+        /// <summary>
         /// Gets or sets the surface format of the render target.
         /// Specify null to use the surface format of the current backbuffer.
         /// </summary>
@@ -91,7 +99,7 @@
                 result.Add(this);
         }
 
-        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
+        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
         {
             int w, h;
             if (renderTargetSize.HasValue)
@@ -113,9 +121,7 @@
                 }
             }
 
-            var format = surfaceFormat.HasValue ? surfaceFormat.Value
-                                                : input != null ? input.Format
-                                                : context.GraphicsDevice.PresentationParameters.BackBufferFormat;
+            var format = surfaceFormat ?? preferredFormat ?? (input != null ? input.Format : context.GraphicsDevice.PresentationParameters.BackBufferFormat);
 
             return RenderTargetPool.GetRenderTarget(context.GraphicsDevice
                                                  , (int)(w * renderTargetScale)

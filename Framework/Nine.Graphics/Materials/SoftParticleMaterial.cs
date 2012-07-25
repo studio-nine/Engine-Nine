@@ -26,7 +26,7 @@
                 effect.DepthFade.SetValue(depthFade.Value);
         }
 
-        partial void EndApplyLocalParameters()
+        partial void EndApplyLocalParameters(DrawingContext context)
         {
             if (depthFade.HasValue)
                 effect.DepthFade.SetValue(MaterialConstants.SoftParticleFade);

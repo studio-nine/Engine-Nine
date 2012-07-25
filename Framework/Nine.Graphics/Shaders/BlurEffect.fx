@@ -11,7 +11,7 @@ float4 PS(float2 texCoord : TEXCOORD0, uniform int sampleCount) : COLOR0
     float4 c = 0;
     
     // Combine a number of weighted image filter taps.
-	[unroll]
+    [unroll]
     for (int i = 0; i < sampleCount; i++)
     {
         c += tex2D(TextureSampler, texCoord + sampleOffsets[i]) * sampleWeights[i];
@@ -29,9 +29,9 @@ PixelShader PSArray[] =
     compile PROFILE PS(5),
     compile PROFILE PS(7),
     compile PROFILE PS(9),
-	compile PROFILE PS(11),
-	compile PROFILE PS(13),
-	compile PROFILE PS(15),
+    compile PROFILE PS(11),
+    compile PROFILE PS(13),
+    compile PROFILE PS(15),
 };
 
 technique GaussianBlur

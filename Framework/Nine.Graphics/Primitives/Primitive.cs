@@ -371,7 +371,13 @@
 
             if (needsRebuild)
                 Rebuild();
-
+            if (!Visible)
+            {
+                vertexBuffer = null;
+                vertexOffset = 0;
+                numVertices = 0;
+                return;
+            }
             vertexBuffer = cachedPrimitive.VertexBuffer;
             numVertices = cachedPrimitive.VertexBuffer.VertexCount;
             vertexOffset = 0;
@@ -384,6 +390,13 @@
             if (needsRebuild)
                 Rebuild();
 
+            if (!Visible)
+            {
+                indexBuffer = null;
+                startIndex = 0;
+                primitiveCount = 0;
+                return;
+            }
             indexBuffer = cachedPrimitive.IndexBuffer;
             primitiveCount = cachedPrimitive.PrimitiveCount;
             startIndex = 0;
@@ -394,8 +407,12 @@
             VerifyInstancingPrimitveType();
 
             // Material Lod is not enabled when using instancing.
-
             return Material;
+        }
+
+        void ISupportInstancing.PrepareMaterial(int subset, Material material)
+        {
+
         }
 
         void VerifyInstancingPrimitveType()

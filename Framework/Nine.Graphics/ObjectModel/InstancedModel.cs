@@ -32,7 +32,7 @@ namespace Nine.Graphics.ObjectModel
             get { return visible; }
             set { visible = value; }
         }
-        internal bool visible;
+        internal bool visible = true;
 
         /// <summary>
         /// Gets a value indicating whether this model resides inside the view frustum last frame.
@@ -123,7 +123,6 @@ namespace Nine.Graphics.ObjectModel
             if (graphicsDevice == null)
                 throw new ArgumentNullException("graphicsDevice");
 
-            Visible = true;
             GraphicsDevice = graphicsDevice;
             Template = template;
         }
@@ -330,6 +329,9 @@ namespace Nine.Graphics.ObjectModel
 
             model.template.GetVertexBuffer(index, out vertexBuffer, out vertexOffset, out numVertices);
             model.template.GetIndexBuffer(index, out indexBuffer, out startIndex, out primitiveCount);
+            
+            if (vertexBuffer == null)
+                return;
 
             context.SetVertexBuffer(null, 0);
 
@@ -339,6 +341,7 @@ namespace Nine.Graphics.ObjectModel
             model.GraphicsDevice.SetVertexBuffers(Bindings);
             model.GraphicsDevice.Indices = indexBuffer;
 
+            model.template.PrepareMaterial(index, material);
             material.world = model.AbsoluteTransform;
             material.BeginApply(context);
             model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);

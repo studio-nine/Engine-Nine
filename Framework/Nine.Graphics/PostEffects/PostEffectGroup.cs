@@ -17,7 +17,7 @@
         /// <summary>
         /// Gets a list of post processing chains contained by this group.
         /// </summary>
-        public IList<PostEffectChain> Passes
+        public virtual IList<PostEffectChain> Passes
         {
             get { return passes; }
         }
@@ -27,6 +27,14 @@
         /// Gets or sets the input texture to be processed.
         /// </summary>
         public Texture2D InputTexture { get; set; }
+
+        /// <summary>
+        /// Gets the preferred surface format for the input texture.
+        /// </summary>
+        public virtual SurfaceFormat? InputFormat 
+        {
+            get { return null; } 
+        }
 
         /// <summary>
         /// Gets or sets the material to combine the composite the result
@@ -77,7 +85,6 @@
         
         /// <summary>
         /// Draws this pass using the specified drawing context.
-
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
@@ -107,7 +114,7 @@
 
                     RenderTarget2D previous = intermediate;
                     RenderTargetPool.Lock(previous);
-                    intermediate = workingPass.PrepareRenderTarget(context, intermediate);
+                    intermediate = workingPass.PrepareRenderTarget(context, intermediate, null);
                     intermediate.Begin();
 
                     workingPass.InputTexture = previous;
@@ -172,7 +179,7 @@
 
                     RenderTarget2D previous = intermediate;
                     RenderTargetPool.Lock(previous);
-                    intermediate = workingPass.PrepareRenderTarget(context, intermediate);
+                    intermediate = workingPass.PrepareRenderTarget(context, intermediate, null);
                     intermediate.Begin();
 
                     workingPass.InputTexture = previous;

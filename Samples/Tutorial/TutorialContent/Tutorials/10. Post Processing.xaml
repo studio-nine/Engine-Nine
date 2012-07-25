@@ -1,6 +1,6 @@
 ﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
 
-    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <SkyBox Texture="{ContentReference ../Textures/skycubemap}" />
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
@@ -12,8 +12,8 @@
     </Surface>
 
     <PostEffect>	
-		<CustomMaterial xml:space="preserve">
-			<CustomMaterial.Code>
+        <CustomMaterial xml:space="preserve">
+            <CustomMaterial.Code>
             <![CDATA[
                 // Contributed by ChFlashER 
                 sampler ColorMapSampler : register(s0);
@@ -51,15 +51,18 @@
                         PixelShader = compile ps_2_0 RipplePS();
                     }
                 }]]>
-			</CustomMaterial.Code>
-		</CustomMaterial>
+            </CustomMaterial.Code>
+        </CustomMaterial>
     </PostEffect>
 
+    <BloomEffect Name="Bloom" BlurAmount="5" Threshold="0.5"/>
+    <Scene.Animations>
+        <SingleAnimation TargetProperty="['Bloom'].Threshold" From="0" To="1" Curve="{x:Static Curves.Sin}" Repeat="999999" AutoReverse="True" />
+    </Scene.Animations>
 
-    <AdoptionEffect />
-    <HighDynamicRangeEffect />
+    <AdaptionEffect />
     <LuminanceChain />
-	-->
-	<BloomEffect BlurAmount="5" Threshold="0.5"/>
-    
+    -->
+    <HighDynamicRangeEffect AdaptionSpeed="0.5" />
+
 </Scene>

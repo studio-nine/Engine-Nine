@@ -15,26 +15,17 @@
                 The following animation is a tween animation that changes the alpha property of the tank model.                
                 Note that tween animation can only reference the direct children of the diplay object.
             -->
-            <SingleAnimation x:Key="Animation1" TargetProperty="['Tank'].Material.Alpha"
-			                 From="1" To="0" Curve="{x:Static Curves.Sin}" Repeat="999999" Easing="In" AutoReverse="True" />
+            <SingleAnimation TargetProperty="['Tank'].Material.Alpha"
+                             From="1" To="0" Curve="{x:Static Curves.Sin}" Repeat="999999" Easing="In" AutoReverse="True" />
         </DrawingGroup.Animations>
         
         <!-- To enable animation, you have to give the object a name -->
-        <Model Name="Tank" Source="{ContentReference ../Models/Tank}">
-            <Model.Material>
-                <BasicMaterial />
-            </Model.Material>
-        </Model>
+        <Model Name="Tank" Source="{ContentReference ../Models/Tank}" Material="{BasicMaterial}" />
         
         <!-- Drawing group can also be nested to create a transform hierarchy. -->
         <DrawingGroup Transform.Position="-10,0,0" Name="NestedObject">
 
-            <Model Name="Dude" Source="{ContentReference ../Models/Dude}">
-                <Model.Material>
-                    <SkinnedMaterial />
-                </Model.Material>
-            </Model>
-            
+            <Model Name="Dude" Source="{ContentReference ../Models/Dude}" Material="{SkinnedMaterial}" />            
             <Model Name="Dude2" Transform.Position="0,0,-10" Source="{ContentReference ../Models/Dude}"/>
             <Model Name="Tree" Transform.Position="0,0,10"  Source="{ContentReference ../Models/AlphaPalm}" />
 
@@ -58,7 +49,7 @@
                     AnimationGroup plays the contained animations in parallel while AnimationSequence 
                     plays them one by one.
                 -->
-                <AnimationGroup x:Key="Default">                    
+                <AnimationGroup>                    
                     <AnimationSequence Repeat="999999">
                         <SingleAnimation TargetProperty="['Dude'].Material.Alpha" To="0" />
                         <DelayAnimation Duration="00:00:01" />

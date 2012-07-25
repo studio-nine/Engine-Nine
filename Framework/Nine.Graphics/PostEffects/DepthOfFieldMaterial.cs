@@ -5,7 +5,7 @@ namespace Nine.Graphics.Materials
     using Nine.Graphics.Drawing;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class DepthOfFieldMaterial : ISceneObject
+    public partial class DepthOfFieldMaterial
     {
         public float FocalLength { get; set; }
         public float FocalPlane { get; set; }
@@ -28,22 +28,18 @@ namespace Nine.Graphics.Materials
             effect.FocalPlane.SetValue(FocalPlane);
         }
 
+        partial void EndApplyLocalParameters(DrawingContext context)
+        {
+            GraphicsDevice.Textures[1] = null;
+            GraphicsDevice.Textures[2] = null;
+        }
+
         public override void SetTexture(TextureUsage textureUsage, Texture texture)
         {
             if (textureUsage == TextureUsage.Blur)
                 effect.BlurTexture.SetValue(texture);
             else if (textureUsage == TextureUsage.DepthBuffer)
                 effect.DepthTexture.SetValue(texture);
-        }
-
-        void ISceneObject.OnAdded(DrawingContext context)
-        {
-            //context.MainPass.Passes.Add(new BasicPass());
-        }
-
-        void ISceneObject.OnRemoved(DrawingContext context)
-        {
-
         }
     }
 }

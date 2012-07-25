@@ -97,6 +97,16 @@ namespace Nine.Graphics.ObjectModel
         int Count { get; }
 
         /// <summary>
+        /// Gets the material for the given subset.
+        /// </summary>
+        Material GetMaterial(int subset);
+
+        /// <summary>
+        /// Prepares the material for rendering.
+        /// </summary>
+        void PrepareMaterial(int subset, Material material);
+
+        /// <summary>
         /// Gets the vertex buffer for the given subset.
         /// </summary>
         void GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices);
@@ -105,10 +115,5 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the index buffer for the given subset.
         /// </summary>
         void GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
-
-        /// <summary>
-        /// Gets the material for the given subset.
-        /// </summary>
-        Material GetMaterial(int subset);
     }
 }

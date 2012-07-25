@@ -1,6 +1,8 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
+    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
 
@@ -26,6 +28,12 @@
         {
             Effects.Add(new PostEffect(blurH = new BlurMaterial(graphics)));
             Effects.Add(new PostEffect(blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 }));
+        }
+
+        [ContentSerializerIgnore]
+        public override IList<PostEffect> Effects
+        {
+            get { return base.Effects; }
         }
     }
 }

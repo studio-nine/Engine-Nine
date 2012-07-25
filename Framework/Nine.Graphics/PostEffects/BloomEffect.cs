@@ -1,6 +1,8 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
+    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
 
@@ -38,6 +40,13 @@
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));
+        }
+
+        [ContentSerializerIgnore]
+        public override IList<PostEffectChain> Passes
+        {
+            // Prevent content serializer from loading passes.
+            get { return base.Passes; }
         }
     }
 }

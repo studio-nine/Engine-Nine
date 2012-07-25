@@ -6,7 +6,7 @@ float FocalDistance = 0.2f;
 sampler TextureSampler : register(s0);
 
 texture BlurTexture;
-sampler blurSampler = sampler_state
+sampler blurSampler : register(s1) = sampler_state
 {
    Texture = <BlurTexture>;
    MinFilter = POINT;
@@ -18,7 +18,7 @@ sampler blurSampler = sampler_state
 };
 
 texture DepthTexture;
-sampler depthSampler = sampler_state
+sampler depthSampler : register(s2) = sampler_state
 {
    Texture = <DepthTexture>;
    MinFilter = POINT;

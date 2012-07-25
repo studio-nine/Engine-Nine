@@ -18,7 +18,12 @@ namespace Nine
         /// <summary>
         /// Gets or sets the name of this transformable.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return string.IsNullOrEmpty(name) ? (name = GetNextName()) : name; }
+            set { name = value; }
+        }
+        private string name;
 
         /// <summary>
         /// Gets or sets any user data.
@@ -108,12 +113,23 @@ namespace Nine
         #endregion
 
         #region ToString
+        private static Dictionary<Type, int> NextName = new Dictionary<Type, int>();
+        private string GetNextName()
+        {
+            int index;
+            Type type = GetType();
+            NextName.TryGetValue(type, out index);
+            NextName[type] = ++index;
+            return string.Concat(type.Name, index);
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         public override string ToString()
         {
-            return Name != null ? string.Concat(Name, ":", GetType().Name) : GetType().Name;
+            var typeName = GetType().Name;
+            return Name != null ? string.Concat(Name, ":", typeName) : typeName;
         }
         #endregion
     }

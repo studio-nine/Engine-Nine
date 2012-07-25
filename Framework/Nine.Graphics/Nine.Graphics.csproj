@@ -124,7 +124,7 @@
     <Compile Include="Materials\DepthMaterial.cs" />
     <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
     <Compile Include="ObjectModel\ShadowMap.cs" />
-    <Compile Include="PostEffects\AdoptionEffect.cs" />
+    <Compile Include="PostEffects\AdaptionEffect.cs" />
     <Compile Include="PostEffects\BlurEffect.cs" />
     <Compile Include="PostEffects\LuminanceMaterial.cs" />
     <Compile Include="PostEffects\ToneMappingMaterial.cs" />
@@ -310,15 +310,13 @@
     <None Include="Shaders\SkyBoxEffect.fx" />
     <None Include="Nine.snk" />
     <None Include="Shaders\SoftParticleEffect.fx" />
-    <None Include="Shaders\Adoption.fx" />
+    <None Include="Shaders\Adaption.fx" />
     <None Include="Shaders\AntiAliasEffect.fx" />
     <None Include="Shaders\BlurEffect.fx" />
     <None Include="Shaders\ColorMatrixEffect.fx" />
     <None Include="Shaders\DepthOfFieldEffect.fx" />
-    <None Include="Shaders\EmbossEffect.fx" />
     <None Include="Shaders\LuminanceEffect.fx" />
     <None Include="Shaders\NoiseEffect.fx" />
-    <None Include="Shaders\PixelateEffect.fx" />
     <None Include="Shaders\RadialBlurEffect.fx" />
     <None Include="Shaders\ScaleEffect.fx" />
     <None Include="Shaders\ThresholdEffect.fx" />

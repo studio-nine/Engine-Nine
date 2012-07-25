@@ -32,17 +32,17 @@ float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 int i;
  for(  i=0;i<4;i++ )
  {
-	 float4 t = tex2D(normalSampler ,texCoord+ delta[i]*pixelSize);
+     float4 t = tex2D(normalSampler ,texCoord+ delta[i]*pixelSize);
      t = t * 2 - 1;
-	 t -= tex;
-	 factor += dot(t,t);
+     t -= tex;
+     factor += dot(t,t);
  }
  factor = min(1.0,factor)*Weight;
  float4 color = float4(0.0,0.0,0.0,0.0);
 
  for( i=0;i<8;i++ )
  {
-	color += tex2D(TextureSampler,texCoord + delta[i]*pixelSize*factor);
+    color += tex2D(TextureSampler,texCoord + delta[i]*pixelSize*factor);
  }
  color += 2.0*tex2D(TextureSampler,texCoord);
  return color*(1.0/10.0);

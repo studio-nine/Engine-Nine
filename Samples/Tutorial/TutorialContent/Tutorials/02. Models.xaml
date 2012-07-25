@@ -43,11 +43,7 @@
         </Model.Material>
     </Model>
 
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="10,0,20">
-        <Model.Material>
-            <AlphaTestMaterial />
-        </Model.Material>
-    </Model>
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="10,0,20" Material="{AlphaTestMaterial}" />
 
     <Model Source="{ContentReference ../Models/Dude}" Transform.Position="20,0,20">
         <Model.Material>

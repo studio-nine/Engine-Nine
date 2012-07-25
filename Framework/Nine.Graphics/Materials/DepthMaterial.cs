@@ -58,7 +58,7 @@ namespace Nine.Graphics.Materials
             effect.worldViewProjection.SetValue(world * context.matrices.ViewProjection);
         }
 
-        partial void EndApplyLocalParameters()
+        partial void EndApplyLocalParameters(DrawingContext context)
         {
             if (referenceAlpha.HasValue)
                 effect.referenceAlpha.SetValue(MaterialConstants.ReferenceAlpha);

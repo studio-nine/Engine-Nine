@@ -117,9 +117,6 @@ namespace Nine.Graphics.Drawing
             get { return matrices; }
         }
         internal MatrixCollection matrices;
-
-        internal Vector2 HalfPixel;
-        internal Vector2 PixelSize;
         #endregion
 
         #region Lights
@@ -163,16 +160,6 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets or sets the fog end.
         /// </summary>
-        public bool FogEnabled
-        {
-            get { return fogEnabled; }
-            set { fogEnabled = value; fogVersion++; }
-        }
-        internal bool fogEnabled = true;
-
-        /// <summary>
-        /// Gets or sets the fog end.
-        /// </summary>
         public float FogEnd
         {
             get { return fogEnd; }
@@ -196,6 +183,7 @@ namespace Nine.Graphics.Drawing
         private bool isDrawing = false;
         private FastList<Pass> activePasses = new FastList<Pass>();
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
+        private FastList<SurfaceFormat?> preferedFormats = new FastList<SurfaceFormat?>();
         private FastList<IDrawableObject> dynamicDrawables = new FastList<IDrawableObject>();
         #endregion
 
@@ -257,6 +245,17 @@ namespace Nine.Graphics.Drawing
         internal Material PreviousMaterial;
 
         /// <summary>
+        /// Gets the half pixel for the current viewport.
+        /// </summary>
+        internal void GetHalfPixel(out Vector2 halfPixel)
+        {
+            var viewport = GraphicsDevice.Viewport;
+            halfPixel = new Vector2();
+            halfPixel.X = 0.5f / viewport.Width;
+            halfPixel.Y = 0.5f / viewport.Height;
+        }
+
+        /// <summary>
         /// Draws the specified scene.
         /// </summary>
         public void Draw(TimeSpan elapsedTime, ISpatialQuery<IDrawableObject> scene, Matrix view, Matrix projection)
@@ -275,14 +274,6 @@ namespace Nine.Graphics.Drawing
             ElapsedSeconds = (float)elapsedTime.TotalSeconds;
             TotalTime += elapsedTime;
 
-            var viewport = GraphicsDevice.Viewport;
-
-            HalfPixel.X = 0.5f / viewport.Width;
-            HalfPixel.Y = 0.5f / viewport.Height;
-
-            PixelSize.X = HalfPixel.X * 2;
-            PixelSize.Y = HalfPixel.Y * 2;
-
             try
             {
                 if (RootPass == null)
@@ -296,6 +287,7 @@ namespace Nine.Graphics.Drawing
                 RootPass.GetActivePasses(activePasses);
 
                 targetPasses.Resize(activePasses.Count);
+                preferedFormats.Resize(activePasses.Count);
 
                 // Determines which pass should be rendered to a texture.
                 int lastPass = 0;
@@ -304,10 +296,17 @@ namespace Nine.Graphics.Drawing
                 {
                     var postEffect = activePasses[i] as IPostEffect;
 
-                    if (lastPostEffect != null && (postEffect != null) || (i == 0))
+                    // TODO: Something seems to be wrong here...
+                    if (lastPostEffect != null && (postEffect != null || i == 0))
+                    {
                         targetPasses[i] = lastPostEffect;
+                        preferedFormats[i] = lastPostEffect.InputFormat;
+                    }
                     else
+                    {
                         targetPasses[i] = null;
+                        preferedFormats[i] = null;
+                    }
 
                     if (postEffect != null)
                     {
@@ -352,7 +351,7 @@ namespace Nine.Graphics.Drawing
 
                         if (targetPass != null)
                         {
-                            intermediate = pass.PrepareRenderTarget(this, intermediate);
+                            intermediate = pass.PrepareRenderTarget(this, intermediate, preferedFormats[i]);
                             intermediate.Begin();
                             RenderTargetPool.Lock(intermediate);
                         }

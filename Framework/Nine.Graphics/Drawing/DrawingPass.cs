@@ -20,7 +20,6 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets or sets the dominant material used for this drawing pass. If this
         /// value is null, each drawable will be drawed using its own material, otherwise
-
         /// all the drawables will use the material specified in this property.
         /// </summary>
         public Material Material { get; set; }
@@ -91,7 +90,6 @@ namespace Nine.Graphics.Drawing
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
-
         /// </summary>
         /// <param name="drawables">
         /// A list of drawables about to be drawed in this drawing pass.

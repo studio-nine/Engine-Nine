@@ -248,9 +248,7 @@ namespace Nine.Graphics.ObjectModel
         {
             var graphics = context.GraphicsDevice;
 
-            if (material != this.Material)
-                ApplyTextures(material);
-
+            ApplyTextures(material);
             ApplySkinTransform(material);
 
             material.world = worldTransform;
@@ -267,9 +265,10 @@ namespace Nine.Graphics.ObjectModel
             material.EndApply(context);
         }
 
-        private void ApplyTextures(Material material)
+        internal void ApplyTextures(Material material)
         {
-            if (UseModelTextures ?? model.UseModelTextures)
+            if (material != this.material &&
+               (UseModelTextures ?? model.UseModelTextures))
             {
                 material.Texture = diffuseTexture;
                 if (textures != null)
@@ -280,7 +279,7 @@ namespace Nine.Graphics.ObjectModel
             }
         }
 
-        private bool ApplySkinTransform(Material material)
+        internal bool ApplySkinTransform(Material material)
         {
             var skinned = material.Find<IEffectSkinned>();
             if (skinned != null && (skinned.SkinningEnabled = Model.IsSkinned))

@@ -24,7 +24,6 @@ namespace Nine
         
         /// <summary>
         /// Gets or sets the value of the target evaluated using this expression.
-
         /// </summary>
         public T Value
         {

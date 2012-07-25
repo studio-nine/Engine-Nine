@@ -11,25 +11,25 @@
 
 #if !WINDOWS_PHONE
     /// <summary>
-    /// Defines a post processing effect that adopt scene changes.
+    /// Defines a post processing effect that adapts to scene changes.
     /// </summary>
     [ContentSerializable]
-    public class AdoptionEffect : PostEffect
+    public class AdaptionEffect : PostEffect
     {
         private RenderTarget2D lastFrame;
         private RenderTarget2D currentFrame;
-        private AdoptionMaterial adoptionMaterial;        
+        private AdaptionMaterial adoptionMaterial;
         private BasicMaterial basicMaterial;
 
         /// <summary>
-        /// Get or sets the speed of the adoptation.
+        /// Get or sets the speed of the adaptation.
         /// </summary>
         public float Speed { get; set; }
         
         /// <summary>
-        /// Creates a new instance of <c>AdoptationEffect</c>.
+        /// Creates a new instance of <c>AdaptationEffect</c>.
         /// </summary>
-        public AdoptionEffect()
+        public AdaptionEffect()
         {
             Speed = 10;
             SamplerState = SamplerState.PointClamp;
@@ -37,14 +37,14 @@
 
         public override void GetActivePasses(IList<Pass> result)
         {
-            // Enable this adoption effect even when Material is set to null.
+            // Enable this adaption effect even when Material is set to null.
             if (Enabled)
                 result.Add(this);
         }
 
-        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input)
+        public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
         {
-            currentFrame = base.PrepareRenderTarget(context, input);
+            currentFrame = base.PrepareRenderTarget(context, input, preferredFormat);
             RenderTargetPool.Lock(currentFrame);
             return currentFrame;
         }
@@ -52,7 +52,7 @@
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             if (Material == null)
-                Material = adoptionMaterial = new AdoptionMaterial(context.GraphicsDevice);
+                Material = adoptionMaterial = new AdaptionMaterial(context.GraphicsDevice);
             else if (Material != adoptionMaterial)
                 throw new InvalidOperationException();
 
@@ -62,7 +62,7 @@
             {
                 if (needLocalTexture = (currentFrame == null))
                 {
-                    PrepareRenderTarget(context, InputTexture);
+                    PrepareRenderTarget(context, InputTexture, null);
                     currentFrame.Begin();
                 }
 

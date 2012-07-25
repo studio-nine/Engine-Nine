@@ -86,7 +86,6 @@ namespace Nine.Graphics.Materials
                 effect.FogColor = context.FogColor;
                 effect.FogStart = context.FogStart;
                 effect.FogEnd = context.FogEnd;
-                effect.FogEnabled = context.FogEnabled;
 
                 fogVersion = context.fogVersion;
             }

@@ -49,11 +49,11 @@ void VertShadow( float4 Pos      : POSITION,
     float4 posWorld = mul( Pos, World );
     oPos = mul( Pos, worldViewProjection );
 
-	float4 positionShadow = mul(posWorld, LightViewProjection);
+    float4 positionShadow = mul(posWorld, LightViewProjection);
 
-	oShadow.x   	=  positionShadow.x / positionShadow.w / 2.0f + 0.5f;
-	oShadow.y   	= -positionShadow.y / positionShadow.w / 2.0f + 0.5f;
-	oShadow.z   	=  positionShadow.z / positionShadow.w;
+    oShadow.x   	=  positionShadow.x / positionShadow.w / 2.0f + 0.5f;
+    oShadow.y   	= -positionShadow.y / positionShadow.w / 2.0f + 0.5f;
+    oShadow.z   	=  positionShadow.z / positionShadow.w;
 }
 
 
@@ -82,11 +82,11 @@ void VertShadowSkinned( float4 Pos : POSITION,
     float4 posWorld = mul( oPos, World );
     oPos = mul( oPos, worldViewProjection );
 
-	float4 positionShadow = mul(posWorld, LightViewProjection);
+    float4 positionShadow = mul(posWorld, LightViewProjection);
 
-	oShadow.x   	=  positionShadow.x / positionShadow.w / 2.0f + 0.5f;
-	oShadow.y   	= -positionShadow.y / positionShadow.w / 2.0f + 0.5f;
-	oShadow.z   	=  positionShadow.z / positionShadow.w;
+    oShadow.x   	=  positionShadow.x / positionShadow.w / 2.0f + 0.5f;
+    oShadow.y   	= -positionShadow.y / positionShadow.w / 2.0f + 0.5f;
+    oShadow.z   	=  positionShadow.z / positionShadow.w;
 }
 
 
@@ -97,16 +97,16 @@ void VertShadowSkinned( float4 Pos : POSITION,
 void PixShadow( float3 shadow : TEXCOORD0, out float4 Color : COLOR )
 {
     float intensity = 0;
-	
+    
     if ((saturate(shadow.x) == shadow.x) && (saturate(shadow.y) == shadow.y))
     {
         for (int i=0; i<10; i++)
         {
             intensity += shadow.z > DepthBias + tex2D(ShadowMapSampler, shadow.xy + filterTaps[i] * shadowMapTexelSize).x ? 1.0f / 10.0f : 0;
         }
-	}
+    }
      
-	Color = lerp(1, float4(ShadowColor, 1), intensity);
+    Color = lerp(1, float4(ShadowColor, 1), intensity);
 }
 
 int shaderIndex = 0;
@@ -114,23 +114,23 @@ int shaderIndex = 0;
 
 VertexShader VSArray[2] =
 {
-	compile vs_2_0 VertShadow(),
-	compile vs_2_0 VertShadowSkinned(),
+    compile vs_2_0 VertShadow(),
+    compile vs_2_0 VertShadowSkinned(),
 };
 
 
 PixelShader PSArray[2] =
 {
-	compile ps_2_0 PixShadow(),
-	compile ps_2_0 PixShadow(),
+    compile ps_2_0 PixShadow(),
+    compile ps_2_0 PixShadow(),
 };
 
 
 Technique BasicEffect
 {
-	Pass
-	{
-		VertexShader = (VSArray[shaderIndex]);
-		PixelShader	 = (PSArray[shaderIndex]);
-	}
+    Pass
+    {
+        VertexShader = (VSArray[shaderIndex]);
+        PixelShader	 = (PSArray[shaderIndex]);
+    }
 }

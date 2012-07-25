@@ -1,8 +1,10 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
 
@@ -14,23 +16,23 @@
     public class LuminanceChain : PostEffectChain
     {
         /// <summary>
-        /// Gets or sets the speed that determine how fast the eye adopts to the changes
-        /// of the luminance in the scene, or specify zero to disable adoption completely.
+        /// Gets or sets the speed that determine how fast the eye adapts to the changes
+        /// of the luminance in the scene, or specify zero to disable adaption completely.
         /// </summary>
-        public float AdoptionSpeed
+        public float AdaptionSpeed
         {
-            get { return adoptionEffect.Speed; }
-            set { adoptionEffect.Speed = value; adoptionEffect.Enabled = value > 0; }
+            get { return adaptionEffect.Speed; }
+            set { adaptionEffect.Speed = value; adaptionEffect.Enabled = value > 0; }
         }
-        private AdoptionEffect adoptionEffect;
+        private AdaptionEffect adaptionEffect;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LuminanceChain"/> class.
         /// </summary>
         public LuminanceChain(GraphicsDevice graphics)
         {
-            int scale = 2;
-            int size = (int)MathHelper.Max(graphics.Viewport.Width / scale, graphics.Viewport.Height / scale);
+            int scale = 4;
+            int size = (int)Math.Max(graphics.Viewport.Width / scale, graphics.Viewport.Height / scale);
             size = Math.Max(1, UtilityExtensions.UpperPowerOfTwo(size));
 
             Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Vector2 });
@@ -38,13 +40,18 @@
 
             while (size >= 1)
             {
-                //Effects.Add(new PostEffect { Material = new ScaleMaterial(graphics), RenderTargetSize = Vector2.One * size });
+                Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics) { IsDownScale = true }, RenderTargetSize = Vector2.One * size });
                 size /= scale;
             }
 
-            Effects.Add(adoptionEffect = new AdoptionEffect() { RenderTargetSize = Vector2.One });
-
+            Effects.Add(adaptionEffect = new AdaptionEffect() { RenderTargetSize = Vector2.One });
             TextureUsage = TextureUsage.Luminance;
+        }
+
+        [ContentSerializerIgnore]
+        public override IList<PostEffect> Effects
+        {
+            get { return base.Effects; }
         }
     }
 }

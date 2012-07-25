@@ -464,7 +464,8 @@ namespace Nine.Graphics.ObjectModel
 
         void ISupportInstancing.GetVertexBuffer(int subset, out VertexBuffer vertexBuffer, out int vertexOffset, out int numVertices)
         {
-            if (modelMeshes.Count <= 0)
+            ModelMesh mesh;
+            if (modelMeshes.Count <= 0 || !(mesh = modelMeshes[subset]).visible)
             {
                 // If model meshes are not found, it means we are in content build mode.
                 vertexBuffer = null;
@@ -473,7 +474,6 @@ namespace Nine.Graphics.ObjectModel
                 return;
             }
 
-            var mesh = modelMeshes[subset];            
             vertexBuffer = mesh.vertexBuffer;
             vertexOffset = mesh.vertexOffset;
             numVertices = mesh.numVertices;
@@ -481,7 +481,8 @@ namespace Nine.Graphics.ObjectModel
 
         void ISupportInstancing.GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount)
         {
-            if (modelMeshes.Count <= 0)
+            ModelMesh mesh;
+            if (modelMeshes.Count <= 0 || !(mesh = modelMeshes[subset]).visible)
             {
                 indexBuffer = null;
                 startIndex = 0;
@@ -489,7 +490,6 @@ namespace Nine.Graphics.ObjectModel
                 return;
             }
 
-            var mesh = modelMeshes[subset];
             indexBuffer = mesh.indexBuffer;
             startIndex = mesh.startIndex;
             primitiveCount = mesh.primitiveCount;
@@ -502,6 +502,16 @@ namespace Nine.Graphics.ObjectModel
 
             // Material Lod is not enabled when using instancing.
             return modelMeshes[subset].Material ?? Material;
+        }
+
+        void ISupportInstancing.PrepareMaterial(int subset, Material material)
+        {
+            if (modelMeshes.Count <= 0)
+                return;
+            var mesh = modelMeshes[subset];
+            UpdateBoneTransforms();
+            mesh.ApplyTextures(material);
+            mesh.ApplySkinTransform(material);
         }
         #endregion
     }

@@ -387,14 +387,14 @@ namespace Nine.Graphics.Materials
 {
 #if !WINDOWS_PHONE
     /// <summary>
-    /// Content reader for <c>AdoptionMaterial</c>.
+    /// Content reader for <c>AdaptionMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AdoptionMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.AdoptionMaterial>
+    partial class AdaptionMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.AdaptionMaterial>
     {
-        protected override Nine.Graphics.Materials.AdoptionMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.AdoptionMaterial existingInstance)
+        protected override Nine.Graphics.Materials.AdaptionMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.AdaptionMaterial existingInstance)
         {
             if (existingInstance == null)
             {
@@ -404,7 +404,7 @@ namespace Nine.Graphics.Materials
                 var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
-                existingInstance = new AdoptionMaterial(graphicsDevice);
+                existingInstance = new AdaptionMaterial(graphicsDevice);
             }
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
@@ -964,40 +964,6 @@ namespace Nine.Graphics.Materials
             return existingInstance;
         }
     }
-#if !WINDOWS_PHONE
-    /// <summary>
-    /// Content reader for <c>EmbossMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class EmbossMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.EmbossMaterial>
-    {
-        protected override Nine.Graphics.Materials.EmbossMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.EmbossMaterial existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new EmbossMaterial(graphicsDevice);
-            }
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Alpha = input.ReadSingle();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.IsAdditive = input.ReadBoolean();
-            existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-#endif
     /// <summary>
     /// Content reader for <c>EnvironmentMapMaterial</c>.
     /// </summary>
@@ -1091,6 +1057,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new LuminanceMaterial(graphicsDevice);
             }
+            existingInstance.IsDownScale = input.ReadBoolean();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
@@ -1169,40 +1136,6 @@ namespace Nine.Graphics.Materials
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
                 existingInstance = new NoiseMaterial(graphicsDevice);
-            }
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Alpha = input.ReadSingle();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.IsAdditive = input.ReadBoolean();
-            existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-#endif
-#if !WINDOWS_PHONE
-    /// <summary>
-    /// Content reader for <c>PixelateMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class PixelateMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.PixelateMaterial>
-    {
-        protected override Nine.Graphics.Materials.PixelateMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.PixelateMaterial existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new PixelateMaterial(graphicsDevice);
             }
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
@@ -1415,7 +1348,6 @@ namespace Nine.Graphics.Materials
                 existingInstance = new ToneMappingMaterial(graphicsDevice);
             }
             existingInstance.Exposure = input.ReadSingle();
-            existingInstance.MaxLuminance = input.ReadSingle();
             existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
@@ -2664,17 +2596,17 @@ namespace Nine.Graphics.PostEffects
 {
 #if !WINDOWS_PHONE
     /// <summary>
-    /// Content reader for <c>AdoptionEffect</c>.
+    /// Content reader for <c>AdaptionEffect</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AdoptionEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.AdoptionEffect>
+    partial class AdaptionEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.AdaptionEffect>
     {
-        protected override Nine.Graphics.PostEffects.AdoptionEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AdoptionEffect existingInstance)
+        protected override Nine.Graphics.PostEffects.AdaptionEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AdaptionEffect existingInstance)
         {
             if (existingInstance == null)
-                existingInstance = new AdoptionEffect();
+                existingInstance = new AdaptionEffect();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
@@ -2712,11 +2644,6 @@ namespace Nine.Graphics.PostEffects
             }
             existingInstance.Threshold = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffectChain>());
-            }
             existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
@@ -2750,11 +2677,6 @@ namespace Nine.Graphics.PostEffects
                 existingInstance = new BlurEffect(graphicsDevice);
             }
             existingInstance.BlurAmount = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Effects.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffect>());
-            }
             existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
             existingInstance.Enabled = input.ReadBoolean();
@@ -2791,11 +2713,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.FocalPlane = input.ReadSingle();
             existingInstance.FocalDistance = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffectChain>());
-            }
             existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
@@ -2830,14 +2747,8 @@ namespace Nine.Graphics.PostEffects
             }
             existingInstance.Threshold = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
-            existingInstance.AdoptionSpeed = input.ReadSingle();
+            existingInstance.AdaptionSpeed = input.ReadSingle();
             existingInstance.Exposure = input.ReadSingle();
-            existingInstance.MaxLuminance = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffectChain>());
-            }
             existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
@@ -2869,12 +2780,7 @@ namespace Nine.Graphics.PostEffects
 #endif
                 existingInstance = new LuminanceChain(graphicsDevice);
             }
-            existingInstance.AdoptionSpeed = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Effects.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffect>());
-            }
+            existingInstance.AdaptionSpeed = input.ReadSingle();
             existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
             existingInstance.Enabled = input.ReadBoolean();

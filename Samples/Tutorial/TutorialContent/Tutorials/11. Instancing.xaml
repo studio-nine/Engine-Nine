@@ -4,31 +4,31 @@
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
-    
+
     <Surface Heightmap.Width="128" Heightmap.Height="128" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-64, 0, -64" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/grass}" />
     </Surface>
-    
-	<InstancedModel Transform.Position="-64, 0, -64">
-		<DistributionMap.DistributionMap>
-			<DistributionMap Step="0.25" Density="10000" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
-		</DistributionMap.DistributionMap>
-		<Cross>
-			<MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True">
-				<DiffuseMaterialPart />
+
+    <InstancedModel Transform.Position="-64, 0, -64">
+        <DistributionMap.DistributionMap>
+            <DistributionMap Step="0.25" Density="10000" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
+        </DistributionMap.DistributionMap>
+        <Cross>
+            <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True">
+                <DiffuseMaterialPart />
                 <AlphaTestMaterialPart ReferenceAlpha="200" />
-                
+
                 <MaterialGroup.NextMaterial>
                     <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True" IsTransparent="True">
                         <DiffuseMaterialPart />
                         <AlphaTestMaterialPart AlphaFunction="LessEqual" ReferenceAlpha="200" />
                     </MaterialGroup>
                 </MaterialGroup.NextMaterial>
-			</MaterialGroup>
-		</Cross>
-	</InstancedModel>
-    
+            </MaterialGroup>
+        </Cross>
+    </InstancedModel>
+
     <InstancedModel Transform.Position="-64, 0, -64">
         <DistributionMap.DistributionMap>
             <DistributionMap Step="0.25" Density="20" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
@@ -37,10 +37,11 @@
             <Model.Material>
                 <MaterialGroup Texture="{ContentReference ../Textures/grass}">
                     <DiffuseMaterialPart />
+                    <SkinnedMaterialPart />
                     <DirectionalLightMaterialPart />
                 </MaterialGroup>
             </Model.Material>
         </Model>
     </InstancedModel>
-	
+
 </Scene>

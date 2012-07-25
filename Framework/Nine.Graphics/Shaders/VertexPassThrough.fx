@@ -1,9 +1,9 @@
-float2 halfPixel;
+float2 HalfPixel;
 
 void VS(inout float2 uv:TEXCOORD0, inout float4 position:POSITION)
 {  
     uv = uv;
-    position.xy += halfPixel;
+    position.xy += HalfPixel;
     position = position;
 }
 
