@@ -2644,8 +2644,6 @@ namespace Nine.Graphics.PostEffects
             }
             existingInstance.Threshold = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
-            existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -2713,8 +2711,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.FocalPlane = input.ReadSingle();
             existingInstance.FocalDistance = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
-            existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -2749,8 +2745,6 @@ namespace Nine.Graphics.PostEffects
             existingInstance.BlurAmount = input.ReadSingle();
             existingInstance.AdaptionSpeed = input.ReadSingle();
             existingInstance.Exposure = input.ReadSingle();
-            existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
@@ -2861,7 +2855,6 @@ namespace Nine.Graphics.PostEffects
                 for (var i = 0; i < count; i++)
                     existingInstance.Passes.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffectChain>());
             }
-            existingInstance.InputTexture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();

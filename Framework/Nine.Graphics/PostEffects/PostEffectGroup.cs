@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Windows.Markup;
+    using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
@@ -26,6 +27,7 @@
         /// <summary>
         /// Gets or sets the input texture to be processed.
         /// </summary>
+        [ContentSerializerIgnore]
         public Texture2D InputTexture { get; set; }
 
         /// <summary>
@@ -40,7 +42,7 @@
         /// Gets or sets the material to combine the composite the result
         /// of each contained pass.
         /// </summary>
-        public Material Material { get; set; }
+        public virtual Material Material { get; set; }
 
         private FastList<RenderTarget2D> passResults = new FastList<RenderTarget2D>();
         private FastList<PostEffect> lastEffects = new FastList<PostEffect>();

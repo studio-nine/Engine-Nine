@@ -44,7 +44,6 @@ namespace Nine.Graphics.Materials
         /// Gets or sets the world transformation for this material.
         /// The property provides a fast access to the world parameter without
         /// having to query for IEffectMatrices interface using the Find method.
-
         /// </summary>
         /// <remarks>
         /// Derived materials should support both this property and the
@@ -85,7 +84,6 @@ namespace Nine.Graphics.Materials
 
         /// <summary>
         /// Gets or sets whether this material will blend with other materials using additive blending.
-
         /// </summary>
         public bool IsAdditive
         {

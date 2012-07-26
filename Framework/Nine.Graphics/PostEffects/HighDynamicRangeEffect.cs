@@ -70,6 +70,13 @@
         {
             // Prevent content serializer from loading passes.
             get { return base.Passes; }
-        }        
+        }
+
+        [ContentSerializerIgnore]
+        public override Material Material
+        {
+            get { return base.Material; }
+            set { base.Material = value; }
+        }
     }
 }

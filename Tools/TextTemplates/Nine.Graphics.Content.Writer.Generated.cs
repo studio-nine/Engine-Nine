@@ -4014,8 +4014,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             output.Write(value.Threshold);
             output.Write(value.BlurAmount);
-            WriteObject(output, value, "InputTexture", value.InputTexture);
-            WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
@@ -4099,8 +4097,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.FocalPlane);
             output.Write(value.FocalDistance);
             output.Write(value.BlurAmount);
-            WriteObject(output, value, "InputTexture", value.InputTexture);
-            WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
@@ -4143,8 +4139,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
             output.Write(value.BlurAmount);
             output.Write(value.AdaptionSpeed);
             output.Write(value.Exposure);
-            WriteObject(output, value, "InputTexture", value.InputTexture);
-            WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
             output.Write(value.Order);
             WriteObject(output, value, "Name", value.Name);
@@ -4316,7 +4310,6 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
                 for (var i = 0; i < value.Passes.Count; i++)
                     output.WriteObject(value.Passes[i]);
             }
-            WriteObject(output, value, "InputTexture", value.InputTexture);
             WriteObject(output, value, "Material", value.Material);
             output.Write(value.Enabled);
             output.Write(value.Order);

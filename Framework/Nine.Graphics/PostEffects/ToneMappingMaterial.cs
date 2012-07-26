@@ -11,12 +11,14 @@ namespace Nine.Graphics.Materials
 
         partial void OnCreated()
         {
-            Exposure = 0.6f;
+            Exposure = 0.5f;
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, ToneMappingMaterial previousMaterial)
         {
             effect.Exposure.SetValue(Exposure);
+            GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+            GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
         }
 
         partial void EndApplyLocalParameters(DrawingContext context)

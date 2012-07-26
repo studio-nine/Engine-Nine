@@ -31,10 +31,11 @@
         /// </summary>
         public LuminanceChain(GraphicsDevice graphics)
         {
-            int scale = 4;
+            int scale = 2;
             int size = (int)Math.Max(graphics.Viewport.Width / scale, graphics.Viewport.Height / scale);
             size = Math.Max(1, UtilityExtensions.UpperPowerOfTwo(size));
 
+            scale = 4;
             Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Vector2 });
             size = Math.Max(1, size / scale);
 
@@ -44,7 +45,7 @@
                 size /= scale;
             }
 
-            Effects.Add(adaptionEffect = new AdaptionEffect() { RenderTargetSize = Vector2.One });
+            Effects.Add(adaptionEffect = new AdaptionEffect() { RenderTargetSize = Vector2.One, Speed = 5 });
             TextureUsage = TextureUsage.Luminance;
         }
 

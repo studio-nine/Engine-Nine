@@ -8,9 +8,6 @@ float3 Color = {1.0f, 1.0f, 1.0f};
 samplerCUBE CubeSampler = sampler_state
 {
 	Texture = <Texture>;
-	MinFilter = Linear;
-	MagFilter = Linear;
-	MipFilter = Linear;
 };
 
 struct VS_OUTPUT

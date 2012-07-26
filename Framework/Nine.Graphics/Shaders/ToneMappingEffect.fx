@@ -6,24 +6,12 @@ texture LuminanceTexture;
 sampler LuminanceSampler : register(s1) = sampler_state
 {
    Texture = <LuminanceTexture>;
-   MinFilter = POINT;
-   MagFilter = POINT;
-   MipFilter = POINT;   
-   AddressU  = Clamp;
-   AddressV  = Clamp;
-   AddressW  = Clamp;
 };
 
 texture BloomTexture;
 sampler BloomSampler : register(s2) = sampler_state
 {
    Texture = <BloomTexture>;
-   MinFilter = POINT;
-   MagFilter = POINT;
-   MipFilter = POINT;   
-   AddressU  = Clamp;
-   AddressV  = Clamp;
-   AddressW  = Clamp;
 };
 
 float4 PS(float2 TexCoord : TEXCOORD0) : COLOR0
