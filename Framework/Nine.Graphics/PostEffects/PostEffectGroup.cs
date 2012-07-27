@@ -135,11 +135,10 @@
             if (fullScreenQuad == null)
             {
                 fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
-                vertexPassThrough = GraphicsResources<VertexPassThroughMaterial>.GetInstance(context.GraphicsDevice);
+                vertexPassThrough = new VertexPassThroughMaterial(context.GraphicsDevice);
             }
 
             vertexPassThrough.BeginApply(context);
-            vertexPassThrough.EndApply(context);
 
             context.GraphicsDevice.BlendState = BlendState.Opaque;
             context.GraphicsDevice.Textures[0] = InputTexture;

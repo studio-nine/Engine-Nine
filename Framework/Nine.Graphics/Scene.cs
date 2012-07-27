@@ -41,7 +41,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets or sets the graphics context.
         /// </summary>
-        public DrawingContext Context { get; protected set; }
+        public DrawingContext Context { get; private set; }
         #endregion
 
         #region Fields
@@ -137,9 +137,7 @@ namespace Nine.Graphics
         #region Collection
         /// <summary>
         /// Adds a new item to the scene using the specified scene manager.
-
         /// All child objects are also added using that scene manager unless stated
-
         /// explicitly with a SceneManger attached property.
         /// The default scene manager is used if no scene manager is specified.
         /// </summary>
@@ -350,7 +348,6 @@ namespace Nine.Graphics
         /// </summary>
         /// <remarks>
         /// When an object tree is added to the scene using Scene.Add, 
-
         /// this find method will set the FindResult.OriginalTarget property to the original 
         /// <see cref="ISpatialQueryable"/> for the intersection test against the input bounding volumn.
         /// It will set the FindResult.Target property to the containing object that is added
@@ -492,15 +489,6 @@ namespace Nine.Graphics
         /// Updates and draws the scene with the specified camera settings.
         /// </summary>
         public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection)
-        {
-            Context.Draw(elapsedTime, drawables, view, projection);
-        }
-
-        /// <summary>
-        /// Updates and draws all the drawable objects in the scene with the specified camera setting using the
-        /// specified material.
-        /// </summary>
-        public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection, Material material)
         {
             Context.Draw(elapsedTime, drawables, view, projection);
         }

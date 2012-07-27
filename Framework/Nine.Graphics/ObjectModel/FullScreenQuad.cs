@@ -42,6 +42,11 @@
         public object Tag { get; set; }
 
         /// <summary>
+        /// When the material does not have a vertex shader, set this to true.
+        /// </summary>
+        internal bool IgnoreVertexTransform;
+
+        /// <summary>
         /// The vertex buffer and index buffers are shared between FullScreenQuads.
         /// </summary>
         private VertexBuffer vertexBuffer;
@@ -86,18 +91,8 @@
 
         public void Draw(DrawingContext context, Material material)
         {
-            var vp = context.GraphicsDevice.Viewport;
-            var oldView = context.matrices.view;
-            var oldProjection = context.matrices.projection;
-
-            try
+            if (IgnoreVertexTransform)
             {
-                context.matrices.view = Matrix.Identity;
-                context.matrices.projection = Matrix.Identity;
-
-                material.world = Matrix.Identity;
-                material.world.M41 = -0.5f / vp.Width;
-                material.world.M42 = 0.5f / vp.Height;
                 material.BeginApply(context);
 
                 context.SetVertexBuffer(vertexBuffer, 0);
@@ -106,10 +101,33 @@
 
                 material.EndApply(context);
             }
-            finally
+            else
             {
-                context.matrices.view = oldView;
-                context.matrices.projection = oldProjection;
+                var vp = context.GraphicsDevice.Viewport;
+                var oldView = context.matrices.view;
+                var oldProjection = context.matrices.projection;
+
+                try
+                {
+                    context.matrices.view = Matrix.Identity;
+                    context.matrices.projection = Matrix.Identity;
+
+                    material.world = Matrix.Identity;
+                    material.world.M41 = -0.5f / vp.Width;
+                    material.world.M42 = 0.5f / vp.Height;
+                    material.BeginApply(context);
+
+                    context.SetVertexBuffer(vertexBuffer, 0);
+                    GraphicsDevice.Indices = indexBuffer;
+                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+
+                    material.EndApply(context);
+                }
+                finally
+                {
+                    context.matrices.view = oldView;
+                    context.matrices.projection = oldProjection;
+                }
             }
         }
 

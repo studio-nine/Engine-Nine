@@ -18,7 +18,6 @@ namespace Nine.Graphics.ObjectModel
         /// Gets the material of the object.
         /// A value of null indicates the object does not have any user specific
         /// material settings, and should be drawn using the default method.
-
         /// </summary>
         Material Material { get; }
 

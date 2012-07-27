@@ -6,22 +6,6 @@ namespace Nine.Graphics.Drawing
     using Nine.Graphics.ObjectModel;
 
     /// <summary>
-    /// Defines an interface for post processing effect
-    /// </summary>
-    public interface IPostEffect
-    {
-        /// <summary>
-        /// Gets or sets the input texture to be processed.
-        /// </summary>
-        Texture2D InputTexture { get; set; }
-
-        /// <summary>
-        /// Gets the preferred surface format for the input texture.
-        /// </summary>
-        SurfaceFormat? InputFormat { get; }
-    }
-
-    /// <summary>
     /// Enables a group of drawing passes to be rendered one by one.
     /// </summary>
     public class PassGroup : Pass

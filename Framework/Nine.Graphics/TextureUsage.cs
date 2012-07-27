@@ -111,6 +111,11 @@ namespace Nine.Graphics
         DepthBuffer,
 
         /// <summary>
+        /// Specifies the target texture is used as normal buffer texture.
+        /// </summary>
+        NormalBuffer,
+
+        /// <summary>
         /// Specifies the target texture is used as light buffer texture.
         /// </summary>
         LightBuffer,

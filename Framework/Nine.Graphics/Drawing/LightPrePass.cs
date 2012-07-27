@@ -1,52 +1,24 @@
-﻿#region Copyright 2009 - 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Nine.Graphics.Primitives;
-using Nine.Graphics.ObjectModel;
-#endregion
-
-namespace Nine.Graphics.Materials.Deferred
+namespace Nine.Graphics.Drawing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.ObjectModel;
+
     /// <summary>
-    /// Represents the G-Buffer used by light pre-pass deferred lighting.
+    /// Represents a deferred lighting technique.
     /// </summary>
-    public class GraphicsBuffer : IDisposable
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class LightPrePass : Pass
     {
-        bool hasSceneBegin;
-        bool hasLightBegin;
-
-        RenderTarget2D normalBuffer;
-        RenderTarget2D depthBuffer;
-        RenderTarget2D lightBuffer;
-
-        DepthStencilState greaterDepth;
-
-        ClearEffect clearEffect;
-        FullScreenQuad clearQuad;
-
-        Matrix view;
-        Matrix projection;
-        BoundingFrustum viewFrustum;
-        
+        #region Properties
         /// <summary>
         /// Gets the graphics device used by this effect.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
-
-        /// <summary>
-        /// Gets the effect used to render the graphics buffer between BeginScene and EndScene pair.
-        /// </summary>
-        //public GraphicsBufferEffect Effect { get; private set; }
 
         /// <summary>
         /// Gets the texture that contains world space normal info of the scene.
@@ -92,21 +64,49 @@ namespace Nine.Graphics.Materials.Deferred
         /// The default value is SurfaceFormat.Color.
         /// </summary>
         public SurfaceFormat LightBufferFormat { get; set; }
+        #endregion
 
-        /// <summary>
-        /// Gets the blend state used to draw the lights.
-        /// </summary>
-        public BlendState BlendState { get { return LightBlendState; } }
+        #region Fields
+        bool hasSceneBegin;
+        bool hasLightBegin;
 
+        RenderTarget2D normalBuffer;
+        RenderTarget2D depthBuffer;
+        RenderTarget2D lightBuffer;
+        RenderTargetBinding[] renderTargetBinding = new RenderTargetBinding[2];
+
+        DepthStencilState greaterDepth;
+        BlendState lightBlendState;
+
+        ClearMaterial clearMaterial;
+        VertexPassThroughMaterial vertexPassThrough;
+        GraphicsBufferMaterial gBufferMaterial;
+        FullScreenQuad clearQuad;
+        #endregion
+
+        #region Methods
         /// <summary>
-        /// Gets the depth stencil state used to draw the lights.
+        /// Initializes a new instance of the <see cref="LightPrePass"/> class.
         /// </summary>
-        public DepthStencilState DepthStencilState { get { return DepthStencilState.None; } }
-        
-        internal static BlendState LightBlendState;
-        static GraphicsBuffer()
+        public LightPrePass(GraphicsDevice graphics)
         {
-            LightBlendState = new BlendState()
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+
+            this.GraphicsDevice = graphics;
+            this.NormalBufferFormat = SurfaceFormat.Color;
+            this.DepthBufferFormat = SurfaceFormat.Single;
+            this.LightBufferFormat = SurfaceFormat.Color;
+            this.gBufferMaterial = new GraphicsBufferMaterial(graphics);
+
+            this.greaterDepth = new DepthStencilState
+            {
+                DepthBufferEnable = true,
+                DepthBufferFunction = CompareFunction.Greater,
+                DepthBufferWriteEnable = false
+            };
+
+            this.lightBlendState = new BlendState()
             {
                 AlphaBlendFunction = BlendFunction.Add,
                 AlphaSourceBlend = Blend.One,
@@ -118,27 +118,46 @@ namespace Nine.Graphics.Materials.Deferred
         }
 
         /// <summary>
-        /// Initializes a new instance of DeferredEffect.
+        /// Draws this pass using the specified drawing context.
         /// </summary>
-        public GraphicsBuffer(GraphicsDevice graphics)
+        public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            if (graphics == null || graphics.IsDisposed)
-                throw new ArgumentException("graphics");
+            try
+            {
+                Begin(context);
 
-            this.GraphicsDevice = graphics;
-            //this.Effect = new GraphicsBufferEffect(graphics);
-            this.NormalBufferFormat = SurfaceFormat.Color;
-            this.DepthBufferFormat = SurfaceFormat.Single;
-            this.LightBufferFormat = SurfaceFormat.Color;
-            this.viewFrustum = new BoundingFrustum(Matrix.Identity);
+                var count = drawables.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var drawable = drawables[i];
+                    if (drawable == null || !drawable.Visible)
+                        continue;
 
-            this.greaterDepth = new DepthStencilState { DepthBufferEnable = true, DepthBufferFunction = CompareFunction.Greater, DepthBufferWriteEnable = false };
+                    drawable.BeginDraw(context);
+
+                    var material = drawable.Material;
+                    if (material == null)
+                        material = gBufferMaterial;
+                    else
+                        material = material[MaterialUsage.Depth];
+
+                    if (material != null)
+                        drawable.Draw(context, material);
+
+                    drawable.EndDraw(context);
+                }
+            }
+            finally
+            {
+                End(context);
+            }
+            DrawLights(context, null);
         }
 
         /// <summary>
         /// Begins the rendering of the scene using DepthNormalEffect.
         /// </summary>
-        public void Begin()
+        private void Begin(DrawingContext context)
         {
             if (hasSceneBegin || hasLightBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
@@ -147,19 +166,24 @@ namespace Nine.Graphics.Materials.Deferred
 
             CreateDepthNormalBuffers();
 
-            GraphicsDevice.SetRenderTargets(normalBuffer, depthBuffer);
+            renderTargetBinding[0] = new RenderTargetBinding(normalBuffer);
+            renderTargetBinding[1] = new RenderTargetBinding(depthBuffer);
+
+            GraphicsDevice.SetRenderTargets(renderTargetBinding);
             GraphicsDevice.BlendState = BlendState.Opaque;
-            ClearRenderTargets();
+            ClearRenderTargets(context);
         }
 
         /// <summary>
         /// Ends the rendering of the scene and generates DepthNormalMap.
         /// </summary>
-        public void End()
+        private void End(DrawingContext context)
         {
             if (!hasSceneBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
+            context.textures[TextureUsage.DepthBuffer] = DepthBuffer;
+            context.textures[TextureUsage.NormalBuffer] = NormalBuffer;
             GraphicsDevice.SetRenderTarget(null);
             hasSceneBegin = false;
         }
@@ -167,88 +191,92 @@ namespace Nine.Graphics.Materials.Deferred
         /// <summary>
         /// Draws the specified lights onto the light buffer.
         /// </summary>
-        public void DrawLights(Matrix view, Matrix projection, ICollection<IDeferredLight> lights)
+        private void DrawLights(DrawingContext context, ICollection<IDeferredLight> lights)
         {
-            BeginLights(view, projection);
-            foreach (IDeferredLight light in lights)
-                DrawLight(light);
-            EndLights();
+            try
+            {
+                BeginLights(context);
+                foreach (IDeferredLight light in lights)
+                    DrawLight(context, light);
+            }
+            finally
+            {
+                EndLights(context);
+            }
         }
 
         /// <summary>
         /// Begins the rendering of all the lights in the scene.
         /// </summary>
-        internal void BeginLights(Matrix view, Matrix projection)
+        private void BeginLights(DrawingContext context)
         {
             if (hasLightBegin || hasSceneBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
 
             hasLightBegin = true;
 
-            this.view = view;
-            this.projection = projection;
-            this.viewFrustum.Matrix = view * projection;
-
             CreateLightBuffer();
 
             lightBuffer.Begin();
 
             // Setup render states for light rendering
-            GraphicsDevice.Clear(Color.Transparent);
+            GraphicsDevice.Clear(new Color(new Vector4(context.AmbientLightColor, 1)));
 
             // Set render state for lights
-            GraphicsDevice.BlendState = LightBlendState;
+            GraphicsDevice.BlendState = lightBlendState;
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
         }
-        
+
         /// <summary>
         /// Draws a light instance for DeferredEffect.
         /// </summary>
-        internal void DrawLight(IDeferredLight light)
+        private void DrawLight(DrawingContext context, IDeferredLight light)
         {
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
-            
-            IEffectTexture texture = light.Effect as IEffectTexture;
-            if (texture != null)
+
+            var lightGeometry = light.Drawable;
+            if (lightGeometry == null)
+                throw new InvalidOperationException();
+
+            var lightMaterial = lightGeometry.Material;
+            if (lightMaterial == null)
+                throw new InvalidOperationException();
+
+            lightMaterial.SetTexture(TextureUsage.NormalMap, normalBuffer);
+            lightMaterial.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
+
+            try
             {
-                texture.SetTexture(TextureUsage.NormalMap, normalBuffer);
-                texture.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
-            }
+                lightMaterial.BeginApply(context);
+            
+                // Draw the model, using the specified effect.
+                // Setup correct cull mode so that each pixel is rendered only once.
+                //
+                // NOTE: Setup cullmode after applying effect so that the world matrix of
+                //       DeferredSpotLight is alway updated before calling Contains.
+                GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                GraphicsDevice.DepthStencilState = greaterDepth;
 
-            IEffectMatrices matrices = light.Effect as IEffectMatrices;
-            if (matrices != null)
+                lightGeometry.BeginDraw(context);
+                lightGeometry.Draw(context, lightMaterial);
+                lightGeometry.EndDraw(context);
+            }
+            finally
             {
-                matrices.View = view;
-                matrices.Projection = projection;
+                lightMaterial.EndApply(context);
             }
-
-            light.Effect.CurrentTechnique.Passes[0].Apply();
-            
-            // Set our vertex declaration, vertex buffer, and index buffer.
-            GraphicsDevice.SetVertexBuffer(light.VertexBuffer);
-            GraphicsDevice.Indices = light.IndexBuffer;
-            
-            // Draw the model, using the specified effect.
-            // Setup correct cull mode so that each pixel is rendered only once.
-            //
-            // NOTE: Setup cullmode after applying effect so that the world matrix of
-            //       DeferredSpotLight is alway updated before calling Contains.
-            GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-            GraphicsDevice.DepthStencilState = greaterDepth;
-
-            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, light.VertexBuffer.VertexCount, 0, light.IndexBuffer.IndexCount / 3);
         }
 
         /// <summary>
         /// Ends the rendering of lights and generates LightTexture.
         /// </summary>
-        internal Texture2D EndLights()
+        private Texture2D EndLights(DrawingContext context)
         {
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
-            lightBuffer.End();
+            lightBuffer.End();            
             hasLightBegin = false;
 
             // Restore render state to default
@@ -256,6 +284,7 @@ namespace Nine.Graphics.Materials.Deferred
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
+            context.textures[TextureUsage.LightBuffer] = LightBuffer;
             return LightBuffer;
         }
 
@@ -273,7 +302,7 @@ namespace Nine.Graphics.Materials.Deferred
                                              GraphicsDevice.Viewport.Height, false, NormalBufferFormat,
                                              GraphicsDevice.PresentationParameters.DepthStencilFormat);
             }
-            
+
             if (depthBuffer == null || depthBuffer.Format != DepthBufferFormat ||
                 depthBuffer.IsDisposed || depthBuffer.IsContentLost ||
                 depthBuffer.Width != GraphicsDevice.Viewport.Width ||
@@ -304,19 +333,20 @@ namespace Nine.Graphics.Materials.Deferred
             }
         }
 
-        private void ClearRenderTargets()
+        private void ClearRenderTargets(DrawingContext context)
         {
-            if (clearEffect == null)
-                clearEffect = new ClearEffect(GraphicsDevice);
-            if (clearQuad == null)
-                clearQuad = new FullScreenQuad(GraphicsDevice);
+            if (clearMaterial == null)
+            {
+                clearMaterial = new ClearMaterial(GraphicsDevice);
+                vertexPassThrough = new VertexPassThroughMaterial(GraphicsDevice);
+                clearQuad = new FullScreenQuad(GraphicsDevice) { IgnoreVertexTransform = true };
+            }
 
-            clearEffect.CurrentTechnique.Passes[0].Apply();
+            vertexPassThrough.BeginApply(context);
+            clearMaterial.effect.CurrentTechnique.Passes[0].Apply();
 
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
-            //GraphicsDevice.SetVertexBuffer(clearQuad.vertexBuffer);
-            //GraphicsDevice.Indices = clearQuad.indexBuffer;
-            //GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, clearQuad.VertexCount, 0, clearQuad.PrimitiveCount);
+            clearQuad.Draw(context, clearMaterial);
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
 
@@ -334,7 +364,7 @@ namespace Nine.Graphics.Materials.Deferred
                 {
                     depthBuffer.Dispose();
                     depthBuffer = null;
-                }                
+                }
                 if (normalBuffer != null)
                 {
                     normalBuffer.Dispose();
@@ -346,11 +376,12 @@ namespace Nine.Graphics.Materials.Deferred
                     lightBuffer = null;
                 }
             }
-        }        
+        }
 
-        ~GraphicsBuffer()
+        ~LightPrePass()
         {
             Dispose(false);
         }
+        #endregion
     }
 }

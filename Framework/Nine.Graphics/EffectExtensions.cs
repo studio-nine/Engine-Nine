@@ -28,6 +28,8 @@ namespace Nine.Graphics
     /// </summary>
     public interface IEffectLights<T>
     {
+        bool Bind(int ordinal, T light);
+
         /// <summary>
         /// Gets a read only collection of lights exposed by this effect.
         /// </summary>

@@ -188,6 +188,7 @@ namespace Nine.Graphics.ObjectModel
     {
         public sealed override bool Apply(Material material, int index, bool last)
         {
+            /*
             IEffectLights<T> lightables = material.Find<IEffectLights<T>>();
             if (lightables == null || lightables.Lights == null || index >= lightables.Lights.Count)
                 return false;
@@ -197,6 +198,7 @@ namespace Nine.Graphics.ObjectModel
                 for (int i = index + 1; i < lightables.Lights.Count; i++)
                     Disable(lightables.Lights[i]);
             }
+             */
             return true;
         }
 

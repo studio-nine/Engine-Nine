@@ -145,7 +145,6 @@
                 } 
                 
                 vertexPassThrough.BeginApply(context);
-                vertexPassThrough.EndApply(context);
 
                 // Blur H
                 depthBlur.Begin();

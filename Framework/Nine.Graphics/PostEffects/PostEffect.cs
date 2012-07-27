@@ -10,6 +10,22 @@
     using Nine.Graphics.ObjectModel;
 
     /// <summary>
+    /// Defines an interface for post processing effect
+    /// </summary>
+    public interface IPostEffect
+    {
+        /// <summary>
+        /// Gets or sets the input texture to be processed.
+        /// </summary>
+        Texture2D InputTexture { get; set; }
+
+        /// <summary>
+        /// Gets the preferred surface format for the input texture.
+        /// </summary>
+        SurfaceFormat? InputFormat { get; }
+    }
+
+    /// <summary>
     /// Represents a post processing effect.
     /// </summary>
     [ContentSerializable]
@@ -139,13 +155,12 @@
                 if (fullScreenQuad == null)
                 {
                     fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
-                    vertexPassThrough = GraphicsResources<VertexPassThroughMaterial>.GetInstance(context.GraphicsDevice);
+                    vertexPassThrough = new VertexPassThroughMaterial(context.GraphicsDevice);
                 }
 
                 // Apply a vertex pass through material in case the specified material does
                 // not have a vertex shader.
                 vertexPassThrough.BeginApply(context);
-                vertexPassThrough.EndApply(context);
 
                 context.GraphicsDevice.BlendState = BlendState;
                 context.GraphicsDevice.Textures[0] = InputTexture;

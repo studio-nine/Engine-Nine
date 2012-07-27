@@ -8,6 +8,7 @@ namespace Nine.Graphics.Drawing
     /// <summary>
     /// A drawing pass represents a single pass in the composition chain.
     /// </summary>
+    [NotContentSerializable]
     public class DrawingPass : Pass
     {
         /// <summary>

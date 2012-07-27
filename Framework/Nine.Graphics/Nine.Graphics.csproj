@@ -115,12 +115,15 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="Design\BlendStateConverter.cs" />
+    <Compile Include="Drawing\IDeferredLight.cs" />
+    <Compile Include="Drawing\LightPrePass.cs" />
     <Compile Include="Drawing\PassGroup.cs" />
     <Compile Include="Drawing\TextureCollection.cs" />
     <Compile Include="Drawing\MatrixCollection.cs" />
     <Compile Include="Drawing\Pass.cs" />
     <Compile Include="Drawing\DrawingQueue.cs" />
     <Compile Include="GraphicsDeviceService.cs" />
+    <Compile Include="Materials\GraphicsBufferMaterial.cs" />
     <Compile Include="Materials\DepthMaterial.cs" />
     <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
     <Compile Include="ObjectModel\ShadowMap.cs" />

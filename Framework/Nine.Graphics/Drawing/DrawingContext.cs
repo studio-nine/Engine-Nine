@@ -6,6 +6,7 @@ namespace Nine.Graphics.Drawing
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
     using Nine.Graphics.ObjectModel;
+    using Nine.Graphics.PostEffects;
     using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
 
     /// <summary>
