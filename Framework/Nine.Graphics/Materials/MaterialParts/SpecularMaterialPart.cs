@@ -84,9 +84,9 @@
             if (specularColorEnabled)
             {
                 if (specularColor.HasValue)
-                    specularColorParameter.SetValue(specularColor);
+                    specularColorParameter.SetValue(specularColor.Value);
                 if (specularPower.HasValue)
-                    specularPowerParameter.SetValue(specularPower);
+                    specularPowerParameter.SetValue(specularPower.Value);
             }
         }
 

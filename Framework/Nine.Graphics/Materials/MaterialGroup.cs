@@ -238,7 +238,7 @@ namespace Nine.Graphics.Materials
                 existingInstance = new MaterialGroup();
 
             int count = 0;
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();

@@ -36,45 +36,7 @@ namespace Nine.Graphics.Drawing
         /// with this specified material usage to draw each object.
         /// </summary>
         public MaterialUsage MaterialUsage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the texture filter quanlity for this drawing pass.
-        /// </summary>
-        public TextureFilter TextureFilter
-        {
-            get { return textureFilter; }
-            set 
-            {
-                if (textureFilter != value)
-                {
-                    textureFilter = value;
-                    samplerStateNeedsUpdate = true;
-                }
-            }
-        }
-        private TextureFilter textureFilter = TextureFilter.Linear;
-     
-        /// <summary>
-        /// Gets or sets the maximum anisotropy. The default value is 4.
-        /// </summary>
-        public int MaxAnisotropy
-        {
-            get { return maxAnisotropy; }
-            set
-            {
-                if (maxAnisotropy != value)
-                {
-                    maxAnisotropy = value;
-                    samplerStateNeedsUpdate = true;
-                }
-            }
-        }
-        private int maxAnisotropy = 4;
-
-        private bool samplerStateNeedsUpdate = false;
-        private SamplerState samplerState = SamplerState.LinearWrap;
-
-
+        
         private DrawingQueue opaque = new DrawingQueue();
         private DrawingQueue opaqueTwoSided = new DrawingQueue();
 
@@ -104,8 +66,6 @@ namespace Nine.Graphics.Drawing
             var graphics = context.GraphicsDevice;
             var dominantMaterial = Material;
             var defaultMaterial = DefaultMaterial ?? (DefaultMaterial = new BasicMaterial(graphics) { LightingEnabled = true });
-
-            UpdateSamplerState(graphics);
 
             try
             {
@@ -151,7 +111,25 @@ namespace Nine.Graphics.Drawing
                     transparentTwoSided.Sort();
                 }
 
-                // Draw opaque objects                
+                //---------------------------------------------------------------------
+                // Sampler state management rules:
+                //
+                // - When possible, do not modify sampler states in HLSL.
+                // - When a material modifies any sampler state, it should restore the 
+                //   state to defaults.
+                // - When a post processing material modifies sampler state 1-n, it should
+                //   restore the state to defaults.
+                // - When a post processing material modifies sampler state 0, no need to restore.
+                // - A post processing material should always set sampler state 0.
+                //
+                // - All sampler states will be set to the default on application startup
+                //   or the default state changed.
+                // - During the drawing pass, the first sampler state is reset to default
+                //   to correct the changes made in post processing.
+                //---------------------------------------------------------------------
+                graphics.SamplerStates[0] = context.Settings.DefaultSamplerState;
+
+                // Draw opaque objects     
                 graphics.DepthStencilState = DepthStencilState.Default;
                 graphics.BlendState = BlendState.Opaque;
 
@@ -218,21 +196,6 @@ namespace Nine.Graphics.Drawing
                 for (int i = 0; i < count; i++)
                     drawables[i].EndDraw(context);
             }
-        }
-
-        private void UpdateSamplerState(GraphicsDevice graphics)
-        {
-            if (samplerStateNeedsUpdate)
-            {
-                samplerState = new SamplerState();
-                samplerState.AddressU = TextureAddressMode.Wrap;
-                samplerState.AddressV = TextureAddressMode.Wrap;
-                samplerState.AddressW = TextureAddressMode.Wrap;
-                samplerState.Filter = textureFilter;
-                samplerState.MaxAnisotropy = maxAnisotropy;
-                samplerStateNeedsUpdate = false;
-            }
-            graphics.SamplerStates[0] = samplerState;
         }
     }
 }

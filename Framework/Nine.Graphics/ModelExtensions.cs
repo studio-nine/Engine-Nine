@@ -371,15 +371,6 @@
             if (!overrideTextures)
             {
                 effect.SetTexture(part.Effect.GetTexture());
-
-                IEffectTexture effectTexture = effect as IEffectTexture;
-                if (effectTexture != null)
-                {
-                    foreach (var texture in part.GetTextures())
-                    {
-                        effectTexture.SetTexture(texture, part.GetTexture(texture));
-                    }
-                }
             }
             part.Effect = effect;
         }

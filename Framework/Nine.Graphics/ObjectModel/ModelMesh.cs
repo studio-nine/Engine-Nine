@@ -270,7 +270,7 @@ namespace Nine.Graphics.ObjectModel
             if (material != this.material &&
                (UseModelTextures ?? model.UseModelTextures))
             {
-                material.Texture = diffuseTexture;
+                material.texture = diffuseTexture;
                 if (textures != null)
                 {
                     foreach (var pair in textures)

@@ -1,58 +1,47 @@
+#define FXAA_PC 1
+#define FXAA_HLSL_3 1
+#define FXAA_QUALITY__PRESET 12
+#define FXAA_GREEN_AS_LUMA 1
 
-float Weight = 0.5;
-float2 pixelSize;
+#include "Fxaa3_11.fxh"
 
-sampler TextureSampler : register(s0);
+float4 PixelSize;
+sampler TextureSampler:register(s0);
 
-const float2 delta[8] =
- {
- float2(-1,1),float2(1,-1),float2(-1,1),float2(1,1),
- float2(-1,0),float2(1,0),float2(0,-1),float2(0,1)
- };
+void VS(inout float2 uv:TEXCOORD0, inout float4 position:POSITION0)
+{  
+    uv = uv;
+    position.xy += PixelSize.zw;
+    position = position;
+}
 
-
-texture NormalTexture;
-sampler normalSampler = sampler_state
+float4 PS(float2 uv:TEXCOORD0):COLOR0
 {
-   Texture = <NormalTexture>;
-   MinFilter = POINT;
-   MagFilter = POINT;
-   MipFilter = POINT;   
-   AddressU  = Clamp;
-   AddressV  = Clamp;
-};
+    return FxaaPixelShader( 
+		uv,                 //pos 
+		0,                  //fxaaConsolePosPos (not used) 
+		TextureSampler,     //tex 
+		TextureSampler,     //fxaaConsole360TexExpBiasNegOne (not used)
+		TextureSampler,     //fxaaConsole360TexExpBiasNegTwo (not used)
+		PixelSize.xy,       //fxaaQualityRcpFrame 
+		0,                  //fxaaConsoleRcpFrameOpt (not used) 
+		0,                  //fxaaConsoleRcpFrameOpt2 (not used)
+		0,                  //fxaaConsole360RcpFrameOpt2 (not used)
+		0.6,                //fxaaQualitySubpix, 
+		0.166,              //fxaaQualityEdgeThreshold, 
+		0.0625,             //fxaaQualityEdgeThresholdMin, 
+		8.0,                //fxaaConsoleEdgeSharpness (not used)
+		0.125,              //fxaaConsoleEdgeThreshold (not used)
+		0.05,               //fxaaConsoleEdgeThresholdMin (not used)
+		0                   //fxaaConsole360ConstDir (not used)
+    );
+} 
 
-float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
- {
-  
- float4 tex = tex2D(normalSampler ,texCoord);
- tex = tex * 2 - 1;
- float factor = 0.0f;
-
-int i;
- for(  i=0;i<4;i++ )
- {
-     float4 t = tex2D(normalSampler ,texCoord+ delta[i]*pixelSize);
-     t = t * 2 - 1;
-     t -= tex;
-     factor += dot(t,t);
- }
- factor = min(1.0,factor)*Weight;
- float4 color = float4(0.0,0.0,0.0,0.0);
-
- for( i=0;i<8;i++ )
- {
-    color += tex2D(TextureSampler,texCoord + delta[i]*pixelSize*factor);
- }
- color += 2.0*tex2D(TextureSampler,texCoord);
- return color*(1.0/10.0);
- 
- } 
- 
- technique AntiAliasing
+technique Default
 {
     pass Pass1
     {
-        PixelShader = compile ps_2_0 PS();
+        VertexShader = compile vs_3_0 VS();
+        PixelShader = compile ps_3_0 PS();
     }
 }

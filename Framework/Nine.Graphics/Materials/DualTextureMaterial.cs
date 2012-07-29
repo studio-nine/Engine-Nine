@@ -1,13 +1,17 @@
 namespace Nine.Graphics.Materials
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
     public class DualTextureMaterial : Material
     {
         #region Properties
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         public Vector3 DiffuseColor
         {
             get { return diffuseColor.HasValue ? diffuseColor.Value : MaterialConstants.DiffuseColor; }
@@ -18,6 +22,9 @@ namespace Nine.Graphics.Materials
         public Texture2D Texture2 { get; set; }
         public bool VertexColorEnabled { get; set; }
         public bool PreferPerPixelLighting { get; set; }
+
+        [TypeConverter(typeof(SamplerStateConverter))]
+        public SamplerState SamplerState { get; set; }
         #endregion
 
         #region Fields
@@ -31,6 +38,7 @@ namespace Nine.Graphics.Materials
         #region Methods
         public DualTextureMaterial(GraphicsDevice graphics)
         {
+            GraphicsDevice = graphics;
             effect = GraphicsResources<DualTextureEffect>.GetInstance(graphics);
         }
 
@@ -65,13 +73,19 @@ namespace Nine.Graphics.Materials
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = diffuseColor.Value;
 
-            if (previousDualTextureMaterial == null || previousTexture != Texture)
-                previousTexture = effect.Texture = Texture;
+            if (previousDualTextureMaterial == null || previousTexture != texture)
+                previousTexture = effect.Texture = texture;
             if (previousDualTextureMaterial == null || previousTexture2 != Texture2)
                 previousTexture2 = effect.Texture2 = Texture2;
 
             effect.World = World;
             effect.VertexColorEnabled = VertexColorEnabled;
+
+            if (SamplerState != null)
+            {
+                GraphicsDevice.SamplerStates[0] = SamplerState;
+                GraphicsDevice.SamplerStates[1] = SamplerState;
+            }
 
             effect.CurrentTechnique.Passes[0].Apply();
         }
@@ -82,6 +96,12 @@ namespace Nine.Graphics.Materials
                 effect.Alpha = MaterialConstants.Alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = MaterialConstants.DiffuseColor;
+
+            if (SamplerState != null)
+            {
+                GraphicsDevice.SamplerStates[0] =
+                GraphicsDevice.SamplerStates[1] = context.Settings.DefaultSamplerState;
+            }
         }
         #endregion
     }

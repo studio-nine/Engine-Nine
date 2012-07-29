@@ -1,4 +1,4 @@
-float2  HalfPixel;
+float2  HalfTexel;
 sampler Sampler : register(s0);
 
 static const float KernelOffsets2[2] = {-1, 1};
@@ -13,11 +13,12 @@ float4 LuminancePS(float2 TexCoord:TEXCOORD0) : COLOR0
     {
         for (int y = 0; y < 2; y++)
         {
-            float2 Offset = float2(KernelOffsets2[x], KernelOffsets2[y]) * HalfPixel;
+            float2 Offset = float2(KernelOffsets2[x], KernelOffsets2[y]) * HalfTexel;
             float4 color = tex2D(Sampler, TexCoord + Offset);
 
             float GreyValue = dot(color.rgb, float3(0.299f, 0.587f, 0.114f));
 
+            // TODO: Apply a max luminance
             maximum = max(maximum, GreyValue);
             average += (0.25f * log( 1e-5 + GreyValue ));
         }
@@ -36,7 +37,7 @@ float4 LuminanceScalePS(float2 TexCoord:TEXCOORD0) : COLOR0
     {
         for (int y = 0; y < 4; y++)
         {
-            float2 Offset = float2(KernelOffsets4[x], KernelOffsets4[y]) * HalfPixel;
+            float2 Offset = float2(KernelOffsets4[x], KernelOffsets4[y]) * HalfTexel;
             float4 color = tex2D(Sampler, TexCoord + Offset);
 
             average += color.r;

@@ -1,6 +1,6 @@
 sampler TextureSampler : register(s0);
 
-float2 HalfPixel;
+float2 HalfTexel;
 
 static const float KernelOffsets[4] = {-3, -1, 1, 3};
 
@@ -11,7 +11,7 @@ float4 SoftwareScale4x4PS(float2 texCoord:TEXCOORD0) : COLOR0
     {
         for (int y = 0; y < 4; y++)
         {
-            float2 Offset = float2(KernelOffsets[x], KernelOffsets[y]) * HalfPixel;
+            float2 Offset = float2(KernelOffsets[x], KernelOffsets[y]) * HalfTexel;
             color += tex2D(TextureSampler, texCoord + Offset);
         }
     }

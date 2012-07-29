@@ -161,11 +161,6 @@ namespace Nine.Graphics.ObjectModel
         }
 
         /// <summary>
-        /// TODO:
-        /// </summary>
-        public abstract bool Apply(Material material, int index, bool last);
-
-        /// <summary>
         /// Gets the shadow frustum of this light.
         /// </summary>
         /// <returns>
@@ -178,31 +173,5 @@ namespace Nine.Graphics.ObjectModel
         /// </summary>
         public virtual void DrawFrustum(DrawingContext context) { }
         #endregion
-    }
-
-    /// <summary>
-    /// Base class for all lights.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public abstract class Light<T> : Light where T : class
-    {
-        public sealed override bool Apply(Material material, int index, bool last)
-        {
-            /*
-            IEffectLights<T> lightables = material.Find<IEffectLights<T>>();
-            if (lightables == null || lightables.Lights == null || index >= lightables.Lights.Count)
-                return false;
-            Enable(lightables.Lights[index]);
-            if (last)
-            {
-                for (int i = index + 1; i < lightables.Lights.Count; i++)
-                    Disable(lightables.Lights[i]);
-            }
-             */
-            return true;
-        }
-
-        protected abstract void Enable(T light);
-        protected abstract void Disable(T light);
     }
 }

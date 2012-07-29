@@ -14,7 +14,7 @@
             if (output.TargetPlatform == TargetPlatform.WindowsPhone)
                 return;
 
-            WriteObject(output, value, "Texture", value.Texture);
+            WriteObject(output, value, "Texture", value.texture);
             output.Write(value.IsTransparent);
             output.Write(value.IsAdditive);
             output.Write(value.TwoSided);

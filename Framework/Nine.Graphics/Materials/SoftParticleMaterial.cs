@@ -21,7 +21,7 @@
 
         partial void BeginApplyLocalParameters(DrawingContext context, SoftParticleMaterial previousMaterial)
         {
-            effect.Texture.SetValue(Texture);
+            effect.Texture.SetValue(texture);
             if (depthFade.HasValue)
                 effect.DepthFade.SetValue(depthFade.Value);
         }

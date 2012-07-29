@@ -1,14 +1,17 @@
 namespace Nine.Graphics.Materials
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
     public class EnvironmentMapMaterial : Material
     {
-        #region Properties
-        
+        #region Properties        
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         public float FresnelFactor
         {
             get { return fresnelFactor.HasValue ? fresnelFactor.Value : MaterialConstants.FresnelFactor; }
@@ -45,6 +48,9 @@ namespace Nine.Graphics.Materials
         private Vector3? environmentMapSpecular;
 
         public TextureCube EnvironmentMap { get; set; }
+
+        [TypeConverter(typeof(SamplerStateConverter))]
+        public SamplerState SamplerState { get; set; }
         #endregion
 
         #region Fields
@@ -59,6 +65,7 @@ namespace Nine.Graphics.Materials
         #region Methods
         public EnvironmentMapMaterial(GraphicsDevice graphics)
         {
+            GraphicsDevice = graphics;
             effect = GraphicsResources<EnvironmentMapEffect>.GetInstance(graphics);
         }
 
@@ -96,13 +103,16 @@ namespace Nine.Graphics.Materials
             if (fresnelFactor.HasValue)
                 effect.FresnelFactor = fresnelFactor.Value;
 
-            if (previousEnvironmentMapMaterial == null || previousTexture != Texture)
-                previousTexture = effect.Texture = Texture;
+            if (previousEnvironmentMapMaterial == null || previousTexture != texture)
+                previousTexture = effect.Texture = texture;
 
             if (previousEnvironmentMapMaterial == null || previousEnvironmentMap != EnvironmentMap)
                 previousEnvironmentMap = effect.EnvironmentMap = EnvironmentMap;
 
             effect.World = World;
+
+            if (SamplerState != null)
+                GraphicsDevice.SamplerStates[0] = SamplerState;
 
             effect.CurrentTechnique.Passes[0].Apply();
         }
@@ -121,6 +131,9 @@ namespace Nine.Graphics.Materials
                 effect.EnvironmentMapSpecular = MaterialConstants.EnvironmentMapSpecular;
             if (environmentMapSpecular.HasValue)
                 effect.FresnelFactor = MaterialConstants.FresnelFactor;
+
+            if (SamplerState != null)
+                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
         }
         #endregion
     }

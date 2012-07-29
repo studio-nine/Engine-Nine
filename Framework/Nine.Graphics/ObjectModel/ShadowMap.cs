@@ -148,14 +148,14 @@
 
                 // Blur H
                 depthBlur.Begin();
-                blur.Texture = map;
+                blur.texture = map;
                 blur.Direction = 0;
                 fullScreenQuad.Draw(context, blur);
                 map = depthBlur.End();
 
                 // Blur V
                 renderTarget.Begin();
-                blur.Texture = map;
+                blur.texture = map;
                 blur.Direction = MathHelper.PiOver2;
                 fullScreenQuad.Draw(context, blur);
                 map = renderTarget.End();

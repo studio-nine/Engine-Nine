@@ -1,6 +1,7 @@
 namespace Nine.Graphics
 {
     using System;
+    using System.ComponentModel;
     using System.Xml.Serialization;
     using Microsoft.Xna.Framework;
     using Nine.Graphics.ObjectModel;
@@ -9,7 +10,8 @@ namespace Nine.Graphics
     /// Defines a graphics component that can be added to a game object container.
     /// </summary>
     [Serializable]
-    public class GraphicsComponent : Component, ITransformable, IServiceProvider, ICloneable
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class GraphicsComponent : Nine.Component, ITransformable, IServiceProvider, ICloneable
     {
         /// <summary>
         /// Gets or sets the view template of this graphics component.

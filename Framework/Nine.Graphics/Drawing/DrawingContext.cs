@@ -23,7 +23,12 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets the graphics settings
         /// </summary>
-        public Settings Settings { get; private set; }
+        public Settings Settings
+        {
+            get { return settings; }
+            set { settings = (value ?? new Settings()); }
+        }
+        private Settings settings;
 
         /// <summary>
         /// Gets the graphics statistics.
@@ -180,7 +185,7 @@ namespace Nine.Graphics.Drawing
         internal int fogVersion;
         #endregion
 
-        #region Fields
+        #region Fields        
         private bool isDrawing = false;
         private FastList<Pass> activePasses = new FastList<Pass>();
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
@@ -192,20 +197,12 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
-        public DrawingContext(GraphicsDevice graphics) : this(graphics, null)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <c>DrawContext</c>.
-        /// </summary>
-        public DrawingContext(GraphicsDevice graphics, Settings settings)
+        public DrawingContext(GraphicsDevice graphics)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            Settings = settings ?? new Settings();
+            Settings = new Settings();
             GraphicsDevice = graphics;
             Statistics = new Statistics();            
             DirectionalLights = new DirectionalLightCollection();
@@ -274,6 +271,8 @@ namespace Nine.Graphics.Drawing
             ElapsedTime = elapsedTime;
             ElapsedSeconds = (float)elapsedTime.TotalSeconds;
             TotalTime += elapsedTime;
+
+            UpdateDefaultSamplerStates();
 
             try
             {
@@ -384,6 +383,17 @@ namespace Nine.Graphics.Drawing
             {
                 CurrentFrame++;
                 isDrawing = false;
+            }
+        }
+
+        private void UpdateDefaultSamplerStates()
+        {
+            if (settings.DefaultSamplerStateChanged)
+            {
+                var samplerState = settings.DefaultSamplerState;
+                for (int i = 0; i < 16; i++)
+                    GraphicsDevice.SamplerStates[i] = samplerState;
+                settings.DefaultSamplerStateChanged = false;
             }
         }
         #endregion

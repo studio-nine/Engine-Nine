@@ -6,9 +6,10 @@ namespace Nine.Graphics.ObjectModel
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
 
     [ContentSerializable]
-    public partial class DirectionalLight : Light<IDirectionalLight>
+    public partial class DirectionalLight : Light, IDeferredLight
     {
         public Vector3 Direction
         {
@@ -40,7 +41,7 @@ namespace Nine.Graphics.ObjectModel
             get { return version; }
         }
         internal int version;
-        
+
         private FastList<ISpatialQueryable> shadowCasters;
         private static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
@@ -128,19 +129,6 @@ namespace Nine.Graphics.ObjectModel
             return shadowCasters;
         }
 
-        protected override void Enable(IDirectionalLight light)
-        {
-            light.Direction = AbsoluteTransform.Forward;
-            light.DiffuseColor = DiffuseColor;
-            light.SpecularColor = SpecularColor;
-        }
-
-        protected override void Disable(IDirectionalLight light)
-        {
-            light.DiffuseColor = Vector3.Zero;
-            light.SpecularColor = Vector3.Zero;
-        }
-
         protected override void OnAdded(DrawingContext context)
         {
             context.DirectionalLights.Add(this);
@@ -150,5 +138,22 @@ namespace Nine.Graphics.ObjectModel
         {
             context.DirectionalLights.Remove(this);
         }
+
+        #region IDeferredLight
+        /// <summary>
+        /// Gets the light geometry for deferred lighting.
+        /// </summary>
+        IDrawableObject IDeferredLight.Drawable
+        {
+            get
+            {
+                return deferredGeometry ?? (deferredGeometry = new FullScreenQuad(Context.GraphicsDevice)
+                {
+                    Material = new DeferredDirectionalLightMaterial(Context.GraphicsDevice)
+                });
+            }
+        }
+        private IDrawableObject deferredGeometry;
+        #endregion
     }
 }

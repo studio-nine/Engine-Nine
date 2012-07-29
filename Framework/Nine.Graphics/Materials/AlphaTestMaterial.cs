@@ -1,13 +1,17 @@
 namespace Nine.Graphics.Materials
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
-    public class AlphaTestMaterial : Material, IEffectTexture
+    public class AlphaTestMaterial : Material
     {
         #region Properties
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         public Vector3 DiffuseColor
         {
             get { return diffuseColor.HasValue ? diffuseColor.Value : MaterialConstants.DiffuseColor; }
@@ -30,6 +34,9 @@ namespace Nine.Graphics.Materials
         private CompareFunction? alphaFunction;
 
         public bool VertexColorEnabled { get; set; }
+
+        [TypeConverter(typeof(SamplerStateConverter))]
+        public SamplerState SamplerState { get; set; }
         #endregion
 
         #region Fields
@@ -42,6 +49,7 @@ namespace Nine.Graphics.Materials
         #region Methods
         public AlphaTestMaterial(GraphicsDevice graphics)
         {
+            GraphicsDevice = graphics;
             effect = GraphicsResources<AlphaTestEffect>.GetInstance(graphics);
             effect.ReferenceAlpha = MaterialConstants.ReferenceAlpha;
         }
@@ -75,11 +83,14 @@ namespace Nine.Graphics.Materials
             if (alphaFunction.HasValue)
                 effect.AlphaFunction = alphaFunction.Value;
 
-            if (previousAlphaTestMaterial == null || previousTexture != Texture)
-                previousTexture = effect.Texture = Texture;
+            if (previousAlphaTestMaterial == null || previousTexture != texture)
+                previousTexture = effect.Texture = texture;
             
             effect.World = World;
             effect.VertexColorEnabled = VertexColorEnabled;
+
+            if (SamplerState != null)
+                GraphicsDevice.SamplerStates[0] = SamplerState;
 
             effect.CurrentTechnique.Passes[0].Apply();
         }
@@ -94,9 +105,10 @@ namespace Nine.Graphics.Materials
                 effect.ReferenceAlpha = MaterialConstants.ReferenceAlpha;
             if (alphaFunction.HasValue)
                 effect.AlphaFunction = MaterialConstants.AlphaFunction;
-        }
 
-        void IEffectTexture.SetTexture(TextureUsage usage, Texture texture) { }
+            if (SamplerState != null)
+                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+        }
         #endregion
     }
 }

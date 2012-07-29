@@ -143,7 +143,7 @@
             context.GraphicsDevice.BlendState = BlendState.Opaque;
             context.GraphicsDevice.Textures[0] = InputTexture;
 
-            Material.Texture = InputTexture;
+            Material.texture = InputTexture;
 
             for (i = 0, p = 0; p < passes.Count; p++)
             {

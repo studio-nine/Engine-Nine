@@ -11,6 +11,7 @@
     /// <summary>
     /// Represents a full screen quad.
     /// </summary>
+    [ContentSerializable]
     [RuntimeNameProperty("Name")]
     [DictionaryKeyProperty("Name")]
     [ContentProperty("Material")]
@@ -87,6 +88,7 @@
             vertexBuffer = sharedBuffer.Key;
             indexBuffer = sharedBuffer.Value;
             GraphicsDevice = graphics;
+            Visible = true;
         }
 
         public void Draw(DrawingContext context, Material material)
@@ -116,7 +118,7 @@
                     material.world.M41 = -0.5f / vp.Width;
                     material.world.M42 = 0.5f / vp.Height;
                     material.BeginApply(context);
-
+                    
                     context.SetVertexBuffer(vertexBuffer, 0);
                     GraphicsDevice.Indices = indexBuffer;
                     GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);

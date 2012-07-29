@@ -60,7 +60,12 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the default diffuse texture for this material.
         /// </summary>
-        public Texture2D Texture { get; set; }
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
+        internal Texture2D texture;
 
         /// <summary>
         /// Gets or sets the alpha value of this material.

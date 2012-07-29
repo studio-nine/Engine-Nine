@@ -1,7 +1,9 @@
 namespace Nine.Graphics.Materials
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
@@ -41,6 +43,9 @@ namespace Nine.Graphics.Materials
         public bool VertexColorEnabled { get; set; }
         public bool LightingEnabled { get; set; }
         public bool PreferPerPixelLighting { get; set; }
+
+        [TypeConverter(typeof(SamplerStateConverter))]
+        public SamplerState SamplerState { get; set; }
         #endregion
 
         #region Fields
@@ -101,20 +106,24 @@ namespace Nine.Graphics.Materials
                 effect.SpecularPower = specularPower.Value;
             
             // Setting the texture parameter has a small overhead, so compare it upfront.
-            if (previousBasicMaterial == null || Texture != previousTexture)
-                previousTexture = effect.Texture = Texture;
+            if (previousBasicMaterial == null || texture != previousTexture)
+                previousTexture = effect.Texture = texture;
 
             // Update shader parameters that are always different for each instance.
             effect.World = World;
 
             // Update shader parameters that has little or no overhead.
-            effect.TextureEnabled = Texture != null;
+            effect.TextureEnabled = texture != null;
             effect.LightingEnabled = LightingEnabled;
             effect.PreferPerPixelLighting = PreferPerPixelLighting;
             effect.VertexColorEnabled = VertexColorEnabled;
-
+            
             // Finally apply the shader.
             effect.CurrentTechnique.Passes[0].Apply();
+
+            // Update sampler state
+            if (SamplerState != null)
+                GraphicsDevice.SamplerStates[0] = SamplerState;
         }
 
         protected override void OnEndApply(DrawingContext context)
@@ -129,12 +138,15 @@ namespace Nine.Graphics.Materials
                 effect.SpecularColor = MaterialConstants.SpecularColor;
             if (specularPower.HasValue)
                 effect.SpecularPower = MaterialConstants.SpecularPower;
+
+            if (SamplerState != null)
+                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
         }
 
         protected override Material OnResolveMaterial(MaterialUsage usage)
         {
             if (usage == MaterialUsage.Depth)
-                return new DepthMaterial(GraphicsDevice) { TextureEnabled = Texture != null && IsTransparent };
+                return new DepthMaterial(GraphicsDevice) { TextureEnabled = texture != null && IsTransparent };
             return null;
         }
         #endregion

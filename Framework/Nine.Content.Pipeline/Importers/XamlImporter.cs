@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Nine.Content.Pipeline.Graphics;
     using Nine.Content.Pipeline.Xaml;
@@ -12,8 +13,12 @@
     [ContentImporter(".xaml", DisplayName = "Xaml Importer - Engine Nine", DefaultProcessor="DefaultContentProcessor")]
     public class XamlImporter : ContentImporter<object>
     {
+        ContentImporterContext context;
+
         public override object Import(string filename, ContentImporterContext context)
         {
+            this.context = context;
+
             try
             {
                 ContentProperties.IsContentBuild = true;
@@ -95,13 +100,21 @@
         {
             try
             {
-                // Enable internal constructors.
-                return Activator.CreateInstance(type, true);
+                try
+                {
+                    // Enable internal constructors.
+                    return Activator.CreateInstance(type, true);
+                }
+                catch (MissingMethodException)
+                {
+                    // Enable constructors that takes a graphics device.
+                    return Activator.CreateInstance(type, new object[] { PipelineGraphics.GraphicsDevice });
+                }
             }
-            catch
+            catch (TargetInvocationException ex)
             {
-                // Enable constructors that takes a graphics device.
-                return Activator.CreateInstance(type, new object[] { PipelineGraphics.GraphicsDevice });
+                context.Logger.LogWarning(null, null, "{0}", ex.InnerException);
+                throw;
             }
         }
     }

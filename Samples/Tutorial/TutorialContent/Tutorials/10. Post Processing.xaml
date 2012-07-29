@@ -10,9 +10,12 @@
              Transform.Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2">
         <BasicMaterial Texture="{ContentReference ../Textures/checker}" />
     </Surface>
-
-    <PostEffect>	
-        <CustomMaterial xml:space="preserve">
+    <FullScreenQuad>
+        <BasicMaterial Texture="{ContentReference ../Textures/Bitmap1}" SamplerState="PointClamp" />
+    </FullScreenQuad>
+    
+    <PostEffect RenderTargetSize="1,1">	
+        <CustomMaterial SamplerState="LinearClamp" xml:space="preserve">
             <CustomMaterial.Code>
             <![CDATA[
                 // Contributed by ChFlashER 
@@ -54,17 +57,15 @@
             </CustomMaterial.Code>
         </CustomMaterial>
     </PostEffect>
-
+    <Scene.Animations>
+        <SingleAnimation TargetProperty="['Hdr'].Exposure" From="0" To="1" Curve="{x:Static Curves.Sin}" Repeat="999999" Duration="00:00:10" AutoReverse="True" />
+    </Scene.Animations>
+    
     <BloomEffect Name="Bloom" BlurAmount="5" Threshold="0.5"/>
-    <Scene.Animations>
-        <SingleAnimation TargetProperty="['Bloom'].Threshold" From="0" To="1" Curve="{x:Static Curves.Sin}" Repeat="999999" AutoReverse="True" />
-    </Scene.Animations>
-    <Scene.Animations>
-        <SingleAnimation TargetProperty="['Hdr'].Exposure" From="0" To="1" Curve="{x:Static Curves.Sin}" Repeat="999999" AutoReverse="True" />
-    </Scene.Animations>
+    <LuminanceChain AdaptionSpeed="0" />
 
     <AdaptionEffect />
-    <LuminanceChain AdaptionSpeed="0" />
+    <BlurEffect Name="Blur" BlurAmount="10" />
     -->
-    <HighDynamicRangeEffect Name="Hdr" Threshold="0.8" Exposure="0.5"/>
+    <HighDynamicRangeEffect Name="Hdr" />
 </Scene>

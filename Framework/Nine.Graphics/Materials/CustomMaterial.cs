@@ -7,6 +7,7 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Graphics.Design;
 
     #region CustomMaterial
     /// <summary>
@@ -50,6 +51,12 @@ namespace Nine.Graphics.Materials
         private CustomMaterialParameterCollection parameters = new CustomMaterialParameterCollection();
 
         /// <summary>
+        /// Gets or sets the sampler state for this custom material.
+        /// </summary>
+        [TypeConverter(typeof(SamplerStateConverter))]
+        public SamplerState SamplerState { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CustomMaterial"/> class for serialization.
         /// </summary>
         internal CustomMaterial()
@@ -73,6 +80,11 @@ namespace Nine.Graphics.Materials
                 var previous = previousMaterial as CustomMaterial;
                 if (previous == null || previous.source != source)
                     parameters.ApplyGlobalParameters(context, this);
+                
+                context.GraphicsDevice.Textures[0] = texture;
+                if (SamplerState != null)
+                    context.GraphicsDevice.SamplerStates[0] = SamplerState;
+
                 parameters.BeginApplyLocalParameters(context, this);
                 source.CurrentTechnique.Passes[0].Apply();
             }
@@ -82,6 +94,8 @@ namespace Nine.Graphics.Materials
         {
             if (source != null)
                 parameters.EndApplyLocalParameters();
+            if (SamplerState != null)
+                context.GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
         }
 
         #region IEffectParameterProvider
@@ -116,7 +130,7 @@ namespace Nine.Graphics.Materials
             var parameters = input.ReadObject<Dictionary<string, object>>();
             if (parameters != null)
                 foreach (var pair in parameters)
-                    effect.Parameters[pair.Key].SetValue(pair.Value);
+                    EffectExtensions.SetValue(effect.Parameters[pair.Key], pair.Value);
             return effect;
         }
     }
@@ -132,9 +146,10 @@ namespace Nine.Graphics.Materials
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Effect>();
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.TwoSided = input.ReadBoolean();
+            existingInstance.SamplerState = input.ReadObject<SamplerState>();
             var dictionary = input.ReadRawObject<Dictionary<string, object>>();
             if (dictionary != null)
                 existingInstance.Parameters.AddRange(dictionary);

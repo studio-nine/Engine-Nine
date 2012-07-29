@@ -8,7 +8,7 @@ namespace Nine.Graphics.ObjectModel
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
-    public partial class AmbientLight : Nine.Object, ISceneObject
+    public class AmbientLight : Nine.Object, ISceneObject
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 

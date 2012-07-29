@@ -16,7 +16,6 @@
 
     /// <summary>
     /// Enables Xna framework content build without using MSBuild
-
     /// </summary>
     public class PipelineBuilder
     {

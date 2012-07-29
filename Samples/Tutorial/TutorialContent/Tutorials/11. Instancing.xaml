@@ -44,4 +44,6 @@
         </Model>
     </InstancedModel>
 
+    <AntiAliasEffect />
+    
 </Scene>

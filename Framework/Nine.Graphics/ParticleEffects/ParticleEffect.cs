@@ -290,10 +290,10 @@
         {
 #if !WINDOWS_PHONE
             if (softParticleEnabled)
-                material = new SoftParticleMaterial(GraphicsDevice) { Texture = Texture, DepthFade = softParticleFade, IsTransparent = true, IsAdditive = isAdditive };
+                material = new SoftParticleMaterial(GraphicsDevice) { texture = Texture, DepthFade = softParticleFade, IsTransparent = true, IsAdditive = isAdditive };
             else
 #endif
-                material = new BasicMaterial(GraphicsDevice) { Texture = Texture, LightingEnabled = false, VertexColorEnabled = true, IsTransparent = true, IsAdditive = isAdditive };
+                material = new BasicMaterial(GraphicsDevice) { texture = Texture, LightingEnabled = false, VertexColorEnabled = true, IsTransparent = true, IsAdditive = isAdditive };
         }
 
         /// <summary>

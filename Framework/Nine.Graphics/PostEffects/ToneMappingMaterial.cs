@@ -17,22 +17,25 @@ namespace Nine.Graphics.Materials
         partial void BeginApplyLocalParameters(DrawingContext context, ToneMappingMaterial previousMaterial)
         {
             effect.Exposure.SetValue(Exposure);
-            GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
-            GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
+
+            GraphicsDevice.Textures[0] = texture;            
+            GraphicsDevice.SamplerStates[0] =
+            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
         }
 
         partial void EndApplyLocalParameters(DrawingContext context)
         {
             GraphicsDevice.Textures[1] = null;
             GraphicsDevice.Textures[2] = null;
+            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.Settings.DefaultSamplerState;
         }
 
         public override void SetTexture(TextureUsage textureUsage, Texture texture)
         {
             if (textureUsage == TextureUsage.Luminance)
-                effect.LuminanceTexture.SetValue(texture as Texture2D);
+                GraphicsDevice.Textures[1] = texture;
             else if (textureUsage == TextureUsage.Bloom)
-                effect.BloomTexture.SetValue(texture as Texture2D);
+                GraphicsDevice.Textures[2] = texture;
         }
     }
 }

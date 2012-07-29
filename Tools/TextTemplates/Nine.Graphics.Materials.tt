@@ -109,7 +109,7 @@ namespace Nine.Graphics.Materials
         if (compiler.HiDef)
         {
 #>
-            if (GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef);
+            if (GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)
                 throw new InvalidOperationException("<#= className #> requires GraphicsProfile.HiDef.");
 
 <#

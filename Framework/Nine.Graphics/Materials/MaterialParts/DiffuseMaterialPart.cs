@@ -141,7 +141,7 @@
             {
                 if (textureAlphaUsage == TextureAlphaUsage.Overlay && overlayColor.HasValue)
                     overlayColorParameter.SetValue(overlayColor.Value);
-                textureParameter.SetValue(Texture ?? material.Texture);
+                textureParameter.SetValue(Texture ?? material.texture);
             }
             if (diffuseColorEnabled)
             {

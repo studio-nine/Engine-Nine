@@ -14,9 +14,11 @@
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
             output.Write(value.IsTransparent);
             WriteObject(output, value, "Source", value.Source);
-            WriteObject(output, value, "Texture", value.Texture);
+            WriteObject(output, value, "Texture", value.texture);
             output.Write(value.IsTransparent);
             output.Write(value.TwoSided);
+            WriteObject(output, value, "SamplerState", value.SamplerState);
+            
             if (value.Parameters == null)
                 output.WriteRawObject<Dictionary<string, object>>(null);
             else

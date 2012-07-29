@@ -1,5 +1,6 @@
 namespace Nine.Graphics.Drawing
 {
+    using System;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,7 @@ namespace Nine.Graphics.Drawing
     using Keys = System.Windows.Input.Key;
 #endif
 
-    [System.Obsolete]
+    [Serializable]
     public class Settings
     {
         /// <summary>
@@ -17,19 +18,9 @@ namespace Nine.Graphics.Drawing
         public Color BackgroundColor { get; set; }
 
         /// <summary>
-        /// Gets or sets whether high dynamic range lighting technique is used.
-        /// </summary>
-        public bool PreferHighDynamicRangeLighting { get; set; }
-
-        /// <summary>
         /// Gets or sets whether shadows are enabled.
         /// </summary>
         public bool ShadowEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets whether multi-pass shadow overlays are enabled.
-        /// </summary>
-        public bool MultiPassShadowEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets whether lights are enabled.
@@ -37,19 +28,14 @@ namespace Nine.Graphics.Drawing
         public bool LightingEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets whether multi-pass light overlays are enabled.
-        /// </summary>
-        public bool MultiPassLightingEnabled { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether fog is enabled.
         /// </summary>
         public bool FogEnable { get; set; }
 
         /// <summary>
-        /// Gets or sets whether lights are enabled.
+        /// Gets or sets post processing effects are enabled.
         /// </summary>
-        public bool ScreenEffectEnabled { get; set; }
+        public bool PostEffectEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets preferred shadowmap resolution.
@@ -72,6 +58,78 @@ namespace Nine.Graphics.Drawing
         public float MaterialQuality { get; set; }
 
         /// <summary>
+        /// Gets or sets the texture filter quanlity for this drawing pass.
+        /// </summary>
+        public TextureFilter TextureFilter
+        {
+            get { return textureFilter; }
+            set
+            {
+                if (textureFilter != value)
+                {
+                    textureFilter = value;
+                    samplerStateNeedsUpdate = true;
+                }
+            }
+        }
+        private TextureFilter textureFilter = TextureFilter.Linear;
+
+        /// <summary>
+        /// Gets or sets the maximum anisotropy. The default value is 4.
+        /// </summary>
+        public int MaxAnisotropy
+        {
+            get { return maxAnisotropy; }
+            set
+            {
+                if (maxAnisotropy != value)
+                {
+                    maxAnisotropy = value;
+                    samplerStateNeedsUpdate = true;
+                }
+            }
+        }
+        private int maxAnisotropy = 4;
+
+        internal bool DefaultSamplerStateChanged = true;
+
+        private bool samplerStateNeedsUpdate = false;
+        private SamplerState samplerState = SamplerState.LinearWrap;
+
+        /// <summary>
+        /// Gets the default sampler state.
+        /// </summary>
+        public SamplerState DefaultSamplerState
+        {
+            get
+            {
+                if (samplerStateNeedsUpdate)
+                {
+                    samplerStateNeedsUpdate = false;
+                    if (maxAnisotropy == 4)
+                    {
+                        if (textureFilter == TextureFilter.Linear)
+                            samplerState = SamplerState.LinearWrap;
+                        else if (textureFilter == TextureFilter.Point)
+                            samplerState = SamplerState.PointWrap;
+                        else if (textureFilter == TextureFilter.Anisotropic)
+                            samplerState = SamplerState.AnisotropicWrap;
+                    }
+                    else
+                    {
+                        samplerState = new SamplerState();
+                        samplerState.AddressU = TextureAddressMode.Wrap;
+                        samplerState.AddressV = TextureAddressMode.Wrap;
+                        samplerState.AddressW = TextureAddressMode.Wrap;
+                        samplerState.Filter = textureFilter;
+                        samplerState.MaxAnisotropy = maxAnisotropy;
+                    }
+                }
+                return samplerState;
+            }
+        }
+
+        /// <summary>
         /// Gets the debug settings.
         /// </summary>
         public GraphicsDebugSetting Debug { get; private set; }
@@ -84,8 +142,7 @@ namespace Nine.Graphics.Drawing
             FogEnable = true;
             LightingEnabled = true;
             ShadowEnabled = true;
-            ScreenEffectEnabled = true;
-            PreferHighDynamicRangeLighting = true;
+            PostEffectEnabled = true;
             ShadowMapResolution = 1024;
             MaterialQuality = 1;
             BackgroundColor = Color.Black;
@@ -98,11 +155,10 @@ namespace Nine.Graphics.Drawing
             {
                 var keyboardState = Keyboard.GetState();
 
-                PreferHighDynamicRangeLighting = !keyboardState.IsKeyDown(Keys.F1);
                 ShadowEnabled = !keyboardState.IsKeyDown(Keys.F2);
                 LightingEnabled = !keyboardState.IsKeyDown(Keys.F3);
                 FogEnable = !keyboardState.IsKeyDown(Keys.F4);
-                ScreenEffectEnabled = !keyboardState.IsKeyDown(Keys.F5);
+                PostEffectEnabled = !keyboardState.IsKeyDown(Keys.F5);
 
                 Debug.ShowWireframe = keyboardState.IsKeyDown(Keys.D1);
                 Debug.ShowBoundingBox = keyboardState.IsKeyDown(Keys.D2);

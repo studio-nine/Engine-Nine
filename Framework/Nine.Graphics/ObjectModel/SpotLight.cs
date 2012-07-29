@@ -6,9 +6,11 @@ namespace Nine.Graphics.ObjectModel
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Graphics.Primitives;
+    using Nine.Graphics.Materials;
 
     [ContentSerializable]
-    public partial class SpotLight : Light<ISpotLight>, ISpatialQueryable
+    public partial class SpotLight : Light, ISpatialQueryable, IDeferredLight
     {
         const float NearPlane = 0.01f;
 
@@ -232,23 +234,21 @@ namespace Nine.Graphics.ObjectModel
             //context.PrimitiveBatch.DrawFrustum(BoundingFrustum, null, context.Settings.Debug.LightFrustumColor);
         }
 
-        protected override void Enable(ISpotLight light)
+        #region IDeferredLight
+        /// <summary>
+        /// Gets the light geometry for deferred lighting.
+        /// </summary>
+        IDrawableObject IDeferredLight.Drawable
         {
-            light.Direction = AbsoluteTransform.Forward;
-            light.Position = AbsoluteTransform.Translation;
-            light.DiffuseColor = DiffuseColor;
-            light.SpecularColor = SpecularColor;
-            light.Attenuation = Attenuation;
-            light.Range = Range;
-            light.InnerAngle = InnerAngle;
-            light.OuterAngle = OuterAngle;     
-            light.Falloff = Falloff;       
+            get
+            {
+                return deferredGeometry ?? (deferredGeometry = new CentrumInvert(Context.GraphicsDevice)
+                {
+                    Material = new DeferredSpotLightMaterial(Context.GraphicsDevice)
+                });
+            }
         }
-
-        protected override void Disable(ISpotLight light)
-        {
-            light.DiffuseColor = Vector3.Zero;
-            light.SpecularColor = Vector3.Zero;
-        }
+        private IDrawableObject deferredGeometry;
+        #endregion
     }
 }

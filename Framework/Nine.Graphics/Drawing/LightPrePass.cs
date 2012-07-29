@@ -9,6 +9,17 @@ namespace Nine.Graphics.Drawing
     using Nine.Graphics.ObjectModel;
 
     /// <summary>
+    /// Defines a light used by deferred rendering.
+    /// </summary>
+    public interface IDeferredLight
+    {
+        /// <summary>
+        /// Gets the drawable object that is used to generate the light buffer.
+        /// </summary>
+        IDrawableObject Drawable { get; }
+    }
+
+    /// <summary>
     /// Represents a deferred lighting technique.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -151,6 +162,7 @@ namespace Nine.Graphics.Drawing
             {
                 End(context);
             }
+
             DrawLights(context, null);
         }
 

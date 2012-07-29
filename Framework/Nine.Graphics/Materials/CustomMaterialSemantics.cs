@@ -131,7 +131,7 @@ namespace Nine.Graphics.Materials
                 for (int i = 0; i < parameterCount; i++)
                 {
                     var entry = values[i];
-                    entry.Parameter.SetValue(entry.Value);
+                    EffectExtensions.SetValue(entry.Parameter, entry.Value);
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace Nine.Graphics.Materials
                 for (int i = 0; i < parameterCount; i++)
                 {
                     var entry = values[i];
-                    entry.Parameter.SetValue(entry.DefaultValue);
+                    EffectExtensions.SetValue(entry.Parameter, entry.DefaultValue);
                 }
             }
         }
@@ -384,7 +384,7 @@ namespace Nine.Graphics.Materials
             // Materials and textures
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
-            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.Texture); } },
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.texture); } },
         };
     }
     #endregion

@@ -11,7 +11,6 @@ namespace Nine.Graphics
     using Nine.Graphics.Materials;
     using Nine.Graphics.ObjectModel;
     
-
     /// <summary>
     /// Defines a graphical scene that manages a set of objects, cameras and lights.
     /// </summary>

@@ -48,6 +48,7 @@
                 
                 TypeMapping.Add("Microsoft.Xna.Framework.Curve", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Curve>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.BlendState", "Microsoft.Xna.Framework.Graphics.BlendState");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.SamplerState", "Microsoft.Xna.Framework.Graphics.SamplerState");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture3D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture3DContent>");

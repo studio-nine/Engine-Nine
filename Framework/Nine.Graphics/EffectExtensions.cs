@@ -5,102 +5,6 @@ namespace Nine.Graphics
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Microsoft.Xna.Framework.Graphics;
-
-    /// <summary>
-    /// Gets or sets skinning parameters for the current effect.
-    /// </summary>
-    public interface IEffectSkinned
-    {
-        /// <summary>
-        /// Gets or sets if vertex skinning is enabled by this effect.
-        /// </summary>
-        bool SkinningEnabled { get; set; }
-
-        /// <summary>
-        /// Sets the bones transforms for the skinned effect.
-        /// </summary>
-        void SetBoneTransforms(Matrix[] boneTransforms);
-    }
-
-    /// <summary>
-    /// Gets or sets lighting parameters for the current effect.
-    /// </summary>
-    public interface IEffectLights<T>
-    {
-        bool Bind(int ordinal, T light);
-
-        /// <summary>
-        /// Gets a read only collection of lights exposed by this effect.
-        /// </summary>
-        ReadOnlyCollection<T> Lights { get; }
-    }
-
-    /// <summary>
-    /// Contains commonly used material parameters.
-    /// </summary>
-    public interface IEffectMaterial
-    {
-        /// <summary>
-        /// Gets or sets the opaque of the effect.
-        /// </summary>
-        float Alpha { get; set; }
-
-        /// <summary>
-        /// Gets or sets the diffuse color of the effect.
-        /// </summary>
-        Vector3 DiffuseColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the emissive color of the effect.
-        /// </summary>
-        Vector3 EmissiveColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the specular color of the effect.
-        /// </summary>
-        Vector3 SpecularColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the specular power of the effect.
-        /// </summary>
-        float SpecularPower { get; set; }
-    }
-
-    /// <summary>
-    /// Gets or sets texture parameters for the current effect.
-    /// </summary>
-    public interface IEffectTexture
-    {
-        /// <summary>
-        /// Gets or sets the primiary diffuse texture of the current effect.
-        /// </summary>
-        Texture2D Texture { get; set; }
-
-        /// <summary>
-        /// Sets the texture with the specified texture usage.
-        /// </summary>
-        void SetTexture(TextureUsage usage, Texture texture);
-    }
-
-    /// <summary>
-    /// Defines a wrapper around effect. Each effect instance stores
-    /// a local copy of effect parameter values, this values are pushed to
-    /// the underlying effect when Apply is called.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IEffectInstance
-    {
-        /// <summary>
-        /// Gets the underlying effect.
-        /// </summary>
-        Effect Effect { get; }
-
-        /// <summary>
-        /// Applys the parameter values.
-        /// </summary>
-        void Apply();
-    }
     
     /// <summary>
     /// Contains extension methods for Effects.
@@ -137,16 +41,7 @@ namespace Nine.Graphics
                 effect.SetTexture(Texture);
 
             // Extract from source
-            if (sourceEffect is IEffectMaterial)
-            {
-                IEffectMaterial source = sourceEffect as IEffectMaterial;
-                DiffuseColor = source.DiffuseColor;
-                EmissiveColor = source.EmissiveColor;
-                SpecularColor = source.SpecularColor;
-                SpecularPower = source.SpecularPower;
-                Alpha = source.Alpha;
-            }
-            else if (sourceEffect is BasicEffect)
+            if (sourceEffect is BasicEffect)
             {
                 BasicEffect source = sourceEffect as BasicEffect;
                 DiffuseColor = source.DiffuseColor;
@@ -186,16 +81,7 @@ namespace Nine.Graphics
 
 
             // Apply to target
-            if (effect is IEffectMaterial)
-            {
-                IEffectMaterial target = effect as IEffectMaterial;
-                target.DiffuseColor = DiffuseColor;
-                target.EmissiveColor = EmissiveColor;
-                target.SpecularColor = SpecularColor;
-                target.SpecularPower = SpecularPower;
-                target.Alpha = Alpha;
-            }
-            else if (effect is BasicEffect)
+            if (effect is BasicEffect)
             {
                 BasicEffect target = effect as BasicEffect;
                 target.DiffuseColor = DiffuseColor;
@@ -236,12 +122,7 @@ namespace Nine.Graphics
 
         internal static void SetTexture(this Effect effect, Texture2D texture)
         {
-            if (effect is IEffectTexture)
-            {
-                IEffectTexture source = effect as IEffectTexture;
-                source.Texture = texture;
-            }
-            else if (effect is BasicEffect)
+            if (effect is BasicEffect)
             {
                 BasicEffect source = effect as BasicEffect;
                 source.Texture = texture;
@@ -273,12 +154,7 @@ namespace Nine.Graphics
         {
             Texture2D texture = null;
 
-            if (sourceEffect is IEffectTexture)
-            {
-                IEffectTexture source = sourceEffect as IEffectTexture;
-                texture = source.Texture;
-            }
-            else if (sourceEffect is BasicEffect)
+            if (sourceEffect is BasicEffect)
             {
                 BasicEffect source = sourceEffect as BasicEffect;
                 texture = source.Texture;
@@ -309,7 +185,7 @@ namespace Nine.Graphics
         #endregion
 
         #region SetValue
-        public static void SetValue(this EffectParameter parameter, object value)
+        public static void SetValue(EffectParameter parameter, object value)
         {
             if (value is Texture)
                 parameter.SetValue((Texture)value);

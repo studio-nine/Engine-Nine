@@ -49,7 +49,7 @@
         {
             Material = toneMapping = new ToneMappingMaterial(graphics);
             Passes.Add(new PostEffectChain(TextureUsage.Bloom,
-                new PostEffect() { Material = threshold = new ThresholdMaterial(graphics), RenderTargetScale = 0.5f },
+                new PostEffect() { Material = threshold = new ThresholdMaterial(graphics), RenderTargetScale = 0.5f, SurfaceFormat = SurfaceFormat.Color },
                 new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
                 new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }

@@ -3,6 +3,7 @@ namespace Nine.Graphics.Materials
     using System;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
     /// <summary>    
@@ -11,6 +12,8 @@ namespace Nine.Graphics.Materials
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial class BlurMaterial
     {
+        public const float MaxBlurAmount = 10;
+
         /// <summary>
         /// Gets or sets the amount of bluring.
         /// </summary>
@@ -36,11 +39,18 @@ namespace Nine.Graphics.Materials
             BlurAmount = 2;
         }
 
+        partial void ApplyGlobalParameters(DrawingContext context)
+        {
+            // Need bilinear sampling to get the result correct.
+            GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+        }
+
         partial void BeginApplyLocalParameters(DrawingContext context, BlurMaterial previousMaterial)
         {
-            SetBlurEffectParameters(
-                (float)Math.Cos(-Direction) / context.GraphicsDevice.Viewport.Width,
-                (float)Math.Sin(-Direction) / context.GraphicsDevice.Viewport.Height);
+            if ((GraphicsDevice.Textures[0] = texture) != null)
+            {
+                SetBlurEffectParameters((float)Math.Cos(-Direction) / texture.Width, (float)Math.Sin(-Direction) / texture.Height);
+            }
         }
         
         /// <summary>
@@ -74,8 +84,18 @@ namespace Nine.Graphics.Materials
                 sampleWeights[i * 2 + 2] = weight;
 
                 totalWeights += weight * 2;
-                
-                Vector2 delta = new Vector2(dx, dy) * (i + 1.0f);
+
+                // To get the maximum amount of blurring from a limited number of
+                // pixel shader samples, we take advantage of the bilinear filtering
+                // hardware inside the texture fetch unit. If we position our texture
+                // coordinates exactly halfway between two texels, the filtering unit
+                // will average them for us, giving two samples for the price of one.
+                // This allows us to step in units of two texels per sample, rather
+                // than just one at a time. The 1.5 offset kicks things off by
+                // positioning us nicely in between two texels.
+                float sampleOffset = i * 2 + 1.5f;
+
+                Vector2 delta = new Vector2(dx, dy) * sampleOffset;
 
                 // Store texture coordinate offsets for the positive and negative taps.
                 sampleOffsets[i * 2 + 1] = delta;
@@ -112,11 +132,13 @@ namespace Nine.Graphics.Materials
         private void UpdateSampleCount()
         {
             float theta = Math.Max(BlurAmount, 0.0001f);
-
+            float minBlendWeight = 0.001f;
+            float x = theta * (float)Math.Sqrt(-2 * Math.Log(minBlendWeight * theta * Math.Sqrt(2 * Math.PI)));
+            
             int MaxSampleCount = 15;
 
-            // 2.146 = Math.Sqrt(-2 * Math.Log(0.1))
-            shaderIndex = Math.Min((int)(blurAmount * 2.146f), (MaxSampleCount - 1) / 2);
+            // Divide by 2 because we sample 2 texels at a time
+            shaderIndex = Math.Min((int)Math.Round(x / 2), (MaxSampleCount - 1) / 2);
             sampleCount = shaderIndex * 2 + 1;
         }
     }

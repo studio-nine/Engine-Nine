@@ -5,12 +5,6 @@
 
     class BlendStateReader : ContentTypeReader<BlendState>
     {
-        /// <summary>
-        /// Reads the specified input.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="existingInstance">The existing instance.</param>
-        /// <returns></returns>
         protected override BlendState Read(ContentReader input, BlendState existingInstance)
         {
             if (existingInstance == null)

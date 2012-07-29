@@ -297,20 +297,13 @@ namespace Nine.Graphics.ObjectModel
 
         private void UpdateDecalMaterial()
         {
-            var effectTexture = material.Find<IEffectTexture>();
-            if (effectTexture != null)
-            {
-                effectTexture.Texture = Texture;
-                effectTexture.SetTexture(TextureUsage.Decal, Texture);
-                effectTexture.SetTexture(TextureUsage.NormalMap, NormalMap);
-            }
+            material.texture = Texture;
+            material.SetTexture(TextureUsage.Decal, Texture);
+            material.SetTexture(TextureUsage.NormalMap, NormalMap);
             
-            var effectMaterial = material.Find<IEffectMaterial>();
-            if (effectMaterial != null)
-            {
-                effectMaterial.Alpha = Alpha;
-                effectMaterial.DiffuseColor = Color;
-            }
+            material.Alpha = Alpha;
+            
+            // effectMaterial.DiffuseColor = Color;
         }
 
         /// <summary>

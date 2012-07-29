@@ -6,9 +6,11 @@ namespace Nine.Graphics.ObjectModel
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
+    using Nine.Graphics.Primitives;
 
     [ContentSerializable]
-    public partial class PointLight : Light<IPointLight>, ISpatialQueryable
+    public partial class PointLight : Light, ISpatialQueryable, IDeferredLight
     {
         public GraphicsDevice GraphicsDevice { get; private set; }
 
@@ -107,24 +109,26 @@ namespace Nine.Graphics.ObjectModel
             //context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
         }
 
-        protected override void Enable(IPointLight light)
-        {
-            light.Position = AbsoluteTransform.Translation;
-            light.DiffuseColor = DiffuseColor;
-            light.SpecularColor = SpecularColor;
-            light.Attenuation = Attenuation;
-            light.Range = Range;            
-        }
-
-        protected override void Disable(IPointLight light)
-        {
-            light.DiffuseColor = Vector3.Zero;
-            light.SpecularColor = Vector3.Zero;
-        }
-
         public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
         {
             throw new NotImplementedException();
         }
+
+        #region IDeferredLight
+        /// <summary>
+        /// Gets the light geometry for deferred lighting.
+        /// </summary>
+        IDrawableObject IDeferredLight.Drawable
+        {
+            get
+            {
+                return deferredGeometry ?? (deferredGeometry = new SphereInvert(Context.GraphicsDevice)
+                {
+                    Material = new DeferredPointLightMaterial(Context.GraphicsDevice)
+                });
+            }
+        }
+        private IDrawableObject deferredGeometry;
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ namespace Nine.Graphics
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Defines an interface for scene objects that 
@@ -40,5 +41,4 @@ namespace Nine.Graphics
         /// </summary>
         Matrix Projection { get; }
     }
-
 }

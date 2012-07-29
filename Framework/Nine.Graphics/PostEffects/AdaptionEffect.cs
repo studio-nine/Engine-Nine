@@ -31,8 +31,7 @@
         /// </summary>
         public AdaptionEffect()
         {
-            Speed = 10;
-            SamplerState = SamplerState.PointClamp;
+            Speed = 1;
         }
 
         public override void GetActivePasses(IList<Pass> result)
@@ -74,11 +73,15 @@
                 }
                 else
                 {
-                    context.GraphicsDevice.Textures[1] = lastFrame;
-                    context.GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
-
-                    adoptionMaterial.effect.Delta.SetValue(context.ElapsedSeconds * Speed);
+                    var graphics = context.GraphicsDevice;
+                    graphics.Textures[0] = adoptionMaterial.texture;
+                    graphics.Textures[1] = lastFrame;
+                    graphics.SamplerStates[0] = graphics.SamplerStates[1] = SamplerState.PointClamp;
+                    adoptionMaterial.effect.Delta.SetValue((1 - (float)Math.Pow(0.98f, 30 * context.ElapsedSeconds)) * Speed);
+                 
                     base.Draw(context, drawables);
+
+                    graphics.SamplerStates[1] = context.Settings.DefaultSamplerState;
                 }
             }
             finally
@@ -102,7 +105,7 @@
             try
             {
                 if (basicMaterial == null)
-                    basicMaterial = new BasicMaterial(context.GraphicsDevice);
+                    basicMaterial = new BasicMaterial(context.GraphicsDevice) { SamplerState = SamplerState.PointClamp };
                 Material = basicMaterial;
                 base.Draw(context, drawables);
             }

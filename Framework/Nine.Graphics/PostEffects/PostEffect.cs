@@ -36,7 +36,7 @@
         /// <summary>
         /// Gets or sets the material used by this post effect.
         /// </summary>
-        public Material Material { get; set; }
+        public virtual Material Material { get; set; }
 
         /// <summary>
         /// Gets or sets the input texture to be processed.
@@ -86,7 +86,6 @@
         private float renderTargetScale = 1;
 
         internal BlendState BlendState = BlendState.Opaque;
-        internal SamplerState SamplerState = SamplerState.PointClamp;
 
         private Material vertexPassThrough;
         private FullScreenQuad fullScreenQuad;
@@ -163,11 +162,9 @@
                 vertexPassThrough.BeginApply(context);
 
                 context.GraphicsDevice.BlendState = BlendState;
-                context.GraphicsDevice.Textures[0] = InputTexture;
-                context.GraphicsDevice.SamplerStates[0] = SamplerState;
                 context.GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
-                Material.Texture = InputTexture;
+                Material.texture = InputTexture;
                 fullScreenQuad.Draw(context, Material);
             }
             finally

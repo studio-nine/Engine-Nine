@@ -11,12 +11,15 @@ namespace Nine.Graphics.Materials
     {
         partial void ApplyGlobalParameters(DrawingContext context)
         {
-            var halfPixel = new Vector2();
+            var pixelSize = new Vector2();
             var viewport = GraphicsDevice.Viewport;
-            halfPixel.X = -0.5f / viewport.Width;
-            halfPixel.Y = 0.5f / viewport.Height;
+            pixelSize.X = -1f / viewport.Width;
+            pixelSize.Y = 1f / viewport.Height;
 
-            effect.HalfPixel.SetValue(halfPixel);
+            // After projection transform, viewport transform will map vertices
+            // from [-1, 1] to [0, 1], this mapping will scale the offset by 2,
+            // so we need to offset the input quad by a full pixel.
+            effect.PixelSize.SetValue(pixelSize);
         }
     }
 }

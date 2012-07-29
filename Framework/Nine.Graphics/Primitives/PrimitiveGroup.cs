@@ -322,7 +322,7 @@
             if (entry.VertexCount <= 0 && entry.IndexCount <= 0)
                 return;
 
-            material.Texture = entry.Texture;
+            material.texture = entry.Texture;
             material.World = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
             material.BeginApply(context);
 

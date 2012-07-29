@@ -122,6 +122,7 @@
     <Compile Include="Content\PipelineImporterContext.cs" />
     <Compile Include="Content\PipelineProcessorContext.cs" />
     <Compile Include="Design\TransformConverter.cs" />
+    <Compile Include="Graphics\SamplerStateWriter.cs" />
     <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
     <Compile Include="Processors\InstancedModelProcessor.cs" />
     <Compile Include="Xaml\DistributionMap.cs" />
@@ -151,7 +152,7 @@
     <Compile Include="ContentProcessorContextExtensions.cs" />
     <Compile Include="Processors\ManifestProcessor.cs" />
     <Compile Include="ReflectionHelper.cs" />
-    <Compile Include="Graphics\BlendStateSerializer.cs" />
+    <Compile Include="Graphics\BlendStateWriter.cs" />
     <Compile Include="RangeSerializer.cs" />
     <Compile Include="Graphics\Materials\MaterialPartShaders.Designer.cs">
       <AutoGen>True</AutoGen>

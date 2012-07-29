@@ -38,8 +38,8 @@ namespace Transitions
         private const int BackBufferHeight = 720;
 #else
         private const int TargetFrameRate = 60;
-        private const int BackBufferWidth = 900;
-        private const int BackBufferHeight = 600;
+        private const int BackBufferWidth = 128;
+        private const int BackBufferHeight = 128;
 #endif
 
         SpriteBatch spriteBatch;
@@ -201,7 +201,7 @@ namespace Transitions
             TimeSpan duration = TimeSpan.FromSeconds(0.25f);
 
             // Fade image
-            animations["ImageColor"].Play(new SequentialAnimation(
+            animations["ImageColor"].Play(new AnimationSequence(
                 new TweenAnimation<Color>()
                 {
                     Duration = duration,
@@ -217,7 +217,7 @@ namespace Transitions
                     TargetProperty = "ImageColor",
                 }));
 
-            animations["ImageScale"].Play(new SequentialAnimation(
+            animations["ImageScale"].Play(new AnimationSequence(
                 new TweenAnimation<float>()
                 {
                     Curve = Curves.Exponential,
@@ -241,13 +241,13 @@ namespace Transitions
         /// </summary>
         private IAnimation TransiteIn(TimeSpan delay)
         {
-            LayeredAnimation layeredAnimation = new LayeredAnimation();
+            AnimationGroup layeredAnimation = new AnimationGroup();
 
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].Y = 220 + i * 24;
 
-                layeredAnimation.Animations.Add(new SequentialAnimation(
+                layeredAnimation.Animations.Add(new AnimationSequence(
                         new DelayAnimation(TimeSpan.FromSeconds(i * 0.1f) + delay),
                         new TweenAnimation<float>()
                         {
@@ -269,13 +269,13 @@ namespace Transitions
         /// </summary>
         private void TransiteOut(int triggerIndex)
         {
-            LayeredAnimation layeredAnimation = new LayeredAnimation();
+            AnimationGroup layeredAnimation = new AnimationGroup();
 
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].Y = 220 + i * 24;
 
-                layeredAnimation.Animations.Add(new SequentialAnimation(
+                layeredAnimation.Animations.Add(new AnimationSequence(
                         new DelayAnimation(TimeSpan.FromSeconds(Math.Abs(i - triggerIndex) * 0.1f)),
                         new TweenAnimation<float>()
                         {
@@ -287,7 +287,7 @@ namespace Transitions
                         }));
             }
 
-            animations["Menu"].Play(new SequentialAnimation(layeredAnimation, TransiteIn(TimeSpan.FromSeconds(1.2f))));
+            animations["Menu"].Play(new AnimationSequence(layeredAnimation, TransiteIn(TimeSpan.FromSeconds(1.2f))));
         }
         Random r = new Random();
         /// <summary>
@@ -309,7 +309,7 @@ namespace Transitions
             animations.Update(gameTime.ElapsedGameTime);
 
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(0, null, SamplerState.PointClamp, null, null);
             spriteBatch.Draw(background, GraphicsDevice.Viewport.Bounds, null, Color.White);            
             spriteBatch.DrawString(font, "Press any key to continue..." , new Vector2(0, GraphicsDevice.Viewport.Height - 20), TextColor);
             spriteBatch.Draw(image, new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), null, ImageColor, ImageRoation, new Vector2(400, 300), ImageScale * 0.6f, SpriteEffects.None, 0);
