@@ -117,6 +117,7 @@
     <Compile Include="Design\SamplerStateReader.cs" />
     <Compile Include="Design\BlendStateConverter.cs" />
     <Compile Include="Design\SamplerStateConverter.cs" />
+    <Compile Include="Drawing\DepthPrePass.cs" />
     <Compile Include="Drawing\LightPrePass.cs" />
     <Compile Include="Drawing\PassGroup.cs" />
     <Compile Include="Drawing\TextureCollection.cs" />

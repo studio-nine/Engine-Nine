@@ -21,6 +21,7 @@ using Nine.Graphics.Materials;
 using Nine.Graphics.ObjectModel;
 using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
 using Nine.Graphics.Primitives;
+using Nine.Graphics.Cameras;
 #endregion
 
 namespace CubeStressTest
@@ -76,22 +77,22 @@ namespace CubeStressTest
             scene = new Scene(GraphicsDevice);
             //scene = new Scene(GraphicsDevice, null, new PassThroughSceneManager());
             //scene = new Scene(GraphicsDevice, null, new BruteForceSceneManager());
-            scene.Settings.BackgroundColor = Color.Gray;
+            scene.Context.Settings.BackgroundColor = Color.Gray;
             scene.Camera = new FreeCamera(GraphicsDevice) { Position = new Vector3(20, -50, 20) };
             //scene.Add(new AmbientLight(GraphicsDevice));
-            scene.Add(new DirectionalLight(GraphicsDevice) { DiffuseColor = Color.Red.ToVector3(), Direction = Vector3.UnitX });
-            scene.Add(new DirectionalLight(GraphicsDevice) { DiffuseColor = Color.Green.ToVector3(), Direction = Vector3.UnitY });
-            scene.Add(new DirectionalLight(GraphicsDevice) { DiffuseColor = Color.Blue.ToVector3(), Direction = Vector3.UnitZ });
+            scene.Add(new DirectionalLight() { DiffuseColor = Color.Red.ToVector3(), Direction = Vector3.UnitX });
+            scene.Add(new DirectionalLight() { DiffuseColor = Color.Green.ToVector3(), Direction = Vector3.UnitY });
+            scene.Add(new DirectionalLight() { DiffuseColor = Color.Blue.ToVector3(), Direction = Vector3.UnitZ });
 
             scene2 = new Scene(GraphicsDevice);
-            scene2.Settings.BackgroundColor = Color.Gray;
+            scene2.Context.Settings.BackgroundColor = Color.Gray;
             scene2.Camera = scene.Camera;
-            scene2.Add(new DirectionalLight(GraphicsDevice) { DiffuseColor = Color.Red.ToVector3(), Direction = Vector3.UnitX });
-            scene2.Add(new DirectionalLight(GraphicsDevice) { DiffuseColor = Color.Green.ToVector3(), Direction = Vector3.UnitY });
-            scene2.Add(new DirectionalLight(GraphicsDevice) { DiffuseColor = Color.Blue.ToVector3(), Direction = Vector3.UnitZ });
+            scene2.Add(new DirectionalLight() { DiffuseColor = Color.Red.ToVector3(), Direction = Vector3.UnitX });
+            scene2.Add(new DirectionalLight() { DiffuseColor = Color.Green.ToVector3(), Direction = Vector3.UnitY });
+            scene2.Add(new DirectionalLight() { DiffuseColor = Color.Blue.ToVector3(), Direction = Vector3.UnitZ });
 
             scene3 = new Scene(GraphicsDevice);
-            scene3.Settings.BackgroundColor = Color.Gray;
+            scene3.Context.Settings.BackgroundColor = Color.Gray;
             scene3.Camera = scene.Camera;
             scene3.Add(primitiveGroup = new PrimitiveGroup(GraphicsDevice));
 

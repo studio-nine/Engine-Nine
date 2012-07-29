@@ -77,6 +77,16 @@ namespace Nine.Graphics.Materials
         }
 
         /// <summary>
+        /// Gets the textures that are required by this material.
+        /// </summary>
+        public override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            var count = materialParts.Count;
+            for (int i = 0; i < count; i++)
+                materialParts[i].GetDependentPasses(passTypes);
+        }
+
+        /// <summary>
         /// Sets the texture based on the texture usage.
         /// </summary>
         public override void SetTexture(TextureUsage textureUsage, Texture texture)

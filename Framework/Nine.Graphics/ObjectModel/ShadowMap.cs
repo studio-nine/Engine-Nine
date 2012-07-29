@@ -188,9 +188,7 @@
                     var shadowCaster = shadowCasters[i];
                     if (shadowCaster == null || !shadowCaster.Visible)
                         continue;
-
-                    shadowCaster.BeginDraw(context);
-
+                    
                     var material = shadowCaster.Material;
                     if (material == null)
                         material = depthMaterial;
@@ -199,8 +197,6 @@
 
                     if (material != null)
                         shadowCaster.Draw(context, material);
-
-                    shadowCaster.EndDraw(context);
                 }
             }
             finally

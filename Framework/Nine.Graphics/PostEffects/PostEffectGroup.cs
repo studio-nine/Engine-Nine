@@ -1,5 +1,6 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content;
@@ -58,6 +59,22 @@
         public PostEffectGroup()
         {
 
+        }
+
+        /// <summary>
+        /// Gets all the pass types that are required by this pass.
+        /// </summary>
+        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            var count = passes.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var pass = passes[i];
+                if (pass.Enabled)
+                    pass.GetDependentPasses(passTypes);
+            }
+            if (Material != null)
+                Material.GetDependentPasses(passTypes);
         }
 
         /// <summary>

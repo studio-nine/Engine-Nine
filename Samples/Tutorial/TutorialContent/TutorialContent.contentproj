@@ -221,13 +221,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\01. Empty Scene.xaml">
+    <None Include="Tutorials\01. Empty Scene.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>01. Empty Scene</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\Tutorials.manifest">
@@ -315,13 +315,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\11. Instancing.xaml">
+    <None Include="Tutorials\11. Instancing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>11. Instancing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\nine.png">

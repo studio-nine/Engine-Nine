@@ -64,6 +64,20 @@
         }
 
         /// <summary>
+        /// Gets all the pass types that are required by this pass.
+        /// </summary>
+        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            var count = effects.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var effect = effects[i];
+                if (effect.Enabled)
+                    effect.GetDependentPasses(passTypes);
+            }
+        }
+
+        /// <summary>
         /// Gets all the passes that are going to be rendered.
         /// </summary>
         public override void GetActivePasses(IList<Pass> result)

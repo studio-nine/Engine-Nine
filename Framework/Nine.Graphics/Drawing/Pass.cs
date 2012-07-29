@@ -92,6 +92,12 @@ namespace Nine.Graphics.Drawing
         }
 
         /// <summary>
+        /// Gets all the pass types that are required by this pass.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        protected internal virtual void GetDependentPasses(ICollection<Type> passTypes) { }
+
+        /// <summary>
         /// Gets all the passes that are going to be rendered.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]

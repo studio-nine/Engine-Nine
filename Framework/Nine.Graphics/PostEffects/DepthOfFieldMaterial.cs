@@ -1,5 +1,7 @@
 namespace Nine.Graphics.Materials
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
@@ -15,15 +17,11 @@ namespace Nine.Graphics.Materials
         {
             FocalDistance = 0.5f;
         }
-
-        partial void ApplyGlobalParameters(DrawingContext context)
-        {
-            
-        }
-
+        
         partial void BeginApplyLocalParameters(DrawingContext context, DepthOfFieldMaterial previousMaterial)
         {
             GraphicsDevice.Textures[0] = texture;
+            GraphicsDevice.Textures[2] = context.textures[TextureUsage.DepthBuffer];
 
             effect.FocalDistance.SetValue(FocalDistance);
             effect.FocalLength.SetValue(FocalLength);
@@ -34,7 +32,12 @@ namespace Nine.Graphics.Materials
         {
             GraphicsDevice.Textures[1] = null;
             GraphicsDevice.Textures[2] = null;
-            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.Settings.DefaultSamplerState;
+            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.Settings.DefaultSamplerState;            
+        }
+
+        public override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            passTypes.Add(typeof(DepthPrePass));
         }
 
         public override void SetTexture(TextureUsage textureUsage, Texture texture)
@@ -42,7 +45,7 @@ namespace Nine.Graphics.Materials
             if (textureUsage == TextureUsage.Blur)
                 GraphicsDevice.Textures[1] = texture;
             else if (textureUsage == TextureUsage.DepthBuffer)
-                GraphicsDevice.Textures[1] = texture;
+                GraphicsDevice.Textures[2] = texture;
         }
     }
 }

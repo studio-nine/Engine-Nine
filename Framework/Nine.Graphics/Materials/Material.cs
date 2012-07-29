@@ -2,11 +2,10 @@ namespace Nine.Graphics.Materials
 {
     using System;
     using System.Collections.Generic;
-    using System.Xaml;
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Content;
     using Nine.Graphics.Drawing;
 
     /// <summary>
@@ -186,6 +185,12 @@ namespace Nine.Graphics.Materials
         {
             return null;
         }
+
+        /// <summary>
+        /// Gets the passes that are required by this material.
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public virtual void GetDependentPasses(ICollection<Type> passTypes) { }
         
         /// <summary>
         /// Sets the texture based on the texture usage.

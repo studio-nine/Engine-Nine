@@ -144,8 +144,6 @@ namespace Nine.Graphics.Drawing
                     if (drawable == null || !drawable.Visible)
                         continue;
 
-                    drawable.BeginDraw(context);
-
                     var material = drawable.Material;
                     if (material == null)
                         material = gBufferMaterial;
@@ -154,8 +152,6 @@ namespace Nine.Graphics.Drawing
 
                     if (material != null)
                         drawable.Draw(context, material);
-
-                    drawable.EndDraw(context);
                 }
             }
             finally
@@ -269,10 +265,8 @@ namespace Nine.Graphics.Drawing
                 //       DeferredSpotLight is alway updated before calling Contains.
                 GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                 GraphicsDevice.DepthStencilState = greaterDepth;
-
-                lightGeometry.BeginDraw(context);
+                
                 lightGeometry.Draw(context, lightMaterial);
-                lightGeometry.EndDraw(context);
             }
             finally
             {

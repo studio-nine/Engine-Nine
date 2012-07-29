@@ -1,6 +1,7 @@
 namespace Nine.Graphics.Drawing
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -185,12 +186,14 @@ namespace Nine.Graphics.Drawing
         internal int fogVersion;
         #endregion
 
-        #region Fields        
+        #region Fields
         private bool isDrawing = false;
         private FastList<Pass> activePasses = new FastList<Pass>();
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
         private FastList<SurfaceFormat?> preferedFormats = new FastList<SurfaceFormat?>();
         private FastList<IDrawableObject> dynamicDrawables = new FastList<IDrawableObject>();
+        private FastList<Type> dependentPassTypes = new FastList<Type>();
+        private Dictionary<Type, Pass> dependentPassMapping = new Dictionary<Type, Pass>();
         #endregion
 
         #region Methods
@@ -283,6 +286,13 @@ namespace Nine.Graphics.Drawing
                 BoundingFrustum viewFrustum = ViewFrustum;
                 scene.FindAll(ref viewFrustum, dynamicDrawables);
 
+                // Notify each drawable when the frame begins
+                for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
+                    // TODO: Visibility filter
+                    dynamicDrawables[currentDrawable].BeginDraw(this);
+
+                UpdatePasses();
+
                 activePasses.Clear();
                 RootPass.GetActivePasses(activePasses);
 
@@ -297,6 +307,7 @@ namespace Nine.Graphics.Drawing
                     var postEffect = activePasses[i] as IPostEffect;
 
                     // TODO: Something seems to be wrong here...
+                    //       Adjacent passes are not blended
                     if (lastPostEffect != null && (postEffect != null || i == 0))
                     {
                         targetPasses[i] = lastPostEffect;
@@ -339,10 +350,17 @@ namespace Nine.Graphics.Drawing
 
                     if (overrideViewFrustum || overrideViewFrustumLastPass)
                     {
+                        // Notify drawables when view frustum has changed
+                        for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
+                            dynamicDrawables[currentDrawable].EndDraw(this);
+
                         dynamicDrawables.Clear();
                         BoundingFrustum frustum = matrices.ViewFrustum;
                         Scene.FindAll(ref frustum, dynamicDrawables);
                         overrideViewFrustumLastPass = overrideViewFrustum;
+
+                        for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
+                            dynamicDrawables[currentDrawable].EndDraw(this);
                     }
 
                     try
@@ -383,9 +401,16 @@ namespace Nine.Graphics.Drawing
             {
                 CurrentFrame++;
                 isDrawing = false;
+
+                // Notify each drawable when the frame begins
+                for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
+                    dynamicDrawables[currentDrawable].BeginDraw(this);
             }
         }
 
+        /// <summary>
+        /// Resets all texture sampler states to the default states specified in settings.
+        /// </summary>
         private void UpdateDefaultSamplerStates()
         {
             if (settings.DefaultSamplerStateChanged)
@@ -395,6 +420,65 @@ namespace Nine.Graphics.Drawing
                     GraphicsDevice.SamplerStates[i] = samplerState;
                 settings.DefaultSamplerStateChanged = false;
             }
+        }
+
+        /// <summary>
+        /// Make sure all the dependent passes for each material is valid.
+        /// </summary>
+        private void UpdatePasses()
+        {
+            try
+            {
+                for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
+                {
+                    var material = dynamicDrawables[currentDrawable].Material;
+                    if (material != null)
+                        material.GetDependentPasses(dependentPassTypes);
+                }
+
+                var passes = RootPass.Passes;
+                var count = RootPass.Passes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var pass = passes[i];
+                    if (pass.Enabled)
+                        pass.GetDependentPasses(dependentPassTypes);
+                }
+
+                foreach (var pass in dependentPassMapping.Values)
+                {
+                    pass.Enabled = false;
+                }
+
+                for (int i = 0; i < dependentPassTypes.Count; i++)
+                {
+                    Pass pass;
+                    var passType = dependentPassTypes[i];
+                    if (dependentPassMapping.TryGetValue(passType, out pass))
+                    {
+                        pass.Enabled = true;
+                        continue;
+                    }
+                    dependentPassMapping.Add(passType, pass = CreatePass(passType));
+                    RootPass.Passes.Add(pass);
+                    MainPass.AddDependency(pass);
+                }
+            }
+            finally
+            {
+                dependentPassTypes.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Creates a pass from the pass type.
+        /// </summary>
+        private Pass CreatePass(Type passType)
+        {
+            var defaultConstructor = passType.GetConstructor(Type.EmptyTypes);
+            if (defaultConstructor != null)
+                return (Pass)defaultConstructor.Invoke(null);
+            return (Pass)Activator.CreateInstance(passType, new object[] { GraphicsDevice });
         }
         #endregion
     }

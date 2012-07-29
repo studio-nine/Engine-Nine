@@ -114,8 +114,15 @@ namespace Nine.Graphics.Drawing
                             samplerState = SamplerState.PointWrap;
                         else if (textureFilter == TextureFilter.Anisotropic)
                             samplerState = SamplerState.AnisotropicWrap;
+                        else
+                            samplerStateNeedsUpdate = true;
                     }
                     else
+                    {
+                        samplerStateNeedsUpdate = true;
+                    }
+
+                    if (samplerStateNeedsUpdate)
                     {
                         samplerState = new SamplerState();
                         samplerState.AddressU = TextureAddressMode.Wrap;
@@ -123,6 +130,7 @@ namespace Nine.Graphics.Drawing
                         samplerState.AddressW = TextureAddressMode.Wrap;
                         samplerState.Filter = textureFilter;
                         samplerState.MaxAnisotropy = maxAnisotropy;
+                        samplerStateNeedsUpdate = false;
                     }
                 }
                 return samplerState;

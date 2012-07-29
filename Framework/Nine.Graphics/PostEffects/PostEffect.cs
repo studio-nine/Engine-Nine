@@ -1,5 +1,6 @@
 ﻿namespace Nine.Graphics.PostEffects
 {
+    using System;
     using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
@@ -106,6 +107,12 @@
         public PostEffect(Material material)
         {
             Material = material;
+        }
+
+        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            if (Material != null)
+                Material.GetDependentPasses(passTypes);
         }
 
         public override void GetActivePasses(IList<Pass> result)

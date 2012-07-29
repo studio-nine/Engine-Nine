@@ -75,8 +75,6 @@ namespace Nine.Graphics.Drawing
                     var drawable = drawables[i];
                     if (drawable != null && drawable.Visible)
                     {
-                        drawable.BeginDraw(context);
-
                         var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
                         if (MaterialUsage != MaterialUsage.Default)
                             material = material[MaterialUsage];
@@ -191,10 +189,6 @@ namespace Nine.Graphics.Drawing
                 opaqueTwoSided.Clear();
                 transparent.Clear();
                 transparentTwoSided.Clear();
-
-                // End Draw
-                for (int i = 0; i < count; i++)
-                    drawables[i].EndDraw(context);
             }
         }
     }
