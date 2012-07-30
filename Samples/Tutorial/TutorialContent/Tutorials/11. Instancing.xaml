@@ -44,6 +44,7 @@
         </Model>
     </InstancedModel>
 
+    <DepthOfFieldEffect />
     <AntiAliasEffect />
     
 </Scene>

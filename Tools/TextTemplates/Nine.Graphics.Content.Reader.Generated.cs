@@ -1117,7 +1117,6 @@ namespace Nine.Graphics.Materials
             existingInstance.SpecularPower = input.ReadSingle();
             existingInstance.WeightsPerVertex = input.ReadInt32();
             existingInstance.PreferPerPixelLighting = input.ReadBoolean();
-            existingInstance.SkinningEnabled = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
             existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();

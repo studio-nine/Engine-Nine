@@ -193,7 +193,7 @@
                     if (material == null)
                         material = depthMaterial;
                     else
-                        material = material[MaterialUsage.Depth];
+                        material = material.GetMaterialByUsage(MaterialUsage.Depth);
 
                     if (material != null)
                         shadowCaster.Draw(context, material);

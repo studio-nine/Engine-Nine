@@ -1568,7 +1568,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             output.Write(value.SpecularPower);
             output.Write(value.WeightsPerVertex);
             output.Write(value.PreferPerPixelLighting);
-            output.Write(value.SkinningEnabled);
             WriteObject(output, value, "SamplerState", value.SamplerState);
             WriteObject(output, value, "Texture", value.texture);
             output.Write(value.Alpha);

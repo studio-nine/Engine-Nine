@@ -21,8 +21,8 @@ float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
 
 Technique Default
 {
-	Pass
-	{
-		PixelShader	 = compile ps_2_0 PS();
-	}
+    Pass
+    {
+        PixelShader	 = compile ps_2_0 PS();
+    }
 }

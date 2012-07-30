@@ -68,6 +68,4 @@
     <BlurEffect Name="Blur" BlurAmount="10" />
     <HighDynamicRangeEffect Name="Hdr" />
     -->
-
-    <DepthOfFieldEffect />
 </Scene>

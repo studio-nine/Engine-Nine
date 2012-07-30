@@ -48,7 +48,7 @@ namespace Nine.Graphics.Materials
         private int? weightsPerVertex;
 
         public bool PreferPerPixelLighting { get; set; }
-        public bool SkinningEnabled { get { return true; } set { } }
+        bool IEffectSkinned.SkinningEnabled { get { return true; } set { } }
 
         [TypeConverter(typeof(SamplerStateConverter))]
         public SamplerState SamplerState { get; set; }
@@ -137,6 +137,24 @@ namespace Nine.Graphics.Materials
 
             if (SamplerState != null)
                 GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+        }
+
+        protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
+        {
+            if (usage == MaterialUsage.Depth)
+            {
+                var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice) { SkinningEnabled = true };
+                result.TextureEnabled = (texture != null && IsTransparent);
+                return result;
+            }
+
+            if (usage == MaterialUsage.DepthAndNormal)
+            {
+                var result = (existingInstance as DepthAndNormalMaterial) ?? new DepthAndNormalMaterial(GraphicsDevice) { SkinningEnabled = true };
+                result.specularPower = specularPower;
+                return result;
+            }
+            return null;
         }
         #endregion
     }

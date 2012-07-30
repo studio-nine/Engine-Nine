@@ -125,7 +125,7 @@
     <Compile Include="Drawing\Pass.cs" />
     <Compile Include="Drawing\DrawingQueue.cs" />
     <Compile Include="GraphicsDeviceService.cs" />
-    <Compile Include="Materials\GraphicsBufferMaterial.cs" />
+    <Compile Include="Materials\DepthAndNormalMaterial.cs" />
     <Compile Include="Materials\DepthMaterial.cs" />
     <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
     <Compile Include="ObjectModel\ShadowMap.cs" />
@@ -298,7 +298,7 @@
     <None Include="Shaders\DeferredLighting.fxh" />
     <None Include="Shaders\DeferredPointLight.fx" />
     <None Include="Shaders\DeferredSpotLight.fx" />
-    <None Include="Shaders\GraphicsBufferEffect.fx" />
+    <None Include="Shaders\DepthAndNormalEffect.fx" />
     <None Include="Shaders\DepthEffect.fx" />
     <None Include="Shaders\SkyBoxEffect.fx" />
     <None Include="Nine.snk" />

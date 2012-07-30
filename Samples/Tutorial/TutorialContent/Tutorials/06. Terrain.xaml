@@ -43,29 +43,29 @@
     -->
     <Surface Heightmap="{ContentReference ../Textures/RF1}" Position="-128, -20, -128" LevelOfDetailEnabled="False" 
              TextureTransform.Scale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
-							
-		<!--
+                            
+        <!--
             You should set the MaterialPaintGroup.MaskTextureScale to the inverse of TextureTransform.Scale so 
-			that the layers will map across the entire terrain.
-		-->
-		<MaterialGroup MaterialPaintGroup.MaskTextureScale="5, 5">
-		
-			<MaterialPaintGroup.MaskTextures>
-				<!-- Specify the mask textures of each material paint group using a splatter. -->
-				<Splatter>
-					<ExternalReference />
-					<ExternalReference>../../Content/Terrain/2.bmp</ExternalReference>
-					<ExternalReference>../../Content/Terrain/3.bmp</ExternalReference>
-				</Splatter>
-			</MaterialPaintGroup.MaskTextures>
-		
-			<MaterialPaintGroup>
-				<DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
-				<SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
-				<NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
-			</MaterialPaintGroup>
-			
-			<MaterialPaintGroup>
+            that the layers will map across the entire terrain.
+        -->
+        <MaterialGroup MaterialPaintGroup.MaskTextureScale="5, 5">
+        
+            <MaterialPaintGroup.MaskTextures>
+                <!-- Specify the mask textures of each material paint group using a splatter. -->
+                <Splatter>
+                    <ExternalReference />
+                    <ExternalReference>../../Content/Terrain/2.bmp</ExternalReference>
+                    <ExternalReference>../../Content/Terrain/3.bmp</ExternalReference>
+                </Splatter>
+            </MaterialPaintGroup.MaskTextures>
+        
+            <MaterialPaintGroup>
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+                <SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
+                <NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
+            </MaterialPaintGroup>
+            
+            <MaterialPaintGroup>
                 <CustomMaterialPart xml:space="preserve">
                     <![CDATA[
                         float Time:TIME;
@@ -75,21 +75,21 @@
                         }
                     ]]>
                 </CustomMaterialPart>
-				<NormalMapMaterialPart NormalMap="{ContentReference ../Textures/grass_n}" />
-				<DiffuseMaterialPart Texture="{ContentReference ../Textures/grass}" DiffuseColor="1, 0, 0" />
-				<SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
-			</MaterialPaintGroup>
-			
-			<MaterialPaintGroup>
-				<DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" />
-				<EmissiveMaterialPart EmissiveColor="0.2, 0.2, 0" />
-			</MaterialPaintGroup>
-			
-			<!--
+                <NormalMapMaterialPart NormalMap="{ContentReference ../Textures/grass_n}" />
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/grass}" DiffuseColor="1, 0, 0" />
+                <SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
+            </MaterialPaintGroup>
+            
+            <MaterialPaintGroup>
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" />
+                <EmissiveMaterialPart EmissiveColor="0.2, 0.2, 0" />
+            </MaterialPaintGroup>
+            
+            <!--
                 Terrain material also supports detailed texture in case you look at the terrain really close.
-			<DetailMaterialPart DetailTexture="{ContentReference ..\Textures\LandscapeDetail}" DetailTextureScale="0.5, 0.5" />
-			-->
-			<DirectionalLightMaterialPart />
-		</MaterialGroup>
+            <DetailMaterialPart DetailTexture="{ContentReference ..\Textures\LandscapeDetail}" DetailTextureScale="0.5, 0.5" />
+            -->
+            <DirectionalLightMaterialPart />
+        </MaterialGroup>
     </Surface>
 </Scene>

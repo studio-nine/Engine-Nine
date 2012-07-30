@@ -23,7 +23,7 @@ namespace Nine.Graphics.Drawing
     /// Represents a deferred lighting technique.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class LightPrePass : Pass
+    public class LightPrePass : Pass, IDisposable
     {
         #region Properties
         /// <summary>
@@ -91,7 +91,7 @@ namespace Nine.Graphics.Drawing
 
         ClearMaterial clearMaterial;
         VertexPassThroughMaterial vertexPassThrough;
-        GraphicsBufferMaterial gBufferMaterial;
+        DepthAndNormalMaterial gBufferMaterial;
         FullScreenQuad clearQuad;
         #endregion
 
@@ -108,7 +108,7 @@ namespace Nine.Graphics.Drawing
             this.NormalBufferFormat = SurfaceFormat.Color;
             this.DepthBufferFormat = SurfaceFormat.Single;
             this.LightBufferFormat = SurfaceFormat.Color;
-            this.gBufferMaterial = new GraphicsBufferMaterial(graphics);
+            this.gBufferMaterial = new DepthAndNormalMaterial(graphics);
 
             this.greaterDepth = new DepthStencilState
             {
@@ -146,11 +146,13 @@ namespace Nine.Graphics.Drawing
 
                     var material = drawable.Material;
                     if (material == null)
-                        material = gBufferMaterial;
-                    else
-                        material = material[MaterialUsage.Depth];
+                    {
+                        drawable.Draw(context, gBufferMaterial);
+                        continue;
+                    }
 
-                    if (material != null)
+                    // Ignore transparent objects
+                    if ((material = material.GetMaterialByUsage(MaterialUsage.DepthAndNormal)) != null)
                         drawable.Draw(context, material);
                 }
             }
@@ -160,6 +162,10 @@ namespace Nine.Graphics.Drawing
             }
 
             DrawLights(context, null);
+
+            context.textures[TextureUsage.DepthBuffer] = depthBuffer;
+            context.textures[TextureUsage.NormalBuffer] = normalBuffer;
+            context.textures[TextureUsage.LightBuffer] = lightBuffer;
         }
 
         /// <summary>

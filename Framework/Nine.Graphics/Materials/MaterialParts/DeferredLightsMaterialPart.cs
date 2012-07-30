@@ -1,147 +1,44 @@
 ﻿namespace Nine.Graphics.Materials.MaterialParts
 {
+    using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
+    using Microsoft.Xna.Framework;
 
-
-
-
-    /*
-    class DeferredLightsMaterialPart : MaterialPart
+    [ContentSerializable]
+    public class DeferredLightsMaterialPart : MaterialPart
     {
-        private EffectParameter halfPixelParameter;
+        EffectParameter halfPixelParameter;
+        EffectParameter lightBufferParameter;
         
-        private Texture lightTexture;
-        private EffectParameter lightTextureParameter;
-        
-        private Vector3 diffuseColor;
-        private EffectParameter diffuseColorParameter;
-
-        private Vector3 emissiveColor;
-        private EffectParameter emissiveColorParameter;
-        
-        private Vector3 specularColor;
-        private EffectParameter specularColorParameter;
-
-        private float specularPower;
-        private EffectParameter specularPowerParameter;
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 DiffuseColor
+        protected internal override void OnBind()
         {
-            get { return diffuseColor; }
-            set { diffuseColor = value; DirtyMask |= diffuseColorDirtyMask; }
+            if ((halfPixelParameter = GetParameter("HalfPixel")) == null)
+                MaterialGroup.MaterialParts.Remove(this);
+            if ((lightBufferParameter = GetParameter("LightTexture")) == null)
+                MaterialGroup.MaterialParts.Remove(this);
         }
 
-        [ContentSerializer(Optional = true)]
-        public Vector3 EmissiveColor
+        protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            get { return emissiveColor; }
-            set { emissiveColor = value; DirtyMask |= emissiveColorDirtyMask; }
-        }
-
-        [ContentSerializer(Optional = true)]
-        public Vector3 SpecularColor
-        {
-            get { return specularColor; }
-            set { specularColor = value; DirtyMask |= specularColorDirtyMask; }
-        }
-
-        [ContentSerializerIgnore]
-        public Texture LightTexture
-        {
-            get { return lightTexture; }
-            set { if (lightTexture != value) { lightTexture = value; DirtyMask |= lightTextureDirtyMask; } }
-        }
-
-        [ContentSerializerIgnore]
-        public float SpecularPower
-        {
-            get { return specularPower; }
-            set { if (specularPower != value) { specularPower = value; DirtyMask |= specularPowerDirtyMask; } }
-        }
-
-        public DeferredLightsMaterialPart()
-        {
-            DiffuseColor = Vector3.One;
-            EmissiveColor = Vector3.Zero;
-            SpecularColor = Vector3.Zero;
-            SpecularPower = 16;
-
-            diffuseColorParameter = GetParameter("DiffuseColor");
-            emissiveColorParameter = GetParameter("EmissiveColor");
-            specularColorParameter = GetParameter("SpecularColor");
-            specularPowerParameter = GetParameter("SpecularPower");
-            lightTextureParameter = GetParameter("LightTexture");
-            halfPixelParameter = GetParameter("halfPixel");
-        }
-
-        protected internal override void SetTexture(TextureUsage usage, Texture texture)
-        {
-            if (usage == TextureUsage.LightBuffer)
-                LightTexture = texture as Texture2D;
-        }
-
-        protected internal override void OnApply()
-        {
-            if ((DirtyMask & diffuseColorDirtyMask) != 0)
+            var lightBuffer = context.textures[TextureUsage.LightBuffer] as Texture2D;
+            lightBufferParameter.SetValue(lightBuffer);
+            if (lightBuffer != null)
             {
-                if (diffuseColorParameter != null)
-                    diffuseColorParameter.SetValue(diffuseColor);
-                DirtyMask &= ~diffuseColorDirtyMask;
+                var halfPixel = new Vector2();
+                halfPixel.X = 0.5f / lightBuffer.Width;
+                halfPixel.Y = 0.5f / lightBuffer.Height;
+                halfPixelParameter.SetValue(halfPixel);
             }
-
-            if ((DirtyMask & emissiveColorDirtyMask) != 0)
-            {
-                if (emissiveColorParameter != null)
-                    emissiveColorParameter.SetValue(emissiveColor);
-                DirtyMask &= ~emissiveColorDirtyMask;
-            }
-
-            if ((DirtyMask & specularColorDirtyMask) != 0)
-            {
-                if (specularColorParameter != null)
-                    specularColorParameter.SetValue(specularColor);
-                DirtyMask &= ~specularColorDirtyMask;
-            }
-
-            if ((DirtyMask & specularPowerDirtyMask) != 0)
-            {
-                if (specularPowerParameter != null)
-                    specularPowerParameter.SetValue(specularPower);
-                DirtyMask &= ~specularPowerDirtyMask;
-            }
-
-            if ((DirtyMask & lightTextureDirtyMask) != 0)
-            {
-                if (lightTextureParameter != null)
-                    lightTextureParameter.SetValue(lightTexture);
-                DirtyMask &= ~lightTextureDirtyMask;
-            }
-
-            if (halfPixelParameter != null)
-                halfPixelParameter.SetValue(new Vector2(0.5f / GraphicsDevice.Viewport.Width, 0.5f / GraphicsDevice.Viewport.Height));
         }
 
-        protected internal override void OnApply(MaterialPart part)
+        protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            var effectPart = (DeferredLightsMaterialPart)part;
-            effectPart.DiffuseColor = DiffuseColor;
-            effectPart.EmissiveColor = EmissiveColor;
-            effectPart.SpecularColor = SpecularColor;
-            effectPart.LightTexture = LightTexture;
-            effectPart.SpecularPower = SpecularPower;
+            return usage == MaterialUsage.Default ? GetShaderCode("DeferredLights") : null;
         }
 
         protected internal override MaterialPart Clone()
         {
-            return new DeferredLightsMaterialPart()
-            {
-                DiffuseColor = this.DiffuseColor,
-                EmissiveColor = this.EmissiveColor,
-                SpecularColor = this.SpecularColor,
-                LightTexture = this.LightTexture,
-                SpecularPower = this.SpecularPower,
-            };
+            return new DeferredLightsMaterialPart();
         }
     }
-     */
 }

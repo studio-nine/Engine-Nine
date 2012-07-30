@@ -77,7 +77,7 @@ namespace Nine.Graphics.Drawing
                     {
                         var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
                         if (MaterialUsage != MaterialUsage.Default)
-                            material = material[MaterialUsage];
+                            material = material.GetMaterialByUsage(MaterialUsage);
 
                         while (material != null)
                         {

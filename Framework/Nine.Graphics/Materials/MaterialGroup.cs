@@ -132,7 +132,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets the material with the specified usage that is attached to this material.
         /// </summary>
-        protected override Material OnResolveMaterial(MaterialUsage usage)
+        protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
             if (usage == MaterialUsage.Default)
                 return this;

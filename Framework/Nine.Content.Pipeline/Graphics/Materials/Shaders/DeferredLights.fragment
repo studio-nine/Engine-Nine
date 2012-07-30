@@ -9,12 +9,13 @@ sampler LightSampler = sampler_state
     MagFilter = POINT;
 };
 
-void PixelShader(float4 positionProjection, float3 specularColor, float3 emissiveColor, inout float4 color)
+void PixelShader(float4 positionProjection, inout float3 lightDiffuse, inout float3 lightSpecular)
 {
     positionProjection.y = -positionProjection.y;
     
-    float2 lightUV = (positionProjection.xy / positionProjection.w) * 0.5f + 0.5f + HalfPixel;
+    float2 lightUV = (positionProjection.xy / positionProjection.w) * 0.5f + 0.5f - HalfPixel;
     float4 light = tex2D(LightSampler, lightUV);
 
-    color.xyz = color.xyz * (light.rgb + emissiveColor)  + light.a * specularColor;
+    lightDiffuse = light.rgb;
+    lightSpecular =  light.a;
 }

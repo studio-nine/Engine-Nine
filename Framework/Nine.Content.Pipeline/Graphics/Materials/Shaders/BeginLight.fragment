@@ -3,6 +3,6 @@ float3 AmbientLightColor = { 0.2, 0.2, 0.2 };
 
 void PixelShader(float4 positionWorld, out float3 positionToEye, out float3 lightDiffuse)
 {
-	positionToEye = normalize(EyePosition - positionWorld.xyz);
+    positionToEye = normalize(EyePosition - positionWorld.xyz);
     lightDiffuse = AmbientLightColor;
 }

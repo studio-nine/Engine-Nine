@@ -109,18 +109,27 @@
             Material = material;
         }
 
+        /// <summary>
+        /// Gets all the pass types that are required by this pass.
+        /// </summary>
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)
         {
             if (Material != null)
                 Material.GetDependentPasses(passTypes);
         }
 
+        /// <summary>
+        /// Gets all the passes that are going to be rendered.
+        /// </summary>
         public override void GetActivePasses(IList<Pass> result)
         {
             if (Enabled && Material != null)
                 result.Add(this);
         }
 
+        /// <summary>
+        /// Prepares a render target to hold the result of this pass.
+        /// </summary>
         public override RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
         {
             int w, h;
@@ -152,6 +161,9 @@
                                                  , DepthFormat.None);
         }
 
+        /// <summary>
+        /// Draws this pass using the specified drawing context.
+        /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             try

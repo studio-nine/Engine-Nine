@@ -110,7 +110,11 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Occurs when a material usage is not found.
         /// </summary>
-        public event Func<MaterialUsage, Material, Material> MaterialResolve;
+        /// <remarks>
+        /// The first material represents the material to be resolved.
+        /// The second material represents any existing material instance that are resolved.
+        /// </remarks>
+        public static event Func<Material, MaterialUsage, Material, Material> MaterialResolve;
         #endregion
 
         #region Methods
@@ -145,33 +149,31 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the <see cref="Nine.Graphics.Materials.Material"/> with the specified usage.
         /// </summary>
-        public Material this[MaterialUsage usage]
+        public Material GetMaterialByUsage(MaterialUsage usage)
         {
-            get 
-            {
-                Material result = null;
-                if (materialUsages != null && materialUsages.TryGetValue(usage, out result))
-                    return result;
-                return (result = ResolveMaterial(usage)) != null ? this[usage] = result : null; 
-            }            
-            set
+            Material resolved = null;
+            Material existing = null;
+            if (materialUsages != null)
+                materialUsages.TryGetValue(usage, out existing);
+            if (existing != (resolved = ResolveMaterial(usage, existing)))
             {
                 if (materialUsages == null)
                     materialUsages = new Dictionary<MaterialUsage, Material>();
-                materialUsages[usage] = value;
+                materialUsages[usage] = resolved;
             }
+            return resolved;
         }
 
-        private Material ResolveMaterial(MaterialUsage usage)
+        private Material ResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
-            var result = OnResolveMaterial(usage);
+            var result = OnResolveMaterial(usage, existingInstance);
             if (result == null && MaterialResolve != null)
             {
                 var listeners = MaterialResolve.GetInvocationList();
                 for (int i = 0; i < listeners.Length; i++)
                 {
-                    var resolve = (Func<MaterialUsage, Material, Material>)listeners[i];
-                    if (resolve != null && (result = resolve(usage, this)) != null)
+                    var resolve = (Func<Material, MaterialUsage, Material, Material>)listeners[i];
+                    if (resolve != null && (result = resolve(this, usage, existingInstance)) != null)
                         break;
                 }
             }
@@ -181,7 +183,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets the material with the specified usage that is attached to this material.
         /// </summary>
-        protected virtual Material OnResolveMaterial(MaterialUsage usage)
+        protected virtual Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
             return null;
         }

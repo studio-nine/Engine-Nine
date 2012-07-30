@@ -22,6 +22,7 @@ namespace Nine.Graphics.Materials
         {
             GraphicsDevice.Textures[0] = texture;
             GraphicsDevice.Textures[2] = context.textures[TextureUsage.DepthBuffer];
+            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
 
             effect.FocalDistance.SetValue(FocalDistance);
             effect.FocalLength.SetValue(FocalLength);

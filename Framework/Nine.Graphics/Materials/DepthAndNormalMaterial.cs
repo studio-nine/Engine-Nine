@@ -5,14 +5,14 @@ namespace Nine.Graphics.Materials
     using Nine.Graphics.Drawing;
 
     [NotContentSerializable]
-    partial class GraphicsBufferMaterial : IEffectSkinned
+    partial class DepthAndNormalMaterial : IEffectSkinned
     {
         public float SpecularPower
         {
             get { return specularPower.HasValue ? specularPower.Value : MaterialConstants.SpecularPower; }
             set { specularPower = (value == MaterialConstants.SpecularPower ? (float?)null : value); }
         }
-        private float? specularPower;
+        internal float? specularPower;
 
         public bool SkinningEnabled
         {
@@ -21,7 +21,7 @@ namespace Nine.Graphics.Materials
         }
         private bool skinningEnabled;
 
-        partial void BeginApplyLocalParameters(DrawingContext context, GraphicsBufferMaterial previousMaterial)
+        partial void BeginApplyLocalParameters(DrawingContext context, DepthAndNormalMaterial previousMaterial)
         {
             if (previousMaterial == null || skinningEnabled != previousMaterial.skinningEnabled)
                 effect.shaderIndex.SetValue(skinningEnabled ? 1 : 0);
