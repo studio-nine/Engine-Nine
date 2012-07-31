@@ -18,7 +18,7 @@
             <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True">
                 <DiffuseMaterialPart />
                 <AlphaTestMaterialPart ReferenceAlpha="200" />
-
+                
                 <MaterialGroup.NextMaterial>
                     <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True" IsTransparent="True">
                         <DiffuseMaterialPart />
@@ -44,7 +44,5 @@
         </Model>
     </InstancedModel>
 
-    <DepthOfFieldEffect />
-    <AntiAliasEffect />
-    
+    <DepthOfFieldEffect BlurAmount="20" />
 </Scene>

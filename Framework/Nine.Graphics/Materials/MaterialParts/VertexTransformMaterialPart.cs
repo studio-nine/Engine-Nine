@@ -1,9 +1,11 @@
 ﻿namespace Nine.Graphics.Materials.MaterialParts
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.Xna.Framework;
-    using Nine.Graphics.Drawing;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
 
     [ContentSerializable]
     class VertexTransformMaterialPart : MaterialPart
@@ -43,6 +45,12 @@
             }
         }
 
+        protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
+        {
+            if (usage == MaterialUsage.Depth)
+                result.Add(typeof(DepthMaterialPart));
+        }
+
         protected internal override MaterialPart Clone()
         {
             return new VertexTransformMaterialPart();
@@ -50,7 +58,7 @@
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode(MaterialGroup.MaterialParts.OfType<InstancedMaterialPart>().Any() ? "InstanceTransform" : "VertexTransform") : null;
+            return GetShaderCode(MaterialGroup.MaterialParts.OfType<InstancedMaterialPart>().Any() ? "InstanceTransform" : "VertexTransform");
         }
     }
 }

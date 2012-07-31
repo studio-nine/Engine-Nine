@@ -101,10 +101,21 @@
             return new AlphaTestMaterialPart() { alphaFunction = this.alphaFunction, ReferenceAlpha = this.ReferenceAlpha };
         }
 
+        protected internal override void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance)
+        {
+            var part = ((AlphaTestMaterialPart)existingInstance);
+            part.ReferenceAlpha = ReferenceAlpha;
+            part.alphaFunction = alphaFunction;
+        }
+
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
+            // When using alpha test with transparent materials, don't write to depth.
+            if (MaterialGroup.IsTransparent && (usage == MaterialUsage.Depth || usage == MaterialUsage.DepthAndNormal))
+                return null;
+
             bool eqne = (alphaFunction == CompareFunction.Equal || alphaFunction == CompareFunction.NotEqual);
-            return usage == MaterialUsage.Default ? GetShaderCode("AlphaTest").Replace("{$EQNE}", eqne ? "" : "//").Replace("{$LTGT}", eqne ? "//" : "") : null;
+            return GetShaderCode("AlphaTest").Replace("{$EQNE}", eqne ? "" : "//").Replace("{$LTGT}", eqne ? "//" : "");
         }
     }
 }

@@ -5,6 +5,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
 
     /// <summary>
@@ -58,8 +59,8 @@
                 {
                     Effects[i * 2].Enabled = true;
                     Effects[i * 2 + 1].Enabled = true;
-                    ((BlurMaterial)Effects[i * 2].Material).BlurAmount = amount;
-                    ((BlurMaterial)Effects[i * 2 + 1].Material).BlurAmount = amount;
+                    ((BlurMaterial)((PostEffect)Effects[i * 2]).Material).BlurAmount = amount;
+                    ((BlurMaterial)((PostEffect)Effects[i * 2 + 1]).Material).BlurAmount = amount;
                 }
 
                 i++;
@@ -74,7 +75,7 @@
         }
 
         [ContentSerializerIgnore]
-        public override IList<PostEffect> Effects
+        public override IList<Pass> Effects
         {
             get { return base.Effects; }
         }

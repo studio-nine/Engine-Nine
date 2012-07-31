@@ -50,7 +50,6 @@
         private FastList<Pass> workingPasses = new FastList<Pass>();
         private PostEffect basicPostEffect;
 
-        private Material vertexPassThrough;
         private FullScreenQuad fullScreenQuad;
         
         /// <summary>
@@ -92,6 +91,7 @@
         void ISceneObject.OnAdded(DrawingContext context)
         {
             context.RootPass.Passes.Add(this);
+            AddDependency(context.MainPass);
         }
 
         /// <summary>
@@ -120,11 +120,7 @@
             int i, p;
             for (p = 0; p < passes.Count; p++)
             {
-                var pass = passes[p];
-                if (!pass.Enabled)
-                    continue;
-
-                pass.GetActivePasses(workingPasses);
+                passes[p].GetActivePasses(workingPasses);
 
                 RenderTarget2D intermediate = InputTexture as RenderTarget2D;
                 for (i = 0; i < workingPasses.Count; i++)
@@ -150,16 +146,9 @@
             RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
 
             if (fullScreenQuad == null)
-            {
                 fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
-                vertexPassThrough = new VertexPassThroughMaterial(context.GraphicsDevice);
-            }
-
-            vertexPassThrough.BeginApply(context);
 
             context.GraphicsDevice.BlendState = BlendState.Opaque;
-            context.GraphicsDevice.Textures[0] = InputTexture;
-
             Material.texture = InputTexture;
 
             for (i = 0, p = 0; p < passes.Count; p++)
@@ -184,11 +173,7 @@
             int i, p;
             for (p = 0; p < passes.Count; p++)
             {
-                var pass = passes[p];
-                if (!pass.Enabled)
-                    continue;
-
-                pass.GetActivePasses(workingPasses);
+                passes[p].GetActivePasses(workingPasses);
 
                 RenderTarget2D intermediate = InputTexture as RenderTarget2D;
                 for (i = 0; i < workingPasses.Count - 1; i++)

@@ -90,7 +90,6 @@ namespace Nine.Graphics.Drawing
         BlendState lightBlendState;
 
         ClearMaterial clearMaterial;
-        VertexPassThroughMaterial vertexPassThrough;
         DepthAndNormalMaterial gBufferMaterial;
         FullScreenQuad clearQuad;
         #endregion
@@ -350,11 +349,9 @@ namespace Nine.Graphics.Drawing
             if (clearMaterial == null)
             {
                 clearMaterial = new ClearMaterial(GraphicsDevice);
-                vertexPassThrough = new VertexPassThroughMaterial(GraphicsDevice);
-                clearQuad = new FullScreenQuad(GraphicsDevice) { IgnoreVertexTransform = true };
+                clearQuad = new FullScreenQuad(GraphicsDevice);
             }
 
-            vertexPassThrough.BeginApply(context);
             clearMaterial.effect.CurrentTechnique.Passes[0].Apply();
 
             GraphicsDevice.DepthStencilState = DepthStencilState.None;

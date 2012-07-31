@@ -80,6 +80,7 @@
         public string Name;
         public string Body;
         public string ReturnType;
+        public bool ContainsClip;
         public ArgumentDeclaration[] Arguments;
 
         public override string ToString()
@@ -96,7 +97,7 @@
     class MaterialPartDeclaration
     {
         public int Index;
-        public string Body;
+        public string Body;        
         public bool Tagged;
         public bool IsVertexShaderOutput;
         public bool IsPixelShaderOutput;
@@ -345,7 +346,7 @@
                 arguments.Add(argument);
             return arguments.ToArray();
         }
-
+        
         public FunctionDeclaration ReadFunctionDeclaration()
         {
             var initial = Position;
@@ -361,6 +362,8 @@
                 Position = initial;
                 return null;
             }
+            // TODO: Canot simply judge based on this....
+            declaration.ContainsClip = declaration.Body.Contains("clip(");
             return declaration;
         }
 
@@ -472,7 +475,7 @@
             if (materialGroup.MaterialParts.Count <= 0)
                 materialGroup.MaterialParts.Add(new DiffuseMaterialPart() { DiffuseColorEnabled = false, TextureEnabled = false });
 
-            materialGroup.MaterialParts.ForEach(p => p.GetDependentParts(dependentPartTypes));
+            materialGroup.MaterialParts.ForEach(p => p.GetDependentParts(usage, dependentPartTypes));
             foreach (var type in dependentPartTypes)
                 if (!materialGroup.MaterialParts.Any(p => p.GetType() == type))
                     materialGroup.MaterialParts.Add((MaterialPart)Activator.CreateInstance(type));
@@ -481,10 +484,11 @@
             if (builderContext.PixelShaderOutputs.Count <= 0)
                 return null;
 
+            context.Logger.LogImportantMessage("Building material group {0}", usage);
+
             try
             {
                 // Force 3_0 when using instancing
-
                 if (materialGroup.MaterialParts.OfType<InstancedMaterialPart>().Any())
                     throw new InvalidOperationException();
 
@@ -500,8 +504,10 @@
 
         internal static CompiledEffectContent BuildEffect(ContentProcessorContext context)
         {
-            System.Diagnostics.Trace.TraceInformation("Building Effect:");
-            System.Diagnostics.Trace.WriteLine(LastEffectCode);
+            if (!Directory.Exists(Path.Combine(context.IntermediateDirectory, WorkingPath)))
+                Directory.CreateDirectory(Path.Combine(context.IntermediateDirectory, WorkingPath));
+
+            File.WriteAllText(Path.Combine(context.IntermediateDirectory, WorkingPath, "LastEffect.fx"), LastEffectCode);
 
             var effectContent = new EffectContent { EffectCode = LastEffectCode };
             var effectProcessor = new EffectProcessor();
@@ -515,9 +521,6 @@
 
             try
             {
-                if (!Directory.Exists(Path.Combine(context.IntermediateDirectory, WorkingPath)))
-                    Directory.CreateDirectory(Path.Combine(context.IntermediateDirectory, WorkingPath));
-
                 string resultEffectFile = Path.Combine(context.IntermediateDirectory, WorkingPath, LastIdentity + ".fx");
                 string resultAsmFile = Path.Combine(context.IntermediateDirectory, WorkingPath, LastIdentity + ".asm");
                 File.WriteAllText(resultEffectFile, MaterialGroupBuilder.LastEffectCode);
@@ -594,16 +597,36 @@
             Regex validVertexShaderOutputSemantic;
 
             validPixelShaderOutputSemantic = new Regex("^COLOR[0-9]$");
-            validVertexShaderOutputSemantic = new Regex("^(COLOR[0-9]+)|(POSITION[0-9]+)|(TEXCOORD[0-9]+)$");            
+            validVertexShaderOutputSemantic = new Regex("^(COLOR[0-9]+)|(POSITION[0-9]+)|(TEXCOORD[0-9]+)$");
 
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
+            var psOutputSemantics = new List<string>();
+            var vsOutputSemantics = new List<string>();
+            for (int i = builderContext.MaterialPartDeclarations.Count - 1; i >= 0; i--)
             {
                 var part = builderContext.MaterialPartDeclarations[i];
                 part.Index = i;
                 part.MaterialPart.ParameterSuffix = string.Concat("_", i);
-                part.IsVertexShaderOutput = part.VertexShader != null && part.VertexShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validVertexShaderOutputSemantic.IsMatch(a.Semantic));
-                part.IsPixelShaderOutput = part.PixelShader != null && part.PixelShader.Arguments.Any(a => a != null && a.Semantic != null && a.Out && validPixelShaderOutputSemantic.IsMatch(a.Semantic));
-            }
+
+                if (part.VertexShader != null)
+                {
+                    var vsOutputArgs = part.VertexShader.Arguments.Where(a => a != null && a.Semantic != null && a.Out && validVertexShaderOutputSemantic.IsMatch(a.Semantic)).Select(a => a.Semantic).ToArray();
+                    if (vsOutputArgs.Length > 0 && !vsOutputSemantics.Intersect(vsOutputArgs).Any())
+                    {
+                        vsOutputSemantics.AddRange(vsOutputArgs);
+                        part.IsVertexShaderOutput = true;
+                    }
+                }
+
+                if (part.PixelShader != null)
+                {
+                    var psOutputArgs = part.PixelShader.Arguments.Where(a => a != null && a.Semantic != null && a.Out && validPixelShaderOutputSemantic.IsMatch(a.Semantic)).Select(a => a.Semantic).ToArray();
+                    if (psOutputArgs.Length > 0 && !psOutputSemantics.Intersect(psOutputArgs).Any())
+                    {
+                        psOutputSemantics.AddRange(psOutputArgs);
+                        part.IsPixelShaderOutput = true;
+                    }
+                }
+            }            
 
             foreach (var materialDeclaration in builderContext.MaterialPartDeclarations)
             {
@@ -632,7 +655,7 @@
 
             // Remove pixel shader parts that don't have a path to the pixel shader output 
             foreach (var part in Enumerable.Reverse(builderContext.MaterialPartDeclarations))
-                if (!simplify || part.IsPixelShaderOutput || part.Tagged)
+                if (!simplify || part.IsPixelShaderOutput || part.Tagged || (part.PixelShader != null && part.PixelShader.ContainsClip))
                 {
                     part.Tagged = true;
                     foreach (var d in part.Dependencies)
@@ -700,13 +723,24 @@
             builderContext.PixelShaderOutputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
             builderContext.VertexShaderInputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
             builderContext.VertexShaderOutputs.ForEach(a => a.DefaultValue = builderContext.ArgumentDictionary[a.Name].DefaultValue);
-
+            
             // Step 5: Argument simplification and validation
             builderContext.TemporaryPixelShaderVariables = (from arg in builderContext.PixelShaderOutputs
                                              where simplify && (arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic))
                                              select arg).ToList();
 
-            // Pixel shader inputs that does not have a matching vertes shader output and a valid semantic            
+            // Remove duplicated pixel shader output semantics, keep only the last one.
+            for (int i = 0; i < builderContext.PixelShaderOutputs.Count; i++)
+			{
+                if (builderContext.PixelShaderOutputs.Skip(i + 1).Any(a => a.Semantic == builderContext.PixelShaderOutputs[i].Semantic))
+                {
+                    builderContext.TemporaryPixelShaderVariables.Add(builderContext.PixelShaderOutputs[i]);
+                    builderContext.PixelShaderOutputs.RemoveAt(i);
+                    i--;
+                }
+			}
+
+            // Pixel shader inputs that does not have a matching vertex shader output and a valid semantic            
             for (int i = 0; i < builderContext.PixelShaderInputs.Count; i++)
             {
                 var psi = builderContext.PixelShaderInputs[i];
@@ -737,6 +771,21 @@
             NextValidSemanticIndex = 0;
             builderContext.VertexShaderOutputSemanticMapping = builderContext.VertexShaderOutputs.Where(vso => vso.Semantic == null || !validVertexShaderOutputSemantic.IsMatch(vso.Semantic))
                                                        .ToDictionary(arg => arg, arg => NextValidSemantic(builderContext.VertexShaderOutputs));
+
+            // POSITION0 is not a valid pixel shader input semantics            
+            if (builderContext.PixelShaderInputs.Any(psi => psi.Semantic == "POSITION0"))
+            {
+                var vso = builderContext.VertexShaderOutputs.Single(a => a.Semantic == "POSITION0");
+                var arg = new ArgumentDeclaration()
+                {
+                    Out = true,
+                    Name = vso.Name + "_pos0_",
+                    Type = vso.Type,
+                };
+                var semantic = NextValidSemantic(builderContext.VertexShaderOutputs);
+                builderContext.VertexShaderOutputSemanticMapping.Add(arg, semantic);
+                builderContext.PixelShaderInputs.Single(psi => psi.Semantic == "POSITION0").Semantic = semantic;
+            }
             
             builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderOutputSemanticMapping.Any(m => m.Key.Name == vso.Name));
             builderContext.VertexShaderOutputs.RemoveAll(vso => builderContext.VertexShaderInputs.Any(vsi => vsi.Name == vso.Name && vsi.Out));
@@ -824,7 +873,8 @@
             builder.AppendLine();
             foreach (var p in builderContext.VertexShaderOutputSemanticMapping)
             {
-                builder.AppendLine(string.Concat("    o_", p.Key.Name, " = ", p.Key.Name, ";"));
+                builder.AppendLine(string.Concat("    o_", p.Key.Name, " = ",
+                    p.Key.Name.EndsWith("_pos0_") ? p.Key.Name.Replace("_pos0_", "") : p.Key.Name, ";"));
             }
             builder.AppendLine("}");
 

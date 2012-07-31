@@ -5,7 +5,6 @@ namespace Nine.Animations
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
 
-
     /// <summary>
     /// Defines in which direction will the transition be eased.
     /// </summary>

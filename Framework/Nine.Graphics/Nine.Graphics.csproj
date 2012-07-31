@@ -128,8 +128,9 @@
     <Compile Include="Materials\DepthAndNormalMaterial.cs" />
     <Compile Include="Materials\DepthMaterial.cs" />
     <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DepthMaterialPart.cs" />
     <Compile Include="ObjectModel\ShadowMap.cs" />
-    <Compile Include="PostEffects\AdaptionEffect.cs" />
+    <Compile Include="PostEffects\AdaptationEffect.cs" />
     <Compile Include="PostEffects\BlurEffect.cs" />
     <Compile Include="PostEffects\AntiAliasMaterial.cs" />
     <Compile Include="PostEffects\AntiAliasEffect.cs" />

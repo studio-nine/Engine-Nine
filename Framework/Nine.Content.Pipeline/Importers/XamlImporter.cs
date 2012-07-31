@@ -18,7 +18,6 @@
         public override object Import(string filename, ContentImporterContext context)
         {
             this.context = context;
-
             try
             {
                 ContentProperties.IsContentBuild = true;

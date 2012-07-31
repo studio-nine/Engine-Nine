@@ -47,14 +47,14 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Puts the dependent parts into the result list.
         /// </summary>
-        protected internal override void GetDependentParts(IList<Type> result)
+        protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
         {
             result.Add(typeof(MaterialParts.BeginPaintGroupMaterialPart));
             result.Add(typeof(MaterialParts.EndPaintGroupMaterialPart));
 
             var count = materialParts.Count;
             for (int i = 0; i < count; i++)
-                materialParts[i].GetDependentParts(result);
+                materialParts[i].GetDependentParts(usage, result);
         }
 
         /// <summary>

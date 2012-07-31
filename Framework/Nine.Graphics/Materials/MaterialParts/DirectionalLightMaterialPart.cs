@@ -37,7 +37,7 @@
             }
         }
 
-        protected internal override void GetDependentParts(IList<Type> result)
+        protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
         {
             result.Add(typeof(BeginLightMaterialPart));
             result.Add(typeof(EndLightMaterialPart));

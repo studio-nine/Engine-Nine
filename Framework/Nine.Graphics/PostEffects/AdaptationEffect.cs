@@ -14,7 +14,7 @@
     /// Defines a post processing effect that adapts to scene changes.
     /// </summary>
     [ContentSerializable]
-    public class AdaptionEffect : PostEffect
+    public class AdaptationEffect : PostEffect
     {
         private RenderTarget2D lastFrame;
         private RenderTarget2D currentFrame;
@@ -29,7 +29,7 @@
         /// <summary>
         /// Creates a new instance of <c>AdaptationEffect</c>.
         /// </summary>
-        public AdaptionEffect()
+        public AdaptationEffect()
         {
             Speed = 1;
         }

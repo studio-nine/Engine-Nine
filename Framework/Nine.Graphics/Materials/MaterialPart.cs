@@ -41,7 +41,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Puts the dependent parts into the result list.
         /// </summary>
-        protected internal virtual void GetDependentParts(IList<Type> result) { }
+        protected internal virtual void GetDependentParts(MaterialUsage usage, IList<Type> result) { }
 
         /// <summary>
         /// Puts the dependent textures into the result list.
@@ -67,6 +67,11 @@ namespace Nine.Graphics.Materials
         /// Restores any local shader parameters changes after drawing the promitive.
         /// </summary>
         protected internal virtual void EndApplyLocalParameters() { }
+
+        /// <summary>
+        /// Gets the material with the specified usage that is attached to this material.
+        /// </summary>
+        protected internal virtual void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance) { }
 
         /// <summary>
         /// Notifies the material system that the shader has changed and needs recompile.

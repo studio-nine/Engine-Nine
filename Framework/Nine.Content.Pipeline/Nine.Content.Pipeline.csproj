@@ -250,6 +250,7 @@
     </None>
     <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\AlphaTest.fragment" />
+    <None Include="Graphics\Materials\Shaders\Depth.fragment" />
     <None Include="Graphics\Materials\Shaders\InstanceTransform.fragment" />
     <None Include="Graphics\Materials\Shaders\TangentTransform.fragment" />
     <None Include="Graphics\Materials\Shaders\EndPaintGroup.fragment" />

@@ -112,29 +112,6 @@
             }        
         }
         Matrix textureTransform = Matrix.Identity;
-
-        /// <summary>
-        /// Gets the underlying heightmap that contains height, normal, tangent data.
-        /// </summary>
-        [ContentSerializer]
-        public Heightmap Heightmap
-        {
-            get { return heightmap; }
-            set
-            {
-                if (heightmap != value)
-                {
-                    if (heightmap != null)
-                        heightmap.Invalidate -= Heightmap_Invalidate;
-                    heightmap = value;
-                    if (heightmap != null)
-                        heightmap.Invalidate += Heightmap_Invalidate;
-                    heightmapNeedsUpdate = true;
-                }
-            }
-        }
-        Heightmap heightmap;
-        private bool heightmapNeedsUpdate = true;
         
         /// <summary>
         /// Gets the current vertex type used by this surface.
@@ -145,6 +122,8 @@
             get { return vertexType; }
             set
             {
+                if (vertexType == null)
+                    vertexType = typeof(VertexPositionNormalTexture);
                 if (vertexType != value)
                 {
                     vertexType = value;
@@ -168,6 +147,29 @@
                 VertexType = type;
             }
         }
+
+        /// <summary>
+        /// Gets the underlying heightmap that contains height, normal, tangent data.
+        /// </summary>
+        [ContentSerializer]
+        public Heightmap Heightmap
+        {
+            get { return heightmap; }
+            set
+            {
+                if (heightmap != value)
+                {
+                    if (heightmap != null)
+                        heightmap.Invalidate -= Heightmap_Invalidate;
+                    heightmap = value;
+                    if (heightmap != null)
+                        heightmap.Invalidate += Heightmap_Invalidate;
+                    UpdateHeightmap();
+                }
+            }
+        }
+        Heightmap heightmap;
+        private bool heightmapNeedsUpdate = true;
 
         /// <summary>
         /// Gets the max level of detail of this surface.
@@ -354,14 +356,8 @@
         /// <param name="heightmap">The heightmap geometry to create from.</param>
         /// <param name="patchSegmentCount">Number of the smallest square block that made up the surface patch.</param>
         public Surface(GraphicsDevice graphics, Heightmap heightmap, int patchSegmentCount)
-            : this(graphics)
-        {
-            if (heightmap == null)
-                throw new ArgumentNullException("heightmap");
-
-            PatchSegmentCount = patchSegmentCount;
-            Heightmap = heightmap;
-        }
+            : this(graphics, heightmap, patchSegmentCount, null)
+        { }
 
         /// <summary>
         /// Creates a new instance of Surface.
@@ -373,9 +369,16 @@
         public Surface(GraphicsDevice graphics, Heightmap heightmap, int patchSegmentCount, Type vertexType)
             : this(graphics)
         {
+            if (heightmap == null)
+                throw new ArgumentNullException("heightmap");
+
             PatchSegmentCount = patchSegmentCount;
-            Heightmap = heightmap;
             VertexType = VertexType;
+
+            if (heightmap != null)
+                heightmap.Invalidate += Heightmap_Invalidate;
+            this.heightmap = heightmap;
+            this.heightmapNeedsUpdate = true;
         }
 
         private void EnsureHeightmapUpToDate()
@@ -453,6 +456,7 @@
             else
                 throw new NotSupportedException("Vertex type not supported. Try using Surface.ConvertVertexType<T> instead.");
 
+            heightmapNeedsUpdate = false;
         }
 
         /// <summary>
@@ -520,7 +524,6 @@
 
         /// <summary>
         /// Populates a single vertex using default settings.
-
         /// </summary>
         internal void PopulateVertex(int xPatch, int zPatch, int x, int z, ref VertexPositionNormalTexture input, ref VertexPositionNormalTexture vertex)
         {

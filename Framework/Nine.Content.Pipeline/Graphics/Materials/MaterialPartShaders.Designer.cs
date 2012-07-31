@@ -133,6 +133,16 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Depth {
+            get {
+                object obj = ResourceManager.GetObject("Depth", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] DetailTexture {
             get {
                 object obj = ResourceManager.GetObject("DetailTexture", resourceCulture);

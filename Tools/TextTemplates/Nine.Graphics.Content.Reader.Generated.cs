@@ -332,6 +332,26 @@ namespace Nine.Graphics.Cameras
 namespace Nine.Graphics.Drawing
 {
     /// <summary>
+    /// Content reader for <c>DepthPrePass</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DepthPrePassReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Drawing.DepthPrePass>
+    {
+        protected override Nine.Graphics.Drawing.DepthPrePass Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Drawing.DepthPrePass existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new DepthPrePass();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>LightPrePass</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -411,7 +431,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new AdaptionMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -449,7 +469,7 @@ namespace Nine.Graphics.Materials
             existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -489,7 +509,7 @@ namespace Nine.Graphics.Materials
             existingInstance.LightingEnabled = input.ReadBoolean();
             existingInstance.PreferPerPixelLighting = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -524,7 +544,7 @@ namespace Nine.Graphics.Materials
             }
             existingInstance.BlurAmount = input.ReadSingle();
             existingInstance.Direction = input.ReadSingle();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -558,7 +578,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new ClearMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -610,7 +630,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new DecalMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -644,7 +664,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new DeferredDirectionalLightMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -678,7 +698,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new DeferredMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -712,7 +732,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new DeferredPointLightMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -746,7 +766,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new DeferredSpotLightMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -783,7 +803,7 @@ namespace Nine.Graphics.Materials
             existingInstance.SkinningEnabled = input.ReadBoolean();
             existingInstance.TextureEnabled = input.ReadBoolean();
             existingInstance.ReferenceAlpha = input.ReadInt32();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -820,7 +840,7 @@ namespace Nine.Graphics.Materials
             existingInstance.FocalLength = input.ReadSingle();
             existingInstance.FocalPlane = input.ReadSingle();
             existingInstance.FocalDistance = input.ReadSingle();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -858,7 +878,7 @@ namespace Nine.Graphics.Materials
             existingInstance.VertexColorEnabled = input.ReadBoolean();
             existingInstance.PreferPerPixelLighting = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -897,7 +917,7 @@ namespace Nine.Graphics.Materials
             existingInstance.EnvironmentMapSpecular = input.ReadVector3();
             existingInstance.EnvironmentMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -931,7 +951,7 @@ namespace Nine.Graphics.Materials
                 existingInstance = new LuminanceMaterial(graphicsDevice);
             }
             existingInstance.IsDownScale = input.ReadBoolean();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1010,7 +1030,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new RadialBlurMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1044,7 +1064,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new ScaleMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1078,7 +1098,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new ShadowMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1118,7 +1138,7 @@ namespace Nine.Graphics.Materials
             existingInstance.WeightsPerVertex = input.ReadInt32();
             existingInstance.PreferPerPixelLighting = input.ReadBoolean();
             existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1152,7 +1172,7 @@ namespace Nine.Graphics.Materials
                 existingInstance = new ThresholdMaterial(graphicsDevice);
             }
             existingInstance.Threshold = input.ReadSingle();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1187,7 +1207,7 @@ namespace Nine.Graphics.Materials
                 existingInstance = new ToneMappingMaterial(graphicsDevice);
             }
             existingInstance.Exposure = input.ReadSingle();
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1221,7 +1241,7 @@ namespace Nine.Graphics.Materials
 #endif
                 existingInstance = new VertexPassThroughMaterial(graphicsDevice);
             }
-            existingInstance.texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Alpha = input.ReadSingle();
             existingInstance.IsTransparent = input.ReadBoolean();
             existingInstance.IsAdditive = input.ReadBoolean();
@@ -1304,6 +1324,42 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new ColorMatrixMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ColorMatrix = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
+#if !WINDOWS_PHONE
+    /// <summary>
+    /// Content reader for <c>DeferredLightsMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DeferredLightsMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DeferredLightsMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new DeferredLightsMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
+#endif
+    /// <summary>
+    /// Content reader for <c>DepthMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DepthMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.DepthMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.DepthMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DepthMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new DepthMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
             return existingInstance;
         }
@@ -2068,8 +2124,8 @@ namespace Nine.Graphics.ObjectModel
             }
             existingInstance.PatchSegmentCount = input.ReadInt32();
             existingInstance.TextureTransform = input.ReadMatrix();
-            existingInstance.Heightmap = input.ReadObject<Nine.Graphics.ObjectModel.Heightmap>();
             existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
+            existingInstance.Heightmap = input.ReadObject<Nine.Graphics.ObjectModel.Heightmap>();
             existingInstance.LevelOfDetailStart = input.ReadSingle();
             existingInstance.LevelOfDetailEnd = input.ReadSingle();
             existingInstance.LevelOfDetailEnabled = input.ReadBoolean();
@@ -2467,12 +2523,12 @@ namespace Nine.Graphics.PostEffects
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AdaptionEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.AdaptionEffect>
+    partial class AdaptionEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.AdaptationEffect>
     {
-        protected override Nine.Graphics.PostEffects.AdaptionEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AdaptionEffect existingInstance)
+        protected override Nine.Graphics.PostEffects.AdaptationEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AdaptationEffect existingInstance)
         {
             if (existingInstance == null)
-                existingInstance = new AdaptionEffect();
+                existingInstance = new AdaptationEffect();
             existingInstance.Speed = input.ReadSingle();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.SurfaceFormat = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.SurfaceFormat>>();
@@ -2642,7 +2698,7 @@ namespace Nine.Graphics.PostEffects
             }
             existingInstance.Threshold = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
-            existingInstance.AdaptionSpeed = input.ReadSingle();
+            existingInstance.AdaptationSpeed = input.ReadSingle();
             existingInstance.Exposure = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
@@ -2673,7 +2729,7 @@ namespace Nine.Graphics.PostEffects
 #endif
                 existingInstance = new LuminanceChain(graphicsDevice);
             }
-            existingInstance.AdaptionSpeed = input.ReadSingle();
+            existingInstance.AdaptationSpeed = input.ReadSingle();
             existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();
             existingInstance.Enabled = input.ReadBoolean();
@@ -2725,7 +2781,7 @@ namespace Nine.Graphics.PostEffects
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
-                    existingInstance.Effects.Add(input.ReadObject<Nine.Graphics.PostEffects.PostEffect>());
+                    existingInstance.Effects.Add(input.ReadObject<Nine.Graphics.Drawing.Pass>());
             }
             existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
             existingInstance.BlendState = input.ReadObject<Microsoft.Xna.Framework.Graphics.BlendState>();

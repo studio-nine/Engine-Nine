@@ -155,6 +155,7 @@ namespace Tutorial
             else if (scene != null)
                 scene.Draw(gameTime.ElapsedGameTime);
 
+            //System.Threading.Thread.Sleep(5000);
             base.Draw(gameTime);
         }
     }

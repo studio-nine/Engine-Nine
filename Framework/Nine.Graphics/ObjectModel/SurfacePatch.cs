@@ -352,7 +352,6 @@
     #region SurfacePatch<T>
     /// <summary>
     /// To support ConvertVertexType, we need to store T using generic subclass.
-
     /// </summary>
     class SurfacePatch<T> : SurfacePatch where T: struct, IVertexType
     {

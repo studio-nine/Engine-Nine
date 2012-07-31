@@ -88,7 +88,6 @@
 
         internal BlendState BlendState = BlendState.Opaque;
 
-        private Material vertexPassThrough;
         private FullScreenQuad fullScreenQuad;
         #endregion
 
@@ -171,15 +170,8 @@
                 RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
                 if (fullScreenQuad == null)
-                {
                     fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
-                    vertexPassThrough = new VertexPassThroughMaterial(context.GraphicsDevice);
-                }
-
-                // Apply a vertex pass through material in case the specified material does
-                // not have a vertex shader.
-                vertexPassThrough.BeginApply(context);
-
+                
                 context.GraphicsDevice.BlendState = BlendState;
                 context.GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
@@ -198,6 +190,7 @@
         void ISceneObject.OnAdded(DrawingContext context)
         {
             context.RootPass.Passes.Add(this);
+            AddDependency(context.MainPass);
         }
 
         /// <summary>

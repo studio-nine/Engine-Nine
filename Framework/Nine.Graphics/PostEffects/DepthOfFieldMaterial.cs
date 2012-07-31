@@ -3,30 +3,50 @@ namespace Nine.Graphics.Materials
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial class DepthOfFieldMaterial
     {
-        public float FocalLength { get; set; }
         public float FocalPlane { get; set; }
+        public float FocalLength { get; set; }
         public float FocalDistance { get; set; }
 
         partial void OnCreated()
         {
-            FocalDistance = 0.5f;
+            FocalPlane = 20;
+            FocalLength = 20;
+            FocalDistance = 50;
         }
         
         partial void BeginApplyLocalParameters(DrawingContext context, DepthOfFieldMaterial previousMaterial)
         {
-            GraphicsDevice.Textures[0] = texture;
-            GraphicsDevice.Textures[2] = context.textures[TextureUsage.DepthBuffer];
-            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
+            Texture2D depthBuffer;
 
-            effect.FocalDistance.SetValue(FocalDistance);
-            effect.FocalLength.SetValue(FocalLength);
-            effect.FocalPlane.SetValue(FocalPlane);
+            GraphicsDevice.Textures[0] = texture;
+            GraphicsDevice.Textures[2] = depthBuffer = context.textures[TextureUsage.DepthBuffer] as Texture2D;
+            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
+                        
+            var projectionParams = new Vector4();
+            projectionParams.X = context.matrices.projection.M43;
+            projectionParams.Y = context.matrices.projection.M33;
+            projectionParams.Z = context.matrices.projection.M34;
+
+            var focalParams = new Vector4();
+            focalParams.X = FocalPlane;
+            focalParams.Y = FocalLength;
+            focalParams.Z = FocalDistance;
+
+            if (depthBuffer != null)
+            {
+                projectionParams.W = 1f / depthBuffer.Width;
+                focalParams.W = 1f / depthBuffer.Height;
+            }
+
+            effect.ProjectionParams.SetValue(projectionParams);
+            effect.FocalParams.SetValue(focalParams);
         }
 
         partial void EndApplyLocalParameters(DrawingContext context)
@@ -45,8 +65,6 @@ namespace Nine.Graphics.Materials
         {
             if (textureUsage == TextureUsage.Blur)
                 GraphicsDevice.Textures[1] = texture;
-            else if (textureUsage == TextureUsage.DepthBuffer)
-                GraphicsDevice.Textures[2] = texture;
         }
     }
 }

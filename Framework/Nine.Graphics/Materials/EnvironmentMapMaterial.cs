@@ -9,7 +9,7 @@ namespace Nine.Graphics.Materials
     [ContentSerializable]
     public class EnvironmentMapMaterial : Material
     {
-        #region Properties        
+        #region Properties
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         public float FresnelFactor
@@ -134,6 +134,22 @@ namespace Nine.Graphics.Materials
 
             if (SamplerState != null)
                 GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+        }
+
+        protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
+        {
+            if (usage == MaterialUsage.Depth)
+            {
+                var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice);
+                result.TextureEnabled = (texture != null && IsTransparent);
+                return result;
+            }
+
+            if (usage == MaterialUsage.DepthAndNormal)
+            {
+                return (existingInstance as DepthAndNormalMaterial) ?? new DepthAndNormalMaterial(GraphicsDevice);
+            }
+            return null;
         }
         #endregion
     }

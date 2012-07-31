@@ -30,12 +30,20 @@ namespace Nine.Graphics.Drawing
             {
                 if (depthBuffer != null)
                     depthBuffer.Dispose();
-                depthBuffer = new RenderTarget2D(graphics, graphics.Viewport.Width, graphics.Viewport.Height, false, SurfaceFormat.Single, DepthFormat.Depth24Stencil8);
+                depthBuffer = new RenderTarget2D(graphics, graphics.Viewport.Width, graphics.Viewport.Height, 
+                    false, SurfaceFormat.Single, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
             }
 
             try
             {
                 depthBuffer.Begin();
+
+                graphics.Clear(Color.White);
+
+                graphics.SamplerStates[0] = SamplerState.PointClamp;
+                graphics.DepthStencilState = DepthStencilState.Default;
+                graphics.BlendState = BlendState.Opaque;
+
                 var count = drawables.Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -43,6 +51,7 @@ namespace Nine.Graphics.Drawing
                     if (drawable == null || !drawable.Visible)
                         continue;
 
+                    // TODO: Two sided...
                     var material = drawable.Material;
                     if (material == null)
                     {

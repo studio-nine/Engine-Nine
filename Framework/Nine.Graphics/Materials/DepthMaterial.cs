@@ -37,7 +37,7 @@ namespace Nine.Graphics.Materials
             get { return referenceAlpha.HasValue ? referenceAlpha.Value : MaterialConstants.ReferenceAlpha; }
             set { referenceAlpha = (value == MaterialConstants.ReferenceAlpha ? (int?)null : value); }
         }
-        private int? referenceAlpha;
+        internal int? referenceAlpha;
 
         private int shaderIndex;
         #endregion
@@ -51,7 +51,7 @@ namespace Nine.Graphics.Materials
 
         partial void BeginApplyLocalParameters(DrawingContext context, DepthMaterial previousMaterial)
         {
-            if (shaderIndex != previousMaterial.shaderIndex)
+            if (previousMaterial != null && shaderIndex != previousMaterial.shaderIndex)
                 effect.shaderIndex.SetValue(shaderIndex);
             if (referenceAlpha.HasValue)
                 effect.referenceAlpha.SetValue(referenceAlpha.Value);

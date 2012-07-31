@@ -19,11 +19,11 @@
         /// <summary>
         /// Gets a list of post processing effects contained by this chain.
         /// </summary>
-        public virtual IList<PostEffect> Effects
+        public virtual IList<Pass> Effects
         {
             get { return effects; }
         }
-        private List<PostEffect> effects = new List<PostEffect>();
+        private List<Pass> effects = new List<Pass>();
 
         /// <summary>
         /// Gets or sets the texture usage of the result of this chain.
@@ -47,7 +47,7 @@
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
-        public PostEffectChain(BlendState blendState, params PostEffect[] effects)
+        public PostEffectChain(BlendState blendState, params Pass[] effects)
         {
             this.BlendState = blendState;
             this.effects.AddRange(effects);
@@ -56,7 +56,7 @@
         /// <summary>
         /// Creates a new instance of ScreenEffect for post processing.
         /// </summary>
-        public PostEffectChain(TextureUsage textureUsage, params PostEffect[] effects)
+        public PostEffectChain(TextureUsage textureUsage, params Pass[] effects)
         {
             this.BlendState = BlendState.Opaque;
             this.TextureUsage = textureUsage;
@@ -87,7 +87,6 @@
                 for (int i = 0; i < effects.Count; i++)
                     if (effects[i].Enabled)
                         effects[i].GetActivePasses(result);
-
             }
         }
 
@@ -97,6 +96,7 @@
         void ISceneObject.OnAdded(DrawingContext context)
         {
             context.RootPass.Passes.Add(this);
+            AddDependency(context.MainPass);
         }
 
         /// <summary>

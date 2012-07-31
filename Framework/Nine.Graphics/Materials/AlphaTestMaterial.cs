@@ -109,6 +109,17 @@ namespace Nine.Graphics.Materials
             if (SamplerState != null)
                 GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
         }
+
+        protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
+        {
+            if (usage == MaterialUsage.Depth)
+            {
+                var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice) { TextureEnabled = true };
+                result.referenceAlpha = referenceAlpha;
+                return result;
+            }
+            return null;
+        }
         #endregion
     }
 }

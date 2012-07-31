@@ -170,6 +170,7 @@
         protected internal override MaterialPart Clone()
         {
             var result = new DiffuseMaterialPart();
+            result.Texture = this.Texture;
             result.overlayColor = this.overlayColor;
             result.textureEnabled = this.textureEnabled;
             result.textureAlphaUsage = this.textureAlphaUsage;
@@ -178,9 +179,21 @@
             return result;
         }
 
+        protected internal override void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance)
+        {
+            var part = ((DiffuseMaterialPart)existingInstance);
+            part.Texture = this.Texture;
+            part.diffuseColor = diffuseColor;
+            part.diffuseColorEnabled = diffuseColorEnabled;
+            part.overlayColor = overlayColor;
+            part.textureAlphaUsage = textureAlphaUsage;
+            part.textureEnabled = textureEnabled;
+            part.vertexColorEnabled = vertexColorEnabled;
+        }
+
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            if (usage != MaterialUsage.Default)
+            if (usage != MaterialUsage.Default && usage != MaterialUsage.Depth && usage != MaterialUsage.DepthAndNormal)
                 return null;
 
             return GetShaderCode("DiffuseTexture").Replace("{$V1}", vertexColorEnabled ? "" : "//")

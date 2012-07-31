@@ -84,6 +84,9 @@
                         if (input == null || IsBasicType(input.GetType()))
                             continue;
 
+                        if (TraversedObjects.Contains(input))
+                            continue;
+
                         object output = action(input);
                         if (output != input)
                             dictionary[key] = output;
@@ -103,6 +106,9 @@
                         if (input == null || IsBasicType(input.GetType()))
                             continue;
 
+                        if (TraversedObjects.Contains(input))
+                            continue;
+
                         object output = action(input);
                         if (output != input)
                             list[i] = output;
@@ -116,6 +122,10 @@
                 {
                     if (input == null || IsBasicType(input.GetType()))
                         continue;
+
+                    if (TraversedObjects.Contains(input))
+                        continue;
+
                     var output = action(input);
                     if (output != input)
                         throw new InvalidOperationException("Output must be the same as input.");
@@ -147,6 +157,9 @@
 
                 if (input != null)
                 {
+                    if (TraversedObjects.Contains(input))
+                        continue;
+
                     Trace.WriteLine(string.Format("{0}.{1} : {2}", targetType.Name, property.Name, input.GetType().Name));
 
                     object output = action(input);
@@ -180,6 +193,9 @@
                     var input = attachedProperty.Value;
                     if (input != null && !IsBasicType(input.GetType()))
                     {
+                        if (TraversedObjects.Contains(input))
+                            continue;
+
                         Trace.WriteLine(string.Format("{0}.{1} : {2}", attachedProperty.Key.DeclaringType, attachedProperty.Key.MemberName, input.GetType().Name));
 
                         object output = action(input);

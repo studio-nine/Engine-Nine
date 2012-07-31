@@ -6,6 +6,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
 
     /// <summary>
@@ -19,12 +20,12 @@
         /// Gets or sets the speed that determine how fast the eye adapts to the changes
         /// of the luminance in the scene, or specify zero to disable adaption completely.
         /// </summary>
-        public float AdaptionSpeed
+        public float AdaptationSpeed
         {
-            get { return adaptionEffect.Speed; }
-            set { adaptionEffect.Speed = value; adaptionEffect.Enabled = value > 0; }
+            get { return adaptationEffect.Speed; }
+            set { adaptationEffect.Speed = value; adaptationEffect.Enabled = value > 0; }
         }
-        private AdaptionEffect adaptionEffect;
+        private AdaptationEffect adaptationEffect;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LuminanceChain"/> class.
@@ -45,12 +46,12 @@
                 size /= scale;
             }
 
-            Effects.Add(adaptionEffect = new AdaptionEffect() { RenderTargetSize = Vector2.One, Speed = 5 });
+            Effects.Add(adaptationEffect = new AdaptationEffect() { RenderTargetSize = Vector2.One, Speed = 5 });
             TextureUsage = TextureUsage.Luminance;
         }
 
         [ContentSerializerIgnore]
-        public override IList<PostEffect> Effects
+        public override IList<Pass> Effects
         {
             get { return base.Effects; }
         }

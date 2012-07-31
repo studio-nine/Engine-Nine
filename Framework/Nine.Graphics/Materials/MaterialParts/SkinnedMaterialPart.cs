@@ -87,9 +87,6 @@
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            if (usage != MaterialUsage.Default)
-                return null;
-
             return GetShaderCode("SkinTransform")
                   .Replace("{$MAXBONES}", MaxBones.ToString())
                   .Replace("{$BONECOUNT}", WeightsPerVertex.ToString());

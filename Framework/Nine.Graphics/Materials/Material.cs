@@ -151,6 +151,9 @@ namespace Nine.Graphics.Materials
         /// </summary>
         public Material GetMaterialByUsage(MaterialUsage usage)
         {
+            if (usage == MaterialUsage.Default)
+                return this;
+
             Material resolved = null;
             Material existing = null;
             if (materialUsages != null)
@@ -160,6 +163,15 @@ namespace Nine.Graphics.Materials
                 if (materialUsages == null)
                     materialUsages = new Dictionary<MaterialUsage, Material>();
                 materialUsages[usage] = resolved;
+            }
+            if (resolved != null)
+            {
+                resolved.texture = texture;
+                resolved.alpha = alpha;
+                resolved.isAdditive = isAdditive;
+                resolved.isTransparent = isTransparent;
+                resolved.texture = texture;
+                resolved.TwoSided = TwoSided;
             }
             return resolved;
         }

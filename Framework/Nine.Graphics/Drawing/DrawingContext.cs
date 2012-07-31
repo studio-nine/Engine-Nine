@@ -211,9 +211,9 @@ namespace Nine.Graphics.Drawing
             DirectionalLights = new DirectionalLightCollection();
             matrices = new MatrixCollection();
             textures = new TextureCollection();
-            MainPass = new PassGroup();
+            MainPass = new PassGroup() { Name="MainPass" };
             MainPass.Passes.Add(new DrawingPass());
-            RootPass = new PassGroup();
+            RootPass = new PassGroup() { Name = "RootPass" };
             RootPass.Passes.Add(MainPass);
         }
 
@@ -305,9 +305,6 @@ namespace Nine.Graphics.Drawing
                 for (int i = activePasses.Count - 1; i >= 0; i--)
                 {
                     var postEffect = activePasses[i] as IPostEffect;
-
-                    // TODO: Something seems to be wrong here...
-                    //       Adjacent passes are not blended
                     if (lastPostEffect != null && (postEffect != null || i == 0))
                     {
                         targetPasses[i] = lastPostEffect;
@@ -326,7 +323,6 @@ namespace Nine.Graphics.Drawing
                             lastPass = i;
                     }
                 }
-
 
                 RenderTarget2D lastRenderTarget = null;
                 RenderTarget2D intermediate = null;
@@ -365,7 +361,11 @@ namespace Nine.Graphics.Drawing
 
                     try
                     {
-                        RenderTargetPool.Lock(lastRenderTarget);
+                        if ((targetPass != null || i == activePasses.Count - 1) && intermediate != null)
+                        {
+                            intermediate.End();
+                            lastRenderTarget = intermediate;
+                        }
 
                         if (targetPass != null)
                         {
@@ -379,6 +379,7 @@ namespace Nine.Graphics.Drawing
                             postEffect.InputTexture = lastRenderTarget;
 
                         // Clear the screen when we are drawing to the backbuffer.
+                        //  --> Or when we are drawing to the main pass ???
                         if (i == lastPass)
                             GraphicsDevice.Clear(Settings.BackgroundColor);
 
@@ -387,13 +388,6 @@ namespace Nine.Graphics.Drawing
                     finally
                     {
                         RenderTargetPool.Unlock(lastRenderTarget);
-
-                        if (targetPass != null)
-                        {
-                            intermediate.End();
-                            RenderTargetPool.Unlock(intermediate);
-                            lastRenderTarget = intermediate;
-                        }
                     }
                 }
             }

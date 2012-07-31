@@ -134,12 +134,43 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
         {
-            if (usage == MaterialUsage.Default)
-                return this;
-
-            MaterialGroup result = null;
-            if (ExtendedMaterials != null)
+            MaterialGroup result = existingInstance as MaterialGroup;
+            if (result == null && ExtendedMaterials != null)
                 ExtendedMaterials.TryGetValue(usage, out result);
+            
+            if (result != null)
+            {
+                var srcCount = materialParts.Count;
+                var destCount = result.materialParts.Count;
+                
+                if (srcCount > 0 && destCount > 0)
+                {
+                    var src = 0;
+                    var dest = 0;
+                    var srcPart = materialParts[0];
+                    var destPart = result.materialParts[0];
+                    var srcType = srcPart.GetType();
+                    var destType = destPart.GetType();
+
+                    // Source material parts is a super set of destination material parts.
+                    while (dest < destCount)
+                    {
+                        destPart = result.materialParts[dest++];
+                        destType = destPart.GetType();
+
+                        while (src < srcCount)
+                        {
+                            srcPart = materialParts[src++];
+                            srcType = srcPart.GetType();
+                            if (srcType == destType)
+                            {
+                                srcPart.OnResolveMaterialPart(usage, destPart);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
             return result;
         }
 

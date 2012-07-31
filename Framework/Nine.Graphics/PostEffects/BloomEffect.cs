@@ -20,12 +20,11 @@
 
         public float BlurAmount
         {
-            get { return blurH.BlurAmount; }
-            set { blurH.BlurAmount = blurV.BlurAmount = value; }
+            get { return blur.BlurAmount; }
+            set { blur.BlurAmount = value; }
         }
 
-        BlurMaterial blurH;
-        BlurMaterial blurV;
+        BlurEffect blur;
         ThresholdMaterial threshold;
 
         /// <summary>
@@ -36,8 +35,7 @@
             Passes.Add(new PostEffectChain());
             Passes.Add(new PostEffectChain(BlendState.Additive,
                 new PostEffect() { Material = threshold = new ThresholdMaterial(graphics), RenderTargetScale = 0.5f, SurfaceFormat = SurfaceFormat.Color },
-                new PostEffect() { Material = blurH = new BlurMaterial(graphics) },
-                new PostEffect() { Material = blurV = new BlurMaterial(graphics) { Direction = MathHelper.PiOver2 } },
+                blur = new BlurEffect(graphics),
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));
         }

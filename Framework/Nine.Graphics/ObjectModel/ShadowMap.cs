@@ -21,7 +21,6 @@
         private RenderTarget2D renderTarget;
         private RenderTarget2D depthBlur;
         private FullScreenQuad fullScreenQuad;
-        private Material vertexPassThrough;
         private BoundingFrustum shadowFrustum = new BoundingFrustum(Matrix.Identity);
         private FastList<IDrawableObject> shadowCasters = new FastList<IDrawableObject>();
 
@@ -76,7 +75,6 @@
             this.GraphicsDevice = graphics;
             this.depthMaterial = new DepthMaterial(graphics);
             this.blur = new BlurMaterial(graphics);
-            this.vertexPassThrough = new VertexPassThroughMaterial(graphics);
             this.fullScreenQuad = new FullScreenQuad(graphics);
 
 #if SILVERLIGHT
@@ -144,8 +142,6 @@
                                                    GraphicsDevice.PresentationParameters.DepthStencilFormat);
                 } 
                 
-                vertexPassThrough.BeginApply(context);
-
                 // Blur H
                 depthBlur.Begin();
                 blur.texture = map;

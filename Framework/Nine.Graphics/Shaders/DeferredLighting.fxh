@@ -33,7 +33,7 @@ void Extract(sampler normalBuffer,
 }
 
 
-// Adopted from: http://aras-p.info/texts/CompactNormalStorage.html
+// http://aras-p.info/texts/CompactNormalStorage.html
 
 float2 EncodeNormal(float3 n)
 {   

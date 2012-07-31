@@ -101,7 +101,7 @@ namespace Nine.Animations
 
         protected virtual void OnCompleted()
         {
-            var completed = Started;
+            var completed = Completed;
             if (completed != null)
                 completed(this, EventArgs.Empty);
         }

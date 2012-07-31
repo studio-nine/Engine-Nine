@@ -139,6 +139,9 @@
   <data name="DeferredPixelShaderOutput" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\deferredpixelshaderoutput.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Depth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaders\depth.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="DetailTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\detailtexture.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

@@ -64,7 +64,7 @@
     <BloomEffect Name="Bloom" BlurAmount="5" Threshold="0.5"/>
     <LuminanceChain AdaptionSpeed="0" />
 
-    <AdaptionEffect />
+    <AdaptationEffect />
     <BlurEffect Name="Blur" BlurAmount="10" />
     <HighDynamicRangeEffect Name="Hdr" />
     -->

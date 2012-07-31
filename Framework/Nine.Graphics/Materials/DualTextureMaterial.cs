@@ -103,6 +103,22 @@ namespace Nine.Graphics.Materials
                 GraphicsDevice.SamplerStates[1] = context.Settings.DefaultSamplerState;
             }
         }
+
+        protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)
+        {
+            if (usage == MaterialUsage.Depth)
+            {
+                var result = (existingInstance as DepthMaterial) ?? new DepthMaterial(GraphicsDevice);
+                result.TextureEnabled = (texture != null && IsTransparent);
+                return result;
+            }
+
+            if (usage == MaterialUsage.DepthAndNormal)
+            {
+                return (existingInstance as DepthAndNormalMaterial) ?? new DepthAndNormalMaterial(GraphicsDevice);
+            }
+            return null;
+        }
         #endregion
     }
 }

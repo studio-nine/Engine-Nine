@@ -24,7 +24,7 @@
                 MaterialGroup.MaterialParts.Remove(this);
         }
 
-        protected internal override void GetDependentParts(IList<Type> result)
+        protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
         {
             result.Add(typeof(TangentTransformMaterialPart));
         }
