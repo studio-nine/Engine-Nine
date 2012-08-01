@@ -7,10 +7,18 @@ void VS(inout float2 uv:TEXCOORD0, inout float4 position:POSITION0)
     position = position;
 }
 
-Technique Default
+Technique T2
 {
     Pass
     {
         VertexShader = compile vs_2_0 VS();
+    }
+}
+
+Technique T3
+{
+    Pass
+    {
+        VertexShader = compile vs_3_0 VS();
     }
 }

@@ -22,6 +22,22 @@
             set { blurAmount = value; UpdateBlurAmount(); }
         }
         private float blurAmount = -1;
+        
+        public bool DepthBufferEnabled
+        {
+            get { return depthBufferEnabled; }
+            set
+            {
+                if (depthBufferEnabled != value)
+                {
+                    for (int i = 0; i < blurs.Count; i++)
+                        blurs[i].DepthBufferEnabled = value;
+                    depthBufferEnabled = value;
+                }
+            }
+        }
+        private bool depthBufferEnabled;
+
 
         List<BlurMaterial> blurs = new List<BlurMaterial>();
 
@@ -50,8 +66,8 @@
                 if (i * 2 >= blurs.Count)
                 {
                     BlurMaterial blurH, blurV;
-                    Effects.Add(new PostEffect(blurH = new BlurMaterial(GraphicsDevice) { BlurAmount = amount }));
-                    Effects.Add(new PostEffect(blurV = new BlurMaterial(GraphicsDevice) { Direction = MathHelper.PiOver2, BlurAmount = amount }));
+                    Effects.Add(new PostEffect(blurH = new BlurMaterial(GraphicsDevice) { DepthBufferEnabled = depthBufferEnabled, BlurAmount = amount }));
+                    Effects.Add(new PostEffect(blurV = new BlurMaterial(GraphicsDevice) { DepthBufferEnabled = depthBufferEnabled, Direction = MathHelper.PiOver2, BlurAmount = amount }));
                     blurs.Add(blurH);
                     blurs.Add(blurV);
                 }
@@ -59,8 +75,8 @@
                 {
                     Effects[i * 2].Enabled = true;
                     Effects[i * 2 + 1].Enabled = true;
-                    ((BlurMaterial)((PostEffect)Effects[i * 2]).Material).BlurAmount = amount;
-                    ((BlurMaterial)((PostEffect)Effects[i * 2 + 1]).Material).BlurAmount = amount;
+                    blurs[i * 2].BlurAmount = amount;
+                    blurs[i * 2 + 1].BlurAmount = amount;
                 }
 
                 i++;

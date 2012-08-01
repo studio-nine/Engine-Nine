@@ -23,27 +23,19 @@ namespace Nine.Graphics.Materials
         
         partial void BeginApplyLocalParameters(DrawingContext context, DepthOfFieldMaterial previousMaterial)
         {
-            Texture2D depthBuffer;
-
             GraphicsDevice.Textures[0] = texture;
-            GraphicsDevice.Textures[2] = depthBuffer = context.textures[TextureUsage.DepthBuffer] as Texture2D;
+            GraphicsDevice.Textures[2] = context.textures[TextureUsage.DepthBuffer] as Texture2D;
             GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = SamplerState.PointClamp;
                         
-            var projectionParams = new Vector4();
+            var projectionParams = new Vector3();
             projectionParams.X = context.matrices.projection.M43;
             projectionParams.Y = context.matrices.projection.M33;
             projectionParams.Z = context.matrices.projection.M34;
 
-            var focalParams = new Vector4();
+            var focalParams = new Vector3();
             focalParams.X = FocalPlane;
             focalParams.Y = FocalLength;
             focalParams.Z = FocalDistance;
-
-            if (depthBuffer != null)
-            {
-                projectionParams.W = 1f / depthBuffer.Width;
-                focalParams.W = 1f / depthBuffer.Height;
-            }
 
             effect.ProjectionParams.SetValue(projectionParams);
             effect.FocalParams.SetValue(focalParams);

@@ -16,12 +16,20 @@ namespace Nine.Graphics.Drawing
     {
         private DepthMaterial depthMaterial;
         private RenderTarget2D depthBuffer;
+        private DrawingPass drawingPass;
 
         /// <summary>
         /// Draws this pass using the specified drawing context.
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
+            var rootPasses = context.RootPass.Passes;
+            for (int i = 0; i < rootPasses.Count; i++)
+            {
+                if (rootPasses[i].Enabled && rootPasses[i] is LightPrePass)
+                    return;
+            }
+
             var graphics = context.GraphicsDevice;
             if (depthMaterial == null)
                 depthMaterial = new DepthMaterial(graphics);
@@ -34,35 +42,17 @@ namespace Nine.Graphics.Drawing
                     false, SurfaceFormat.Single, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
             }
 
+            if (drawingPass == null)
+            {
+                drawingPass = new DrawingPass();
+                drawingPass.MaterialUsage = MaterialUsage.Depth;                
+            }
+
             try
             {
                 depthBuffer.Begin();
-
                 graphics.Clear(Color.White);
-
-                graphics.SamplerStates[0] = SamplerState.PointClamp;
-                graphics.DepthStencilState = DepthStencilState.Default;
-                graphics.BlendState = BlendState.Opaque;
-
-                var count = drawables.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    var drawable = drawables[i];
-                    if (drawable == null || !drawable.Visible)
-                        continue;
-
-                    // TODO: Two sided...
-                    var material = drawable.Material;
-                    if (material == null)
-                    {
-                        drawable.Draw(context, depthMaterial);
-                        continue;
-                    }
-
-                    // Ignore transparent objects
-                    if ((material = material.GetMaterialByUsage(MaterialUsage.Depth)) != null)
-                        drawable.Draw(context, material);
-                }
+                drawingPass.Draw(context, drawables);
             }
             finally
             {

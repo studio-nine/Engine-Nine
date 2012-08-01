@@ -46,7 +46,7 @@
             Material = material = new DepthOfFieldMaterial(graphics);
             Passes.Add(new PostEffectChain(TextureUsage.Blur,
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
-                blur = new BlurEffect(graphics),
+                blur = new BlurEffect(graphics) { DepthBufferEnabled = true },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));
         }

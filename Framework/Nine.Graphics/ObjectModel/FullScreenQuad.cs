@@ -52,7 +52,7 @@
         /// <summary>
         /// Always use this pass through material as the vertex shader when drawing fullscreen quads.
         /// </summary>
-        private Material vertexPassThrough;
+        private VertexPassThroughMaterial vertexPassThrough;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FullScreenQuad"/> class.
@@ -97,13 +97,30 @@
         {
             material.BeginApply(context);
 
-            // Apply a vertex pass through material in case the specified material does
-            // not have a vertex shader.
-            vertexPassThrough.BeginApply(context);
-
             context.SetVertexBuffer(vertexBuffer, 0);
             GraphicsDevice.Indices = indexBuffer;
-            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+
+            // Apply a vertex pass through material in case the specified material does
+            // not have a vertex shader.
+            //
+            // NOTE: There is no legal way to determine the current shader profile. If you are mix using a 
+            //       2_0 vs and 3_0 ps, DrawIndexedPrimitives is going to throw an InvalidOperationException,
+            //       in that case, catch that exception and try to draw with 3_0 vs.
+            try
+            {
+                // Use vs 2_0
+                vertexPassThrough.Apply(0);
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+            }
+            catch (InvalidOperationException)
+            {
+                if (context.GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)
+                    throw;
+
+                // Use vs 3_0
+                vertexPassThrough.Apply(1);
+                GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+            }
 
             material.EndApply(context);
         }

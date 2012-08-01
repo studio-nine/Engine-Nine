@@ -1,18 +1,20 @@
 namespace Nine.Graphics.Materials
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    /// <summary>    
+    /// <summary>
     /// A post processing screen effect that blurs the whole screen.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public partial class BlurMaterial
     {
         public const float MaxBlurAmount = 10;
+        private const int MaxSampleCount = 15;
 
         /// <summary>
         /// Gets or sets the amount of bluring.
@@ -22,6 +24,11 @@ namespace Nine.Graphics.Materials
             get { return blurAmount; }
             set { blurAmount = value; UpdateSampleCount(); }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether depth buffer will be sampled when bluring the scene.
+        /// </summary>
+        public bool DepthBufferEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the direction of bluring in radians.
@@ -39,6 +46,12 @@ namespace Nine.Graphics.Materials
             BlurAmount = 2;
         }
 
+        public override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            if (DepthBufferEnabled)
+                passTypes.Add(typeof(DepthPrePass));
+        }
+
         partial void ApplyGlobalParameters(DrawingContext context)
         {
             // Need bilinear sampling to get the result correct.
@@ -47,12 +60,29 @@ namespace Nine.Graphics.Materials
 
         partial void BeginApplyLocalParameters(DrawingContext context, BlurMaterial previousMaterial)
         {
-            if ((GraphicsDevice.Textures[0] = texture) != null)
+            Texture2D blurTexture, depthTexture;
+
+            if ((GraphicsDevice.Textures[0] = blurTexture = texture as Texture2D) != null)
             {
                 SetBlurEffectParameters((float)Math.Cos(-Direction) / texture.Width, (float)Math.Sin(-Direction) / texture.Height);
+
+                if (DepthBufferEnabled && (GraphicsDevice.Textures[1] = depthTexture = context.textures[TextureUsage.DepthBuffer] as Texture2D) != null)
+                {
+                    GraphicsDevice.SamplerStates[1] = SamplerState.PointClamp;
+                    effect.depthTextureScale.SetValue(new Vector2(1f * depthTexture.Width / blurTexture.Width, 1f * depthTexture.Height / blurTexture.Height));
+                }
             }
         }
-        
+
+        partial void EndApplyLocalParameters(DrawingContext context)
+        {
+            if (DepthBufferEnabled)
+            {
+                GraphicsDevice.SamplerStates[1] = context.Settings.DefaultSamplerState;
+                GraphicsDevice.Textures[1] = null;
+            }
+        }
+
         /// <summary>
         /// Computes sample weightings and texture coordinate offsets
         /// for one pass of a separable gaussian blur filter.
@@ -109,7 +139,7 @@ namespace Nine.Graphics.Materials
             }
 
             // Tell the effect about our new filter 
-            effect.shaderIndex.SetValue(shaderIndex);
+            effect.shaderIndex.SetValue(DepthBufferEnabled ? shaderIndex : MaxSampleCount + shaderIndex);
             effect.sampleOffsets.SetValue(sampleOffsets);
             effect.sampleWeights.SetValue(sampleWeights);
         }
@@ -134,8 +164,6 @@ namespace Nine.Graphics.Materials
             float theta = Math.Max(BlurAmount, 0.0001f);
             float minBlendWeight = 0.001f;
             float x = theta * (float)Math.Sqrt(-2 * Math.Log(minBlendWeight * theta * Math.Sqrt(2 * Math.PI)));
-            
-            int MaxSampleCount = 15;
 
             // Divide by 2 because we sample 2 texels at a time
             shaderIndex = Math.Min((int)Math.Round(x / 2), (MaxSampleCount - 1) / 2);

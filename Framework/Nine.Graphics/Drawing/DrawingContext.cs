@@ -192,7 +192,7 @@ namespace Nine.Graphics.Drawing
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
         private FastList<SurfaceFormat?> preferedFormats = new FastList<SurfaceFormat?>();
         private FastList<IDrawableObject> dynamicDrawables = new FastList<IDrawableObject>();
-        private FastList<Type> dependentPassTypes = new FastList<Type>();
+        private HashSet<Type> dependentPassTypes = new HashSet<Type>();
         private Dictionary<Type, Pass> dependentPassMapping = new Dictionary<Type, Pass>();
         #endregion
 
@@ -444,10 +444,9 @@ namespace Nine.Graphics.Drawing
                     pass.Enabled = false;
                 }
 
-                for (int i = 0; i < dependentPassTypes.Count; i++)
+                foreach (var passType in dependentPassTypes)
                 {
                     Pass pass;
-                    var passType = dependentPassTypes[i];
                     if (dependentPassMapping.TryGetValue(passType, out pass))
                     {
                         pass.Enabled = true;

@@ -92,6 +92,8 @@ namespace Nine.Graphics.Drawing
         ClearMaterial clearMaterial;
         DepthAndNormalMaterial gBufferMaterial;
         FullScreenQuad clearQuad;
+
+        DrawingPass drawingPass;
         #endregion
 
         #region Methods
@@ -136,24 +138,12 @@ namespace Nine.Graphics.Drawing
             {
                 Begin(context);
 
-                var count = drawables.Count;
-                for (int i = 0; i < count; i++)
+                if (drawingPass == null)
                 {
-                    var drawable = drawables[i];
-                    if (drawable == null || !drawable.Visible)
-                        continue;
-
-                    var material = drawable.Material;
-                    if (material == null)
-                    {
-                        drawable.Draw(context, gBufferMaterial);
-                        continue;
-                    }
-
-                    // Ignore transparent objects
-                    if ((material = material.GetMaterialByUsage(MaterialUsage.DepthAndNormal)) != null)
-                        drawable.Draw(context, material);
+                    drawingPass = new DrawingPass();
+                    drawingPass.MaterialUsage = MaterialUsage.DepthAndNormal;
                 }
+                drawingPass.Draw(context, drawables);
             }
             finally
             {

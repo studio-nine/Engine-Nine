@@ -1,6 +1,6 @@
 
-float4 ProjectionParams;
-float4 FocalParams;
+float3 ProjectionParams;
+float3 FocalParams;
 
 sampler TextureSampler : register(s0);
 sampler BlurSampler : register(s1);
@@ -13,10 +13,7 @@ float4 PS(float2 texCoord : TEXCOORD0) : COLOR0
     float4 depth = tex2D(DepthSampler, texCoord);
 
     float z = (depth.r - ProjectionParams.z) / (depth.r * ProjectionParams.x - ProjectionParams.y);
-    float amount = saturate((abs(z - FocalParams.x) - FocalParams.y) / FocalParams.z);
-
-    // Tixel size is stored in w channel of ProjectionParams and FocalParams 
-    // TODO: Sample multiple depth
+    float amount = saturate(smoothstep(0, 1, (abs(z - FocalParams.x) - FocalParams.y) / FocalParams.z));
     
     return lerp(scene, blur, amount);
 }
