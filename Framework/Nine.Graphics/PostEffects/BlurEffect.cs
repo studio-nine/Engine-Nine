@@ -23,7 +23,7 @@
         }
         private float blurAmount = -1;
         
-        public bool DepthBufferEnabled
+        internal bool DepthBufferEnabled
         {
             get { return depthBufferEnabled; }
             set

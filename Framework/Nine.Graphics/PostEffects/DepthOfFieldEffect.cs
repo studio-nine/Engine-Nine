@@ -35,6 +35,13 @@
             set { blur.BlurAmount = value; }
         }
 
+        public float Quality
+        {
+            get { return quality; }
+            set { quality = value; blur.DepthBufferEnabled = (value > 0.5f); }
+        }
+        private float quality = 1;
+
         DepthOfFieldMaterial material;
         BlurEffect blur;
 
@@ -43,9 +50,9 @@
         /// </summary>
         public DepthOfFieldEffect(GraphicsDevice graphics)
         {
-            Material = material = new DepthOfFieldMaterial(graphics);
+            Material = new DepthOfFieldMaterial(graphics);
             Passes.Add(new PostEffectChain(TextureUsage.Blur,
-                new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f },
+                new PostEffect() { Material = material = new DepthOfFieldMaterial(graphics) { IsDownScale = true }, RenderTargetScale = 0.5f },
                 blur = new BlurEffect(graphics) { DepthBufferEnabled = true },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));

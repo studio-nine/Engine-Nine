@@ -7,12 +7,14 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class DepthOfFieldMaterial
+    [NotContentSerializable]
+    partial class DepthOfFieldMaterial
     {
         public float FocalPlane { get; set; }
         public float FocalLength { get; set; }
         public float FocalDistance { get; set; }
+
+        internal bool IsDownScale;
 
         partial void OnCreated()
         {
@@ -37,8 +39,17 @@ namespace Nine.Graphics.Materials
             focalParams.Y = FocalLength;
             focalParams.Z = FocalDistance;
 
+            if (texture != null)
+            {
+                var halfPixel = new Vector2();
+                halfPixel.X = 0.5f / texture.Width;
+                halfPixel.Y = 0.5f / texture.Height;
+                effect.HalfTexel.SetValue(halfPixel);
+            }
+
             effect.ProjectionParams.SetValue(projectionParams);
             effect.FocalParams.SetValue(focalParams);
+            effect.CurrentTechnique = IsDownScale ? effect.Techniques[1] : effect.Techniques[0];
         }
 
         partial void EndApplyLocalParameters(DrawingContext context)
