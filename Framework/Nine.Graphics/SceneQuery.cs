@@ -69,7 +69,7 @@ namespace Nine.Graphics.ObjectModel
             }
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<T> result)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Nine.Graphics.ObjectModel
 
                 var count = sceneManagers.Count;
                 for (int i = 0; i < count; i++)
-                    sceneManagers[i].FindAll(ref boundingFrustum, adapter);
+                    sceneManagers[i].FindAll(boundingFrustum, adapter);
             }
             finally
             {
@@ -180,10 +180,10 @@ namespace Nine.Graphics.ObjectModel
             adapter.Result = null;
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<FindResult> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<FindResult> result)
         {
             adapter.Result = result;
-            sceneManager.FindAll(ref boundingFrustum, adapter);
+            sceneManager.FindAll(boundingFrustum, adapter);
             adapter.Result = null;
         }
 

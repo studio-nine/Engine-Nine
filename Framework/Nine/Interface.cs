@@ -100,7 +100,7 @@ namespace Nine
         /// Finds all the objects resides within the specified bounding frustum.
         /// </summary>
         /// <param name="result">The caller is responsable for clearing the result collection</param>
-        void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result);
+        void FindAll(BoundingFrustum boundingFrustum, ICollection<T> result);
     }
 
     /// <summary>

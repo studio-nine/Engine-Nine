@@ -1,34 +1,36 @@
 ﻿namespace Nine.Graphics.Materials.MaterialParts
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
-    using Microsoft.Xna.Framework;
 
     [ContentSerializable]
     public class DeferredLightsMaterialPart : MaterialPart
     {
-        EffectParameter halfPixelParameter;
         EffectParameter lightBufferParameter;
         
         protected internal override void OnBind()
         {
-            if ((halfPixelParameter = GetParameter("HalfPixel")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
             if ((lightBufferParameter = GetParameter("LightTexture")) == null)
                 MaterialGroup.MaterialParts.Remove(this);
         }
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            var lightBuffer = context.textures[TextureUsage.LightBuffer] as Texture2D;
-            lightBufferParameter.SetValue(lightBuffer);
-            if (lightBuffer != null)
-            {
-                var halfPixel = new Vector2();
-                halfPixel.X = 0.5f / lightBuffer.Width;
-                halfPixel.Y = 0.5f / lightBuffer.Height;
-                halfPixelParameter.SetValue(halfPixel);
-            }
+            lightBufferParameter.SetValue(context.textures[TextureUsage.LightBuffer]);
+        }
+
+        protected internal override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            passTypes.Add(typeof(LightPrePass));
+        }
+
+        protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
+        {
+            result.Add(typeof(BeginLightMaterialPart));
+            result.Add(typeof(EndLightMaterialPart));
         }
 
         protected internal override string GetShaderCode(MaterialUsage usage)

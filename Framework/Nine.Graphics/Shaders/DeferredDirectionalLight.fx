@@ -1,39 +1,14 @@
 #include "DeferredLighting.fxh"
 
 // Input parameters.
-float4x4 viewProjectionInverse;
-
-float2 halfPixel;
-float3 eyePosition;
-
+float4x4 ViewProjectionInverse;
+float3 EyePosition;
 float3 Direction;
 float3 DiffuseColor;
 float3 SpecularColor;
 
-texture2D NormalBuffer;
-sampler NormalBufferSampler = sampler_state
-{
-    Texture = (NormalBuffer);
-};
-
-texture2D DepthBuffer;
-sampler DepthBufferSampler = sampler_state
-{
-    Texture = (DepthBuffer);
-    MipFilter = Point;
-    MagFilter = Point;
-    MinFilter = Point;
-};
-
-void VS(float4 Pos : POSITION,
-        float2 TexCoord : TEXCOORD0,
-        out float4 oPos : POSITION,
-        out float4 oPosProjection : TEXCOORD0)
-{
-    oPos = Pos;
-    oPos.xy -= halfPixel;
-    oPosProjection = oPos; 
-}
+sampler DepthBufferSampler : register(s0);
+sampler NormalBufferSampler : register(s1);
 
 void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
 {
@@ -41,11 +16,9 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
     float3 position;
     float specularPower;
 
-    Extract(NormalBufferSampler, DepthBufferSampler,
-            PosProjection, halfPixel, viewProjectionInverse, 
-            normal, position, specularPower);
+    Extract(NormalBufferSampler, DepthBufferSampler, PosProjection, ViewProjectionInverse, normal, position, specularPower);
     
-    float3 positionToEye = normalize(eyePosition - position);
+    float3 positionToEye = normalize(EyePosition - position);
 	float3 L = -Direction; 
     float dotL = dot(L, normal);
 	float dotH = dot(normalize(positionToEye + L), normal);
@@ -62,7 +35,6 @@ Technique BasicEffect
 {
 	Pass
 	{
-		VertexShader = compile vs_2_0 VS();
 		PixelShader	 = compile ps_2_0 PS();
 	}
 }

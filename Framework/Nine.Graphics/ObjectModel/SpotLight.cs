@@ -238,17 +238,33 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
-        IDrawableObject IDeferredLight.Drawable
+        IDrawableObject IDeferredLight.GetDrawble(DrawingContext context)
         {
-            get
+            if (deferredGeometry == null)
             {
-                return deferredGeometry ?? (deferredGeometry = new CentrumInvert(Context.GraphicsDevice)
+                deferredGeometry = new CentrumInvert(Context.GraphicsDevice)
                 {
-                    Material = new DeferredSpotLightMaterial(Context.GraphicsDevice)
-                });
+                    Material = deferredMaterial = new DeferredSpotLightMaterial(Context.GraphicsDevice)
+                };
             }
+            deferredMaterial.effect.World.SetValue(AbsoluteTransform);
+            deferredMaterial.effect.ViewProjection.SetValue(context.matrices.ViewProjection);
+            deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);
+            deferredMaterial.effect.EyePosition.SetValue(context.EyePosition);
+            deferredMaterial.effect.Position.SetValue(Position);
+            deferredMaterial.effect.Direction.SetValue(Direction);
+            deferredMaterial.effect.DiffuseColor.SetValue(diffuseColor);
+            deferredMaterial.effect.SpecularColor.SetValue(SpecularColor);
+            deferredMaterial.effect.Range.SetValue(range);
+            deferredMaterial.effect.Attenuation.SetValue(attenuation);
+            deferredMaterial.effect.Falloff.SetValue(falloff);
+            deferredMaterial.effect.innerAngle.SetValue(innerAngle);
+            deferredMaterial.effect.outerAngle.SetValue(outerAngle);
+            deferredGeometry.Visible = Enabled;
+            return deferredGeometry;
         }
-        private IDrawableObject deferredGeometry;
+        private DeferredSpotLightMaterial deferredMaterial;
+        private CentrumInvert deferredGeometry;
         #endregion
     }
 }

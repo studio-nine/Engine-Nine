@@ -46,7 +46,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Puts the dependent textures into the result list.
         /// </summary>
-        protected internal void GetDependentPasses(ICollection<Type> passTypes) { }
+        protected internal virtual void GetDependentPasses(ICollection<Type> passTypes) { }
 
         /// <summary>
         /// Sets the texture based on the texture usage.

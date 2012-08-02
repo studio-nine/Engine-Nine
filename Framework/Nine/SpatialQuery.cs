@@ -90,12 +90,12 @@ namespace Nine
             adapter.Result = null;
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<TOutput> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<TOutput> result)
         {
             adapter.Result = result;
             if (InnerQueries != null)
                 for (int i = 0; i < InnerQueries.Count; i++)
-                    InnerQueries[i].FindAll(ref boundingFrustum, adapter);
+                    InnerQueries[i].FindAll(boundingFrustum, adapter);
             adapter.Result = null;
         }
 
@@ -146,7 +146,7 @@ namespace Nine
             Find(result);
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<T> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<T> result)
         {
             Find(result);
         }

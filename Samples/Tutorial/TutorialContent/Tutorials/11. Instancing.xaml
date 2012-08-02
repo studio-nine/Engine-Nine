@@ -44,6 +44,6 @@
         </Model>
     </InstancedModel>
 
-    <DepthOfFieldEffect BlurAmount="20" />
+    <DepthOfFieldEffect BlurAmount="20"/>
     <AntiAliasEffect />
 </Scene>

@@ -125,9 +125,11 @@
     <Compile Include="Drawing\Pass.cs" />
     <Compile Include="Drawing\DrawingQueue.cs" />
     <Compile Include="GraphicsDeviceService.cs" />
+    <Compile Include="Materials\DebugMaterial.cs" />
     <Compile Include="Materials\DepthAndNormalMaterial.cs" />
     <Compile Include="Materials\DepthMaterial.cs" />
     <Compile Include="Materials\MaterialParts\AlphaTestMaterialPart.cs" />
+    <Compile Include="Materials\MaterialParts\DepthAndNormalMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\DepthMaterialPart.cs" />
     <Compile Include="ObjectModel\ShadowMap.cs" />
     <Compile Include="PostEffects\AdaptationEffect.cs" />

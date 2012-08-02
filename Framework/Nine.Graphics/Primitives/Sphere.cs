@@ -28,7 +28,6 @@
 
         /// <summary>
         /// Constructs a new sphere primitive, using default settings.
-
         /// </summary>
         public Sphere(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

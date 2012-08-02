@@ -194,7 +194,7 @@ namespace Nine
             FindAll(ref box, result);
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
         {
             for (int x = 0; x < SegmentCountX; x++)
             {

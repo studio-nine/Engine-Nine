@@ -59,8 +59,8 @@ void VertSkinned( float4 Pos : POSITION,
 //-----------------------------------------------------------------------------
 void Pix(       float2 Depth : TEXCOORD0,
                 float3 Normal : TEXCOORD1,
-                out float4 oNormal : COLOR0,
-                out float4 oDepth : COLOR1  )
+                out float4 oDepth : COLOR0,
+                out float4 oNormal : COLOR1 )
 {
     oNormal.rgb = Normal * 0.5 + 0.5;
     oNormal.a = SpecularPower / MaxSpecular;

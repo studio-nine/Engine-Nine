@@ -123,9 +123,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] DeferredPixelShaderOutput {
+        internal static byte[] Depth {
             get {
-                object obj = ResourceManager.GetObject("DeferredPixelShaderOutput", resourceCulture);
+                object obj = ResourceManager.GetObject("Depth", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Depth {
+        internal static byte[] DepthAndNormal {
             get {
-                object obj = ResourceManager.GetObject("Depth", resourceCulture);
+                object obj = ResourceManager.GetObject("DepthAndNormal", resourceCulture);
                 return ((byte[])(obj));
             }
         }

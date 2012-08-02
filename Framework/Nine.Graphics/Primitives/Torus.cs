@@ -31,7 +31,6 @@
 
         /// <summary>
         /// Constructs a new torus primitive, using default settings.
-
         /// </summary>
         public Torus(GraphicsDevice graphicsDevice) : base(graphicsDevice) 
         {

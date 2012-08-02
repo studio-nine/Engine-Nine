@@ -52,9 +52,9 @@ namespace Nine.Graphics.Drawing
         public TimeSpan TotalTime { get; internal set; }
 
         /// <summary>
-        /// Gets the scene to be renderted with this drawing context.
+        /// Gets the scene to be rendered with this drawing context.
         /// </summary>
-        public ISpatialQuery<IDrawableObject> Scene { get; private set; }
+        public ISpatialQuery<IDrawableObject> Drawables { get; private set; }
 
         /// <summary>
         /// Gets the main pass that is used to render the scene.
@@ -187,6 +187,7 @@ namespace Nine.Graphics.Drawing
         #endregion
 
         #region Fields
+        private Scene scene;
         private bool isDrawing = false;
         private FastList<Pass> activePasses = new FastList<Pass>();
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
@@ -200,21 +201,25 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
-        public DrawingContext(GraphicsDevice graphics)
+        public DrawingContext(GraphicsDevice graphics, Scene scene)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
+            if (scene == null)
+                throw new ArgumentNullException("scene");
 
-            Settings = new Settings();
-            GraphicsDevice = graphics;
-            Statistics = new Statistics();            
-            DirectionalLights = new DirectionalLightCollection();
-            matrices = new MatrixCollection();
-            textures = new TextureCollection();
-            MainPass = new PassGroup() { Name="MainPass" };
-            MainPass.Passes.Add(new DrawingPass());
-            RootPass = new PassGroup() { Name = "RootPass" };
-            RootPass.Passes.Add(MainPass);
+            this.scene = scene;
+            this.Drawables = scene.CreateQuery<IDrawableObject>();
+            this.Settings = new Settings();
+            this.GraphicsDevice = graphics;
+            this.Statistics = new Statistics();
+            this.DirectionalLights = new DirectionalLightCollection();
+            this.matrices = new MatrixCollection();
+            this.textures = new TextureCollection();
+            this.MainPass = new PassGroup() { Name = "MainPass" };
+            this.MainPass.Passes.Add(new DrawingPass());
+            this.RootPass = new PassGroup() { Name = "RootPass" };
+            this.RootPass.Passes.Add(MainPass);
         }
 
         /// <summary>
@@ -244,27 +249,23 @@ namespace Nine.Graphics.Drawing
         /// changed since last drawing operation.
         /// </summary>
         internal Material PreviousMaterial;
-
+        
         /// <summary>
-        /// Gets the half pixel for the current viewport.
+        /// Create a spatial query of the specified type from this scene.
         /// </summary>
-        internal void GetHalfPixel(out Vector2 halfPixel)
+        public ISpatialQuery<T> CreateQuery<T>() where T : class
         {
-            var viewport = GraphicsDevice.Viewport;
-            halfPixel = new Vector2();
-            halfPixel.X = 0.5f / viewport.Width;
-            halfPixel.Y = 0.5f / viewport.Height;
+            return scene.CreateQuery<T>();
         }
 
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
-        public void Draw(TimeSpan elapsedTime, ISpatialQuery<IDrawableObject> scene, Matrix view, Matrix projection)
+        public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection)
         {
             if (isDrawing)
                 throw new InvalidOperationException("Cannot trigger another drawing of the scene while it's still been drawn");
 
-            Scene = scene;
             View = view;
             Projection = projection;
             isDrawing = true;
@@ -284,7 +285,7 @@ namespace Nine.Graphics.Drawing
 
                 dynamicDrawables.Clear();
                 BoundingFrustum viewFrustum = ViewFrustum;
-                scene.FindAll(ref viewFrustum, dynamicDrawables);
+                Drawables.FindAll(viewFrustum, dynamicDrawables);
 
                 // Notify each drawable when the frame begins
                 for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
@@ -352,7 +353,7 @@ namespace Nine.Graphics.Drawing
 
                         dynamicDrawables.Clear();
                         BoundingFrustum frustum = matrices.ViewFrustum;
-                        Scene.FindAll(ref frustum, dynamicDrawables);
+                        Drawables.FindAll(frustum, dynamicDrawables);
                         overrideViewFrustumLastPass = overrideViewFrustum;
 
                         for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)

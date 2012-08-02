@@ -476,9 +476,16 @@
                 materialGroup.MaterialParts.Add(new DiffuseMaterialPart() { DiffuseColorEnabled = false, TextureEnabled = false });
 
             materialGroup.MaterialParts.ForEach(p => p.GetDependentParts(usage, dependentPartTypes));
-            foreach (var type in dependentPartTypes)
+            for (int i = 0; i < dependentPartTypes.Count; i++)
+            {
+                var type = dependentPartTypes[i];
                 if (!materialGroup.MaterialParts.Any(p => p.GetType() == type))
-                    materialGroup.MaterialParts.Add((MaterialPart)Activator.CreateInstance(type));
+                {
+                    var part = (MaterialPart)Activator.CreateInstance(type);
+                    part.GetDependentParts(usage, dependentPartTypes);
+                    materialGroup.MaterialParts.Add(part);
+                }
+            }
 
             var builderContext = CreateMaterialGroupBuilderContext(materialGroup.MaterialParts, usage, true);
             if (builderContext.PixelShaderOutputs.Count <= 0)
@@ -758,6 +765,9 @@
                     builderContext.VertexShaderOutputs.Add(arg);
                 }
             }
+
+            // Remove temporary duplicates
+            builderContext.TemporaryPixelShaderVariables = builderContext.TemporaryPixelShaderVariables.Distinct(argumentEqualtyComparer).ToList();
 
             // Valid vertex shader input semantic
             foreach (var input in builderContext.VertexShaderInputs)

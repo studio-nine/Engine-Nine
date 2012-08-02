@@ -18,6 +18,7 @@ namespace Nine.Graphics.Drawing
         private const int ProjectionInverseDirty = 1 << 5;
         private const int ProjectionTransposeDirty = 1 << 6;
         private const int ProjectionInverseTransposeDirty = 1 << 7;
+        private const int ViewProjectionInverseDirty = 1 << 8;
 
         private int matricesDirtyMask = int.MaxValue;
 
@@ -30,7 +31,7 @@ namespace Nine.Graphics.Drawing
             set
             {
                 view = value;
-                matricesDirtyMask |= (ViewFrustumDirty | ViewProjectionDirty);
+                matricesDirtyMask |= (ViewFrustumDirty | ViewProjectionDirty | ViewProjectionInverseDirty);
                 Matrix.Invert(ref view, out viewInverse);
                 eyePosition.X = viewInverse.M41;
                 eyePosition.Y = viewInverse.M42;
@@ -48,7 +49,7 @@ namespace Nine.Graphics.Drawing
             set
             {
                 projection = value;
-                matricesDirtyMask |= (ViewFrustumDirty | ViewProjectionDirty);
+                matricesDirtyMask |= (ViewFrustumDirty | ViewProjectionDirty | ViewProjectionInverseDirty);
             }
         }
         internal Matrix projection;
@@ -69,6 +70,25 @@ namespace Nine.Graphics.Drawing
             }
         }
         private Matrix viewProjection;
+
+        /// <summary>
+        /// Gets the view projection inverse matrix.
+        /// </summary>
+        public Matrix ViewProjectionInverse
+        {
+            get
+            {
+                if ((matricesDirtyMask & ViewProjectionInverseDirty) != 0)
+                {
+                    Matrix.Multiply(ref view, ref projection, out viewProjection);
+                    Matrix.Invert(ref viewProjection, out viewProjectionInverse);
+                    matricesDirtyMask |= ~ViewProjectionInverseDirty;
+                    matricesDirtyMask |= ~ViewProjectionDirty;
+                }
+                return viewProjectionInverse;
+            }
+        }
+        private Matrix viewProjectionInverse;
 
         /// <summary>
         /// Gets the inverse view matrix.

@@ -611,6 +611,42 @@ namespace Nine.Graphics.Materials
     }
 #if !WINDOWS_PHONE
     /// <summary>
+    /// Content reader for <c>DebugMaterial</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DebugMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.DebugMaterial>
+    {
+        protected override Nine.Graphics.Materials.DebugMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.DebugMaterial existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DebugMaterial(graphicsDevice);
+            }
+            existingInstance.TextureUsage = input.ReadObject<Nine.Graphics.TextureUsage>();
+            existingInstance.SamplerState = input.ReadObject<Microsoft.Xna.Framework.Graphics.SamplerState>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.IsTransparent = input.ReadBoolean();
+            existingInstance.IsAdditive = input.ReadBoolean();
+            existingInstance.TwoSided = input.ReadBoolean();
+            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+#endif
+#if !WINDOWS_PHONE
+    /// <summary>
     /// Content reader for <c>DecalMaterial</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -816,43 +852,6 @@ namespace Nine.Graphics.Materials
         }
     }
 #endif
-#if !WINDOWS_PHONE
-    /// <summary>
-    /// Content reader for <c>DepthOfFieldMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class DepthOfFieldMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.DepthOfFieldMaterial>
-    {
-        protected override Nine.Graphics.Materials.DepthOfFieldMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.DepthOfFieldMaterial existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new DepthOfFieldMaterial(graphicsDevice);
-            }
-            existingInstance.FocalLength = input.ReadSingle();
-            existingInstance.FocalPlane = input.ReadSingle();
-            existingInstance.FocalDistance = input.ReadSingle();
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Alpha = input.ReadSingle();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.IsAdditive = input.ReadBoolean();
-            existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-#endif
     /// <summary>
     /// Content reader for <c>DualTextureMaterial</c>.
     /// </summary>
@@ -929,41 +928,6 @@ namespace Nine.Graphics.Materials
             return existingInstance;
         }
     }
-#if !WINDOWS_PHONE
-    /// <summary>
-    /// Content reader for <c>LuminanceMaterial</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class LuminanceMaterialReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.LuminanceMaterial>
-    {
-        protected override Nine.Graphics.Materials.LuminanceMaterial Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.LuminanceMaterial existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new LuminanceMaterial(graphicsDevice);
-            }
-            existingInstance.IsDownScale = input.ReadBoolean();
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Alpha = input.ReadSingle();
-            existingInstance.IsTransparent = input.ReadBoolean();
-            existingInstance.IsAdditive = input.ReadBoolean();
-            existingInstance.TwoSided = input.ReadBoolean();
-            existingInstance.NextMaterial = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-#endif
     /// <summary>
     /// Content reader for <c>MaterialLevelOfDetail</c>.
     /// </summary>
@@ -1347,6 +1311,23 @@ namespace Nine.Graphics.Materials.MaterialParts
         }
     }
 #endif
+    /// <summary>
+    /// Content reader for <c>DepthAndNormalMaterialPart</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DepthAndNormalMaterialPartReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart>
+    {
+        protected override Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Materials.MaterialParts.DepthAndNormalMaterialPart existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new DepthAndNormalMaterialPart();
+            existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            return existingInstance;
+        }
+    }
     /// <summary>
     /// Content reader for <c>DepthMaterialPart</c>.
     /// </summary>
@@ -2518,12 +2499,12 @@ namespace Nine.Graphics.PostEffects
 {
 #if !WINDOWS_PHONE
     /// <summary>
-    /// Content reader for <c>AdaptionEffect</c>.
+    /// Content reader for <c>AdaptationEffect</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AdaptionEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.AdaptationEffect>
+    partial class AdaptationEffectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PostEffects.AdaptationEffect>
     {
         protected override Nine.Graphics.PostEffects.AdaptationEffect Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PostEffects.AdaptationEffect existingInstance)
         {
@@ -2662,10 +2643,11 @@ namespace Nine.Graphics.PostEffects
 #endif
                 existingInstance = new DepthOfFieldEffect(graphicsDevice);
             }
-            existingInstance.FocalLength = input.ReadSingle();
             existingInstance.FocalPlane = input.ReadSingle();
+            existingInstance.FocalLength = input.ReadSingle();
             existingInstance.FocalDistance = input.ReadSingle();
             existingInstance.BlurAmount = input.ReadSingle();
+            existingInstance.Quality = input.ReadSingle();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();

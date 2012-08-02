@@ -76,6 +76,26 @@ namespace Nine.Graphics.Materials.Test
         }
 
         [TestMethod()]
+        public void MaterialGroupDeferredLightingTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
+            materialGroup.MaterialParts.Add(new SpecularMaterialPart());
+            materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
+        public void MaterialGroupDeferredGraphicsBufferTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
+            materialGroup.MaterialParts.Add(new SpecularMaterialPart());
+            materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
         public void MaterialPaintGroupTest()
         {
             MaterialGroup materialGroup = new MaterialGroup();

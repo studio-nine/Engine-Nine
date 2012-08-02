@@ -16,7 +16,6 @@
 
         /// <summary>
         /// Constructs a new cube primitive, using default settings.
-
         /// </summary>
         public Box(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

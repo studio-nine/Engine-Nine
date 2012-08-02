@@ -1,0 +1,6 @@
+void PixelShader(float4 positionProjection, out float4 oDepth:COLOR0, float3 normal:NORMAL0, out float4 oNormal:COLOR1, float specularPower = 16)
+{
+    oDepth = float4(positionProjection.z / positionProjection.w, 0, 0, 1);
+    oNormal.rgb = normal;
+    oNormal.a = specularPower / 255;
+}

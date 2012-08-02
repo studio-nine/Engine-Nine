@@ -118,17 +118,28 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
-        IDrawableObject IDeferredLight.Drawable
+        IDrawableObject IDeferredLight.GetDrawble(DrawingContext context)
         {
-            get
+            if (deferredGeometry == null)
             {
-                return deferredGeometry ?? (deferredGeometry = new SphereInvert(Context.GraphicsDevice)
+                deferredGeometry = new SphereInvert(Context.GraphicsDevice)
                 {
-                    Material = new DeferredPointLightMaterial(Context.GraphicsDevice)
-                });
+                    Material = deferredMaterial = new DeferredPointLightMaterial(Context.GraphicsDevice)
+                };
             }
+            deferredMaterial.effect.ViewProjection.SetValue(context.matrices.ViewProjection);
+            deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);
+            deferredMaterial.effect.EyePosition.SetValue(context.EyePosition);
+            deferredMaterial.effect.Position.SetValue(Position);
+            deferredMaterial.effect.DiffuseColor.SetValue(diffuseColor);
+            deferredMaterial.effect.SpecularColor.SetValue(SpecularColor);
+            deferredMaterial.effect.Range.SetValue(range);
+            deferredMaterial.effect.Attenuation.SetValue(attenuation);
+            deferredGeometry.Visible = Enabled;
+            return deferredGeometry;
         }
-        private IDrawableObject deferredGeometry;
+        private DeferredPointLightMaterial deferredMaterial;
+        private SphereInvert deferredGeometry;
         #endregion
     }
 }

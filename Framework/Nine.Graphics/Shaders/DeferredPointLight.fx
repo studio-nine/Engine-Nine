@@ -1,12 +1,10 @@
 #include "DeferredLighting.fxh"
 
 // Input parameters.
-float4x4 viewProjection;
-float4x4 viewProjectionInverse;
+float4x4 ViewProjection;
+float4x4 ViewProjectionInverse;
 
-float2 halfPixel;
-float3 eyePosition;
-
+float3 EyePosition;
 float3 Position;
 float3 DiffuseColor;
 float3 SpecularColor;
@@ -14,27 +12,15 @@ float3 SpecularColor;
 float Range = 100;
 float Attenuation = 1;
 
-texture2D NormalBuffer;
-sampler NormalBufferSampler = sampler_state
-{
-    Texture = (NormalBuffer);
-};
-
-texture2D DepthBuffer;
-sampler DepthBufferSampler = sampler_state
-{
-    Texture = (DepthBuffer);
-    MipFilter = Point;
-    MagFilter = Point;
-    MinFilter = Point;
-};
+sampler DepthBufferSampler : register(s0);
+sampler NormalBufferSampler : register(s1);
 
 void VS(float4 Pos : POSITION,
         out float4 oPos : POSITION,
         out float4 oPosProjection : TEXCOORD0)
 {
     oPos = float4(Pos * Range + Position, 1);
-    oPos = mul(oPos, viewProjection);
+    oPos = mul(oPos, ViewProjection);
     oPosProjection = oPos;
 }
 
@@ -43,12 +29,10 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
     float3 normal;
     float3 position;
     float specularPower;
-    
-    Extract(NormalBufferSampler, DepthBufferSampler, 
-            PosProjection, halfPixel, viewProjectionInverse, 
-            normal, position, specularPower); 
 
-    float3 positionToEye = normalize(eyePosition - position);
+    Extract(NormalBufferSampler, DepthBufferSampler, PosProjection, ViewProjectionInverse, normal, position, specularPower);
+
+    float3 positionToEye = normalize(EyePosition - position);
     float3 positionToVertex = Position - position;
     float3 L = normalize(positionToVertex);
     float dotL = dot(L, normal);

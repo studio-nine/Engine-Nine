@@ -12,8 +12,8 @@
     -->
     <AmbientLight AmbientLightColor="0.1, 0.1, 0.1" />
     <DirectionalLight DiffuseColor="0.5, 0.5, 0.5" Direction="-1, -1, -1" />
-    <PointLight DiffuseColor="1.0, 1.0, 0" Transform.Position="0, 0, 2" Range="10" />
-    <SpotLight DiffuseColor="0, 1.0, 1.0" Transform.Position="0, -20, 2" Range="20" />
+    <PointLight DiffuseColor="1.0, 1.0, 0" Transform.Position="0, 2, 0" Range="10" />
+    <SpotLight DiffuseColor="0, 1.0, 1.0" Transform.Position="0, 2, 20" Range="20" />
 
     <!--
         Deferred lighting is not supported equally on all platforms. It requires at least HiDef profile.
@@ -38,17 +38,20 @@
             </MaterialGroup>
         </Model.Material>
     </Model>
+
+    <!-- Use debug material and full screen quad to view intermediate buffers -->
+    <FullScreenQuad Material="{DebugMaterial TextureUsage=LightBuffer}" />
     
     <!-- Animations can also be applied to lights. -->
     <DrawingGroup>
 
-        <PointLight Name="Light1" DiffuseColor="0, 1, 0" Transform.Position="-20, -20, 2" />
-        <PointLight Name="Light2" DiffuseColor="0, 1, 0" Transform.Position="20, -20, 2" />
-        <PointLight Name="Light3" DiffuseColor="0, 1, 0" Transform.Position="-20, 20, 2" />
+        <PointLight Name="Light1" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, 20" />
+        <PointLight Name="Light2" DiffuseColor="0, 1, 0" Transform.Position="20, 2, 20" />
+        <PointLight Name="Light3" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, -20" />
         <SpotLight Name="Light4" DiffuseColor="1, 0, 0" OuterAngle="30" InnerAngle="10" Range="25" />
 
         <DrawingGroup.Animations>
-            <AnimationGroup>                
+            <AnimationGroup>
                 <SingleAnimation TargetProperty="['Light1'].Attenuation" From="0" To="1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
                 <SingleAnimation TargetProperty="['Light2'].Range" From="0" To="10" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
                 <Vector3Animation TargetProperty="['Light3'].DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />                

@@ -12,7 +12,6 @@ float2 PositionToUV(float4 posProjection)
 void Extract(sampler normalBuffer,
              sampler depthBuffer,
              float4 posProjection,
-             float2 halfPixel,
              float4x4 viewProjectionInverse,
              out float3 normal, 
              out float3 position, 
@@ -20,7 +19,7 @@ void Extract(sampler normalBuffer,
 {
     posProjection.xy /= posProjection.w;
 
-    float2 uv = float2(posProjection.x,-posProjection.y) * 0.5f + 0.5f + halfPixel;
+    float2 uv = float2(posProjection.x,-posProjection.y) * 0.5f + 0.5f;
 
     float4 g = tex2D(normalBuffer, uv);
     normal = g.xyz * 2 - 1;

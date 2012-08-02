@@ -407,7 +407,7 @@ namespace Nine
             return TraverseOptions.Continue;
         }
 
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
         {
             this.result = result;
             this.boundingFrustum = boundingFrustum;

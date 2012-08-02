@@ -31,7 +31,6 @@
 
         /// <summary>
         /// Constructs a new cylinder primitive, using default settings.
-
         /// </summary>
         public Centrum(GraphicsDevice graphicsDevice) : base(graphicsDevice)
         {

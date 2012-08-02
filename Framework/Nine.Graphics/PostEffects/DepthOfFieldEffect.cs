@@ -13,20 +13,20 @@
     {        
         public float FocalPlane
         {
-            get { return material.FocalPlane; }
-            set { material.FocalPlane = value; }
+            get { return depthScale.FocalPlane; }
+            set { depthScale.FocalPlane = combine.FocalPlane = value; }
         }
 
         public float FocalLength
         {
-            get { return material.FocalLength; }
-            set { material.FocalLength = value; }
+            get { return depthScale.FocalLength; }
+            set { depthScale.FocalLength = combine.FocalLength = value; }
         }
 
         public float FocalDistance
         {
-            get { return material.FocalDistance; }
-            set { material.FocalDistance = value; }
+            get { return depthScale.FocalDistance; }
+            set { depthScale.FocalDistance = combine.FocalDistance = value; }
         }
 
         public float BlurAmount
@@ -38,11 +38,18 @@
         public float Quality
         {
             get { return quality; }
-            set { quality = value; blur.DepthBufferEnabled = (value > 0.5f); }
+            set 
+            {
+                quality = value;
+                scaleEffect.Enabled = !(depthScaleEffect.Enabled = blur.DepthBufferEnabled = (value > 0.5f));
+            }
         }
         private float quality = 1;
 
-        DepthOfFieldMaterial material;
+        PostEffect scaleEffect;
+        PostEffect depthScaleEffect;
+        DepthOfFieldMaterial depthScale;
+        DepthOfFieldMaterial combine;
         BlurEffect blur;
 
         /// <summary>
@@ -50,9 +57,10 @@
         /// </summary>
         public DepthOfFieldEffect(GraphicsDevice graphics)
         {
-            Material = new DepthOfFieldMaterial(graphics);
+            Material = combine = new DepthOfFieldMaterial(graphics);
             Passes.Add(new PostEffectChain(TextureUsage.Blur,
-                new PostEffect() { Material = material = new DepthOfFieldMaterial(graphics) { IsDownScale = true }, RenderTargetScale = 0.5f },
+                depthScaleEffect = new PostEffect() { Material = depthScale = new DepthOfFieldMaterial(graphics) { IsDownScale = true }, RenderTargetScale = 0.5f },
+                scaleEffect = new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 0.5f, Enabled = false },
                 blur = new BlurEffect(graphics) { DepthBufferEnabled = true },
                 new PostEffect() { Material = new ScaleMaterial(graphics), RenderTargetScale = 2.0f }
             ));

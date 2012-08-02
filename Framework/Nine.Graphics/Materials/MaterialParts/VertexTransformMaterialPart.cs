@@ -49,6 +49,8 @@
         {
             if (usage == MaterialUsage.Depth)
                 result.Add(typeof(DepthMaterialPart));
+            if (usage == MaterialUsage.DepthAndNormal)
+                result.Add(typeof(DepthAndNormalMaterialPart));
         }
 
         protected internal override MaterialPart Clone()

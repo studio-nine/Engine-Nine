@@ -71,11 +71,6 @@ namespace Nine.Graphics
         private ISpatialQuery<object> flattenedQuery;
 
         /// <summary>
-        /// Gets the spatial query that finds all the drawable objects.
-        /// </summary>
-        private ISpatialQuery<IDrawableObject> drawables;
-
-        /// <summary>
         /// This list contains all the drawable objects in the current view frustum.
         /// </summary>
         private FastList<IDrawableObject> drawablesInViewFrustum = new FastList<IDrawableObject>();
@@ -123,13 +118,12 @@ namespace Nine.Graphics
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            this.Context = Context ?? new DrawingContext(graphics);
             this.defaultSceneManager = defaultSceneManager ?? new OctreeSceneManager();
             this.sceneManagers = new List<ISceneManager>();
             this.sceneManagers.Add(this.defaultSceneManager);
             this.flattenedQuery = CreateQuery<object>();
             this.detailedQuery = new DetailedQuery(this.defaultSceneManager);
-            this.drawables = CreateQuery<IDrawableObject>();
+            this.Context = new DrawingContext(graphics, this);
         }
         #endregion
 
@@ -378,9 +372,9 @@ namespace Nine.Graphics
         /// Finds all the scene objects and the original volumn for intersection test that is contained by or
         /// intersects the specified bounding frustum.
         /// </summary>
-        public void FindAll(ref BoundingFrustum boundingFrustum, ICollection<FindResult> result)
+        public void FindAll(BoundingFrustum boundingFrustum, ICollection<FindResult> result)
         {
-            detailedQuery.FindAll(ref boundingFrustum, result);
+            detailedQuery.FindAll(boundingFrustum, result);
         }
         #endregion
 
@@ -489,7 +483,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(TimeSpan elapsedTime, Matrix view, Matrix projection)
         {
-            Context.Draw(elapsedTime, drawables, view, projection);
+            Context.Draw(elapsedTime, view, projection);
         }
         #endregion
 

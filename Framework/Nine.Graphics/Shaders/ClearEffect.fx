@@ -1,7 +1,7 @@
-void PS(out float4 Normal:COLOR0, out float4 Depth:COLOR1)
+void PS(out float4 Depth:COLOR0, out float4 Normal:COLOR1)
 {
-    Normal = float4(0, 0, 1, 1);
-    Depth = float4(1, 0, 0, 0);
+    Normal = float4(0, 0, 1, 16.0f / 255);
+    Depth = float4(1, 1, 1, 1);
 }
 
 Technique Default

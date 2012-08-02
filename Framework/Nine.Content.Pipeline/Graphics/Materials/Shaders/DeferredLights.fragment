@@ -1,5 +1,3 @@
-float2 HalfPixel;
-
 texture2D LightTexture;
 sampler LightSampler = sampler_state
 {
@@ -7,13 +5,16 @@ sampler LightSampler = sampler_state
     MipFilter = POINT;
     MinFilter = POINT;
     MagFilter = POINT;
+    AddressU = Clamp;
+    AddressV = Clamp;
+    AddressW = Clamp;
 };
 
 void PixelShader(float4 positionProjection, inout float3 lightDiffuse, inout float3 lightSpecular)
 {
     positionProjection.y = -positionProjection.y;
     
-    float2 lightUV = (positionProjection.xy / positionProjection.w) * 0.5f + 0.5f - HalfPixel;
+    float2 lightUV = (positionProjection.xy / positionProjection.w) * 0.5f + 0.5f;
     float4 light = tex2D(LightSampler, lightUV);
 
     lightDiffuse = light.rgb;

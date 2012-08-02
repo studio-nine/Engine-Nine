@@ -166,7 +166,7 @@
             Light.GetShadowFrustum(context.ViewFrustum, drawables, out shadowFrustumMatrix);
 
             shadowFrustum.Matrix = shadowFrustumMatrix;
-            context.Scene.FindAll(ref shadowFrustum, shadowCasters);
+            context.Drawables.FindAll(shadowFrustum, shadowCasters);
 
             if (shadowCasters.Count <= 0)
                 return;

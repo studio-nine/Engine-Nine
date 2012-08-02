@@ -66,6 +66,6 @@
 
     <AdaptationEffect />
     <BlurEffect Name="Blur" BlurAmount="10" />
-    <HighDynamicRangeEffect Name="Hdr" />
     -->
+    <HighDynamicRangeEffect Name="Hdr" />
 </Scene>
