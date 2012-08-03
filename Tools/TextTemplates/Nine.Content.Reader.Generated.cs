@@ -73,23 +73,6 @@ namespace Nine
         }
     }
     /// <summary>
-    /// Content reader for <c>GridSceneManager</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class GridSceneManagerReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.GridSceneManager>
-    {
-        protected override Nine.GridSceneManager Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.GridSceneManager existingInstance)
-        {
-            existingInstance.SegmentCountX = input.ReadInt32();
-            existingInstance.SegmentCountY = input.ReadInt32();
-            existingInstance.Position = input.ReadVector2();
-            existingInstance.Size = input.ReadVector2();
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>LinearCurve</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -101,24 +84,6 @@ namespace Nine
         {
             if (existingInstance == null)
                 existingInstance = new LinearCurve();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Object</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class ObjectReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Object>
-    {
-        protected override Nine.Object Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Object existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new Object();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -718,9 +683,6 @@ namespace Nine.Animations
         {
             if (existingInstance == null)
                 existingInstance = new TweenAnimation<T>();
-            existingInstance.From = input.ReadObject<System.Nullable<T>>();
-            existingInstance.To = input.ReadObject<System.Nullable<T>>();
-            existingInstance.By = input.ReadObject<System.Nullable<T>>();
             existingInstance.Easing = input.ReadObject<Nine.Animations.Easing>();
             existingInstance.Curve = input.ReadObject<Nine.ICurve>();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();

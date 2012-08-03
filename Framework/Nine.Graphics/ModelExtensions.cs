@@ -12,6 +12,7 @@
     /// <summary>
     /// Tag used by models.
     /// </summary>
+    [ContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ModelTag
     {
@@ -39,6 +40,7 @@
     /// <summary>
     /// Tag used by ModelMeshPart.
     /// </summary>
+    [ContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ModelMeshPartTag
     {

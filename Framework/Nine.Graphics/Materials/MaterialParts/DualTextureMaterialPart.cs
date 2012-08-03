@@ -3,7 +3,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class DualTextureMaterialPart : MaterialPart
     {
         private EffectParameter textureParameter;
@@ -12,13 +11,13 @@
 
         protected internal override void OnBind()
         {
-            if ((textureParameter = GetParameter("Texture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureParameter = GetParameter("Texture");
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            textureParameter.SetValue(Texture2);
+            if (textureParameter != null)
+                textureParameter.SetValue(Texture2);
         }
 
         public override void SetTexture(TextureUsage usage, Texture texture)

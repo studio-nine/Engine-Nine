@@ -4,7 +4,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class ColorMatrixMaterialPart : MaterialPart
     {   
         public Matrix ColorMatrix 
@@ -18,13 +17,13 @@
 
         protected internal override void OnBind()
         {
-            if ((transformParameter = GetParameter("Transform")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            transformParameter = GetParameter("Transform");
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            transformParameter.SetValue(colorMatrix);
+            if (transformParameter != null)
+                transformParameter.SetValue(colorMatrix);
         }
 
         protected internal override MaterialPart Clone()

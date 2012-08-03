@@ -4,7 +4,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     class BeginPaintGroupMaterialPart : MaterialPart
     {
         private EffectParameter maskTextureScaleParameter;
@@ -17,9 +16,7 @@
 
         protected internal override void OnBind()
         {
-            if ((maskTextureScaleParameter = GetParameter("MaskTextureScale")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-
+            maskTextureScaleParameter = GetParameter("MaskTextureScale");
             maskTexture0Parameter = GetParameter("MaskTexture0");
             maskTexture1Parameter = GetParameter("MaskTexture1");
 
@@ -34,9 +31,12 @@
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            maskTextureScaleParameter.SetValue(maskTextureScale);
-            maskTexture0Parameter.SetValue(maskTexture0);
-            maskTexture1Parameter.SetValue(maskTexture1);
+            if (maskTextureScaleParameter != null)
+            {
+                maskTextureScaleParameter.SetValue(maskTextureScale);
+                maskTexture0Parameter.SetValue(maskTexture0);
+                maskTexture1Parameter.SetValue(maskTexture1);
+            }
         }
 
         protected internal override MaterialPart Clone()

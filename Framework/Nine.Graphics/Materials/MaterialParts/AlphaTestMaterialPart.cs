@@ -4,7 +4,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class AlphaTestMaterialPart : MaterialPart
     {
         private EffectParameter alphaTestParameter;
@@ -20,12 +19,14 @@
 
         protected internal override void OnBind()
         {
-            if ((alphaTestParameter = GetParameter("AlphaTest")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            alphaTestParameter = GetParameter("AlphaTest");
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
+            if (alphaTestParameter == null)
+                return;
+
             Vector4 alphaTest = new Vector4();
 
             // Convert reference alpha from 8 bit integer to 0-1 float format.

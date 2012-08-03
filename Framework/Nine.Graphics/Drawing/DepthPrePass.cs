@@ -59,7 +59,7 @@ namespace Nine.Graphics.Drawing
                 depthBuffer.End();
                 context.textures[TextureUsage.DepthBuffer] = depthBuffer;
             }
-        }        
+        }
 
         public void Dispose()
         {

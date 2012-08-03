@@ -2,7 +2,6 @@
 {
     using System.Linq;
     
-    [ContentSerializable]
     class TangentTransformMaterialPart : MaterialPart
     {
         protected internal override void OnBind()
@@ -17,9 +16,9 @@
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("TangentTransform")
-                .Replace("{$SKINNED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is SkinnedMaterialPart) ? "" : "//")
-                .Replace("{$INSTANCED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is InstancedMaterialPart) ? "" : "//") : null;
+            return (usage == MaterialUsage.Default || usage == MaterialUsage.DepthAndNormal || usage == MaterialUsage.Normal) ? 
+                GetShaderCode("TangentTransform").Replace("{$SKINNED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is SkinnedMaterialPart) ? "" : "//")
+                                                 .Replace("{$INSTANCED}", MaterialGroup != null && MaterialGroup.MaterialParts.Any(p => p is InstancedMaterialPart) ? "" : "//") : null;
         }
     }
 }

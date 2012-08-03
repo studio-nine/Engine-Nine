@@ -4,7 +4,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class FogMaterialPart : MaterialPart
     {
         private int fogVersion;
@@ -13,15 +12,13 @@
 
         protected internal override void OnBind()
         {
-            if ((fogColorParameter = GetParameter("FogColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((fogVectorParameter = GetParameter("FogVector")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            fogColorParameter = GetParameter("FogColor");
+            fogVectorParameter = GetParameter("FogVector");
         }
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            if (fogVersion != context.fogVersion)
+            if (fogVersion != context.fogVersion && fogColorParameter != null)
             {
                 fogColorParameter.SetValue(context.fogColor);
                 fogVersion = context.fogVersion;

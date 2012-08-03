@@ -12,7 +12,6 @@
     /// </summary>
     public class PointEmitter : ParticleEmitter
     {
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -37,7 +36,6 @@
     /// </summary>
     public class BoxEmitter : ParticleEmitter
     {
-        [ContentSerializer(Optional = true)]
         public Matrix? Transform 
         {
             get
@@ -57,10 +55,8 @@
         private bool hasTransform;
         private Matrix transform;
 
-        [ContentSerializer(Optional = true)]
         public BoundingBox Box { get; set; }
 
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -107,14 +103,10 @@
     /// </summary>
     public class SphereEmitter : ParticleEmitter
     {
-        [ContentSerializer(Optional = true)]
         public bool Shell { get; set; }
-        [ContentSerializer(Optional = true)]
         public bool Radiate { get; set; }
-        [ContentSerializer(Optional = true)]
         public float Radius { get; set; }
 
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -154,14 +146,10 @@
     /// </summary>
     public class CylinderEmitter : ParticleEmitter
     {
-        [ContentSerializer(Optional = true)]
         public bool Shell { get; set; }
-        [ContentSerializer(Optional = true)]
         public bool Radiate { get; set; }
-        [ContentSerializer(Optional = true)]
         public float Height { get; set; }
 
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -169,9 +157,7 @@
         }
         private float spread = MathHelper.Pi;
 
-        [ContentSerializer(Optional = true)]
         public Vector3 Up { get; set; }
-        [ContentSerializer(Optional = true)]
         public float Radius { get; set; }
 
         protected override BoundingBox BoundingBoxValue
@@ -238,7 +224,6 @@
         private List<float> lineWeights = new List<float>();
         private BoundingBox bounds;
 
-        [ContentSerializer(Optional = true)]
         public float Spread
         {
             get { return spread; }
@@ -246,7 +231,6 @@
         }
         private float spread = MathHelper.Pi;
 
-        [ContentSerializer(Optional = true)]
         public IEnumerable<Vector3> LineList
         {
             get { return lineList; }

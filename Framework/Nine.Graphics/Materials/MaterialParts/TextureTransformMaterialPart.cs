@@ -4,7 +4,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class TextureTransformMaterialPart : MaterialPart
     {
         public Matrix TextureTransform 
@@ -18,13 +17,13 @@
 
         protected internal override void OnBind()
         {
-            if ((textureTransformParameter = GetParameter("TextureTransform")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureTransformParameter = GetParameter("TextureTransform");
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            textureTransformParameter.SetValue(Nine.Graphics.TextureTransform.ToArray(transform));
+            if (textureTransformParameter != null)
+                textureTransformParameter.SetValue(Nine.Graphics.TextureTransform.ToArray(transform));
         }
 
         protected internal override MaterialPart Clone()

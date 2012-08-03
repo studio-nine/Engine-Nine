@@ -64,6 +64,17 @@ namespace Nine.Graphics.Materials.Test
         }
 
         [TestMethod()]
+        public void MaterialGroupNormalMappingUsageTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
+            materialGroup.MaterialParts.Add(new SpecularMaterialPart());
+            materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
+            materialGroup.MaterialParts.Add(new DirectionalLightMaterialPart());
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
         public void MaterialGroupSkinnedNormalMappingTest()
         {
             MaterialGroup materialGroup = new MaterialGroup();

@@ -3,7 +3,6 @@
     using Nine.Graphics.Drawing;
     using Microsoft.Xna.Framework.Graphics;
 
-    [ContentSerializable]
     class BeginLightMaterialPart : MaterialPart
     {
         private int ambientLightVersion;
@@ -12,14 +11,15 @@
 
         protected internal override void OnBind()
         {
-            if ((eyePositionParameter = GetParameter("EyePosition")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((ambientLightColorParameter = GetParameter("AmbientLightColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            eyePositionParameter = GetParameter("EyePosition");
+            ambientLightColorParameter = GetParameter("AmbientLightColor");
         }
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
+            if (eyePositionParameter == null)
+                return;
+
             if (ambientLightVersion != context.ambientLightColorVersion)
             {
                 ambientLightColorParameter.SetValue(context.ambientLightColor);

@@ -7,7 +7,6 @@
     /// <summary>
     /// Defines a material part that provides specular color and specular texture
     /// </summary>
-    [ContentSerializable]
     public class SpecularMaterialPart : MaterialPart
     {
         private EffectParameter specularColorParameter;
@@ -66,12 +65,9 @@
         /// </summary>
         protected internal override void  OnBind()
         {
-            if (specularMapEnabled && (textureParameter = GetParameter("Texture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if (specularColorEnabled && (specularColorParameter = GetParameter("SpecularColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((specularPowerParameter = GetParameter("SpecularPower")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureParameter = GetParameter("Texture");
+            specularColorParameter = GetParameter("SpecularColor");
+            specularPowerParameter = GetParameter("SpecularPower");
         }
 
         /// <summary>
@@ -79,15 +75,12 @@
         /// </summary>
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            if (specularMapEnabled)
+            if (textureParameter != null)
                 textureParameter.SetValue(SpecularMap);
-            if (specularColorEnabled)
-            {
-                if (specularColor.HasValue)
-                    specularColorParameter.SetValue(specularColor.Value);
-                if (specularPower.HasValue)
-                    specularPowerParameter.SetValue(specularPower.Value);
-            }
+            if (specularColor.HasValue && specularColorParameter != null)
+                specularColorParameter.SetValue(specularColor.Value);
+            if (specularPower.HasValue && specularPowerParameter != null)
+                specularPowerParameter.SetValue(specularPower.Value);
         }
 
         /// <summary>

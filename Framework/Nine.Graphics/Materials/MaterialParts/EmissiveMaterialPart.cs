@@ -7,7 +7,6 @@
     /// <summary>
     /// Defines a material part that provides emissive color and emissive texture
     /// </summary>
-    [ContentSerializable]
     public class EmissiveMaterialPart : MaterialPart
     {
         private EffectParameter emissiveColorParameter;
@@ -55,10 +54,8 @@
         /// </summary>
         protected internal override void OnBind()
         {
-            if (emissiveMapEnabled && (textureParameter = GetParameter("Texture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if (emissiveColorEnabled && (emissiveColorParameter = GetParameter("EmissiveColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureParameter = GetParameter("Texture");
+            emissiveColorParameter = GetParameter("EmissiveColor");
         }
 
         /// <summary>
@@ -66,9 +63,9 @@
         /// </summary>
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            if (emissiveMapEnabled)
+            if (textureParameter != null)
                 textureParameter.SetValue(EmissiveMap);
-            if (emissiveColorEnabled && emissiveColor.HasValue)
+            if (emissiveColorParameter != null)
                 emissiveColorParameter.SetValue(emissiveColor.Value);
         }
 

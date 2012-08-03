@@ -238,7 +238,7 @@ namespace Nine.Graphics.ObjectModel
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
-        IDrawableObject IDeferredLight.GetDrawble(DrawingContext context)
+        IDrawableObject IDeferredLight.GetLightGeometry(DrawingContext context)
         {
             if (deferredGeometry == null)
             {
@@ -247,6 +247,7 @@ namespace Nine.Graphics.ObjectModel
                     Material = deferredMaterial = new DeferredSpotLightMaterial(Context.GraphicsDevice)
                 };
             }
+            deferredMaterial.effect.HalfPixel.SetValue(context.HalfPixel);
             deferredMaterial.effect.World.SetValue(AbsoluteTransform);
             deferredMaterial.effect.ViewProjection.SetValue(context.matrices.ViewProjection);
             deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);

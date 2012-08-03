@@ -7,7 +7,6 @@
     /// <summary>
     /// Defines a material part that allows vertex skinning based on bone hierarchy.
     /// </summary>
-    [ContentSerializable]
     public class SkinnedMaterialPart : MaterialPart, IEffectSkinned
     {
         EffectParameter bonesParameter;
@@ -37,8 +36,7 @@
         /// </summary>
         protected internal override void OnBind()
         {
-            if ((bonesParameter = GetParameter("Bones")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            bonesParameter = GetParameter("Bones");
         }
 
         /// <summary>
@@ -61,7 +59,8 @@
             if (boneTransforms.Length > MaxBones)
                 throw new ArgumentException();
 
-            bonesParameter.SetValue(boneTransforms);
+            if (bonesParameter != null)
+                bonesParameter.SetValue(boneTransforms);
         }
 
 #if !SILVERLIGHT

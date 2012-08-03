@@ -121,7 +121,7 @@ namespace Nine.Graphics
             this.defaultSceneManager = defaultSceneManager ?? new OctreeSceneManager();
             this.sceneManagers = new List<ISceneManager>();
             this.sceneManagers.Add(this.defaultSceneManager);
-            this.flattenedQuery = CreateQuery<object>();
+            this.flattenedQuery = CreateSpatialQuery<object>();
             this.detailedQuery = new DetailedQuery(this.defaultSceneManager);
             this.Context = new DrawingContext(graphics, this);
         }
@@ -284,7 +284,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Create a spatial query of the specified type from this scene.
         /// </summary>
-        public ISpatialQuery<T> CreateQuery<T>() where T : class
+        public ISpatialQuery<T> CreateSpatialQuery<T>() where T : class
         {
             return new SceneQuery<T>(sceneManagers, Children);
         }

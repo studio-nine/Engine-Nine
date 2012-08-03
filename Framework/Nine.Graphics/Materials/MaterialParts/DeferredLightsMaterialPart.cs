@@ -6,20 +6,19 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class DeferredLightsMaterialPart : MaterialPart
     {
         EffectParameter lightBufferParameter;
         
         protected internal override void OnBind()
         {
-            if ((lightBufferParameter = GetParameter("LightTexture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            lightBufferParameter = GetParameter("LightTexture");
         }
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            lightBufferParameter.SetValue(context.textures[TextureUsage.LightBuffer]);
+            if (lightBufferParameter != null)
+                lightBufferParameter.SetValue(context.textures[TextureUsage.LightBuffer]);
         }
 
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)

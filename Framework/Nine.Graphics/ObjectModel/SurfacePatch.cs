@@ -11,7 +11,6 @@
     /// <summary>
     /// A square block made up of surface patch parts. The whole surface is rendered patch by patch.
     /// </summary>
-    [ContentSerializable]
     public class SurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, IContainedObject, IGeometry, IDisposable
     {
         #region Properties
@@ -310,7 +309,7 @@
         public void Draw(DrawingContext context, Material material)
         {
             GraphicsDevice.Indices = IndexBuffer;
-            GraphicsDevice.SetVertexBuffer(VertexBuffer);
+            context.SetVertexBuffer(VertexBuffer, 0);
 
             material.world = Surface.AbsoluteTransform;
             material.BeginApply(context);

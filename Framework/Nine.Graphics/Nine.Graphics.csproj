@@ -136,6 +136,7 @@
     <Compile Include="PostEffects\BlurEffect.cs" />
     <Compile Include="PostEffects\AntiAliasMaterial.cs" />
     <Compile Include="PostEffects\AntiAliasEffect.cs" />
+    <Compile Include="PostEffects\RestoreDepthBufferMaterial.cs" />
     <Compile Include="PostEffects\LuminanceMaterial.cs" />
     <Compile Include="PostEffects\ToneMappingMaterial.cs" />
     <Compile Include="PostEffects\VertexPassThroughMaterial.cs" />
@@ -292,6 +293,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
+    <None Include="Shaders\RestoreDepthBuffer.fx" />
     <None Include="Shaders\VertexPassThrough.fx" />
     <None Include="Shaders\ShadowEffect.fx" />
     <None Include="Shaders\DecalEffect.fx" />

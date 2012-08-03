@@ -13,7 +13,6 @@
         /// <summary>
         /// Range of values controlling the particle end color and alpha. 
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Range<Color> EndColor { get; set; }
 
         public ColorController()
@@ -55,7 +54,6 @@
         /// <summary>
         /// Range of values controlling the particle end size.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Range<float> EndSize { get; set; }
 
         public SizeController()
@@ -83,7 +81,6 @@
         /// <summary>
         /// Range of values controlling the particle end rotation.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Range<float> EndRotation { get; set; }
 
         protected override void OnReset(ref Particle particle, ref float tag)
@@ -106,7 +103,6 @@
         /// Range of values representing the particle end speed in proportion to its start speed.
         /// A value of 1 means no change, a value of 0 means complete stop.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Range<float> EndSpeed { get; set; }
 
         protected override void OnReset(ref Particle particle, ref float tag)
@@ -129,7 +125,6 @@
         /// <summary>
         /// Gets or sets the force amount.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Vector3 Force { get; set; }
 
         public ForceController()
@@ -153,19 +148,16 @@
         /// <summary>
         /// Gets or sets the force amount.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public float Force { get; set; }
 
         /// <summary>
         /// Gets or sets the up axis.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Vector3 Up { get; set; }
 
         /// <summary>
         /// Gets or sets the center position.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Vector3 Center { get; set; }
 
         public TangentForceController()
@@ -193,13 +185,11 @@
         /// <summary>
         /// Gets or sets the absorb position.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public Vector3 Position { get; set; }
 
         /// <summary>
         /// Gets or sets the absorb force.
         /// </summary>
-        [ContentSerializer(Optional = true)]
         public float Force { get; set; }
 
         protected override void OnReset(ref Particle particle) { }

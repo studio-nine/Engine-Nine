@@ -7,10 +7,10 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
     
-
     /// <summary>
     /// An animation player that plays TextureList based sprite animations.
     /// </summary>
+    [ContentSerializable]
     public class SpriteAnimation : KeyframeAnimation, ISupportTarget
     {
         private object target;

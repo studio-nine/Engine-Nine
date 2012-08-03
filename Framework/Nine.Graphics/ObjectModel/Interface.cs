@@ -1,5 +1,6 @@
 namespace Nine.Graphics.ObjectModel
 {
+    using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
@@ -88,7 +89,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Defines an interface for objects that supports hardware instancing
     /// </summary>
-    public interface ISupportInstancing
+    public interface ISupportInstancing : IBoundable
     {
         /// <summary>
         /// Gets the subset count.

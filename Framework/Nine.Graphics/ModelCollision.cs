@@ -8,6 +8,7 @@
     /// <summary>
     /// Defines a octree base model collision detection.
     /// </summary>
+    [ContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class ModelCollision : IPickable
     {

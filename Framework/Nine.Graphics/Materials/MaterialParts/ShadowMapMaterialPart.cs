@@ -5,7 +5,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class ShadowMapMaterialPart : MaterialPart, IEffectShadowMap
     {
         private EffectParameter shadowColorParameter;
@@ -48,16 +47,11 @@
         /// </summary>
         protected internal override void OnBind()
         {
-            if ((shadowColorParameter = GetParameter("ShadowColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((depthBiasParameter = GetParameter("DepthBias")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((lightViewProjectionParameter = GetParameter("LightViewProjection")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((shadowMapParameter = GetParameter("ShadowMap")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((shadowMapSizeParameter = GetParameter("ShadowMapTexelSize")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            shadowColorParameter = GetParameter("ShadowColor");
+            depthBiasParameter = GetParameter("DepthBias");
+            lightViewProjectionParameter = GetParameter("LightViewProjection");
+            shadowMapParameter = GetParameter("ShadowMap");
+            shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
         }
 
         /// <summary>
@@ -65,11 +59,14 @@
         /// </summary>
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            shadowColorParameter.SetValue(ShadowColor);
-            depthBiasParameter.SetValue(DepthBias);
-            lightViewProjectionParameter.SetValue(LightViewProjection);
-            shadowMapParameter.SetValue(ShadowMap);
-            shadowMapSizeParameter.SetValue(new Vector2(1.0f / ShadowMap.Width, 1.0f / ShadowMap.Height));
+            if (shadowColorParameter != null)
+            {
+                shadowColorParameter.SetValue(ShadowColor);
+                depthBiasParameter.SetValue(DepthBias);
+                lightViewProjectionParameter.SetValue(LightViewProjection);
+                shadowMapParameter.SetValue(ShadowMap);
+                shadowMapSizeParameter.SetValue(new Vector2(1.0f / ShadowMap.Width, 1.0f / ShadowMap.Height));
+            }
         }
 
         protected internal override MaterialPart Clone()

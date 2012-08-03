@@ -484,6 +484,7 @@
     /// Combines all the data needed to render and animate a skinned object.
     /// This is typically stored in the Tag property of the Model being animated.
     /// </summary>
+    [ContentSerializable]
     class ModelSkeletonData
     {
         /// <summary>

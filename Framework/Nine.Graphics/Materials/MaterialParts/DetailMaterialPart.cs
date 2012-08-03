@@ -4,7 +4,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class DetailMaterialPart : MaterialPart
     {
         private EffectParameter textureParameter;
@@ -27,22 +26,23 @@
 
         protected internal override void OnBind()
         {
-            if ((textureParameter = GetParameter("Texture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((detailTextureSettingsParameter = GetParameter("DetailTextureSettings")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureParameter = GetParameter("Texture");
+            detailTextureSettingsParameter = GetParameter("DetailTextureSettings");
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            Vector4 detailTextureSettings = new Vector4();
-            detailTextureSettings.X = DetailTextureScale.X;
-            detailTextureSettings.Y = DetailTextureScale.Y;
-            detailTextureSettings.Z = Attenuation;
-            detailTextureSettings.W = Distance;
+            if (textureParameter != null)
+            {
+                Vector4 detailTextureSettings = new Vector4();
+                detailTextureSettings.X = DetailTextureScale.X;
+                detailTextureSettings.Y = DetailTextureScale.Y;
+                detailTextureSettings.Z = Attenuation;
+                detailTextureSettings.W = Distance;
 
-            detailTextureSettingsParameter.SetValue(detailTextureSettings);
-            textureParameter.SetValue(DetailTexture);
+                detailTextureSettingsParameter.SetValue(detailTextureSettings);
+                textureParameter.SetValue(DetailTexture);
+            }
         }
 
         protected internal override MaterialPart Clone()

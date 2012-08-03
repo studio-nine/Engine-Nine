@@ -26,7 +26,7 @@
                 extendedMaterial.ExtendedMaterials = null;
                 extendedMaterial.Reference = Build(extendedMaterial, usage, context).Filename;
                 if (extendedMaterial.Reference != null)
-                    input.ExtendedMaterials.Add(usage, extendedMaterial);
+                    input.ExtendedMaterials[usage] =  extendedMaterial;
             }
             return input;
         }

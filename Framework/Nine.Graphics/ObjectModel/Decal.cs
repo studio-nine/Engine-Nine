@@ -282,7 +282,7 @@ namespace Nine.Graphics.ObjectModel
                 material.Effect.CurrentTechnique.Passes[0].Apply();
                 
                 GraphicsDevice.RasterizerState = rasterizeState;
-                GraphicsDevice.SetVertexBuffer(vertexBuffer);
+                context.SetVertexBuffer(vertexBuffer);
                 GraphicsDevice.Indices = indexBuffer;
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertexCount, 0, indexCount / 3);
                  */

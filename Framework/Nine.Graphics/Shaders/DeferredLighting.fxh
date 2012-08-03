@@ -13,13 +13,14 @@ void Extract(sampler normalBuffer,
              sampler depthBuffer,
              float4 posProjection,
              float4x4 viewProjectionInverse,
+             float2 halfPixel,
              out float3 normal, 
              out float3 position, 
              out float specularPower)
 {
     posProjection.xy /= posProjection.w;
 
-    float2 uv = float2(posProjection.x,-posProjection.y) * 0.5f + 0.5f;
+    float2 uv = float2(posProjection.x,-posProjection.y) * 0.5f + 0.5f - halfPixel;
 
     float4 g = tex2D(normalBuffer, uv);
     normal = g.xyz * 2 - 1;

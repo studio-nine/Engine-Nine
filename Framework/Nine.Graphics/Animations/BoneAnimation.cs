@@ -10,11 +10,11 @@
     using Microsoft.Xna.Framework.Content;
     using Nine.Graphics;
 
-
     #region BoneAnimationClip
     /// <summary>
     /// Defines a bone animation clip.
     /// </summary>
+    [ContentSerializable]
     [EditorBrowsable(EditorBrowsableState.Never)]
     public class BoneAnimationClip
     {

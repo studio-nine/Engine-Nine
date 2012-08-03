@@ -1,6 +1,5 @@
 ﻿namespace Nine.Graphics.Materials.MaterialParts
 {
-    [ContentSerializable]
     class EndLightMaterialPart : MaterialPart
     {
         protected internal override void OnBind()

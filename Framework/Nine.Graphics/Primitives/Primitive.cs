@@ -13,7 +13,7 @@
     /// Base class for simple geometric primitive models. 
     /// </summary>
     [ContentProperty("Material")]
-    public abstract class Primitive<T> : Transformable, IDrawableObject, IDisposable, ISupportInstancing where T : struct, IVertexType
+    public abstract class Primitive<T> : Transformable, ISpatialQueryable, IDrawableObject, IDisposable, ISupportInstancing where T : struct, IVertexType
     {
         #region Properties
         /// <summary>
@@ -56,6 +56,13 @@
         /// Gets the optional bounding sphere of the primitive.
         /// </summary>
         public BoundingBox BoundingBox { get; private set; }
+
+        /// <summary>
+        /// Occurs when the bounding box changed.
+        /// </summary>
+        public event EventHandler<EventArgs> BoundingBoxChanged;
+
+        object ISpatialQueryable.SpatialData { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether winding order will be inverted.
@@ -231,7 +238,12 @@
         private void UpdateBoundingBox()
         {
             if (cachedPrimitive != null)
+            {
                 BoundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);
+                var boundingBoxChanged = BoundingBoxChanged;
+                if (boundingBoxChanged != null)
+                    boundingBoxChanged(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

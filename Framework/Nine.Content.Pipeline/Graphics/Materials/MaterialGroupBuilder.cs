@@ -650,7 +650,7 @@
                      select part).Concat
                     (from part in builderContext.MaterialPartDeclarations
                      where part != materialDeclaration && part.VertexShader != null &&
-                           part.VertexShader.Arguments.Any(arg => arg.Out && (!arg.In || part.Index < materialDeclaration.Index) &&
+                           part.VertexShader.Arguments.Any(arg => arg.Out &&
                                materialDeclaration.PixelShader != null && materialDeclaration.PixelShader.Arguments.Any(a => a.In && a.Name == arg.Name))
                      select part).ToArray();
             }
@@ -738,14 +738,14 @@
 
             // Remove duplicated pixel shader output semantics, keep only the last one.
             for (int i = 0; i < builderContext.PixelShaderOutputs.Count; i++)
-			{
+            {
                 if (builderContext.PixelShaderOutputs.Skip(i + 1).Any(a => a.Semantic == builderContext.PixelShaderOutputs[i].Semantic))
                 {
                     builderContext.TemporaryPixelShaderVariables.Add(builderContext.PixelShaderOutputs[i]);
                     builderContext.PixelShaderOutputs.RemoveAt(i);
                     i--;
                 }
-			}
+            }
 
             // Pixel shader inputs that does not have a matching vertex shader output and a valid semantic            
             for (int i = 0; i < builderContext.PixelShaderInputs.Count; i++)

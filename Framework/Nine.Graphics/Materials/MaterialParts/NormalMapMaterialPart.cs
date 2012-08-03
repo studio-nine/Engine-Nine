@@ -8,7 +8,6 @@
     /// <summary>
     /// Defines a material part that provides normals from normal maps
     /// </summary>
-    [ContentSerializable]
     public class NormalMapMaterialPart : MaterialPart
     {      
         private EffectParameter textureParameter;
@@ -20,8 +19,7 @@
 
         protected internal override void OnBind()
         {
-            if ((textureParameter = GetParameter("Texture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureParameter = GetParameter("Texture");
         }
 
         protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
@@ -31,12 +29,19 @@
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            textureParameter.SetValue(NormalMap);
+            if (textureParameter != null)
+                textureParameter.SetValue(NormalMap);
         }
 
         protected internal override MaterialPart Clone()
         {
             return new NormalMapMaterialPart() { NormalMap = this.NormalMap };
+        }
+
+        protected internal override void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance)
+        {
+            var part = ((NormalMapMaterialPart)existingInstance);
+            part.NormalMap = this.NormalMap;
         }
 
         public override void SetTexture(TextureUsage usage, Texture texture)
@@ -47,7 +52,7 @@
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("NormalMap") : null;
+            return (usage == MaterialUsage.Default || usage == MaterialUsage.DepthAndNormal || usage == MaterialUsage.Normal) ? GetShaderCode("NormalMap") : null;
         }
     }
 }

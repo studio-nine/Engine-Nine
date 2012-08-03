@@ -209,7 +209,7 @@ namespace Nine.Graphics.Drawing
                 throw new ArgumentNullException("scene");
 
             this.scene = scene;
-            this.Drawables = scene.CreateQuery<IDrawableObject>();
+            this.Drawables = scene.CreateSpatialQuery<IDrawableObject>();
             this.Settings = new Settings();
             this.GraphicsDevice = graphics;
             this.Statistics = new Statistics();
@@ -249,13 +249,25 @@ namespace Nine.Graphics.Drawing
         /// changed since last drawing operation.
         /// </summary>
         internal Material PreviousMaterial;
+
+        /// <summary>
+        /// Gets the half pixel size of the current viewport.
+        /// </summary>
+        internal Vector2 HalfPixel
+        {
+            get
+            {
+                var vp = GraphicsDevice.Viewport;
+                return new Vector2(1.0f / vp.Width, 1.0f / vp.Height);
+            }
+        }
         
         /// <summary>
         /// Create a spatial query of the specified type from this scene.
         /// </summary>
-        public ISpatialQuery<T> CreateQuery<T>() where T : class
+        public ISpatialQuery<T> CreateSpatialQuery<T>() where T : class
         {
-            return scene.CreateQuery<T>();
+            return scene.CreateSpatialQuery<T>();
         }
 
         /// <summary>

@@ -3,12 +3,11 @@
     /// <summary>
     /// Defines a material part that is used for hardware instancing.
     /// </summary>
-    [ContentSerializable]
     public class InstancedMaterialPart : MaterialPart
     {
         protected internal override void OnBind()
         {
-            
+
         }
 
         protected internal override MaterialPart Clone()

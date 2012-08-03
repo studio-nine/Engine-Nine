@@ -37,7 +37,6 @@
     /// <summary>
     /// Defines a material part that provides diffuse color and diffuse texture
     /// </summary>
-    [ContentSerializable]
     public class DiffuseMaterialPart : MaterialPart
     {
         private EffectParameter textureParameter;
@@ -124,12 +123,9 @@
 
         protected internal override void OnBind()
         {
-            if (textureEnabled && (textureParameter = GetParameter("Texture")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if (diffuseColorEnabled && (diffuseColorParameter = GetParameter("DiffuseColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if (textureAlphaUsage == TextureAlphaUsage.Overlay && (overlayColorParameter = GetParameter("OverlayColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            textureParameter = GetParameter("Texture");
+            diffuseColorParameter = GetParameter("DiffuseColor");
+            overlayColorParameter = GetParameter("OverlayColor");
         }
 
         /// <summary>
@@ -137,13 +133,12 @@
         /// </summary>
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
-            if (textureEnabled)
-            {
-                if (textureAlphaUsage == TextureAlphaUsage.Overlay && overlayColor.HasValue)
-                    overlayColorParameter.SetValue(overlayColor.Value);
+            if (textureParameter != null)
                 textureParameter.SetValue(Texture ?? material.texture);
-            }
-            if (diffuseColorEnabled)
+            if (overlayColorParameter != null && overlayColor.HasValue)
+                overlayColorParameter.SetValue(overlayColor.Value);
+
+            if (diffuseColorParameter != null)
             {
                 var diffuseColorWithAlpha = new Vector4();
                 diffuseColorWithAlpha.X = diffuseColor.X * material.alpha;
@@ -159,7 +154,7 @@
         /// </summary>
         protected internal override void EndApplyLocalParameters()
         {
-            if (textureEnabled && textureAlphaUsage == TextureAlphaUsage.Overlay && overlayColor.HasValue)
+            if (overlayColorParameter != null && overlayColor.HasValue)
                 overlayColorParameter.SetValue(MaterialConstants.DiffuseColor);
         }
 

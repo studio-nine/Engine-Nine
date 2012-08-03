@@ -7,7 +7,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     class VertexTransformMaterialPart : MaterialPart
     {
         private EffectParameter worldParameter;
@@ -17,9 +16,7 @@
 
         protected internal override void OnBind()
         {
-            if ((worldParameter = GetParameter("World")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-
+            worldParameter = GetParameter("World");
             viewProjectionParameter = GetParameter("ViewProjection");
             worldViewProjectionParameter = GetParameter("WorldViewProjection");
             worldInverseTransposeParameter = GetParameter("WorldInverseTranspose");

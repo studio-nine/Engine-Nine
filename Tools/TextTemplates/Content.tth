@@ -75,7 +75,7 @@
         IEnumerable<Type> FindContentSerializableTypes(Assembly assembly)
         {
             return from type in assembly.GetTypes()
-                   where !HasNotContentSerializableAttribute(type) && (HasContentSerializableType(type) || HasContentSerializableAttribute(type))
+                   where !HasNotContentSerializableAttribute(type) && HasContentSerializableAttribute(type) && !type.IsAbstract && !type.IsInterface
                    select type;
         }
 
@@ -105,7 +105,7 @@
         {
             if (type == null || type.IsInterface)
                 return false;
-            return type.GetCustomAttributes(false).Count(a => a.GetType().FullName == "Nine.ContentSerializableAttribute") > 0;
+            return type.GetCustomAttributes(true).Count(a => a.GetType().FullName == "Nine.ContentSerializableAttribute") > 0;
         }
 
         bool HasNotContentSerializableAttribute(Type type)
@@ -117,7 +117,7 @@
 
         bool IsContentSerializable(Type type)
         {
-            if (type == null)
+            if (type == null || string.IsNullOrEmpty(type.FullName))
                 return false;
             if (KnownContentTypes.ExcludedTypes.Contains(type.FullName))
                 return false;

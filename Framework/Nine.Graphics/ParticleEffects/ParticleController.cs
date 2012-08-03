@@ -24,6 +24,7 @@
     /// <summary>
     /// Defines the base class for all particle controllers.
     /// </summary>
+    [ContentSerializable]
     public abstract class ParticleController : IParticleController
     {
         /// <summary>

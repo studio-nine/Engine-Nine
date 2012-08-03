@@ -155,7 +155,6 @@
     #region AvatarBoneAnimation
     /// <summary>
     /// Provides methods and properties for animating an avatar using custom animations.
-
     /// </summary>
     public class AvatarBoneAnimation : BoneAnimation, IAvatarAnimation
     {

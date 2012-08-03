@@ -10,6 +10,7 @@
     /// The geometric representation of heightmap. 
     /// The up axis of the terrain is Vector.UnitY.
     /// </summary>
+    [ContentSerializable]
     public class Heightmap
     {
         #region Fields

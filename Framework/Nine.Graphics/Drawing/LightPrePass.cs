@@ -17,7 +17,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets the drawable object that is used to generate the light buffer.
         /// </summary>
-        IDrawableObject GetDrawble(DrawingContext context);
+        IDrawableObject GetLightGeometry(DrawingContext context);
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ namespace Nine.Graphics.Drawing
 
             if (lightQuery == null)
             {
-                lightQuery = context.CreateQuery<IDeferredLight>();
+                lightQuery = context.CreateSpatialQuery<IDeferredLight>();
                 deferredLights = new FastList<IDeferredLight>();
             }
                         
@@ -250,7 +250,7 @@ namespace Nine.Graphics.Drawing
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
-            var lightGeometry = light.GetDrawble(context);
+            var lightGeometry = light.GetLightGeometry(context);
             if (lightGeometry == null || !lightGeometry.Visible)
                 return;
 

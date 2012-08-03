@@ -11,8 +11,7 @@ namespace Nine.Graphics.ObjectModel
     /// <summary>
     /// Base class for all objects that has a transform and a bounds.
     /// </summary>
-    [RuntimeNameProperty("Name")]
-    [DictionaryKeyProperty("Name")]
+    [ContentSerializable]
     public abstract class Transformable : Nine.Object, IContainedObject
     {
         #region Properties

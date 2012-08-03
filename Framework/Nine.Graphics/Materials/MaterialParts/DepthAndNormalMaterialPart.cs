@@ -1,11 +1,10 @@
 ﻿namespace Nine.Graphics.Materials.MaterialParts
 {
-    [ContentSerializable]
     class DepthAndNormalMaterialPart : MaterialPart
     {
         protected internal override void OnBind()
         {
-
+            MaterialGroup.MaterialParts.Remove(this);
         }
 
         protected internal override MaterialPart Clone()

@@ -11,6 +11,7 @@ namespace Nine.Graphics.Materials
     /// <summary>
     /// Represents a basic building block of a material group.
     /// </summary>
+    [ContentSerializable]
     [RuntimeNameProperty("Name")]
     [DictionaryKeyProperty("Name")]
     public abstract class MaterialPart

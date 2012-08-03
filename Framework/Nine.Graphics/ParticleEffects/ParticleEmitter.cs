@@ -49,6 +49,7 @@
     /// <summary>
     /// Defines the base class for all particle emitters.
     /// </summary>
+    [ContentSerializable]
     public abstract class ParticleEmitter : IParticleEmitter
     {
         /// <summary>

@@ -6,7 +6,6 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [ContentSerializable]
     public class DirectionalLightMaterialPart : MaterialPart
     {
         private int lightIndex;
@@ -19,12 +18,9 @@
 
         protected internal override void OnBind()
         {
-            if ((directionParameter = GetParameter("DirLightDirection")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((diffuseColorParameter = GetParameter("DirLightDiffuseColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
-            if ((specularColorParameter = GetParameter("DirLightSpecularColor")) == null)
-                MaterialGroup.MaterialParts.Remove(this);
+            directionParameter = GetParameter("DirLightDirection");
+            diffuseColorParameter = GetParameter("DirLightDiffuseColor");
+            specularColorParameter = GetParameter("DirLightSpecularColor");
 
             foreach (var part in MaterialGroup.MaterialParts)
             {
@@ -45,6 +41,9 @@
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
+            if (directionParameter == null)
+                return;
+
             var light = context.DirectionalLights[lightIndex];
             if (light != null && light.version != lightVersion)
             {

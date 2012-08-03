@@ -8,6 +8,7 @@
     /// <summary>
     /// Geometric representation of a model.
     /// </summary>
+    [ContentSerializable]
     public class Geometry : IGeometry, ISurface
     {
         /// <summary>
