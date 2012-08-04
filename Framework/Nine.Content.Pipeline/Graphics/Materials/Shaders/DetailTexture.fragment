@@ -3,11 +3,6 @@ texture2D Texture : DETAILTEXTURE;
 sampler BasicSampler = sampler_state
 {
     Texture = (Texture);
-    MipFilter = Linear;
-    MagFilter = Linear;
-    MinFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
 };
 
 void PixelShader(float2 uv, float4 positionProjection, inout float4 diffuse)

@@ -1,7 +1,7 @@
-float SpecularPower : SPECULARPOWER;
-float3 SpecularColor : SPECULARCOLOR;
-texture2D Texture : SPECULARMAP;
-sampler BasicSampler { Texture = (Texture); };
+float SpecularPower : SPECULARPOWER = 16;
+float3 SpecularColor : SPECULARCOLOR = 1;
+{$ST}texture2D Texture : SPECULARMAP;
+{$ST}sampler BasicSampler { Texture = (Texture); };
 
 void PixelShader(float2 uv:TEXCOORD0, out float3 specular, out float specularPower)
 {

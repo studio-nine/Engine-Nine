@@ -1,6 +1,6 @@
-texture2D Texture : EMISSIVEMAP;
-float3 EmissiveColor : EMISSIVE;
-sampler BasicSampler { Texture = (Texture); };
+{$ET}texture2D Texture : EMISSIVEMAP;
+float3 EmissiveColor : EMISSIVE = 0;
+{$ET}sampler BasicSampler { Texture = (Texture); };
 
 void PixelShader(float2 uv:TEXCOORD0, out float3 emissive)
 {

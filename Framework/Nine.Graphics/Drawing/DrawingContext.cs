@@ -258,7 +258,7 @@ namespace Nine.Graphics.Drawing
             get
             {
                 var vp = GraphicsDevice.Viewport;
-                return new Vector2(1.0f / vp.Width, 1.0f / vp.Height);
+                return new Vector2(0.5f / vp.Width, 0.5f / vp.Height);
             }
         }
         

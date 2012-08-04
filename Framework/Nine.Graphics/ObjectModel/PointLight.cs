@@ -18,8 +18,13 @@ namespace Nine.Graphics.ObjectModel
         {
             get { return AbsoluteTransform.Translation; }
         }
-
-        public Vector3 SpecularColor { get; set; }
+        
+        public Vector3 SpecularColor
+        {
+            get { return specularColor; }
+            set { specularColor = value; }
+        }
+        private Vector3 specularColor;
 
         public Vector3 DiffuseColor
         {
@@ -127,13 +132,14 @@ namespace Nine.Graphics.ObjectModel
                     Material = deferredMaterial = new DeferredPointLightMaterial(Context.GraphicsDevice)
                 };
             }
+            deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];
             deferredMaterial.effect.HalfPixel.SetValue(context.HalfPixel);
             deferredMaterial.effect.ViewProjection.SetValue(context.matrices.ViewProjection);
             deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);
             deferredMaterial.effect.EyePosition.SetValue(context.EyePosition);
             deferredMaterial.effect.Position.SetValue(Position);
             deferredMaterial.effect.DiffuseColor.SetValue(diffuseColor);
-            deferredMaterial.effect.SpecularColor.SetValue(SpecularColor);
+            deferredMaterial.effect.SpecularColor.SetValue(specularColor);
             deferredMaterial.effect.Range.SetValue(range);
             deferredMaterial.effect.Attenuation.SetValue(attenuation);
             deferredGeometry.Visible = Enabled;

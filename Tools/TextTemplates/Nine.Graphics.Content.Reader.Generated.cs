@@ -1165,10 +1165,11 @@ namespace Nine.Graphics.ObjectModel
 #endif
                 existingInstance = new FullScreenQuad(graphicsDevice);
             }
-            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }

@@ -6,21 +6,11 @@ texture2D MaskTexture1;
 sampler MaskSampler0 = sampler_state
 {
     Texture = (MaskTexture0);
-    MipFilter = Linear;
-    MagFilter = Linear;
-    MinFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
 };
 
 sampler MaskSampler1 = sampler_state
 {
     Texture = (MaskTexture1);
-    MipFilter = Linear;
-    MagFilter = Linear;
-    MinFilter = Linear;
-    AddressU = Wrap;
-    AddressV = Wrap;
 };
 
 // TODO: Make this dynamic

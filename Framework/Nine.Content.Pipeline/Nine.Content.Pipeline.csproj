@@ -264,7 +264,6 @@
     <None Include="Graphics\Materials\Shaders\SpecularMap.fragment" />
     <None Include="Graphics\Materials\Shaders\SpotLight.fragment" />
     <None Include="Graphics\Materials\Shaders\PointLight.fragment" />
-    <None Include="Graphics\Materials\Shaders\SplatterTexture.fragment" />
     <None Include="Graphics\Materials\Shaders\ScreenEffect.fragment" />
     <None Include="Graphics\Materials\Shaders\NormalMap.fragment" />
     <None Include="Graphics\Materials\Shaders\RadicalBlur.fragment" />

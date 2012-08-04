@@ -669,11 +669,6 @@
                         d.Tagged = true;
                 }
 
-            var offset = 0;
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
-                if (!builderContext.MaterialPartDeclarations[i].Tagged && builderContext.MaterialPartDeclarations[i].PixelShader != null)
-                    materialParts.RemoveAt(i + offset--);
-
             builderContext.MaterialPartDeclarations = (from part in builderContext.MaterialPartDeclarations where part.Tagged || part.PixelShader == null select part).ToList();
 
             // Step 4: Get shader input/output argument semantics

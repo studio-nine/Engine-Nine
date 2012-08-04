@@ -123,6 +123,7 @@ namespace Tutorial
             //scene.Camera = new ModelViewerCamera(GraphicsDevice);           
             scene.Context.Settings.DefaultDebugControlEnabled = true;
             scene.Context.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            scene.Context.Settings.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = tutorials[nextTutorial];
 
@@ -150,6 +151,10 @@ namespace Tutorial
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
+            var quad = scene["Debug"] as FullScreenQuad;
+            if (quad != null)
+                quad.Visible = Keyboard.GetState().IsKeyDown(Keys.Space);
+
             if (world != null)
                 world.Draw(gameTime.ElapsedGameTime);
             else if (scene != null)

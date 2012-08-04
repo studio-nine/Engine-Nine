@@ -4,13 +4,9 @@ float4x4 TextureTransform;
 float Alpha = 1.0f;
 
 texture Texture;
-
-sampler Sampler : register(s7) = sampler_state
+sampler Sampler : register(s0) = sampler_state
 {
     Texture = (Texture);
-    
-    AddressU = Clamp;
-    AddressV = Clamp;
 };
 
 

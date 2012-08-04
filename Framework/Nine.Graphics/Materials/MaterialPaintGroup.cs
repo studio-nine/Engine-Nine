@@ -80,11 +80,11 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Restores any local shader parameters changes after drawing the promitive.
         /// </summary>
-        protected internal override void EndApplyLocalParameters()
+        protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             var count = materialParts.Count;
             for (int i = 0; i < count; i++)
-                materialParts[i].EndApplyLocalParameters();
+                materialParts[i].EndApplyLocalParameters(context);
         }
 
         /// <summary>

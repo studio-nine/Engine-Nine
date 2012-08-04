@@ -126,7 +126,7 @@ namespace Nine.Graphics.Materials
         {
             var count = materialParts.Count;
             for (int i = 0; i < count; i++)
-                materialParts[i].EndApplyLocalParameters();
+                materialParts[i].EndApplyLocalParameters(context);
         }
 
         /// <summary>

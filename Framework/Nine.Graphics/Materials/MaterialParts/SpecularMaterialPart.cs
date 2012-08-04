@@ -45,8 +45,8 @@
         /// </summary>
         public Vector3 SpecularColor
         {
-            get { return specularColor.HasValue ? specularColor.Value : MaterialConstants.SpecularColor; }
-            set { specularColor = (value == MaterialConstants.SpecularColor ? (Vector3?)null : value); }
+            get { return specularColor.HasValue ? specularColor.Value : Vector3.One; }
+            set { specularColor = (value == Vector3.One ? (Vector3?)null : value); }
         }
         private Vector3? specularColor;
 
@@ -86,15 +86,12 @@
         /// <summary>
         /// Restores any local shader parameters changes after drawing the promitive.
         /// </summary>
-        protected internal override void EndApplyLocalParameters()
+        protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
-            if (specularColorEnabled)
-            {
-                if (specularColor.HasValue)
-                    specularColorParameter.SetValue(MaterialConstants.SpecularColor);
-                if (specularPower.HasValue)
-                    specularPowerParameter.SetValue(MaterialConstants.SpecularPower);
-            }
+            if (specularColor.HasValue && specularColorParameter != null)
+                specularColorParameter.SetValue(Vector3.One);
+            if (specularPower.HasValue && specularPowerParameter != null)
+                specularPowerParameter.SetValue(MaterialConstants.SpecularPower);
         }
 
         /// <summary>
@@ -119,12 +116,11 @@
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            if (usage != MaterialUsage.Default)
-                return null;
-
-            return GetShaderCode("SpecularMap").Replace("{$S1}", specularColorEnabled ? "" : "//")
-                                               .Replace("{$S2}", specularColorEnabled ? "//" : "")
-                                               .Replace("{$ST}", specularMapEnabled ? "" : "//");
+            // Specular power will be output to the alpha channel of the normal texture.
+            return (usage != MaterialUsage.Default || usage != MaterialUsage.DepthAndNormal) ?
+                GetShaderCode("SpecularMap").Replace("{$S1}", specularColorEnabled ? "" : "//")
+                                            .Replace("{$S2}", specularColorEnabled ? "//" : "")
+                                            .Replace("{$ST}", specularMapEnabled ? "" : "//") : null;
         }
     }
 }

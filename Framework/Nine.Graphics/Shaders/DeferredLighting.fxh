@@ -11,8 +11,8 @@ float2 PositionToUV(float4 posProjection)
 
 void Extract(sampler normalBuffer,
              sampler depthBuffer,
-             float4 posProjection,
              float4x4 viewProjectionInverse,
+             float4 posProjection,
              float2 halfPixel,
              out float3 normal, 
              out float3 position, 
@@ -20,7 +20,7 @@ void Extract(sampler normalBuffer,
 {
     posProjection.xy /= posProjection.w;
 
-    float2 uv = float2(posProjection.x,-posProjection.y) * 0.5f + 0.5f - halfPixel;
+    float2 uv = float2(posProjection.x,-posProjection.y) * 0.5f + 0.5f + halfPixel;
 
     float4 g = tex2D(normalBuffer, uv);
     normal = g.xyz * 2 - 1;
@@ -30,6 +30,23 @@ void Extract(sampler normalBuffer,
 
     float4 p = mul(float4(posProjection.xy, z, 1), viewProjectionInverse);
     position = p.xyz / p.w;
+}
+
+void Extract(sampler normalBuffer,
+             sampler depthBuffer,
+             float4x4 viewProjectionInverse,
+             float2 uv,
+             out float3 normal, 
+             out float3 position, 
+             out float specularPower)
+{
+    float4 g = tex2D(normalBuffer, uv);
+    normal = g.xyz * 2 - 1;
+    specularPower = g.w * MaxSpecular;
+    
+    float z = tex2D(depthBuffer, uv).x;
+
+    position = mul(float4(uv * 2 - 1, z, 1), viewProjectionInverse).xyz;
 }
 
 

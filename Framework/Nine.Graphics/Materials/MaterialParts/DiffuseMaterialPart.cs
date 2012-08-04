@@ -125,7 +125,7 @@
         {
             textureParameter = GetParameter("Texture");
             diffuseColorParameter = GetParameter("DiffuseColor");
-            overlayColorParameter = GetParameter("OverlayColor");
+            overlayColorParameter = GetParameter("OverlayColor");            
         }
 
         /// <summary>
@@ -135,6 +135,7 @@
         {
             if (textureParameter != null)
                 textureParameter.SetValue(Texture ?? material.texture);
+
             if (overlayColorParameter != null && overlayColor.HasValue)
                 overlayColorParameter.SetValue(overlayColor.Value);
 
@@ -152,7 +153,7 @@
         /// <summary>
         /// Restores any local shader parameters changes after drawing the promitive.
         /// </summary>
-        protected internal override void EndApplyLocalParameters()
+        protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             if (overlayColorParameter != null && overlayColor.HasValue)
                 overlayColorParameter.SetValue(MaterialConstants.DiffuseColor);

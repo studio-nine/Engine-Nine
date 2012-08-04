@@ -11,11 +11,11 @@
         have as many lights as you want in your scene while still maintain a reasonable frame rate.
     -->
     <AmbientLight AmbientLightColor="0.1, 0.1, 0.1" />
-    <DirectionalLight DiffuseColor="0.5, 0.5, 0.5" Direction="-1, -1, -1" />
-    <!--
+    <DirectionalLight DiffuseColor="0.5, 0.5, 0.5" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
     <PointLight DiffuseColor="1.0, 1.0, 0" Transform.Position="0, 2, 0" Range="10" />
     <SpotLight DiffuseColor="0, 1.0, 1.0" Transform.Position="0, 2, 20" Range="20" />
 
+    <!--
         Deferred lighting is not supported equally on all platforms. It requires at least HiDef profile.
     
         To enable deferred lighting on an object, you have to choose the appropriate material that supports
@@ -24,13 +24,13 @@
     <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
              Transform.Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
         <MaterialGroup>
-            <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+            <SpecularMaterialPart />
+            <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" TextureEnabled="True"/>
             <NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
             <DeferredLightsMaterialPart />
         </MaterialGroup>
     </Surface>
     
-    <!--
     <Model Source="{ContentReference ../Models/Tank}">
         <Model.Material>
             <MaterialGroup>
@@ -39,19 +39,17 @@
             </MaterialGroup>
         </Model.Material>
     </Model>
-    -->
     
-    <!-- Use debug material and full screen quad to view intermediate buffers
-    <FullScreenQuad Material="{DebugMaterial TextureUsage=DepthBuffer, SamplerState=PointClamp}" />
-     -->
+    <!-- Use debug material and full screen quad to view intermediate buffers -->
+    <FullScreenQuad Name="Debug" Material="{DebugMaterial TextureUsage=NormalBuffer, SamplerState=PointClamp}" />
+    
     
     <!-- Animations can also be applied to lights. -->
     <DrawingGroup>
-<!-- 
         <PointLight Name="Light1" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, 20" />
-        <PointLight Name="Light2" DiffuseColor="0, 1, 0" Transform.Position="20, 2, 20" />
-        <PointLight Name="Light3" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, -20" />
-        <SpotLight Name="Light4" DiffuseColor="1, 0, 0" OuterAngle="30" InnerAngle="10" Range="25" />
+        <PointLight Name="Light2" DiffuseColor="1, 0, 0" Transform.Position="20, 2, 20" />
+        <PointLight Name="Light3" DiffuseColor="0, 0, 1" Transform.Position="-20, 2, -20" />
+        <SpotLight Name="Light4" Enabled="False" DiffuseColor="1, 0, 0" OuterAngle="30" InnerAngle="10" Range="25" />
 
         <DrawingGroup.Animations>
             <AnimationGroup>
@@ -59,14 +57,15 @@
                 <SingleAnimation TargetProperty="['Light2'].Range" From="0" To="10" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
                 <Vector3Animation TargetProperty="['Light3'].DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />                
                 
+<!-- 
                 The following transform animation will animate the spot light around a circle.
                 <AnimationSequence Repeat="999999">
                     <MatrixAnimation TargetProperty="['Light4'].Transform" Duration="00:00:01" From="{Transform ;30, 0, 0;0, 0, 15;Yxz}" To=";30, 0, 180;0, 0, 15;Yxz"/>
                     <MatrixAnimation TargetProperty="['Light4'].Transform" Duration="00:00:01" From=";30, 0, 180;0, 0, 15;Yxz" To=";30, 0, 360;0, 0, 15;Yxz"/>
                 </AnimationSequence>
+                -->
             </AnimationGroup>
         </DrawingGroup.Animations>
-                -->
         
     </DrawingGroup>
     

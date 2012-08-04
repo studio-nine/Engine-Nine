@@ -67,7 +67,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Restores any local shader parameters changes after drawing the promitive.
         /// </summary>
-        protected internal virtual void EndApplyLocalParameters() { }
+        protected internal virtual void EndApplyLocalParameters(DrawingContext context) { }
 
         /// <summary>
         /// Gets the material with the specified usage that is attached to this material.
@@ -93,11 +93,55 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets the EffectParameter with the name from the fragment parameter name.
         /// </summary>
-        protected EffectParameter GetParameter(string name)
+        protected EffectParameter GetParameter(string parameterName)
         {
             if (IsContentBuild)
                 return null;
-            return MaterialGroup.Effect.Parameters[string.Concat(name, ParameterSuffix)];
+            return MaterialGroup.Effect.Parameters[string.Concat(parameterName, ParameterSuffix)];
+        }
+
+        /// <summary>
+        /// Gets the index of the sampler with the name from the fragment parameter name.
+        /// </summary>
+        /// <returns>
+        /// The index of the sampler, or a negative value if the parameter is not found.
+        /// </returns>
+        protected void GetTextureParameter(string parameterName, out EffectParameter parameter, out int index)
+        {
+            parameter = null;
+            index = -1;
+            if (IsContentBuild)
+                return;
+            var parameters = MaterialGroup.Effect.Parameters;
+            parameter = parameters[string.Concat(parameterName, ParameterSuffix)];
+            if (parameter == null)
+                return;
+            if (!IsTexture(parameter))
+            {
+                parameter = null;
+                return;
+            }
+            
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                if (IsTexture(parameters[i]))
+                    index++;
+                if (parameters[i] == parameter)
+                    return;
+            }
+
+            // If we cannot find the parameter, something must went wrong.
+            throw new InvalidOperationException();
+        }
+
+        private bool IsTexture(EffectParameter parameter)
+        {
+            return parameter.ParameterClass == EffectParameterClass.Object && (
+                   parameter.ParameterType == EffectParameterType.Texture ||
+                   parameter.ParameterType == EffectParameterType.Texture1D ||
+                   parameter.ParameterType == EffectParameterType.Texture2D ||
+                   parameter.ParameterType == EffectParameterType.Texture3D ||
+                   parameter.ParameterType == EffectParameterType.TextureCube);
         }
 
 #if !SILVERLIGHT

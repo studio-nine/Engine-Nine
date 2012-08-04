@@ -313,16 +313,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] SplatterTexture {
-            get {
-                object obj = ResourceManager.GetObject("SplatterTexture", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] SpotLight {
             get {
                 object obj = ResourceManager.GetObject("SpotLight", resourceCulture);

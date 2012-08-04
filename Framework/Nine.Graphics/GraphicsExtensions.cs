@@ -70,55 +70,45 @@
         #region RenderTargetStack
         static Dictionary<GraphicsDevice, Stack<RenderTarget2D>> renderTargetStacks;
 
-        private static void PopRenderTarget(GraphicsDevice graphics)
+        internal static void PopRenderTarget(GraphicsDevice graphics)
         {
-            if (renderTargetStacks != null)
+            Stack<RenderTarget2D> stack = null;
+            if (renderTargetStacks.TryGetValue(graphics, out stack))
             {
-                Stack<RenderTarget2D> stack = null;
-                if (renderTargetStacks.TryGetValue(graphics, out stack))
-                {
-                    stack.Pop();
-                    graphics.SetRenderTarget(stack.Peek());
-                }
+                stack.Pop();
+                graphics.SetRenderTarget(stack.Peek());
             }
         }
 
-        private static void PushRenderTarget(RenderTarget2D renderTarget)
+        internal static void PushRenderTarget(GraphicsDevice graphicsDevice, RenderTarget2D renderTarget)
         {
-            if (renderTarget != null)
+            if (renderTargetStacks == null)
+                renderTargetStacks = new Dictionary<GraphicsDevice, Stack<RenderTarget2D>>();
+
+            Stack<RenderTarget2D> stack = null;
+            if (!renderTargetStacks.TryGetValue(graphicsDevice, out stack))
             {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = renderTarget.GraphicsDevice;
-#endif
-                if (renderTargetStacks == null)
-                    renderTargetStacks = new Dictionary<GraphicsDevice, Stack<RenderTarget2D>>();
-
-                Stack<RenderTarget2D> stack = null;
-                if (!renderTargetStacks.TryGetValue(graphicsDevice, out stack))
-                {
-                    renderTargetStacks.Add(graphicsDevice, stack = new Stack<RenderTarget2D>());
-                    stack.Push(null);
-                }
-
-                stack.Push(renderTarget);
-                graphicsDevice.SetRenderTarget(renderTarget);
+                renderTargetStacks.Add(graphicsDevice, stack = new Stack<RenderTarget2D>());
+                stack.Push(null);
             }
+
+            stack.Push(renderTarget);
+            if (renderTarget != null)
+                graphicsDevice.SetRenderTarget(renderTarget);
         }
 
         public static void Begin(this RenderTarget2D renderTarget)
         {
-            if (renderTarget == null)
-                throw new ArgumentNullException();
-
-            PushRenderTarget(renderTarget);
+#if SILVERLIGHT
+            var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+            var graphicsDevice = renderTarget.GraphicsDevice;
+#endif
+            PushRenderTarget(graphicsDevice, renderTarget);
         }
 
         public static Texture2D End(this RenderTarget2D renderTarget)
         {
-            if (renderTarget == null)
-                throw new ArgumentNullException();
 #if SILVERLIGHT
             PopRenderTarget(System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice);
 #else

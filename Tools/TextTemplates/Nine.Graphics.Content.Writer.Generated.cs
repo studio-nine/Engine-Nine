@@ -1908,10 +1908,11 @@ namespace Nine.Content.Pipeline.Graphics.ObjectModel
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ObjectModel.FullScreenQuad value)
         {
-            WriteObject(output, value, "Name", value.Name);
             output.Write(value.Visible);
             WriteObject(output, value, "Material", value.Material);
+            WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)

@@ -31,13 +31,13 @@ void VS(float4 Pos : POSITION,
     oPosProjection = oPos;
 }
 
-void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
+void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR, uniform bool specularEnabled)
 {
     float3 normal;
     float3 position;
     float specularPower;
 
-    Extract(NormalBufferSampler, DepthBufferSampler, PosProjection, ViewProjectionInverse, HalfPixel, normal, position, specularPower);
+    Extract(NormalBufferSampler, DepthBufferSampler, ViewProjectionInverse, PosProjection, HalfPixel, normal, position, specularPower);
     
     float3 positionToEye = normalize(EyePosition - position);
     float3 positionToVertex = Position - position;
@@ -61,18 +61,26 @@ void PS(float4 PosProjection : TEXCOORD0, out float4 Color:COLOR)
             fade *= pow(max((angle - outer) / (inner - outer), 0.000001), Falloff);
     }
 
-    float3 diffuse = DiffuseColor * zeroL * dotL* fade;
-    float specular = pow(max(dotH, 0.000001) * zeroL, specularPower) * fade * SpecularColor.x;
+    float3 diffuse = DiffuseColor * zeroL * dotL * fade;
+    float specularIntenisty = pow(max(dotH, 0.000001) * zeroL, specularPower) * fade * SpecularColor.x;
     
-    Color = float4(diffuse, specular);
+    Color = specularEnabled ? float4(diffuse, specularIntenisty) : float4(diffuse, 0);
 }
 
-
-Technique BasicEffect
+Technique Specular
 {
     Pass
     {
         VertexShader = compile vs_3_0 VS();
-        PixelShader	 = compile ps_3_0 PS();
+        PixelShader	 = compile ps_3_0 PS(true);
+    }
+}
+
+Technique NoSpecular
+{
+    Pass
+    {
+        VertexShader = compile vs_3_0 VS();
+        PixelShader	 = compile ps_3_0 PS(false);
     }
 }

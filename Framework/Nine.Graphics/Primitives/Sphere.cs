@@ -24,7 +24,7 @@
                 }
             }
         }
-        private int tessellation = 16;
+        private int tessellation = 8;
 
         /// <summary>
         /// Constructs a new sphere primitive, using default settings.

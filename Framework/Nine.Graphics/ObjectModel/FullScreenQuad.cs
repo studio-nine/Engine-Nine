@@ -15,17 +15,12 @@
     [RuntimeNameProperty("Name")]
     [DictionaryKeyProperty("Name")]
     [ContentProperty("Material")]
-    public class FullScreenQuad : IDrawableObject
+    public class FullScreenQuad : Nine.Object, IDrawableObject
     {
         /// <summary>
         /// Gets the graphics device.
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the name of this object.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets whether this object is visible.
@@ -36,11 +31,6 @@
         /// Gets the material of the object.
         /// </summary>
         public Material Material { get; set; }
-
-        /// <summary>
-        /// Gets or sets the tag.
-        /// </summary>
-        public object Tag { get; set; }
 
         /// <summary>
         /// The vertex buffer and index buffers are shared between FullScreenQuads.

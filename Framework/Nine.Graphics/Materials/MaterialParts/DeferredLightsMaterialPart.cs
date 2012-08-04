@@ -8,17 +8,30 @@
 
     public class DeferredLightsMaterialPart : MaterialPart
     {
+        int lightBufferIndex;
         EffectParameter lightBufferParameter;
+        EffectParameter halfPixelParameter;
         
         protected internal override void OnBind()
         {
-            lightBufferParameter = GetParameter("LightTexture");
+            GetTextureParameter("LightTexture", out lightBufferParameter, out lightBufferIndex);
+            halfPixelParameter = GetParameter("HalfPixel");
         }
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
             if (lightBufferParameter != null)
+            {
+                halfPixelParameter.SetValue(context.HalfPixel);
                 lightBufferParameter.SetValue(context.textures[TextureUsage.LightBuffer]);
+                context.GraphicsDevice.SamplerStates[lightBufferIndex] = SamplerState.PointClamp;
+            }
+        }
+
+        protected internal override void EndApplyLocalParameters(DrawingContext context)
+        {
+            if (lightBufferParameter != null)
+                context.GraphicsDevice.SamplerStates[lightBufferIndex] = context.Settings.DefaultSamplerState;
         }
 
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)

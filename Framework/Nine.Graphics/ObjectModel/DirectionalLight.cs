@@ -152,7 +152,7 @@ namespace Nine.Graphics.ObjectModel
                     Material = deferredMaterial = new DeferredDirectionalLightMaterial(Context.GraphicsDevice)
                 };
             }
-            deferredMaterial.effect.HalfPixel.SetValue(context.HalfPixel);
+            deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];
             deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);
             deferredMaterial.effect.EyePosition.SetValue(context.EyePosition);
             deferredMaterial.effect.Direction.SetValue(Direction);

@@ -91,6 +91,7 @@ namespace Nine.Graphics.Materials.Test
         {
             MaterialGroup materialGroup = new MaterialGroup();
             materialGroup.MaterialParts.Add(new DiffuseMaterialPart());
+            materialGroup.MaterialParts.Add(new NormalMapMaterialPart());
             materialGroup.MaterialParts.Add(new SpecularMaterialPart());
             materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
             MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);

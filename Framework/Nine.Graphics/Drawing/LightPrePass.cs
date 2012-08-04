@@ -191,7 +191,9 @@ namespace Nine.Graphics.Drawing
 
             CreateDepthNormalBuffers();
 
-            // TODO: Maintain RT stack
+            // Maintain render target stack
+            GraphicsExtensions.PushRenderTarget(context.GraphicsDevice, null);
+
             renderTargetBinding[0] = new RenderTargetBinding(depthBuffer);
             renderTargetBinding[1] = new RenderTargetBinding(normalBuffer);
 
@@ -208,6 +210,8 @@ namespace Nine.Graphics.Drawing
         {
             if (!hasSceneBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
+
+            GraphicsExtensions.PopRenderTarget(context.GraphicsDevice);
 
             context.textures[TextureUsage.DepthBuffer] = DepthBuffer;
             context.textures[TextureUsage.NormalBuffer] = NormalBuffer;
@@ -230,7 +234,8 @@ namespace Nine.Graphics.Drawing
             lightBuffer.Begin();
 
             // Setup render states for light rendering
-            GraphicsDevice.Clear(new Color(new Vector4(context.AmbientLightColor, 1)));
+            // Clear specular intensity to 0
+            GraphicsDevice.Clear(new Color(new Vector4(context.AmbientLightColor, 0)));
 
             // Set render state for lights
             GraphicsDevice.BlendState = lightBlendState;
@@ -271,9 +276,6 @@ namespace Nine.Graphics.Drawing
 
                     // Draw the model, using the specified effect.
                     // Setup correct cull mode so that each pixel is rendered only once.
-                    //
-                    // NOTE: Setup cullmode after applying effect so that the world matrix of
-                    //       DeferredSpotLight is alway updated before calling Contains.
                     GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                     GraphicsDevice.DepthStencilState = greaterDepth;
 
