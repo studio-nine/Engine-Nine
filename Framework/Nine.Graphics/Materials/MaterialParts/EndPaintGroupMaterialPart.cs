@@ -9,12 +9,12 @@
 
         protected internal override MaterialPart Clone()
         {
-            return new EndLightMaterialPart();
+            return new EndPaintGroupMaterialPart();
         }
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("EndPaintGroup") : null;
+            return GetShaderCode("EndPaintGroup");
         }
     }
 }

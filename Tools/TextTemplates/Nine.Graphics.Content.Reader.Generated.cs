@@ -323,8 +323,9 @@ namespace Nine.Graphics.Materials
             if (existingInstance == null)
                 existingInstance = new CustomMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.DefaultShaderCode = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -519,6 +520,8 @@ namespace Nine.Graphics.Materials
                     existingInstance.MaterialParts.Add(input.ReadObject<Nine.Graphics.Materials.MaterialPart>());
             }
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -580,6 +583,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.AlphaFunction = input.ReadObject<Microsoft.Xna.Framework.Graphics.CompareFunction>();
             existingInstance.ReferenceAlpha = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -597,6 +602,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new BeginLightMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -614,6 +621,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new BeginPaintGroupMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -632,6 +641,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ColorMatrix = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -650,6 +661,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new DeferredLightsMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -668,6 +681,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new DepthAndNormalMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -685,6 +700,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new DepthMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -706,6 +723,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.Distance = input.ReadSingle();
             existingInstance.DetailTextureScale = input.ReadVector2();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -730,6 +749,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.OverlayColor = input.ReadVector3();
             existingInstance.TextureAlphaUsage = input.ReadObject<Nine.Graphics.Materials.MaterialParts.TextureAlphaUsage>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -747,6 +768,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new DirectionalLightMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -765,6 +788,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Texture2 = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -786,6 +811,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.EmissiveMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.EmissiveColor = input.ReadVector3();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -803,6 +830,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new EndLightMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -820,6 +849,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new EndPaintGroupMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -837,6 +868,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new FogMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -854,6 +887,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new InstancedMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -872,6 +907,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -894,6 +931,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.ShadowMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SampleCount = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -913,6 +952,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.MaxBones = input.ReadInt32();
             existingInstance.WeightsPerVertex = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -935,6 +976,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.SpecularPower = input.ReadSingle();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -952,6 +995,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new TangentTransformMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -970,6 +1015,8 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.TextureTransform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }
@@ -987,6 +1034,8 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new VertexTransformMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }

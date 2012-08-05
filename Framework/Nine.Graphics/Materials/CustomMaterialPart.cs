@@ -1,5 +1,7 @@
 namespace Nine.Graphics.Materials
 {
+    using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework.Content;
@@ -10,13 +12,30 @@ namespace Nine.Graphics.Materials
     /// Represents a basic building block of a material group.
     /// </summary>
     [ContentSerializable]
-    [ContentProperty("DefaultShaderCode")]    
+    [ContentProperty("ShaderCode")]    
     public class CustomMaterialPart : MaterialPart, IEffectParameterProvider
     {
         /// <summary>
+        /// Gets or sets the usages of the default shader code.
+        /// </summary>
+        [ContentSerializerIgnore]
+        public string ShaderUsages
+        {
+            get { return usages; }
+            set 
+            {
+                if (!string.IsNullOrEmpty(usages = value))
+                    shaderUsages = value.Split(',').Select(str => (MaterialUsage)Enum.Parse(typeof(MaterialUsage), str.Trim())).ToArray();
+            }
+        }
+        private string usages;
+        private MaterialUsage[] shaderUsages;
+
+        /// <summary>
         /// Gets or sets the shader code when material usage is default.
         /// </summary>
-        public string DefaultShaderCode { get; set; }
+        [ContentSerializerIgnore]
+        public string ShaderCode { get; set; }
 
         /// <summary>
         /// Gets a dictionary containing all the HLSL shader code with different material usage.
@@ -31,7 +50,6 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets the parameters unique to this custom material instance.
         /// </summary>
-        [ContentSerializerIgnore]
         public CustomMaterialParameterCollection Parameters
         {
             get { return parameters; }
@@ -75,8 +93,13 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            if (usage == MaterialUsage.Default && !string.IsNullOrEmpty(DefaultShaderCode))
-                return DefaultShaderCode;
+            if (!string.IsNullOrEmpty(ShaderCode))
+            {
+                if (usage == MaterialUsage.Default)
+                    return ShaderCode;
+                if (shaderUsages != null && shaderUsages.Contains(usage))
+                    return ShaderCode;
+            }
             string code = null;
             if (shaderCodes != null)
                 shaderCodes.TryGetValue(usage, out code);            
@@ -88,13 +111,19 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override MaterialPart Clone()
         {
-            return new CustomMaterialPart();
+            var result = new CustomMaterialPart();
+            result.usages = usages;
+            result.shaderUsages = shaderUsages;
+            result.ShaderCode = ShaderCode;
+            result.shaderCodes = ShaderCodes;
+            result.parameters = parameters;
+            return result;
         }
 
         #region IEffectParameterProvider
         IEnumerable<EffectParameter> IEffectParameterProvider.GetParameters()
         {
-            if (MaterialGroup != null && MaterialGroup.Effect != null)
+            if (MaterialGroup != null && MaterialGroup.Effect != null && ParameterSuffix != null)
             {
                 foreach (EffectParameter parameter in MaterialGroup.Effect.Parameters)
                     if (parameter.Name.EndsWith(ParameterSuffix))

@@ -1,6 +1,5 @@
 namespace Nine.Graphics.Materials
 {
-
     /// <summary>
     /// Defines commonly used material usages.
     /// </summary>

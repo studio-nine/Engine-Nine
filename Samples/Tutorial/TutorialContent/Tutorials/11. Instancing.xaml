@@ -16,15 +16,38 @@
         </DistributionMap.DistributionMap>
         <Cross>
             <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True">
+                <!-- 
+                    Seting the ShaderUsages property to Depth to indicate that this CustomMaterialPart will be
+                    affecting the depth buffer generation shader.
+                -->
+                <CustomMaterialPart ShaderUsages="Depth" xml:space="preserve">
+                    <![CDATA[
+                        float Time:TIME;
+                        void VertexShader(float2 uv:TEXCOORD0, inout float4 position:POSITION0)
+                        {
+                            position.x += sin(Time) * (1 - uv.y) * 0.1;
+                        }
+                    ]]>
+                </CustomMaterialPart>
                 <DiffuseMaterialPart />
                 <AlphaTestMaterialPart ReferenceAlpha="200" />
                 
                 <MaterialGroup.NextMaterial>
                     <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True" IsTransparent="True">
+                        <CustomMaterialPart xml:space="preserve">
+                            <![CDATA[
+                                float Time:TIME;
+                                void VertexShader(float2 uv:TEXCOORD0, inout float4 position:POSITION0)
+                                {
+                                    position.x += sin(Time) * (1 - uv.y) * 0.1;
+                                }
+                            ]]>
+                        </CustomMaterialPart>
                         <DiffuseMaterialPart />
                         <AlphaTestMaterialPart AlphaFunction="LessEqual" ReferenceAlpha="200" />
                     </MaterialGroup>
                 </MaterialGroup.NextMaterial>
+
             </MaterialGroup>
         </Cross>
     </InstancedModel>
@@ -46,4 +69,5 @@
 
     <DepthOfFieldEffect BlurAmount="20"/>
     <AntiAliasEffect />
+
 </Scene>

@@ -88,6 +88,43 @@ namespace Nine.Graphics.Materials
         }
 
         /// <summary>
+        /// Gets the material with the specified usage that is attached to this material.
+        /// </summary>
+        protected internal override void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance)
+        {
+            var result = ((MaterialPaintGroup)existingInstance);
+            var srcCount = materialParts.Count;
+            var destCount = result.materialParts.Count;
+            if (srcCount > 0 && destCount > 0)
+            {
+                var src = 0;
+                var dest = 0;
+                var srcPart = materialParts[0];
+                var destPart = result.materialParts[0];
+                var srcType = srcPart.GetType();
+                var destType = destPart.GetType();
+
+                // Source material parts is a super set of destination material parts.
+                while (dest < destCount)
+                {
+                    destPart = result.materialParts[dest++];
+                    destType = destPart.GetType();
+
+                    while (src < srcCount)
+                    {
+                        srcPart = materialParts[src++];
+                        srcType = srcPart.GetType();
+                        if (srcType == destType)
+                        {
+                            srcPart.OnResolveMaterialPart(usage, destPart);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Sets the texture based on the texture usage.
         /// </summary>
         public override void SetTexture(TextureUsage textureUsage, Texture texture)
@@ -119,7 +156,10 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected internal override MaterialPart Clone()
         {
-            return new MaterialPaintGroup();
+            var result = new MaterialPaintGroup();
+            for (int i = 0; i < materialParts.Count; i++)
+                result.MaterialParts.Add(materialParts[i].Clone());
+            return result;
         }
 
         #region MaskTextureScale

@@ -5,13 +5,13 @@ sampler LightSampler = sampler_state
     Texture = (LightTexture);
 };
 
-void PixelShader(float4 positionProjection, inout float3 lightDiffuse, inout float3 lightSpecular)
+void PixelShader(float4 positionProjection, out float4 color:COLOR0, float4 diffuse = 1, float3 specular = 0, float3 emissive = 0)
 {
     positionProjection.y = -positionProjection.y;
     
     float2 lightUV = (positionProjection.xy / positionProjection.w) * 0.5f + 0.5f + HalfPixel;
     float4 light = tex2D(LightSampler, lightUV);
-
-    lightDiffuse = light.rgb;
-    lightSpecular =  light.a;
+        
+    diffuse.rgb = diffuse.rgb * (light.rgb + emissive)  + light.a * specular * diffuse.a;
+    color = diffuse;
 }

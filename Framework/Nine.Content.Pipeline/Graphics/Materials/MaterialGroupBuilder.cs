@@ -470,22 +470,38 @@
         public static CompiledEffectContent Build(MaterialGroup materialGroup, MaterialUsage usage, ContentProcessorContext context)
         {
             // Make sure we have the nesessary building blocks of a shader
-            var dependentPartTypes = new List<Type>();
-            dependentPartTypes.Add(typeof(VertexTransformMaterialPart));
             if (materialGroup.MaterialParts.Count <= 0)
                 materialGroup.MaterialParts.Add(new DiffuseMaterialPart() { DiffuseColorEnabled = false, TextureEnabled = false });
 
-            materialGroup.MaterialParts.ForEach(p => p.GetDependentParts(usage, dependentPartTypes));
-            for (int i = 0; i < dependentPartTypes.Count; i++)
+            var dependentPartTypes = new List<Type>();
+            for (int p = 0; p < materialGroup.MaterialParts.Count; p++)
             {
-                var type = dependentPartTypes[i];
-                if (!materialGroup.MaterialParts.Any(p => p.GetType() == type))
+                var currentPart = materialGroup.MaterialParts[p];
+                currentPart.GetDependentParts(usage, dependentPartTypes);
+                for (int i = 0; i < dependentPartTypes.Count; i++)
                 {
-                    var part = (MaterialPart)Activator.CreateInstance(type);
-                    part.GetDependentParts(usage, dependentPartTypes);
-                    materialGroup.MaterialParts.Add(part);
+                    var type = dependentPartTypes[i];
+                    if (!materialGroup.MaterialParts.Any(x => x.GetType() == type))
+                    {
+                        var part = (MaterialPart)Activator.CreateInstance(type);
+                        part.GetDependentParts(usage, dependentPartTypes);
+                        materialGroup.MaterialParts.Insert(++p, part);
+                    }
+                    else
+                    {
+                        var parts = materialGroup.MaterialParts.Where(x => x.GetType() == type && x != currentPart).ToArray();
+                        foreach (var pt in parts)
+                            materialGroup.MaterialParts.Remove(pt);
+                        p = materialGroup.MaterialParts.IndexOf(currentPart);
+                        foreach (var pt in parts)
+                            materialGroup.MaterialParts.Insert(++p, pt);
+                    }
                 }
+                dependentPartTypes.Clear();
             }
+
+            if (!materialGroup.MaterialParts.OfType<VertexTransformMaterialPart>().Any())
+                materialGroup.MaterialParts.Add(new VertexTransformMaterialPart());
 
             var builderContext = CreateMaterialGroupBuilderContext(materialGroup.MaterialParts, usage, true);
             if (builderContext.PixelShaderOutputs.Count <= 0)
@@ -728,7 +744,8 @@
             
             // Step 5: Argument simplification and validation
             builderContext.TemporaryPixelShaderVariables = (from arg in builderContext.PixelShaderOutputs
-                                             where simplify && (arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic))
+                                             where simplify && (arg.Semantic == null || !validPixelShaderOutputSemantic.IsMatch(arg.Semantic)) &&
+                                             !builderContext.PixelShaderInputs.Any(psi => psi.Name == arg.Name)
                                              select arg).ToList();
 
             // Remove duplicated pixel shader output semantics, keep only the last one.
@@ -737,6 +754,8 @@
                 if (builderContext.PixelShaderOutputs.Skip(i + 1).Any(a => a.Semantic == builderContext.PixelShaderOutputs[i].Semantic))
                 {
                     builderContext.TemporaryPixelShaderVariables.Add(builderContext.PixelShaderOutputs[i]);
+                    foreach (var psi in builderContext.PixelShaderInputs.Where(p => p.Name == builderContext.PixelShaderOutputs[i].Name))
+                        psi.Out = false;
                     builderContext.PixelShaderOutputs.RemoveAt(i);
                     i--;
                 }
@@ -756,13 +775,16 @@
                 else
                 {
                     var arg = new ArgumentDeclaration { Name = psi.Name, Type = psi.Type, Semantic = psi.Semantic, In = true, Out = true };
-                    builderContext.VertexShaderInputs.Add(arg);
+                    if (!builderContext.VertexShaderInputs.Any(vsi => vsi.Name == psi.Name))
+                        builderContext.VertexShaderInputs.Add(arg);
+                    else
+                        builderContext.VertexShaderInputs.Where(vsi => vsi.Name == psi.Name).ForEach(vsi => vsi.Out = true);
                     builderContext.VertexShaderOutputs.Add(arg);
                 }
             }
 
             // Remove temporary duplicates
-            builderContext.TemporaryPixelShaderVariables = builderContext.TemporaryPixelShaderVariables.Distinct(argumentEqualtyComparer).ToList();
+            builderContext.TemporaryPixelShaderVariables = builderContext.TemporaryPixelShaderVariables.Distinct(argumentEqualtyComparer).ToList();            
 
             // Valid vertex shader input semantic
             foreach (var input in builderContext.VertexShaderInputs)
@@ -818,6 +840,12 @@
                     }
             }
             builderContext.PixelShaderOutputs.RemoveAll(pso => builderContext.PixelShaderInputs.Any(psi => psi.Name == pso.Name) || builderContext.TemporaryPixelShaderVariables.Any(t => t.Name == pso.Name));
+            if (simplify)
+                foreach (var psi in builderContext.PixelShaderInputs)
+                    psi.Out = false;
+
+            // Merge vertex shader inout parameters
+            builderContext.VertexShaderOutputs.RemoveAll(vso => vso.In && builderContext.VertexShaderInputs.Any(vsi =>vsi.Name == vso.Name));
             return builderContext;
         }
 

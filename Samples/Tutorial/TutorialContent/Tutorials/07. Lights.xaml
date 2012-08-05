@@ -21,16 +21,27 @@
         To enable deferred lighting on an object, you have to choose the appropriate material that supports
         this lighting technique. Add DeferredLightsMaterialPart to a MaterialGroup to enable deferred lighting.
     -->
-    <Surface Heightmap.Width="64" Heightmap.Height="64" Heightmap.Step="1" PatchSegmentCount="8"
-             Transform.Position="-32, 0, -32" TextureTransform.Scale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
-        <MaterialGroup>
-            <SpecularMaterialPart />
-            <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" TextureEnabled="True"/>
-            <NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
+    <Surface Heightmap.Width="128" Heightmap.Height="128" Heightmap.Step="1" PatchSegmentCount="8"
+             Transform.Position="-64, 0, -64" TextureTransform.Scale="0.2, 0.2" VertexType="VertexPositionNormalTangentBinormalTexture">
+        <MaterialGroup MaterialPaintGroup.MaskTextureScale="5, 5">
+            <MaterialPaintGroup.MaskTextures>
+                <Splatter>
+                    <ExternalReference />
+                    <ExternalReference>../../Content/Terrain/2.bmp</ExternalReference>
+                </Splatter>
+            </MaterialPaintGroup.MaskTextures>
+            <MaterialPaintGroup>
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" />
+            </MaterialPaintGroup>
+            <MaterialPaintGroup>
+                <DiffuseMaterialPart Texture="{ContentReference ../Textures/box}" />
+                <SpecularMaterialPart SpecularColor="0.5, 0.5, 0.5" SpecularPower="64" />
+                <NormalMapMaterialPart NormalMap="{ContentReference ../Textures/box_n}" />
+            </MaterialPaintGroup>
             <DeferredLightsMaterialPart />
         </MaterialGroup>
     </Surface>
-    
+
     <Model Source="{ContentReference ../Models/Tank}">
         <Model.Material>
             <MaterialGroup>
@@ -39,25 +50,25 @@
             </MaterialGroup>
         </Model.Material>
     </Model>
-    
+
     <!-- Use debug material and full screen quad to view intermediate buffers -->
     <FullScreenQuad Name="Debug" Material="{DebugMaterial TextureUsage=NormalBuffer, SamplerState=PointClamp}" />
-    
-    
+
+
     <!-- Animations can also be applied to lights. -->
     <DrawingGroup>
         <PointLight Name="Light1" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, 20" />
         <PointLight Name="Light2" DiffuseColor="1, 0, 0" Transform.Position="20, 2, 20" />
         <PointLight Name="Light3" DiffuseColor="0, 0, 1" Transform.Position="-20, 2, -20" />
-        <SpotLight Name="Light4" Enabled="False" DiffuseColor="1, 0, 0" OuterAngle="30" InnerAngle="10" Range="25" />
+        <SpotLight Name="Light4" DiffuseColor="1, 1, 1" Transform.Position="0, 2 , -20" OuterAngle="{Degrees 30}" InnerAngle="{Degrees 10}" Range="25" />
 
         <DrawingGroup.Animations>
             <AnimationGroup>
                 <SingleAnimation TargetProperty="['Light1'].Attenuation" From="0" To="1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
                 <SingleAnimation TargetProperty="['Light2'].Range" From="0" To="10" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
-                <Vector3Animation TargetProperty="['Light3'].DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />                
-                
-<!-- 
+                <Vector3Animation TargetProperty="['Light3'].DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
+
+                <!-- 
                 The following transform animation will animate the spot light around a circle.
                 <AnimationSequence Repeat="999999">
                     <MatrixAnimation TargetProperty="['Light4'].Transform" Duration="00:00:01" From="{Transform ;30, 0, 0;0, 0, 15;Yxz}" To=";30, 0, 180;0, 0, 15;Yxz"/>
@@ -66,7 +77,7 @@
                 -->
             </AnimationGroup>
         </DrawingGroup.Animations>
-        
+
     </DrawingGroup>
-    
+
 </Scene>

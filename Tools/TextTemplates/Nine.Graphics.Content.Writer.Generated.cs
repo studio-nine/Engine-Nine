@@ -488,8 +488,9 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Materials.CustomMaterialPart value)
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
-            WriteObject(output, value, "DefaultShaderCode", value.DefaultShaderCode);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -756,6 +757,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials
                     output.WriteObject(value.MaterialParts[i]);
             }
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -845,6 +848,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "AlphaFunction", value.AlphaFunction);
             output.Write(value.ReferenceAlpha);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -880,6 +885,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -915,6 +922,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -951,6 +960,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.ColorMatrix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -986,6 +997,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1021,6 +1034,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1056,6 +1071,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1095,6 +1112,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.Distance);
             output.Write(value.DetailTextureScale);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1137,6 +1156,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.OverlayColor);
             WriteObject(output, value, "TextureAlphaUsage", value.TextureAlphaUsage);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1172,6 +1193,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1208,6 +1231,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Texture2", value.Texture2);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1247,6 +1272,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "EmissiveMap", value.EmissiveMap);
             output.Write(value.EmissiveColor);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1282,6 +1309,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1317,6 +1346,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1352,6 +1383,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1387,6 +1420,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1423,6 +1458,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "NormalMap", value.NormalMap);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1463,6 +1500,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.SampleCount);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1500,6 +1539,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.MaxBones);
             output.Write(value.WeightsPerVertex);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1540,6 +1581,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.SpecularColor);
             output.Write(value.SpecularPower);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1575,6 +1618,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1611,6 +1656,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.TextureTransform);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -1646,6 +1693,8 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)

@@ -66,13 +66,13 @@
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_GenerateMipmaps>True</ProcessorParameters_GenerateMipmaps>
     </Compile>
-    <None Include="Tutorials\06. Terrain.xaml">
+    <Compile Include="Tutorials\06. Terrain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Name>06. Terrain</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\flake.png">
@@ -221,13 +221,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\01. Empty Scene.xaml">
+    <Compile Include="Tutorials\01. Empty Scene.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>01. Empty Scene</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tutorials\Tutorials.manifest">
@@ -237,22 +237,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\02. Models.xaml">
+    <Compile Include="Tutorials\02. Models.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>02. Models</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\09. Particle System.xaml">
+    <Compile Include="Tutorials\09. Particle System.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>09. Particle System</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Terrain\LandscapeDetail.tga">
@@ -282,13 +282,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\10. Post Processing.xaml">
+    <Compile Include="Tutorials\10. Post Processing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>10. Post Processing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TutorialData\TutorialData.csproj">
@@ -297,31 +297,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\03. Materials.xaml">
+    <Compile Include="Tutorials\03. Materials.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>03. Materials</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\04. Primitives.xaml">
+    <Compile Include="Tutorials\04. Primitives.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>04. Primitives</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\11. Instancing.xaml">
+    <Compile Include="Tutorials\11. Instancing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>11. Instancing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\nine.png">
@@ -333,13 +333,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\05. Animations.xaml">
+    <Compile Include="Tutorials\05. Animations.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>05. Animations</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Bitmap1.bmp">

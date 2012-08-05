@@ -39,14 +39,22 @@
             }
         }
 
+        protected internal override void OnResolveMaterialPart(MaterialUsage usage, MaterialPart existingInstance)
+        {
+            var part = (BeginPaintGroupMaterialPart)existingInstance;
+            part.maskTexture0 = maskTexture0;
+            part.maskTexture1 = maskTexture1;
+            part.maskTextureScale = maskTextureScale;
+        }
+
         protected internal override MaterialPart Clone()
         {
-            return new BeginLightMaterialPart();
+            return new BeginPaintGroupMaterialPart();
         }
 
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
-            return usage == MaterialUsage.Default ? GetShaderCode("BeginPaintGroup") : null;
+            return GetShaderCode("BeginPaintGroup");
         }
     }
 }

@@ -39,12 +39,6 @@
             passTypes.Add(typeof(LightPrePass));
         }
 
-        protected internal override void GetDependentParts(MaterialUsage usage, IList<Type> result)
-        {
-            result.Add(typeof(BeginLightMaterialPart));
-            result.Add(typeof(EndLightMaterialPart));
-        }
-
         protected internal override string GetShaderCode(MaterialUsage usage)
         {
             return usage == MaterialUsage.Default ? GetShaderCode("DeferredLights") : null;

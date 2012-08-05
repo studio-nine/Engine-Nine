@@ -160,5 +160,45 @@ namespace Nine.Graphics.Materials.Test
 
             MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
         }
+
+        [TestMethod()]
+        public void MaterialPaintGroupDeferredLightingTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            MaterialPaintGroup layer0 = new MaterialPaintGroup();
+            MaterialPaintGroup layer1 = new MaterialPaintGroup();
+
+            layer0.MaterialParts.Add(new DiffuseMaterialPart());
+            layer0.MaterialParts.Add(new SpecularMaterialPart());
+            layer0.MaterialParts.Add(new NormalMapMaterialPart());
+            layer1.MaterialParts.Add(new DiffuseMaterialPart());
+            layer1.MaterialParts.Add(new NormalMapMaterialPart());
+
+            materialGroup.MaterialParts.Add(layer0);
+            materialGroup.MaterialParts.Add(layer1);
+            materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
+
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.Default, new PipelineBuilder().ProcessorContext);
+        }
+
+        [TestMethod()]
+        public void MaterialPaintGroupDeferredLightingUsageTest()
+        {
+            MaterialGroup materialGroup = new MaterialGroup();
+            MaterialPaintGroup layer0 = new MaterialPaintGroup();
+            MaterialPaintGroup layer1 = new MaterialPaintGroup();
+
+            layer0.MaterialParts.Add(new DiffuseMaterialPart());
+            layer0.MaterialParts.Add(new SpecularMaterialPart());
+            layer0.MaterialParts.Add(new NormalMapMaterialPart());
+            layer1.MaterialParts.Add(new DiffuseMaterialPart());
+            layer1.MaterialParts.Add(new NormalMapMaterialPart());
+
+            materialGroup.MaterialParts.Add(layer0);
+            materialGroup.MaterialParts.Add(layer1);
+            materialGroup.MaterialParts.Add(new DeferredLightsMaterialPart());
+
+            MaterialGroupBuilder.Build(materialGroup, MaterialUsage.DepthAndNormal, new PipelineBuilder().ProcessorContext);
+        }
     }
 }

@@ -15,7 +15,7 @@
     {
         public override CustomMaterial Process(CustomMaterial input, ContentProcessorContext context)
         {
-            if (!string.IsNullOrEmpty(input.Code))
+            if (!string.IsNullOrEmpty(input.ShaderCode))
             {
                 if (input.Source != null)
                 {
@@ -24,7 +24,7 @@
                 }
                 
                 var hashString = new StringBuilder();
-                var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input.Code));
+                var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input.ShaderCode));
                 for (int i = 0; i < hash.Length; i++)
                 {
                     hashString.Append(hash[i].ToString("X2"));
@@ -34,14 +34,14 @@
                 var assetName = Path.Combine(ContentProcessorContextExtensions.DefaultOutputDirectory, name);
                 var sourceFile = Path.Combine(context.IntermediateDirectory, input.GetType().Name + "-" + name + ".fx");
 
-                File.WriteAllText(sourceFile, input.Code);
+                File.WriteAllText(sourceFile, input.ShaderCode);
 
                 var source = context.BuildAsset<EffectContent, CustomEffectContent>(
                     new ExternalReference<EffectContent>(sourceFile), "CustomEffectProcessor", null, null, assetName);
                 
                 XamlSerializer.SerializationData[new PropertyInstance(input, "Source")] =
                     new ContentReference<CompiledEffectContent>(source.Filename);
-                input.Code = null;
+                input.ShaderCode = null;
             }
             return input;
         }

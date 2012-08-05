@@ -12,17 +12,10 @@ namespace Nine.Graphics.Materials
     /// Represents a basic building block of a material group.
     /// </summary>
     [ContentSerializable]
-    [RuntimeNameProperty("Name")]
-    [DictionaryKeyProperty("Name")]
-    public abstract class MaterialPart
+    public abstract class MaterialPart : Nine.Object
     {
         [ContentSerializer]
         internal string ParameterSuffix;
-
-        /// <summary>
-        /// Gets or sets the name of this material part.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Gets the EffectParts from the parent LinkedEffectContent.

@@ -39,7 +39,7 @@ namespace Nine.Graphics.Materials
         /// </summary>
         [ContentSerializerIgnore]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string Code { get; set; }
+        public string ShaderCode { get; set; }
 
         /// <summary>
         /// Gets the parameters unique to this custom material instance.
