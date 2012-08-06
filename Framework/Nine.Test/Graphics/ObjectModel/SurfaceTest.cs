@@ -1,4 +1,4 @@
-﻿namespace Nine.Graphics.ObjectModel.Test
+﻿namespace Nine.Graphics.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Xna.Framework;

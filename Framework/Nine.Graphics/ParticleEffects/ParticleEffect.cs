@@ -9,7 +9,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
     using Nine.Graphics.Primitives;
 
     /// <summary>
@@ -524,7 +524,7 @@
             if (toBeRemoved > 0)
             {
                 // Remove this particle system from the parent container
-                var container = Parent as Nine.Graphics.ObjectModel.IContainer;
+                var container = Parent as Nine.IContainer;
                 if (container != null && container.Children != null)
                     container.Children.Remove(this);
                 return;

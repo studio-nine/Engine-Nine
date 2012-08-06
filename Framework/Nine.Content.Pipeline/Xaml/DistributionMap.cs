@@ -6,7 +6,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     public class DistributionMap
     {

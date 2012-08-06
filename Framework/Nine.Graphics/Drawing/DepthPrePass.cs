@@ -6,7 +6,7 @@ namespace Nine.Graphics.Drawing
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Defines a pass that draws the scene depth buffer prior to the actual rendering.

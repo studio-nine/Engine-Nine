@@ -73,6 +73,32 @@ namespace Nine
         }
     }
     /// <summary>
+    /// Content reader for <c>Group</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class GroupReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Group>
+    {
+        protected override Nine.Group Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Group existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Group();
+            existingInstance.Visible = input.ReadBoolean();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Children.Add(input.ReadObject<System.Object>());
+            }
+            existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>LinearCurve</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -84,6 +110,32 @@ namespace Nine
         {
             if (existingInstance == null)
                 existingInstance = new LinearCurve();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Scene</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SceneReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Scene>
+    {
+        protected override Nine.Scene Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Scene existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Scene();
+            existingInstance.Visible = input.ReadBoolean();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Children.Add(input.ReadObject<System.Object>());
+            }
+            existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }

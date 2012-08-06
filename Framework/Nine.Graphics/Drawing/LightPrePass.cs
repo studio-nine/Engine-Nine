@@ -6,7 +6,7 @@ namespace Nine.Graphics.Drawing
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Defines a light used by deferred rendering.

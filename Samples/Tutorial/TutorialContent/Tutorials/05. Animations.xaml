@@ -5,25 +5,23 @@
     <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     
-    <!--
-        To enable animation, objects that needs to be animated have to be grouped together under a DrawingGroup.
-    -->
-    <DrawingGroup>        
-        <DrawingGroup.Animations>
+    <!-- To enable animation, objects that needs to be animated have to be grouped together under a Group. -->
+    <Group>        
+        <Group.Animations>
             <!--
                 In the Animations property of display object, add a new animation with a name key.                
-                The following animation is a tween animation that changes the alpha property of the tank model.                
+                The following animation is a tween animation that changes the alpha property of the tank model.
                 Note that tween animation can only reference the direct children of the diplay object.
             -->
             <SingleAnimation TargetProperty="['Tank'].Material.Alpha"
                              From="1" To="0" Curve="{x:Static Curves.Sin}" Repeat="999999" Easing="In" AutoReverse="True" />
-        </DrawingGroup.Animations>
+        </Group.Animations>
         
         <!-- To enable animation, you have to give the object a name -->
         <Model Name="Tank" Source="{ContentReference ../Models/Tank}" Material="{BasicMaterial}" />
         
         <!-- Drawing group can also be nested to create a transform hierarchy. -->
-        <DrawingGroup Transform.Position="-10,0,0" Name="NestedObject">
+        <Group Transform.Position="-10,0,0" Name="NestedObject">
 
             <Model Name="Dude" Source="{ContentReference ../Models/Dude}" Material="{SkinnedMaterial}" />            
             <Model Name="Dude2" Transform.Position="0,0,-10" Source="{ContentReference ../Models/Dude}"/>
@@ -35,16 +33,16 @@
                 Drawing group can also be used to bind transforms. Here is a demonstration to attach the tree
                 model to the right hand of the dude model. You can also adjust the bind transform.
             -->
-            <DrawingGroup.TransformBindings>
                 <!--
+            <Group.TransformBindings>
                 <TransformBinding Source="{x:Reference MyCamera}" Target="{x:Reference Dude}" TargetBone="R_Hand" />
                 <TransformBinding Source="{x:Reference Dude2}" Target="{x:Reference Dude}" ShareSkeleton="True" Position="-5, 0, 0" />
                 <TransformBinding Source="{x:Reference Tree}" Target="{x:Reference Dude}" TargetBone="R_Hand"
                                   Scale="0.25, 0.25, 0.25" Position="0.2, 0.3, -0.6" Rotation="15, 15, 0" />
+            </Group.TransformBindings>
                 -->
-            </DrawingGroup.TransformBindings>
 
-            <DrawingGroup.Animations>                
+            <Group.Animations>                
                 <!--
                     AnimationGroup plays the contained animations in parallel while AnimationSequence 
                     plays them one by one.
@@ -73,7 +71,7 @@
                         </MatrixAnimation.To>
                     </MatrixAnimation>
                 </AnimationGroup>
-            </DrawingGroup.Animations> 
-        </DrawingGroup>
-    </DrawingGroup>
+            </Group.Animations> 
+        </Group>
+    </Group>
 </Scene>

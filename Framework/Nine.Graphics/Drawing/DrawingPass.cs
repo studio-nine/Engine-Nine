@@ -3,7 +3,7 @@ namespace Nine.Graphics.Drawing
     using System.Collections.Generic;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// A drawing pass represents a single pass in the composition chain.

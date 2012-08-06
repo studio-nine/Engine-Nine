@@ -6,9 +6,8 @@ namespace Nine
 
     /// <summary>
     /// Manages a collection of objects using grids.
-
     /// </summary>
-    public class GridSceneManager : UniformGrid, ISceneManager
+    public class GridSceneManager : UniformGrid, ISceneManager<ISpatialQueryable>
     {
         private GridSceneManagerEntry<ISpatialQueryable>[] Data;
         private float rayPickPrecision = float.MaxValue;

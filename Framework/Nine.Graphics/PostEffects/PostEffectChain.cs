@@ -7,7 +7,7 @@
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Represents post processing effects.

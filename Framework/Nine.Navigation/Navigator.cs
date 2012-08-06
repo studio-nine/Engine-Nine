@@ -5,7 +5,6 @@ namespace Nine.Navigation
     using Microsoft.Xna.Framework;
     using Nine.Navigation.Steering;
     
-
     /// <summary>
     /// Defines the state of a <see cref="Navigator"/>
     /// </summary>
@@ -25,7 +24,7 @@ namespace Nine.Navigation
     /// <summary>
     /// Represents a basic navigator to simulate game object movement.
     /// </summary>
-    public class Navigator : Nine.IUpdateable, ISpatialQueryable
+    public class Navigator : Transformable, Nine.IUpdateable, ISpatialQueryable
     {
         #region Fields
         private Steerable steerable;
@@ -51,20 +50,6 @@ namespace Nine.Navigation
         /// Gets the current state of this <see cref="Navigator"/>.
         /// </summary>
         public NavigatorState State { get; private set; }
-
-        /// <summary>
-        /// Gets the world transformation matrix this navigator.
-        /// </summary>
-        public Matrix Transform 
-        {
-            get 
-            {
-                return Matrix.CreateFromAxisAngle(Vector3.Up, Rotation - MathHelper.PiOver2) *
-                       Matrix.CreateTranslation(Position);
-                //return Matrix.CreateFromAxisAngle(Vector3.Up, (float)(Math.Atan2(steerable.Forward.Y, steerable.Forward.X)) - MathHelper.PiOver2) *
-                //       Matrix.CreateTranslation(Position);
-            }
-        }
 
         /// <summary>
         /// Gets or sets the current position of this navigator.
@@ -390,6 +375,9 @@ namespace Nine.Navigation
             realHeight = height;
 
             UpdateRotation(elapsedTime, facing);
+
+            Transform = Matrix.CreateFromAxisAngle(Vector3.Up, Rotation - MathHelper.PiOver2) *
+                        Matrix.CreateTranslation(Position);
         }
 
         private void UpdateRotation(float elapsedSeconds, Vector3 facing)

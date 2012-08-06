@@ -56,13 +56,13 @@
 
 
     <!-- Animations can also be applied to lights. -->
-    <DrawingGroup>
+    <Group>
         <PointLight Name="Light1" DiffuseColor="0, 1, 0" Transform.Position="-20, 2, 20" />
         <PointLight Name="Light2" DiffuseColor="1, 0, 0" Transform.Position="20, 2, 20" />
         <PointLight Name="Light3" DiffuseColor="0, 0, 1" Transform.Position="-20, 2, -20" />
         <SpotLight Name="Light4" DiffuseColor="1, 1, 1" Transform.Position="0, 2 , -20" OuterAngle="{Degrees 30}" InnerAngle="{Degrees 10}" Range="25" />
 
-        <DrawingGroup.Animations>
+        <Group.Animations>
             <AnimationGroup>
                 <SingleAnimation TargetProperty="['Light1'].Attenuation" From="0" To="1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
                 <SingleAnimation TargetProperty="['Light2'].Range" From="0" To="10" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
@@ -76,8 +76,8 @@
                 </AnimationSequence>
                 -->
             </AnimationGroup>
-        </DrawingGroup.Animations>
+        </Group.Animations>
 
-    </DrawingGroup>
+    </Group>
 
 </Scene>

@@ -5,7 +5,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Materials.MaterialParts;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     [DefaultContentProcessor]
     [EditorBrowsable(EditorBrowsableState.Never)]

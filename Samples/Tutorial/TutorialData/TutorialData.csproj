@@ -49,6 +49,7 @@
     <Reference Include="mscorlib" />
     <Reference Include="Nine, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9, processorArchitecture=x86" />
     <Reference Include="System" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>

@@ -71,9 +71,7 @@
     <Compile Include="..\..\Build\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="PathGraphComponent.cs" />
     <Compile Include="PathGraph.cs" />
-    <Compile Include="NavigatorComponent.cs" />
     <Compile Include="GraphSearch.cs" />
     <Compile Include="Navigator.cs" />
     <Compile Include="PathGrid.cs" />
@@ -89,7 +87,6 @@
     <Compile Include="Steering\SteeringHelper.cs" />
     <Compile Include="Steering\StuckAvoidanceBehavior.cs" />
     <Compile Include="Steering\WallAvoidanceBehavior.cs" />
-    <Compile Include="WorldExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.snk" />

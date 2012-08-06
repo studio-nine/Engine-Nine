@@ -37,9 +37,25 @@ namespace Nine.Graphics.Materials
         private List<KeyValuePair<CustomEffectSemantics, EffectParameter>> localParameters;
 
         /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </summary>
+        public int Count
+        {
+            get { return nameToIndex != null ? nameToIndex.Count : 0; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CustomMaterialParameterCollection"/> class.
         /// </summary>
         internal CustomMaterialParameterCollection() { }
+
+        /// <summary>
+        /// Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+        /// </summary>
+        public void Add(string key, object value)
+        {
+            this[key] = value;
+        }
 
         /// <summary>
         /// Binds all the parameters.
@@ -186,11 +202,6 @@ namespace Nine.Graphics.Materials
         }
 
         #region Dictionary
-        void IDictionary<string, object>.Add(string key, object value)
-        {
-            this[key] = value;
-        }
-
         bool IDictionary<string, object>.ContainsKey(string key)
         {
             return nameToIndex != null && nameToIndex.ContainsKey(key);
@@ -234,11 +245,6 @@ namespace Nine.Graphics.Materials
         void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
             throw new NotSupportedException();
-        }
-
-        int ICollection<KeyValuePair<string, object>>.Count
-        {
-            get { return nameToIndex != null ? nameToIndex.Count : 0; }
         }
 
         bool ICollection<KeyValuePair<string, object>>.IsReadOnly

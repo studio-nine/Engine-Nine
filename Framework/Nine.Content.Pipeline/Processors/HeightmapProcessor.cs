@@ -4,7 +4,7 @@
     using System.ComponentModel;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Turns a heightmap into a terrain geometry.

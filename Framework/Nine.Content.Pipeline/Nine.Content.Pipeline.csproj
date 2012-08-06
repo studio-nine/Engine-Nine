@@ -134,8 +134,6 @@
     <Compile Include="Graphics\PipelineGraphics.cs" />
     <Compile Include="Navigation\PathGridBuilder.cs" />
     <Compile Include="Navigation\PathGridContent.cs" />
-    <Compile Include="Physics\PhysicsComponentContent.cs" />
-    <Compile Include="Physics\PhysicsShapeContent.cs" />
     <Compile Include="Processors\CustomMaterialProcessor.cs" />
     <Compile Include="Processors\CustomEffectProcessor.cs" />
     <Compile Include="Processors\DefaultContentProcessor.cs" />
@@ -166,7 +164,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WorldPart.cs" />
     <Compile Include="Xaml\Degrees.cs" />
     <Compile Include="Xaml\ExternalReference.cs" />
     <Compile Include="Xaml\TextureTransform.cs" />

@@ -5,10 +5,11 @@ namespace Nine.Graphics.Drawing
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics;
+    using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.ObjectModel;
     using Nine.Graphics.PostEffects;
-    using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
+    using DirectionalLight = Nine.Graphics.DirectionalLight;
 
     /// <summary>
     /// A drawing context contains commonly used global parameters for rendering.
@@ -21,6 +22,16 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public GraphicsDevice GraphicsDevice { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the active camera.
+        /// </summary>
+        public ICamera Camera
+        {
+            get { return camera ?? (camera = new FreeCamera(GraphicsDevice)); }
+            set { camera = value; }
+        }
+        private ICamera camera;
+        
         /// <summary>
         /// Gets the graphics settings
         /// </summary>
@@ -187,8 +198,8 @@ namespace Nine.Graphics.Drawing
         #endregion
 
         #region Fields
-        private Scene scene;
         private bool isDrawing = false;
+        private ISpatialQuery spatialQuery;
         private FastList<Pass> activePasses = new FastList<Pass>();
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
         private FastList<SurfaceFormat?> preferedFormats = new FastList<SurfaceFormat?>();
@@ -201,15 +212,15 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
-        public DrawingContext(GraphicsDevice graphics, Scene scene)
+        public DrawingContext(GraphicsDevice graphics, ISpatialQuery spatialQuery)
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
-            if (scene == null)
-                throw new ArgumentNullException("scene");
+            if (spatialQuery == null)
+                throw new ArgumentNullException("spatialQuery");
 
-            this.scene = scene;
-            this.Drawables = scene.CreateSpatialQuery<IDrawableObject>();
+            this.spatialQuery = spatialQuery;
+            this.Drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>();
             this.Settings = new Settings();
             this.GraphicsDevice = graphics;
             this.Statistics = new Statistics();
@@ -267,7 +278,22 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public ISpatialQuery<T> CreateSpatialQuery<T>() where T : class
         {
-            return scene.CreateSpatialQuery<T>();
+            return spatialQuery.CreateSpatialQuery<T>();
+        }
+
+        /// <summary>
+        /// Draws the specified scene.
+        /// </summary>
+        public void Draw(TimeSpan elapsedTime)
+        {
+            var activeCamera = Camera;
+
+            // TODO: May update the camera twice if it has already been added to the scene
+            var updateable = activeCamera as Nine.IUpdateable;
+            if (updateable != null)
+                updateable.Update(elapsedTime);
+
+            Draw(elapsedTime, activeCamera.View, activeCamera.Projection);
         }
 
         /// <summary>

@@ -3,7 +3,7 @@ namespace Nine.Graphics.Cameras
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.

@@ -9,10 +9,9 @@ namespace Nine
     #region QuadTreeSceneManager
     /// <summary>
     /// Manages a collection of objects using quad tree.
-
     /// </summary>
     [DebuggerDisplay("Count = {Count}")]
-    public class QuadTreeSceneManager : ISceneManager
+    public class QuadTreeSceneManager : ISceneManager<ISpatialQueryable>
     {
         internal QuadTree<QuadTreeSceneManagerNodeData<ISpatialQueryable>> Tree;
 

@@ -26,20 +26,5 @@
 
             Assert.AreEqual(2, model.Meshes.Count);
         }
-
-        [TestMethod]
-        [DeploymentItem(@"Nine.Test\Content\TestWorld.xaml")]
-        [DeploymentItem(@"..\Samples\Content\Models\Terrain\SkyCubeMap.dds")]
-        [DeploymentItem(@"..\Samples\Content\Models\Palm\AlphaPalm.x")]
-        [DeploymentItem(@"..\Samples\Content\Models\Palm\Palm.tga")]
-        [DeploymentItem(@"..\Samples\Content\Models\Palm\PalmLeave.tga")]
-        public void LoadWorldTest()
-        {
-            var cubeMap = PipelineBuilder.Load<TextureCube>("SkyCubeMap.dds");
-            var world = PipelineBuilder.Load<World>("TestWorld.xaml");
-
-            Assert.IsNotNull(world);
-            //Assert.AreEqual(1, world.WorldObjects.Count);
-        }
     }
 }

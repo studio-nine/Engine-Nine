@@ -306,7 +306,7 @@
         /// <summary>
         /// Initializes a new instance of <c>ModelSkeleton</c>.
         /// </summary>
-        public ModelSkeleton(Model model)
+        public ModelSkeleton(Microsoft.Xna.Framework.Graphics.Model model)
         {
             if (model == null)
                 throw new ArgumentNullException("model");
@@ -327,7 +327,7 @@
         #region Collections
         class BoneNameCollection : IList<string>
         {
-            internal Model Model;
+            internal Microsoft.Xna.Framework.Graphics.Model Model;
 
             public int IndexOf(string item)
             {
@@ -402,7 +402,7 @@
 
         class ParentBoneCollection : IList<int>
         {
-            internal Model Model;
+            internal Microsoft.Xna.Framework.Graphics.Model Model;
 
             public int IndexOf(int item)
             {

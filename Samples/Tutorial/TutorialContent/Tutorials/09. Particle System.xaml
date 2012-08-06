@@ -32,8 +32,8 @@
         <FadeController />
     </ParticleEffect>
 
-    <!-- Particle effects can also be combined using DrawingGroup -->
-    <DrawingGroup Transform.Position="0, 6, 0">
+    <!-- Particle effects can also be combined using Group -->
+    <Group Transform.Position="0, 6, 0">
 	
 		<ParticleEffect Name="Snowball" Texture="{ContentReference ../Textures/flake}">
             <ParticleEffect.Emitter>
@@ -65,7 +65,7 @@
         </ParticleEffect>
         
         Particle system can also be animated using tween animation
-        <DrawingGroup.Animations>
+        <Group.Animations>
             <LayeredAnimation x:Key="Default">
                 <Vector3Animation TargetProperty="['Fireball'].Position" Duration="00:00:03"
                                          Curve="Sin" AutoReverse="True" Repeat="999999" From="-20, 15, 0" To="-10, 15, 0"/>
@@ -74,9 +74,9 @@
                 <SpriteAnimation TargetProperty="['Fireball'].ParticleEffect.TextureList" 
                                         TextureList="..\Textures\fireball002" Repeat="999999"/>
             </LayeredAnimation>            
-        </DrawingGroup.Animations>
+        </Group.Animations>
  -->
-    </DrawingGroup>
+    </Group>
 
     <ParticleEffect Transform.Position="20, 0, -20" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
         <!-- 

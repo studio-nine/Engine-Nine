@@ -8,10 +8,9 @@ namespace Nine
     #region OctreeSceneManager
     /// <summary>
     /// Manages a collection of objects using quad tree.
-
     /// </summary>
     [DebuggerDisplay("Count = {Count}")]
-    public class OctreeSceneManager : ISceneManager
+    public class OctreeSceneManager : ISceneManager<ISpatialQueryable>
     {
         internal Octree<List<ISpatialQueryable>> Tree;
 

@@ -72,14 +72,14 @@
         /// Gets whether the specified model has any skinning info attached to it.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static bool IsSkinned(this Model model)
+        public static bool IsSkinned(this Microsoft.Xna.Framework.Graphics.Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
             return extensions != null && extensions.Skeleton != null;
         }
 
-        internal static ModelSkeletonData GetSkeletonData(this Model model)
+        internal static ModelSkeletonData GetSkeletonData(this Microsoft.Xna.Framework.Graphics.Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
@@ -90,7 +90,7 @@
         /// Gets the animation data associated with the specified model.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static ICollection<string> GetAnimations(this Model model)
+        public static ICollection<string> GetAnimations(this Microsoft.Xna.Framework.Graphics.Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
@@ -105,7 +105,7 @@
         /// Gets the animation data associated with the specified model.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static BoneAnimationClip GetAnimation(this Model model, string name)
+        public static BoneAnimationClip GetAnimation(this Microsoft.Xna.Framework.Graphics.Model model, string name)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
@@ -123,7 +123,7 @@
         /// Gets the animation data associated with the specified model.
         /// Works with models that are processed by Nine.Pipeline.Processors.ExtendedModelProcessor.
         /// </summary>
-        public static BoneAnimationClip GetAnimation(this Model model, int index)
+        public static BoneAnimationClip GetAnimation(this Microsoft.Xna.Framework.Graphics.Model model, int index)
         {
             BoneAnimationClip clip = null;
 
@@ -148,7 +148,7 @@
         /// <summary>
         /// Gets the aboslute transform of the specified bone.
         /// </summary>
-        public static Matrix GetAbsoluteBoneTransform(this Model model, int boneIndex)
+        public static Matrix GetAbsoluteBoneTransform(this Microsoft.Xna.Framework.Graphics.Model model, int boneIndex)
         {
             ModelBone bone = model.Bones[boneIndex];
             Matrix absoluteTransform = bone.Transform;
@@ -165,7 +165,7 @@
         /// <summary>
         /// Gets the aboslute transform of the specified bone.
         /// </summary>
-        public static Matrix GetAbsoluteBoneTransform(this Model model, string boneName)
+        public static Matrix GetAbsoluteBoneTransform(this Microsoft.Xna.Framework.Graphics.Model model, string boneName)
         {
             return GetAbsoluteBoneTransform(model, model.Bones[boneName].Index);
         }
@@ -173,7 +173,7 @@
         /// <summary>
         /// Gets wether the model contains the given point.
         /// </summary>
-        public static bool Contains(this Model model, Matrix world, Vector3 point)
+        public static bool Contains(this Microsoft.Xna.Framework.Graphics.Model model, Matrix world, Vector3 point)
         {
             Vector3 local;
             ModelTag extensions = model.Tag as ModelTag;
@@ -181,7 +181,7 @@
             // Collision tree not found, use bounding sphere instead.
             if (extensions == null || extensions.Collision == null)
             {
-                foreach (ModelMesh mesh in model.Meshes)
+                foreach (var mesh in model.Meshes)
                 {
                     local = point - GetAbsoluteTransform(mesh, world).Translation;
                     if (mesh.BoundingSphere.Contains(local) == ContainmentType.Contains)
@@ -192,7 +192,6 @@
             }
 
             // Detect using collision tree.
-
             local = point - GetAbsoluteTransform(model.Meshes[0], world).Translation;
             return extensions.Collision.Contains(local);
         }
@@ -201,7 +200,7 @@
         /// Gets the nearest intersection point from the specifed picking ray.
         /// </summary>
         /// <returns>Distance to the start of the ray.</returns>
-        public static float? Intersects(this Model model, Matrix world, Ray ray)
+        public static float? Intersects(this Microsoft.Xna.Framework.Graphics.Model model, Matrix world, Ray ray)
         {
             Ray local;
             ModelTag extensions = model.Tag as ModelTag;
@@ -211,7 +210,7 @@
             {
                 float? result = null;
 
-                foreach (ModelMesh mesh in model.Meshes)
+                foreach (var mesh in model.Meshes)
                 {
                     local = ray.Transform(Matrix.Invert(GetAbsoluteTransform(mesh, world)));
                     float? current = mesh.BoundingSphere.Intersects(local);
@@ -231,7 +230,7 @@
             return extensions.Collision.Intersects(local);
         }
 
-        internal static Matrix GetAbsoluteTransform(this ModelMesh mesh)
+        internal static Matrix GetAbsoluteTransform(this Microsoft.Xna.Framework.Graphics.ModelMesh mesh)
         {
             // In case animation changes the tranform of the node containning the model,
             // gets the ambsolute transform of the first mesh before transform to world
@@ -247,8 +246,8 @@
 
             return ambsoluteTransform;
         }
-        
-        internal static Matrix GetAbsoluteTransform(this ModelMesh mesh, Matrix world)
+
+        internal static Matrix GetAbsoluteTransform(this Microsoft.Xna.Framework.Graphics.ModelMesh mesh, Matrix world)
         {
             // In case animation changes the tranform of the node containning the model,
             // gets the ambsolute transform of the first mesh before transform to world
@@ -299,10 +298,10 @@
         /// <summary>
         /// Gets all the effects in the model.
         /// </summary>
-        public static IEnumerable<Effect> GetEffects(this Model model)
+        public static IEnumerable<Effect> GetEffects(this Microsoft.Xna.Framework.Graphics.Model model)
         {
-            foreach (ModelMesh mesh in model.Meshes)
-                foreach (ModelMeshPart part in mesh.MeshParts)
+            foreach (var mesh in model.Meshes)
+                foreach (var part in mesh.MeshParts)
                     yield return part.Effect;
         }
 
@@ -315,11 +314,11 @@
         /// This function requires the effect to be either build in effect or effects 
         /// that implements IEffectMaterial or IEffectTexture.
         /// </remarks>
-        public static void ConvertEffectTo(this Model model, Effect effect)
+        public static void ConvertEffectTo(this Microsoft.Xna.Framework.Graphics.Model model, Effect effect)
         {
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (var mesh in model.Meshes)
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
+                foreach (var part in mesh.MeshParts)
                 {
                     part.ConvertEffectTo(effect.Clone());
                 }
@@ -334,9 +333,9 @@
         /// This function requires the effect to be either build in effect or effects 
         /// that implements IEffectMaterial or IEffectTexture.
         /// </remarks>
-        public static void ConvertEffectTo(this ModelMesh mesh, Effect effect)
+        public static void ConvertEffectTo(this Microsoft.Xna.Framework.Graphics.ModelMesh mesh, Effect effect)
         {
-            foreach (ModelMeshPart part in mesh.MeshParts)
+            foreach (var part in mesh.MeshParts)
             {
                 part.ConvertEffectTo(effect.Clone());
             }
@@ -381,7 +380,7 @@
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
-        public static BoundingBox ComputeBoundingBox(this Model model)
+        public static BoundingBox ComputeBoundingBox(this Microsoft.Xna.Framework.Graphics.Model model)
         {
             ModelTag extensions = model.Tag as ModelTag;
 
@@ -398,7 +397,7 @@
                 return result;
 #endif
             // Now use bounding spheres
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (var mesh in model.Meshes)
             {
                 BoundingBox box = BoundingBox.CreateFromSphere(
                     mesh.BoundingSphere.Transform(GetAbsoluteTransform(mesh, Matrix.Identity)));
@@ -415,7 +414,7 @@
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
-        private static bool ComputeBoundingBoxFromVertices(this Model model, out BoundingBox boundingBox)
+        private static bool ComputeBoundingBoxFromVertices(this Microsoft.Xna.Framework.Graphics.Model model, out BoundingBox boundingBox)
         {
             if (null == model || model.Meshes.Count <= 0)
             {
@@ -429,9 +428,9 @@
             Matrix[] bones = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(bones);
 
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (var mesh in model.Meshes)
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
+                foreach (var part in mesh.MeshParts)
                 {
                     if (part.VertexBuffer.BufferUsage == BufferUsage.WriteOnly)
                     {
@@ -460,7 +459,7 @@
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
-        public static BoundingBox ComputeBoundingBox(this Model model, ModelMesh mesh, ModelMeshPart part)
+        public static BoundingBox ComputeBoundingBox(this Microsoft.Xna.Framework.Graphics.Model model, Microsoft.Xna.Framework.Graphics.ModelMesh mesh, ModelMeshPart part)
         {
 #if !SILVERLIGHT
             // Try to use vertices of the mesh
@@ -476,15 +475,15 @@
         /// <summary>
         /// Copies the positions of the model to the target array.
         /// </summary>
-        public static int CopyPositionsTo(this Model model, Vector3[] positions, int startIndex)
+        public static int CopyPositionsTo(this Microsoft.Xna.Framework.Graphics.Model model, Vector3[] positions, int startIndex)
         {
             Matrix[] bones = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(bones);
 
             int count = 0;
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (var mesh in model.Meshes)
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
+                foreach (var part in mesh.MeshParts)
                 {
                     int partCount = CopyPositionsTo(model, mesh, part, positions, startIndex);
                     if (positions != null)
@@ -504,13 +503,13 @@
         /// <summary>
         /// Copies the indices of the model to the target array.
         /// </summary>
-        public static int CopyIndicesTo(this Model model, ushort[] indices, int startIndex)
+        public static int CopyIndicesTo(this Microsoft.Xna.Framework.Graphics.Model model, ushort[] indices, int startIndex)
         {
             int count = 0;
             int baseVertex = 0;
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (var mesh in model.Meshes)
             {
-                foreach (ModelMeshPart part in mesh.MeshParts)
+                foreach (var part in mesh.MeshParts)
                 {
                     int partCount = CopyIndicesTo(model, mesh, part, indices, startIndex);
                     if (indices != null)
@@ -533,7 +532,7 @@
         /// Copies the positions of the model mesh part to the target array.
         /// The positions are not transformed by the transform of the model mesh.
         /// </summary>
-        private static int CopyPositionsTo(this Model model, ModelMesh mesh, ModelMeshPart part, Vector3[] positions, int startIndex)
+        private static int CopyPositionsTo(this Microsoft.Xna.Framework.Graphics.Model model, Microsoft.Xna.Framework.Graphics.ModelMesh mesh, ModelMeshPart part, Vector3[] positions, int startIndex)
         {
             int stride = part.VertexBuffer.VertexDeclaration.VertexStride;
             int elementCount = part.NumVertices;
@@ -548,7 +547,7 @@
         /// <summary>
         /// Copies the indices of the model mesh part to the target array.
         /// </summary>
-        private static int CopyIndicesTo(this Model model, ModelMesh mesh, ModelMeshPart part, ushort[] indices, int startIndex)
+        private static int CopyIndicesTo(this Microsoft.Xna.Framework.Graphics.Model model, Microsoft.Xna.Framework.Graphics.ModelMesh mesh, ModelMeshPart part, ushort[] indices, int startIndex)
         {
             int indexCount = part.PrimitiveCount * 3;
             if (part.IndexBuffer.IndexElementSize == IndexElementSize.ThirtyTwoBits)
@@ -562,7 +561,7 @@
         /// <summary>
         /// Computes the bounding box for the specified xna model.
         /// </summary>
-        private static bool ComputeBoundingBoxFromVertices(this Model model, ModelMesh mesh, ModelMeshPart part, Matrix? transform, out BoundingBox boundingBox)
+        private static bool ComputeBoundingBoxFromVertices(this Microsoft.Xna.Framework.Graphics.Model model, Microsoft.Xna.Framework.Graphics.ModelMesh mesh, ModelMeshPart part, Matrix? transform, out BoundingBox boundingBox)
         {
             boundingBox = new BoundingBox();
             if (null == model || model.Meshes.Count <= 0)

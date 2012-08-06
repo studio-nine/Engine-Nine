@@ -4,8 +4,8 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
-    using Nine.Graphics.ObjectModel;
-    using DirectionalLight = Nine.Graphics.ObjectModel.DirectionalLight;
+    using Nine.Graphics;
+    using DirectionalLight = Nine.Graphics.DirectionalLight;
 
     partial class RestoreDepthBufferMaterial
     {

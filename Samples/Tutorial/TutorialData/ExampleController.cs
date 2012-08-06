@@ -32,29 +32,25 @@ namespace TutorialData
     /// must be marked as Serializable and be compatible with XmlSerializer.
     /// </summary>
     [Serializable]
-    public class ExampleController : Component, IUpdateable
+    public class ExampleController : Transformable, IUpdateable
     {
         public float Speed { get; set; }
 
         public void Update(TimeSpan elapsedTime)
         {
-            var transformable = Parent.Find<ITransformable>();
-            if (transformable != null)
-            {
-                var transform = transformable.Transform;
+            var transform = Parent.Transform;
 
-                var keyboardState = Keyboard.GetState();
-                if (keyboardState.IsKeyDown(Keys.Left))
-                    transform.Translation += Speed * (float)elapsedTime.TotalSeconds * -Vector3.UnitX;
-                if (keyboardState.IsKeyDown(Keys.Right))
-                    transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.UnitX;
-                if (keyboardState.IsKeyDown(Keys.Down))
-                    transform.Translation += Speed * (float)elapsedTime.TotalSeconds * -Vector3.UnitY;
-                if (keyboardState.IsKeyDown(Keys.Up))
-                    transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.UnitY;
+            var keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Left))
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * -Vector3.UnitX;
+            if (keyboardState.IsKeyDown(Keys.Right))
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.UnitX;
+            if (keyboardState.IsKeyDown(Keys.Down))
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * -Vector3.UnitY;
+            if (keyboardState.IsKeyDown(Keys.Up))
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.UnitY;
 
-                transformable.Transform = transform;
-            }
+            Parent.Transform = transform;
         }
     }
 }

@@ -3,7 +3,7 @@ namespace Nine.Graphics.Drawing
     using System;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Enables a group of drawing passes to be rendered one by one.

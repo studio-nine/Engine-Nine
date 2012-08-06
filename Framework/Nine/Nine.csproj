@@ -93,10 +93,13 @@
     </Compile>
     <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="Content\ContentReflector.cs" />
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Content\ContentProperties.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="FindResult.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="DependencyGraph.cs" />
     <Compile Include="FastList.cs" />
@@ -108,6 +111,8 @@
     <Compile Include="Input\WindowsInputSource.cs" />
     <Compile Include="Input\XnaInputSource.cs" />
     <Compile Include="Input\InputComponent.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="SceneQuery.cs" />
     <Compile Include="Serialization.cs" />
     <Compile Include="TimeEventArgs.cs" />
     <Compile Include="PropertyExpression.cs" />
@@ -116,6 +121,7 @@
     <Compile Include="Design\RangeConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Transformable.cs" />
     <Compile Include="WeakReference.cs" />
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
@@ -136,8 +142,6 @@
     </Compile>
     <Compile Include="UniformGrid.cs" />
     <Compile Include="NotificationCollection.cs" />
-    <Compile Include="World.cs" />
-    <Compile Include="WorldObject.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
     <None Include="..\..\Tools\TextTemplates\Content.Reader.tth">
       <Link>TextTempates\Content.Reader.tth</Link>

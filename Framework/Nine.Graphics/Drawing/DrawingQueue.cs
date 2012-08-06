@@ -2,7 +2,7 @@ namespace Nine.Graphics.Drawing
 {
     using System;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.ObjectModel;
+    using Nine.Graphics;
 
     /// <summary>
     /// Each item in the queue will hold a strong reference to the IDrawableObject.

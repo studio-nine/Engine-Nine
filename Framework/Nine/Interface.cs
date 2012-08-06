@@ -4,8 +4,7 @@ namespace Nine
     using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
-
-
+    
     /// <summary>
     /// Object that react to game updates.
     /// </summary>
@@ -26,17 +25,6 @@ namespace Nine
         /// Draws the internal state of the object.
         /// </summary>
         void Draw(TimeSpan elapsedTime);
-    }
-
-    /// <summary>
-    /// Defines an object that can be transformed.
-    /// </summary>
-    public interface ITransformable
-    {
-        /// <summary>
-        /// Gets or sets the transform.
-        /// </summary>
-        Matrix Transform { get; set; }
     }
 
     /// <summary>
@@ -71,6 +59,17 @@ namespace Nine
         /// Gets a read-only list of geometry indices.
         /// </summary>
         ushort[] Indices { get; }
+    }
+
+    /// <summary>
+    /// Defines Spatial relations between objects.
+    /// </summary>
+    public interface ISpatialQuery
+    {
+        /// <summary>
+        /// Creates a spatial query of the specified target type.
+        /// </summary>
+        ISpatialQuery<T> CreateSpatialQuery<T>() where T : class;
     }
 
     /// <summary>
@@ -123,7 +122,7 @@ namespace Nine
     /// Interface for a scene manager that manages the spatial relationships
     /// between objects.
     /// </summary>
-    public interface ISceneManager : ICollection<ISpatialQueryable>, ISpatialQuery<ISpatialQueryable>
+    public interface ISceneManager<T> : ICollection<T>, ISpatialQuery<T>
     {
 
     }

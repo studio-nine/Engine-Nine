@@ -9,7 +9,6 @@ namespace Tutorial
     using Nine.Components;
     using Nine.Graphics;
     using Nine.Graphics.Cameras;
-    using Nine.Graphics.ObjectModel;
     using Nine.Physics;
 
     public class Tutorial : Microsoft.Xna.Framework.Game
@@ -28,7 +27,6 @@ namespace Tutorial
         private const int BackBufferHeight = 720;
 #endif
 
-        private World world;
         private Scene scene;
         private string[] tutorials;
         private int nextTutorial;
@@ -100,30 +98,14 @@ namespace Tutorial
         /// </summary>
         private void LoadNextScene()
         {
-            var tutorial = Content.Load<object>(tutorials[nextTutorial]);
+            scene = Content.Load<Scene>(tutorials[nextTutorial]);
 
-            // Since some tutorials are worlds and some of them are scenes,
-            // provide a unified initalization for them.
-            world = tutorial as World;
-            scene = tutorial as Scene;
-
-            if (world != null)
-            {
-                // After a world is loaded, you have to explicitly initialize the
-                // content and graphics of the world.
-                world.CreateContent(Content);
-                scene = world.CreateGraphics(GraphicsDevice);
-
-                // To enable phyiscs, explicitly create the physics world.
-                world.CreatePhysics(true);
-            }
-
-            scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));           
+            //scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));           
             //scene.Camera = new TopDownEditorCamera(GraphicsDevice);           
             //scene.Camera = new ModelViewerCamera(GraphicsDevice);           
-            scene.Context.Settings.DefaultDebugControlEnabled = true;
-            scene.Context.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
-            scene.Context.Settings.TextureFilter = TextureFilter.Anisotropic;
+            //scene.Context.Settings.DefaultDebugControlEnabled = true;
+            //scene.Context.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            //scene.Context.Settings.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = tutorials[nextTutorial];
 
@@ -138,10 +120,7 @@ namespace Tutorial
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Exit();
 
-            if (world != null)
-                world.Update(gameTime.ElapsedGameTime);
-            else if (scene != null)
-                scene.Update(gameTime.ElapsedGameTime);
+            scene.Update(gameTime.ElapsedGameTime);
 
             base.Update(gameTime);
         }
@@ -155,10 +134,7 @@ namespace Tutorial
             if (quad != null)
                 quad.Visible = Keyboard.GetState().IsKeyDown(Keys.Space);
 
-            if (world != null)
-                world.Draw(gameTime.ElapsedGameTime);
-            else if (scene != null)
-                scene.Draw(gameTime.ElapsedGameTime);
+            scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
 
             base.Draw(gameTime);
         }

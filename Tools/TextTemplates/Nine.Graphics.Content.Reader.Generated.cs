@@ -65,6 +65,150 @@ namespace Nine.Animations
 namespace Nine.Graphics
 {
     /// <summary>
+    /// Content reader for <c>AmbientLight</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class AmbientLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.AmbientLight>
+    {
+        protected override Nine.Graphics.AmbientLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.AmbientLight existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new AmbientLight(graphicsDevice);
+            }
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.AmbientLightColor = input.ReadVector3();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Decal</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DecalReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Decal>
+    {
+        protected override Nine.Graphics.Decal Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Decal existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Decal(graphicsDevice);
+            }
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.IsDynamic = input.ReadBoolean();
+            existingInstance.Alpha = input.ReadSingle();
+            existingInstance.Color = input.ReadVector3();
+            existingInstance.Size = input.ReadVector3();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.DepthBias = input.ReadSingle();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.NormalMappingEnabled = input.ReadBoolean();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
+            existingInstance.Duration = input.ReadObject<System.Nullable<System.TimeSpan>>();
+            existingInstance.FadeDuration = input.ReadObject<System.TimeSpan>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>DirectionalLight</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class DirectionalLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.DirectionalLight>
+    {
+        protected override Nine.Graphics.DirectionalLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.DirectionalLight existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new DirectionalLight();
+            existingInstance.Direction = input.ReadVector3();
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ShadowMap>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Fog</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class FogReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Fog>
+    {
+        protected override Nine.Graphics.Fog Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Fog existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Fog();
+            existingInstance.FogStart = input.ReadSingle();
+            existingInstance.FogEnd = input.ReadSingle();
+            existingInstance.FogColor = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>FullScreenQuad</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class FullScreenQuadReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.FullScreenQuad>
+    {
+        protected override Nine.Graphics.FullScreenQuad Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.FullScreenQuad existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new FullScreenQuad(graphicsDevice);
+            }
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>Geometry</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -84,6 +228,105 @@ namespace Nine.Graphics
         }
     }
     /// <summary>
+    /// Content reader for <c>Heightmap</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class HeightmapReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Heightmap>
+    {
+        protected override Nine.Graphics.Heightmap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Heightmap existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new Heightmap();
+            existingInstance.Size = input.ReadVector3();
+            existingInstance.Step = input.ReadSingle();
+            existingInstance.Heights = input.ReadObject<System.Single[]>();
+            existingInstance.Normals = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
+            existingInstance.Tangents = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
+            existingInstance.Width = input.ReadInt32();
+            existingInstance.Height = input.ReadInt32();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>InstancedModel</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class InstancedModelReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.InstancedModel>
+    {
+        protected override Nine.Graphics.InstancedModel Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.InstancedModel existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new InstancedModel(graphicsDevice);
+            }
+            existingInstance.instanceTransforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[]>();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Template = input.ReadObject<Nine.Graphics.ISupportInstancing>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Model</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ModelReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Model>
+    {
+        protected override Nine.Graphics.Model Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Model existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Model(graphicsDevice);
+            }
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.ModelMeshes.Add(input.ReadObject<Nine.Graphics.ModelMesh>());
+            }
+            existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.UseModelTextures = input.ReadBoolean();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
+            existingInstance.MaxAffectingLights = input.ReadInt32();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.ReceiveShadow = input.ReadBoolean();
+            existingInstance.MaxReceivedShadows = input.ReadInt32();
+            existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
+            existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>ModelCollision</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -96,6 +339,26 @@ namespace Nine.Graphics
             if (existingInstance == null)
                 existingInstance = new ModelCollision();
             existingInstance.CollisionTree = input.ReadObject<Nine.Octree<System.Boolean>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ModelMesh</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ModelMeshReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelMesh>
+    {
+        protected override Nine.Graphics.ModelMesh Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelMesh existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new ModelMesh();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
+            existingInstance.UseModelTextures = input.ReadObject<System.Nullable<System.Boolean>>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
             return existingInstance;
         }
     }
@@ -152,14 +415,14 @@ namespace Nine.Graphics
         }
     }
     /// <summary>
-    /// Content reader for <c>Scene</c>.
+    /// Content reader for <c>PointLight</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class SceneReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Scene>
+    partial class PointLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.PointLight>
     {
-        protected override Nine.Graphics.Scene Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Scene existingInstance)
+        protected override Nine.Graphics.PointLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.PointLight existingInstance)
         {
             if (existingInstance == null)
             {
@@ -169,25 +432,156 @@ namespace Nine.Graphics
                 var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
                                 typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
 #endif
-                existingInstance = new Scene(graphicsDevice);
+                existingInstance = new PointLight(graphicsDevice);
             }
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Range = input.ReadSingle();
+            existingInstance.Attenuation = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ShadowMap>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ShadowMap</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ShadowMapReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ShadowMap>
+    {
+        protected override Nine.Graphics.ShadowMap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ShadowMap existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ShadowMap(graphicsDevice);
+            }
+            existingInstance.Size = input.ReadInt32();
+            existingInstance.SurfaceFormat = input.ReadObject<Microsoft.Xna.Framework.Graphics.SurfaceFormat>();
+            existingInstance.BlurEnabled = input.ReadBoolean();
+            existingInstance.BlurAmount = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadInt32();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>SkyBox</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SkyBoxReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.SkyBox>
+    {
+        protected override Nine.Graphics.SkyBox Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.SkyBox existingInstance)
+        {
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new SkyBox(graphicsDevice);
+            }
+            existingInstance.Color = input.ReadVector3();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
             existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>SpotLight</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SpotLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.SpotLight>
+    {
+        protected override Nine.Graphics.SpotLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.SpotLight existingInstance)
+        {
+            if (existingInstance == null)
             {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Children.Add(input.ReadObject<System.Object>());
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new SpotLight(graphicsDevice);
             }
+            existingInstance.SpecularColor = input.ReadVector3();
+            existingInstance.DiffuseColor = input.ReadVector3();
+            existingInstance.Range = input.ReadSingle();
+            existingInstance.Attenuation = input.ReadSingle();
+            existingInstance.InnerAngle = input.ReadSingle();
+            existingInstance.OuterAngle = input.ReadSingle();
+            existingInstance.Falloff = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Order = input.ReadSingle();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ShadowMap>();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>Surface</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class SurfaceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Surface>
+    {
+        protected override Nine.Graphics.Surface Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Surface existingInstance)
+        {
+            if (existingInstance == null)
             {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.TransformBindings.Add(input.ReadObject<Nine.Graphics.ObjectModel.TransformBinding>());
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new Surface(graphicsDevice);
             }
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.DetailLevels.Add(input.ReadObject<System.Object>());
-            }
-            existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
+            existingInstance.PatchSegmentCount = input.ReadInt32();
+            existingInstance.TextureTransform = input.ReadMatrix();
+            existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
+            existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
+            existingInstance.LevelOfDetailStart = input.ReadSingle();
+            existingInstance.LevelOfDetailEnd = input.ReadSingle();
+            existingInstance.LevelOfDetailEnabled = input.ReadBoolean();
+            existingInstance.Visible = input.ReadBoolean();
+            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
+            existingInstance.LightingEnabled = input.ReadBoolean();
+            existingInstance.CastShadow = input.ReadBoolean();
+            existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -323,6 +717,13 @@ namespace Nine.Graphics.Materials
             if (existingInstance == null)
                 existingInstance = new CustomMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Parameters.Add(
+                        input.ReadObject<System.String>(),
+                        input.ReadObject<System.Object>());
+            }
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -1033,483 +1434,6 @@ namespace Nine.Graphics.Materials.MaterialParts
             if (existingInstance == null)
                 existingInstance = new VertexTransformMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-}
-namespace Nine.Graphics.ObjectModel
-{
-    /// <summary>
-    /// Content reader for <c>AmbientLight</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AmbientLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.AmbientLight>
-    {
-        protected override Nine.Graphics.ObjectModel.AmbientLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.AmbientLight existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new AmbientLight(graphicsDevice);
-            }
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.AmbientLightColor = input.ReadVector3();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Decal</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class DecalReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Decal>
-    {
-        protected override Nine.Graphics.ObjectModel.Decal Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Decal existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new Decal(graphicsDevice);
-            }
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.IsDynamic = input.ReadBoolean();
-            existingInstance.Alpha = input.ReadSingle();
-            existingInstance.Color = input.ReadVector3();
-            existingInstance.Size = input.ReadVector3();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.DepthBias = input.ReadSingle();
-            existingInstance.LightingEnabled = input.ReadBoolean();
-            existingInstance.NormalMappingEnabled = input.ReadBoolean();
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.NormalMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.Duration = input.ReadObject<System.Nullable<System.TimeSpan>>();
-            existingInstance.FadeDuration = input.ReadObject<System.TimeSpan>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>DirectionalLight</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class DirectionalLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DirectionalLight>
-    {
-        protected override Nine.Graphics.ObjectModel.DirectionalLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DirectionalLight existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new DirectionalLight();
-            existingInstance.Direction = input.ReadVector3();
-            existingInstance.SpecularColor = input.ReadVector3();
-            existingInstance.DiffuseColor = input.ReadVector3();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadSingle();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ObjectModel.ShadowMap>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>DrawingGroup</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class DrawingGroupReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.DrawingGroup>
-    {
-        protected override Nine.Graphics.ObjectModel.DrawingGroup Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.DrawingGroup existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new DrawingGroup();
-            existingInstance.Visible = input.ReadBoolean();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.Children.Add(input.ReadObject<System.Object>());
-            }
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.TransformBindings.Add(input.ReadObject<Nine.Graphics.ObjectModel.TransformBinding>());
-            }
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.DetailLevels.Add(input.ReadObject<System.Object>());
-            }
-            existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Fog</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class FogReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Fog>
-    {
-        protected override Nine.Graphics.ObjectModel.Fog Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Fog existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new Fog();
-            existingInstance.FogStart = input.ReadSingle();
-            existingInstance.FogEnd = input.ReadSingle();
-            existingInstance.FogColor = input.ReadVector3();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>FullScreenQuad</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class FullScreenQuadReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.FullScreenQuad>
-    {
-        protected override Nine.Graphics.ObjectModel.FullScreenQuad Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.FullScreenQuad existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new FullScreenQuad(graphicsDevice);
-            }
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Heightmap</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class HeightmapReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Heightmap>
-    {
-        protected override Nine.Graphics.ObjectModel.Heightmap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Heightmap existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new Heightmap();
-            existingInstance.Size = input.ReadVector3();
-            existingInstance.Step = input.ReadSingle();
-            existingInstance.Heights = input.ReadObject<System.Single[]>();
-            existingInstance.Normals = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
-            existingInstance.Tangents = input.ReadObject<Microsoft.Xna.Framework.Vector3[]>();
-            existingInstance.Width = input.ReadInt32();
-            existingInstance.Height = input.ReadInt32();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.BoundingBox = input.ReadObject<Microsoft.Xna.Framework.BoundingBox>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>InstancedModel</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class InstancedModelReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.InstancedModel>
-    {
-        protected override Nine.Graphics.ObjectModel.InstancedModel Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.InstancedModel existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new InstancedModel(graphicsDevice);
-            }
-            existingInstance.instanceTransforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[]>();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Template = input.ReadObject<Nine.Graphics.ObjectModel.ISupportInstancing>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Model</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class ModelReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Model>
-    {
-        protected override Nine.Graphics.ObjectModel.Model Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Model existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new Model(graphicsDevice);
-            }
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
-                    existingInstance.ModelMeshes.Add(input.ReadObject<Nine.Graphics.ObjectModel.ModelMesh>());
-            }
-            existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.UseModelTextures = input.ReadBoolean();
-            existingInstance.LightingEnabled = input.ReadBoolean();
-            existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
-            existingInstance.MaxAffectingLights = input.ReadInt32();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
-            existingInstance.MaxReceivedShadows = input.ReadInt32();
-            existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
-            existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>ModelMesh</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class ModelMeshReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.ModelMesh>
-    {
-        protected override Nine.Graphics.ObjectModel.ModelMesh Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.ModelMesh existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new ModelMesh();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.UseModelTextures = input.ReadObject<System.Nullable<System.Boolean>>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>PointLight</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class PointLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.PointLight>
-    {
-        protected override Nine.Graphics.ObjectModel.PointLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.PointLight existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new PointLight(graphicsDevice);
-            }
-            existingInstance.SpecularColor = input.ReadVector3();
-            existingInstance.DiffuseColor = input.ReadVector3();
-            existingInstance.Range = input.ReadSingle();
-            existingInstance.Attenuation = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadSingle();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ObjectModel.ShadowMap>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>ShadowMap</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class ShadowMapReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.ShadowMap>
-    {
-        protected override Nine.Graphics.ObjectModel.ShadowMap Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.ShadowMap existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new ShadowMap(graphicsDevice);
-            }
-            existingInstance.Size = input.ReadInt32();
-            existingInstance.SurfaceFormat = input.ReadObject<Microsoft.Xna.Framework.Graphics.SurfaceFormat>();
-            existingInstance.BlurEnabled = input.ReadBoolean();
-            existingInstance.BlurAmount = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>SkyBox</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class SkyBoxReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.SkyBox>
-    {
-        protected override Nine.Graphics.ObjectModel.SkyBox Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SkyBox existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new SkyBox(graphicsDevice);
-            }
-            existingInstance.Color = input.ReadVector3();
-            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.TextureCube>();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>SpotLight</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class SpotLightReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.SpotLight>
-    {
-        protected override Nine.Graphics.ObjectModel.SpotLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.SpotLight existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new SpotLight(graphicsDevice);
-            }
-            existingInstance.SpecularColor = input.ReadVector3();
-            existingInstance.DiffuseColor = input.ReadVector3();
-            existingInstance.Range = input.ReadSingle();
-            existingInstance.Attenuation = input.ReadSingle();
-            existingInstance.InnerAngle = input.ReadSingle();
-            existingInstance.OuterAngle = input.ReadSingle();
-            existingInstance.Falloff = input.ReadSingle();
-            existingInstance.Enabled = input.ReadBoolean();
-            existingInstance.Order = input.ReadSingle();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ObjectModel.ShadowMap>();
-            existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
-    /// Content reader for <c>Surface</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class SurfaceReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ObjectModel.Surface>
-    {
-        protected override Nine.Graphics.ObjectModel.Surface Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ObjectModel.Surface existingInstance)
-        {
-            if (existingInstance == null)
-            {
-#if SILVERLIGHT
-                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
-#else
-                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
-                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
-#endif
-                existingInstance = new Surface(graphicsDevice);
-            }
-            existingInstance.PatchSegmentCount = input.ReadInt32();
-            existingInstance.TextureTransform = input.ReadMatrix();
-            existingInstance.VertexTypeSerializer = input.ReadObject<System.String>();
-            existingInstance.Heightmap = input.ReadObject<Nine.Graphics.ObjectModel.Heightmap>();
-            existingInstance.LevelOfDetailStart = input.ReadSingle();
-            existingInstance.LevelOfDetailEnd = input.ReadSingle();
-            existingInstance.LevelOfDetailEnabled = input.ReadBoolean();
-            existingInstance.Visible = input.ReadBoolean();
-            existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
-            existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
-            existingInstance.LightingEnabled = input.ReadBoolean();
-            existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.ReceiveShadow = input.ReadBoolean();
-            existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();

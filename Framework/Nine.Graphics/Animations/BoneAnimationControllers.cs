@@ -134,7 +134,7 @@ namespace Nine.Animations
         /// <summary>
         /// Initializes a new instance of the <see cref="BoneSnapshotController"/> class.
         /// </summary>
-        public BoneSnapshotController(Model model)
+        public BoneSnapshotController(Microsoft.Xna.Framework.Graphics.Model model)
         {
             transforms = new Matrix[model.Bones.Count];
             model.CopyBoneTransformsTo(transforms);
