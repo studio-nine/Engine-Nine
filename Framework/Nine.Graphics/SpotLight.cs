@@ -118,11 +118,18 @@ namespace Nine.Graphics
             if (frustumTransformNeedsUpdate)
             {
                 float radius = (float)Math.Tan(outerAngle * 0.5) * range;
-                frustumTransform = Matrix.CreateScale(radius, range, radius) *
-                                   Matrix.CreateTranslation(0, -range, 0) *
-                                   Matrix.CreateRotationX(MathHelper.PiOver2) *
-                                   MatrixHelper.CreateRotation(Vector3.Forward, Direction) *
-                                   Matrix.CreateTranslation(Position);
+                frustumTransform.M11 = radius; frustumTransform.M12 = 0; frustumTransform.M13 = 0; frustumTransform.M14 = 0;
+                frustumTransform.M21 = 0; frustumTransform.M22 = range; frustumTransform.M23 = 0; frustumTransform.M24 = 0;
+                frustumTransform.M31 = 0; frustumTransform.M32 = 0; frustumTransform.M33 = radius; frustumTransform.M34 = 0;
+                frustumTransform.M41 = 0; frustumTransform.M42 = -range; frustumTransform.M43 = 0; frustumTransform.M44 = 1;
+
+                Matrix temp = MatrixHelper.CreateRotation(Vector3.Down, Direction);
+                Matrix.Multiply(ref frustumTransform, ref temp, out frustumTransform);
+
+                var position = AbsoluteTransform.Translation;
+                frustumTransform.M41 += position.X;
+                frustumTransform.M42 += position.Y;
+                frustumTransform.M43 += position.Z;
                 frustumTransformNeedsUpdate = false;
             }
         }
@@ -256,9 +263,9 @@ namespace Nine.Graphics
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new CentrumInvert(Context.GraphicsDevice)
+                deferredGeometry = new CentrumInvert(context.GraphicsDevice)
                 {
-                    Material = deferredMaterial = new DeferredSpotLightMaterial(Context.GraphicsDevice)
+                    Material = deferredMaterial = new DeferredSpotLightMaterial(context.GraphicsDevice)
                 };
             }
             UpdateFrustumTransform();

@@ -74,7 +74,7 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnStopped()
         {
-            var stopped = Started;
+            var stopped = Stopped;
             if (stopped != null)
                 stopped(this, EventArgs.Empty);
         }
@@ -84,7 +84,7 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnPaused()
         {
-            var paused = Started;
+            var paused = Paused;
             if (paused != null)
                 paused(this, EventArgs.Empty);
         }
@@ -94,7 +94,7 @@ namespace Nine.Animations
         /// </summary>
         protected virtual void OnResumed()
         {
-            var resumed = Started;
+            var resumed = Resumed;
             if (resumed != null)
                 resumed(this, EventArgs.Empty);
         }

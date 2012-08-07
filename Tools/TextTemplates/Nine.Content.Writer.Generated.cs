@@ -157,7 +157,6 @@ namespace Nine.Content.Pipeline
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Group value)
         {
-            output.Write(value.Visible);
             {
                 output.Write(value.Children.Count);
                 for (var i = 0; i < value.Children.Count; i++)
@@ -234,7 +233,6 @@ namespace Nine.Content.Pipeline
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Scene value)
         {
-            output.Write(value.Visible);
             {
                 output.Write(value.Children.Count);
                 for (var i = 0; i < value.Children.Count; i++)

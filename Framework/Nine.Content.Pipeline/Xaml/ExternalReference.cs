@@ -17,12 +17,12 @@
         public string FileName { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentReference"/> class.
+        /// Initializes a new instance of the <see cref="ExternalReference"/> class.
         /// </summary>
         public ExternalReference() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentReference"/> class.
+        /// Initializes a new instance of the <see cref="ExternalReference"/> class.
         /// </summary>
         /// <param name="fileName">The name of the asset.</param>
         public ExternalReference(string fileName) { FileName = fileName; }

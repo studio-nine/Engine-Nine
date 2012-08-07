@@ -146,28 +146,18 @@ namespace Nine
     }
 
     /// <summary>
-    /// Defines a factory that can create an instance of a object based on the
-    /// specified type name.
+    ///  Notifies clients that the collection has changed.
     /// </summary>
-    public interface IObjectFactory
+    public interface INotifyCollectionChanged<T>
     {
         /// <summary>
-        /// Creates a new instance of the object with the specified type name.
+        /// Raised when a new element is added to the collection.
         /// </summary>
-        T Create<T>(string typeName);
-    }
+        event Action<T> Added;
 
-#if !WINDOWS
-    /// <summary>
-    /// Supports cloning, which creates a new instance of a class with the same value
-    /// as an existing instance.
-    /// </summary>
-    public interface ICloneable
-    {
         /// <summary>
-        /// Creates a new object that is a copy of the current instance.
+        /// Raised when an element is removed from the collection.
         /// </summary>
-        object Clone();
+        event Action<T> Removed;
     }
-#endif
 }

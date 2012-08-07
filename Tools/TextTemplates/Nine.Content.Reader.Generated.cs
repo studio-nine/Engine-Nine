@@ -84,7 +84,6 @@ namespace Nine
         {
             if (existingInstance == null)
                 existingInstance = new Group();
-            existingInstance.Visible = input.ReadBoolean();
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
@@ -125,7 +124,6 @@ namespace Nine
         {
             if (existingInstance == null)
                 existingInstance = new Scene();
-            existingInstance.Visible = input.ReadBoolean();
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)

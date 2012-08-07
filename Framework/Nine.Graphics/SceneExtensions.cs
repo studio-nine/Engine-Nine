@@ -19,24 +19,20 @@ namespace Nine.Graphics
         /// </summary>
         public static DrawingContext GetDrawingContext(Scene scene)
         {
+            if (scene == null)
+                throw new ArgumentNullException("scene");
+
             DrawingContext value = null;
             AttachablePropertyServices.TryGetProperty(scene, DrawingContextProperty, out value);
             return value;
         }
 
         /// <summary>
-        /// Sets the drawing context of the specified scene.
+        /// Gets the drawing context of the specified scene. 
+        /// Creates a default drawing context if no drawing context is currently bound
+        /// to the scene.
         /// </summary>
-        public static void SetDrawingContext(Scene scene, DrawingContext value)
-        {
-            AttachablePropertyServices.SetProperty(scene, DrawingContextProperty, value);
-        }
-        private static AttachableMemberIdentifier DrawingContextProperty = new AttachableMemberIdentifier(typeof(SceneExtensions), "DrawingContext");
-
-        /// <summary>
-        /// Draws the specified scene.
-        /// </summary>
-        public static void Draw(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
+        public static DrawingContext GetDrawingContext(this Scene scene, GraphicsDevice graphics)
         {
             if (scene == null)
                 throw new ArgumentNullException("scene");
@@ -46,30 +42,63 @@ namespace Nine.Graphics
             var context = GetDrawingContext(scene);
             if (context == null)
                 SetDrawingContext(scene, context = new DrawingContext(graphics, scene));
-            context.Draw(elapsedTime);
+            else if (context.GraphicsDevice != graphics)
+                throw new ArgumentException("graphics");
+
+            return context;
         }
+
+        /// <summary>
+        /// Sets the drawing context of the specified scene.
+        /// </summary>
+        public static void SetDrawingContext(Scene scene, DrawingContext value)
+        {
+            if (scene == null)
+                throw new ArgumentNullException("scene");
+
+            var currentContext = GetDrawingContext(scene);
+            if (currentContext != null && currentContext != value)
+                throw new InvalidOperationException();
+
+            if (currentContext == null)
+            {
+                if (value != null)
+                    BindDrawingContext(scene, value);
+                AttachablePropertyServices.SetProperty(scene, DrawingContextProperty, value);
+            }
+        }
+        private static AttachableMemberIdentifier DrawingContextProperty = new AttachableMemberIdentifier(typeof(SceneExtensions), "DrawingContext");
 
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
-        public static void Draw(this Scene scene, DrawingContext context, TimeSpan elapsedTime)
+        public static void Draw(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
         {
-            if (scene == null)
-                throw new ArgumentNullException("scene");
-            if (context == null)
-                throw new ArgumentNullException("context");
+            GetDrawingContext(scene, graphics).Draw(elapsedTime);
+        }
 
-            var existingContext = GetDrawingContext(scene);
-            if (existingContext != null)
+        /// <summary>
+        /// Binds scene added/removed events to the drawing context.
+        /// </summary>
+        private static void BindDrawingContext(Scene scene, DrawingContext context)
+        {
+            scene.AddedToScene += (value) =>
             {
-                if (existingContext != context)
-                    throw new InvalidOperationException();
-            }
-            else
+                var sceneObject = value as ISceneObject;
+                if (sceneObject != null)
+                    sceneObject.OnAdded(context);
+            };
+            scene.RemovedFromScene += (value) =>
             {
-                SetDrawingContext(scene, existingContext = context);
-            }            
-            context.Draw(elapsedTime);
+                var sceneObject = value as ISceneObject;
+                if (sceneObject != null)
+                    sceneObject.OnRemoved(context);
+            };
+            scene.Traverse<ISceneObject>(sceneObject =>
+            {
+                sceneObject.OnAdded(context);
+                return TraverseOptions.Continue;
+            });
         }
     }
 }

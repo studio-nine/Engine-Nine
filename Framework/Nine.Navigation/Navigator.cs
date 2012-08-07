@@ -199,11 +199,6 @@ namespace Nine.Navigation
             get { return myOpponents; }
             set { myOpponents = value; UpdateFriendsAndOpponents(); }
         }
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
         #endregion
 
         #region ISpatialQueryable

@@ -360,7 +360,7 @@
                         continue;
                     targetValue = converter.ConvertFrom(null, CultureInfo.InvariantCulture, param.Value);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Trace.TraceWarning("Error converting {0} to type {1}", param.Value, property.PropertyType);
                 }
@@ -369,7 +369,7 @@
                 {
                     property.SetValue(value, targetValue, null);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Trace.TraceWarning("Error setting {0} to property {1} on {2}", param.Value, param.Key, property.PropertyType);
                 }

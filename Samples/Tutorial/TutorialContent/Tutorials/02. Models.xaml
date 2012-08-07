@@ -55,22 +55,24 @@
         You can apply different materials to each part of the model and toggle their visibility seperately.
     -->
     <Model Source="{ContentReference ../Models/AlphaPalm}" Transform.Position="10,0,20">
-        <!-- Hide the trunk -->       
-        <ModelMesh Visible="False" />     
-        <!-- 
-            You can write your own .fx shaders and apply them to the models. 
-            The shader should use the standard annotations to bind to the current graphics settings.
-            You should not modify any render states in the shader.
+        <Model.Meshes>
+            <!-- Hide the trunk -->       
+            <ModelMesh Visible="False" />     
+            <!-- 
+                You can write your own .fx shaders and apply them to the models. 
+                The shader should use the standard annotations to bind to the current graphics settings.
+                You should not modify any render states in the shader.
                
-            Process your shader using "Effect - Engine Nine".
-        -->
-        <ModelMesh>
-            <ModelMesh.Material>
-                <CustomMaterial IsTransparent="true" TwoSided="true" Source="{ContentReference ../Effects/Cage}">
-                    <xna:Vector4 x:Key="BrightColor">1,1,1,1</xna:Vector4>
-                </CustomMaterial>
-            </ModelMesh.Material>
-        </ModelMesh>
+                Process your shader using "Effect - Engine Nine".
+            -->
+            <ModelMesh>
+                <ModelMesh.Material>
+                    <CustomMaterial IsTransparent="true" TwoSided="true" Source="{ContentReference ../Effects/Cage}">
+                        <xna:Vector4 x:Key="BrightColor">1,1,1,1</xna:Vector4>
+                    </CustomMaterial>
+                </ModelMesh.Material>
+            </ModelMesh>
+        </Model.Meshes>
     </Model>
     
     <!--

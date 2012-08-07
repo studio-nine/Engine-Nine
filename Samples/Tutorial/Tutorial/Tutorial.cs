@@ -100,13 +100,12 @@ namespace Tutorial
         {
             scene = Content.Load<Scene>(tutorials[nextTutorial]);
 
-            //scene.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));           
-            //scene.Camera = new TopDownEditorCamera(GraphicsDevice);           
-            //scene.Camera = new ModelViewerCamera(GraphicsDevice);           
-            //scene.Context.Settings.DefaultDebugControlEnabled = true;
-            //scene.Context.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
-            //scene.Context.Settings.TextureFilter = TextureFilter.Anisotropic;
-
+            // Gets the drawing context to adjust drawing settings.
+            var drawingContext = scene.GetDrawingContext(GraphicsDevice);
+            drawingContext.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));
+            drawingContext.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
+            
             Window.Title = tutorials[nextTutorial];
 
             nextTutorial = (nextTutorial + 1) % tutorials.Length;
@@ -120,6 +119,7 @@ namespace Tutorial
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back))
                 Exit();
 
+            scene.UpdatePhysicsAsync(gameTime.ElapsedGameTime);
             scene.Update(gameTime.ElapsedGameTime);
 
             base.Update(gameTime);
@@ -138,5 +138,18 @@ namespace Tutorial
 
             base.Draw(gameTime);
         }
+
+#if WINDOWS || XBOX
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        static void Main(string[] args)
+        {
+            using (Tutorial game = new Tutorial())
+            {
+                game.Run();
+            }
+        }
+#endif
     }
 }

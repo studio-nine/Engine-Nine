@@ -295,17 +295,23 @@ namespace Nine.Content.Pipeline.Xaml
 
         private static bool TryGetTransform(object target, out Matrix transform)
         {
-            try
+            transform = Matrix.Identity;
+            var transformProperty = target.GetType().GetProperty("Transform");
+            if (transformProperty == null || !transformProperty.CanRead)
+                return false;
+            if (transformProperty.PropertyType == typeof(Matrix))
             {
-                dynamic d = target;
-                transform = d.Transform;
+                transform = (Matrix)transformProperty.GetValue(target, null);
                 return true;
             }
-            catch
+            if (transformProperty.PropertyType == typeof(Matrix?))
             {
-                transform = Matrix.Identity;
-                return false;
+                var nullable = ((Matrix?)transformProperty.GetValue(target, null));
+                if (nullable.HasValue)
+                    transform = nullable.Value;
+                return true;
             }
+            return false;
         }
 
         private static bool TrySetTransform(object target, Vector3 scale, Quaternion rotation, Vector3 translation)
@@ -315,16 +321,20 @@ namespace Nine.Content.Pipeline.Xaml
 
         private static bool TrySetTransform(object target, Matrix transform)
         {
-            try
+            var transformProperty = target.GetType().GetProperty("Transform");
+            if (transformProperty == null || !transformProperty.CanWrite)
+                return false;
+            if (transformProperty.PropertyType == typeof(Matrix))
             {
-                dynamic d = target;
-                d.Transform = transform;
+                transformProperty.SetValue(target, transform, null);
                 return true;
             }
-            catch
+            if (transformProperty.PropertyType == typeof(Matrix?))
             {
-                return false;
+                transformProperty.SetValue(target, (Matrix?)transform, null);
+                return true;
             }
+            return false;
         }
         #endregion
     }

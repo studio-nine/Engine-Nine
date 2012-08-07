@@ -6,7 +6,6 @@ namespace Nine.Content.Pipeline.Navigation
     using System.Threading.Tasks;
     using Microsoft.Xna.Framework;
     using Nine.Graphics;
-    using Nine.Graphics;
     using Nine.Navigation;
 
     public static class PathGridBuilder

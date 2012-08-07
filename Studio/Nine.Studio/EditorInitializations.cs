@@ -8,7 +8,7 @@
     class EditorInitializations : IDisposable
     {
         [ImportMany()]
-        public IEnumerable<ISupportInitialize> Initializers;
+        public IEnumerable<ISupportInitialize> Initializers { get; set; }
 
         public EditorInitializations()
         {

@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{926CE988-9E75-40DD-80F1-1709A91F8C35}</ProjectGuid>
@@ -12,12 +12,6 @@
     <AssemblyName>Nine.Content.Pipeline</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -125,6 +119,7 @@
     <Compile Include="Graphics\SamplerStateWriter.cs" />
     <Compile Include="Graphics\Materials\MaterialPaintGroupBuilder.cs" />
     <Compile Include="Processors\InstancedModelProcessor.cs" />
+    <Compile Include="Xaml\Transform2D.cs" />
     <Compile Include="Xaml\DistributionMap.cs" />
     <Compile Include="Xaml\Splatter.cs" />
     <Compile Include="Graphics\Materials\MaterialGroupBuilder.cs" />

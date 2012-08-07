@@ -19,21 +19,7 @@
             return (typeof(ContentTypeReader).Namespace + ".ExternalReferenceReader");
         }
     }
-
-    [ContentTypeWriter]
-    class ReferenceWriter : ContentTypeWriter<Reference>
-    {
-        protected override void Write(ContentWriter output, Reference value)
-        {
-            output.WriteSharedResource(0);
-        }
-
-        public override string GetRuntimeReader(TargetPlatform targetPlatform)
-        {
-            return "";
-        }
-    }
-
+    
     [ContentTypeWriter]
     class AttachableMemberIdentifierWriter : ContentTypeWriter<AttachableMemberIdentifier>
     {

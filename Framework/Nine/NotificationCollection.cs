@@ -6,62 +6,14 @@ namespace Nine
     using System.ComponentModel;
     using System.Diagnostics;
     using Microsoft.Xna.Framework.Content;
-
-
-    /// <summary>
-    ///  Notifies clients that the collection has changed.
-    /// </summary>
-    public interface INotifyCollectionChanged<T>
-    {
-        /// <summary>
-        /// Raised when a new element is added to the collection.
-        /// </summary>
-        event EventHandler<NotifyCollectionChangedEventArgs<T>> Added;
-
-        /// <summary>
-        /// Raised when an element is removed from the collection.
-        /// </summary>
-        event EventHandler<NotifyCollectionChangedEventArgs<T>> Removed;
-    }
-
-    /// <summary>
-    /// Event args for changed an item.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class NotifyCollectionChangedEventArgs<T> : EventArgs
-    {
-        /// <summary>
-        /// Gets the index of the added or removed item.
-        /// </summary>
-        public int Index { get; internal set; }
-
-        /// <summary>
-        /// Gets the new value of the item.
-        /// </summary>
-        public T Value { get; internal set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotifyCollectionChangedEventArgs&lt;T&gt;"/> class.
-        /// </summary>
-        public NotifyCollectionChangedEventArgs() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotifyCollectionChangedEventArgs&lt;T&gt;"/> class.
-        /// </summary>
-        public NotifyCollectionChangedEventArgs(int index, T value)
-        {
-            Index = index;
-            Value = value;
-        }
-    }
-
+    
     /// <summary>
     /// A collection that can notify changes.
     /// </summary>
     [DebuggerDisplay("Count = {Count}")]
     [DebuggerTypeProxy("System.Collections.Generic.Mscorlib_CollectionDebugView`1, mscorlib")]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T>
+    class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T>
     {
         private List<T> elements = null;
         private List<T> copy = null;
@@ -84,12 +36,12 @@ namespace Nine
         /// <summary>
         /// Raised when a new element is added to the collection.
         /// </summary>
-        public event EventHandler<NotifyCollectionChangedEventArgs<T>> Added;
+        public event Action<T> Added;
 
         /// <summary>
         /// Raised when an element is removed from the collection.
         /// </summary>
-        public event EventHandler<NotifyCollectionChangedEventArgs<T>> Removed;
+        public event Action<T> Removed;
                 
         /// <summary>
         /// Gets the enumerator associated with is collection.
@@ -144,7 +96,7 @@ namespace Nine
             isDirty = true;
             elements.Add(value);
 
-            OnAdded(elements.Count - 1, value);
+            OnAdded(value);
         }
 
         /// <summary>
@@ -171,7 +123,7 @@ namespace Nine
 
             elements.RemoveAt(index);
 
-            OnRemoved(index, value);
+            OnRemoved(value);
 
             return true;
         }
@@ -189,7 +141,7 @@ namespace Nine
 
                 if (elements != null)
                     for (int i = 0; i < elements.Count; i++)
-                        OnRemoved(i, elements[i]);
+                        OnRemoved(elements[i]);
 
                 temp.Clear();
             }
@@ -247,7 +199,7 @@ namespace Nine
             isDirty = true;
             elements.Insert(index, item);
 
-            OnAdded(index, item);
+            OnAdded(item);
         }
 
         /// <summary>
@@ -261,7 +213,7 @@ namespace Nine
                 T e = elements[index];
                 elements.RemoveAt(index);
 
-                OnRemoved(index, e);
+                OnRemoved(e);
             }
         }
 
@@ -285,7 +237,7 @@ namespace Nine
 
                     elements.RemoveAt(i);
 
-                    OnRemoved(i, e);
+                    OnRemoved(e);
 
                     i--;
                     count++;
@@ -311,29 +263,31 @@ namespace Nine
                     elements = new List<T>();
 
                 T oldValue = elements[index];
-                OnRemoved(index, oldValue);
+                OnRemoved(oldValue);
                 elements[index] = value;
                 isDirty = true;
-                OnAdded(index, value);
+                OnAdded(value);
             }
         }
 
         /// <summary>
         /// Raised when a new element is added to the collection.
         /// </summary>
-        protected virtual void OnAdded(int index, T value)
+        protected virtual void OnAdded(T value)
         {
-            if (Added != null)
-                Added(Sender, new NotifyCollectionChangedEventArgs<T> { Index = index, Value = value });
+            var added = Added;
+            if (added != null)
+                added(value);
         }
 
         /// <summary>
         /// Raised when an element is removed from the collection.
         /// </summary>
-        protected virtual void OnRemoved(int index, T value)
+        protected virtual void OnRemoved(T value)
         {
-            if (Removed != null)
-                Removed(Sender, new NotifyCollectionChangedEventArgs<T> { Index = index, Value = value });
+            var removed = Removed;
+            if (removed != null)
+                removed(value);
         }
 
         #region IList

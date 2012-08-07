@@ -65,9 +65,6 @@ namespace Nine.Graphics
         public Material Material
         {
             get { return material; }
-#if !TEXT_TEMPLATE && !WINDOWS_PHONE
-#else
-#endif
             //set { material = value ?? (new DecalMaterial(GraphicsDevice)); UpdateDecalMaterial(); }
             set { }
         }
@@ -217,8 +214,8 @@ namespace Nine.Graphics
             DepthBias = 0.001f;
             
             decalGeometries = new NotificationCollection<IGeometry>();
-            decalGeometries.Added += (sender, e) => { dirtyMask |= GeometryDirtyMask; };
-            decalGeometries.Removed += (sender, e) => { dirtyMask |= GeometryDirtyMask; };
+            decalGeometries.Added += (value) => { dirtyMask |= GeometryDirtyMask; };
+            decalGeometries.Removed += (value) => { dirtyMask |= GeometryDirtyMask; };
             
 #if !TEXT_TEMPLATE
 #if !WINDOWS_PHONE

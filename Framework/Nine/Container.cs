@@ -106,7 +106,7 @@ namespace Nine
             if (traverseOptions == TraverseOptions.Skip)
                 return true;
 
-            var targetContainer = targetObject as IContainer;
+            var targetContainer = target as IContainer;
             if (targetContainer == null)
                 return true;
             

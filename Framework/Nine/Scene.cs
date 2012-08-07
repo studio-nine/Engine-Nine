@@ -39,10 +39,8 @@ namespace Nine
         private ISpatialQuery<object> flattenedQuery;
 
         /// <summary>
-        /// This list contains all the flattened objects in the current view frustum.
+        /// Used for ray casting.
         /// </summary>
-        private FastList<object> flattenedObjectsInViewFrustum = new FastList<object>();
-
         private List<FindResult> rayCastResult = new List<FindResult>();
         #endregion
 
@@ -51,23 +49,23 @@ namespace Nine
         /// Occurs when any of the desecendant node is removed from the scene either
         /// directly or through the removal from a subtree.
         /// </summary>
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> RemovedFromScene;
+        public event Action<object> RemovedFromScene;
 
         /// <summary>
         /// Occurs when any of the desecendant node is added to the scene either
         /// directly or through the addition of a subtree.
         /// </summary>
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> AddedToScene;
+        public event Action<object> AddedToScene;
 
         /// <summary>
         /// Occurs when the scene is starting to update.
         /// </summary>
-        public event Action<Scene, TimeSpan> Updating;
+        public event Action<TimeSpan> Updating;
 
         /// <summary>
         /// Occurs when the scene has finished updating.
         /// </summary>
-        public event Action<Scene, TimeSpan> Updated;
+        public event Action<TimeSpan> Updated;
         #endregion
 
         #region Initialization
@@ -98,13 +96,13 @@ namespace Nine
         {
             var updating = Updating;
             if (updating != null)
-                updating(this, elapsedTime);
+                updating(elapsedTime);
 
             base.Update(elapsedTime);
 
             var updated = Updated;
             if (updated != null)
-                updated(this, elapsedTime);         
+                updated(elapsedTime);         
         }
         #endregion
 
@@ -168,7 +166,7 @@ namespace Nine
 
             var addedToScene = AddedToScene;
             if (addedToScene != null)
-                addedToScene(this, new NotifyCollectionChangedEventArgs<object>(0, desecendant));
+                addedToScene(desecendant);
 
             return TraverseOptions.Continue;
         }
@@ -211,7 +209,7 @@ namespace Nine
 
             var removedFromScene = RemovedFromScene;
             if (removedFromScene != null)
-                removedFromScene(this, new NotifyCollectionChangedEventArgs<object>(0, desecendant));
+                removedFromScene(desecendant);
 
             return TraverseOptions.Continue;
         }
@@ -229,17 +227,17 @@ namespace Nine
         /// <summary>
         /// Ensures OnAddedToScene is called when a desecendant is added to a subtree.
         /// </summary>
-        private void OnDesecendantAdded(object sender, NotifyCollectionChangedEventArgs<object> e)
+        private void OnDesecendantAdded(object value)
         {
-            InternalAdd(e.Value);
+            InternalAdd(value);
         }
 
         /// <summary>
         /// Ensures OnRemovedFromScene is called when a desecendant is removed from a subtree.
         /// </summary>
-        private void OnDesecendantRemoved(object sender, NotifyCollectionChangedEventArgs<object> e)
+        private void OnDesecendantRemoved(object value)
         {
-            InternalRemove(e.Value);
+            InternalRemove(value);
         }
         #endregion
 

@@ -441,9 +441,9 @@ namespace Nine.Content.Pipeline.Graphics
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Model value)
         {
             {
-                output.Write(value.ModelMeshes.Count);
-                for (var i = 0; i < value.ModelMeshes.Count; i++)
-                    output.WriteObject(value.ModelMeshes[i]);
+                output.Write(value.Meshes.Count);
+                for (var i = 0; i < value.Meshes.Count; i++)
+                    output.WriteObject(value.Meshes[i]);
             }
             WriteObject(output, value, "Source", value.Source);
             WriteObject(output, value, "Material", value.Material);
@@ -458,6 +458,11 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.MaxReceivedShadows);
             output.Write(value.MultiPassShadowEnabled);
             WriteObject(output, value, "SharedSkeleton", value.SharedSkeleton);
+            {
+                output.Write(value.Attachments.Count);
+                for (var i = 0; i < value.Attachments.Count; i++)
+                    output.WriteObject(value.Attachments[i]);
+            }
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -482,6 +487,44 @@ namespace Nine.Content.Pipeline.Graphics
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Model, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ModelAttachment</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ModelAttachmentWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.ModelAttachment>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.ModelAttachment value)
+        {
+            WriteObject(output, value, "Transformable", value.Transformable);
+            WriteObject(output, value, "Bone", value.Bone);
+            output.WriteObject(value.Transform);
+            output.Write(value.UseBoneScale);
+            output.Write(value.ShareSkeleton);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ModelAttachmentReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.ModelAttachment, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
     /// <summary>
@@ -533,7 +576,9 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.WriteObject(value.UseModelTextures);
+            WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)

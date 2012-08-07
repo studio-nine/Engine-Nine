@@ -1014,7 +1014,7 @@
             ba.Position.X = +width * 0.5f; ba.Position.Y = -height * 0.5f; ba.Position.Z = 0;
             bb.Position.X = -width * 0.5f; bb.Position.Y = -height * 0.5f; bb.Position.Z = 0;
 
-            if (rotation != null)
+            if (Math.Abs(rotation) > 1E-6F)
             {
                 float x, y;
                 float cos = (float)Math.Cos(rotation);

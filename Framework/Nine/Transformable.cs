@@ -21,8 +21,6 @@ namespace Nine
         public Transformable Parent
         {
             get { return parent; }
-
-            // To be used by Group.
             internal set 
             {
                 if (parent != value)

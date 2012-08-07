@@ -147,9 +147,9 @@ namespace Nine.Graphics
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new FullScreenQuad(Context.GraphicsDevice)
+                deferredGeometry = new FullScreenQuad(context.GraphicsDevice)
                 {
-                    Material = deferredMaterial = new DeferredDirectionalLightMaterial(Context.GraphicsDevice)
+                    Material = deferredMaterial = new DeferredDirectionalLightMaterial(context.GraphicsDevice)
                 };
             }
             deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];

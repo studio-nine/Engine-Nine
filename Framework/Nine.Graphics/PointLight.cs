@@ -127,9 +127,9 @@ namespace Nine.Graphics
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new SphereInvert(Context.GraphicsDevice)
+                deferredGeometry = new SphereInvert(context.GraphicsDevice)
                 {
-                    Material = deferredMaterial = new DeferredPointLightMaterial(Context.GraphicsDevice)
+                    Material = deferredMaterial = new DeferredPointLightMaterial(context.GraphicsDevice)
                 };
             }
             deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];

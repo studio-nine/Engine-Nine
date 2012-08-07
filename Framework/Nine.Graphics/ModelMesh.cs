@@ -12,18 +12,9 @@ namespace Nine.Graphics
     /// Defines a part of a model that contains only one material.
     /// </summary>
     [ContentSerializable]
-    public class ModelMesh : IDrawableObject, ILightable, IContainedObject
+    public class ModelMesh : Nine.Object, IDrawableObject, ILightable, IContainedObject
     {
         #region Properties
-        /// <summary>
-        /// Gets the name of this model part.
-        /// </summary>
-        public string Name
-        {
-            get { return name; } 
-        }
-        private string name;
-
         /// <summary>
         /// Gets the containing model.
         /// </summary>
@@ -115,11 +106,6 @@ namespace Nine.Graphics
         }
         private Dictionary<TextureUsage, Texture> textures;
         
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
-        
         object IContainedObject.Parent
         {
             get { return model; }
@@ -190,7 +176,7 @@ namespace Nine.Graphics
                 throw new ArgumentNullException();
 
             this.model = model;
-            this.name = mesh.Name;
+            this.Name = mesh.Name;
 
             var tag = part.Tag as ModelMeshPartTag;
             if (tag != null && tag.Textures != null && tag.Textures.Count > 0)

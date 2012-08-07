@@ -14,27 +14,8 @@ namespace Nine
     /// Defines a logic group of transformable objects to create a transform and bounding box hierarchy.
     /// </summary>
     [ContentProperty("Children")]
-    public class Group : Transformable, IContainer, ICollection<object>, INotifyCollectionChanged<object>, Nine.IUpdateable, IBoundable, IDisposable
+    public class Group : Transformable, IContainer, INotifyCollectionChanged<object>, Nine.IUpdateable, IBoundable, IDisposable
     {
-        #region Properties
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Group"/> is visible.
-        /// </summary>
-        public bool Visible
-        {
-            get { return visible; }
-            set
-            {
-                if (visible != value)
-                {
-                    // TODO: Implement this
-                    visible = value;
-                }
-            }
-        }
-        private bool visible = true;
-        #endregion
-
         #region Children
         /// <summary>
         /// Gets the child drawable owned used by this drawable.
@@ -79,31 +60,26 @@ namespace Nine
             }
         }
 
-        void Child_Added(object sender, NotifyCollectionChangedEventArgs<object> e)
+        void Child_Added(object value)
         {
-            if (e.Value == null)
+            if (value == null)
                 throw new ArgumentNullException("item");
 
-            CheckIntegrity(e.Value);
+            CheckIntegrity(value);
 
-            Transformable transformable = e.Value as Transformable;
+            Transformable transformable = value as Transformable;
             if (transformable != null)
             {
                 if (transformable.Parent != null)
                     throw new InvalidOperationException("The object is already added to a display object.");
                 transformable.Parent = this;
             }
-                        
-            // Model animations are added automatically to the parent display object
-            //if (e.Value is DrawableModel)
-            //{
-            //    animations.Animations.AddRange(((DrawableModel)e.Value).Animations.Animations);
-            //}
 
-            OnAdded(e.Value);
+            OnAdded(value);
 
-            if (Added != null)
-                Added(this, e);
+            var added = Added;
+            if (added != null)
+                added(value);
         }
 
         [Conditional("DEBUG")]
@@ -114,9 +90,9 @@ namespace Nine
                 throw new InvalidOperationException("The object is already a child of this display object");
         }
 
-        void Child_Removed(object sender, NotifyCollectionChangedEventArgs<object> e)
+        void Child_Removed(object value)
         {
-            Transformable transformable = e.Value as Transformable;
+            Transformable transformable = value as Transformable;
             if (transformable != null)
             {
                 if (transformable.Parent == null)
@@ -124,10 +100,11 @@ namespace Nine
                 transformable.Parent = null;
             }
 
-            OnRemoved(e.Value);
+            OnRemoved(value);
 
-            if (Removed != null)
-                Removed(this, e);
+            var removed = Removed;
+            if (removed != null)
+                removed(value);
         }
 
         /// <summary>
@@ -149,12 +126,12 @@ namespace Nine
         /// <summary>
         /// Occurs when a child object is added directly to this drawing group.
         /// </summary>
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Added;
+        public event Action<object> Added;
 
         /// <summary>
         /// Occurs when a child object is removed directly from this drawing group.
         /// </summary>
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Removed;
+        public event Action<object> Removed;
         #endregion
 
         #region ICollection
@@ -190,32 +167,12 @@ namespace Nine
             return children.Contains(item);
         }
 
-        void ICollection<object>.CopyTo(object[] array, int arrayIndex)
-        {
-            children.CopyTo(array, arrayIndex);
-        }
-
         /// <summary>
         /// Gets the number of objects managed by this drawing group.
         /// </summary>
         public int Count
         {
             get { return children.Count; }
-        }
-
-        bool ICollection<object>.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        IEnumerator<object> IEnumerable<object>.GetEnumerator()
-        {
-            return children.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return children.GetEnumerator();
         }
         #endregion
 
@@ -319,6 +276,22 @@ namespace Nine
                 return TraverseOptions.Continue;
             });
             return result;            
+        }
+
+        /// <summary>
+        /// Finds all the child objects of the target including the input target.
+        /// </summary>
+        public void Traverse<T>(ICollection<T> result) where T : class
+        {
+            ContainerTraverser.Traverse(this, result);
+        }
+        
+        /// <summary>
+        /// Finds all the child objects of the target including the input target.
+        /// </summary>
+        public void Traverse<T>(Func<T, TraverseOptions> result) where T : class
+        {
+            ContainerTraverser.Traverse(this, result);
         }
         #endregion
 

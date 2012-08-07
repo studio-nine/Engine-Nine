@@ -4,6 +4,7 @@ namespace Nine
     using System.Windows.Markup;
     using System.Xml.Serialization;
     using Microsoft.Xna.Framework.Content;
+        
     /*
     #region IComponent
     /// <summary>

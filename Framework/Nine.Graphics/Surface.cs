@@ -401,9 +401,10 @@
                 segmentCountX = segmentCountZ = 0;
                 patches = null;
 
-                if (Removed != null && removedPatches != null)
+                var removed = Removed;
+                if (removed != null && removedPatches != null)
                     foreach (var patch in removedPatches)
-                        Removed(this, new NotifyCollectionChangedEventArgs<object>(-1, patch));
+                        removed(patch);
                 return;
             }
 
@@ -426,9 +427,10 @@
             if (newPatchCountX != patchCountX || newPatchCountZ != patchCountZ)
             {
                 patches = null;
-                if (Removed != null && removedPatches != null)
+                var removed = Removed;
+                if (removed != null && removedPatches != null)
                     foreach (var patch in removedPatches)
-                        Removed(this, new NotifyCollectionChangedEventArgs<object>(-1, patch));
+                        removed(patch);
             }
 
             patchCountX = newPatchCountX;
@@ -476,11 +478,10 @@
                 {
                     foreach (SurfacePatch patch in patches)
                     {
-                        if (Removed != null)
-                        {
-                            patch.Dispose();
-                            Removed(this, new NotifyCollectionChangedEventArgs<object>(-1, patch));
-                        }
+                        var removed = Removed;
+                        if (removed != null)
+                            removed(patch);
+                        patch.Dispose();
                     }
                 }
 
@@ -492,9 +493,10 @@
                         patchArray[i++] = new SurfacePatch<T>(this, x, z);
                 patches = new SurfacePatchCollection(this, patchArray);
 
-                if (Added != null)
+                var added = Added;
+                if (added != null)
                     foreach (SurfacePatch patch in patches)
-                        Added(this, new NotifyCollectionChangedEventArgs<object>(-1, patch));
+                        added(patch);
             }
 
             foreach (SurfacePatch<T> patch in patches)
@@ -809,10 +811,10 @@
 
         #region INotifyCollectionChanged
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Added;
+        public event Action<object> Added;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public event EventHandler<NotifyCollectionChangedEventArgs<object>> Removed;
+        public event Action<object> Removed;
         #endregion
 
         #region IDisposable

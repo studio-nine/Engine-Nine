@@ -50,12 +50,14 @@
                 directionParameter.SetValue(light.Direction);
                 diffuseColorParameter.SetValue(light.DiffuseColor);
                 specularColorParameter.SetValue(light.SpecularColor);
+                lightVersion = light.version;
             }
 
-            if (lightCollectionVersion != lightVersion && light == null)
+            if (lightCollectionVersion != context.DirectionalLights.Version && light == null)
             {
                 directionParameter.SetValue(Vector3.Zero);
                 directionParameter.SetValue(Vector3.Zero);
+                lightCollectionVersion = context.DirectionalLights.Version;
             }
         }
 

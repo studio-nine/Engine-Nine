@@ -304,7 +304,7 @@ namespace Nine.Graphics
             {
                 var count = input.ReadInt32();
                 for (var i = 0; i < count; i++)
-                    existingInstance.ModelMeshes.Add(input.ReadObject<Nine.Graphics.ModelMesh>());
+                    existingInstance.Meshes.Add(input.ReadObject<Nine.Graphics.ModelMesh>());
             }
             existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
@@ -319,10 +319,35 @@ namespace Nine.Graphics
             existingInstance.MaxReceivedShadows = input.ReadInt32();
             existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
             existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
+            {
+                var count = input.ReadInt32();
+                for (var i = 0; i < count; i++)
+                    existingInstance.Attachments.Add(input.ReadObject<Nine.Graphics.ModelAttachment>());
+            }
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ModelAttachment</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ModelAttachmentReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.ModelAttachment>
+    {
+        protected override Nine.Graphics.ModelAttachment Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.ModelAttachment existingInstance)
+        {
+            if (existingInstance == null)
+                existingInstance = new ModelAttachment();
+            existingInstance.Transformable = input.ReadObject<Nine.Transformable>();
+            existingInstance.Bone = input.ReadObject<System.String>();
+            existingInstance.Transform = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Matrix>>();
+            existingInstance.UseBoneScale = input.ReadBoolean();
+            existingInstance.ShareSkeleton = input.ReadBoolean();
             return existingInstance;
         }
     }
@@ -358,7 +383,9 @@ namespace Nine.Graphics
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.UseModelTextures = input.ReadObject<System.Nullable<System.Boolean>>();
+            existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
         }
     }

@@ -7,7 +7,8 @@ namespace Nine.Graphics
     using Nine.Graphics.Materials;
 
     /// <summary>
-    /// Defines an interface for scene objects that 
+    /// Defines an interface for objects that can be added to or removed 
+    /// from a drawing context.
     /// </summary>
     public interface ISceneObject
     {
@@ -23,7 +24,7 @@ namespace Nine.Graphics
     }
 
     /// <summary>
-    /// Interface for game camera
+    /// Interface for game cameras.
     /// </summary>
     public interface ICamera
     {

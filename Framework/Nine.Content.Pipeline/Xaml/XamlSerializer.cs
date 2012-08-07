@@ -279,7 +279,7 @@
             {
                 result = xamlTypeInvoker.CreateInstance(arguments);
             }
-            catch (MissingMethodException e)
+            catch (MissingMethodException)
             {
                 result = xamlSerializer.ResolveInstance(xamlType.UnderlyingType, arguments);
             }

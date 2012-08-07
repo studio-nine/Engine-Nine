@@ -14,8 +14,8 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a basic model that can be rendered using the renderer with a designated material.
     /// </summary>
-    [ContentProperty("ModelMeshes")]
-    public class Model : Transformable, Nine.IContainer, Nine.IUpdateable, ISpatialQueryable, IPickable, IGeometry, ISupportInstancing
+    [ContentProperty("Attachments")]
+    public class Model : Transformable, Nine.IContainer, Nine.IUpdateable, ISpatialQueryable, IPickable, IGeometry, ISupportInstancing, INotifyCollectionChanged<object>
     {
         #region Source
         /// <summary>
@@ -26,22 +26,23 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the model meshes that made up of this model.
         /// </summary>
-        public IList<ModelMesh> ModelMeshes
+        public IList<ModelMesh> Meshes
         {
             get { return modelMeshes; }
         }
 
         IList Nine.IContainer.Children
         {
-            get { return modelMeshes; }
+            get { return children; }
         }
 
         private List<ModelMesh> modelMeshes;
+        internal List<object> children;
 
         /// <summary>
         /// Gets or sets the underlying model.
         /// </summary>
-        [DependsOn("ModelMeshes")]
+        [DependsOn("Meshes")]
         public Microsoft.Xna.Framework.Graphics.Model Source
         {
             get { return source; }
@@ -239,6 +240,17 @@ namespace Nine.Graphics
         public bool IsSkinned { get; private set; }
         #endregion
 
+        #region Attachments
+        /// <summary>
+        /// Gets a dictionary of objects that are attached to the specific bone of this model.
+        /// </summary>
+        public ModelAttachmentCollection Attachments
+        {
+            get { return attachments ?? (attachments = new ModelAttachmentCollection(this)); }
+        }
+        private ModelAttachmentCollection attachments;
+        #endregion
+
         #region Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="Model"/> class.
@@ -257,6 +269,7 @@ namespace Nine.Graphics
             MaxReceivedShadows = 1;
             GraphicsDevice = graphicsDevice;
             modelMeshes = new List<ModelMesh>();
+            children = new List<object>();
         }
 
         /// <summary>
@@ -328,6 +341,14 @@ namespace Nine.Graphics
                         iPart++;
                     }
                 }
+
+                // Populate child nodes
+                children.Clear();
+                children.AddRange(modelMeshes);
+                if (attachments != null)
+                    for (int i = 0; i < attachments.Count; i++)
+                        if (attachments[i].Transformable != null)
+                            children.Add(attachments[i].Transformable);
             }
         }
         #endregion
@@ -386,6 +407,17 @@ namespace Nine.Graphics
                 boneTransformNeedUpdate = true;
             }
 
+            if (attachments != null)
+            {
+                if (boneTransformNeedUpdate)
+                    attachments.UpdateTransforms();
+                for (int i = 0; i < attachments.Count; i++)
+                {
+                    var updateable = attachments[i].Transformable as Nine.IUpdateable;
+                    if (updateable != null)
+                        updateable.Update(elapsedTime);
+                }
+            }
             insideViewFrustum = false;
         }
         #endregion
@@ -512,6 +544,28 @@ namespace Nine.Graphics
             UpdateBoneTransforms();
             mesh.ApplyTextures(material);
             mesh.ApplySkinTransform(material);
+        }
+        #endregion
+        
+        #region INotifyCollectionChanged
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public event Action<object> Added;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public event Action<object> Removed;
+
+        internal void NotifyAdded(object item)
+        {
+            var added = Added;
+            if (added != null)
+                added(item);
+        }
+
+        internal void NotifyRemoved(object item)
+        {
+            var removed = Removed;
+            if (removed != null)
+                removed(item);
         }
         #endregion
     }
