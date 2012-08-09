@@ -286,8 +286,8 @@
         {
             int count = 0;
             NotificationCollection<int> target = new NotificationCollection<int>();
-            target.Added += (o, e) => { count++; };
-            target.Removed += (o, e) => { count--; };
+            target.Added += (e) => { count++; };
+            target.Removed += (e) => { count--; };
 
             target.Add(0);
             target.Clear();

@@ -4,7 +4,9 @@ namespace Nine
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
-    #region SceneQuery
+    /// <summary>
+    /// Traverses the scene hierarchy and find all the objects that implements T.
+    /// </summary>
     class SceneQuery<T> : ISpatialQuery<T> where T : class
     {
         CollectionAdapter adapter;
@@ -145,120 +147,4 @@ namespace Nine
             }
         }
     }
-    #endregion
-
-    #region DetailedQuery
-    class DetailedQuery : ISpatialQuery<FindResult>
-    {
-        CollectionAdapter adapter;
-        ISpatialQuery<ISpatialQueryable> sceneManager;
-
-        public DetailedQuery(ISpatialQuery<ISpatialQueryable> sceneManager)
-        {
-            this.sceneManager = sceneManager;
-            this.adapter = new CollectionAdapter();
-        }
-
-        public void FindAll(ref BoundingSphere boundingSphere, ICollection<FindResult> result)
-        {
-            adapter.Result = result;
-            sceneManager.FindAll(ref boundingSphere, adapter);
-            adapter.Result = null;
-        }
-
-        public void FindAll(ref Ray ray, ICollection<FindResult> result)
-        {
-            adapter.Result = result;
-            sceneManager.FindAll(ref ray, adapter);
-            adapter.Result = null;
-        }
-
-        public void FindAll(ref BoundingBox boundingBox, ICollection<FindResult> result)
-        {
-            adapter.Result = result;
-            sceneManager.FindAll(ref boundingBox, adapter);
-            adapter.Result = null;
-        }
-
-        public void FindAll(BoundingFrustum boundingFrustum, ICollection<FindResult> result)
-        {
-            adapter.Result = result;
-            sceneManager.FindAll(boundingFrustum, adapter);
-            adapter.Result = null;
-        }
-
-        class CollectionAdapter : SpatialQueryCollectionAdapter<ISpatialQueryable>
-        {
-            public ICollection<FindResult> Result;
-
-            public override void Add(ISpatialQueryable item)
-            {
-                var findResult = new FindResult();
-                findResult.OriginalTarget = item;
-                findResult.Target = ContainerTraverser.FindRootContainer(item);
-                findResult.Distance = null;
-                findResult.ContainmentType = ContainmentType.Disjoint;
-                Result.Add(findResult);
-            }
-        }
-    }
-    #endregion
-
-    #region SceneQueryHelper
-    static class SceneQueryHelper<T> where T : class
-    {
-        public static ICollection<T> Result;
-
-        private static T ResultObject;
-        private static string TargetName;
-        private static Func<T, TraverseOptions> NameTraverser = new Func<T, TraverseOptions>(FindNameTraverser);
-        private static Func<T, TraverseOptions> AllNamesTraverser = new Func<T, TraverseOptions>(FindAllNamesTraverser);
-
-        public static T FindName(object targetObject, string name)
-        {
-            TargetName = name;
-            ContainerTraverser.Traverse(targetObject, NameTraverser);
-            T result = ResultObject;
-            ResultObject = null;
-            return result;
-        }
-        
-        private static TraverseOptions FindNameTraverser(T item)
-        {
-            if (item.ToString() == TargetName || TargetName == null)
-            {
-                ResultObject = item;
-                return TraverseOptions.Stop;
-            }
-            return TraverseOptions.Continue;
-        }
-
-        public static void FindAllNames(object targetObject, string name, ICollection<T> result)
-        {
-            Result = result;
-            TargetName = name;
-            ContainerTraverser.Traverse(targetObject, AllNamesTraverser);
-            Result = null;
-        }
-
-        private static TraverseOptions FindAllNamesTraverser(T item)
-        {
-            if (item.ToString() == TargetName)
-            {
-                Result.Add(item);
-            }
-            return TraverseOptions.Continue;
-        }
-
-        private static void Output(object value)
-        {
-            var t = value as T;
-            if (t != null)
-            {
-                if (Result != null)
-                    Result.Add(t);
-            }
-        }
-    }
-    #endregion
 }

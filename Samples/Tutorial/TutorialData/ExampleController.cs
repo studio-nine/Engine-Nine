@@ -1,7 +1,7 @@
-#region Copyright 2009 - 2011 (c) Engine Nine
+#region Copyright 2009 - 2012 (c) Engine Nine
 //=============================================================================
 //
-//  Copyright 2009 - 2011 (c) Engine Nine. All Rights Reserved.
+//  Copyright 2009 - 2012 (c) Engine Nine. All Rights Reserved.
 //
 //=============================================================================
 #endregion
@@ -16,7 +16,7 @@ using Nine;
 namespace TutorialData
 {
     /// <summary>
-    /// The follow class defines a basic controller that updates the position of the parent object
+    /// The follow class defines a basic component that updates the position of the parent object
     /// based on keyboard input.
     /// 
     /// To create a custom game component, inherit from Nine.Component so you can gain access to
@@ -27,12 +27,8 @@ namespace TutorialData
     /// both Xaml as well as Xna content compiler. Because the custom component will be first parsed
     /// using Xaml, and then compiled with the Xna content compiler into the binary .xnb format, and
     /// finally be read through the content manager.
-    ///
-    /// To be able to save and load the component using World.Save or World.Load method, the component
-    /// must be marked as Serializable and be compatible with XmlSerializer.
     /// </summary>
-    [Serializable]
-    public class ExampleController : Transformable, IUpdateable
+    public class ExampleController : Component, IUpdateable
     {
         public float Speed { get; set; }
 

@@ -22,7 +22,6 @@
     <RootNamespace>GameContent</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BEPUphysics, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31f6a8732a21de19, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553" />
@@ -335,13 +334,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\05. Animations.xaml">
+    <None Include="Tutorials\05. Animations.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>05. Animations</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Bitmap1.bmp">
@@ -358,6 +357,24 @@
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\13. Components.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Name>13. Components</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\12. Physics.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Name>12. Physics</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+      <SubType>Designer</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

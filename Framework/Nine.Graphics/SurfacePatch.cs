@@ -11,7 +11,7 @@
     /// <summary>
     /// A square block made up of surface patch parts. The whole surface is rendered patch by patch.
     /// </summary>
-    public class SurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, IContainedObject, IGeometry, IDisposable
+    public class SurfacePatch : ISpatialQueryable, IDrawableObject, ILightable, Nine.IComponent, IGeometry, IDisposable
     {
         #region Properties
         /// <summary>
@@ -153,9 +153,10 @@
         #endregion
 
         #region IContainedObject
-        object IContainedObject.Parent
+        object IComponent.Parent
         {
             get { return Surface; }
+            set { throw new InvalidOperationException(); }
         }
         #endregion
 

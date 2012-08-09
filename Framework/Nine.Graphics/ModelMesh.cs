@@ -12,7 +12,7 @@ namespace Nine.Graphics
     /// Defines a part of a model that contains only one material.
     /// </summary>
     [ContentSerializable]
-    public class ModelMesh : Nine.Object, IDrawableObject, ILightable, IContainedObject
+    public class ModelMesh : Nine.Object, IDrawableObject, ILightable, Nine.IComponent
     {
         #region Properties
         /// <summary>
@@ -106,9 +106,10 @@ namespace Nine.Graphics
         }
         private Dictionary<TextureUsage, Texture> textures;
         
-        object IContainedObject.Parent
+        object IComponent.Parent
         {
             get { return model; }
+            set { throw new InvalidOperationException(); }
         }
         #endregion
 

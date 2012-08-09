@@ -1,12 +1,16 @@
 namespace Nine.Physics
 {
+    using BEPUphysics;
+    using BEPUphysics.CollisionTests.CollisionAlgorithms;
+    using BEPUphysics.Constraints;
+    using BEPUphysics.PositionUpdating;
+    using BEPUphysics.Settings;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Xaml;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-    using BEPUphysics;
     
     /// <summary>
     /// Contains extension methods related to physics.
@@ -74,6 +78,8 @@ namespace Nine.Physics
         {
             var space = new Space();
 
+            ApplyDefaultSettings(space);
+
             //If left unset, the default value is (0,0,0).
             space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
 
@@ -100,6 +106,23 @@ namespace Nine.Physics
         }
 
         /// <summary>
+        /// Applies the default settings to the space.
+        /// These values are what the engine starts with; they don't have to be applied unless you just want to get back to the defaults.
+        /// This doesn't cover every single tunable field in the entire engine, just the main ones that this helper class is messing with.
+        /// </summary>
+        /// <param name="space">Space to configure.</param>
+        private static void ApplyDefaultSettings(Space space)
+        {
+            MotionSettings.ConserveAngularMomentum = false;
+            MotionSettings.DefaultPositionUpdateMode = PositionUpdateMode.Discrete;
+            MotionSettings.UseRk4AngularIntegration = false;
+            SolverSettings.DefaultMinimumIterations = 1;
+            space.Solver.IterationLimit = 10;
+            GeneralConvexPairTester.UseSimplexCaching = false;
+            MotionSettings.UseExtraExpansionForContinuousBoundingBoxes = false;
+        }
+
+        /// <summary>
         /// Binds scene added/removed events to the drawing context.
         /// </summary>
         private static void BindSpace(Scene scene, ISpace space)
@@ -107,18 +130,18 @@ namespace Nine.Physics
             scene.AddedToScene += (value) =>
             {
                 var spaceObject = value as ISpaceObject;
-                //if (spaceObject != null)
-                //    spaceObject.OnAdded(space);
+                if (spaceObject != null)
+                    space.Add(spaceObject);
             };
             scene.RemovedFromScene += (value) =>
             {
-                var sceneObject = value as ISpaceObject;
-                //if (sceneObject != null)
-                //    sceneObject.OnRemoved(space);
+                var spaceObject = value as ISpaceObject;
+                if (spaceObject != null)
+                    space.Remove(spaceObject);
             };
             scene.Traverse<ISpaceObject>(spaceObject =>
             {
-                //spaceObject.OnAdded(space);
+                space.Add(spaceObject);
                 return TraverseOptions.Continue;
             });
         }

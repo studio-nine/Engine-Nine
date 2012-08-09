@@ -21,12 +21,58 @@ namespace Nine
     /// Defines an object that can be contained by a parent container.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IContainedObject
+    public interface IComponent
     {
         /// <summary>
-        /// Gets the parent container.
+        /// Gets or sets the parent container.
         /// </summary>
-        object Parent { get; }
+        object Parent { get; set; }
+    }
+
+    /// <summary>
+    /// Defines a basic component that can be added to a parent game object.
+    /// </summary>
+    [ContentSerializable]
+    public class Component : Nine.Object, IComponent
+    {
+        #region Properties
+        /// <summary>
+        /// Gets the parent of this object.
+        /// </summary>
+        public Group Parent
+        {
+            get { return parent; }
+        }
+
+        object IComponent.Parent
+        {
+            get { return Parent; }
+            set { SetParent(value); }
+        }
+
+        private void SetParent(object value)
+        {
+            if (parent != value)
+            {
+                if (value != null)
+                {
+                    if (parent != null)
+                        throw new InvalidOperationException("This object already belongs to a container");
+                    var group = value as Group;
+                    if (group == null)
+                        throw new InvalidOperationException("This object can only be attached to a Group");
+                    parent = group;
+                }
+                else
+                {
+                    if (parent == null)
+                        throw new InvalidOperationException("This object does not belongs to the specified container");
+                    parent = null;
+                }
+            }
+        }
+        private Group parent;
+        #endregion
     }
 
     static class ContainerTraverser
@@ -65,7 +111,7 @@ namespace Nine
 
         private static object GetParent(object target)
         {
-            var containedObject = target as IContainedObject;
+            var containedObject = target as IComponent;
             return containedObject != null ? containedObject.Parent : null;
         }
 

@@ -107,6 +107,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Graphics.Content.Writer.tt</DependentUpon>
     </Compile>
+    <Compile Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Writer.Generated.cs">
+      <Link>Nine.Physics.Content.Writer.Generated.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nine.Physics.Content.Writer.tt</DependentUpon>
+    </Compile>
     <Compile Include="Animations\TweenAnimationWriter.cs" />
     <Compile Include="ContentReference.cs" />
     <Compile Include="Content\PipelineBuilder.cs" />
@@ -191,6 +197,10 @@
       <Project>{9C99FC5F-4D5C-4740-9DFD-8F2C9288BBBB}</Project>
       <Name>Nine.Navigation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nine.Physics\Nine.Physics.csproj">
+      <Project>{5e8a4935-1fa4-4beb-8e9c-6003c0c296b7}</Project>
+      <Name>Nine.Physics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nine\Nine.csproj">
       <Project>{E4F84943-5258-4F67-9C6C-739C18A47120}</Project>
       <Name>Nine</Name>
@@ -239,6 +249,11 @@
       <Link>Nine.Graphics.Content.Writer.tt</Link>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Nine.Graphics.Content.Writer1.Generated.cs</LastGenOutput>
+    </None>
+    <None Include="..\..\Tools\TextTemplates\Nine.Physics.Content.Writer.tt">
+      <Link>Nine.Physics.Content.Writer.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Nine.Physics.Content.Writer.Generated.cs</LastGenOutput>
     </None>
     <None Include="Graphics\Materials\Shaders\BeginPaintGroup.fragment" />
     <None Include="Graphics\Materials\Shaders\AlphaTest.fragment" />

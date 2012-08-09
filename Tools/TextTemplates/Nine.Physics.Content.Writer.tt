@@ -1,0 +1,4 @@
+﻿<#
+    var assemblyFile = @"..\..\References\x86\Nine.Physics.dll";
+#>
+<#@ include file="Content.Writer.tth" #>

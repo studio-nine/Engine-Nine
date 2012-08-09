@@ -2,12 +2,13 @@ namespace Nine
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     
     /// <summary>
-    /// Defines a graphical scene that manages a set of objects, cameras and lights.
+    /// Defines a scene that manages an object hierarchy.
     /// </summary>
     public class Scene : Group, ISpatialQuery
     {
@@ -31,17 +32,12 @@ namespace Nine
         /// <summary>
         /// Gets the spatial query that can find all the top level objects.
         /// </summary>
-        private ISpatialQuery<FindResult> detailedQuery;
+        private Dictionary<Type, object> typedQueries;
 
         /// <summary>
-        /// Gets the spatial query that can find all the flattened objects.
+        /// Keeps track of all the objects, only used under debug mode.
         /// </summary>
-        private ISpatialQuery<object> flattenedQuery;
-
-        /// <summary>
-        /// Used for ray casting.
-        /// </summary>
-        private List<FindResult> rayCastResult = new List<FindResult>();
+        private List<object> objectTracker;
         #endregion
 
         #region Events
@@ -85,8 +81,6 @@ namespace Nine
             this.defaultSceneManager = defaultSceneManager ?? new OctreeSceneManager();
             this.sceneManagers = new List<ISceneManager<ISpatialQueryable>>();
             this.sceneManagers.Add(this.defaultSceneManager);
-            this.flattenedQuery = CreateSpatialQuery<object>();
-            this.detailedQuery = new DetailedQuery(this.defaultSceneManager);
         }
 
         /// <summary>
@@ -162,6 +156,7 @@ namespace Nine
                 collectionChanged.Removed += OnDesecendantRemoved;
             }
 
+            TrackObject(desecendant);
             OnAddedToScene(desecendant);
 
             var addedToScene = AddedToScene;
@@ -205,6 +200,7 @@ namespace Nine
                 collectionChanged.Removed -= OnDesecendantRemoved;
             }
 
+            UnTrackObject(desecendant);
             OnRemovedFromScene(desecendant);
 
             var removedFromScene = RemovedFromScene;
@@ -239,6 +235,22 @@ namespace Nine
         {
             InternalRemove(value);
         }
+
+        [Conditional("DEBUG")]
+        private void TrackObject(object value)
+        {
+            if (objectTracker == null)
+                objectTracker = new List<object>();
+            if (objectTracker.Contains(value))
+                throw new InvalidOperationException();
+            objectTracker.Add(value);
+        }
+
+        [Conditional("DEBUG")]
+        private void UnTrackObject(object value)
+        {
+            objectTracker.Remove(value);
+        }
         #endregion
 
         #region Find
@@ -247,85 +259,49 @@ namespace Nine
         /// </summary>
         public ISpatialQuery<T> CreateSpatialQuery<T>() where T : class
         {
-            return new SceneQuery<T>(sceneManagers, Children);
-        }
-
-        /// <summary>
-        /// Finds the nearest object that intersects the specified ray.
-        /// </summary>
-        public FindResult Find(Ray ray)
-        {
-            FindResult result;
-            Find(ref ray, out result);
-            return result;
-        }
-
-        /// <summary>
-        /// Finds the nearest object that intersects the specified ray.
-        /// </summary>
-        public void Find(ref Ray ray, out FindResult result)
-        {
-            result = new FindResult();
-            FindAll(ref ray, rayCastResult);
-
-            float? currentDistance = null;
-            for (int i = 0; i < rayCastResult.Count; i++)
-            {
-                var pickable = ContainerTraverser.FindParentContainer<IPickable>(rayCastResult[i].OriginalTarget);
-                if (pickable != null)
-                {
-                    currentDistance = pickable.Intersects(ray);
-                    if (currentDistance.HasValue && (!result.Distance.HasValue || result.Distance.Value > currentDistance.Value))
-                    {
-                        result.Distance = currentDistance;
-                        result.Target = rayCastResult[i].Target;
-                        result.OriginalTarget = rayCastResult[i].OriginalTarget;
-                    }
-                }
-            }
-            rayCastResult.Clear();
+            object result = null;
+            if (typedQueries != null && typedQueries.TryGetValue(typeof(T), out result))
+                return (ISpatialQuery<T>)result;
+            if (typedQueries == null)
+                typedQueries = new Dictionary<Type, object>();
+            var query = new SceneQuery<T>(sceneManagers, Children);
+            typedQueries[typeof(T)] = query;
+            return query;
         }
 
         /// <summary>
         /// Finds all the scene objects and the original volumn for intersection test that is contained by or
         /// intersects the specified bounding sphere.
         /// </summary>
-        /// <remarks>
-        /// When an object tree is added to the scene using Scene.Add, 
-        /// this find method will set the FindResult.OriginalTarget property to the original 
-        /// <see cref="ISpatialQueryable"/> for the intersection test against the input bounding volumn.
-        /// It will set the FindResult.Target property to the containing object that is added
-        /// to the scene.
-        /// </remarks>
-        public void FindAll(ref BoundingSphere boundingSphere, ICollection<FindResult> result)
+        public void FindAll<T>(ref BoundingSphere boundingSphere, ICollection<T> result) where T : class
         {
-            detailedQuery.FindAll(ref boundingSphere, result);
+            CreateSpatialQuery<T>().FindAll(ref boundingSphere, result);
         }
 
         /// <summary>
         /// Finds all the scene objects and the original volumn for intersection test that intersects the specified ray.
         /// </summary>
-        public void FindAll(ref Ray ray, ICollection<FindResult> result)
+        public void FindAll<T>(ref Ray ray, ICollection<T> result) where T : class
         {
-            detailedQuery.FindAll(ref ray, result);
+            CreateSpatialQuery<T>().FindAll(ref ray, result);
         }
 
         /// <summary>
         /// Finds all the scene objects and the original volumn for intersection test that is contained by or
         /// intersects the specified bounding box.
         /// </summary>
-        public void FindAll(ref BoundingBox boundingBox, ICollection<FindResult> result)
+        public void FindAll<T>(ref BoundingBox boundingBox, ICollection<T> result) where T : class
         {
-            detailedQuery.FindAll(ref boundingBox, result);
+            CreateSpatialQuery<T>().FindAll(ref boundingBox, result);
         }
 
         /// <summary>
         /// Finds all the scene objects and the original volumn for intersection test that is contained by or
         /// intersects the specified bounding frustum.
         /// </summary>
-        public void FindAll(BoundingFrustum boundingFrustum, ICollection<FindResult> result)
+        public void FindAll<T>(BoundingFrustum boundingFrustum, ICollection<T> result) where T : class
         {
-            detailedQuery.FindAll(boundingFrustum, result);
+            CreateSpatialQuery<T>().FindAll(boundingFrustum, result);
         }
         #endregion
     }

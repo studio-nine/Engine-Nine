@@ -67,12 +67,12 @@ namespace Nine
 
             CheckIntegrity(value);
 
-            Transformable transformable = value as Transformable;
-            if (transformable != null)
+            var component = value as IComponent;
+            if (component != null)
             {
-                if (transformable.Parent != null)
+                if (component.Parent != null)
                     throw new InvalidOperationException("The object is already added to a display object.");
-                transformable.Parent = this;
+                component.Parent = this;
             }
 
             OnAdded(value);
@@ -92,12 +92,12 @@ namespace Nine
 
         void Child_Removed(object value)
         {
-            Transformable transformable = value as Transformable;
-            if (transformable != null)
+            var component = value as IComponent;
+            if (component != null)
             {
-                if (transformable.Parent == null)
+                if (component.Parent == null)
                     throw new InvalidOperationException("The object does not belong to this display object.");
-                transformable.Parent = null;
+                component.Parent = null;
             }
 
             OnRemoved(value);
@@ -275,7 +275,38 @@ namespace Nine
                 }
                 return TraverseOptions.Continue;
             });
-            return result;            
+            return result;
+        }
+
+        /// <summary>
+        /// Finds the first direct child with the specified type
+        /// </summary>
+        public T Find<T>() where T : class
+        {
+            for (int i = 0; i < children.Count; i++)
+            {
+                var child = children[i] as T;
+                if (child != null)
+                    return child;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Finds the root object in the scene hierarchy.
+        /// </summary>
+        public object FindRoot()
+        {
+            return ContainerTraverser.FindRootContainer(this);
+        }
+
+        /// <summary>
+        /// Traverse up the scene tree and returns the first parent of type T.
+        /// Returns the target object if it is already an instance of T.
+        /// </summary>
+        public T FindParent<T>() where T : class
+        {
+            return ContainerTraverser.FindParentContainer<T>(this);
         }
 
         /// <summary>

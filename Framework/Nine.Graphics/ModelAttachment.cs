@@ -159,7 +159,7 @@ namespace Nine.Graphics
                 {
                     if (transformable.Parent != null)
                         throw new InvalidOperationException("Cannot attached an object that is already added to the scene.");
-                    transformable.Parent = model;
+                    ((Nine.IComponent)transformable).Parent = model;
                 }
             }
         }

@@ -1,0 +1,14 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
+    <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+    <Surface Heightmap.Width="16" Heightmap.Height="16" Heightmap.Step="2" PatchSegmentCount="4" Position="-16, 0, 0" />
+
+    <Group>
+        <Model Source="{ContentReference ../Models/Tank}" />
+        
+        <!-- Write your own component to extend the behavior of the parent group. -->
+        <my:ExampleController Speed="10" />
+    </Group>    
+</Scene>

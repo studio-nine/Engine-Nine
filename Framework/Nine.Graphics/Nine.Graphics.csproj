@@ -106,6 +106,7 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="FastList.cs" />
     <Compile Include="ModelAttachment.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SceneExtensions.cs" />

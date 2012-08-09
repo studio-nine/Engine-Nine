@@ -12,7 +12,7 @@ namespace Nine
     /// Base class for all objects that has a transform and a bounds.
     /// </summary>
     [ContentSerializable]
-    public abstract class Transformable : Nine.Object, IContainedObject
+    public abstract class Transformable : Nine.Object, IComponent
     {
         #region Properties
         /// <summary>
@@ -21,15 +21,37 @@ namespace Nine
         public Transformable Parent
         {
             get { return parent; }
-            internal set 
+        }
+
+        object IComponent.Parent
+        {
+            get { return Parent; }
+            set { SetParent(value); }
+        }
+
+        private void SetParent(object value)
+        {
+            if (parent != value)
             {
-                if (parent != value)
+                if (value != null)
                 {
-                    parent = value; 
-                    NotifyTransformChanged();
+                    if (parent != null)
+                        throw new InvalidOperationException("This object already belongs to a container");
+                    var transformable = value as Transformable;
+                    if (transformable == null)
+                        throw new InvalidOperationException("This object can only be attached to a transformable");
+                    parent = transformable;
                 }
+                else
+                {
+                    if (parent == null)
+                        throw new InvalidOperationException("This object does not belongs to the specified container");
+                    parent = null;
+                }
+                NotifyTransformChanged();
             }
         }
+
         private Transformable parent;
         #endregion
 
@@ -78,13 +100,6 @@ namespace Nine
         {
             isAbsoluteTransformDirty = true;
             OnTransformChanged();
-        }
-        #endregion
-
-        #region IContainedObject
-        object IContainedObject.Parent
-        {
-            get { return Parent; }
         }
         #endregion
     }

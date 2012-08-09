@@ -42,7 +42,7 @@ namespace Nine.Content.Pipeline.Navigation
             var height = (int)Math.Round((bounds.Max.Y - bounds.Min.Y) / step) + 1;
 
             var heightmap = new float[width * height];
-
+            /*
             Parallel.For(0, height, y =>
             //for (int y = 0; y < height; y++)
             {
@@ -90,7 +90,7 @@ namespace Nine.Content.Pipeline.Navigation
                 }
             //}
             });
-
+            */
             return new Heightmap(heightmap, step, width - 1, height - 1);
         }
         
