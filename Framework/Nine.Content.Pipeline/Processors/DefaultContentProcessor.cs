@@ -10,20 +10,14 @@
     using System.Xml;
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Intermediate;
-        /// Processes each property of the input object graph using the processor specified by 
 
     /// <summary>
+    /// Processes each property of the input object graph using the processor specified by 
     /// DefaultContentProcessorAttribute or the method marked with SelfProcessAttribute.
     /// </summary>
     [ContentProcessor(DisplayName = "Content - Engine Nine")]
     public class DefaultContentProcessor : ContentProcessor<object, object>
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether a debug intermediate xml file will be created.
-        /// </summary>
-        [DefaultValue(false)]
-        public bool Debug { get; set; }
-
         /// <summary>
         /// A stack holding the current processor context.
         /// </summary>
@@ -48,8 +42,6 @@
             {
                 contextStack.Pop();
             }
-
-            SerializeOutput(input, context);
             return input;
         }
         
@@ -71,18 +63,6 @@
                 }
             }
             return input;
-        }
-        
-        private void SerializeOutput(object input, ContentProcessorContext context)
-        {
-            if (Debug)
-            {
-                var debugOutput = Path.Combine(context.IntermediateDirectory, "DefaultContent-" + Guid.NewGuid().ToString("B").ToUpperInvariant()) + ".xml";
-                using (var writer = XmlWriter.Create(debugOutput))
-                {
-                    IntermediateSerializer.Serialize(writer, input, null);
-                }
-            }
         }
 
         #region FindDefaultProcessor

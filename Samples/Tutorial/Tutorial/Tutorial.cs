@@ -36,7 +36,7 @@ namespace Tutorial
         {
             GraphicsDeviceManager graphics = new GraphicsDeviceManager(this);
 
-            graphics.SynchronizeWithVerticalRetrace = true;
+            graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
 

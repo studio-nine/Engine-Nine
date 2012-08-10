@@ -236,13 +236,11 @@
         
         #region ISpatialQueryable
         /// <summary>
-        /// Gets or sets the local bottom left position of the surface.
+        /// Gets the local bottom left position of the surface.
         /// </summary>
-        [ContentSerializerIgnore]
         public Vector3 Position
         {
             get { return Transform.Translation; }
-            set { Transform = Matrix.CreateTranslation(value); }
         }
 
         /// <summary>

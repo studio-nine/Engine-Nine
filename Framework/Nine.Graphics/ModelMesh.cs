@@ -234,8 +234,10 @@ namespace Nine.Graphics
         public void Draw(DrawingContext context, Material material)
         {
             var graphics = context.GraphicsDevice;
+            var applyTexture = material != this.material && (UseModelTextures ?? model.UseModelTextures);
 
-            ApplyTextures(material);
+            if (applyTexture)
+                ApplyTextures(material);
             ApplySkinTransform(material);
 
             material.world = worldTransform;
@@ -250,19 +252,24 @@ namespace Nine.Graphics
             graphics.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount);
             
             material.EndApply(context);
+
+            // The input material might be shared between different objects,
+            // some of which might not even have a texture.
+            // Since we have modified the material texture, we need to store it. 
+            // 
+            // We also modified other textures like normal maps, but these textures
+            // aren't likely to be used by other object types, so don't restore them.
+            if (applyTexture)
+                material.texture = null;
         }
 
         internal void ApplyTextures(Material material)
         {
-            if (material != this.material &&
-               (UseModelTextures ?? model.UseModelTextures))
+            material.texture = diffuseTexture;
+            if (textures != null)
             {
-                material.texture = diffuseTexture;
-                if (textures != null)
-                {
-                    foreach (var pair in textures)
-                        material.SetTexture(pair.Key, pair.Value);
-                }
+                foreach (var pair in textures)
+                    material.SetTexture(pair.Key, pair.Value);
             }
         }
 

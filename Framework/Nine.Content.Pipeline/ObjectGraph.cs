@@ -11,7 +11,7 @@
     /// <summary>
     /// Traverses an object graph.
     /// </summary>
-    public static class ObjectGraph
+    static class ObjectGraph
     {
         /// <summary>
         /// Traverses the each property of the target object.
@@ -235,6 +235,7 @@
                    type.Assembly == typeof(Microsoft.Xna.Framework.Vector3).Assembly ||
                    type.Assembly == typeof(Microsoft.Xna.Framework.Graphics.GraphicsDevice).Assembly ||
                    type.Assembly == typeof(Microsoft.Xna.Framework.Content.Pipeline.IContentProcessor).Assembly ||
+                   type.Assembly == typeof(Nine.Physics.RigidBody).Assembly ||
                    ((type.Assembly == typeof(string).Assembly || type.Assembly == typeof(Stack).Assembly) &&
                     !type.FullName.StartsWith("System.Collections.") && !type.IsInterface && !type.IsAbstract && type != typeof(object));
         }

@@ -20,7 +20,7 @@ namespace Nine.Physics.Colliders
         public Microsoft.Xna.Framework.Graphics.Model Source
         {
             get { return source; }
-            set { if (source != value) { source = value; NotifyColliderChanged(); } }
+            set { if (source != value) { source = value; } }
         }
         private Microsoft.Xna.Framework.Graphics.Model source;
 
@@ -30,17 +30,25 @@ namespace Nine.Physics.Colliders
         public string CollisionMesh
         {
             get { return collisionMesh; }
-            set { if (collisionMesh != value) { collisionMesh = value; NotifyColliderChanged(); } }
+            set { if (collisionMesh != value) { collisionMesh = value; } }
         }
         private string collisionMesh;
 
-        protected override Entity CreateCollidable()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelCollider"/> class.
+        /// </summary>
+        public ModelCollider()
+            : base(new StaticMesh(null, null))
+        {
+
+        }
+
+        private Collidable CreateCollidable()
         {
             Vector3[] vertices;
             int[] indices;
             GetVerticesAndIndicesFromModel(source, collisionMesh, out vertices, out indices);
-            //return new StaticMesh(vertices, indices);
-            return null;
+            return new StaticMesh(vertices, indices);
         }
 
         private static void GetVerticesAndIndicesFromModel(Microsoft.Xna.Framework.Graphics.Model collisionModel, string collisionMesh, out Vector3[] vertices, out int[] indices)

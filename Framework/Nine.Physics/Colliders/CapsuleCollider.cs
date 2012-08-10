@@ -5,6 +5,9 @@ namespace Nine.Physics.Colliders
     using Microsoft.Xna.Framework;
     using BEPUphysics.Entities;
     using BEPUphysics.Entities.Prefabs;
+    using BEPUphysics.Collidables;
+    using BEPUphysics.Collidables.MobileCollidables;
+    using BEPUphysics.CollisionShapes.ConvexShapes;
 
     /// <summary>
     /// Represents a capsule shaped collider.
@@ -16,24 +19,23 @@ namespace Nine.Physics.Colliders
         /// </summary>
         public float Height
         {
-            get { return height; }
-            set { height = value; NotifyColliderChanged(); }
+            get { return shape.Length; }
+            set { shape.Length = value; }
         }
-        private float height;
 
         /// <summary>
         /// Gets or sets the radius of this collider.
         /// </summary>
         public float Radius
         {
-            get { return radius; }
-            set { radius = value; NotifyColliderChanged(); }
+            get { return shape.Radius; }
+            set { shape.Radius = value; }
         }
-        private float radius;
+        private CapsuleShape shape;
 
-        protected override Entity CreateCollidable()
+        public CapsuleCollider() : base(new Capsule(Vector3.Zero, 1, 1))
         {
-            return new Capsule(Vector3.Zero, height, radius);
+            shape = ((ConvexCollidable<CapsuleShape>)Collidable).Shape;
         }
     }
 }

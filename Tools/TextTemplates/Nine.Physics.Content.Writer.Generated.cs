@@ -17,9 +17,9 @@ namespace Nine.Content.Pipeline.Physics
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class BodyWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.Body>
+    partial class BodyWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.RigidBody>
     {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Body value)
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.RigidBody value)
         {
             WriteObject(output, value, "Collider", value.Collider);
             WriteObject(output, value, "Name", value.Name);
@@ -62,6 +62,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.BoxCollider value)
         {
             output.Write(value.Size);
+            output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
             output.Write(value.Transform);
@@ -103,6 +104,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             output.Write(value.Height);
             output.Write(value.Radius);
+            output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
             output.Write(value.Transform);
@@ -132,6 +134,51 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         }
     }
     /// <summary>
+    /// Content writer for <c>CompoundCollider</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class CompoundColliderWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.Colliders.CompoundCollider>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.CompoundCollider value)
+        {
+            {
+                output.Write(value.Colliders.Count);
+                for (var i = 0; i < value.Colliders.Count; i++)
+                    output.WriteObject(value.Colliders[i]);
+            }
+            output.Write(value.Mass);
+            WriteObject(output, value, "Friction", value.Friction);
+            output.Write(value.Restitution);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Physics.Colliders.CompoundColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Physics.Colliders.CompoundCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>ConeCollider</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -144,6 +191,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             output.Write(value.Height);
             output.Write(value.Radius);
+            output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
             output.Write(value.Transform);
@@ -185,6 +233,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             output.Write(value.Height);
             output.Write(value.Radius);
+            output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
             output.Write(value.Transform);
@@ -214,6 +263,48 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         }
     }
     /// <summary>
+    /// Content writer for <c>ModelCollider</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ModelColliderWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.Colliders.ModelCollider>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.ModelCollider value)
+        {
+            WriteObject(output, value, "Source", value.Source);
+            WriteObject(output, value, "CollisionMesh", value.CollisionMesh);
+            output.Write(value.Mass);
+            WriteObject(output, value, "Friction", value.Friction);
+            output.Write(value.Restitution);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Physics.Colliders.ModelColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Physics.Colliders.ModelCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>SphereCollider</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -225,6 +316,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.SphereCollider value)
         {
             output.Write(value.Radius);
+            output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
             output.Write(value.Transform);
@@ -251,6 +343,47 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Physics.Colliders.SphereCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>TerrainCollider</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class TerrainColliderWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.Colliders.TerrainCollider>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.TerrainCollider value)
+        {
+            WriteObject(output, value, "Heightmap", value.Heightmap);
+            output.Write(value.Mass);
+            WriteObject(output, value, "Friction", value.Friction);
+            output.Write(value.Restitution);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Physics.Colliders.TerrainColliderReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Physics.Colliders.TerrainCollider, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }

@@ -1,15 +1,10 @@
 namespace Nine.Physics.Colliders
 {
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Windows.Markup;
-    using Microsoft.Xna.Framework;
-    using BEPUphysics.Entities;
-    using BEPUphysics.Entities.Prefabs;
-    using BEPUphysics.DataStructures;
     using BEPUphysics.Collidables;
-    using Nine.Graphics;
+    using BEPUphysics.CollisionShapes;
     using BEPUphysics.MathExtensions;
+    using Microsoft.Xna.Framework;
+    using Nine.Graphics;
 
     /// <summary>
     /// Represents a collider based on heightmap.
@@ -22,22 +17,63 @@ namespace Nine.Physics.Colliders
         public Heightmap Heightmap
         {
             get { return heightmap; }
-            set { if (heightmap != value) { heightmap = value; NotifyColliderChanged(); } }
+            set 
+            {
+                if (heightmap != value)
+                {
+                    terrain.Shape = CreateTerrainShape(heightmap = value);
+                    OnTransformChanged();
+                }
+            }
         }
         private Heightmap heightmap;
+        private Terrain terrain;
 
-        protected override Collidable CreateCollidable()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TerrainCollider"/> class.
+        /// </summary>
+        public TerrainCollider()
+            : base(new Terrain(CreateTerrainShape(null), AffineTransform.Identity))
         {
+            terrain = (Terrain)Collidable;
+        }
+
+        /// <summary>
+        /// Called when local or absolute transform changed.
+        /// </summary>
+        protected override void OnTransformChanged()
+        {
+            if (heightmap != null)
+            {
+                var matrix = Matrix.Identity;
+                matrix.M11 = matrix.M33 = heightmap.Step;
+                matrix *= Transform;
+                terrain.WorldTransform = new AffineTransform() { Matrix = matrix };
+            }
+            else
+            {
+                terrain.WorldTransform = new AffineTransform() { Matrix = Transform };
+            }
+            base.OnTransformChanged();
+        }
+
+        /// <summary>
+        /// Creates the collidable.
+        /// </summary>
+        private static TerrainShape CreateTerrainShape(Heightmap heightmap)
+        {
+            if (heightmap == null)
+                return new TerrainShape(new float[2, 2]);
+
             int xLength = heightmap.Width + 1;
             int zLength = heightmap.Height + 1;
 
             var heights = new float[xLength, zLength];
             for (int x = 0; x < xLength; x++)
                 for (int z = 0; z < zLength; z++)
-                    heights[x, z] = heightmap.GetHeight(x, zLength - 1 - z);
+                    heights[x, z] = heightmap.GetHeight(x, z);
 
-            //Create the terrain.
-            return new Terrain(heights, new AffineTransform(new Vector3(heightmap.Step, 1, heightmap.Step)));
+            return new TerrainShape(heights);
         }
     }
 }

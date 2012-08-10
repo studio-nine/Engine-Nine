@@ -5,6 +5,9 @@ namespace Nine.Physics.Colliders
     using Microsoft.Xna.Framework;
     using BEPUphysics.Entities;
     using BEPUphysics.Entities.Prefabs;
+    using BEPUphysics.Collidables;
+    using BEPUphysics.CollisionShapes.ConvexShapes;
+    using BEPUphysics.Collidables.MobileCollidables;
 
     /// <summary>
     /// Represents a cylinder shaped collider.
@@ -16,24 +19,23 @@ namespace Nine.Physics.Colliders
         /// </summary>
         public float Height
         {
-            get { return height; }
-            set { height = value; NotifyColliderChanged(); }
+            get { return shape.Height; }
+            set { shape.Height = value; }
         }
-        private float height;
 
         /// <summary>
         /// Gets or sets the radius of this collider.
         /// </summary>
         public float Radius
         {
-            get { return radius; }
-            set { radius = value; NotifyColliderChanged(); }
+            get { return shape.Radius; }
+            set { shape.Radius = value; }
         }
-        private float radius;
+        private CylinderShape shape;
 
-        protected override Entity CreateCollidable()
+        public CylinderCollider() : base(new Cylinder(Vector3.Zero, 1, 1))
         {
-            return new Cylinder(Vector3.Zero, height, radius);
+            shape = ((ConvexCollidable<CylinderShape>)Collidable).Shape;
         }
     }
 }

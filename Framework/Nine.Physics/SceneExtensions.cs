@@ -42,7 +42,8 @@ namespace Nine.Physics
             if (scene == null)
                 throw new ArgumentNullException("scene");
 
-            var currentSpace = GetSpace(scene);
+            ISpace currentSpace = null;
+            AttachablePropertyServices.TryGetProperty(scene, SpaceProperty, out currentSpace);
             if (currentSpace != null && currentSpace != value)
                 throw new InvalidOperationException();
 
@@ -78,11 +79,6 @@ namespace Nine.Physics
         {
             var space = new Space();
 
-            ApplyDefaultSettings(space);
-
-            //If left unset, the default value is (0,0,0).
-            space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
-
             // This section lets the engine know that it can make use of multithreaded systems
             // by adding threads to its thread pool.
 #if XBOX
@@ -102,6 +98,11 @@ namespace Nine.Physics
                 }
             }
 #endif
+
+            ApplyDefaultSettings(space);
+
+            //If left unset, the default value is (0,0,0).
+            space.ForceUpdater.Gravity = new Vector3(0, -9.81f, 0);
             return space;
         }
 

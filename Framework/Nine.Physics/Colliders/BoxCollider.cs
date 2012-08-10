@@ -5,6 +5,9 @@ namespace Nine.Physics.Colliders
     using Microsoft.Xna.Framework;
     using BEPUphysics.Entities;
     using BEPUphysics.Entities.Prefabs;
+    using BEPUphysics.Collidables;
+    using BEPUphysics.CollisionShapes.ConvexShapes;
+    using BEPUphysics.Collidables.MobileCollidables;
 
     /// <summary>
     /// Represents a box shaped collider.
@@ -17,13 +20,19 @@ namespace Nine.Physics.Colliders
         public Vector3 Size
         {
             get { return size; }
-            set { size = value; NotifyColliderChanged(); }
+            set 
+            {
+                size.X = shape.Width = value.X;
+                size.Y = shape.Height = value.Y;
+                size.Z = shape.Length = value.Z;
+            }
         }
-        private Vector3 size;
+        private Vector3 size = Vector3.One;
+        private BoxShape shape;
 
-        protected override Entity CreateCollidable()
+        public BoxCollider():base(new Box(Vector3.Zero, 1, 1, 1))
         {
-            return new Box(Vector3.Zero, size.X, size.Y, size.Z);
+            shape = ((ConvexCollidable<BoxShape>)Collidable).Shape;
         }
     }
 }

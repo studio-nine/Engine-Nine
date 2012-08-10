@@ -38,13 +38,13 @@ namespace TutorialData
 
             var keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(Keys.Left))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * -Vector3.UnitX;
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Left;
             if (keyboardState.IsKeyDown(Keys.Right))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.UnitX;
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Right;
             if (keyboardState.IsKeyDown(Keys.Down))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * -Vector3.UnitY;
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Backward;
             if (keyboardState.IsKeyDown(Keys.Up))
-                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.UnitY;
+                transform.Translation += Speed * (float)elapsedTime.TotalSeconds * Vector3.Forward;
 
             Parent.Transform = transform;
         }

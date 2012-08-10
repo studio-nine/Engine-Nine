@@ -1,23 +1,29 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
     
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
     <DirectionalLight DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
-    
-    <Surface Heightmap="{ContentReference ../Textures/RF1}" Position="-50, -10, -50"
+   
+    <Surface Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50"
              TextureTransform.Scale="0.3, 0.3" Material="{BasicMaterial Texture={ContentReference ../Textures/TerrainTex}}" />
+   
+    <!-- Create a terrain collider to make the above terrain respond to collision events -->
+    <TerrainCollider Heightmap="{ContentReference ../Textures/RF1}" Transform.Position="-50,-10,-50"/>
     
-    <Group>
-        <Model Source="{ContentReference ../Models/Cube}" Material="{BasicMaterial Texture={ContentReference ../Textures/box}}" />
-        <Body>
-            <!--
-                Besides generating physics models from graphical models, you can explicitly specify the physics
-                shapes to use. This includes simple boxes, spheres, cylinders, capsules, cones, etc.
-                A compound shape will be created when multiple shapes are specified.
-            -->
-            <BoxCollider />
-        </Body>
+    <Group Transform.Position="10,20,0">
+        <Box Transform.Scale="1,4,8" Material="{BasicMaterial Texture={ContentReference ../Textures/box}}" />
+        
+        <!-- Attach a rigid body to a group so the group will be simulated using physics engine -->
+        <RigidBody>
+            <BoxCollider Size="1,4,8" />
+        </RigidBody>
     </Group>
-    
+
+    <!--
+    <Group>
+        <Model Source="{ContentReference ../Models/Tank}" />
+        <ModelCollider Source="{ContentReference ../Models/Tank}" />
+    </Group>
+    -->
 </Scene>

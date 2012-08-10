@@ -15,24 +15,18 @@ namespace Nine.Physics.Colliders
     public class SphereCollider : Collider
     {
         /// <summary>
-        /// Gets or sets the radius of this sphere collider.
+        /// Gets or sets the radius of this collider.
         /// </summary>
         public float Radius
         {
-            get { return radius; }
-            set
-            {
-                radius = value; 
-                if (shape != null) 
-                    shape.Radius = value; 
-            }
+            get { return shape.Radius; }
+            set { shape.Radius = value; }
         }
-        private float radius;
         private SphereShape shape;
 
-        protected override Collidable CreateCollidable()
+        public SphereCollider() : base(new Sphere(Vector3.Zero, 1, 1))
         {
-            return new ConvexCollidable<SphereShape>(shape = new SphereShape(radius));
+            shape = ((ConvexCollidable<SphereShape>)Collidable).Shape;
         }
     }
 }
