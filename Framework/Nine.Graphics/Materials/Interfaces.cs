@@ -12,17 +12,6 @@ namespace Nine.Graphics.Materials
     public interface IEffectShadowMap
     {
         /// <summary>
-        /// Gets or sets a small depth bias value that is added to the shadow map depth
-        /// when comparing the object depth with depth in the shadow map.
-        /// </summary>
-        float DepthBias { get; set; }
-
-        /// <summary>
-        /// Gets or sets the color of the shadow.
-        /// </summary>
-        Vector3 ShadowColor { get; set; }
-
-        /// <summary>
         /// Gets or sets the view projection matrix of the light that casts the shadow.
         /// </summary>
         Matrix LightViewProjection { get; set; }

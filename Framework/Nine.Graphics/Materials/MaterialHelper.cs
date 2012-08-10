@@ -20,24 +20,20 @@ namespace Nine.Graphics.Materials
                 ambientLightVersion = context.ambientLightColorVersion;
             }
 
-            var light0 = context.DirectionalLights[0];
-            var light1 = context.DirectionalLights[1];
-            var light2 = context.DirectionalLights[2];
+            var light0 = context.directionalLights[0];
+            var light1 = context.directionalLights[1];
+            var light2 = context.directionalLights[2];
 
             // Force update of the light when the lights are added, replaced or removed.
             var force = false;
-            var contextLightCollectionVersion = context.DirectionalLights.Version;
+            var contextLightCollectionVersion = context.directionalLights.Version;
             if (lightCollectionVersion != contextLightCollectionVersion)
             {
                 lightCollectionVersion = contextLightCollectionVersion;
                 force = true;
             }
 
-            if (light0 == null)
-            {
-                effect.DirectionalLight0.Enabled = false;
-            }
-            else if (light0.Version != lightVersion0 || force)
+            if (light0.Version != lightVersion0 || force)
             {
                 // Update the shader light parameters only when it changed.
                 effect.DirectionalLight0.Direction = light0.Direction;
@@ -47,11 +43,7 @@ namespace Nine.Graphics.Materials
                 lightVersion0 = light0.Version;
             }
 
-            if (light1 == null)
-            {
-                effect.DirectionalLight1.Enabled = false;
-            }
-            else if (light1.Version != lightVersion1 || force)
+            if (light1.Version != lightVersion1 || force)
             {
                 effect.DirectionalLight1.Direction = light1.Direction;
                 effect.DirectionalLight1.DiffuseColor = light1.DiffuseColor;
@@ -60,11 +52,7 @@ namespace Nine.Graphics.Materials
                 lightVersion1 = light1.Version;
             }
 
-            if (light2 == null)
-            {
-                effect.DirectionalLight2.Enabled = false;
-            }
-            else if (light2.Version != lightVersion2 || force)
+            if (light2.Version != lightVersion2 || force)
             {
                 effect.DirectionalLight2.Direction = light2.Direction;
                 effect.DirectionalLight2.DiffuseColor = light2.DiffuseColor;

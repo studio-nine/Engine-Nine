@@ -12,8 +12,6 @@ namespace Nine.Graphics
     [ContentSerializable]
     public partial class PointLight : Light, ISpatialQueryable, IDeferredLight
     {
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
         public Vector3 Position
         {
             get { return AbsoluteTransform.Translation; }
@@ -93,10 +91,8 @@ namespace Nine.Graphics
         }
         #endregion
         
-        public PointLight(GraphicsDevice graphics)
+        public PointLight(GraphicsDevice graphics) : base(graphics)
         {
-            GraphicsDevice = graphics;
-
             range = 10;
             Attenuation = MathHelper.E;
             DiffuseColor = Vector3.One;

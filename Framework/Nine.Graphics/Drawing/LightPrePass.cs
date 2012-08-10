@@ -276,7 +276,6 @@ namespace Nine.Graphics.Drawing
 
                     // Draw the model, using the specified effect.
                     // Setup correct cull mode so that each pixel is rendered only once.
-                    GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
                     GraphicsDevice.DepthStencilState = greaterDepth;
 
                     lightGeometry.Draw(context, lightMaterial);

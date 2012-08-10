@@ -11,12 +11,12 @@
 namespace Nine.Physics
 {
     /// <summary>
-    /// Content reader for <c>Body</c>.
+    /// Content reader for <c>RigidBody</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class BodyReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Physics.RigidBody>
+    partial class RigidBodyReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Physics.RigidBody>
     {
         protected override Nine.Physics.RigidBody Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.RigidBody existingInstance)
         {
@@ -45,6 +45,7 @@ namespace Nine.Physics.Colliders
             if (existingInstance == null)
                 existingInstance = new BoxCollider();
             existingInstance.Size = input.ReadVector3();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -69,6 +70,7 @@ namespace Nine.Physics.Colliders
                 existingInstance = new CapsuleCollider();
             existingInstance.Height = input.ReadSingle();
             existingInstance.Radius = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -96,6 +98,7 @@ namespace Nine.Physics.Colliders
                 for (var i = 0; i < count; i++)
                     existingInstance.Colliders.Add(input.ReadObject<Nine.Physics.Colliders.Collider>());
             }
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -120,6 +123,7 @@ namespace Nine.Physics.Colliders
                 existingInstance = new ConeCollider();
             existingInstance.Height = input.ReadSingle();
             existingInstance.Radius = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -144,6 +148,7 @@ namespace Nine.Physics.Colliders
                 existingInstance = new CylinderCollider();
             existingInstance.Height = input.ReadSingle();
             existingInstance.Radius = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -168,6 +173,7 @@ namespace Nine.Physics.Colliders
                 existingInstance = new ModelCollider();
             existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
             existingInstance.CollisionMesh = input.ReadObject<System.String>();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -191,6 +197,7 @@ namespace Nine.Physics.Colliders
             if (existingInstance == null)
                 existingInstance = new SphereCollider();
             existingInstance.Radius = input.ReadSingle();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();
@@ -214,6 +221,7 @@ namespace Nine.Physics.Colliders
             if (existingInstance == null)
                 existingInstance = new TerrainCollider();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Mass = input.ReadSingle();
             existingInstance.Friction = input.ReadObject<Nine.Range<System.Single>>();
             existingInstance.Restitution = input.ReadSingle();

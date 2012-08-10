@@ -205,7 +205,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             output.Write(value.CastShadow);
-            WriteObject(output, value, "Shadow", value.Shadow);
+            WriteObject(output, value, "Shadow", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -725,7 +725,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             output.Write(value.CastShadow);
-            WriteObject(output, value, "Shadow", value.Shadow);
+            WriteObject(output, value, "Shadow", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -855,7 +855,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             output.Write(value.CastShadow);
-            WriteObject(output, value, "Shadow", value.Shadow);
+            WriteObject(output, value, "Shadow", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -2104,7 +2104,6 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
         {
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             output.Write(value.ShadowColor);
-            output.Write(value.DepthBias);
             output.Write(value.LightViewProjection);
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.SampleCount);

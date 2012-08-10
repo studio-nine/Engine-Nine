@@ -15,24 +15,24 @@
     [ContentSerializable]
     public class ShadowMap : Pass, IDisposable
     {
-        private bool hasBegin;
-        private BlurMaterial blur;
-        private DepthMaterial depthMaterial;
-        private RenderTarget2D renderTarget;
-        private RenderTarget2D depthBlur;
-        private FullScreenQuad fullScreenQuad;
-        private BoundingFrustum shadowFrustum = new BoundingFrustum(Matrix.Identity);
-        private FastList<IDrawableObject> shadowCasters = new FastList<IDrawableObject>();
-
+        #region Properties
         /// <summary>
         /// Gets the graphics device.
         /// </summary>
-        public GraphicsDevice GraphicsDevice { get; private set; }
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return graphics; }
+        }
 
         /// <summary>
         /// Gets the parent light that uses this shadow map.
         /// </summary>
-        public Light Light { get; internal set; }
+        public Light Light 
+        {
+            get { return light; } 
+            internal set { light = value; } 
+        }
+        private Light light;
 
         /// <summary>
         /// Gets or sets the size of the shadow map texture.
@@ -51,6 +51,24 @@
         public Texture2D Texture { get; private set; }
 
         /// <summary>
+        /// Gets or sets the depth bias to reduce shadow acne artifacts.
+        /// </summary>
+        public float DepthBias
+        {
+            get { return rasterizeState.DepthBias; }
+            set { rasterizeState.DepthBias = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the slope scale depth bias to reduce shadow acne artifacts over sharp corners.
+        /// </summary>
+        public float SlopeScaleDepthBias
+        {
+            get { return rasterizeState.SlopeScaleDepthBias; }
+            set { rasterizeState.SlopeScaleDepthBias = value; }
+        }
+        
+        /// <summary>
         /// Gets whether a bluring pass is applied to the final shadow map.
         /// </summary>
         public bool BlurEnabled { get; set; }
@@ -63,6 +81,20 @@
             get { return blur.BlurAmount; }
             set { blur.BlurAmount = value; }
         }
+        #endregion
+
+        #region Fields
+        private bool hasBegin;
+        private BlurMaterial blur;
+        private GraphicsDevice graphics;
+        private DepthMaterial depthMaterial;
+        private RenderTarget2D renderTarget;
+        private RenderTarget2D depthBlur;
+        private FullScreenQuad fullScreenQuad;
+        private RasterizerState rasterizeState = new RasterizerState() { CullMode = CullMode.CullCounterClockwiseFace };
+        private BoundingFrustum shadowFrustum = new BoundingFrustum(Matrix.Identity);
+        private FastList<IDrawableObject> shadowCasters = new FastList<IDrawableObject>();
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShadowMap"/> class.
@@ -72,7 +104,7 @@
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            this.GraphicsDevice = graphics;
+            this.graphics = graphics;
             this.depthMaterial = new DepthMaterial(graphics);
             this.blur = new BlurMaterial(graphics);
             this.fullScreenQuad = new FullScreenQuad(graphics);
@@ -89,7 +121,7 @@
         /// </summary>
         public override void GetActivePasses(IList<Pass> result)
         {
-            if (Enabled && Light != null && Light.Enabled && Light.CastShadow)
+            if (enabled && light != null && light.enabled && light.castShadow)
                 result.Add(this);
         }
         
@@ -110,11 +142,12 @@
             {
                 if (renderTarget != null)
                     renderTarget.Dispose();
-                renderTarget = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat,
-                                                  GraphicsDevice.PresentationParameters.DepthStencilFormat);
+                renderTarget = new RenderTarget2D(graphics, Size, Size, false, SurfaceFormat,
+                                                  graphics.PresentationParameters.DepthStencilFormat);
             }
             renderTarget.Begin();
-            GraphicsDevice.Clear(Color.White);
+            graphics.RasterizerState = rasterizeState;
+            graphics.Clear(Color.White);
         }
 
         /// <summary>
@@ -128,6 +161,9 @@
             hasBegin = false;
             Texture2D map = renderTarget.End();
 
+            // Restore rasterizer state
+            graphics.RasterizerState = RasterizerState.CullCounterClockwise;
+
             if (BlurEnabled)
             {
                 if (depthBlur == null || depthBlur.IsDisposed ||
@@ -138,8 +174,8 @@
                 {
                     if (depthBlur != null)
                         depthBlur.Dispose();
-                    depthBlur = new RenderTarget2D(GraphicsDevice, Size, Size, false, SurfaceFormat,
-                                                   GraphicsDevice.PresentationParameters.DepthStencilFormat);
+                    depthBlur = new RenderTarget2D(graphics, Size, Size, false, SurfaceFormat,
+                                                   graphics.PresentationParameters.DepthStencilFormat);
                 } 
                 
                 // Blur H
@@ -160,10 +196,13 @@
             return Texture = map;
         }
 
+        /// <summary>
+        /// Draws this pass using the specified drawing context.
+        /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             Matrix shadowFrustumMatrix;
-            Light.GetShadowFrustum(context.ViewFrustum, drawables, out shadowFrustumMatrix);
+            light.GetShadowFrustum(context.ViewFrustum, drawables, out shadowFrustumMatrix);
 
             shadowFrustum.Matrix = shadowFrustumMatrix;
             context.Drawables.FindAll(shadowFrustum, shadowCasters);

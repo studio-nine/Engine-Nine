@@ -143,14 +143,22 @@ namespace Nine.Graphics
         protected override Nine.Graphics.DirectionalLight Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.DirectionalLight existingInstance)
         {
             if (existingInstance == null)
-                existingInstance = new DirectionalLight();
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new DirectionalLight(graphicsDevice);
+            }
             existingInstance.Direction = input.ReadVector3();
             existingInstance.SpecularColor = input.ReadVector3();
             existingInstance.DiffuseColor = input.ReadVector3();
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadSingle();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ShadowMap>();
+            existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -468,7 +476,7 @@ namespace Nine.Graphics
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadSingle();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ShadowMap>();
+            existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -568,7 +576,7 @@ namespace Nine.Graphics
             existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Order = input.ReadSingle();
             existingInstance.CastShadow = input.ReadBoolean();
-            existingInstance.Shadow = input.ReadObject<Nine.Graphics.ShadowMap>();
+            existingInstance.ShadowMap = input.ReadObject<Nine.Graphics.ShadowMap>();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
@@ -1354,7 +1362,6 @@ namespace Nine.Graphics.Materials.MaterialParts
                 existingInstance = new ShadowMapMaterialPart();
             existingInstance.ParameterSuffix = input.ReadObject<System.String>();
             existingInstance.ShadowColor = input.ReadVector3();
-            existingInstance.DepthBias = input.ReadSingle();
             existingInstance.LightViewProjection = input.ReadMatrix();
             existingInstance.ShadowMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.SampleCount = input.ReadInt32();

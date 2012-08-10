@@ -16,11 +16,13 @@ namespace Nine.Graphics
 
         int count;
         int version;
+        DirectionalLight defaultLight;
         DirectionalLight[] elements;
 
-        internal DirectionalLightCollection() 
+        internal DirectionalLightCollection(DirectionalLight defaultLight) 
         {
-            elements = new DirectionalLight[4];
+            this.elements = new DirectionalLight[4];
+            this.defaultLight = defaultLight;
         }
 
         private void SortAndIncrementVersion()
@@ -72,7 +74,7 @@ namespace Nine.Graphics
 
         public DirectionalLight this[int index]
         {
-            get { return index >= count ? null : elements[index]; }
+            get { return index >= count ? defaultLight : elements[index]; }
             set { elements[index] = value; SortAndIncrementVersion(); }
         }
 

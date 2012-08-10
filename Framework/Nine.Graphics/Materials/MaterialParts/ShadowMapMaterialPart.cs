@@ -14,7 +14,6 @@
         private EffectParameter shadowMapSizeParameter;
 
         public Vector3 ShadowColor { get; set; }
-        public float DepthBias { get; set; }
         public Matrix LightViewProjection { get; set; }
         public Texture2D ShadowMap { get; set; }
 
@@ -39,7 +38,6 @@
         internal ShadowMapMaterialPart()
         {
             ShadowColor = Vector3.One * 0.5f;
-            DepthBias = 0.005f;
         }
         
         /// <summary>
@@ -54,6 +52,12 @@
             shadowMapSizeParameter = GetParameter("ShadowMapTexelSize");
         }
 
+        protected internal override void ApplyGlobalParameters(DrawingContext context)
+        {
+            if (shadowMapParameter != null)
+                shadowMapParameter.SetValue(context.DirectionalLight.ShadowMap.Texture);
+        }
+
         /// <summary>
         /// Applies all the local shader parameters before drawing any primitives.
         /// </summary>
@@ -62,7 +66,6 @@
             if (shadowColorParameter != null)
             {
                 shadowColorParameter.SetValue(ShadowColor);
-                depthBiasParameter.SetValue(DepthBias);
                 lightViewProjectionParameter.SetValue(LightViewProjection);
                 shadowMapParameter.SetValue(ShadowMap);
                 shadowMapSizeParameter.SetValue(new Vector2(1.0f / ShadowMap.Width, 1.0f / ShadowMap.Height));
@@ -73,7 +76,6 @@
         {
             return new ShadowMapMaterialPart()
             {
-                DepthBias = this.DepthBias,
                 ShadowColor = this.ShadowColor,
                 ShadowMap = this.ShadowMap,
                 LightViewProjection = this.LightViewProjection,

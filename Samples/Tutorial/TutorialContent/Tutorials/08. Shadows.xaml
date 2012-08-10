@@ -1,36 +1,43 @@
-﻿<SceneContent xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
 
-    <SkyBoxContent Texture="..\Textures\SkyCubeMap" />
-    <FogContent FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
-    <AmbientLightContent AmbientLightColor="0.2, 0.2, 0.2" />
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Fog FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
+    <AmbientLight AmbientLightColor="0.1, 0.1, 0.1" />
     
     <!--
         To enable shadows, first find a light that can cast shadow. Typically it is the main directional
         light of the scene. Set the CastShadow property to True to make this light cast shadow.
     -->
-    <DirectionalLightContent CastShadow="True" DiffuseColor="0.8, 0.8, 0.8" Direction="-1, -1, -1" />
+    <DirectionalLight CastShadow="True" DiffuseColor="0.5, 0.5, 0.5" SpecularColor="1, 1, 1" Direction="-1, -1, -1" />
     
     <!--
         Surfaces will receive shadows by default, but the default material of the surface will not show the
         shadows. Change the material to terrain material and make sure shadows are enabled.
     -->
-    <DrawableSurfaceContent Width="64" Height="64" Step="1" PatchSegmentCount="8" Position="-32, -32, 0">
-        <!--
-            Tweek ShadowMapSampleCount to adjust the shadow quanlity. You can also adjust the shadow color
-            for each shadow receiver.
-        -->
-        <TerrainMaterialContent ShadowEnabled="True" ShadowMapSampleCount="8" ShadowColor="0.4, 0.4, 0.5" />
-    </DrawableSurfaceContent>
+    <Surface Heightmap.Width="128" Heightmap.Height="128" Heightmap.Step="1" PatchSegmentCount="8"
+             Transform.Position="-64, 0, -64" TextureTransform.Scale="0.2, 0.2">
+        <MaterialGroup>
+            <DiffuseMaterialPart Texture="{ContentReference ../Textures/terrainTex}" />
+            <SpecularMaterialPart SpecularPower="64" />
+            <DirectionalLightMaterialPart />
+        </MaterialGroup>
+    </Surface>
 
     <!-- Models will cast shadows by default, so nothing needs to be changed here. -->
-    <DrawableModelContent Model="..\Models\Tank" />
+    <Model Source="{ContentReference ../Models/Tank}" />
     
     <!--
         To enable self shadow, mark the model as receive shadow and choose a material that supports 
         shadow mapping. Ajust shadow bias to eliminate possible depth fight artifacts.
     -->
-    <DrawableModelContent Model="..\Models\Dude" Position="-10, 0, 0" ReceiveShadow="True">
-        <ModelMaterialContent SkinningEnabled="True" ShadowEnabled="True" ShadowBias="0.005" />
-    </DrawableModelContent>
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-10, 0, 0" ReceiveShadow="True">
+        <Model.Material>
+            <MaterialGroup>
+                <SkinnedMaterialPart />
+                <DiffuseMaterialPart />
+                <DirectionalLightMaterialPart />
+            </MaterialGroup>
+        </Model.Material>
+    </Model>
     
-</SceneContent>
+</Scene>

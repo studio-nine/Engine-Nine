@@ -13,8 +13,6 @@ namespace Nine.Graphics
     public partial class SpotLight : Light, ISpatialQueryable, IDeferredLight
     {
         const float NearPlane = 0.01f;
-
-        public GraphicsDevice GraphicsDevice { get; private set; }
         
         public Vector3 Position
         {
@@ -163,9 +161,8 @@ namespace Nine.Graphics
         private BoundingFrustum boundingFrustum;
         #endregion
 
-        public SpotLight(GraphicsDevice graphics)
+        public SpotLight(GraphicsDevice graphics) : base(graphics)
         {
-            GraphicsDevice = graphics;
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
             range = 10;

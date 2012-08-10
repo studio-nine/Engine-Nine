@@ -11,13 +11,13 @@
 namespace Nine.Content.Pipeline.Physics
 {
     /// <summary>
-    /// Content writer for <c>Body</c>.
+    /// Content writer for <c>RigidBody</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
     [System.Diagnostics.DebuggerStepThrough()]
     [System.Runtime.CompilerServices.CompilerGenerated()]
     [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class BodyWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.RigidBody>
+    partial class RigidBodyWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Physics.RigidBody>
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.RigidBody value)
         {
@@ -39,12 +39,12 @@ namespace Nine.Content.Pipeline.Physics
 
         public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.BodyReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.RigidBodyReader, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
 
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
-            return "Nine.Physics.Body, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+            return "Nine.Physics.RigidBody, Nine.Physics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }
@@ -62,6 +62,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.BoxCollider value)
         {
             output.Write(value.Size);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -104,6 +105,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             output.Write(value.Height);
             output.Write(value.Radius);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -149,6 +151,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
                 for (var i = 0; i < value.Colliders.Count; i++)
                     output.WriteObject(value.Colliders[i]);
             }
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -191,6 +194,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             output.Write(value.Height);
             output.Write(value.Radius);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -233,6 +237,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             output.Write(value.Height);
             output.Write(value.Radius);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -275,6 +280,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             WriteObject(output, value, "Source", value.Source);
             WriteObject(output, value, "CollisionMesh", value.CollisionMesh);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -316,6 +322,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.SphereCollider value)
         {
             output.Write(value.Radius);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);
@@ -357,6 +364,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.Colliders.TerrainCollider value)
         {
             WriteObject(output, value, "Heightmap", value.Heightmap);
+            output.Write(value.Enabled);
             output.Write(value.Mass);
             WriteObject(output, value, "Friction", value.Friction);
             output.Write(value.Restitution);

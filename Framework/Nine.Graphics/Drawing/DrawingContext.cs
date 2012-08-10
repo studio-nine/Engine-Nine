@@ -149,19 +149,23 @@ namespace Nine.Graphics.Drawing
         internal Vector3 ambientLightColor;
         internal int ambientLightColorVersion;
 
-
         /// <summary>
         /// Gets a global sorted collection of directional lights of this <see cref="DrawingContext"/>.
         /// </summary>
-        public DirectionalLightCollection DirectionalLights { get; private set; }
+        public DirectionalLightCollection DirectionalLights
+        {
+            get { return directionalLights; }
+        }
+        internal DirectionalLightCollection directionalLights;
 
         /// <summary>
         /// Gets the default or main directional light of this <see cref="DrawingContext"/>.
         /// </summary>
         public DirectionalLight DirectionalLight
         {
-            get { return DirectionalLights[0] ?? DirectionalLight.Empty; }
+            get { return directionalLights[0] ?? defaultLight; }
         }
+        private DirectionalLight defaultLight;
         #endregion
 
         #region Fog
@@ -224,7 +228,14 @@ namespace Nine.Graphics.Drawing
             this.Settings = new Settings();
             this.GraphicsDevice = graphics;
             this.Statistics = new Statistics();
-            this.DirectionalLights = new DirectionalLightCollection();
+            this.defaultLight = new DirectionalLight(graphics)
+            {
+                DiffuseColor = Vector3.Zero,
+                SpecularColor = Vector3.Zero,
+                Direction = Vector3.Down,
+                Enabled = false
+            };
+            this.directionalLights = new DirectionalLightCollection(defaultLight);
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
             this.MainPass = new PassGroup() { Name = "MainPass" };

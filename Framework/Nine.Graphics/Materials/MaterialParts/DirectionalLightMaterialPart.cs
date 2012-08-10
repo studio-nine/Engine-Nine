@@ -44,8 +44,8 @@
             if (directionParameter == null)
                 return;
 
-            var light = context.DirectionalLights[lightIndex];
-            if (light != null && light.version != lightVersion)
+            var light = context.directionalLights[lightIndex];
+            if (light.version != lightVersion)
             {
                 directionParameter.SetValue(light.Direction);
                 diffuseColorParameter.SetValue(light.DiffuseColor);
@@ -53,11 +53,11 @@
                 lightVersion = light.version;
             }
 
-            if (lightCollectionVersion != context.DirectionalLights.Version && light == null)
+            if (lightCollectionVersion != context.directionalLights.Version && light == null)
             {
                 directionParameter.SetValue(Vector3.Zero);
                 directionParameter.SetValue(Vector3.Zero);
-                lightCollectionVersion = context.DirectionalLights.Version;
+                lightCollectionVersion = context.directionalLights.Version;
             }
         }
 

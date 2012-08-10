@@ -20,7 +20,12 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Pass"/> is enabled.
         /// </summary>
-        public bool Enabled { get; set; }
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+        internal bool enabled = true;
 
         /// <summary>
         /// Gets or sets the preferred drawing order of this drawing pass.
@@ -63,9 +68,9 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="Pass"/> class.
         /// </summary>
-        public Pass()
+        protected Pass()
         {
-            this.Enabled = true;
+
         }
 
         /// <summary>

@@ -13,10 +13,15 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines a base class for a light used by the render system.
     /// </summary>
-    [ContentProperty("Shadow")]
+    [ContentProperty("ShadowMap")]
     public abstract class Light : Transformable, ISceneObject
     {
         #region Properties
+        /// <summary>
+        /// Gets the underlying GraphicsDevice.
+        /// </summary>
+        public GraphicsDevice GraphicsDevice { get; private set; }
+
         /// <summary>
         /// Gets whether the light is enabled.
         /// </summary>
@@ -25,7 +30,7 @@ namespace Nine.Graphics
             get { return enabled; }
             set { enabled = value; }
         }
-        private bool enabled = true;
+        internal bool enabled = true;
 
         /// <summary>
         /// Gets the order of this light when it's been process by the renderer.
@@ -40,17 +45,13 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Gets the material usage to draw multi-pass lighting effect, or return 
-        /// null to indicate that this light does not support multi-pass lighting effect.
+        /// MaterialUsage.Default to indicate that this light does not support
+        /// multi-pass lighting effect.
         /// </summary>
-        public virtual MaterialUsage? MultiPassMaterial
+        public virtual MaterialUsage MultiPassMaterial
         {
-            get { return null; } 
+            get { return MaterialUsage.Default; } 
         }
-
-        /// <summary>
-        /// Keeps track of the owner drawing context.
-        /// </summary>
-        protected DrawingContext Context { get; private set; }
         #endregion
 
         #region Shadow
@@ -60,42 +61,51 @@ namespace Nine.Graphics
         public bool CastShadow
         {
             get { return castShadow; }
-            set { castShadow = value; }
+            set 
+            {
+                if (castShadow != value)
+                {
+                    castShadow = value;
+                    if (castShadow && shadowMap == null)
+                        ShadowMap = new ShadowMap(GraphicsDevice);
+                }
+            }
         }
-        private bool castShadow = false;
+        internal bool castShadow = false;
 
         /// <summary>
         /// Gets or sets the shadow technique used by this light.
         /// </summary>
-        public ShadowMap Shadow
+        public ShadowMap ShadowMap
         {
-            get { return shadow; }
+            get { return shadowMap; }
             set
             {
-                if (shadow != value)
+                if (shadowMap != value)
                 {
-                    if (shadow != null)
+                    if (shadowMap != null)
                     {
-                        if (shadow.Light == null)
+                        if (shadowMap.Light == null)
                             throw new InvalidOperationException();
-                        shadow.Light = null;
-                        shadow.Dispose();
-                        if (Context != null)
-                            Context.MainPass.Passes.Remove(shadow);
+                        shadowMap.Light = null;
+                        shadowMap.Dispose();
+                        if (context != null)
+                            context.MainPass.Passes.Remove(shadowMap);
                     }
-                    shadow = value;
-                    if (shadow != null)
+                    shadowMap = value;
+                    if (shadowMap != null)
                     {
-                        if (shadow.Light != null)
+                        if (shadowMap.Light != null)
                             throw new InvalidOperationException();
-                        if (Context != null)
-                            Context.MainPass.Passes.Insert(0, shadow);
-                        shadow.Light = this;
+                        if (context != null)
+                            context.MainPass.Passes.Insert(0, shadowMap);
+                        shadowMap.Light = this;
                     }
                 }
             }
         }
-        private ShadowMap shadow;
+        private ShadowMap shadowMap;
+        private DrawingContext context;
 
         /// <summary>
         /// Gets the shadow frustum of this light.
@@ -111,8 +121,11 @@ namespace Nine.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="Light"/> class.
         /// </summary>
-        protected Light()
+        protected Light(GraphicsDevice graphics)
         {
+            if (graphics == null)
+                throw new ArgumentNullException("graphics");
+            GraphicsDevice = graphics;
             shadowFrustum = new BoundingFrustum(new Matrix());
         }
 
@@ -126,28 +139,34 @@ namespace Nine.Graphics
         /// </summary>
         protected virtual void OnRemoved(DrawingContext context) { }
 
+        /// <summary>
+        /// Called when this scene object is added to the scene.
+        /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            if (this.Context != null)
+            if (this.context != null)
                 throw new InvalidOperationException();
-            if (shadow == null)
-                shadow = new ShadowMap(context.GraphicsDevice);
-            context.MainPass.Passes.Insert(0, shadow);
-            this.Context = context;
+            if (shadowMap == null)
+                shadowMap = new ShadowMap(GraphicsDevice);
+            context.MainPass.Passes.Insert(0, shadowMap);
+            this.context = context;
             OnAdded(context);
         }
 
+        /// <summary>
+        /// Called when this scene object is removed from the scene.
+        /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            if (this.Context == null || context != this.Context)
+            if (this.context == null || context != this.context)
                 throw new InvalidOperationException();
-            if (shadow != null)
+            if (shadowMap != null)
             {
-                context.MainPass.Passes.Remove(shadow);
-                shadow.Dispose();
-                shadow = null;
+                context.MainPass.Passes.Remove(shadowMap);
+                shadowMap.Dispose();
+                shadowMap = null;
             }
-            this.Context = null;
+            this.context = null;
             OnRemoved(context);
         }
 

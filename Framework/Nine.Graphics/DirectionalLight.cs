@@ -46,14 +46,9 @@ namespace Nine.Graphics
         private static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
         /// <summary>
-        /// Gets the empty directional light.
-        /// </summary>
-        public static readonly DirectionalLight Empty = new DirectionalLight() { DiffuseColor = Vector3.Zero, SpecularColor = Vector3.Zero, Direction = Vector3.Down };
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DirectionalLight"/> class.
         /// </summary>
-        public DirectionalLight()
+        public DirectionalLight(GraphicsDevice graphics) : base(graphics)
         {
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
@@ -131,12 +126,12 @@ namespace Nine.Graphics
 
         protected override void OnAdded(DrawingContext context)
         {
-            context.DirectionalLights.Add(this);
+            context.directionalLights.Add(this);
         }
 
         protected override void OnRemoved(DrawingContext context)
         {
-            context.DirectionalLights.Remove(this);
+            context.directionalLights.Remove(this);
         }
 
         #region IDeferredLight

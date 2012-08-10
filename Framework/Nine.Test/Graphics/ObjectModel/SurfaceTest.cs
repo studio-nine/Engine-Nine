@@ -31,7 +31,7 @@
             Assert.AreEqual<Vector3>(new Vector3(2, 0, 2), surface.Size);
             Assert.AreEqual<BoundingBox>(surface.BoundingBox, surface.Patches[0].BoundingBox);
 
-            surface.Position = new Vector3(1, 0, 1);
+            surface.Transform = Matrix.CreateTranslation(1, 0, 1);
 
             Assert.AreEqual<BoundingBox>(
                 new BoundingBox(new Vector3(1, 0, 1), new Vector3(3, 0, 3)),

@@ -189,6 +189,9 @@ namespace Nine.Graphics.Drawing
                 opaqueTwoSided.Clear();
                 transparent.Clear();
                 transparentTwoSided.Clear();
+
+                // Counter clock wise culling is the default rasterizer state. Restore it afer the drawing pass.
+                graphics.RasterizerState = RasterizerState.CullCounterClockwise;
             }
         }
     }

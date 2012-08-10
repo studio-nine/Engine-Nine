@@ -13,6 +13,11 @@ namespace Nine.Physics.Colliders
     public abstract class Collider : Transformable, IContainer
     {
         /// <summary>
+        /// Gets or sets whether this collider is enabled.
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// Gets or sets the mass of this collider.
         /// </summary>
         public float Mass { get; set; }
