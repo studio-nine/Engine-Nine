@@ -101,7 +101,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
             TinyStructList<ContactData> contactList;
             if (pairTester.GenerateContactCandidate(out contactList))
             {
-                for (int i = 0; i < contactList.count; i++)
+                for (int i = 0; i < contactList.count; ++i)
                 {
                     contactList.Get(i, out contact);
                     //Put the contact into world space.
@@ -160,7 +160,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
         {
 
             float distanceSquared;
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);
                 if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)

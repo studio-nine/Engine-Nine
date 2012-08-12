@@ -67,7 +67,7 @@ namespace Nine
         {
             adapter.Result = result;
             if (InnerQueries != null)
-                for (int i = 0; i < InnerQueries.Count; i++)
+                for (int i = 0; i < InnerQueries.Count; ++i)
                     InnerQueries[i].FindAll(ref boundingSphere, adapter);
             adapter.Result = null;
         }
@@ -76,7 +76,7 @@ namespace Nine
         {
             adapter.Result = result;
             if (InnerQueries != null)
-                for (int i = 0; i < InnerQueries.Count; i++)
+                for (int i = 0; i < InnerQueries.Count; ++i)
                     InnerQueries[i].FindAll(ref ray, adapter);
             adapter.Result = null;
         }
@@ -85,7 +85,7 @@ namespace Nine
         {
             adapter.Result = result;
             if (InnerQueries != null)
-                for (int i = 0; i < InnerQueries.Count; i++)
+                for (int i = 0; i < InnerQueries.Count; ++i)
                     InnerQueries[i].FindAll(ref boundingBox, adapter);
             adapter.Result = null;
         }
@@ -94,7 +94,7 @@ namespace Nine
         {
             adapter.Result = result;
             if (InnerQueries != null)
-                for (int i = 0; i < InnerQueries.Count; i++)
+                for (int i = 0; i < InnerQueries.Count; ++i)
                     InnerQueries[i].FindAll(boundingFrustum, adapter);
             adapter.Result = null;
         }
@@ -132,7 +132,7 @@ namespace Nine
         private void Find(ICollection<T> result)
         {
             var count = Objects.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 result.Add(Objects[i]);
         }
 

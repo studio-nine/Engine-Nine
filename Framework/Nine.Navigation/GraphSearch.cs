@@ -159,7 +159,7 @@ namespace Nine.Navigation
                 // Otherwise test all node adjacent to this one
                 int edgeCount = graph.GetEdges(top, edges, 0);
 
-                for (int i = 0; i < edgeCount; i++)
+                for (int i = 0; i < edgeCount; ++i)
                 {
                     var edge = edges[i];
 

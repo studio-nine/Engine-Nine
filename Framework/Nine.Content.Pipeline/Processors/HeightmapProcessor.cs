@@ -64,9 +64,9 @@
 
             float[] heightmap = new float[width * height];
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; ++y)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; ++x)
                 {
                     if (x < heightfield.Width && y < heightfield.Height)
                         heightmap[i++] = heightfield.GetPixel(x, y) * Height;

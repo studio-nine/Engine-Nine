@@ -38,7 +38,7 @@ namespace BEPUphysics.UpdateableSystems
                 bool oldValue = isSequentiallyUpdated;
                 isSequentiallyUpdated = value;
                 if (value != oldValue)
-                    for (int i = 0; i < managers.Count; i++)
+                    for (int i = 0; i < managers.Count; ++i)
                     {
                         managers[i].SequentialUpdatingStateChanged(this);
                     }

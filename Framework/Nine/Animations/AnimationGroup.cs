@@ -96,7 +96,7 @@ namespace Nine.Animations
         protected override void OnStarted()
         {
             repeatCounter = 0;
-            for (int i = 0; i < animations.Count; i++)
+            for (int i = 0; i < animations.Count; ++i)
                 animations[i].Play();
             base.OnStarted();
         }
@@ -106,7 +106,7 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnStopped()
         {
-            for (int i = 0; i < animations.Count; i++)
+            for (int i = 0; i < animations.Count; ++i)
                 animations[i].Stop();
             base.OnStopped();
         }
@@ -116,7 +116,7 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnPaused()
         {
-            for (int i = 0; i < animations.Count; i++)
+            for (int i = 0; i < animations.Count; ++i)
                 animations[i].Pause();
             base.OnPaused();
         }
@@ -126,7 +126,7 @@ namespace Nine.Animations
         /// </summary>
         protected override void OnResumed()
         {
-            for (int i = 0; i < animations.Count; i++)
+            for (int i = 0; i < animations.Count; ++i)
                 animations[i].Resume();
             base.OnResumed();
         }
@@ -138,7 +138,7 @@ namespace Nine.Animations
         {
             if (State == AnimationState.Playing)
             {
-                for (int i = 0; i < animations.Count; i++)
+                for (int i = 0; i < animations.Count; ++i)
                 {
                     IUpdateable update = animations[i] as IUpdateable;
                     if (update != null)
@@ -153,7 +153,7 @@ namespace Nine.Animations
                 }
                 else
                 {
-                    for (int i = 0; i < animations.Count; i++)
+                    for (int i = 0; i < animations.Count; ++i)
                     {
                         if (animations[i].State != AnimationState.Stopped)
                         {
@@ -172,7 +172,7 @@ namespace Nine.Animations
                     }
                     else
                     {
-                        for (int i = 0; i < animations.Count; i++)
+                        for (int i = 0; i < animations.Count; ++i)
                             animations[i].Play();
                         OnRepeated();
                     }

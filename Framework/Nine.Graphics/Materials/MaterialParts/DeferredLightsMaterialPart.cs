@@ -24,14 +24,14 @@
             {
                 halfPixelParameter.SetValue(context.HalfPixel);
                 lightBufferParameter.SetValue(context.textures[TextureUsage.LightBuffer]);
-                context.GraphicsDevice.SamplerStates[lightBufferIndex] = SamplerState.PointClamp;
+                context.graphics.SamplerStates[lightBufferIndex] = SamplerState.PointClamp;
             }
         }
 
         protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             if (lightBufferParameter != null)
-                context.GraphicsDevice.SamplerStates[lightBufferIndex] = context.Settings.DefaultSamplerState;
+                context.graphics.SamplerStates[lightBufferIndex] = context.settings.SamplerState;
         }
 
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)

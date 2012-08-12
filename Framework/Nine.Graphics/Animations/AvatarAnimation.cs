@@ -37,7 +37,7 @@
                 previousState = Renderer.State;
                 if (previousState == AvatarRendererState.Ready)
                 {
-                    for (int i = 0; i < AvatarRenderer.BoneCount; i++)
+                    for (int i = 0; i < AvatarRenderer.BoneCount; ++i)
                         boneTransforms[i] = Renderer.BindPose[i];
                 }
             }
@@ -281,7 +281,7 @@
 
                 base.Update(elapsedTime);
 
-                for (int i = 0; i < AvatarRenderer.BoneCount; i++)
+                for (int i = 0; i < AvatarRenderer.BoneCount; ++i)
                 {
                     animationBoneTransforms[i] = Skeleton.BoneTransforms[i] * 
                                    Matrix.Invert(Skeleton.Renderer.BindPose[i]);

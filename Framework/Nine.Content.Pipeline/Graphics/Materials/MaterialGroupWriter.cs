@@ -24,7 +24,7 @@
             output.WriteExternalReference(new ExternalReference<CompiledEffectContent>(value.Reference));
 
             output.Write(value.MaterialParts.Count);
-            for (var i = 0; i < value.MaterialParts.Count; i++)
+            for (var i = 0; i < value.MaterialParts.Count; ++i)
                 output.WriteObject(value.MaterialParts[i]);
             
             output.WriteObject(value.ExtendedMaterials);

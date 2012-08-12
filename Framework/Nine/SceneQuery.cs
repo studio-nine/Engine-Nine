@@ -13,11 +13,11 @@ namespace Nine
         List<ISceneManager<ISpatialQueryable>> sceneManagers;
         IList<object> topLevelObjects;
 
-        public SceneQuery(List<ISceneManager<ISpatialQueryable>> sceneManagers, IList<object> topLevelObjects)
+        public SceneQuery(List<ISceneManager<ISpatialQueryable>> sceneManagers, IList<object> topLevelObjects, Predicate<T> condition)
         {
             this.sceneManagers = sceneManagers;
             this.topLevelObjects = topLevelObjects;
-            this.adapter = CollectionAdapter.Instance;
+            this.adapter = new CollectionAdapter(condition);
         }
 
         public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
@@ -28,7 +28,7 @@ namespace Nine
                 adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
                 var count = sceneManagers.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     sceneManagers[i].FindAll(ref boundingSphere, adapter);
             }
             finally
@@ -45,7 +45,7 @@ namespace Nine
                 adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
                 var count = sceneManagers.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     sceneManagers[i].FindAll(ref ray, adapter);
             }
             finally
@@ -62,7 +62,7 @@ namespace Nine
                 adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
                 var count = sceneManagers.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     sceneManagers[i].FindAll(ref boundingBox, adapter);
             }
             finally
@@ -79,7 +79,7 @@ namespace Nine
                 adapter.IncludeTopLevelNonSpatialQueryableDesendants(topLevelObjects);
 
                 var count = sceneManagers.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     sceneManagers[i].FindAll(boundingFrustum, adapter);
             }
             finally
@@ -90,34 +90,36 @@ namespace Nine
 
         class CollectionAdapter : SpatialQueryCollectionAdapter<ISpatialQueryable>
         {
-            public static CollectionAdapter Instance 
-            {
-                get { return instance ?? (instance = new CollectionAdapter()); } 
-            }
-            static CollectionAdapter instance;
-
             public ICollection<T> Result;
-            private ISpatialQueryable CurrentItem;
-            private Func<object, TraverseOptions> Traverser;
+            private ISpatialQueryable currentItem;
+            private Func<object, TraverseOptions> traverser;
+            private Predicate<T> condition;
 
-            private CollectionAdapter()
+            public CollectionAdapter(Predicate<T> condition)
             {
-                Traverser = new Func<object, TraverseOptions>(FindNonSpatialQueryableDescendantTraverser);
+                this.condition = condition;
+                this.traverser = new Func<object, TraverseOptions>(FindNonSpatialQueryableDescendantTraverser);
             }
 
             public override void Add(ISpatialQueryable item)
             {
-                CurrentItem = item;
-                ContainerTraverser.Traverse(item, Traverser);
-                CurrentItem = null;
+                try
+                {
+                    currentItem = item;
+                    ContainerTraverser.Traverse(item, traverser);
+                }
+                finally
+                {
+                    currentItem = null;
+                }
             }
 
             public void IncludeTopLevelNonSpatialQueryableDesendants(IList<object> topLevelObjects)
             {
                 var count = topLevelObjects.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
-                    ContainerTraverser.Traverse(topLevelObjects[i], Traverser);
+                    ContainerTraverser.Traverse(topLevelObjects[i], traverser);
                 }
             }
 
@@ -130,18 +132,18 @@ namespace Nine
                 var queryable = item as ISpatialQueryable;
                 if (queryable != null)
                 {
-                    if (queryable == CurrentItem)
+                    if (queryable == currentItem)
                     {
                         t = queryable as T;
-                        if (t != null)
+                        if (t != null && (condition == null || condition(t)))
                             Result.Add(t);
                         return TraverseOptions.Continue;
                     }
                     return TraverseOptions.Skip;
                 }
-                
+
                 t = item as T;
-                if (t != null)
+                if (t != null && (condition == null || condition(t)))
                     Result.Add(t);
                 return TraverseOptions.Continue;
             }

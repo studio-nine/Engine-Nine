@@ -14,22 +14,22 @@ namespace Nine.Graphics.Materials
 
         public Vector3 DiffuseColor
         {
-            get { return diffuseColor.HasValue ? diffuseColor.Value : MaterialConstants.DiffuseColor; }
-            set { diffuseColor = (value == MaterialConstants.DiffuseColor ? (Vector3?)null : value); }
+            get { return diffuseColor.HasValue ? diffuseColor.Value : Constants.DiffuseColor; }
+            set { diffuseColor = (value == Constants.DiffuseColor ? (Vector3?)null : value); }
         }
         private Vector3? diffuseColor;
 
         public int ReferenceAlpha
         {
-            get { return referenceAlpha.HasValue ? referenceAlpha.Value : MaterialConstants.ReferenceAlpha; }
-            set { referenceAlpha = (value == MaterialConstants.ReferenceAlpha ? (int?)null : value); }
+            get { return referenceAlpha.HasValue ? referenceAlpha.Value : Constants.ReferenceAlpha; }
+            set { referenceAlpha = (value == Constants.ReferenceAlpha ? (int?)null : value); }
         }
         private int? referenceAlpha;
 
         public CompareFunction AlphaFunction
         {
-            get { return alphaFunction.HasValue ? alphaFunction.Value : MaterialConstants.AlphaFunction; }
-            set { alphaFunction = (value == MaterialConstants.AlphaFunction ? (CompareFunction?)null : value); }
+            get { return alphaFunction.HasValue ? alphaFunction.Value : Constants.AlphaFunction; }
+            set { alphaFunction = (value == Constants.AlphaFunction ? (CompareFunction?)null : value); }
         }
         private CompareFunction? alphaFunction;
 
@@ -51,7 +51,7 @@ namespace Nine.Graphics.Materials
         {
             GraphicsDevice = graphics;
             effect = GraphicsResources<AlphaTestEffect>.GetInstance(graphics);
-            effect.ReferenceAlpha = MaterialConstants.ReferenceAlpha;
+            effect.ReferenceAlpha = Constants.ReferenceAlpha;
         }
 
         public override T Find<T>()
@@ -74,7 +74,7 @@ namespace Nine.Graphics.Materials
                 fogHelper.Apply(context, effect);
             }
 
-            if (alpha != MaterialConstants.Alpha)
+            if (alpha != Constants.Alpha)
                 effect.Alpha = alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = diffuseColor.Value;
@@ -97,17 +97,17 @@ namespace Nine.Graphics.Materials
 
         protected override void OnEndApply(DrawingContext context)
         {
-            if (alpha != MaterialConstants.Alpha)
-                effect.Alpha = MaterialConstants.Alpha;
+            if (alpha != Constants.Alpha)
+                effect.Alpha = Constants.Alpha;
             if (diffuseColor.HasValue)
-                effect.DiffuseColor = MaterialConstants.DiffuseColor;
+                effect.DiffuseColor = Constants.DiffuseColor;
             if (referenceAlpha.HasValue)
-                effect.ReferenceAlpha = MaterialConstants.ReferenceAlpha;
+                effect.ReferenceAlpha = Constants.ReferenceAlpha;
             if (alphaFunction.HasValue)
-                effect.AlphaFunction = MaterialConstants.AlphaFunction;
+                effect.AlphaFunction = Constants.AlphaFunction;
 
             if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+                GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
         }
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)

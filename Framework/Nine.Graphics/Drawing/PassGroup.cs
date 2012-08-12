@@ -35,7 +35,7 @@ namespace Nine.Graphics.Drawing
         {
             var passOrder = passes.GetEnabledAndSortedOrder();
             var count = passOrder.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 passes[passOrder[i]].GetActivePasses(result);
         }
 

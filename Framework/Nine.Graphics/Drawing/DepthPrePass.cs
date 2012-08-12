@@ -23,14 +23,14 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            var rootPasses = context.RootPass.Passes;
-            for (int i = 0; i < rootPasses.Count; i++)
+            var rootPasses = context.rootPass.Passes;
+            for (int i = 0; i < rootPasses.Count; ++i)
             {
                 if (rootPasses[i].Enabled && rootPasses[i] is LightPrePass)
                     return;
             }
 
-            var graphics = context.GraphicsDevice;
+            var graphics = context.graphics;
             if (depthMaterial == null)
                 depthMaterial = new DepthMaterial(graphics);
 

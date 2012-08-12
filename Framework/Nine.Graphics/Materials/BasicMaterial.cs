@@ -14,29 +14,29 @@ namespace Nine.Graphics.Materials
 
         public Vector3 DiffuseColor
         {
-            get { return diffuseColor.HasValue ? diffuseColor.Value : MaterialConstants.DiffuseColor; }
-            set { diffuseColor = (value == MaterialConstants.DiffuseColor ? (Vector3?)null : value); }
+            get { return diffuseColor.HasValue ? diffuseColor.Value : Constants.DiffuseColor; }
+            set { diffuseColor = (value == Constants.DiffuseColor ? (Vector3?)null : value); }
         }
         private Vector3? diffuseColor;
 
         public Vector3 EmissiveColor
         {
-            get { return emissiveColor.HasValue ? emissiveColor.Value : MaterialConstants.EmissiveColor; }
-            set { emissiveColor = (value == MaterialConstants.EmissiveColor ? (Vector3?)null : value); }
+            get { return emissiveColor.HasValue ? emissiveColor.Value : Constants.EmissiveColor; }
+            set { emissiveColor = (value == Constants.EmissiveColor ? (Vector3?)null : value); }
         }
         private Vector3? emissiveColor;
 
         public Vector3 SpecularColor
         {
-            get { return specularColor.HasValue ? specularColor.Value : MaterialConstants.SpecularColor; }
-            set { specularColor = (value == MaterialConstants.SpecularColor ? (Vector3?)null : value); }
+            get { return specularColor.HasValue ? specularColor.Value : Constants.SpecularColor; }
+            set { specularColor = (value == Constants.SpecularColor ? (Vector3?)null : value); }
         }
         private Vector3? specularColor;
         
         public float SpecularPower
         {
-            get { return specularPower.HasValue ? specularPower.Value : MaterialConstants.SpecularPower; }
-            set { specularPower = (value == MaterialConstants.SpecularPower ? (float?)null : value); }
+            get { return specularPower.HasValue ? specularPower.Value : Constants.SpecularPower; }
+            set { specularPower = (value == Constants.SpecularPower ? (float?)null : value); }
         }
         private float? specularPower;
 
@@ -94,7 +94,7 @@ namespace Nine.Graphics.Materials
             // the default one. Remember to reset it back to defaults during EndApply.
             // Since most objects will have their materials left at the default state, 
             // most of these parameter won't be updated to the shader.
-            if (alpha != MaterialConstants.Alpha)
+            if (alpha != Constants.Alpha)
                 effect.Alpha = alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = diffuseColor.Value;
@@ -128,19 +128,19 @@ namespace Nine.Graphics.Materials
 
         protected override void OnEndApply(DrawingContext context)
         {
-            if (alpha != MaterialConstants.Alpha)
-                effect.Alpha = MaterialConstants.Alpha;
+            if (alpha != Constants.Alpha)
+                effect.Alpha = Constants.Alpha;
             if (diffuseColor.HasValue)
-                effect.DiffuseColor = MaterialConstants.DiffuseColor;
+                effect.DiffuseColor = Constants.DiffuseColor;
             if (emissiveColor.HasValue)
-                effect.EmissiveColor = MaterialConstants.EmissiveColor;
+                effect.EmissiveColor = Constants.EmissiveColor;
             if (specularColor.HasValue)
-                effect.SpecularColor = MaterialConstants.SpecularColor;
+                effect.SpecularColor = Constants.SpecularColor;
             if (specularPower.HasValue)
-                effect.SpecularPower = MaterialConstants.SpecularPower;
+                effect.SpecularPower = Constants.SpecularPower;
 
             if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+                GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
         }
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)

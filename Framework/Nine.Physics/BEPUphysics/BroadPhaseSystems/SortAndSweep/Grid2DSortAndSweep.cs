@@ -93,7 +93,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             newEntry.Initialize(entry);
             entries.Add(newEntry);
             //Add the object to the grid.
-            for (int i = newEntry.previousMin.Y; i <= newEntry.previousMax.Y; i++)
+            for (int i = newEntry.previousMin.Y; i <= newEntry.previousMax.Y; ++i)
             {
                 for (int j = newEntry.previousMin.Z; j <= newEntry.previousMax.Z; j++)
                 {
@@ -110,7 +110,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         public override void Remove(BroadPhaseEntry entry)
         {
             base.Remove(entry);
-            for (int i = 0; i < entries.count; i++)
+            for (int i = 0; i < entries.count; ++i)
             {
                 if (entries.Elements[i].item == entry)
                 {
@@ -150,7 +150,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             {
                 Overlaps.Clear();
                 //Update the placement of objects.
-                for (int i = 0; i < entries.count; i++)
+                for (int i = 0; i < entries.count; ++i)
                 {
                     //Compute the current cells occupied by the entry.
                     var entry = entries.Elements[i];
@@ -186,7 +186,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                 }
 
                 //Update each cell to find the overlaps.
-                for (int i = 0; i < cellSet.count; i++)
+                for (int i = 0; i < cellSet.count; ++i)
                 {
                     cellSet.cells.Elements[i].UpdateOverlaps(this);
                 }

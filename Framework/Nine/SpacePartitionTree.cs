@@ -179,7 +179,7 @@ namespace Nine
             int count = 1;
             bool collapsedThisNode = true;
 
-            for (int i = 0; i < target.Children.Count; i++)
+            for (int i = 0; i < target.Children.Count; ++i)
             {
                 var child = target.Children[i];
                 int childCount = Collapse(child, condition);
@@ -238,7 +238,7 @@ namespace Nine
 
                 if (traverseOptions == TraverseOptions.Continue)
                 {
-                    for (int i = 0; i < node.Children.Count; i++)
+                    for (int i = 0; i < node.Children.Count; ++i)
                     {
                         stack.Push(node.Children[i]);
                     }

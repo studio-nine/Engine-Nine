@@ -88,7 +88,7 @@ namespace BEPUphysics.DeactivationManagement
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(SimulationIslandMember[] array, int arrayIndex)
         {
-            for (int i = 0; i < entries.count; i++)
+            for (int i = 0; i < entries.count; ++i)
             {
                 array[i + arrayIndex] = entries.Elements[i].Member;
             }

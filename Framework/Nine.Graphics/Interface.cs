@@ -5,6 +5,7 @@ namespace Nine.Graphics
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
+    using Nine.Graphics.Primitives;
 
     /// <summary>
     /// Defines an interface for objects that can be added to or removed 
@@ -29,7 +30,7 @@ namespace Nine.Graphics
     public interface ICamera
     {
         /// <summary>
-        /// Gets the optional viewport of this cameara.
+        /// Gets the optional viewport of this camera.
         /// </summary>
         Viewport? Viewport { get; }
 
@@ -62,7 +63,7 @@ namespace Nine.Graphics
         Material Material { get; }
 
         /// <summary>
-        /// Perform any updates before this object is drawed.
+        /// Perform any updates before anything is rendered in the scene.
         /// </summary>
         void BeginDraw(DrawingContext context);
 
@@ -72,7 +73,7 @@ namespace Nine.Graphics
         void Draw(DrawingContext context, Material material);
 
         /// <summary>
-        /// Perform any updates after this object is drawed.
+        /// Perform any updates after everything is rendered in the scene.
         /// </summary>
         void EndDraw(DrawingContext context);
     }
@@ -82,11 +83,6 @@ namespace Nine.Graphics
     /// </summary>
     public interface ILightable
     {
-        /// <summary>
-        /// Gets whether lighting is enabled on this drawable.
-        /// </summary>
-        bool LightingEnabled { get; }
-
         /// <summary>
         /// Gets whether the lighting system should draw multi-pass lighting
         /// overlays on to this object.
@@ -128,12 +124,17 @@ namespace Nine.Graphics
     /// <summary>
     /// Defines an interface for objects that supports hardware instancing
     /// </summary>
-    public interface ISupportInstancing : IBoundable
+    public interface ISupportInstancing
     {
         /// <summary>
         /// Gets the subset count.
         /// </summary>
         int Count { get; }
+
+        /// <summary>
+        /// Gets the bounding box of this instance.
+        /// </summary>
+        BoundingBox BoundingBox { get; }
 
         /// <summary>
         /// Gets the material for the given subset.
@@ -154,5 +155,21 @@ namespace Nine.Graphics
         /// Gets the index buffer for the given subset.
         /// </summary>
         void GetIndexBuffer(int subset, out IndexBuffer indexBuffer, out int startIndex, out int primitiveCount);
+    }
+
+    /// <summary>
+    /// Defines an object that supports debug visual.
+    /// </summary>
+    public interface IDebugDrawable
+    {
+        /// <summary>
+        /// Gets whether this object is visible.
+        /// </summary>
+        bool Visible { get; }
+
+        /// <summary>
+        /// Draws the debug overlay of this object.
+        /// </summary>
+        void Draw(DrawingContext context, DynamicPrimitive primitive);
     }
 }

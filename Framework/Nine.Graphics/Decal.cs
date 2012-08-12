@@ -308,6 +308,7 @@ namespace Nine.Graphics
         /// </summary>
         private void UpdateDecalGeometry()
         {
+            /*
             vertexCount = 0;
             indexCount = 0;
             invertWorld = Matrix.Invert(AbsoluteTransform);
@@ -318,24 +319,24 @@ namespace Nine.Graphics
             BoundingBox obb = OrientedBoundingBox;
 
             // Initialize geometry primitive
-            for (int i = 0; i < decalGeometries.Count; i++)
+            for (int i = 0; i < decalGeometries.Count; ++i)
             {
                 var geometry = decalGeometries[i];
 
-                if (IndexTracker == null || IndexTracker.Length < geometry.Positions.Length)
-                    IndexTracker = new ushort[geometry.Positions.Length];
+                if (IndexTracker == null || IndexTracker.Length < positions.Length)
+                    IndexTracker = new ushort[positions.Length];
                 else
                     Array.Clear(IndexTracker, 0, IndexTracker.Length);
 
-                for (int t = 0; t < geometry.Indices.Length; t += 3)
+                for (int t = 0; t < indices.Length; t += 3)
                 {
-                    var i1 = geometry.Indices[t];
-                    var i2 = geometry.Indices[t + 1];
-                    var i3 = geometry.Indices[t + 2];
+                    var i1 = indices[t];
+                    var i2 = indices[t + 1];
+                    var i3 = indices[t + 2];
 
-                    worldTriangle.V1 = geometry.Positions[i1];
-                    worldTriangle.V2 = geometry.Positions[i2];
-                    worldTriangle.V3 = geometry.Positions[i3];
+                    worldTriangle.V1 = positions[i1];
+                    worldTriangle.V2 = positions[i2];
+                    worldTriangle.V3 = positions[i3];
 
                     // Transform to world space
                     if (geometry.Transform.HasValue)
@@ -359,13 +360,13 @@ namespace Nine.Graphics
                     {
                         // Reserve at least 3 vertices
                         if (Vertices == null)
-                            Vertices = new VertexPositionNormalTexture[geometry.Positions.Length];
+                            Vertices = new VertexPositionNormalTexture[positions.Length];
                         else if (Vertices.Length < (vertexCount + 3))
                             Array.Resize(ref Vertices, (vertexCount + 3) * 2);
 
                         // Reserve at least 3 indices
                         if (Indices == null)
-                            Indices = new ushort[geometry.Indices.Length];
+                            Indices = new ushort[indices.Length];
                         else if (Indices.Length < (indexCount + 3))
                             Array.Resize(ref Indices, (indexCount + 3) * 2);
 
@@ -430,6 +431,7 @@ namespace Nine.Graphics
 
             vertexBuffer.SetData<VertexPositionNormalTexture>(Vertices, 0, vertexCount);
             indexBuffer.SetData<ushort>(Indices, 0, indexCount);
+             */
         }
 
         /// <summary>
@@ -438,7 +440,7 @@ namespace Nine.Graphics
         private static void ComputeNormals(VertexPositionNormalTexture[] vertices, ushort[] indices, int vertexCount, int indexCount)
         {
             // Clear normals for each vertex
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < vertices.Length; ++i)
             {
                 vertices[i].Normal.X = 0;
                 vertices[i].Normal.Y = 0;
@@ -472,7 +474,7 @@ namespace Nine.Graphics
             }
 
             // Average normals for each vertex
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < vertices.Length; ++i)
             {
                 vertices[i].Normal.Normalize();
             }

@@ -180,7 +180,7 @@ namespace Nine.Graphics
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
-        public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
+        protected override void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> bounds, out Matrix shadowFrustum)
         {
             throw new NotImplementedException();
             /*
@@ -206,7 +206,7 @@ namespace Nine.Graphics
             foreach (var shadowCaster in shadowCastersInLightFrustum)
             {
                 shadowCaster.BoundingBox.GetCorners(Corners);
-                for (int i = 0; i < BoundingBox.CornerCount; i++)
+                for (int i = 0; i < BoundingBox.CornerCount; ++i)
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
 
@@ -247,22 +247,23 @@ namespace Nine.Graphics
              */
         }
 
-        public override void DrawFrustum(DrawingContext context)
+        public override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
-            //context.PrimitiveBatch.DrawFrustum(BoundingFrustum, null, context.Settings.Debug.LightFrustumColor);
+            primitive.AddFrustum(BoundingFrustum, null, Constants.LightFrustumColor);
+            base.Draw(context, primitive);
         }
 
         #region IDeferredLight
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
-        IDrawableObject IDeferredLight.GetLightGeometry(DrawingContext context)
+        IDrawableObject IDeferredLight.PrepareLightGeometry(DrawingContext context)
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new CentrumInvert(context.GraphicsDevice)
+                deferredGeometry = new CentrumInvert(context.graphics)
                 {
-                    Material = deferredMaterial = new DeferredSpotLightMaterial(context.GraphicsDevice)
+                    Material = deferredMaterial = new DeferredSpotLightMaterial(context.graphics)
                 };
             }
             UpdateFrustumTransform();

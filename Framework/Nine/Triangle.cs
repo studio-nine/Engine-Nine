@@ -96,6 +96,272 @@ namespace Nine
         }
 
         /// <summary>
+        /// Clips a triangle against a plane and split the input triangle when they interests.
+        /// </summary>
+        /// <returns>The count of new vertices added to the output array</returns>
+        /// <remarks>
+        /// The output intersection points will have the same winding order as this triangle.
+        /// 
+        /// This algorithm is inspired by a blog post from wolfire games:
+        /// http://blog.wolfire.com/2009/06/how-to-project-decals/.
+        /// By the way, Overgrowth is AWEOSOME!!!
+        /// </remarks>
+        public int Intersects(BoundingBox box, Vector3[] intersections, int startIndex)
+        {
+            var mid = new Vector3();
+            var source = intersections;
+            var target = IntersectionPoints;
+            var sourceCount = 3;
+            var targetCount = 0;
+
+            source[0] = V1;
+            source[1] = V2;
+            source[3] = V3;
+
+            #region Clip against -X plane
+            for (var i = 0; i < sourceCount; ++i)
+            {
+                var start = source[i];
+                var end = source[(i + 1) % sourceCount];
+
+                var insideStart = start.X >= box.Min.X;
+                var insideEnd = end.X >= box.Min.X;
+
+                if (!insideStart && !insideEnd)
+                    continue;
+
+                if (insideStart && insideEnd)
+                {
+                    target[targetCount++] = start;
+                    target[targetCount++] = end;
+                    continue;
+                }
+
+                var delta = (box.Min.X - start.X) / (end.X - start.X);
+                mid.X = start.X + (end.X - start.X) * delta;
+                mid.Y = start.Y + (end.Y - start.Y) * delta;
+                mid.Z = start.Z + (end.Z - start.Z) * delta;
+
+                if (insideStart)
+                {
+                    target[targetCount++] = start;
+                    target[targetCount++] = mid;
+                }
+                else
+                {
+                    target[targetCount++] = mid;
+                    target[targetCount++] = end;
+                }
+            }
+            #endregion
+
+            #region Clip against +X plane
+            for (var i = 0; i < targetCount; ++i)
+            {
+                var start = target[i];
+                var end = target[(i + 1) % targetCount];
+
+                var insideStart = start.X <= box.Max.X;
+                var insideEnd = end.X <= box.Max.X;
+
+                if (!insideStart && !insideEnd)
+                    continue;
+
+                if (insideStart && insideEnd)
+                {
+                    source[sourceCount++] = start;
+                    source[sourceCount++] = end;
+                    continue;
+                }
+
+                var delta = (box.Max.X - start.X) / (end.X - start.X);
+                mid.X = start.X + (end.X - start.X) * delta;
+                mid.Y = start.Y + (end.Y - start.Y) * delta;
+                mid.Z = start.Z + (end.Z - start.Z) * delta;
+
+                if (insideStart)
+                {
+                    source[sourceCount++] = start;
+                    source[sourceCount++] = mid;
+                }
+                else
+                {
+                    source[sourceCount++] = mid;
+                    source[sourceCount++] = end;
+                }
+            }
+            #endregion
+            
+            #region Clip against -Y plane
+            for (var i = 0; i < sourceCount; ++i)
+            {
+                var start = source[i];
+                var end = source[(i + 1) % sourceCount];
+
+                var insideStart = start.Y >= box.Min.Y;
+                var insideEnd = end.Y >= box.Min.Y;
+
+                if (!insideStart && !insideEnd)
+                    continue;
+
+                if (insideStart && insideEnd)
+                {
+                    target[targetCount++] = start;
+                    target[targetCount++] = end;
+                    continue;
+                }
+
+                var delta = (box.Min.Y - start.Y) / (end.Y - start.Y);
+                mid.X = start.X + (end.X - start.X) * delta;
+                mid.Y = start.Y + (end.Y - start.Y) * delta;
+                mid.Z = start.Z + (end.Z - start.Z) * delta;
+
+                if (insideStart)
+                {
+                    target[targetCount++] = start;
+                    target[targetCount++] = mid;
+                }
+                else
+                {
+                    target[targetCount++] = mid;
+                    target[targetCount++] = end;
+                }
+            }
+            #endregion
+
+            #region Clip against +Y plane
+            for (var i = 0; i < targetCount; ++i)
+            {
+                var start = target[i];
+                var end = target[(i + 1) % targetCount];
+
+                var insideStart = start.Y <= box.Max.Y;
+                var insideEnd = end.Y <= box.Max.Y;
+
+                if (!insideStart && !insideEnd)
+                    continue;
+
+                if (insideStart && insideEnd)
+                {
+                    source[sourceCount++] = start;
+                    source[sourceCount++] = end;
+                    continue;
+                }
+
+                var delta = (box.Max.Y - start.Y) / (end.Y - start.Y);
+                mid.X = start.X + (end.X - start.X) * delta;
+                mid.Y = start.Y + (end.Y - start.Y) * delta;
+                mid.Z = start.Z + (end.Z - start.Z) * delta;
+
+                if (insideStart)
+                {
+                    source[sourceCount++] = start;
+                    source[sourceCount++] = mid;
+                }
+                else
+                {
+                    source[sourceCount++] = mid;
+                    source[sourceCount++] = end;
+                }
+            }
+            #endregion
+
+            #region Clip against -Z plane
+            for (var i = 0; i < sourceCount; ++i)
+            {
+                var start = source[i];
+                var end = source[(i + 1) % sourceCount];
+
+                var insideStart = start.Z >= box.Min.Z;
+                var insideEnd = end.Z >= box.Min.Z;
+
+                if (!insideStart && !insideEnd)
+                    continue;
+
+                if (insideStart && insideEnd)
+                {
+                    target[targetCount++] = start;
+                    target[targetCount++] = end;
+                    continue;
+                }
+
+                var delta = (box.Min.Z - start.Z) / (end.Z - start.Z);
+                mid.X = start.X + (end.X - start.X) * delta;
+                mid.Y = start.Y + (end.Y - start.Y) * delta;
+                mid.Z = start.Z + (end.Z - start.Z) * delta;
+
+                if (insideStart)
+                {
+                    target[targetCount++] = start;
+                    target[targetCount++] = mid;
+                }
+                else
+                {
+                    target[targetCount++] = mid;
+                    target[targetCount++] = end;
+                }
+            }
+            #endregion
+
+            #region Clip against +Z plane
+            for (var i = 0; i < targetCount; ++i)
+            {
+                var start = target[i];
+                var end = target[(i + 1) % targetCount];
+
+                var insideStart = start.Z <= box.Max.Z;
+                var insideEnd = end.Z <= box.Max.Z;
+
+                if (!insideStart && !insideEnd)
+                    continue;
+
+                if (insideStart && insideEnd)
+                {
+                    source[sourceCount++] = start;
+                    source[sourceCount++] = end;
+                    continue;
+                }
+
+                var delta = (box.Max.Z - start.Z) / (end.Z - start.Z);
+                mid.X = start.X + (end.X - start.X) * delta;
+                mid.Y = start.Y + (end.Y - start.Y) * delta;
+                mid.Z = start.Z + (end.Z - start.Z) * delta;
+
+                if (insideStart)
+                {
+                    source[sourceCount++] = start;
+                    source[sourceCount++] = mid;
+                }
+                else
+                {
+                    source[sourceCount++] = mid;
+                    source[sourceCount++] = end;
+                }
+            }
+            #endregion
+            
+            return targetCount;
+        }
+
+        /// <summary>
+        /// Box triangle have at most 32 intersection points.
+        /// </summary>
+        static Vector3[] IntersectionPoints = new Vector3[32];
+
+        /// <summary>
+        /// These are the indices used to tessellate a box into a list of triangles. 
+        /// </summary>
+        static readonly ushort[] BoxTriangleIndices = new ushort[]
+        {
+            0,1,2,  1,2,3,
+            4,5,6,  5,6,7,
+            0,2,4,  2,4,6,
+            1,3,5,  3,5,7,
+            0,1,4,  1,4,5,
+            2,3,6,  3,6,7 
+        };
+
+        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>

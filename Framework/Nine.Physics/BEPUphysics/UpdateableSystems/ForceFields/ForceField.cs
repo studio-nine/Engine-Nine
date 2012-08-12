@@ -100,7 +100,7 @@ namespace BEPUphysics.UpdateableSystems.ForceFields
                 currentTimestep = dt;
                 //No multithreading, so do it directly.
                 int count = affectedEntities.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     CalculateImpulsesSubfunction(i);
                 }

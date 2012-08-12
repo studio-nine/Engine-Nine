@@ -10,11 +10,6 @@
     public class Box : Primitive<VertexPositionNormalTexture>
     {
         /// <summary>
-        /// Gets or sets a value indicating whether this primitive is solid or wireframed.
-        /// </summary>
-        public bool IsSolid { get; set; }
-
-        /// <summary>
         /// Constructs a new cube primitive, using default settings.
         /// </summary>
         public Box(GraphicsDevice graphicsDevice) : base(graphicsDevice)

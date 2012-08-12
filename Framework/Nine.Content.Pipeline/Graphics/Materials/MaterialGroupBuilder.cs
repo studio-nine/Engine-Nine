@@ -478,7 +478,7 @@
             {
                 var currentPart = materialGroup.MaterialParts[p];
                 currentPart.GetDependentParts(usage, dependentPartTypes);
-                for (int i = 0; i < dependentPartTypes.Count; i++)
+                for (int i = 0; i < dependentPartTypes.Count; ++i)
                 {
                     var type = dependentPartTypes[i];
                     if (!materialGroup.MaterialParts.Any(x => x.GetType() == type))
@@ -538,7 +538,7 @@
 
             var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(LastEffectCode));
             var hashString = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
+            for (int i = 0; i < hash.Length; ++i)
                 hashString.Append(hash[i].ToString("X2"));
             LastIdentity = hashString.ToString();
 
@@ -693,7 +693,7 @@
             builderContext.VertexShaderInputs = new List<ArgumentDeclaration>();
             builderContext.VertexShaderOutputs = new List<ArgumentDeclaration>();
 
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; ++i)
             {
                 if (builderContext.MaterialPartDeclarations[i].VertexShader != null)
                 {
@@ -714,7 +714,7 @@
             builderContext.PixelShaderInputs = new List<ArgumentDeclaration>();
             builderContext.PixelShaderOutputs = new List<ArgumentDeclaration>();
 
-            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; i++)
+            for (int i = 0; i < builderContext.MaterialPartDeclarations.Count; ++i)
             {
                 if (builderContext.MaterialPartDeclarations[i].PixelShader != null)
                 {
@@ -749,7 +749,7 @@
                                              select arg).ToList();
 
             // Remove duplicated pixel shader output semantics, keep only the last one.
-            for (int i = 0; i < builderContext.PixelShaderOutputs.Count; i++)
+            for (int i = 0; i < builderContext.PixelShaderOutputs.Count; ++i)
             {
                 if (builderContext.PixelShaderOutputs.Skip(i + 1).Any(a => a.Semantic == builderContext.PixelShaderOutputs[i].Semantic))
                 {
@@ -762,7 +762,7 @@
             }
 
             // Pixel shader inputs that does not have a matching vertex shader output and a valid semantic            
-            for (int i = 0; i < builderContext.PixelShaderInputs.Count; i++)
+            for (int i = 0; i < builderContext.PixelShaderInputs.Count; ++i)
             {
                 var psi = builderContext.PixelShaderInputs[i];
                 if (builderContext.VertexShaderOutputs.Any(vso => vso.Name == psi.Name))

@@ -119,7 +119,7 @@ namespace Nine.Components
             if (File.Exists(ScreenshotNameBuilder(0)) == true)
             {
                 // First scan for screenshot num/1000
-                for (i = 1; i < 10; i++)
+                for (i = 1; i < 10; ++i)
                 {
                     if (File.Exists(ScreenshotNameBuilder(i * 1000)) == false)
                         break;

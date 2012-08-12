@@ -8,6 +8,7 @@ namespace Nine.Graphics.Drawing
     using Nine.Graphics;
     using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
+    using Nine.Graphics.Primitives;
     using Nine.Graphics.PostEffects;
     using DirectionalLight = Nine.Graphics.DirectionalLight;
 
@@ -20,14 +21,18 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets the underlying graphics device.
         /// </summary>
-        public GraphicsDevice GraphicsDevice { get; private set; }
+        public GraphicsDevice GraphicsDevice
+        {
+            get { return graphics; }
+        }
+        internal GraphicsDevice graphics;
 
         /// <summary>
         /// Gets or sets the active camera.
         /// </summary>
         public ICamera Camera
         {
-            get { return camera ?? (camera = new FreeCamera(GraphicsDevice)); }
+            get { return camera ?? (camera = new FreeCamera(graphics)); }
             set { camera = value; }
         }
         private ICamera camera;
@@ -40,47 +45,71 @@ namespace Nine.Graphics.Drawing
             get { return settings; }
             set { settings = (value ?? new Settings()); }
         }
-        private Settings settings;
+        internal Settings settings;
 
         /// <summary>
         /// Gets the graphics statistics.
         /// </summary>
-        public Statistics Statistics { get; private set; }
+        public Statistics Statistics 
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         /// <summary>
         /// Gets the elapsed time since last update.
         /// </summary>
-        public TimeSpan ElapsedTime { get; internal set; }
+        public TimeSpan ElapsedTime
+        {
+            get { return elapsedTime; }
+        }
+        internal TimeSpan elapsedTime;
+        internal float elapsedSeconds;
 
         /// <summary>
-        /// Gets the elapsed time from last frame in seconds.
+        /// Gets the total seconds since the beginning of the drawing context.
         /// </summary>
-        internal float ElapsedSeconds;
+        public TimeSpan TotalTime
+        {
+            get { return totalTime; }
+        }
+        internal TimeSpan totalTime;
+        internal float totalSeconds;
 
         /// <summary>
-        /// Gets the total seconds since the beginning of the draw context.
+        /// Gets all the visible drawables used by this drawing context.
         /// </summary>
-        public TimeSpan TotalTime { get; internal set; }
-
-        /// <summary>
-        /// Gets the scene to be rendered with this drawing context.
-        /// </summary>
-        public ISpatialQuery<IDrawableObject> Drawables { get; private set; }
+        public ISpatialQuery<IDrawableObject> Drawables
+        {
+            get { return drawables; }
+        }
+        internal ISpatialQuery<IDrawableObject> drawables;
 
         /// <summary>
         /// Gets the main pass that is used to render the scene.
         /// </summary>
-        public PassGroup MainPass { get; private set; }
+        public PassGroup MainPass 
+        {
+            get { return mainPass; }
+        }
+        internal PassGroup mainPass;
 
         /// <summary>
         /// Gets the root pass of this drawing context composition chain.
         /// </summary>
-        public PassGroup RootPass { get; private set; }
+        public PassGroup RootPass
+        {
+            get { return rootPass; }
+        }
+        internal PassGroup rootPass;
 
         /// <summary>
         /// Gets the number of elapsed frames since the beginning of the draw context.
         /// </summary>
-        public int CurrentFrame { get; private set; }
+        public int CurrentFrame
+        {
+            get { return currentFrame; }
+        }
+        internal int currentFrame;
 
         /// <summary>
         /// Gets a collection of global textures.
@@ -177,7 +206,7 @@ namespace Nine.Graphics.Drawing
             get { return fogColor; }
             set { fogColor = value; fogVersion++; }
         }
-        internal Vector3 fogColor = MaterialConstants.FogColor;
+        internal Vector3 fogColor = Constants.FogColor;
 
         /// <summary>
         /// Gets or sets the fog end.
@@ -187,7 +216,7 @@ namespace Nine.Graphics.Drawing
             get { return fogEnd; }
             set { fogEnd = value; fogVersion++; }
         }
-        internal float fogEnd = MaterialConstants.FogEnd;
+        internal float fogEnd = Constants.FogEnd;
 
         /// <summary>
         /// Gets or sets the fog start.
@@ -197,17 +226,22 @@ namespace Nine.Graphics.Drawing
             get { return fogStart; }
             set { fogStart = value; fogVersion++; }
         }
-        internal float fogStart = MaterialConstants.FogStart;
+        internal float fogStart = Constants.FogStart;
         internal int fogVersion;
         #endregion
 
         #region Fields
         private bool isDrawing = false;
         private ISpatialQuery spatialQuery;
+        private ISpatialQuery<IDebugDrawable> debugDrawables;
+        private ISpatialQuery<ISpatialQueryable> debugBounds;
+        private DynamicPrimitive debugPrimitive;
+        private FastList<ISpatialQueryable> debugBoundsInViewFrustum;
+        private FastList<IDebugDrawable> debugDrawablesInViewFrustum;
         private FastList<Pass> activePasses = new FastList<Pass>();
         private FastList<IPostEffect> targetPasses = new FastList<IPostEffect>();
         private FastList<SurfaceFormat?> preferedFormats = new FastList<SurfaceFormat?>();
-        private FastList<IDrawableObject> dynamicDrawables = new FastList<IDrawableObject>();
+        private FastList<IDrawableObject> drawablesInViewFrustum = new FastList<IDrawableObject>();
         private HashSet<Type> dependentPassTypes = new HashSet<Type>();
         private Dictionary<Type, Pass> dependentPassMapping = new Dictionary<Type, Pass>();
         #endregion
@@ -224,10 +258,9 @@ namespace Nine.Graphics.Drawing
                 throw new ArgumentNullException("spatialQuery");
 
             this.spatialQuery = spatialQuery;
-            this.Drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>();
-            this.Settings = new Settings();
-            this.GraphicsDevice = graphics;
-            this.Statistics = new Statistics();
+            this.drawables = spatialQuery.CreateSpatialQuery<IDrawableObject>(drawable => drawable.Visible);
+            this.settings = new Settings();
+            this.graphics = graphics;
             this.defaultLight = new DirectionalLight(graphics)
             {
                 DiffuseColor = Vector3.Zero,
@@ -238,10 +271,10 @@ namespace Nine.Graphics.Drawing
             this.directionalLights = new DirectionalLightCollection(defaultLight);
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
-            this.MainPass = new PassGroup() { Name = "MainPass" };
-            this.MainPass.Passes.Add(new DrawingPass());
-            this.RootPass = new PassGroup() { Name = "RootPass" };
-            this.RootPass.Passes.Add(MainPass);
+            this.mainPass = new PassGroup() { Name = "MainPass" };
+            this.mainPass.Passes.Add(new DrawingPass());
+            this.rootPass = new PassGroup() { Name = "RootPass" };
+            this.rootPass.Passes.Add(mainPass);
         }
 
         /// <summary>
@@ -258,7 +291,7 @@ namespace Nine.Graphics.Drawing
         {
             if (VertexBuffer != vertexBuffer || VertexOffset != vertexOffset)
             {
-                GraphicsDevice.SetVertexBuffer(vertexBuffer, vertexOffset);
+                graphics.SetVertexBuffer(vertexBuffer, vertexOffset);
                 VertexBuffer = vertexBuffer;
                 VertexOffset = vertexOffset;
             }
@@ -279,7 +312,7 @@ namespace Nine.Graphics.Drawing
         {
             get
             {
-                var vp = GraphicsDevice.Viewport;
+                var vp = graphics.Viewport;
                 return new Vector2(0.5f / vp.Width, 0.5f / vp.Height);
             }
         }
@@ -287,11 +320,11 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Create a spatial query of the specified type from this scene.
         /// </summary>
-        public ISpatialQuery<T> CreateSpatialQuery<T>() where T : class
+        public ISpatialQuery<T> CreateSpatialQuery<T>(Predicate<T> condition) where T : class
         {
-            return spatialQuery.CreateSpatialQuery<T>();
+            return spatialQuery.CreateSpatialQuery<T>(condition);
         }
-
+        
         /// <summary>
         /// Draws the specified scene.
         /// </summary>
@@ -315,36 +348,36 @@ namespace Nine.Graphics.Drawing
             if (isDrawing)
                 throw new InvalidOperationException("Cannot trigger another drawing of the scene while it's still been drawn");
 
-            View = view;
-            Projection = projection;
-            isDrawing = true;
-            VertexOffset = 0;
-            VertexBuffer = null;
-            PreviousMaterial = null;
-            ElapsedTime = elapsedTime;
-            ElapsedSeconds = (float)elapsedTime.TotalSeconds;
-            TotalTime += elapsedTime;
+            this.View = view;
+            this.Projection = projection;
+            this.isDrawing = true;
+            this.VertexOffset = 0;
+            this.VertexBuffer = null;
+            this.PreviousMaterial = null;
+            this.elapsedTime = elapsedTime;
+            this.totalTime += elapsedTime;
+            this.elapsedSeconds = (float)elapsedTime.TotalSeconds;
+            this.totalSeconds = (float)totalTime.TotalSeconds;
 
             UpdateDefaultSamplerStates();
 
             try
             {
-                if (RootPass == null)
+                if (rootPass == null)
                     return;
 
-                dynamicDrawables.Clear();
+                drawablesInViewFrustum.Clear();
                 BoundingFrustum viewFrustum = ViewFrustum;
-                Drawables.FindAll(viewFrustum, dynamicDrawables);
+                drawables.FindAll(viewFrustum, drawablesInViewFrustum);
 
                 // Notify each drawable when the frame begins
-                for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
-                    // TODO: Visibility filter
-                    dynamicDrawables[currentDrawable].BeginDraw(this);
+                for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                    drawablesInViewFrustum[currentDrawable].BeginDraw(this);
 
                 UpdatePasses();
 
                 activePasses.Clear();
-                RootPass.GetActivePasses(activePasses);
+                rootPass.GetActivePasses(activePasses);
 
                 targetPasses.Resize(activePasses.Count);
                 preferedFormats.Resize(activePasses.Count);
@@ -378,7 +411,7 @@ namespace Nine.Graphics.Drawing
                 RenderTarget2D intermediate = null;
                 bool overrideViewFrustumLastPass = false;
 
-                for (int i = 0; i < activePasses.Count; i++)
+                for (int i = 0; i < activePasses.Count; ++i)
                 {
                     var pass = activePasses[i];
                     var targetPass = targetPasses[i];
@@ -397,16 +430,16 @@ namespace Nine.Graphics.Drawing
                     if (overrideViewFrustum || overrideViewFrustumLastPass)
                     {
                         // Notify drawables when view frustum has changed
-                        for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
-                            dynamicDrawables[currentDrawable].EndDraw(this);
+                        for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                            drawablesInViewFrustum[currentDrawable].EndDraw(this);
 
-                        dynamicDrawables.Clear();
+                        drawablesInViewFrustum.Clear();
                         BoundingFrustum frustum = matrices.ViewFrustum;
-                        Drawables.FindAll(frustum, dynamicDrawables);
+                        drawables.FindAll(frustum, drawablesInViewFrustum);
                         overrideViewFrustumLastPass = overrideViewFrustum;
 
-                        for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
-                            dynamicDrawables[currentDrawable].EndDraw(this);
+                        for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                            drawablesInViewFrustum[currentDrawable].EndDraw(this);
                     }
 
                     try
@@ -428,12 +461,12 @@ namespace Nine.Graphics.Drawing
                         if (postEffect != null)
                             postEffect.InputTexture = lastRenderTarget;
 
-                        // Clear the screen when we are drawing to the backbuffer.
+                        // Clear the screen when we are drawing to the back buffer.
                         //  --> Or when we are drawing to the main pass ???
                         if (i == lastPass)
-                            GraphicsDevice.Clear(Settings.BackgroundColor);
+                            graphics.Clear(settings.BackgroundColor);
 
-                        pass.Draw(this, dynamicDrawables);
+                        pass.Draw(this, drawablesInViewFrustum);
                     }
                     finally
                     {
@@ -443,12 +476,12 @@ namespace Nine.Graphics.Drawing
             }
             finally
             {
-                CurrentFrame++;
+                currentFrame++;
                 isDrawing = false;
 
                 // Notify each drawable when the frame begins
-                for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
-                    dynamicDrawables[currentDrawable].BeginDraw(this);
+                for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
+                    drawablesInViewFrustum[currentDrawable].BeginDraw(this);
             }
         }
 
@@ -459,9 +492,9 @@ namespace Nine.Graphics.Drawing
         {
             if (settings.DefaultSamplerStateChanged)
             {
-                var samplerState = settings.DefaultSamplerState;
-                for (int i = 0; i < 16; i++)
-                    GraphicsDevice.SamplerStates[i] = samplerState;
+                var samplerState = settings.SamplerState;
+                for (int i = 0; i < 16; ++i)
+                    graphics.SamplerStates[i] = samplerState;
                 settings.DefaultSamplerStateChanged = false;
             }
         }
@@ -473,16 +506,16 @@ namespace Nine.Graphics.Drawing
         {
             try
             {
-                for (int currentDrawable = 0; currentDrawable < dynamicDrawables.Count; currentDrawable++)
+                for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
                 {
-                    var material = dynamicDrawables[currentDrawable].Material;
+                    var material = drawablesInViewFrustum[currentDrawable].Material;
                     if (material != null)
                         material.GetDependentPasses(dependentPassTypes);
                 }
 
-                var passes = RootPass.Passes;
-                var count = RootPass.Passes.Count;
-                for (int i = 0; i < count; i++)
+                var passes = rootPass.Passes;
+                var count = rootPass.Passes.Count;
+                for (int i = 0; i < count; ++i)
                 {
                     var pass = passes[i];
                     if (pass.Enabled)
@@ -503,8 +536,8 @@ namespace Nine.Graphics.Drawing
                         continue;
                     }
                     dependentPassMapping.Add(passType, pass = CreatePass(passType));
-                    RootPass.Passes.Add(pass);
-                    MainPass.AddDependency(pass);
+                    rootPass.Passes.Add(pass);
+                    mainPass.AddDependency(pass);
                 }
             }
             finally
@@ -521,7 +554,41 @@ namespace Nine.Graphics.Drawing
             var defaultConstructor = passType.GetConstructor(Type.EmptyTypes);
             if (defaultConstructor != null)
                 return (Pass)defaultConstructor.Invoke(null);
-            return (Pass)Activator.CreateInstance(passType, new object[] { GraphicsDevice });
+            return (Pass)Activator.CreateInstance(passType, new object[] { graphics });
+        }
+
+        /// <summary>
+        /// Draws the debug overlay of the target scene.
+        /// </summary>
+        internal void DrawDebugOverlay()
+        {
+            if (debugDrawables == null)
+            {
+                debugDrawables = CreateSpatialQuery<IDebugDrawable>(drawable => drawable.Visible);
+                debugBounds = CreateSpatialQuery<ISpatialQueryable>(queryable => true);
+                debugPrimitive = new DynamicPrimitive(graphics);
+                debugDrawablesInViewFrustum = new FastList<IDebugDrawable>();
+                debugBoundsInViewFrustum = new FastList<ISpatialQueryable>();                
+            }
+            
+            BoundingFrustum viewFrustum = ViewFrustum;
+            debugDrawables.FindAll(viewFrustum, debugDrawablesInViewFrustum);
+            debugBounds.FindAll(viewFrustum, debugBoundsInViewFrustum);
+
+            for (int i = 0; i < debugBoundsInViewFrustum.Count; ++i)
+            {
+                debugPrimitive.AddBox(debugBoundsInViewFrustum[i].BoundingBox, null, Constants.BoundingBoxColor);
+            }
+            
+            for (int i = 0; i < debugDrawablesInViewFrustum.Count; ++i)
+            {
+                debugDrawablesInViewFrustum[i].Draw(this, debugPrimitive);
+            }
+
+            debugPrimitive.Draw(this, null);
+            debugPrimitive.Clear();
+            debugDrawablesInViewFrustum.Clear();
+            debugBoundsInViewFrustum.Clear();
         }
         #endregion
     }

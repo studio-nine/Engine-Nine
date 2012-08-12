@@ -23,10 +23,10 @@ namespace Nine.Graphics
         /// </summary>
         public Fog()
         {
-            FogStart = MaterialConstants.FogStart;
-            FogEnd = MaterialConstants.FogEnd;
-            Enabled = MaterialConstants.FogEnabled;
-            FogColor = MaterialConstants.FogColor;
+            FogStart = Constants.FogStart;
+            FogEnd = Constants.FogEnd;
+            Enabled = Constants.FogEnabled;
+            FogColor = Constants.FogColor;
         }
 
         void ISceneObject.OnAdded(DrawingContext context)

@@ -205,7 +205,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             output.Write(value.CastShadow);
-            WriteObject(output, value, "Shadow", value.ShadowMap);
+            WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -321,10 +321,13 @@ namespace Nine.Content.Pipeline.Graphics
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Geometry value)
         {
-            WriteObject(output, value, "BoundingSphere", value.BoundingSphere);
+            WriteObject(output, value, "positions", value.positions);
+            WriteObject(output, value, "indices", value.indices);
             WriteObject(output, value, "BoundingBox", value.BoundingBox);
-            WriteObject(output, value, "Positions", value.Positions);
-            WriteObject(output, value, "Indices", value.Indices);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
         private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
@@ -442,7 +445,7 @@ namespace Nine.Content.Pipeline.Graphics
         {
             {
                 output.Write(value.Meshes.Count);
-                for (var i = 0; i < value.Meshes.Count; i++)
+                for (var i = 0; i < value.Meshes.Count; ++i)
                     output.WriteObject(value.Meshes[i]);
             }
             WriteObject(output, value, "Source", value.Source);
@@ -450,7 +453,6 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.Visible);
             output.Write(value.UseModelTextures);
-            output.Write(value.LightingEnabled);
             output.Write(value.MultiPassLightingEnabled);
             output.Write(value.MaxAffectingLights);
             output.Write(value.CastShadow);
@@ -460,7 +462,7 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "SharedSkeleton", value.SharedSkeleton);
             {
                 output.Write(value.Attachments.Count);
-                for (var i = 0; i < value.Attachments.Count; i++)
+                for (var i = 0; i < value.Attachments.Count; ++i)
                     output.WriteObject(value.Attachments[i]);
             }
             output.Write(value.Transform);
@@ -725,7 +727,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             output.Write(value.CastShadow);
-            WriteObject(output, value, "Shadow", value.ShadowMap);
+            WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -855,7 +857,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Enabled);
             output.Write(value.Order);
             output.Write(value.CastShadow);
-            WriteObject(output, value, "Shadow", value.ShadowMap);
+            WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
@@ -903,7 +905,6 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.Visible);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
-            output.Write(value.LightingEnabled);
             output.Write(value.CastShadow);
             output.Write(value.ReceiveShadow);
             output.Write(value.Transform);
@@ -1320,7 +1321,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
         {
             {
                 output.Write(value.MaterialLevels.Count);
-                for (var i = 0; i < value.MaterialLevels.Count; i++)
+                for (var i = 0; i < value.MaterialLevels.Count; ++i)
                     output.WriteObject(value.MaterialLevels[i]);
             }
             output.Write(value.LevelOfDetailStart);
@@ -1362,7 +1363,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials
             WriteObject(output, value, "ParameterSuffix", value.ParameterSuffix);
             {
                 output.Write(value.MaterialParts.Count);
-                for (var i = 0; i < value.MaterialParts.Count; i++)
+                for (var i = 0; i < value.MaterialParts.Count; ++i)
                     output.WriteObject(value.MaterialParts[i]);
             }
             WriteObject(output, value, "Name", value.Name);
@@ -2107,6 +2108,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.LightViewProjection);
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
             output.Write(value.SampleCount);
+            output.Write(value.Seed);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -2683,7 +2685,7 @@ namespace Nine.Content.Pipeline.Graphics.ParticleEffects
             WriteObject(output, value, "Emitter", value.Emitter);
             {
                 output.Write(value.Controllers.Count);
-                for (var i = 0; i < value.Controllers.Count; i++)
+                for (var i = 0; i < value.Controllers.Count; ++i)
                     output.WriteObject(value.Controllers[i]);
             }
             output.Write(value.Transform);
@@ -3298,7 +3300,7 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             {
                 output.Write(value.Effects.Count);
-                for (var i = 0; i < value.Effects.Count; i++)
+                for (var i = 0; i < value.Effects.Count; ++i)
                     output.WriteObject(value.Effects[i]);
             }
             WriteObject(output, value, "TextureUsage", value.TextureUsage);
@@ -3343,7 +3345,7 @@ namespace Nine.Content.Pipeline.Graphics.PostEffects
         {
             {
                 output.Write(value.Passes.Count);
-                for (var i = 0; i < value.Passes.Count; i++)
+                for (var i = 0; i < value.Passes.Count; ++i)
                     output.WriteObject(value.Passes[i]);
             }
             WriteObject(output, value, "Material", value.Material);
@@ -3388,8 +3390,9 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Primitives.Box value)
         {
-            output.Write(value.IsSolid);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3432,6 +3435,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3474,6 +3479,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3516,6 +3523,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3556,8 +3565,9 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Primitives.CubeInvert value)
         {
-            output.Write(value.IsSolid);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3600,6 +3610,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3642,6 +3654,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3672,6 +3686,46 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         }
     }
     /// <summary>
+    /// Content writer for <c>DynamicPrimitive</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class DynamicPrimitiveWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Primitives.DynamicPrimitive>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Primitives.DynamicPrimitive value)
+        {
+            output.Write(value.Visible);
+            WriteObject(output, value, "Material", value.Material);
+            {
+                output.Write(value.Primitives.Count);
+                for (var i = 0; i < value.Primitives.Count; ++i)
+                    output.WriteObject(value.Primitives[i]);
+            }
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Primitives.DynamicPrimitiveReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Primitives.DynamicPrimitive, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>Plane</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -3685,6 +3739,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
             output.Write(value.TessellationX);
             output.Write(value.TessellationZ);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3715,46 +3771,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         }
     }
     /// <summary>
-    /// Content writer for <c>PrimitiveGroup</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class PrimitiveGroupWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Primitives.PrimitiveGroup>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Primitives.PrimitiveGroup value)
-        {
-            output.Write(value.Visible);
-            WriteObject(output, value, "Material", value.Material);
-            {
-                output.Write(value.Primitives.Count);
-                for (var i = 0; i < value.Primitives.Count; i++)
-                    output.WriteObject(value.Primitives[i]);
-            }
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Primitives.PrimitiveGroupReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Graphics.Primitives.PrimitiveGroup, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>Sphere</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -3767,6 +3783,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3809,6 +3827,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3851,6 +3871,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);
@@ -3893,6 +3915,8 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Tessellation);
             output.Write(value.Visible);
+            output.Write(value.CastShadow);
+            output.Write(value.ReceiveShadow);
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.InvertWindingOrder);

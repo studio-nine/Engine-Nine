@@ -133,12 +133,7 @@ namespace Nine.Graphics
         {
             get { return Model != null && Model.ReceiveShadow; } 
         }
-
-        bool ILightable.LightingEnabled 
-        {
-            get { return Model != null && Model.LightingEnabled; }
-        }
-
+        
         int ILightable.MaxReceivedShadows 
         { 
             get { return Model != null ? Model.MaxReceivedShadows : 0; } 
@@ -233,7 +228,7 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
-            var graphics = context.GraphicsDevice;
+            var graphics = context.graphics;
             var applyTexture = material != this.material && (UseModelTextures ?? model.UseModelTextures);
 
             if (applyTexture)

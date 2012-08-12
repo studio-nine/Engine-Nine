@@ -52,9 +52,9 @@
                 int i = 0;
                 PixelBitmapContent<float> bitmap = new PixelBitmapContent<float>(Width, Height);
 
-                for (int y = 0; y < Height; y++)
+                for (int y = 0; y < Height; ++y)
                 {
-                    for (int x = 0; x < Width; x++)
+                    for (int x = 0; x < Width; ++x)
                     {
                         if (bit16)
                         {

@@ -163,7 +163,7 @@
                 };
             animation.Play();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; ++i)
                 animation.Update(TimeSpan.FromSeconds(0.25));
 
             Assert.AreNotEqual<AnimationState>(AnimationState.Playing, animation.State);
@@ -178,7 +178,7 @@
             animation.Ending = KeyframeEnding.Clamp;
             animation.Play();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; ++i)
             {
                 animation.Update(TimeSpan.FromSeconds(1));
             }
@@ -187,7 +187,7 @@
             animation.Ending = KeyframeEnding.Discard;
             animation.Play();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; ++i)
             {
                 animation.Update(TimeSpan.FromSeconds(1));
             }
@@ -197,7 +197,7 @@
             animation.AutoReverse = true;
             animation.Play();
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 50; ++i)
             {
                 animation.Update(TimeSpan.FromSeconds(0.5));
                 System.Diagnostics.Trace.WriteLine(animation.CurrentFrame);
@@ -220,7 +220,7 @@
             };
             animation.Play();
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 200; ++i)
                 animation.Update(TimeSpan.FromSeconds(0.25));
 
             Assert.AreEqual(AnimationState.Stopped, animation.State);

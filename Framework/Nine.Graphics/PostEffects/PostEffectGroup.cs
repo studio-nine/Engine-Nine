@@ -66,7 +66,7 @@
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)
         {
             var count = passes.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var pass = passes[i];
                 if (pass.Enabled)
@@ -90,8 +90,8 @@
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.RootPass.Passes.Add(this);
-            AddDependency(context.MainPass);
+            context.rootPass.Passes.Add(this);
+            AddDependency(context.mainPass);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.RootPass.Passes.Remove(this);
+            context.rootPass.Passes.Remove(this);
         }
         
         /// <summary>
@@ -123,7 +123,7 @@
                 passes[p].GetActivePasses(workingPasses);
 
                 RenderTarget2D intermediate = InputTexture as RenderTarget2D;
-                for (i = 0; i < workingPasses.Count; i++)
+                for (i = 0; i < workingPasses.Count; ++i)
                 {
                     var workingPass = (PostEffect)workingPasses[i];
 
@@ -146,9 +146,9 @@
             RenderTargetPool.Unlock(InputTexture as RenderTarget2D);
 
             if (fullScreenQuad == null)
-                fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
+                fullScreenQuad = new FullScreenQuad(context.graphics);
 
-            context.GraphicsDevice.BlendState = BlendState.Opaque;
+            context.graphics.BlendState = BlendState.Opaque;
             Material.texture = InputTexture;
 
             for (i = 0, p = 0; p < passes.Count; p++)
@@ -176,7 +176,7 @@
                 passes[p].GetActivePasses(workingPasses);
 
                 RenderTarget2D intermediate = InputTexture as RenderTarget2D;
-                for (i = 0; i < workingPasses.Count - 1; i++)
+                for (i = 0; i < workingPasses.Count - 1; ++i)
                 {
                     var workingPass = (PostEffect)workingPasses[i];
 
@@ -204,7 +204,7 @@
                     if (basicPostEffect == null)
                     {
                         basicPostEffect = new PostEffect();
-                        basicPostEffect.Material = new BasicMaterial(context.GraphicsDevice);
+                        basicPostEffect.Material = new BasicMaterial(context.graphics);
                     }
                     lastEffect = basicPostEffect;
                 }

@@ -146,13 +146,13 @@ namespace Nine
                     if (input.PlayerIndex.HasValue)
                         playerIndexEnabled[(int)input.PlayerIndex.Value] = true;
                     else
-                        for (int i = 0; i < 4; i++)
+                        for (int i = 0; i < 4; ++i)
                             playerIndexEnabled[i] = true;
                     return false;
                 });
             }
 
-            for (int i = 0; i < gamePadStates.Length; i++)
+            for (int i = 0; i < gamePadStates.Length; ++i)
             {
                 if (playerIndexEnabled[i])
                 {
@@ -219,7 +219,7 @@ namespace Nine
         {
             if (RaiseMode == InputRaiseMode.Tunneling)
             {
-                for (int i = 0; i < inputs.Count; i++)
+                for (int i = 0; i < inputs.Count; ++i)
                 {
                     var input = inputs[i].Target as Input;
                     if (input != null)

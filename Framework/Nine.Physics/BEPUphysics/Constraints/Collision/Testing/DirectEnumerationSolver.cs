@@ -167,7 +167,7 @@ namespace BEPUphysics.Constraints
             {
                 //Populate the jacobian
                 linear = pair.Contacts[0].Normal;
-                for (int i = 0; i < contactCount; i++)
+                for (int i = 0; i < contactCount; ++i)
                 {
                     angularA[i] = new Vector3(pair.Contacts[i].penetrationConstraint.angularAX, pair.Contacts[i].penetrationConstraint.angularAY, pair.Contacts[i].penetrationConstraint.angularAZ);
                     angularB[i] = new Vector3(pair.Contacts[i].penetrationConstraint.angularBX, pair.Contacts[i].penetrationConstraint.angularBY, pair.Contacts[i].penetrationConstraint.angularBZ);

@@ -95,7 +95,7 @@ namespace Nine.Physics.Colliders
                 existingInstance = new CompoundCollider();
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.Colliders.Add(input.ReadObject<Nine.Physics.Colliders.Collider>());
             }
             existingInstance.Enabled = input.ReadBoolean();

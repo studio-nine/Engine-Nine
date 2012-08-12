@@ -9,8 +9,8 @@ namespace Nine.Graphics.Materials
     {
         public float SpecularPower
         {
-            get { return specularPower.HasValue ? specularPower.Value : MaterialConstants.SpecularPower; }
-            set { specularPower = (value == MaterialConstants.SpecularPower ? (float?)null : value); }
+            get { return specularPower.HasValue ? specularPower.Value : Constants.SpecularPower; }
+            set { specularPower = (value == Constants.SpecularPower ? (float?)null : value); }
         }
         internal float? specularPower;
 
@@ -34,7 +34,7 @@ namespace Nine.Graphics.Materials
         partial void EndApplyLocalParameters(DrawingContext context)
         {
             if (specularPower.HasValue)
-                effect.SpecularPower.SetValue(MaterialConstants.SpecularPower);
+                effect.SpecularPower.SetValue(Constants.SpecularPower);
         }
 
         public void SetBoneTransforms(Matrix[] boneTransforms)

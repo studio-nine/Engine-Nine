@@ -4,29 +4,14 @@
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Geometric representation of a model.
     /// </summary>
     [ContentSerializable]
-    public class Geometry : IGeometry, ISurface
+    public class Geometry : Transformable, IGeometry, ISurface
     {
-        /// <summary>
-        /// Gets the bounding sphere.
-        /// </summary>
-        [ContentSerializer]
-        public BoundingSphere BoundingSphere
-        {
-            get
-            {
-                if (boundingSphere == null)
-                    boundingSphere = BoundingSphere.CreateFromPoints(Positions);
-                return boundingSphere.Value;
-            }
-            internal set { boundingSphere = value; }
-        }
-        private BoundingSphere? boundingSphere;
-
         /// <summary>
         /// Gets the bounding box.
         /// </summary>
@@ -42,32 +27,41 @@
             internal set { boundingBox = value; }
         }
         private BoundingBox? boundingBox;
-
-        Matrix? IGeometry.Transform { get { return null; } }
-
+        
         /// <summary>
-        /// Gets a readonly list of vertex positions.
+        /// Gets a read only list of vertex positions.
         /// </summary>
+        public ReadOnlyCollection<Vector3> Positions 
+        {
+            get { return positionsCollection; } 
+        }
         [ContentSerializer]
-        public Vector3[] Positions { get; internal set; }
+        internal Vector3[] positions;
+        private ReadOnlyCollection<Vector3> positionsCollection;
 
         /// <summary>
         /// Gets a read-only list of geometry indices.
         /// </summary>
+        public ReadOnlyCollection<ushort> Indices
+        {
+            get { return indicesCollection; }
+        }
         [ContentSerializer]
-        public ushort[] Indices { get; internal set; }
+        internal ushort[] indices;
+        private ReadOnlyCollection<ushort> indicesCollection;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Geometry"/> class.
+        /// </summary>
+        internal Geometry() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Geometry"/> class.
         /// </summary>
         /// <param name="geometry">The geometry.</param>
-        public Geometry(IGeometry geometry)
+        public Geometry(IGeometry geometry) : this(GetPositions(geometry), GetIndices(geometry))
         {
-            if (geometry == null)
-                throw new ArgumentNullException("geometry");
 
-            Positions = geometry.Positions;
-            Indices = geometry.Indices;
         }
         
         /// <summary>
@@ -80,27 +74,48 @@
             if (positions == null)
                 throw new ArgumentNullException("positions");
 
-            Positions = new Vector3[positions.Count];
-            positions.CopyTo(Positions, 0);
+            this.positions = new Vector3[positions.Count];
+            this.positionsCollection = new ReadOnlyCollection<Vector3>(this.positions);
+            positions.CopyTo(this.positions, 0);
 
             if (indices == null)
             {
-                Indices = new ushort[positions.Count];
-                for (int i = 0; i < Indices.Length; i++)
-                    Indices[i] = (ushort)i;
+                this.indices = new ushort[positions.Count];
+                for (int i = 0; i < this.indices.Length; ++i)
+                    this.indices[i] = (ushort)i;
             }
             else
             {
-                Indices = new ushort[indices.Count];
-                indices.CopyTo(Indices, 0);
+                this.indices = new ushort[indices.Count];
+                indices.CopyTo(this.indices, 0);
             }
+            this.indicesCollection = new ReadOnlyCollection<ushort>(this.indices);
         }
 
+        private static ICollection<Vector3> GetPositions(IGeometry geometry)
+        {
+            Vector3[] positions;
+            ushort[] indices;
+            geometry.GetTriangles(out positions, out indices);
+            return positions;
+        }
+
+        private static ICollection<ushort> GetIndices(IGeometry geometry)
+        {
+            Vector3[] positions;
+            ushort[] indices;
+            geometry.GetTriangles(out positions, out indices);
+            return indices;
+        }
 
         /// <summary>
-        /// Used by XNA content serialzier
+        /// Gets the triangle vertices of the target geometry.
         /// </summary>
-        internal Geometry() { }
+        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        {
+            vertices = this.positions;
+            indices = this.indices;
+        }
         
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)
         {

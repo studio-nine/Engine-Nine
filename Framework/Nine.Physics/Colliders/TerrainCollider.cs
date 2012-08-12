@@ -69,7 +69,7 @@ namespace Nine.Physics.Colliders
             int zLength = heightmap.Height + 1;
 
             var heights = new float[xLength, zLength];
-            for (int x = 0; x < xLength; x++)
+            for (int x = 0; x < xLength; ++x)
                 for (int z = 0; z < zLength; z++)
                     heights[x, z] = heightmap.GetHeight(x, z);
 

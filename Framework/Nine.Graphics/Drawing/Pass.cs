@@ -118,7 +118,7 @@ namespace Nine.Graphics.Drawing
         [EditorBrowsable(EditorBrowsableState.Never)]
         public virtual RenderTarget2D PrepareRenderTarget(DrawingContext context, Texture2D input, SurfaceFormat? preferredFormat)
         {
-            GraphicsDevice graphics = context.GraphicsDevice;
+            GraphicsDevice graphics = context.graphics;
 
             if (input != null)
             {

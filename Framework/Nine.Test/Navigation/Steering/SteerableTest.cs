@@ -20,7 +20,7 @@
 
             float[] targetSpeed = new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10 };
 
-            for (int i = 0; i < targetSpeed.Length; i++)
+            for (int i = 0; i < targetSpeed.Length; ++i)
             {
                 steerer.Update(ElapsedTime);
                 Assert.AreEqual<int>((int)targetSpeed[i], (int)Math.Round(steerer.Speed));
@@ -38,7 +38,7 @@
 
             float[] targetSpeed = new float[] { 10, 10, 10 };
 
-            for (int i = 0; i < targetSpeed.Length; i++)
+            for (int i = 0; i < targetSpeed.Length; ++i)
             {
                 steerer.Update(ElapsedTime);
                 Assert.AreEqual<int>((int)targetSpeed[i], (int)Math.Round(steerer.Speed));
@@ -56,7 +56,7 @@
 
             float[] targetSpeed = new float[] { 2, 4, 6, 8, 10, 10, 10 };
 
-            for (int i = 0; i < targetSpeed.Length; i++)
+            for (int i = 0; i < targetSpeed.Length; ++i)
             {
                 steerer.Update(ElapsedTime);
                 Assert.AreEqual<int>((int)targetSpeed[i], (int)Math.Round(steerer.Speed));
@@ -64,7 +64,7 @@
 
             bool hasStopped = false;
             bool hasFullyStopped = false;
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 2000; ++i)
             {
                 steerer.Update(ElapsedTime);
 
@@ -99,14 +99,14 @@
 
             float[] targetSpeed = new float[] { 10, 10, 10 };
 
-            for (int i = 0; i < targetSpeed.Length; i++)
+            for (int i = 0; i < targetSpeed.Length; ++i)
             {
                 steerer.Update(ElapsedTime);
                 Assert.AreEqual<int>((int)targetSpeed[i], (int)Math.Round(steerer.Speed));
             }
 
             bool hasStopped = false;
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 2000; ++i)
             {
                 steerer.Update(ElapsedTime);
 
@@ -135,7 +135,7 @@
             bool hasStopped = false;
             bool hasFullyStopped = false;
             float previousSpeed = float.MinValue;
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 200; ++i)
             {
                 steerer.Update(ElapsedTime);
 

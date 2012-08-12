@@ -37,7 +37,7 @@ namespace Nine.Graphics.Materials
         protected override void OnEndApply(DrawingContext context)
         {
             if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+                GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
         }
     }
 }

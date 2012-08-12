@@ -33,7 +33,7 @@ namespace Nine
     /// Defines a basic component that can be added to a parent game object.
     /// </summary>
     [ContentSerializable]
-    public class Component : Nine.Object, IComponent
+    public abstract class Component : Nine.Object, IComponent
     {
         #region Properties
         /// <summary>
@@ -132,7 +132,7 @@ namespace Nine
             if (children != null)
             {
                 var count = children.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     Traverse(children[i], result);
             }
         }
@@ -160,7 +160,7 @@ namespace Nine
             if (children != null)
             {
                 var count = children.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     if (!Traverse(children[i], result))
                         return false;
             }

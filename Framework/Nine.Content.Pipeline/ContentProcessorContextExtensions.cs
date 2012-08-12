@@ -89,7 +89,7 @@
                     stream.Seek(0, SeekOrigin.Begin);
 
                     var hash = MD5.Create().ComputeHash(stream);
-                    for (int i = 0; i < hash.Length; i++)
+                    for (int i = 0; i < hash.Length; ++i)
                     {
                         hashString.Append(hash[i].ToString("X2"));
                     }

@@ -1279,7 +1279,7 @@ namespace Nine.Components
                     _TotalBytesRead += count;
                     while (count > 0)
                     {
-                        for (int i = 0; i < count; i++)
+                        for (int i = 0; i < count; ++i)
                         {
                             crc32Result = ((crc32Result) >> 8) ^ crc32Table[(buffer[i]) ^ ((crc32Result) & 0x000000FF)];
                         }
@@ -1310,7 +1310,7 @@ namespace Nine.Components
                     crc32Table = new UInt32[256];
 
                     UInt32 dwCrc;
-                    for (i = 0; i < 256; i++)
+                    for (i = 0; i < 256; ++i)
                     {
                         dwCrc = i;
                         for (j = 8; j > 0; j--)
@@ -1338,7 +1338,7 @@ namespace Nine.Components
             {
                 int i;
                 char[] c = new char[maxlength];
-                for (i = 0; (i < maxlength) && (i < buf.Length) && (buf[i] != 0); i++)
+                for (i = 0; (i < maxlength) && (i < buf.Length) && (buf[i] != 0); ++i)
                 {
                     c[i] = (char)buf[i]; // System.BitConverter.ToChar(buf, start+i*2);
                 }
@@ -1374,7 +1374,7 @@ namespace Nine.Components
                     n = s.Read(batch, 0, batch.Length);
                     if (n != 0)
                     {
-                        for (int i = 0; i < n; i++)
+                        for (int i = 0; i < n; ++i)
                         {
                             if (batch[i] == targetBytes[3])
                             {

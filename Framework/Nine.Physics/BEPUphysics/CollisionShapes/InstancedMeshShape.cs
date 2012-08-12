@@ -59,7 +59,7 @@ namespace BEPUphysics.CollisionShapes
             float maxX = -float.MaxValue;
             float maxY = -float.MaxValue;
             float maxZ = -float.MaxValue;
-            for (int i = 0; i < triangleMesh.Data.vertices.Length; i++)
+            for (int i = 0; i < triangleMesh.Data.vertices.Length; ++i)
             {
                 Vector3 vertex;
                 triangleMesh.Data.GetVertexPosition(i, out vertex);

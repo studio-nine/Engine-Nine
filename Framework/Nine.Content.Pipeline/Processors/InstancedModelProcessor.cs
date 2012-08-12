@@ -15,7 +15,7 @@
         {
             if (input != null && input.Template != null)
             {
-                for (int i = 0; i < input.Template.Count; i++)
+                for (int i = 0; i < input.Template.Count; ++i)
                 {
                     var material = input.Template.GetMaterial(i);
                     while (material != null)

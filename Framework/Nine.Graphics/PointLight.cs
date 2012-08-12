@@ -105,12 +105,13 @@ namespace Nine.Graphics
             //scene.FindAll(ref boundingSphere, result);
         }
 
-        public override void DrawFrustum(DrawingContext context)
+        public override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
-            //context.PrimitiveBatch.DrawSphere(BoundingSphere, 8, null, context.Settings.Debug.LightFrustumColor);
+            primitive.AddSphere(BoundingSphere, 8, null, Constants.LightFrustumColor);
+            base.Draw(context, primitive);
         }
 
-        public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
+        protected override void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> bounds, out Matrix shadowFrustum)
         {
             throw new NotImplementedException();
         }
@@ -119,13 +120,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
-        IDrawableObject IDeferredLight.GetLightGeometry(DrawingContext context)
+        IDrawableObject IDeferredLight.PrepareLightGeometry(DrawingContext context)
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new SphereInvert(context.GraphicsDevice)
+                deferredGeometry = new SphereInvert(context.graphics)
                 {
-                    Material = deferredMaterial = new DeferredPointLightMaterial(context.GraphicsDevice)
+                    Material = deferredMaterial = new DeferredPointLightMaterial(context.graphics)
                 };
             }
             deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];

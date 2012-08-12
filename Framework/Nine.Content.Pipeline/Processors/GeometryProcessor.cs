@@ -71,7 +71,7 @@
                         foreach (Vector3 position in geometry.Vertices.Positions)
                             positions.Add(Vector3.Transform(position, mesh.AbsoluteTransform * transform));
 
-                        foreach (int index in geometry.Indices)
+                        foreach (int index in indices)
                             indices.Add((ushort)(currentVertex + index));
                     }
                 }

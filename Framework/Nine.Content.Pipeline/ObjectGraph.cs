@@ -100,7 +100,7 @@
                 IList list = enumerable as IList;
                 if (list != null)
                 {
-                    for (int i = 0; i < list.Count; i++)
+                    for (int i = 0; i < list.Count; ++i)
                     {
                         object input = list[i];
                         if (input == null || IsBasicType(input.GetType()))

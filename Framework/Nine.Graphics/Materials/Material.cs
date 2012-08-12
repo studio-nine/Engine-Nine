@@ -182,7 +182,7 @@ namespace Nine.Graphics.Materials
             if (result == null && MaterialResolve != null)
             {
                 var listeners = MaterialResolve.GetInvocationList();
-                for (int i = 0; i < listeners.Length; i++)
+                for (int i = 0; i < listeners.Length; ++i)
                 {
                     var resolve = (Func<Material, MaterialUsage, Material, Material>)listeners[i];
                     if (resolve != null && (result = resolve(this, usage, existingInstance)) != null)

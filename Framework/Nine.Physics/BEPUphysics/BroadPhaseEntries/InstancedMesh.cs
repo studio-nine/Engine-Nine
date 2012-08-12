@@ -211,7 +211,7 @@ namespace BEPUphysics.Collidables
             if (this.Shape.TriangleMesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (int i = 0; i < hitElements.Count; ++i)
                 {
                     Shape.TriangleMesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     AffineTransform.Transform(ref tri.vA, ref worldTransform, out tri.vA);

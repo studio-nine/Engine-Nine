@@ -1433,7 +1433,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             bool toReturn = AreBoxesColliding(a, b, ref transformA, ref transformB, out distance, out axis, out tempData);
             BoxContactData* dataPointer = &tempData.D1;
             contactData = new TinyStructList<BoxContactData>();
-            for (int i = 0; i < tempData.Count; i++)
+            for (int i = 0; i < tempData.Count; ++i)
             {
                 contactData.Add(ref dataPointer[i]);
             }
@@ -2808,7 +2808,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
         {
             highestIndex = 0;
             float highestValue = dots[0];
-            for (int i = 1; i < 4; i++)
+            for (int i = 1; i < 4; ++i)
             {
                 float dot = dots[i];
                 if (dot > highestValue)
@@ -2819,7 +2819,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             }
             secondHighestIndex = 0;
             float secondHighestValue = -float.MaxValue;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 float dot = dots[i];
                 if (i != highestIndex && dot > secondHighestValue)
@@ -3431,7 +3431,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //Find the deepest point.
             float deepestDepth = -1;
             int deepestIndex = 0;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 if (data[i].Depth > deepestDepth)
                 {
@@ -3443,7 +3443,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //Identify the furthest point away from the deepest index.
             float furthestDistance = -1;
             int furthestIndex = 0;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 float distance;
                 Vector3.DistanceSquared(ref data[deepestIndex].Position, ref data[i].Position, out distance);
@@ -3468,7 +3468,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3.Dot(ref data[0].Position, ref yAxis, out minY);
             maxY = minY;
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i < count; ++i)
             {
                 float dot;
                 Vector3.Dot(ref yAxis, ref data[i].Position, out dot);
@@ -3499,7 +3499,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //int maxIndexA = -1, maxIndexB = -1;
             //float temp;
             //float maximumDistanceSquared = -float.MaxValue;
-            //for (int i = 0; i < count; i++)
+            //for (int i = 0; i < count; ++i)
             //{
             //    for (int j = i + 1; j < count; j++)
             //    {
@@ -3520,7 +3520,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //int minimumIndex = -1, maximumIndex = -1;
             //float minimumDistance = float.MaxValue, maximumDistance = -float.MaxValue;
 
-            //for (int i = 0; i < count; i++)
+            //for (int i = 0; i < count; ++i)
             //{
             //    if (i != maxIndexA && i != maxIndexB)
             //    {
@@ -3552,7 +3552,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //Find the deepest point.
             BoxContactData data, deepestData;
             input.Get(0, out deepestData);
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i < count; ++i)
             {
                 input.Get(i, out data);
                 if (data.Depth > deepestData.Depth)
@@ -3566,7 +3566,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             input.Get(0, out furthestData);
             float furthestDistance;
             Vector3.DistanceSquared(ref deepestData.Position, ref furthestData.Position, out furthestDistance);
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i < count; ++i)
             {
                 input.Get(i, out data);
                 float distance;
@@ -3593,7 +3593,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3.Dot(ref minData.Position, ref yAxis, out minY);
             maxY = minY;
-            for (int i = 1; i < count; i++)
+            for (int i = 1; i < count; ++i)
             {
                 input.Get(i, out data);
                 float dot;
@@ -3624,7 +3624,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //float temp;
             //float maximumDistanceSquared = -float.MaxValue;
             //BoxContactData itemA, itemB;
-            //for (int i = 0; i < count; i++)
+            //for (int i = 0; i < count; ++i)
             //{
             //    for (int j = i + 1; j < count; j++)
             //    {
@@ -3647,7 +3647,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             //int minimumIndex = -1, maximumIndex = -1;
             //float minimumDistance = float.MaxValue, maximumDistance = -float.MaxValue;
 
-            //for (int i = 0; i < count; i++)
+            //for (int i = 0; i < count; ++i)
             //{
             //    if (i != maxIndexA && i != maxIndexB)
             //    {
@@ -3698,7 +3698,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             BoxContactData* temp = &temporaryCache.d1;
             FaceEdge clippingEdge;
             Vector3 intersection;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {//For each clipping edge (edges of face a)
 
                 clipFace.GetEdge(i, ref mtd, out clippingEdge);
@@ -3769,7 +3769,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             float depth;
             float a, b;
             Vector3.Dot(ref clipFace.v1, ref mtd, out a);
-            for (int i = 0; i < temporaryCache.count; i++)
+            for (int i = 0; i < temporaryCache.count; ++i)
             {
                 Vector3.Dot(ref temp[i].position, ref mtd, out b);
                 depth = b - a;
@@ -3993,7 +3993,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             float depth;
             float clipFaceDot, faceDot;
             Vector3.Dot(ref clipFace.V1, ref mtd, out clipFaceDot);
-            for (int i = 0; i < tempData.Count; i++)
+            for (int i = 0; i < tempData.Count; ++i)
             {
                 Vector3.Dot(ref temp[i].Position, ref mtd, out faceDot);
                 depth = faceDot - clipFaceDot;
@@ -4065,7 +4065,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             tempData = contactData;
             contactData.Count = previousCount;
 
-            for (int i = previousCount; i < tempData.Count; i++)
+            for (int i = previousCount; i < tempData.Count; ++i)
             {
                 Vector3.Dot(ref temp[i].Position, ref mtd, out faceDot);
                 depth = faceDot - clipFaceDot;
@@ -4565,7 +4565,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             tempData = contactData;
             contactData.Count = previousCount;
 
-            for (int i = previousCount; i < tempData.Count; i++)
+            for (int i = previousCount; i < tempData.Count; ++i)
             {
                 Vector3.Dot(ref temp[i].Position, ref mtd, out faceDot);
                 depth = faceDot - clipFaceDot;
@@ -4761,7 +4761,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             contactData.Clear();
             float clipFaceDot, faceDot;
             Vector3.Dot(ref clipFace.V1, ref mtd, out clipFaceDot);
-            for (int i = 0; i < tempData.Count; i++)
+            for (int i = 0; i < tempData.Count; ++i)
             {
                 tempData.Get(i, out item);
                 Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -4833,7 +4833,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
                 contactData.RemoveAt(i);
 
 
-            for (int i = previousCount; i < tempData.Count; i++)
+            for (int i = previousCount; i < tempData.Count; ++i)
             {
                 tempData.Get(i, out item);
                 Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -5331,7 +5331,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
             for (int i = postClipCount - 1; i >= previousCount; i--)
                 contactData.RemoveAt(i);
 
-            for (int i = previousCount; i < tempData.Count; i++)
+            for (int i = previousCount; i < tempData.Count; ++i)
             {
                 tempData.Get(i, out item);
                 Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -5515,7 +5515,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
         //    contactData.Clear();
         //    float clipFaceDot, faceDot;
         //    Vector3.Dot(ref clipFace.V1, ref mtd, out clipFaceDot);
-        //    for (int i = 0; i < tempData.Count; i++)
+        //    for (int i = 0; i < tempData.Count; ++i)
         //    {
         //        tempData.Get(i, out item);
         //        Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -5594,7 +5594,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
         //        contactData.RemoveAt(i);
 
 
-        //    for (int i = previousCount; i < tempData.Count; i++)
+        //    for (int i = previousCount; i < tempData.Count; ++i)
         //    {
         //        tempData.Get(i, out item);
         //        Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -6057,7 +6057,7 @@ namespace BEPUphysics.CollisionTests.CollisionAlgorithms
         //    for (int i = postClipCount - 1; i >= previousCount; i--)
         //        contactData.RemoveAt(i);
 
-        //    for (int i = previousCount; i < tempData.Count; i++)
+        //    for (int i = previousCount; i < tempData.Count; ++i)
         //    {
         //        tempData.Get(i, out item);
         //        Vector3.Dot(ref item.Position, ref mtd, out faceDot);

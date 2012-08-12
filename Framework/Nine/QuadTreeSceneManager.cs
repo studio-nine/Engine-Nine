@@ -357,7 +357,7 @@ namespace Nine
             if (node.Value.List != null)
             {
                 var count = node.Value.List.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value.List[i];
                     val.BoundingBox.Intersects(ref ray, out intersection);
@@ -401,7 +401,7 @@ namespace Nine
             if (node.Value.List != null)
             {
                 var count = node.Value.List.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value.List[i];
                     ContainmentType objectContainment;
@@ -444,7 +444,7 @@ namespace Nine
             if (node.Value.List != null)
             {
                 var count = node.Value.List.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value.List[i];
                     ContainmentType objectContainment;
@@ -487,7 +487,7 @@ namespace Nine
             if (node.Value.List != null)
             {
                 var count = node.Value.List.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value.List[i];
                     if (boundingFrustum.Contains(val.BoundingBox) != ContainmentType.Disjoint)
@@ -509,14 +509,14 @@ namespace Nine
                 if (node.Value.List != null)
                 {
                     var count = node.Value.List.Count;
-                    for (int i = 0; i < count; i++)
+                    for (int i = 0; i < count; ++i)
                     {
                         result.Add(node.Value.List[i]);
                     }
                 }
 
                 var children = node.Children;
-                for (int i = 0; i < children.Count; i++)
+                for (int i = 0; i < children.Count; ++i)
                     DesedentsStack.Push(children[i]);
             }
         }

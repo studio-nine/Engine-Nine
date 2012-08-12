@@ -20,7 +20,7 @@
             PathGrid graph = new PathGrid(0, 0, graphSize, graphSize, graphSize, graphSize);
 
             var picks = new int[graphSize * graphSize];
-            for (int i = 0; i < picks.Length; i++)
+            for (int i = 0; i < picks.Length; ++i)
             {
                 picks[i] = i;
             }
@@ -46,7 +46,7 @@
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
-            for (int i = 0; i < iteration; i++)
+            for (int i = 0; i < iteration; ++i)
             {
                 result.Clear();
                 search.Search(graph, picks[random.Next(walkables)], picks[random.Next(walkables)], result);
@@ -70,7 +70,7 @@
                 watch = new Stopwatch();
                 watch.Start();
 
-                for (int i = 0; i < iteration; i++)
+                for (int i = 0; i < iteration; ++i)
                 {
                     Clear(array, blockSize);
                 }
@@ -145,8 +145,8 @@
 
             PathGrid grid = new PathGrid(0, 0, 1000, 1000, 1000, 1000);
 
-            for (int y = 0; y < 1000; y++)
-                for (int x = 0; x < 1000; x++)
+            for (int y = 0; y < 1000; ++y)
+                for (int x = 0; x < 1000; ++x)
                     if ((byte)fs.ReadByte() == 0)
                         grid.Mark(x, y);
 
@@ -158,7 +158,7 @@
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
-            for (int i = 0; i < iteration; i++)
+            for (int i = 0; i < iteration; ++i)
                 search.Search(grid, iStart, iEnd, result);
 
             watch.Stop();

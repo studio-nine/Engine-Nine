@@ -148,7 +148,7 @@ namespace Nine.Content.Pipeline.Physics.Colliders
         {
             {
                 output.Write(value.Colliders.Count);
-                for (var i = 0; i < value.Colliders.Count; i++)
+                for (var i = 0; i < value.Colliders.Count; ++i)
                     output.WriteObject(value.Colliders[i]);
             }
             output.Write(value.Enabled);

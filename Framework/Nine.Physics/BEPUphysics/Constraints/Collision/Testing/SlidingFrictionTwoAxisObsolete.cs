@@ -68,7 +68,7 @@ namespace BEPUphysics.Constraints
 
             //Compute maximum force
             float maximumFrictionForce = 0;
-            for (int i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; ++i)
             {
                 maximumFrictionForce += pair.Contacts[i].penetrationConstraint.accumulatedImpulse;
             }
@@ -251,7 +251,7 @@ namespace BEPUphysics.Constraints
             }
 
             //maximumFrictionForce = 0;
-            //for (int i = 0; i < count; i++)
+            //for (int i = 0; i < count; ++i)
             //{
             //    maximumFrictionForce += pair.contacts[i].penetrationConstraint.accumulatedImpulse;
             //}

@@ -213,7 +213,7 @@
 
         private IEnumerable<Vector3> EnumeratePositions()
         {
-            for (int x = 0; x <= Width; x++)
+            for (int x = 0; x <= Width; ++x)
             {
                 for (int z = 0; z <= Height; z++)
                 {
@@ -247,7 +247,7 @@
         {        
             #region Build tangent vertices
             // Build our tangent vertices
-            for (int x = 0; x < w; x++)
+            for (int x = 0; x < w; ++x)
                 for (int z = 0; z < h; z++)
                 {
                     // Step 1: Calculate position
@@ -280,7 +280,7 @@
             Array.Copy(normals, normalsForSmoothing, normals.Length);
 
             // Time to smooth to normals we just saved
-            for (int x = 1; x < w - 1; x++)
+            for (int x = 1; x < w - 1; ++x)
             {
                 for (int z = 1; z < h - 1; z++)
                 {

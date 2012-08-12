@@ -46,7 +46,7 @@ namespace Nine
             Vector2.Add(ref min, ref max, out center);
             Vector2.Multiply(ref center, 0.5f, out center);
 
-            for (int i = 0; i < ChildCount; i++)
+            for (int i = 0; i < ChildCount; ++i)
             {
                 var child = new QuadTreeNode<T>();
                 child.Bounds = new BoundingRectangle

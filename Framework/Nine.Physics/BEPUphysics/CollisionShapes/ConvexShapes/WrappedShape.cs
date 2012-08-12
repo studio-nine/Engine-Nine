@@ -88,7 +88,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             //When first constructed, a wrapped shape may not actually be centered on its local origin.
             //It is helpful to many systems if this is addressed.
             center = ComputeCenter();
-            for (int i = 0; i < shapes.Count; i++)
+            for (int i = 0; i < shapes.Count; ++i)
             {
                 shapes.list.Elements[i].Transform.Position -= center;
             }
@@ -141,7 +141,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             if (shapeEntries.Count == 0)
                 throw new Exception("Cannot create a wrapped shape with no contained shapes.");
-            for (int i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; ++i)
             {
                 shapes.Add(shapeEntries[i]);
             }
@@ -163,7 +163,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             if (shapeEntries.Count == 0)
                 throw new Exception("Cannot create a wrapped shape with no contained shapes.");
-            for (int i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; ++i)
             {
                 shapes.Add(shapeEntries[i]);
             }
@@ -189,7 +189,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             RigidTransform subTransform;
             RigidTransform.Transform(ref shapes.list.Elements[0].Transform, ref shapeTransform, out subTransform);
             shapes.list.Elements[0].CollisionShape.GetBoundingBox(ref subTransform, out boundingBox);
-            for (int i = 1; i < shapes.list.count; i++)
+            for (int i = 1; i < shapes.list.count; ++i)
             {
                 RigidTransform.Transform(ref shapes.list.Elements[i].Transform, ref shapeTransform, out subTransform);
                 BoundingBox toMerge;
@@ -217,7 +217,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             shapes.list.Elements[0].CollisionShape.GetExtremePoint(direction, ref shapes.list.Elements[0].Transform, out extremePoint);
             float maxDot;
             Vector3.Dot(ref extremePoint, ref direction, out maxDot);
-            for (int i = 1; i < shapes.list.count; i++)
+            for (int i = 1; i < shapes.list.count; ++i)
             {
                 float dot;
                 Vector3 temp;
@@ -243,7 +243,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             //This can overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
             float maxRadius = 0;
-            for (int i = 0; i < shapes.Count; i++)
+            for (int i = 0; i < shapes.Count; ++i)
             {
                 float radius = shapes.list.Elements[i].CollisionShape.ComputeMaximumRadius() +
                                shapes.list.Elements[i].Transform.Position.Length();
@@ -256,7 +256,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             //Could also use the tetrahedron approximation approach.
             float minRadius = 0;
-            for (int i = 0; i < shapes.Count; i++)
+            for (int i = 0; i < shapes.Count; ++i)
             {
                 float radius = shapes.list.Elements[i].CollisionShape.ComputeMinimumRadius();
                 if (radius < minRadius)

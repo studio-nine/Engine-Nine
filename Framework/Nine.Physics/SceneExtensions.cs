@@ -92,7 +92,7 @@ namespace Nine.Physics
 #else
             if (Environment.ProcessorCount > 1)
             {
-                for (int i = 0; i < Environment.ProcessorCount; i++)
+                for (int i = 0; i < Environment.ProcessorCount; ++i)
                 {
                     space.ThreadManager.AddThread();
                 }

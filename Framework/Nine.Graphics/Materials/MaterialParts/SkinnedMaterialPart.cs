@@ -75,7 +75,7 @@
             Matrix[] bones = bonesParameter.GetValueMatrixArray(count);
 
             // Convert matrices from 43 to 44 format.
-            for (int i = 0; i < bones.Length; i++)
+            for (int i = 0; i < bones.Length; ++i)
             {
                 bones[i].M44 = 1;
             }

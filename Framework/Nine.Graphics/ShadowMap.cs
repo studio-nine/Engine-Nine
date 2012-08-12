@@ -10,7 +10,7 @@
     using Nine.Graphics.PostEffects;
 
     /// <summary>
-    /// Represents a shadow drawing technique using shadowmap.
+    /// Represents a shadow drawing technique using shadow map.
     /// </summary>
     [ContentSerializable]
     public class ShadowMap : Pass, IDisposable
@@ -21,7 +21,7 @@
         /// </summary>
         public GraphicsDevice GraphicsDevice
         {
-            get { return graphics; }
+            get { return graphics; }            
         }
 
         /// <summary>
@@ -37,7 +37,12 @@
         /// <summary>
         /// Gets or sets the size of the shadow map texture.
         /// </summary>
-        public int Size { get; set; }
+        public int Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
+        private int size = 512;
 
         /// <summary>
         /// Gets or sets the preferred surface format of the shadow map texture.
@@ -49,27 +54,9 @@
         /// Gets the underlying shadow map texture.
         /// </summary>
         public Texture2D Texture { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the depth bias to reduce shadow acne artifacts.
-        /// </summary>
-        public float DepthBias
-        {
-            get { return rasterizeState.DepthBias; }
-            set { rasterizeState.DepthBias = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the slope scale depth bias to reduce shadow acne artifacts over sharp corners.
-        /// </summary>
-        public float SlopeScaleDepthBias
-        {
-            get { return rasterizeState.SlopeScaleDepthBias; }
-            set { rasterizeState.SlopeScaleDepthBias = value; }
-        }
         
         /// <summary>
-        /// Gets whether a bluring pass is applied to the final shadow map.
+        /// Gets whether a blurring pass is applied to the final shadow map.
         /// </summary>
         public bool BlurEnabled { get; set; }
 
@@ -91,9 +78,8 @@
         private RenderTarget2D renderTarget;
         private RenderTarget2D depthBlur;
         private FullScreenQuad fullScreenQuad;
-        private RasterizerState rasterizeState = new RasterizerState() { CullMode = CullMode.CullCounterClockwiseFace };
-        private BoundingFrustum shadowFrustum = new BoundingFrustum(Matrix.Identity);
         private FastList<IDrawableObject> shadowCasters = new FastList<IDrawableObject>();
+        private ISpatialQuery<IDrawableObject> shadowCasterQuery;
         #endregion
 
         /// <summary>
@@ -103,7 +89,7 @@
         {
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
-
+            
             this.graphics = graphics;
             this.depthMaterial = new DepthMaterial(graphics);
             this.blur = new BlurMaterial(graphics);
@@ -146,7 +132,6 @@
                                                   graphics.PresentationParameters.DepthStencilFormat);
             }
             renderTarget.Begin();
-            graphics.RasterizerState = rasterizeState;
             graphics.Clear(Color.White);
         }
 
@@ -160,9 +145,6 @@
 
             hasBegin = false;
             Texture2D map = renderTarget.End();
-
-            // Restore rasterizer state
-            graphics.RasterizerState = RasterizerState.CullCounterClockwise;
 
             if (BlurEnabled)
             {
@@ -201,29 +183,35 @@
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            Matrix shadowFrustumMatrix;
-            light.GetShadowFrustum(context.ViewFrustum, drawables, out shadowFrustumMatrix);
+            light.UpdateShadowFrustum(context.ViewFrustum, drawables);
+            if (shadowCasterQuery == null)
+            {
+                shadowCasterQuery = context.CreateSpatialQuery<IDrawableObject>(drawable =>
+                {
+                    if (!drawable.Visible)
+                        return false;
+                    var lightable = drawable as ILightable;
+                    return lightable != null && lightable.CastShadow;
+                });
+            }
+            shadowCasterQuery.FindAll(light.ShadowFrustum, shadowCasters);
 
-            shadowFrustum.Matrix = shadowFrustumMatrix;
-            context.Drawables.FindAll(shadowFrustum, shadowCasters);
-
-            if (shadowCasters.Count <= 0)
-                return;
-
+            Matrix oldView = context.matrices.view;
+            Matrix oldProjection = context.matrices.projection;
             try
             {
                 Begin();
 
-                context.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-                context.GraphicsDevice.BlendState = BlendState.Opaque;
-                context.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+                context.matrices.View = light.ShadowFrustum.Matrix;
+                context.matrices.Projection = Matrix.Identity;
 
-                for (int i = 0; i < shadowCasters.Count; i++)
+                context.graphics.SamplerStates[0] = SamplerState.PointClamp;
+                context.graphics.BlendState = BlendState.Opaque;
+                context.graphics.DepthStencilState = DepthStencilState.Default;
+
+                for (int i = 0; i < shadowCasters.Count; ++i)
                 {
                     var shadowCaster = shadowCasters[i];
-                    if (shadowCaster == null || !shadowCaster.Visible)
-                        continue;
-                    
                     var material = shadowCaster.Material;
                     if (material == null)
                         material = depthMaterial;
@@ -238,6 +226,9 @@
             {
                 shadowCasters.Clear();
                 End(context);
+
+                context.matrices.View = oldView;
+                context.matrices.Projection = oldProjection;
             }
         }
 

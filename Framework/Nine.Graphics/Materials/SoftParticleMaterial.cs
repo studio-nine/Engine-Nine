@@ -7,8 +7,8 @@
     {
         public float DepthFade
         {
-            get { return depthFade.HasValue ? depthFade.Value : MaterialConstants.SoftParticleFade; }
-            set { depthFade = (value == MaterialConstants.SoftParticleFade ? (float?)null : value); }
+            get { return depthFade.HasValue ? depthFade.Value : Constants.SoftParticleFade; }
+            set { depthFade = (value == Constants.SoftParticleFade ? (float?)null : value); }
         }
         private float? depthFade;
 
@@ -29,7 +29,7 @@
         partial void EndApplyLocalParameters(DrawingContext context)
         {
             if (depthFade.HasValue)
-                effect.DepthFade.SetValue(MaterialConstants.SoftParticleFade);
+                effect.DepthFade.SetValue(Constants.SoftParticleFade);
         }
     }
 }

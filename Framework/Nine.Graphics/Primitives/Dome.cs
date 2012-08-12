@@ -61,7 +61,7 @@
             AddVertex(Vector3.Up * radius + sink, Vector3.Up, Vector2.One * 0.5f);
 
             // Create rings of vertices at progressively higher latitudes.
-            for (int i = 0; i < verticalSegments; i++)
+            for (int i = 0; i < verticalSegments; ++i)
             {
                 float latitude = ((i + 1) * MathHelper.Pi / verticalSegments) * percentage + MathHelper.PiOver2;
 
@@ -89,7 +89,7 @@
 
 
             // Create a fan connecting the bottom vertex to the bottom latitude ring.
-            for (int i = 0; i < horizontalSegments; i++)
+            for (int i = 0; i < horizontalSegments; ++i)
             {
                 AddIndex(0);
                 AddIndex(1 + i);
@@ -97,7 +97,7 @@
             }
 
             // Fill the sphere body with triangles joining each pair of latitude rings.
-            for (int i = 0; i < verticalSegments - 1; i++)
+            for (int i = 0; i < verticalSegments - 1; ++i)
             {
                 for (int j = 0; j < horizontalSegments; j++)
                 {

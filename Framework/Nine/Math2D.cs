@@ -562,7 +562,7 @@ namespace Nine
         public static bool PolygonIntersects(Vector2[] object1, Vector2[] object2)
         {
             // Test each line segment of object1 against each segment of object2
-            for (int i = 0; i < object1.Length - 1; i++)
+            for (int i = 0; i < object1.Length - 1; ++i)
                 for (int j = 0; j < object2.Length - 1; j++)
                     if (LineSegmentIntersects(
                         object2[j], object2[j + 1], object1[i], object1[i + 1]))
@@ -581,7 +581,7 @@ namespace Nine
         /// <remarks>This algorithm does not check for enclosure</remarks>
         public static bool PolygonSegmentIntersects(Vector2[] polygon, Vector2 a, Vector2 b)
         {
-            for (int i = 0; i < polygon.Length - 1; i++)
+            for (int i = 0; i < polygon.Length - 1; ++i)
                 if (LineSegmentIntersects(
                     polygon[i], polygon[i + 1], a, b))
                 {
@@ -845,7 +845,7 @@ namespace Nine
             rect2[3].Y = min2.Y;
 
             // Transform rectangle 2 to rectangle 1 local space
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 rect1[i] = LocalToWorld(rect1[i], position1, rotation1);
                 rect2[i] = LocalToWorld(rect2[i], position2, rotation2);
@@ -854,7 +854,7 @@ namespace Nine
             // Polygon intersection test
             if (PolygonIntersects(rect1, rect2))
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; ++i)
                 {
                     if (PointInRectangle(rect1[i], min2, max2, position2, rotation2))
                         return ContainmentType.Intersects;
@@ -890,7 +890,7 @@ namespace Nine
             rect[3].X = max.X;
             rect[3].Y = min.Y;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 // Transform to world space
                 rect[i] = LocalToWorld(rect[i], rectanglePosition, rotation);

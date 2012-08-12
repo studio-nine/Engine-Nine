@@ -221,7 +221,7 @@ namespace BEPUphysics.Threading
         {
             var data = o as LoopSection;
             int finalIndex = (data.iterationCount * (data.Index + 1)) / data.Subdivisions;
-            for (int i = (data.iterationCount * data.Index) / data.Subdivisions; i < finalIndex; i++)
+            for (int i = (data.iterationCount * data.Index) / data.Subdivisions; i < finalIndex; ++i)
             {
                 //do stuff
                 data.loopBody(i);
@@ -233,7 +233,7 @@ namespace BEPUphysics.Threading
             taskInfos.Clear();
             int workerCount = workers.Count;
             int subdivisions = workerCount * loopTasksPerThread;
-            for (int i = 0; i < workerCount; i++)
+            for (int i = 0; i < workerCount; ++i)
             {
                 for (int j = 0; j < loopTasksPerThread; j++)
                 {
@@ -327,7 +327,7 @@ namespace BEPUphysics.Threading
                         manager.allThreadsIdleNotifier.Set();
                 }
                 //Dump out any remaining tasks in the queue.
-                for (int i = 0; i < taskQueue.Count; i++) //This is still safe since shutDownThread is called from within a lock(taskQueue) block.
+                for (int i = 0; i < taskQueue.Count; ++i) //This is still safe since shutDownThread is called from within a lock(taskQueue) block.
                 {
                     taskQueue.Dequeue();
                     if (Interlocked.Decrement(ref manager.tasksRemaining) == 0)

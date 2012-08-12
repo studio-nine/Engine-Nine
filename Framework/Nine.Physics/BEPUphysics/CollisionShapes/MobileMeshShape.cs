@@ -132,7 +132,7 @@ namespace BEPUphysics.CollisionShapes
             ShapeDistributionInformation distributionInfo;
             ComputeShapeInformation(data, out distributionInfo);
 
-            for (int i = 0; i < surfaceVertices.count; i++)
+            for (int i = 0; i < surfaceVertices.count; ++i)
             {
                 Vector3.Subtract(ref surfaceVertices.Elements[i], ref distributionInfo.Center, out surfaceVertices.Elements[i]);
             }
@@ -155,7 +155,7 @@ namespace BEPUphysics.CollisionShapes
             var data = new TransformableMeshData(vertices, indices, localTransform);
             ComputeShapeInformation(data, out distributionInfo);
 
-            for (int i = 0; i < surfaceVertices.count; i++)
+            for (int i = 0; i < surfaceVertices.count; ++i)
             {
                 Vector3.Subtract(ref surfaceVertices.Elements[i], ref distributionInfo.Center, out surfaceVertices.Elements[i]);
             }
@@ -191,7 +191,7 @@ namespace BEPUphysics.CollisionShapes
             if (triangleMesh.Tree.GetOverlaps(ray, overlapList))
             {
                 bool minimumClockwise = false;
-                for (int i = 0; i < overlapList.Count; i++)
+                for (int i = 0; i < overlapList.Count; ++i)
                 {
                     Vector3 vA, vB, vC;
                     triangleMesh.Data.GetTriangle(overlapList[i], out vA, out vB, out vC);
@@ -221,7 +221,7 @@ namespace BEPUphysics.CollisionShapes
 
         internal bool IsHitUnique(RawList<RayHit> hits, ref RayHit hit)
         {
-            for (int i = 0; i < hits.count; i++)
+            for (int i = 0; i < hits.count; ++i)
             {
                 if (Math.Abs(hits.Elements[i].T - hit.T) < MeshHitUniquenessThreshold)
                     return false;
@@ -291,7 +291,7 @@ namespace BEPUphysics.CollisionShapes
                 int maximum = 0;
                 float minimumT = float.MaxValue;
                 float maximumT = -1;
-                for (int i = 0; i < hitList.Count; i++)
+                for (int i = 0; i < hitList.Count; ++i)
                 {
                     triangleMesh.Data.GetTriangle(hitList[i], out vA, out vB, out vC);
                     RayHit hit;
@@ -352,7 +352,7 @@ namespace BEPUphysics.CollisionShapes
             try
             {
                 ConvexHullHelper.GetConvexHull(data.vertices, surfaceVertices);
-                for (int i = 0; i < surfaceVertices.count; i++)
+                for (int i = 0; i < surfaceVertices.count; ++i)
                 {
                     AffineTransform.Transform(ref surfaceVertices.Elements[i], ref data.worldTransform, out surfaceVertices.Elements[i]);
                 }
@@ -363,7 +363,7 @@ namespace BEPUphysics.CollisionShapes
                 //If the convex hull failed, then the point set has no volume.  A mobile mesh is allowed to have zero volume, however.
                 //In this case, compute the bounding box of all points.
                 BoundingBox box = new BoundingBox();
-                for (int i = 0; i < data.vertices.Length; i++)
+                for (int i = 0; i < data.vertices.Length; ++i)
                 {
                     Vector3 v;
                     data.GetVertexPosition(i, out v);
@@ -594,13 +594,13 @@ namespace BEPUphysics.CollisionShapes
         //    //Add more extents for a tighter volume
 
         //    //Initialize the max and mins.
-        //    for (int i = 0; i < extents.count; i++)
+        //    for (int i = 0; i < extents.count; ++i)
         //    {
         //        extents.Elements[i].Minimum = float.MaxValue;
         //        extents.Elements[i].Maximum = -float.MaxValue;
         //    }
 
-        //    for (int i = 0; i < triangleMesh.Data.vertices.Length; i++)
+        //    for (int i = 0; i < triangleMesh.Data.vertices.Length; ++i)
         //    {
         //        Vector3 v;
         //        triangleMesh.Data.GetVertexPosition(i, out v);
@@ -629,7 +629,7 @@ namespace BEPUphysics.CollisionShapes
             int right = 0, left = 0, up = 0, down = 0, backward = 0, forward = 0;
             float minX = float.MaxValue, maxX = -float.MaxValue, minY = float.MaxValue, maxY = -float.MaxValue, minZ = float.MaxValue, maxZ = -float.MaxValue;
 
-            for (int i = 0; i < surfaceVertices.count; i++)
+            for (int i = 0; i < surfaceVertices.count; ++i)
             {
                 float dotX, dotY, dotZ;
                 Vector3.Dot(ref rightDirection, ref surfaceVertices.Elements[i], out dotX);
@@ -725,7 +725,7 @@ namespace BEPUphysics.CollisionShapes
             //Vector3.Negate(ref right, out left);
             //Vector3.Negate(ref up, out down);
             //Vector3.Negate(ref backward, out forward);
-            //for (int i = 0; i < extents.count; i++)
+            //for (int i = 0; i < extents.count; ++i)
             //{
             //    extents.Elements[i].Clamp(ref right);
             //    extents.Elements[i].Clamp(ref left);

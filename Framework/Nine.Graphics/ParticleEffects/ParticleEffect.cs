@@ -145,7 +145,7 @@
                     spm.DepthFade = softParticleFade;
             }
         }
-        private float softParticleFade = MaterialConstants.SoftParticleFade;
+        private float softParticleFade = Constants.SoftParticleFade;
 
         /// <summary>
         /// Gets or sets a value indicating whether this particle effect will be updated asynchronously.
@@ -245,7 +245,7 @@
         private int CurrentController = 0;
         private Random random = new Random();
 
-        private PrimitiveGroup primitive;
+        private DynamicPrimitive primitive;
         private float elapsedSeconds;
         private Vector3 eyePosition;
         private Matrix viewInverse;
@@ -281,7 +281,7 @@
             {
                 this.MaxParticleCount = EstimateMaxParticleCount();
                 this.particles = new Particle[MaxParticleCount];
-                this.primitive = new PrimitiveGroup(GraphicsDevice, MaxParticleCount * 6, 32768);
+                this.primitive = new DynamicPrimitive(GraphicsDevice, MaxParticleCount * 6, 32768);
                 UpdateMaterial();
             }
         }

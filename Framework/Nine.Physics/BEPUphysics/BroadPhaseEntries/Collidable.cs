@@ -87,7 +87,7 @@ namespace BEPUphysics.Collidables
 
         protected override void CollisionRulesUpdated()
         {
-            for (int i = 0; i < pairs.Count; i++)
+            for (int i = 0; i < pairs.Count; ++i)
             {
                 pairs[i].CollisionRule = CollisionRules.CollisionRuleCalculator(pairs[i].BroadPhaseOverlap.entryA, pairs[i].BroadPhaseOverlap.entryB);
             }

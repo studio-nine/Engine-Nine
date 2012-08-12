@@ -48,7 +48,7 @@
             AddVertex(Vector3.Zero, -Vector3.Up);
 
 
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i < tessellation; ++i)
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 

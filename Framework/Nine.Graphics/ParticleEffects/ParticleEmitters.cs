@@ -254,7 +254,7 @@
             if (totalLength > 0)
             {
                 float invLength = 1 / totalLength;
-                for (int i = 0; i < lineWeights.Count; i++)
+                for (int i = 0; i < lineWeights.Count; ++i)
                     lineWeights[i] *= invLength;
             }
             
@@ -266,7 +266,7 @@
         public override void Emit(float lerpAmount, ref Vector3 position, ref Vector3 velocity)
         {
             float percentage = (float)Random.NextDouble();
-            for (int i = 0; i < lineWeights.Count; i++)
+            for (int i = 0; i < lineWeights.Count; ++i)
             {
                 if (lineWeights[i] >= percentage)
                 {

@@ -140,7 +140,7 @@ namespace Nine.Components
 
         public void Write(string value)
         {
-            for (int i = 0; i < value.Length; i++)
+            for (int i = 0; i < value.Length; ++i)
             {
                 // Replace "\t" with space
                 if (value[i] == '\t')
@@ -203,7 +203,7 @@ namespace Nine.Components
             if (i < 0)
                 i = 0;
             
-            for (; i < messages.Count; i++)
+            for (; i < messages.Count; ++i)
             {
                 spriteBatch.DrawString(
                     Font, messages[i], new Vector2(Border + 2, y), ForegroundColor, 0,

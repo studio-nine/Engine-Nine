@@ -70,7 +70,7 @@ namespace BEPUphysics.Constraints.Collision
             //Clamp accumulated impulse
             float previousAccumulatedImpulse = accumulatedImpulse;
             float maximumFrictionForce = 0;
-            for (int i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; ++i)
             {
                 maximumFrictionForce += leverArms[i] * contactManifoldConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
             }
@@ -162,7 +162,7 @@ namespace BEPUphysics.Constraints.Collision
             contactCount = contactManifoldConstraint.penetrationConstraints.count;
 
             Vector3 contactOffset;
-            for (int i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; ++i)
             {
                 Vector3.Subtract(ref contactManifoldConstraint.penetrationConstraints.Elements[i].contact.Position, ref contactManifoldConstraint.SlidingFriction.manifoldCenter, out contactOffset);
                 leverArms[i] = contactOffset.Length();

@@ -27,7 +27,7 @@ namespace BEPUphysics
             rawPoints.AddRange(points);
             GetConvexHull(rawPoints, rawIndices);
             Resources.GiveBack(rawPoints);
-            for (int i = 0; i < rawIndices.count; i++)
+            for (int i = 0; i < rawIndices.count; ++i)
             {
                 indices.Add(rawIndices[i]);
             }
@@ -73,7 +73,7 @@ namespace BEPUphysics
             rawPoints.AddRange(points);
             GetConvexHull(rawPoints, rawIndices, outputSurfacePoints);
             Resources.GiveBack(rawPoints);
-            for (int i = 0; i < rawIndices.count; i++)
+            for (int i = 0; i < rawIndices.count; ++i)
             {
                 outputIndices.Add(rawIndices[i]);
             }

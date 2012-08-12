@@ -120,9 +120,9 @@ namespace Nine
         {
             Count = 0;
 
-            for (int x = 0; x < SegmentCountX; x++)
+            for (int x = 0; x < SegmentCountX; ++x)
             {
-                for (int y = 0; y < SegmentCountY; y++)
+                for (int y = 0; y < SegmentCountY; ++y)
                 {
                     var index = x + SegmentCountX * y;
 
@@ -151,7 +151,7 @@ namespace Nine
             if (Data != null && Data[index] != null && Data[index].Objects != null)
             {
                 var entry = Data[index];
-                for (int i = 0; i < entry.Objects.Count; i++)
+                for (int i = 0; i < entry.Objects.Count; ++i)
                 {
                     if (entry.ObjectBounds[i].Intersects(ray).HasValue)
                     {
@@ -175,7 +175,7 @@ namespace Nine
             if (Data != null && Data[index] != null && Data[index].Objects != null)
             {
                 var entry = Data[index];
-                for (int i = 0; i < entry.Objects.Count; i++)
+                for (int i = 0; i < entry.Objects.Count; ++i)
                 {
                     if (entry.ObjectBounds[i].Contains(box) != ContainmentType.Disjoint)
                     {
@@ -195,15 +195,15 @@ namespace Nine
 
         public void FindAll(BoundingFrustum boundingFrustum, ICollection<ISpatialQueryable> result)
         {
-            for (int x = 0; x < SegmentCountX; x++)
+            for (int x = 0; x < SegmentCountX; ++x)
             {
-                for (int y = 0; y < SegmentCountY; y++)
+                for (int y = 0; y < SegmentCountY; ++y)
                 {
                     var index = x + SegmentCountX * y;
                     if (Data != null && Data[index] != null && Data[index].Objects != null)
                     {
                         var entry = Data[index];
-                        for (int i = 0; i < entry.Objects.Count; i++)
+                        for (int i = 0; i < entry.Objects.Count; ++i)
                         {
                             if (boundingFrustum.Contains(entry.ObjectBounds[i]) != ContainmentType.Disjoint)
                             {
@@ -269,15 +269,15 @@ namespace Nine
 
             bool hasValue = false;
 
-            for (int x = 0; x < SegmentCountX; x++)
+            for (int x = 0; x < SegmentCountX; ++x)
             {
-                for (int y = 0; y < SegmentCountY; y++)
+                for (int y = 0; y < SegmentCountY; ++y)
                 {
                     var index = x + SegmentCountX * y;
                     if (Data != null && Data[index] != null && Data[index].Objects != null)
                     {
                         var entry = Data[index];
-                        for (int i = 0; i < entry.Objects.Count; i++)
+                        for (int i = 0; i < entry.Objects.Count; ++i)
                         {
                             if (entry.Objects[i].Equals(item))
                             {

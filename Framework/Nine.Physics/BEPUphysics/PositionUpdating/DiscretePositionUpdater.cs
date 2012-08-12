@@ -47,7 +47,7 @@ namespace BEPUphysics.PositionUpdating
 
         protected override void UpdateSingleThreaded()
         {
-            for (int i = 0; i < integrables.Count; i++)
+            for (int i = 0; i < integrables.Count; ++i)
                 UpdateIntegrable(i);
         }
 

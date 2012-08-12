@@ -200,7 +200,7 @@ namespace BEPUphysics.Threading
         {
             var data = o as LoopSection;
             int finalIndex = (data.iterationCount * (data.Index + 1)) / data.Subdivisions;
-            for (int i = (data.iterationCount * data.Index) / data.Subdivisions; i < finalIndex; i++)
+            for (int i = (data.iterationCount * data.Index) / data.Subdivisions; i < finalIndex; ++i)
             {
                 //do stuff
                 data.loopBody(i);
@@ -212,7 +212,7 @@ namespace BEPUphysics.Threading
             taskInfos.Clear();
             int workerCount = workers.Count;
             int subdivisions = workerCount * loopTasksPerThread;
-            for (int i = 0; i < workerCount; i++)
+            for (int i = 0; i < workerCount; ++i)
             {
                 for (int j = 0; j < loopTasksPerThread; j++)
                 {
@@ -327,7 +327,7 @@ namespace BEPUphysics.Threading
                         if (!taskData.TryDequeueFirst(out task))
                         {
                             bool gotSomething = false;
-                            for (int i = 1; i < manager.workers.Count; i++)
+                            for (int i = 1; i < manager.workers.Count; ++i)
                             {
                                 if (TrySteal((index + i) % manager.workers.Count, out task))
                                 {

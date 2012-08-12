@@ -24,7 +24,7 @@ namespace BEPUphysics.CollisionTests
             float maximumDepth = -float.MaxValue;
             int deepestIndex = -1;
             Vector3 normal = Toolbox.ZeroVector;
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 Vector3.Add(ref normal, ref contacts.Elements[i].Normal, out normal);
                 if (contacts.Elements[i].PenetrationDepth > maximumDepth)
@@ -33,7 +33,7 @@ namespace BEPUphysics.CollisionTests
                     maximumDepth = contacts.Elements[i].PenetrationDepth;
                 }
             }
-            for (int i = 0; i < contactCandidates.count; i++)
+            for (int i = 0; i < contactCandidates.count; ++i)
             {
                 Vector3.Add(ref normal, ref contactCandidates.Elements[i].Normal, out normal);
                 if (contactCandidates.Elements[i].PenetrationDepth > maximumDepth)
@@ -61,7 +61,7 @@ namespace BEPUphysics.CollisionTests
             float distanceSquared;
             float furthestDistance = 0;
             int furthestIndex = -1;
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref deepestPosition, out distanceSquared);
                 if (distanceSquared > furthestDistance)
@@ -70,7 +70,7 @@ namespace BEPUphysics.CollisionTests
                     furthestIndex = i;
                 }
             }
-            for (int i = 0; i < contactCandidates.count; i++)
+            for (int i = 0; i < contactCandidates.count; ++i)
             {
                 Vector3.DistanceSquared(ref contactCandidates.Elements[i].Position, ref deepestPosition, out distanceSquared);
                 if (distanceSquared > furthestDistance)
@@ -84,7 +84,7 @@ namespace BEPUphysics.CollisionTests
                 //Either this method was called when it shouldn't have been, or all contacts and contact candidates are at the same location.
                 if (contacts.count > 0)
                 {
-                    for (int i = 1; i < contacts.count; i++)
+                    for (int i = 1; i < contacts.count; ++i)
                     {
                         contactsToRemove.Add(i);
                     }
@@ -114,7 +114,7 @@ namespace BEPUphysics.CollisionTests
             float minYAxisDot = float.MaxValue, maxYAxisDot = -float.MaxValue;
             int minYAxisIndex = -1, maxYAxisIndex = -1;
 
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 float dot;
                 Vector3.Dot(ref contacts.Elements[i].Position, ref yAxis, out dot);
@@ -130,7 +130,7 @@ namespace BEPUphysics.CollisionTests
                 }
 
             }
-            for (int i = 0; i < contactCandidates.count; i++)
+            for (int i = 0; i < contactCandidates.count; ++i)
             {
                 float dot;
                 Vector3.Dot(ref contactCandidates.Elements[i].Position, ref yAxis, out dot);
@@ -159,7 +159,7 @@ namespace BEPUphysics.CollisionTests
             //-Contact candidates do not repeat with contacts.
             //-Contact candidates are added if they match any of the indices.
 
-            for (int i = 0; i < contactCandidates.count; i++)
+            for (int i = 0; i < contactCandidates.count; ++i)
             {
                 int totalIndex = i + contacts.count;
                 if (totalIndex == deepestIndex || totalIndex == furthestIndex || totalIndex == minYAxisIndex || totalIndex == maxYAxisIndex)
@@ -168,7 +168,7 @@ namespace BEPUphysics.CollisionTests
                     toAdd.Add(ref contactCandidates.Elements[i]);
                 }
             }
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 if (!(i == deepestIndex || i == furthestIndex || i == minYAxisIndex || i == maxYAxisIndex))
                 {
@@ -199,7 +199,7 @@ namespace BEPUphysics.CollisionTests
             //addCandidate = true;
             //float min = float.MaxValue;
             //int minIndex = 3;
-            //for (int i = 0; i < 4; i++)
+            //for (int i = 0; i < 4; ++i)
             //{
             //    if (contacts.Elements[i].PenetrationDepth < min)
             //    {
@@ -213,7 +213,7 @@ namespace BEPUphysics.CollisionTests
             //Find the deepest point of all contacts/candidates, as well as a compounded 'normal' vector.
             float maximumDepth = -float.MaxValue;
             int deepestIndex = -1;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 if (contacts.Elements[i].PenetrationDepth > maximumDepth)
                 {
@@ -236,7 +236,7 @@ namespace BEPUphysics.CollisionTests
             float distanceSquared;
             float furthestDistance = 0;
             int furthestIndex = -1;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref deepestPosition, out distanceSquared);
                 if (distanceSquared > furthestDistance)
@@ -268,7 +268,7 @@ namespace BEPUphysics.CollisionTests
             int minYAxisIndex = -1, maxYAxisIndex = -1;
 
             float dot;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 Vector3.Dot(ref contacts.Elements[i].Position, ref yAxis, out dot);
                 if (dot < minYAxisDot)
@@ -310,7 +310,7 @@ namespace BEPUphysics.CollisionTests
 
                 addCandidate = true;
                 //Only reduce when we are going to add a new contact, and only get rid of one.
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; ++i)
                 {
                     if (!(i == deepestIndex || i == furthestIndex || i == minYAxisIndex || i == maxYAxisIndex))
                     {

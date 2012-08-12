@@ -50,7 +50,7 @@ namespace Nine.Physics.Colliders
         {
             var count = colliders.Count;
             var children = new List<CompoundChildData>(count);
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var collidable = colliders[i].Collidable;
                 var child = new CompoundChildData();

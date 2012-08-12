@@ -111,7 +111,7 @@ namespace BEPUphysics.PositionUpdating
             if (continuousUpdateables.count > MultithreadingThreshold)
                 ThreadManager.ForLoop(0, continuousUpdateables.count, updateTimeOfImpact);
             else
-                for (int i = 0; i < continuousUpdateables.count; i++)
+                for (int i = 0; i < continuousUpdateables.count; ++i)
                     UpdateTimeOfImpact(i);
             //The TOI's are now computed, so we can integrate all of the CCD or allow-motionclampers 
             //to their new positions.
@@ -119,7 +119,7 @@ namespace BEPUphysics.PositionUpdating
             if (count > MultithreadingThreshold)
                 ThreadManager.ForLoop(0, count, updateContinuous);
             else
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     UpdateContinuousItem(i);
 
             //The above process is the same as the UpdateSingleThreaded version, but 
@@ -135,16 +135,16 @@ namespace BEPUphysics.PositionUpdating
             //In addition, go through the remaining non-discrete objects and perform their prestep.
             //This usually involves updating their angular motion, but not their linear motion.
             int count = discreteUpdateables.count + passiveUpdateables.count + continuousUpdateables.count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 PreUpdate(i);
             //Now go through the list of all full CCD objects.  These are responsible
             //for determining the TOI of collision pairs, if existent.
-            for (int i = 0; i < continuousUpdateables.count; i++)
+            for (int i = 0; i < continuousUpdateables.count; ++i)
                 UpdateTimeOfImpact(i);
             //The TOI's are now computed, so we can integrate all of the CCD or allow-motionclampers 
             //to their new positions.
             count = passiveUpdateables.count + continuousUpdateables.count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 UpdateContinuousItem(i);
         }
 

@@ -13,7 +13,7 @@
     /// Base class for simple geometric primitive models. 
     /// </summary>
     [ContentProperty("Material")]
-    public abstract class Primitive<T> : Transformable, ISpatialQueryable, IDrawableObject, IDisposable, ISupportInstancing where T : struct, IVertexType
+    public abstract class Primitive<T> : Transformable, ISpatialQueryable, IDrawableObject, IGeometry, ISupportInstancing, ILightable, IDisposable where T : struct, IVertexType
     {
         #region Properties
         /// <summary>
@@ -27,6 +27,16 @@
         public bool Visible { get; set; }
 
         /// <summary>
+        /// Gets whether the object casts shadow.
+        /// </summary>
+        public bool CastShadow { get; set; }
+
+        /// <summary>
+        /// Gets whether the object receives shadow.
+        /// </summary>
+        public bool ReceiveShadow { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether this primitive resides inside the view frustum last frame.
         /// </summary>
         public bool InsideViewFrustum { get; internal set; }
@@ -37,7 +47,7 @@
         public Material Material { get; set; }
 
         /// <summary>
-        /// Gets a collection containning all the materials that are sorted based on level of detail.
+        /// Gets a collection containing all the materials that are sorted based on level of detail.
         /// </summary>
         public MaterialLevelOfDetail MaterialLevels
         {
@@ -55,7 +65,16 @@
         /// <summary>
         /// Gets the optional bounding sphere of the primitive.
         /// </summary>
-        public BoundingBox BoundingBox { get; private set; }
+        public BoundingBox BoundingBox
+        {
+            get
+            {
+                if (needsRebuild)
+                    Rebuild();
+                return boundingBox; 
+            }
+        }
+        private BoundingBox boundingBox;
 
         /// <summary>
         /// Occurs when the bounding box changed.
@@ -150,7 +169,7 @@
                 List<PrimitiveCache> cachedPrimitives;
                 if (PrimitiveCache.TryGetValue(type, out cachedPrimitives))
                 {
-                    for (int i = 0; i < cachedPrimitives.Count; i++)
+                    for (int i = 0; i < cachedPrimitives.Count; ++i)
                     {
                         cachedPrimitive = cachedPrimitives[i];
                         if (cachedPrimitive.IsDisposed)
@@ -179,6 +198,8 @@
                 cachedPrimitive = new PrimitiveCache();
                 cachedPrimitive.RefCount = 1;
                 cachedPrimitive.Primitive = this;
+                cachedPrimitive.Positions = Positions.ToArray();
+                cachedPrimitive.Indices = Indices.ToArray();
 
                 // Create a vertex buffer, and copy our vertex data into it.            
                 cachedPrimitive.VertexBuffer = new VertexBuffer(GraphicsDevice, typeof(T), Vertices.Count, BufferUsage.WriteOnly);
@@ -239,7 +260,7 @@
         {
             if (cachedPrimitive != null)
             {
-                BoundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);
+                boundingBox = BoundingBoxExtensions.CreateAxisAligned(cachedPrimitive.BoundingBox, AbsoluteTransform);
                 var boundingBoxChanged = BoundingBoxChanged;
                 if (boundingBoxChanged != null)
                     boundingBoxChanged(this, EventArgs.Empty);
@@ -287,7 +308,7 @@
         /// </summary>
         protected void AddIndex(params int[] indices)
         {
-            for (int i = 0; i < indices.Length; i++)
+            for (int i = 0; i < indices.Length; ++i)
             {
                 AddIndex(indices[i]);
             }
@@ -340,6 +361,20 @@
             }
 
             material.EndApply(context);
+        }
+
+        Matrix IGeometry.Transform
+        {
+            get { return AbsoluteTransform; }
+        }
+
+        /// <summary>
+        /// Gets the triangle vertices of the target geometry.
+        /// </summary>
+        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        {
+            vertices = cachedPrimitive.Positions;
+            indices = cachedPrimitive.Indices;
         }
 
         /// <summary>
@@ -433,6 +468,14 @@
                 throw new NotSupportedException("The current primitive cannot be used for instancing");
         }
         #endregion
+
+        #region ILightable
+        bool ILightable.MultiPassLightingEnabled { get { return false; } }
+        int ILightable.MaxAffectingLights { get { return 1; } }
+        bool ILightable.MultiPassShadowEnabled { get { return false; } }
+        int ILightable.MaxReceivedShadows { get { return 1; } }
+        object ILightable.LightingData { get; set; }
+        #endregion
     }
 
     class PrimitiveCache : IDisposable
@@ -445,6 +488,8 @@
         public IndexBuffer IndexBuffer;
         public BoundingBox BoundingBox;
         public object Primitive;
+        public Vector3[] Positions;
+        public ushort[] Indices;
 
         public void Dispose()
         {

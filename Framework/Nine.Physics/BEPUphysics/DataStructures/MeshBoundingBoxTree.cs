@@ -92,7 +92,7 @@ namespace BEPUphysics.DataStructures
 
             maxDepth = 0;
             minDepth = int.MaxValue;
-            for (int i = 0; i < depths.Count; i++)
+            for (int i = 0; i < depths.Count; ++i)
             {
                 if (depths[i] > maxDepth)
                     maxDepth = depths[i];

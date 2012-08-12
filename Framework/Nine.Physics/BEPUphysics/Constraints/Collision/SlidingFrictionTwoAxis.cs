@@ -168,7 +168,7 @@ namespace BEPUphysics.Constraints.Collision
             accumulatedImpulse.Y += lambda.Y;
             float length = accumulatedImpulse.LengthSquared();
             float maximumFrictionForce = 0;
-            for (int i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; ++i)
             {
                 maximumFrictionForce += contactManifoldConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
             }
@@ -183,7 +183,7 @@ namespace BEPUphysics.Constraints.Collision
             lambda.Y = accumulatedImpulse.Y - previousAccumulatedImpulse.Y;
             //Single Axis clamp
             //float maximumFrictionForce = 0;
-            //for (int i = 0; i < contactCount; i++)
+            //for (int i = 0; i < contactCount; ++i)
             //{
             //    maximumFrictionForce += pair.contacts[i].penetrationConstraint.accumulatedImpulse;
             //}

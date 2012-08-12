@@ -97,7 +97,7 @@ namespace <#= namespaceGroup.Key #>
 #>
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.<#= member.Name #>.Add(input.ReadObject<<#= GetClassFullName(GetCollectionType(memberType)) #>>());
             }
 <#
@@ -108,7 +108,7 @@ namespace <#= namespaceGroup.Key #>
 #>
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.<#= member.Name #>.Add(
                         input.ReadObject<<#= GetClassFullName(dictionaryType[0]) #>>(),
                         input.ReadObject<<#= GetClassFullName(dictionaryType[1]) #>>());

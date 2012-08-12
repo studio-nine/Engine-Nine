@@ -53,7 +53,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
         internal void UpdateOverlaps(Grid2DSortAndSweep owner)
         {
             //Sort along x axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (int i = 1; i < entries.count; i++)
+            for (int i = 1; i < entries.count; ++i)
             {
                 var entry = entries.Elements[i];
                 for (int j = i - 1; j >= 0; j--)
@@ -68,7 +68,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                 }
             }
             //Sweep the list looking for overlaps.
-            for (int i = 0; i < entries.count; i++)
+            for (int i = 0; i < entries.count; ++i)
             {
                 Grid2DEntry a = entries.Elements[i];
                 Grid2DEntry b;

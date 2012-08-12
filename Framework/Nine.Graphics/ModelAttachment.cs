@@ -181,7 +181,7 @@ namespace Nine.Graphics
         internal void UpdateTransforms()
         {
             var count = Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var attachment = this[i];
                 var transformable = attachment.Transformable;
@@ -216,7 +216,7 @@ namespace Nine.Graphics
 
         protected override void ClearItems()
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
                 this[i].SetParent(null);
             base.ClearItems();
         }

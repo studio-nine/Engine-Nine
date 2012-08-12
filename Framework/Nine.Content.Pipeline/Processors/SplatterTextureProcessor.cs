@@ -98,9 +98,9 @@
 
             PixelBitmapContent<Vector4> bitmap = new PixelBitmapContent<Vector4>(width, height);
 
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; ++y)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; ++x)
                 {
                     var color = new Vector4(
                         bitmapR != null ? bitmapR.GetPixel(x, y) : GenerateBaseLayer ? 1 : 0,

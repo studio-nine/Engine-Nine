@@ -91,7 +91,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
 
             Matrix3X3 orientation;
             Matrix3X3.CreateFromQuaternion(ref convex.worldTransform.Orientation, out orientation);
-            for (int i = 0; i < triangleCount; i++)
+            for (int i = 0; i < triangleCount; ++i)
             {
                 //Initialize the local triangle.
                 TriangleIndices indices;
@@ -204,7 +204,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                         //TODO: Note that we're only checking the new edge contacts, not the existing contacts.
                         //It's possible that some existing contacts could interfere and cause issues, but for the sake of simplicity and due to rarity
                         //we'll ignore that possibility for now.
-                        for (int i = 1; i < edgeContacts.count; i++)
+                        for (int i = 1; i < edgeContacts.count; ++i)
                         {
                             Vector3.Dot(ref edgeContacts.Elements[i].ContactData.Normal, ref firstNormal, out dot);
                             if (dot < 0)
@@ -234,7 +234,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                         edgeContacts.Elements[0].ContactData.Normal = edgeContacts.Elements[0].CorrectedNormal;
                         edgeContacts.Elements[0].ShouldCorrect = true;
 
-                        for (int i = 1; i < edgeContacts.count; i++)
+                        for (int i = 1; i < edgeContacts.count; ++i)
                         {
                             //Must normalize the corrected normal before using it.
                             edgeContacts.Elements[i].CorrectedNormal.Normalize();
@@ -260,7 +260,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
 
 
 
-                for (int i = 0; i < edgeContacts.count; i++)
+                for (int i = 0; i < edgeContacts.count; ++i)
                 {
                     //Only correct if it's allowed AND it's blocked.
                     //If it's not blocked, the contact being created is necessary!
@@ -288,7 +288,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
 
 
                 }
-                for (int i = 0; i < vertexContacts.count; i++)
+                for (int i = 0; i < vertexContacts.count; ++i)
                 {
                     if (!blockedVertexRegions.Contains(vertexContacts.Elements[i].Vertex))
                     {
@@ -365,7 +365,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
             else if (candidatesToAdd.count > 0)
             {
                 //Won't overflow the manifold, so just toss it in PROVIDED that it isn't too close to something else.
-                for (int i = 0; i < candidatesToAdd.count; i++)
+                for (int i = 0; i < candidatesToAdd.count; ++i)
                 {
                     Add(ref candidatesToAdd.Elements[i]);
                 }
@@ -577,7 +577,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
 
             float distanceSquared;
             RigidTransform meshTransform = MeshTransform;
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);
                 if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)
@@ -599,7 +599,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                     }
                 }
             }
-            for (int i = 0; i < candidatesToAdd.count; i++)
+            for (int i = 0; i < candidatesToAdd.count; ++i)
             {
                 Vector3.DistanceSquared(ref candidatesToAdd.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);
                 if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)
@@ -611,7 +611,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                         return false;
                 }
             }
-            //for (int i = 0; i < edgeContacts.count; i++)
+            //for (int i = 0; i < edgeContacts.count; ++i)
             //{
             //    Vector3.DistanceSquared(ref edgeContacts.Elements[i].ContactData.Position, ref contactCandidate.Position, out distanceSquared);
             //    if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)
@@ -619,7 +619,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
             //        return false;
             //    }
             //}
-            //for (int i = 0; i < vertexContacts.count; i++)
+            //for (int i = 0; i < vertexContacts.count; ++i)
             //{
             //    Vector3.DistanceSquared(ref vertexContacts.Elements[i].ContactData.Position, ref contactCandidate.Position, out distanceSquared);
             //    if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)

@@ -125,7 +125,7 @@ namespace Nine.Graphics.Materials
             if (globalParameters != null)
             {
                 var parameterCount = globalParameters.Count;
-                for (int i = 0; i < parameterCount; i++)
+                for (int i = 0; i < parameterCount; ++i)
                     CustomEffectParameterBinding.Bindings[(int)globalParameters[i].Key].Bind(globalParameters[i].Value, context, material);
             }
         }
@@ -137,14 +137,14 @@ namespace Nine.Graphics.Materials
             if (localParameters != null)
             {
                 parameterCount = localParameters.Count;
-                for (int i = 0; i < parameterCount; i++)
+                for (int i = 0; i < parameterCount; ++i)
                     CustomEffectParameterBinding.Bindings[(int)localParameters[i].Key].Bind(localParameters[i].Value, context, material);
             }
 
             if (values != null)
             {
                 parameterCount = values.Count;
-                for (int i = 0; i < parameterCount; i++)
+                for (int i = 0; i < parameterCount; ++i)
                 {
                     var entry = values[i];
                     EffectExtensions.SetValue(entry.Parameter, entry.Value);
@@ -157,7 +157,7 @@ namespace Nine.Graphics.Materials
             if (values != null)
             {
                 var parameterCount = values.Count;
-                for (int i = 0; i < parameterCount; i++)
+                for (int i = 0; i < parameterCount; ++i)
                 {
                     var entry = values[i];
                     EffectExtensions.SetValue(entry.Parameter, entry.DefaultValue);
@@ -378,14 +378,14 @@ namespace Nine.Graphics.Materials
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.DirectionalLight.SpecularColor) },
 
             // Half Pixel
-            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => { var viewport = context.GraphicsDevice.Viewport; parameter.SetValue(new Vector2(0.5f / viewport.Width, 0.5f / viewport.Height)); } },
+            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => { var viewport = context.graphics.Viewport; parameter.SetValue(new Vector2(0.5f / viewport.Width, 0.5f / viewport.Height)); } },
             
             // Eye Position
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.EyePosition) },
 
             // Time
-            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.TotalTime.TotalSeconds) },
-            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.ElapsedTime.TotalSeconds) },
+            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.totalSeconds) },
+            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.elapsedSeconds) },
 
             // Materials and textures
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },

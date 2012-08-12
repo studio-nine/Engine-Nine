@@ -48,7 +48,7 @@ namespace BEPUphysics.EntityStateManagement
                 int initialCount = Math.Max(manager.entities.Count, 64);
                 backBuffer = new RigidTransform[initialCount];
                 states = new RigidTransform[initialCount];
-                for (int i = 0; i < manager.entities.Count; i++)
+                for (int i = 0; i < manager.entities.Count; ++i)
                 {
                     Entity entity = manager.entities[i];
                     backBuffer[i].Position = entity.position;
@@ -148,7 +148,7 @@ namespace BEPUphysics.EntityStateManagement
 
         protected override void UpdateSingleThreaded()
         {
-            for (int i = 0; i < manager.entities.Count; i++)
+            for (int i = 0; i < manager.entities.Count; ++i)
             {
                 UpdateIndex(i);
             }

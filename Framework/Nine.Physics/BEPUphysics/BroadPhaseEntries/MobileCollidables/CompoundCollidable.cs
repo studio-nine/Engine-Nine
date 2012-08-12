@@ -75,7 +75,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
 
         protected override void OnEntityChanged()
         {
-            for (int i = 0; i < children.count; i++)
+            for (int i = 0; i < children.count; ++i)
             {
                 children.Elements[i].CollisionInformation.Entity = entity;
                 if (children.Elements[i].Material == null)
@@ -134,13 +134,13 @@ namespace BEPUphysics.Collidables.MobileCollidables
 
             var shapeList = new RawList<CompoundShapeEntry>();
             //Create the shape first.
-            for (int i = 0; i < children.Count; i++)
+            for (int i = 0; i < children.Count; ++i)
             {
                 shapeList.Add(children[i].Entry);
             }
             base.Shape = new CompoundShape(shapeList);
             //Now create the actual child objects.
-            for (int i = 0; i < children.Count; i++)
+            for (int i = 0; i < children.Count; ++i)
             {
                 this.children.Add(GetChild(children[i], i));
             }
@@ -159,13 +159,13 @@ namespace BEPUphysics.Collidables.MobileCollidables
 
             var shapeList = new RawList<CompoundShapeEntry>();
             //Create the shape first.
-            for (int i = 0; i < children.Count; i++)
+            for (int i = 0; i < children.Count; ++i)
             {
                 shapeList.Add(children[i].Entry);
             }
             base.Shape = new CompoundShape(shapeList, out center);
             //Now create the actual child objects.
-            for (int i = 0; i < children.Count; i++)
+            for (int i = 0; i < children.Count; ++i)
             {
                 this.children.Add(GetChild(children[i], i));
             }
@@ -183,7 +183,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
         {
             Events = new CompoundEventManager();
 
-            for (int i = 0; i < compoundShape.shapes.count; i++)
+            for (int i = 0; i < compoundShape.shapes.count; ++i)
             {
                 CompoundChild child = GetChild(compoundShape.shapes.Elements[i], i);
                 this.children.Add(child);
@@ -220,7 +220,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
         {
             base.UpdateWorldTransform(ref position, ref orientation);
             var shapeList = Shape.shapes;
-            for (int i = 0; i < children.count; i++)
+            for (int i = 0; i < children.count; ++i)
             {
                 RigidTransform transform;
                 RigidTransform.Transform(ref shapeList.Elements[children.Elements[i].shapeIndex].LocalTransform, ref worldTransform, out transform);
@@ -230,7 +230,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
 
         protected internal override void UpdateBoundingBoxInternal(float dt)
         {
-            for (int i = 0; i < children.count; i++)
+            for (int i = 0; i < children.count; ++i)
             {
                 children.Elements[i].CollisionInformation.UpdateBoundingBoxInternal(dt);
             }
@@ -254,7 +254,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
             if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
             {
                 rayHit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.count; i++)
+                for (int i = 0; i < hitElements.count; ++i)
                 {
                     RayHit tempHit;
                     if (hitElements.Elements[i].CollisionInformation.RayCast(ray, maximumLength, out tempHit) && tempHit.T < rayHit.T)
@@ -288,7 +288,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
                 if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
                 {
                     rayHit.T = float.MaxValue;
-                    for (int i = 0; i < hitElements.count; i++)
+                    for (int i = 0; i < hitElements.count; ++i)
                     {
                         RayHit tempHit;
                         if (hitElements.Elements[i].CollisionInformation.RayCast(ray, maximumLength, filter, out tempHit) && tempHit.T < rayHit.T)
@@ -319,7 +319,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
             if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
             {
                 rayHit.HitData.T = float.MaxValue;
-                for (int i = 0; i < hitElements.count; i++)
+                for (int i = 0; i < hitElements.count; ++i)
                 {
                     EntityCollidable candidate = hitElements.Elements[i].CollisionInformation;
                     RayHit tempHit;
@@ -352,7 +352,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
             if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
             {
                 rayHit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.count; i++)
+                for (int i = 0; i < hitElements.count; ++i)
                 {
                     EntityCollidable candidate = hitElements.Elements[i].CollisionInformation;
                     RayHit tempHit;
@@ -387,7 +387,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
             if (hierarchy.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.count; i++)
+                for (int i = 0; i < hitElements.count; ++i)
                 {
                     var candidate = hitElements.Elements[i].CollisionInformation;
                     RayHit tempHit;

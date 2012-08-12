@@ -115,7 +115,7 @@ namespace Nine.Graphics.Materials
                 return;
             }
             
-            for (int i = 0; i < parameters.Count; i++)
+            for (int i = 0; i < parameters.Count; ++i)
             {
                 if (IsTexture(parameters[i]))
                     index++;

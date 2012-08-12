@@ -50,7 +50,7 @@ namespace Nine.Graphics.Materials
                 return part as T;
 
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 if (materialParts[i] is T)
                 {
@@ -68,7 +68,7 @@ namespace Nine.Graphics.Materials
         public override void FindAll<T>(ICollection<T> result)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var part = materialParts[i] as T;
                 if (part != null)
@@ -82,7 +82,7 @@ namespace Nine.Graphics.Materials
         public override void GetDependentPasses(ICollection<Type> passTypes)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].GetDependentPasses(passTypes);
         }
 
@@ -92,7 +92,7 @@ namespace Nine.Graphics.Materials
         public override void SetTexture(TextureUsage textureUsage, Texture texture)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].SetTexture(textureUsage, texture);
 
             if (ExtendedMaterials != null)
@@ -109,11 +109,11 @@ namespace Nine.Graphics.Materials
             var previous = previousMaterial as MaterialGroup;
             if (previous == null || previous.Effect != Effect)
             {
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     materialParts[i].ApplyGlobalParameters(context);
             }
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].BeginApplyLocalParameters(context, this);
 
             Effect.CurrentTechnique.Passes[0].Apply();
@@ -125,7 +125,7 @@ namespace Nine.Graphics.Materials
         protected override void OnEndApply(DrawingContext context)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].EndApplyLocalParameters(context);
         }
 
@@ -198,7 +198,7 @@ namespace Nine.Graphics.Materials
             result.IsTransparent = IsTransparent;
             result.ExtendedMaterials = ExtendedMaterials;
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var clonedPart = materialParts[i].Clone();
                 if (clonedPart == null)
@@ -222,7 +222,7 @@ namespace Nine.Graphics.Materials
 
             var copiedMaterialParts = new MaterialPart[Count];
             CopyTo(copiedMaterialParts, 0);
-            for (var i = 0; i < copiedMaterialParts.Length; i++)
+            for (var i = 0; i < copiedMaterialParts.Length; ++i)
             {
                 copiedMaterialParts[i].MaterialGroup = materialGroup;
                 copiedMaterialParts[i].OnBind();

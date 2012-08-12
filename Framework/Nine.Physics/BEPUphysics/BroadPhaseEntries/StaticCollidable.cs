@@ -66,7 +66,7 @@ namespace BEPUphysics.Collidables
         Action<Material> materialChangedDelegate;
         protected virtual void OnMaterialChanged(Material newMaterial)
         {
-            for (int i = 0; i < pairs.Count; i++)
+            for (int i = 0; i < pairs.Count; ++i)
             {
                 pairs[i].UpdateMaterialProperties();
             }

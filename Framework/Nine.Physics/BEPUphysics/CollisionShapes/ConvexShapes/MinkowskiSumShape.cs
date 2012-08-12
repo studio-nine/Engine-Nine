@@ -126,7 +126,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             if (shapeEntries.Count == 0)
                 throw new Exception("Cannot create a wrapped shape with no contained shapes.");
-            for (int i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; ++i)
             {
                 shapes.Add(shapeEntries[i]);
             }
@@ -156,7 +156,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             var transform = new RigidTransform {Orientation = shapes.list.Elements[0].Orientation};
             shapes.list.Elements[0].CollisionShape.GetExtremePoint(direction, ref transform, out extremePoint);
-            for (int i = 1; i < shapes.list.count; i++)
+            for (int i = 1; i < shapes.list.count; ++i)
             {
                 Vector3 temp;
                 transform.Orientation = shapes.list.Elements[i].Orientation;
@@ -175,7 +175,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         public override float ComputeMinimumRadius()
         {
             float minRadius = 0;
-            for (int i = 0; i < shapes.Count; i++)
+            for (int i = 0; i < shapes.Count; ++i)
             {
                 minRadius += shapes.list.Elements[i].CollisionShape.ComputeMinimumRadius();
             }
@@ -193,7 +193,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             //This can overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
             float maxRadius = 0;
-            for (int i = 0; i < shapes.Count; i++)
+            for (int i = 0; i < shapes.Count; ++i)
             {
                 maxRadius += shapes.list.Elements[i].CollisionShape.ComputeMaximumRadius();
             }

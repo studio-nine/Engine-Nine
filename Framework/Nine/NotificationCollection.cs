@@ -140,7 +140,7 @@ namespace Nine
                 elements = null;
 
                 if (elements != null)
-                    for (int i = 0; i < elements.Count; i++)
+                    for (int i = 0; i < elements.Count; ++i)
                         OnRemoved(elements[i]);
 
                 temp.Clear();
@@ -229,7 +229,7 @@ namespace Nine
 
             int count = 0;
 
-            for (int i = 0; i < elements.Count; i++)
+            for (int i = 0; i < elements.Count; ++i)
             {
                 if (match(elements[i]))
                 {
@@ -406,7 +406,7 @@ namespace Nine
                 existingInstance = new NotificationCollection<T>();
 
             var count = input.ReadInt32();
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 existingInstance.Add(input.ReadObject<T>(elementReader));
             return existingInstance;
         }

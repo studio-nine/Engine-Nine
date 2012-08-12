@@ -467,7 +467,7 @@
                 throw new ArgumentNullException("controller");
 
             List<WeightedBoneAnimationControllerBone> bones = new List<WeightedBoneAnimationControllerBone>(skeleton.BoneTransforms.Length);
-            for (int i = 0; i < skeleton.BoneTransforms.Length; i++)
+            for (int i = 0; i < skeleton.BoneTransforms.Length; ++i)
                 bones.Add(new WeightedBoneAnimationControllerBone());
 
             this.Skeleton = skeleton;
@@ -654,7 +654,7 @@
 
         public bool Remove(IBoneAnimationController item)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            for (int i = 0; i < controllers.Count; ++i)
             {
                 if (controllers[i].Controller == item)
                 {

@@ -139,7 +139,7 @@
             // Build up a list of all the sprites needing to be arranged.
             List<ArrangedSprite> sprites = new List<ArrangedSprite>();
 
-            for (int i = 0; i < sourceSprites.Count; i++)
+            for (int i = 0; i < sourceSprites.Count; ++i)
             {
                 ArrangedSprite sprite = new ArrangedSprite();
 
@@ -162,7 +162,7 @@
             int totalSpriteSize = 0;
 
             // Choose positions for each sprite, one at a time.
-            for (int i = 0; i < sprites.Count; i++)
+            for (int i = 0; i < sprites.Count; ++i)
             {
                 PositionSprite(sprites, i, outputWidth);
 
@@ -307,7 +307,7 @@
             int w = sprites[index].Width;
             int h = sprites[index].Height;
 
-            for (int i = 0; i < index; i++)
+            for (int i = 0; i < index; ++i)
             {
                 if (sprites[i].X >= x + w)
                     continue;

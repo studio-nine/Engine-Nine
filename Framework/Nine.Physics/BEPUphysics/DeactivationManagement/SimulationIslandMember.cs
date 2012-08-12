@@ -126,7 +126,7 @@ namespace BEPUphysics.DeactivationManagement
                         //To solve this, when we encounter active kinematic objects,
                         //tell simulation islands associated with connected objects that they aren't allowed to deactivate.
 
-                        for (int i = 0; i < connections.count; i++)
+                        for (int i = 0; i < connections.count; ++i)
                         {
                             var connectedMembers = connections.Elements[i].entries;
                             for (int j = connectedMembers.count - 1; j >= 0; j--)

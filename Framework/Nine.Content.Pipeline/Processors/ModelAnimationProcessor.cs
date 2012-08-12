@@ -237,7 +237,7 @@ namespace Nine.Content.Pipeline.Processors
             // Build up a table mapping bone names to indices.
             Dictionary<string, int> boneMap = new Dictionary<string, int>();
 
-            for (int i = 0; i < bones.Count; i++)
+            for (int i = 0; i < bones.Count; ++i)
             {
                 string boneName = bones[i].Name;
 
@@ -342,7 +342,7 @@ namespace Nine.Content.Pipeline.Processors
 
 
             boneAnimation.Transforms = new Matrix[maxBones + 1][];
-            for (int i = 0; i <= maxBones; i++)
+            for (int i = 0; i <= maxBones; ++i)
             {
                 if (keyframes.ContainsKey(i))
                     boneAnimation.Transforms[i] = new Matrix[boneAnimation.TotalFrames];
@@ -456,7 +456,7 @@ namespace Nine.Content.Pipeline.Processors
             {
                 foreach (var animation in animations.Values)
                 {
-                    for (int i = 0; i < Skeleton.SkeletonRoot; i++)
+                    for (int i = 0; i < Skeleton.SkeletonRoot; ++i)
                     {
                         if (i < animation.Transforms.Length)
                             animation.Transforms[i] = null;
@@ -470,7 +470,7 @@ namespace Nine.Content.Pipeline.Processors
             {
                 if (animation.Transforms[root] != null)
                 {
-                    for (int i = 0; i < animation.Transforms[root].Length; i++)
+                    for (int i = 0; i < animation.Transforms[root].Length; ++i)
                         animation.Transforms[root][i] = Transform(animation.Transforms[root][i]);
                 }
             }

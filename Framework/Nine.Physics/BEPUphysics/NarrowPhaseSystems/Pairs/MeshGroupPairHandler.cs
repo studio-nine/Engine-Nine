@@ -216,7 +216,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                 if (!containedPairs.Contains(pair))
                     pairsToRemove.Add(pair);
             }
-            for (int i = 0; i < pairsToRemove.count; i++)
+            for (int i = 0; i < pairsToRemove.count; ++i)
             {
                 var toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);

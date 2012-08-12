@@ -29,7 +29,7 @@
         {
             int stride = tessellation + 1;
 
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i < tessellation; ++i)
             {
                 for (int j = 0; j < tessellation; j++)
                 {
@@ -69,7 +69,7 @@
         {
             Debug.Assert(patch.Length == 16);
 
-            for (int i = 0; i <= tessellation; i++)
+            for (int i = 0; i <= tessellation; ++i)
             {
                 float ti = (float)i / tessellation;
 

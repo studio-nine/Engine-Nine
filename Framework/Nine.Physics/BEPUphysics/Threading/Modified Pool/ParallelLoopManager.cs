@@ -117,7 +117,7 @@ namespace BEPUphysics.Threading
             else
                 maxJobIndex = 1 + (int) maxJobs;
 
-            for (int i = 0; i < workers.Count; i++)
+            for (int i = 0; i < workers.Count; ++i)
             {
                 workers[i].finalIndex = endIndex;
                 workers[i].iterationsPerSteal = iterationsPerSteal;

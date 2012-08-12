@@ -74,7 +74,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Could be faster sometimes depending on the way it's set up.
             var overlappedElements = Resources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(terrain.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.count; i++)
+            for (int i = 0; i < overlappedElements.count; ++i)
             {
                 TryToAdd(overlappedElements.Elements[i].CollisionInformation, terrain, overlappedElements.Elements[i].Material);
 

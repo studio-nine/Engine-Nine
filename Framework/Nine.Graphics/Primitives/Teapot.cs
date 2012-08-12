@@ -82,7 +82,7 @@
             // Look up the 16 control points for this patch.
             Vector3[] controlPoints = new Vector3[16];
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; ++i)
             {
                 int index = patch.Indices[i];
                 controlPoints[i] = TeapotControlPoints[index] * scale;

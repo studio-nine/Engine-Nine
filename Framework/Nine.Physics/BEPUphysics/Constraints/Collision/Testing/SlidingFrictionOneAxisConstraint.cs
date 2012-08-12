@@ -184,7 +184,7 @@ namespace BEPUphysics.Constraints
             }
 
             maximumFrictionForce = 0;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 maximumFrictionForce += pair.Contacts[i].penetrationConstraint.accumulatedImpulse;
             }

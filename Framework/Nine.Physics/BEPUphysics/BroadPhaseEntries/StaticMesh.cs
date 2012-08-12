@@ -203,7 +203,7 @@ namespace BEPUphysics.Collidables
             if (Mesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (int i = 0; i < hitElements.Count; ++i)
                 {
                     mesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     Vector3 center;

@@ -63,7 +63,7 @@ namespace <#= namespaceGroup.Key #>
 #>
             {
                 output.Write(value.<#= member.Name #>.Count);
-                for (var i = 0; i < value.<#= member.Name #>.Count; i++)
+                for (var i = 0; i < value.<#= member.Name #>.Count; ++i)
                     output.WriteObject(value.<#= member.Name #>[i]);
             }
 <#

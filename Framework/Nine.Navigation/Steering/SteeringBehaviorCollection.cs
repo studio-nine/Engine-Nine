@@ -16,7 +16,7 @@ namespace Nine.Navigation.Steering
 
         public float GetWeight(ISteeringBehavior behavior)
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
             {
                 if (array[i].Key == behavior)
                 {
@@ -34,7 +34,7 @@ namespace Nine.Navigation.Steering
 
         public T FindFirst<T>()
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
                 if (array[i].Key is T)
                     return (T)array[i].Key;
 
@@ -43,7 +43,7 @@ namespace Nine.Navigation.Steering
 
         public IEnumerable<T> FindAll<T>()
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
                 if (array[i].Key is T)
                     yield return (T)array[i].Key;
         }
@@ -65,7 +65,7 @@ namespace Nine.Navigation.Steering
 
         public bool Contains(ISteeringBehavior item)
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
             {
                 if (array[i].Key == item)
                 {
@@ -78,7 +78,7 @@ namespace Nine.Navigation.Steering
 
         public void CopyTo(ISteeringBehavior[] array, int arrayIndex)
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
             {
                 array[i + arrayIndex] = this.array[i].Key;
             }
@@ -96,7 +96,7 @@ namespace Nine.Navigation.Steering
 
         public bool Remove(ISteeringBehavior item)
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
             {
                 if (array[i].Key == item)
                 {
@@ -110,7 +110,7 @@ namespace Nine.Navigation.Steering
         
         public IEnumerator<ISteeringBehavior> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
                 yield return array[i].Key;
         }
 

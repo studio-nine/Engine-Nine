@@ -139,7 +139,7 @@ namespace BEPUphysics.DataStructures
             if (toReturn)
             {
                 rayHit = rayHits[0];
-                for (int i = 1; i < rayHits.Count; i++)
+                for (int i = 1; i < rayHits.Count; ++i)
                 {
                     RayHit hit = rayHits[i];
                     if (hit.T < rayHit.T)
@@ -176,7 +176,7 @@ namespace BEPUphysics.DataStructures
         {
             var hitElements = Resources.GetIntList();
             tree.GetOverlaps(ray, maximumLength, hitElements);
-            for (int i = 0; i < hitElements.Count; i++)
+            for (int i = 0; i < hitElements.Count; ++i)
             {
                 Vector3 v1, v2, v3;
                 data.GetTriangle(hitElements[i], out v1, out v2, out v3);

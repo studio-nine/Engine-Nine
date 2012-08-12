@@ -47,7 +47,7 @@ namespace BEPUphysics.DataStructures
         {
             root = null;
             int count = elements.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 //Use a permuted version of the elements instead of the actual elements list.
                 //Permuting makes the input basically random, improving the quality of the tree.
@@ -74,7 +74,7 @@ namespace BEPUphysics.DataStructures
 
             maxDepth = 0;
             minDepth = int.MaxValue;
-            for (int i = 0; i < depths.Count; i++)
+            for (int i = 0; i < depths.Count; ++i)
             {
                 if (depths[i] > maxDepth)
                     maxDepth = depths[i];

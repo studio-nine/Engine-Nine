@@ -13,7 +13,7 @@
             get { return alphaFunction; }
             set { if (alphaFunction != value) { alphaFunction = value; NotifyShaderChanged(); } }
         }
-        private CompareFunction alphaFunction = MaterialConstants.AlphaFunction;
+        private CompareFunction alphaFunction = Constants.AlphaFunction;
 
         public int ReferenceAlpha { get; set; }
 

@@ -65,7 +65,7 @@
         public IEnumerable<int> GetChildBones(int bone)
         {
             var count = ParentBones.Count;
-            for (int i = bone + 1; i < count; i++)
+            for (int i = bone + 1; i < count; ++i)
                 if (ParentBones[i] == bone)
                     yield return i;
         }
@@ -76,7 +76,7 @@
         public void GetChildBones(int bone, ICollection<int> childBones)
         {
             var count = ParentBones.Count;
-            for (int i = bone + 1; i < count; i++)
+            for (int i = bone + 1; i < count; ++i)
                 if (ParentBones[i] == bone)
                     childBones.Add(i);
         }
@@ -132,7 +132,7 @@
                 throw new ArgumentOutOfRangeException("destinationBoneTransforms");
 
             int parent = 0;
-            for (int i = 0; i < BoneTransforms.Length; i++)
+            for (int i = 0; i < BoneTransforms.Length; ++i)
             {
                 if ((parent = GetParentBone(i)) < 0)
                 {
@@ -190,7 +190,7 @@
 
             CopyAbsoluteBoneTransformsTo(bones);
 
-            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; ++i)
             {
                 // Apply inverse bind pose
                 skin[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i];
@@ -223,7 +223,7 @@
 
             CopyAbsoluteBoneTransformsTo(bones);
 
-            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; ++i)
             {
                 // Apply inverse bind pose
                 skin[i] = InverseAbsoluteBindPose[i] * bones[SkeletonRoot + i] * world;
@@ -249,7 +249,7 @@
 
             CopyAbsoluteBoneTransformsTo(bones);
 
-            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; ++i)
             {
                 // Apply inverse bind pose
                 Matrix inverseAbsoluteBindPose = InverseAbsoluteBindPose[i];
@@ -271,7 +271,7 @@
 
             CopyAbsoluteBoneTransformsTo(bones);
 
-            for (int i = 0; i < InverseAbsoluteBindPose.Count; i++)
+            for (int i = 0; i < InverseAbsoluteBindPose.Count; ++i)
             {
                 // Apply inverse bind pose
                 Matrix inverseAbsoluteBindPose = InverseAbsoluteBindPose[i];
@@ -331,7 +331,7 @@
 
             public int IndexOf(string item)
             {
-                for (int i = 0; i < Model.Bones.Count; i++)
+                for (int i = 0; i < Model.Bones.Count; ++i)
                     if (Model.Bones[i].Name == item)
                         return i;
                 return -1;
@@ -370,7 +370,7 @@
 
             public void CopyTo(string[] array, int arrayIndex)
             {
-                for (int i = 0; i < Model.Bones.Count; i++)
+                for (int i = 0; i < Model.Bones.Count; ++i)
                     array[i + arrayIndex] = Model.Bones[i].Name;
             }
 
@@ -406,7 +406,7 @@
 
             public int IndexOf(int item)
             {
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < Count; ++i)
                     if (this[i] == item)
                         return i;
                 return -1;
@@ -445,7 +445,7 @@
 
             public void CopyTo(int[] array, int arrayIndex)
             {
-                for (int i = 0; i < Model.Bones.Count; i++)
+                for (int i = 0; i < Model.Bones.Count; ++i)
                     array[i + arrayIndex] = this[i];
             }
 
@@ -466,7 +466,7 @@
 
             public IEnumerator<int> GetEnumerator()
             {
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < Count; ++i)
                     yield return this[i];
             }
 

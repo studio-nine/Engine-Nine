@@ -56,7 +56,7 @@ namespace Nine.Graphics.Materials
         {
             GraphicsDevice.Textures[1] = null;
             GraphicsDevice.Textures[2] = null;
-            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.Settings.DefaultSamplerState;            
+            GraphicsDevice.SamplerStates[1] = GraphicsDevice.SamplerStates[2] = context.settings.SamplerState;            
         }
 
         public override void GetDependentPasses(ICollection<Type> passTypes)

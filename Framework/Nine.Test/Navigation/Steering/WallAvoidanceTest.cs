@@ -66,7 +66,7 @@
 
             int frames = 10000;
             bool hasFullyStopped = false;
-            for (int i = 0; i < frames; i++)
+            for (int i = 0; i < frames; ++i)
             {
                 steerer.Update(ElapsedTime);
                 if (steerer.Speed <= 0 && steerer.Force.LengthSquared() <= 0)

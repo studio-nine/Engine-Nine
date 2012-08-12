@@ -240,7 +240,7 @@
 
             if (EmitCount > 0)
             {
-                for (int i = 0; i < EmitCount; i++)
+                for (int i = 0; i < EmitCount; ++i)
                     EmitNewParticle(particleEffect, 0, ref particle);
                 return true;
             }

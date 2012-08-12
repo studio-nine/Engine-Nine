@@ -146,14 +146,14 @@
                 }
                 else
                 {
-                    w = context.GraphicsDevice.Viewport.Width;
-                    h = context.GraphicsDevice.Viewport.Height;
+                    w = context.graphics.Viewport.Width;
+                    h = context.graphics.Viewport.Height;
                 }
             }
 
-            var format = surfaceFormat ?? preferredFormat ?? (input != null ? input.Format : context.GraphicsDevice.PresentationParameters.BackBufferFormat);
+            var format = surfaceFormat ?? preferredFormat ?? (input != null ? input.Format : context.graphics.PresentationParameters.BackBufferFormat);
 
-            return RenderTargetPool.GetRenderTarget(context.GraphicsDevice
+            return RenderTargetPool.GetRenderTarget(context.graphics
                                                  , (int)(w * renderTargetScale)
                                                  , (int)(h * renderTargetScale)
                                                  , format
@@ -170,10 +170,10 @@
                 RenderTargetPool.Lock(InputTexture as RenderTarget2D);
 
                 if (fullScreenQuad == null)
-                    fullScreenQuad = new FullScreenQuad(context.GraphicsDevice);
+                    fullScreenQuad = new FullScreenQuad(context.graphics);
                 
-                context.GraphicsDevice.BlendState = BlendState;
-                context.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                context.graphics.BlendState = BlendState;
+                context.graphics.DepthStencilState = DepthStencilState.None;
 
                 Material.texture = InputTexture;
                 fullScreenQuad.Draw(context, Material);
@@ -189,8 +189,8 @@
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.RootPass.Passes.Add(this);
-            AddDependency(context.MainPass);
+            context.rootPass.Passes.Add(this);
+            AddDependency(context.mainPass);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.RootPass.Passes.Remove(this);
+            context.rootPass.Passes.Remove(this);
         }
         #endregion
     }

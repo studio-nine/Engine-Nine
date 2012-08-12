@@ -205,7 +205,7 @@ namespace BEPUphysics.NarrowPhaseSystems
         protected override void UpdateSingleThreaded()
         {
             int count = broadPhaseOverlaps.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 UpdateBroadPhaseOverlap(i);
             }

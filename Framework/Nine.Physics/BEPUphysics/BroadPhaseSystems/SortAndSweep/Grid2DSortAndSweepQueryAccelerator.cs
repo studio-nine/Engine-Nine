@@ -84,7 +84,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
                     //Since it only contains the sorted min intervals, we can't just start at a point in the middle of the list.
                     //Consider some giant bounding box that spans the entire list. 
                     for (int i = 0; i < cell.entries.count 
-                        && cell.entries.Elements[i].item.boundingBox.Min.X <= endingX; i++) //TODO: Try additional x axis pruning?
+                        && cell.entries.Elements[i].item.boundingBox.Min.X <= endingX; ++i) //TODO: Try additional x axis pruning?
                     {
                         float? intersects;
                         var item = cell.entries.Elements[i].item;
@@ -127,7 +127,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             Int2 min, max;
             Grid2DSortAndSweep.ComputeCell(ref boundingShape.Min, out min);
             Grid2DSortAndSweep.ComputeCell(ref boundingShape.Max, out max);
-            for (int i = min.Y; i <= max.Y; i++)
+            for (int i = min.Y; i <= max.Y; ++i)
             {
                 for (int j = min.Z; j <= max.Z; j++)
                 {
@@ -178,7 +178,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep
             Int2 min, max;
             Grid2DSortAndSweep.ComputeCell(ref box.Min, out min);
             Grid2DSortAndSweep.ComputeCell(ref box.Max, out max);
-            for (int i = min.Y; i <= max.Y; i++)
+            for (int i = min.Y; i <= max.Y; ++i)
             {
                 for (int j = min.Z; j <= max.Z; j++)
                 {

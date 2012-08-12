@@ -16,7 +16,7 @@ namespace Nine.Graphics.Drawing
 
         protected override void ClearItems()
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
                 this[i].Container = null;
             base.ClearItems();
 
@@ -62,7 +62,7 @@ namespace Nine.Graphics.Drawing
 
             if (topologyReorder != null)
             {
-                for (int i = 0; i < topologyReorder.Length; i++)
+                for (int i = 0; i < topologyReorder.Length; ++i)
                 {
                     var index = topologyReorder[i];
                     var pass = this[index];
@@ -72,7 +72,7 @@ namespace Nine.Graphics.Drawing
             }
             else
             {
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < Count; ++i)
                 {
                     var pass = this[i];
                     if (pass != null && pass.Enabled)
@@ -98,7 +98,7 @@ namespace Nine.Graphics.Drawing
                     topologyReorder = new int[Count];
 
                 // Sort by dependencies
-                for (int i = 0; i < Count; i++)
+                for (int i = 0; i < Count; ++i)
                     this[i].Id = i;
                 DependencyGraph.Sort(this, topologyReorder, this);
 
@@ -127,7 +127,7 @@ namespace Nine.Graphics.Drawing
                 return 0;
             
             var num = 0;
-            for (int i = 0; i < pass.DependentPasses.Count; i++)
+            for (int i = 0; i < pass.DependentPasses.Count; ++i)
             {
                 var e = pass.DependentPasses.Elements[i];
                 if (e.Container == this)

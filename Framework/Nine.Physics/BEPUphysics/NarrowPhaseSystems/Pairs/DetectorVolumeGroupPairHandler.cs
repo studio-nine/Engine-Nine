@@ -89,7 +89,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                 if (!containedPairs.Contains(other))
                     pairsToRemove.Add(other);
             }
-            for (int i = 0; i < pairsToRemove.count; i++)
+            for (int i = 0; i < pairsToRemove.count; ++i)
             {
                 var toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);

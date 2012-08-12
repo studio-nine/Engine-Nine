@@ -64,25 +64,25 @@ namespace Nine
             Triangle triangle;
             ContainmentType containment;
 
-            Matrix matrix = new Matrix();
-            if (geometry.Transform.HasValue)
-                matrix = geometry.Transform.Value;
-
+            Vector3[] positions;
+            ushort[] indices;
             bool? containsLastTriangle = null;
+            Matrix matrix = geometry.Transform;
+            geometry.GetTriangles(out positions, out indices);
 
-            for (int i = 0; i < geometry.Indices.Length; i += 3)
+            for (int i = 0; i < indices.Length; i += 3)
             {
                 if (geometry.Transform == null)
                 {
-                    triangle.V1 = geometry.Positions[geometry.Indices[i]];
-                    triangle.V2 = geometry.Positions[geometry.Indices[i + 1]];
-                    triangle.V3 = geometry.Positions[geometry.Indices[i + 2]];
+                    triangle.V1 = positions[indices[i]];
+                    triangle.V2 = positions[indices[i + 1]];
+                    triangle.V3 = positions[indices[i + 2]];
                 }
                 else
                 {
-                    Vector3.Transform(ref geometry.Positions[geometry.Indices[i]], ref matrix, out triangle.V1);
-                    Vector3.Transform(ref geometry.Positions[geometry.Indices[i + 1]], ref matrix, out triangle.V2);
-                    Vector3.Transform(ref geometry.Positions[geometry.Indices[i + 2]], ref matrix, out triangle.V3);
+                    Vector3.Transform(ref positions[indices[i]], ref matrix, out triangle.V1);
+                    Vector3.Transform(ref positions[indices[i + 1]], ref matrix, out triangle.V2);
+                    Vector3.Transform(ref positions[indices[i + 2]], ref matrix, out triangle.V3);
                 }
 
                 box.Contains(ref triangle, out containment);
@@ -265,7 +265,7 @@ namespace Nine
             result.Min = result.Max;
 
             var v = new Vector3();
-            for (int i = 1; i < corners.Length; i++)
+            for (int i = 1; i < corners.Length; ++i)
             {
                 Vector3.Transform(ref corners[i], ref transform, out v);
 

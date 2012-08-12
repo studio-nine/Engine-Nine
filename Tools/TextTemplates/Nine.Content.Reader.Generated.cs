@@ -27,24 +27,6 @@ namespace Nine
         }
     }
     /// <summary>
-    /// Content reader for <c>Component</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class ComponentReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Component>
-    {
-        protected override Nine.Component Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Component existingInstance)
-        {
-            if (existingInstance == null)
-                existingInstance = new Component();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.Tag = input.ReadObject<System.Object>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>CustomCurve</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -104,7 +86,7 @@ namespace Nine
                 existingInstance = new Group();
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.Children.Add(input.ReadObject<System.Object>());
             }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
@@ -144,7 +126,7 @@ namespace Nine
                 existingInstance = new Scene();
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.Children.Add(input.ReadObject<System.Object>());
             }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
@@ -202,7 +184,7 @@ namespace Nine.Animations
                 existingInstance = new AnimationGroup();
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
             }
             existingInstance.Repeat = input.ReadInt32();
@@ -226,7 +208,7 @@ namespace Nine.Animations
                 existingInstance = new AnimationPlayer();
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.Animations.Add(
                         input.ReadObject<System.String>(),
                         input.ReadObject<Nine.Animations.IAnimation>());
@@ -248,7 +230,7 @@ namespace Nine.Animations
                 existingInstance = new AnimationSequence();
             {
                 var count = input.ReadInt32();
-                for (var i = 0; i < count; i++)
+                for (var i = 0; i < count; ++i)
                     existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
             }
             existingInstance.Repeat = input.ReadInt32();

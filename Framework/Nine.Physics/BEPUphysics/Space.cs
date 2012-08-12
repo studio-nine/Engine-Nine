@@ -523,7 +523,7 @@ namespace BEPUphysics
         public void Update(float dt)
         {
             TimeStepSettings.AccumulatedTime += dt;
-            for (int i = 0; i < TimeStepSettings.MaximumTimeStepsPerFrame; i++)
+            for (int i = 0; i < TimeStepSettings.MaximumTimeStepsPerFrame; ++i)
             {
                 if (TimeStepSettings.AccumulatedTime >= TimeStepSettings.TimeStepDuration)
                 {
@@ -576,7 +576,7 @@ namespace BEPUphysics
             var resultsList = Resources.GetRayCastResultList();
             bool didHit = RayCast(ray, maximumLength, resultsList);
             result = resultsList.Elements[0];
-            for (int i = 1; i < resultsList.count; i++)
+            for (int i = 1; i < resultsList.count; ++i)
             {
                 RayCastResult candidate = resultsList.Elements[i];
                 if (candidate.HitData.T < result.HitData.T)
@@ -600,7 +600,7 @@ namespace BEPUphysics
             var resultsList = Resources.GetRayCastResultList();
             bool didHit = RayCast(ray, maximumLength, filter, resultsList);
             result = resultsList.Elements[0];
-            for (int i = 1; i < resultsList.count; i++)
+            for (int i = 1; i < resultsList.count; ++i)
             {
                 RayCastResult candidate = resultsList.Elements[i];
                 if (candidate.HitData.T < result.HitData.T)
@@ -624,7 +624,7 @@ namespace BEPUphysics
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
 
-                for (int i = 0; i < outputIntersections.count; i++)
+                for (int i = 0; i < outputIntersections.count; ++i)
                 {
                     RayHit rayHit;
                     BroadPhaseEntry candidate = outputIntersections.Elements[i];
@@ -652,7 +652,7 @@ namespace BEPUphysics
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
 
-                for (int i = 0; i < outputIntersections.count; i++)
+                for (int i = 0; i < outputIntersections.count; ++i)
                 {
                     RayHit rayHit;
                     BroadPhaseEntry candidate = outputIntersections.Elements[i];

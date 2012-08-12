@@ -276,7 +276,7 @@ namespace BEPUphysics.UpdateableSystems
             if (collisionEntries.Count > 30 && ThreadManager.ThreadCount > 1)
                 ThreadManager.ForLoop(0, collisionEntries.Count, analyzeCollisionEntryDelegate);
             else
-                for (int i = 0; i < collisionEntries.Count; i++)
+                for (int i = 0; i < collisionEntries.Count; ++i)
                 {
                     AnalyzeCollisionEntry(i);
                 }
@@ -366,7 +366,7 @@ namespace BEPUphysics.UpdateableSystems
             float maxLength = surfacePlaneHeight - entityBoundingBox.Min.Y;
             submergedCenter = new Vector3();
             submergedVolume = 0;
-            for (int i = 0; i < samplePointsPerDimension; i++)
+            for (int i = 0; i < samplePointsPerDimension; ++i)
             {
                 for (int j = 0; j < samplePointsPerDimension; j++)
                 {

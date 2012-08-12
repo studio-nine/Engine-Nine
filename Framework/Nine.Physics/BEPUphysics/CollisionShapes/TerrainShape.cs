@@ -99,7 +99,7 @@ namespace BEPUphysics.CollisionShapes
                     maxZvertex = new Vector3();
 
             //Find the extreme locations.
-            for (int i = 0; i < heights.GetLength(0); i++)
+            for (int i = 0; i < heights.GetLength(0); ++i)
             {
                 for (int j = 0; j < heights.GetLength(1); j++)
                 {
@@ -498,7 +498,7 @@ namespace BEPUphysics.CollisionShapes
             int minY = Math.Max((int)localSpaceBoundingBox.Min.Z, 0);
             int maxX = Math.Min((int)localSpaceBoundingBox.Max.X, width - 2);
             int maxY = Math.Min((int)localSpaceBoundingBox.Max.Z, heights.GetLength(1) - 2);
-            for (int i = minX; i <= maxX; i++)
+            for (int i = minX; i <= maxX; ++i)
             {
                 for (int j = minY; j <= maxY; j++)
                 {
@@ -582,7 +582,7 @@ namespace BEPUphysics.CollisionShapes
             int minY = Math.Max((int)localBoundingBox.Min.Z, 0);
             int maxX = Math.Min((int)localBoundingBox.Max.X, width - 2);
             int maxY = Math.Min((int)localBoundingBox.Max.Z, heights.GetLength(1) - 2);
-            for (int i = minX; i <= maxX; i++)
+            for (int i = minX; i <= maxX; ++i)
             {
                 for (int j = minY; j <= maxY; j++)
                 {

@@ -201,7 +201,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
 
                     //Do not yet create a new contact.  Check to see if an 'inner contact' with id == 2 already exists.
                     bool addContact = true;
-                    for (int i = 0; i < contacts.count; i++)
+                    for (int i = 0; i < contacts.count; ++i)
                     {
                         if (contacts.Elements[i].Id == 2)
                         {

@@ -14,7 +14,7 @@ namespace Nine
     /// Defines a logic group of transformable objects to create a transform and bounding box hierarchy.
     /// </summary>
     [ContentProperty("Children")]
-    public class Group : Transformable, IContainer, INotifyCollectionChanged<object>, Nine.IUpdateable, IBoundable, IDisposable
+    public class Group : Transformable, IContainer, INotifyCollectionChanged<object>, Nine.IUpdateable, IDisposable
     {
         #region Children
         /// <summary>
@@ -50,7 +50,7 @@ namespace Nine
                     throw new ArgumentException("name");
 
                 var count = children.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var child = children[i] as Nine.Object;
                     if (child != null && child.Name == name)
@@ -181,7 +181,7 @@ namespace Nine
         /// Computes the axis aligned bounding box that exactly contains the bounds of all child node.
         /// </summary>
         /// <remarks>
-        /// Any children that implements <see cref="IBoundable"/> will be included in the final bounding box.
+        /// Any children that implements <see cref="ISpatialQueryable"/> will be included in the final bounding box.
         /// </remarks>
         public BoundingBox BoundingBox
         {
@@ -190,9 +190,9 @@ namespace Nine
                 var hasBoundable = false;
                 var bounds = new BoundingBox();
                 var count = children.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
-                    var boundable = children[i] as IBoundable;
+                    var boundable = children[i] as ISpatialQueryable;
                     if (boundable != null)
                     {
                         if (hasBoundable)
@@ -219,7 +219,7 @@ namespace Nine
         protected override void OnTransformChanged()
         {
             var count = children.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var transformable = children[i] as Transformable;
                 if (transformable != null)
@@ -283,7 +283,7 @@ namespace Nine
         /// </summary>
         public T Find<T>() where T : class
         {
-            for (int i = 0; i < children.Count; i++)
+            for (int i = 0; i < children.Count; ++i)
             {
                 var child = children[i] as T;
                 if (child != null)
@@ -355,7 +355,7 @@ namespace Nine
         public virtual void Update(TimeSpan elapsedTime)
         {
             var count = children.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var updateable = children[i] as Nine.IUpdateable;
                 if (updateable != null)
@@ -383,7 +383,7 @@ namespace Nine
         {
             if (disposing)
             {
-                for (var i = 0; i < children.Count; i++)
+                for (var i = 0; i < children.Count; ++i)
                 {
                     IDisposable disposable = children[i] as IDisposable;
                     if (disposable != null)

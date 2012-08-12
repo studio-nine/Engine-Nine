@@ -48,7 +48,7 @@
                 return tag.RenderTarget;
             }
 
-            for (int i = 0; i < tags.Count; i++)
+            for (int i = 0; i < tags.Count; ++i)
             {
                 if ((tag = tags[i]).RefCount <= 0)
                     return tag.RenderTarget;                

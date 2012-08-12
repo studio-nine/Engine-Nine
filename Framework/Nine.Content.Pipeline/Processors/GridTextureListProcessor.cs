@@ -71,9 +71,9 @@
             int width = input.Mipmaps[0].Width;
             int height = input.Mipmaps[0].Height;
                         
-            for (int y = 0; y < RowCount; y++)
+            for (int y = 0; y < RowCount; ++y)
             {
-                for (int x = 0; x < ColumnCount; x++)
+                for (int x = 0; x < ColumnCount; ++x)
                 {
                     result.SpriteTextures.Add(0);
                     result.SpriteRectangles.Add(new Rectangle(

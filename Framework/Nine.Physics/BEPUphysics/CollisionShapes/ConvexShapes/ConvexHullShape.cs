@@ -121,7 +121,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             int maxYIndex = 0;
             int minZIndex = 0;
             int maxZIndex = 0;
-            for (int i = 1; i < vertices.count; i++)
+            for (int i = 1; i < vertices.count; ++i)
             {
                 float dot;
                 Vector3.Dot(ref vertices.Elements[i], ref right, out dot);
@@ -185,7 +185,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
             float max;
             Vector3.Dot(ref vertices.Elements[0], ref direction, out max);
             int maxIndex = 0;
-            for (int i = 1; i < vertices.count; i++)
+            for (int i = 1; i < vertices.count; ++i)
             {
                 float dot;
                 Vector3.Dot(ref vertices.Elements[i], ref direction, out dot);
@@ -436,7 +436,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         public override float ComputeMaximumRadius()
         {
             float maximumRadius = 0;
-            for (int i = 0; i < vertices.count; i++)
+            for (int i = 0; i < vertices.count; ++i)
             {
                 float tempDist = vertices.Elements[i].Length();
                 if (maximumRadius < tempDist)

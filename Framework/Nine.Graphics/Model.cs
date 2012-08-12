@@ -118,11 +118,6 @@ namespace Nine.Graphics
         public bool UseModelTextures { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether lighting is enabled.
-        /// </summary>
-        public bool LightingEnabled { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether multi-pass lighting is enabled.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -263,7 +258,6 @@ namespace Nine.Graphics
             Visible = true;
             CastShadow = true;
             ReceiveShadow = false;
-            LightingEnabled = true;
             UseModelTextures = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;
@@ -300,8 +294,8 @@ namespace Nine.Graphics
         private void UpdateModel()
         {
             skeleton = null;
-            positions = null;
-            indices = null;
+            geometryPositions = null;
+            geometryIndices = null;
             animations = null;
             orientedBoundingBox = new BoundingBox();
             boundingBox = new BoundingBox();
@@ -346,7 +340,7 @@ namespace Nine.Graphics
                 children.Clear();
                 children.AddRange(modelMeshes);
                 if (attachments != null)
-                    for (int i = 0; i < attachments.Count; i++)
+                    for (int i = 0; i < attachments.Count; ++i)
                         if (attachments[i].Transformable != null)
                             children.Add(attachments[i].Transformable);
             }
@@ -411,7 +405,7 @@ namespace Nine.Graphics
             {
                 if (boneTransformNeedUpdate)
                     attachments.UpdateTransforms();
-                for (int i = 0; i < attachments.Count; i++)
+                for (int i = 0; i < attachments.Count; ++i)
                 {
                     var updateable = attachments[i].Transformable as Nine.IUpdateable;
                     if (updateable != null)
@@ -449,43 +443,29 @@ namespace Nine.Graphics
         #endregion
 
         #region IGeometry
-        Matrix? IGeometry.Transform { get { return AbsoluteTransform; } }
-
-        Vector3[] IGeometry.Positions
+        Matrix IGeometry.Transform 
         {
-            get
-            {
-#if SILVERLIGHT
-                throw new NotSupportedException();
-#else
-                if (positions == null && source != null)
-                {
-                    positions = new Vector3[source.CopyPositionsTo(null, 0)];
-                    source.CopyPositionsTo(positions, 0);
-                }
-                return positions;
-#endif
-            }
+            get { return AbsoluteTransform; } 
         }
-        Vector3[] positions;
 
-        ushort[] IGeometry.Indices
+        /// <summary>
+        /// Gets the triangle vertices of the target geometry.
+        /// </summary>        
+        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
-            get
+            if (geometryPositions == null && source != null)
             {
-#if SILVERLIGHT
-                throw new NotSupportedException();
-#else
-                if (indices == null && source != null)
-                {
-                    indices = new ushort[source.CopyIndicesTo(null, 0)];
-                    source.CopyIndicesTo(indices, 0);
-                }
-                return indices;
-#endif
+                geometryPositions = new Vector3[source.CopyPositionsTo(null, 0)];
+                source.CopyPositionsTo(geometryPositions, 0);
+
+                geometryIndices = new ushort[source.CopyIndicesTo(null, 0)];
+                source.CopyIndicesTo(geometryIndices, 0);
             }
+            vertices = this.geometryPositions;
+            indices = this.geometryIndices;
         }
-        ushort[] indices;
+        Vector3[] geometryPositions;
+        ushort[] geometryIndices;
         #endregion
 
         #region ISupportInstancing

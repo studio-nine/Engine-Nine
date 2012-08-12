@@ -51,7 +51,7 @@
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
             if (Material == null)
-                Material = adoptionMaterial = new AdaptionMaterial(context.GraphicsDevice);
+                Material = adoptionMaterial = new AdaptionMaterial(context.graphics);
             else if (Material != adoptionMaterial)
                 throw new InvalidOperationException();
 
@@ -73,15 +73,15 @@
                 }
                 else
                 {
-                    var graphics = context.GraphicsDevice;
+                    var graphics = context.graphics;
                     graphics.Textures[0] = adoptionMaterial.texture;
                     graphics.Textures[1] = lastFrame;
                     graphics.SamplerStates[0] = graphics.SamplerStates[1] = SamplerState.PointClamp;
-                    adoptionMaterial.effect.Delta.SetValue((1 - (float)Math.Pow(0.98f, 30 * context.ElapsedSeconds)) * Speed);
+                    adoptionMaterial.effect.Delta.SetValue((1 - (float)Math.Pow(0.98f, 30 * context.elapsedSeconds)) * Speed);
                  
                     base.Draw(context, drawables);
 
-                    graphics.SamplerStates[1] = context.Settings.DefaultSamplerState;
+                    graphics.SamplerStates[1] = context.settings.SamplerState;
                 }
             }
             finally
@@ -105,7 +105,7 @@
             try
             {
                 if (basicMaterial == null)
-                    basicMaterial = new BasicMaterial(context.GraphicsDevice) { SamplerState = SamplerState.PointClamp };
+                    basicMaterial = new BasicMaterial(context.graphics) { SamplerState = SamplerState.PointClamp };
                 Material = basicMaterial;
                 base.Draw(context, drawables);
             }

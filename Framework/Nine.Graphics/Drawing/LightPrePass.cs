@@ -17,7 +17,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets the drawable object that is used to generate the light buffer.
         /// </summary>
-        IDrawableObject GetLightGeometry(DrawingContext context);
+        IDrawableObject PrepareLightGeometry(DrawingContext context);
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ namespace Nine.Graphics.Drawing
 
             if (lightQuery == null)
             {
-                lightQuery = context.CreateSpatialQuery<IDeferredLight>();
+                lightQuery = context.CreateSpatialQuery<IDeferredLight>(null);
                 deferredLights = new FastList<IDeferredLight>();
             }
                         
@@ -167,7 +167,7 @@ namespace Nine.Graphics.Drawing
                 BeginLights(context); 
                 
                 lightQuery.FindAll(context.ViewFrustum, deferredLights);
-                for (int i = 0; i < deferredLights.Count; i++)
+                for (int i = 0; i < deferredLights.Count; ++i)
                     DrawLight(context, deferredLights[i]);
             }
             finally
@@ -192,7 +192,7 @@ namespace Nine.Graphics.Drawing
             CreateDepthNormalBuffers();
 
             // Maintain render target stack
-            GraphicsExtensions.PushRenderTarget(context.GraphicsDevice, null);
+            GraphicsExtensions.PushRenderTarget(context.graphics, null);
 
             renderTargetBinding[0] = new RenderTargetBinding(depthBuffer);
             renderTargetBinding[1] = new RenderTargetBinding(normalBuffer);
@@ -211,7 +211,7 @@ namespace Nine.Graphics.Drawing
             if (!hasSceneBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
-            GraphicsExtensions.PopRenderTarget(context.GraphicsDevice);
+            GraphicsExtensions.PopRenderTarget(context.graphics);
 
             context.textures[TextureUsage.DepthBuffer] = DepthBuffer;
             context.textures[TextureUsage.NormalBuffer] = NormalBuffer;
@@ -255,7 +255,7 @@ namespace Nine.Graphics.Drawing
             if (!hasLightBegin)
                 throw new InvalidOperationException(Strings.NotInBeginEndPair);
 
-            var lightGeometry = light.GetLightGeometry(context);
+            var lightGeometry = light.PrepareLightGeometry(context);
             if (lightGeometry == null || !lightGeometry.Visible)
                 return;
 
@@ -306,7 +306,7 @@ namespace Nine.Graphics.Drawing
             GraphicsDevice.BlendState = BlendState.Opaque;
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = context.Settings.DefaultSamplerState;
+            GraphicsDevice.SamplerStates[0] = GraphicsDevice.SamplerStates[1] = context.settings.SamplerState;
 
             context.textures[TextureUsage.LightBuffer] = LightBuffer;
             return LightBuffer;

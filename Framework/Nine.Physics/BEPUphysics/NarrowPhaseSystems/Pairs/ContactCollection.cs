@@ -144,7 +144,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         public bool Contains(ContactInformation item)
         {
             int count = Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 if (this[i].Contact == item.Contact)
                     return true;
@@ -159,7 +159,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         public void CopyTo(ContactInformation[] array, int arrayIndex)
         {
             int count = Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 array[arrayIndex + i] = this[i];
             }
@@ -175,7 +175,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         public int IndexOf(ContactInformation item)
         {
             int count = Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 if (this[i].Contact == item.Contact)
                     return i;

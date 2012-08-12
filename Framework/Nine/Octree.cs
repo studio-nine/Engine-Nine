@@ -46,7 +46,7 @@ namespace Nine
             Vector3.Add(ref min, ref max, out center);
             Vector3.Multiply(ref center, 0.5f, out center);
 
-            for (int i = 0; i < ChildCount; i++)
+            for (int i = 0; i < ChildCount; ++i)
             {
                 var child = new OctreeNode<T>();
                 child.Bounds = new BoundingBox

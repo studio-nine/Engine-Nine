@@ -135,7 +135,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                     triangle.collisionMargin = 0;
                     Vector3 terrainUp = new Vector3(terrain.worldTransform.LinearTransform.M21, terrain.worldTransform.LinearTransform.M22, terrain.worldTransform.LinearTransform.M23);
                     //Spherecast against all triangles to find the earliest time.
-                    for (int i = 0; i < TerrainManifold.overlappedTriangles.count; i++)
+                    for (int i = 0; i < TerrainManifold.overlappedTriangles.count; ++i)
                     {
                         terrain.Shape.GetTriangle(ref TerrainManifold.overlappedTriangles.Elements[i], ref terrain.worldTransform, out triangle.vA, out triangle.vB, out triangle.vC);
                         //Put the triangle into 'localish' space of the convex.
@@ -186,7 +186,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal and friction forces.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (int i = 0; i < contactConstraint.frictionConstraints.count; i++)
+            for (int i = 0; i < contactConstraint.frictionConstraints.count; ++i)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {

@@ -34,8 +34,8 @@ namespace Nine.Graphics.Materials
 
         public int ReferenceAlpha
         {
-            get { return referenceAlpha.HasValue ? referenceAlpha.Value : MaterialConstants.ReferenceAlpha; }
-            set { referenceAlpha = (value == MaterialConstants.ReferenceAlpha ? (int?)null : value); }
+            get { return referenceAlpha.HasValue ? referenceAlpha.Value : Constants.ReferenceAlpha; }
+            set { referenceAlpha = (value == Constants.ReferenceAlpha ? (int?)null : value); }
         }
         internal int? referenceAlpha;
 
@@ -61,7 +61,7 @@ namespace Nine.Graphics.Materials
         partial void EndApplyLocalParameters(DrawingContext context)
         {
             if (referenceAlpha.HasValue)
-                effect.referenceAlpha.SetValue(MaterialConstants.ReferenceAlpha);
+                effect.referenceAlpha.SetValue(Constants.ReferenceAlpha);
         }
 
         public void SetBoneTransforms(Matrix[] boneTransforms)

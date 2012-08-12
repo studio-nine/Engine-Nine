@@ -73,7 +73,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             var overlappedElements = Resources.GetCollidableList();
             staticGroup.Shape.CollidableTree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.count; i++)
+            for (int i = 0; i < overlappedElements.count; ++i)
             {
                 var staticCollidable = overlappedElements.Elements[i] as StaticCollidable;
                 TryToAdd(overlappedElements.Elements[i], mesh, staticCollidable != null ? staticCollidable.Material : null);

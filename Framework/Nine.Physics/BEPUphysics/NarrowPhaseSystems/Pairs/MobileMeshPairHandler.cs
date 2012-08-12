@@ -173,7 +173,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
                     var triangle = Resources.GetTriangle();
                     triangle.collisionMargin = 0;
                     //Spherecast against all triangles to find the earliest time.
-                    for (int i = 0; i < MeshManifold.overlappedTriangles.count; i++)
+                    for (int i = 0; i < MeshManifold.overlappedTriangles.count; ++i)
                     {
                         MeshBoundingBoxTreeData data = mobileMesh.Shape.TriangleMesh.Data;
                         int triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
@@ -233,7 +233,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal and friction forces.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (int i = 0; i < contactConstraint.frictionConstraints.count; i++)
+            for (int i = 0; i < contactConstraint.frictionConstraints.count; ++i)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {

@@ -30,7 +30,7 @@
             {
                 if (depthBufferEnabled != value)
                 {
-                    for (int i = 0; i < blurs.Count; i++)
+                    for (int i = 0; i < blurs.Count; ++i)
                         blurs[i].DepthBufferEnabled = value;
                     depthBufferEnabled = value;
                 }
@@ -50,7 +50,7 @@
                 throw new ArgumentNullException("graphics");
 
             GraphicsDevice = graphics;
-            BlurAmount = MaterialConstants.BlurAmount;
+            BlurAmount = Constants.BlurAmount;
         }
 
         private void UpdateBlurAmount()

@@ -45,7 +45,7 @@
         protected override void  OnBuild()
         {
             // Create a ring of triangles around the outside of the cylinder.
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i < tessellation; ++i)
             {
                 Vector3 normal = GetCircleVector(i, tessellation);
 
@@ -73,7 +73,7 @@
         void CreateCap(int tessellation, float height, float radius, Vector3 normal)
         {
             // Create cap indices.
-            for (int i = 0; i < tessellation - 2; i++)
+            for (int i = 0; i < tessellation - 2; ++i)
             {
                 if (normal.Y > 0)
                 {
@@ -90,7 +90,7 @@
             }
 
             // Create cap vertices.
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i < tessellation; ++i)
             {
                 Vector3 position = GetCircleVector(i, tessellation) * radius;
                 if (normal.Y > 0)

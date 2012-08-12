@@ -28,37 +28,21 @@ namespace Nine
     }
 
     /// <summary>
-    /// Interface for an object with a bounding box that can be queryed.
-    /// </summary>
-    public interface IBoundable
-    {
-        /// <summary>
-        /// Gets the axis aligned bounding box in world space.
-        /// </summary>
-        BoundingBox BoundingBox { get; }
-    }
-
-    /// <summary>
     /// Interface for a 3D geometry made up of triangles
     /// </summary>
     public interface IGeometry
     {
-        //void GetTriangles(int triangleUsage, ref BoundingBox bounds, out Vector3[] vertices, out ushort[] indices, out int[][] adjacencies);
+        /// <summary>
+        /// Gets an optional world transform matrix of the target geometry.
+        /// </summary>
+        Matrix Transform { get; }
 
         /// <summary>
-        /// Gets the optional transformation matrix of this <see cref="IGeometry"/>.
+        /// Gets the triangle vertices of the target geometry.
         /// </summary>
-        Matrix? Transform { get; }
-
-        /// <summary>
-        /// Gets a readonly list of vertex positions.
-        /// </summary>
-        Vector3[] Positions { get; }
-
-        /// <summary>
-        /// Gets a read-only list of geometry indices.
-        /// </summary>
-        ushort[] Indices { get; }
+        /// <param name="vertices">Output vertex buffer</param>
+        /// <param name="indices">Output index buffer</param>
+        void GetTriangles(out Vector3[] vertices, out ushort[] indices);
     }
 
     /// <summary>
@@ -69,7 +53,7 @@ namespace Nine
         /// <summary>
         /// Creates a spatial query of the specified target type.
         /// </summary>
-        ISpatialQuery<T> CreateSpatialQuery<T>() where T : class;
+        ISpatialQuery<T> CreateSpatialQuery<T>(Predicate<T> condition) where T : class;
     }
 
     /// <summary>
@@ -80,33 +64,38 @@ namespace Nine
         /// <summary>
         /// Finds all the objects that intersects with the specified ray.
         /// </summary>
-        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        /// <param name="result">The caller is responsible for clearing the result collection</param>
         void FindAll(ref Ray ray, ICollection<T> result);
 
         /// <summary>
         /// Finds all the objects resides within the specified bounding sphere.
         /// </summary>
-        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        /// <param name="result">The caller is responsible for clearing the result collection</param>
         void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result);
 
         /// <summary>
         /// Finds all the objects that intersects with the specified bounding box.
         /// </summary>
-        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        /// <param name="result">The caller is responsible for clearing the result collection</param>
         void FindAll(ref BoundingBox boundingBox, ICollection<T> result);
 
         /// <summary>
         /// Finds all the objects resides within the specified bounding frustum.
         /// </summary>
-        /// <param name="result">The caller is responsable for clearing the result collection</param>
+        /// <param name="result">The caller is responsible for clearing the result collection</param>
         void FindAll(BoundingFrustum boundingFrustum, ICollection<T> result);
     }
 
     /// <summary>
     /// Interface for an object that can be queried by a scene manager.
     /// </summary>
-    public interface ISpatialQueryable : IBoundable
+    public interface ISpatialQueryable
     {
+        /// <summary>
+        /// Gets the axis aligned bounding box of this instance in world space.
+        /// </summary>
+        BoundingBox BoundingBox { get; }
+
         /// <summary>
         /// Occurs when the bounding box changed.
         /// </summary>
@@ -159,5 +148,22 @@ namespace Nine
         /// Raised when an element is removed from the collection.
         /// </summary>
         event Action<T> Removed;
+    }
+    
+    /// <summary>
+    /// Interface for an object that can be picked by a given ray.
+    /// </summary>
+    public interface IPickable
+    {
+        /// <summary>
+        /// Gets whether the object contains the given point.
+        /// </summary>
+        bool Contains(Vector3 point);
+
+        /// <summary>
+        /// Gets the nearest intersection point from the specified picking ray.
+        /// </summary>
+        /// <returns>Distance to the start of the ray.</returns>
+        float? Intersects(Ray ray);
     }
 }

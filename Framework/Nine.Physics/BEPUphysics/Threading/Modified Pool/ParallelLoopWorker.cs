@@ -90,7 +90,7 @@ namespace BEPUphysics.Threading
                     int beginIndex = endIndex - iterationsPerSteal;
 
                     //Do the job piece.  Make sure you don't do more than exists in the list itself.
-                    for (int i = beginIndex; i < endIndex && i < finalIndex; i++)
+                    for (int i = beginIndex; i < endIndex && i < finalIndex; ++i)
                     {
                         manager.currentLoopBody(i);
                     }

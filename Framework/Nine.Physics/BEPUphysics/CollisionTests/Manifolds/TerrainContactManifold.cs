@@ -125,7 +125,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                         PenetrationDepth = -rayHit.T * dot + convex.Shape.minimumRadius
                     };
                     bool found = false;
-                    for (int i = 0; i < contacts.count; i++)
+                    for (int i = 0; i < contacts.count; ++i)
                     {
                         if (contacts.Elements[i].Id == 2)
                         {

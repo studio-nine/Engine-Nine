@@ -65,14 +65,14 @@
 
             for (int z = 0; z < map.Height; z++)
             {
-                for (int x = 0; x < map.Width; x++)
+                for (int x = 0; x < map.Width; ++x)
                 {
                     var probability = map.GetPixel(x, z) * Density * 0.0001 * Step * Step;
                     var count = (int)Math.Floor(probability);
                     if (random.NextDouble() < probability - count)
                         count++;
 
-                    for (int i = 0; i < count; i++)
+                    for (int i = 0; i < count; ++i)
                     {
                         var xx = random.NextDouble();
                         var zz = random.NextDouble();

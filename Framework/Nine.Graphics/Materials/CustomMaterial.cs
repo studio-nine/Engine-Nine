@@ -81,9 +81,9 @@ namespace Nine.Graphics.Materials
                 if (previous == null || previous.source != source)
                     parameters.ApplyGlobalParameters(context, this);
                 
-                context.GraphicsDevice.Textures[0] = texture;
+                context.graphics.Textures[0] = texture;
                 if (SamplerState != null)
-                    context.GraphicsDevice.SamplerStates[0] = SamplerState;
+                    context.graphics.SamplerStates[0] = SamplerState;
 
                 parameters.BeginApplyLocalParameters(context, this);
                 source.CurrentTechnique.Passes[0].Apply();
@@ -95,7 +95,7 @@ namespace Nine.Graphics.Materials
             if (source != null)
                 parameters.EndApplyLocalParameters();
             if (SamplerState != null)
-                context.GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+                context.graphics.SamplerStates[0] = context.settings.SamplerState;
         }
 
         #region IEffectParameterProvider

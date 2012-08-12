@@ -48,7 +48,7 @@
         protected override void OnBuild()
         {
             // First we loop around the main ring of the torus.
-            for (int i = 0; i < tessellation; i++)
+            for (int i = 0; i < tessellation; ++i)
             {
                 float outerAngle = i * MathHelper.TwoPi / tessellation;
 

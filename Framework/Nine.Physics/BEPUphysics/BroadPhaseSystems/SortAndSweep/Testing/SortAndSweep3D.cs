@@ -88,7 +88,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep.Testing
             Overlaps.Clear();
 
             //Sort along x axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (int i = 1; i < entriesX.count; i++)
+            for (int i = 1; i < entriesX.count; ++i)
             {
                 var entry = entriesX.Elements[i];
                 for (int j = i - 1; j >= 0; j--)
@@ -104,7 +104,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep.Testing
 
             }
             //Sort along y axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (int i = 1; i < entriesY.count; i++)
+            for (int i = 1; i < entriesY.count; ++i)
             {
                 var entry = entriesY.Elements[i];
                 for (int j = i - 1; j >= 0; j--)
@@ -120,7 +120,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep.Testing
 
             }
             //Sort along z axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (int i = 1; i < entriesZ.count; i++)
+            for (int i = 1; i < entriesZ.count; ++i)
             {
                 var entry = entriesZ.Elements[i];
                 for (int j = i - 1; j >= 0; j--)
@@ -140,7 +140,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep.Testing
 
             //Sweep the list looking for overlaps.
             //Sweep the X axis first; in this phase, add overlaps to the hash set if they exist.
-            for (int i = 0; i < entriesX.count; i++)
+            for (int i = 0; i < entriesX.count; ++i)
             {
                 BoundingBox a = entriesX.Elements[i].boundingBox;
                 for (int j = i + 1; j < entriesX.count && a.Max.X > entriesX.Elements[j].boundingBox.Min.X; j++)
@@ -149,7 +149,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep.Testing
                 }
             }
             //Sweep the Y axis second; same thing
-            for (int i = 0; i < entriesY.count; i++)
+            for (int i = 0; i < entriesY.count; ++i)
             {
                 BoundingBox a = entriesY.Elements[i].boundingBox;
                 for (int j = i + 1; j < entriesY.count && a.Max.Y > entriesY.Elements[j].boundingBox.Min.Y; j++)
@@ -158,7 +158,7 @@ namespace BEPUphysics.BroadPhaseSystems.SortAndSweep.Testing
                 }
             }
             //Sweep the Z axis last
-            for (int i = 0; i < entriesZ.count; i++)
+            for (int i = 0; i < entriesZ.count; ++i)
             {
                 BoundingBox a = entriesZ.Elements[i].boundingBox;
                 for (int j = i + 1; j < entriesZ.count && a.Max.Z > entriesZ.Elements[j].boundingBox.Min.Z; j++)

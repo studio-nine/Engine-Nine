@@ -42,7 +42,7 @@ namespace Nine
             Array.Clear(dependencyMatrix, 0, dependencyMatrix.Length);
             Array.Clear(dependencies, 0, dependencies.Length);
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length; ++i)
             {
                 var dependencyCount = dependencyProvider.GetDependencies(elements, i, dependencies);
                 for (int j = 0; j < dependencyCount; j++)
@@ -60,7 +60,7 @@ namespace Nine
             {
                 bool isCyclic = true;
 
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < length; ++i)
                 {
                     if (dependencies[i] < 0)
                         continue;

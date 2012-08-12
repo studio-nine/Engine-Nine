@@ -215,7 +215,7 @@ namespace BEPUphysics.Paths
 
             float speed = GetSpeedAtCurveTime(Curve.ControlPoints[minIndex].Time);
             float previousSpeed = speed;
-            for (int i = minIndex; i < maxIndex; i++)
+            for (int i = minIndex; i < maxIndex; ++i)
             {
                 previousValue = currentValue;
                 currentValue = Curve.ControlPoints[i].Value;

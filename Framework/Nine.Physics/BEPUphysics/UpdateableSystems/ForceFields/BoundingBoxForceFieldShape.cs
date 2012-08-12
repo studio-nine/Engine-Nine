@@ -38,7 +38,7 @@ namespace BEPUphysics.UpdateableSystems.ForceFields
         {
             affectedEntities.Clear();
             ForceField.QueryAccelerator.GetEntries(BoundingBox, affectedEntries);
-            for (int i = 0; i < affectedEntries.count; i++)
+            for (int i = 0; i < affectedEntries.count; ++i)
             {
                 var EntityCollidable = affectedEntries[i] as EntityCollidable;
                 if (EntityCollidable != null)

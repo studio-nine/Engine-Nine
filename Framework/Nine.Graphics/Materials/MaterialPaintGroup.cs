@@ -38,7 +38,7 @@ namespace Nine.Graphics.Materials
         protected internal override void OnBind()
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].ParameterSuffix = string.Concat(materialParts[i].ParameterSuffix, ParameterSuffix);
 
             materialParts.Bind(MaterialGroup);
@@ -53,7 +53,7 @@ namespace Nine.Graphics.Materials
             result.Add(typeof(MaterialParts.EndPaintGroupMaterialPart));
 
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].GetDependentParts(usage, result);
         }
 
@@ -63,7 +63,7 @@ namespace Nine.Graphics.Materials
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].ApplyGlobalParameters(context);
         }
 
@@ -73,7 +73,7 @@ namespace Nine.Graphics.Materials
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].BeginApplyLocalParameters(context, material);
         }
 
@@ -83,7 +83,7 @@ namespace Nine.Graphics.Materials
         protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].EndApplyLocalParameters(context);
         }
 
@@ -130,7 +130,7 @@ namespace Nine.Graphics.Materials
         public override void SetTexture(TextureUsage textureUsage, Texture texture)
         {
             var count = materialParts.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 materialParts[i].SetTexture(textureUsage, texture);
         }
 
@@ -157,7 +157,7 @@ namespace Nine.Graphics.Materials
         protected internal override MaterialPart Clone()
         {
             var result = new MaterialPaintGroup();
-            for (int i = 0; i < materialParts.Count; i++)
+            for (int i = 0; i < materialParts.Count; ++i)
                 result.MaterialParts.Add(materialParts[i].Clone());
             return result;
         }

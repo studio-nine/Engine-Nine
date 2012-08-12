@@ -488,7 +488,7 @@
                     int partCount = CopyPositionsTo(model, mesh, part, positions, startIndex);
                     if (positions != null)
                     {
-                        for (int i = startIndex; i < startIndex + partCount; i++)
+                        for (int i = startIndex; i < startIndex + partCount; ++i)
                         {
                             Vector3.Transform(ref positions[i], ref bones[mesh.ParentBone.Index], out positions[i]);
                         }
@@ -514,7 +514,7 @@
                     int partCount = CopyIndicesTo(model, mesh, part, indices, startIndex);
                     if (indices != null)
                     {
-                        for (int i = startIndex; i < startIndex + partCount; i++)
+                        for (int i = startIndex; i < startIndex + partCount; ++i)
                         {
                             // TODO: May overflow here
                             indices[i] = (ushort)(baseVertex + indices[i]);
@@ -596,7 +596,7 @@
             if (transform != null)
                 mx = transform.Value;
 
-            for (int i = 0; i < indexCount; i++)
+            for (int i = 0; i < indexCount; ++i)
             {
                 Vector3 v = Vertices[Indices[i]];
                 if (transform != null)

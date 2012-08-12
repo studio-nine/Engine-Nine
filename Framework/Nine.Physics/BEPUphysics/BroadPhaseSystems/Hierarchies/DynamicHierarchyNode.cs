@@ -317,7 +317,7 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
             var leafNodes = nodeListPool.Take();
             oldChildA.RetrieveNodes(leafNodes);
             oldChildB.RetrieveNodes(leafNodes);
-            for (int i = 0; i < leafNodes.count; i++)
+            for (int i = 0; i < leafNodes.count; ++i)
                 leafNodes.Elements[i].Refit();
             Reconstruct(leafNodes, 0, leafNodes.count);
             leafNodes.Clear();
@@ -332,7 +332,7 @@ namespace BEPUphysics.BroadPhaseSystems.Hierarchies
             //This is because this is only an internal node if the parent figured out it involved more than 2 leaf nodes, OR
             //this node was the initiator of the revalidation (in which case, it was an internal node with 2+ children).
             BoundingBox.CreateMerged(ref leafNodes.Elements[begin].BoundingBox, ref leafNodes.Elements[begin + 1].BoundingBox, out BoundingBox);
-            for (int i = begin + 2; i < end; i++)
+            for (int i = begin + 2; i < end; ++i)
             {
                 BoundingBox.CreateMerged(ref BoundingBox, ref leafNodes.Elements[i].BoundingBox, out BoundingBox);
             }

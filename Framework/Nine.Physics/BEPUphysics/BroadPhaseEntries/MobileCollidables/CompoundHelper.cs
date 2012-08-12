@@ -529,7 +529,7 @@ namespace BEPUphysics.Collidables.MobileCollidables
             CompoundCollidable compound = new CompoundCollidable();
             Vector3 center = new Vector3();
             float totalWeight = 0;
-            for (int i = 0; i < childIndices.Count; i++)
+            for (int i = 0; i < childIndices.Count; ++i)
             {
                 //Create and add the child object itself.
                 var entry = shape.shapes[childIndices[i]];

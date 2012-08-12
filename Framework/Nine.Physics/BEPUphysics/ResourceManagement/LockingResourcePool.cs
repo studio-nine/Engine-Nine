@@ -75,7 +75,7 @@ namespace BEPUphysics.ResourceManagement
             }
             int length = stack.lastIndex - stack.firstIndex + 1; //lastIndex is inclusive, so add 1.
             if (InstanceInitializer != null)
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < length; ++i)
                 {
                     InstanceInitializer(stack.array[(stack.firstIndex + i) % stack.array.Length]);
                 }

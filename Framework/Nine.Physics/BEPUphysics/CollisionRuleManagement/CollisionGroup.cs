@@ -60,11 +60,11 @@ namespace BEPUphysics.CollisionRuleManagement
         /// <param name="other">CollisionRule between each group and every other group in the set.</param>
         public static void DefineCollisionRulesInSet(List<CollisionGroup> groups, CollisionRule self, CollisionRule other)
         {
-            for (int i = 0; i < groups.Count; i++)
+            for (int i = 0; i < groups.Count; ++i)
             {
                 DefineCollisionRule(groups[i], groups[i], self);
             }
-            for (int i = 0; i < groups.Count - 1; i++)
+            for (int i = 0; i < groups.Count - 1; ++i)
             {
                 for (int j = i + 1; j < groups.Count; j++)
                 {
@@ -119,11 +119,11 @@ namespace BEPUphysics.CollisionRuleManagement
         /// <param name="groups">Set of CollisionGroups.</param>
         public static void RemoveCollisionRulesInSet(List<CollisionGroup> groups)
         {
-            for (int i = 0; i < groups.Count; i++)
+            for (int i = 0; i < groups.Count; ++i)
             {
                 RemoveCollisionRule(groups[i], groups[i]);
             }
-            for (int i = 0; i < groups.Count - 1; i++)
+            for (int i = 0; i < groups.Count - 1; ++i)
             {
                 for (int j = i + 1; j < groups.Count; j++)
                 {

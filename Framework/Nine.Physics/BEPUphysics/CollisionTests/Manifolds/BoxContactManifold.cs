@@ -68,7 +68,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                     BoxContactData* manifoldPointer = &manifold.D1;
                     Vector3.Negate(ref axis, out axis);
                     var toRemove = new TinyList<int>();
-                    for (int i = 0; i < contacts.count; i++)
+                    for (int i = 0; i < contacts.count; ++i)
                     {
                         bool found = false;
                         for (int j = manifold.Count - 1; j >= 0; j--)
@@ -97,7 +97,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                         Remove(toRemove[i]);
 
                     //Add new contacts.
-                    for (int i = 0; i < manifold.Count; i++)
+                    for (int i = 0; i < manifold.Count; ++i)
                     {
                         var newContact = new ContactData
                                              {
@@ -133,7 +133,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                 Vector3.Negate(ref axis, out axis);
                 TinyList<int> toRemove = new TinyList<int>();
                 BoxContactData data;
-                for (int i = 0; i < contacts.count; i++)
+                for (int i = 0; i < contacts.count; ++i)
                 {
                     bool found = false;
                     for (int j = manifold.Count - 1; j >= 0; j--)
@@ -181,7 +181,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
                     Remove(toRemove[i]);
 
                 //Add new contacts.
-                for (int i = 0; i < manifold.Count; i++)
+                for (int i = 0; i < manifold.Count; ++i)
                 {
                     manifold.Get(i, out data);
                     ContactData newContact = new ContactData();

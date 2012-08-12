@@ -221,7 +221,7 @@ namespace BEPUphysics.Collidables
             if (Shape.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.count; i++)
+                for (int i = 0; i < hitElements.count; ++i)
                 {
                     Shape.GetTriangle(ref hitElements.Elements[i], ref worldTransform, out tri.vA, out tri.vB, out tri.vC);
                     Vector3 center;

@@ -53,16 +53,15 @@ namespace Nine.Graphics
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
         }
-        
-        public override bool GetShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawablesInViewFrustum, out Matrix shadowFrustum)
-        {
-            var shadowCastersInViewFrustum = FindShadowCasters(drawablesInViewFrustum);
-            if (shadowCastersInViewFrustum.Count <= 0)
-            {
-                shadowFrustum = Matrix.Identity;
-                return false;
-            }
 
+        /// <summary>
+        /// Computes the shadow frustum of this light based on the current
+        /// view frustum and objects in the current scene;
+        /// </summary>
+        protected override void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> shadowCasters, out Matrix shadowFrustum)
+        {
+            // 1. Find the bounds of all the shadow casters in the current view frustum
+            //    from the respect to the light source.
             Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.Up);
             if (float.IsNaN(view.M11))
                 view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitX);
@@ -76,10 +75,10 @@ namespace Nine.Graphics
             float bottom = float.MaxValue;
             float top = float.MinValue;
 
-            for (int caster = 0; caster < shadowCastersInViewFrustum.Count; caster++)
+            foreach (var shadowCaster in shadowCasters)
             {
-                shadowCastersInViewFrustum[caster].BoundingBox.GetCorners(Corners);
-                for (int i = 0; i < BoundingBox.CornerCount; i++)
+                shadowCaster.BoundingBox.GetCorners(Corners);
+                for (int i = 0; i < BoundingBox.CornerCount; ++i)
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
 
@@ -88,40 +87,23 @@ namespace Nine.Graphics
                         nearZ = z;
                     if (z > farZ)
                         farZ = z;
-
-                    left = Math.Min(left, point.X);
-                    right = Math.Max(right, point.X);
-                    bottom = Math.Min(bottom, point.Y);
-                    top = Math.Max(top, point.Y);
-
-                    Corners[i] = point;
+                    if (point.X < left)
+                        left = point.X;
+                    if (point.X > right)
+                        right = point.X;
+                    if (point.Y < bottom)
+                        bottom = point.Y;
+                    if (point.Y > top)
+                        top = point.Y;
                 }
             }
 
             Matrix projection;
             Matrix.CreateOrthographicOffCenter(left, right, bottom, top, nearZ, farZ, out projection);
             Matrix.Multiply(ref view, ref projection, out shadowFrustum);
-            return true;
-        }
-        
-        private FastList<ISpatialQueryable> FindShadowCasters(IList<IDrawableObject> drawables)
-        {
-            if (shadowCasters == null)
-                shadowCasters = new FastList<ISpatialQueryable>();
 
-            shadowCasters.Clear();
-            for (int currentDrawable = 0; currentDrawable < drawables.Count; currentDrawable++)
-            {
-                var drawable = drawables[currentDrawable];
-                var lightable = drawable as ILightable;
-                if (lightable != null && lightable.CastShadow)
-                {
-                    var parentSpatialQueryable = ContainerTraverser.FindParentContainer<ISpatialQueryable>(drawable);
-                    if (parentSpatialQueryable != null)
-                        shadowCasters.Add(parentSpatialQueryable);
-                }
-            }
-            return shadowCasters;
+            // 2. Now extend the above frustum to include objects that are outside the
+            //    view frustum. E.g. a bird might cast a shadow even if it is not visible.
         }
 
         protected override void OnAdded(DrawingContext context)
@@ -138,13 +120,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the light geometry for deferred lighting.
         /// </summary>
-        IDrawableObject IDeferredLight.GetLightGeometry(DrawingContext context)
+        IDrawableObject IDeferredLight.PrepareLightGeometry(DrawingContext context)
         {
             if (deferredGeometry == null)
             {
-                deferredGeometry = new FullScreenQuad(context.GraphicsDevice)
+                deferredGeometry = new FullScreenQuad(context.graphics)
                 {
-                    Material = deferredMaterial = new DeferredDirectionalLightMaterial(context.GraphicsDevice)
+                    Material = deferredMaterial = new DeferredDirectionalLightMaterial(context.graphics)
                 };
             }
             deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];

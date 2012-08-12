@@ -197,7 +197,7 @@ namespace BEPUphysics.Collidables
             float minimumT = float.MaxValue;
             bool minimumIsClockwise = false;
 
-            for (int i = 0; i < triangles.count; i++)
+            for (int i = 0; i < triangles.count; ++i)
             {
                 Vector3 a, b, c;
                 triangleMesh.Data.GetTriangle(triangles.Elements[i], out a, out b, out c);
@@ -247,7 +247,7 @@ namespace BEPUphysics.Collidables
             if (triangleMesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (int i = 0; i < hitElements.Count; ++i)
                 {
                     triangleMesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     Vector3 center;
@@ -310,7 +310,7 @@ namespace BEPUphysics.Collidables
 
             float minimumT = float.MaxValue;
 
-            for (int i = 0; i < triangles.count; i++)
+            for (int i = 0; i < triangles.count; ++i)
             {
                 triangleMesh.Data.GetTriangle(triangles.Elements[i], out a, out b, out c);
 

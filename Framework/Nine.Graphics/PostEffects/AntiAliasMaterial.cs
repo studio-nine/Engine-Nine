@@ -9,7 +9,7 @@
     {
         partial void ApplyGlobalParameters(DrawingContext context)
         {
-            var graphics = context.GraphicsDevice;
+            var graphics = context.graphics;
             var viewport = graphics.Viewport;
             var pixelSize = new Vector4();
             pixelSize.X = 1.0f / viewport.Width;

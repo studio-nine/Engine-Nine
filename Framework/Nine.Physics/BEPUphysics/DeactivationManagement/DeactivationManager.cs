@@ -234,7 +234,7 @@ namespace BEPUphysics.DeactivationManagement
         {
             FlushSplits();
 
-            for (int i = 0; i < simulationIslandMembers.count; i++)
+            for (int i = 0; i < simulationIslandMembers.count; ++i)
                 simulationIslandMembers.Elements[i].UpdateDeactivationCandidacy(timeStepSettings.TimeStepDuration);
 
             DeactivateObjects();
@@ -294,7 +294,7 @@ namespace BEPUphysics.DeactivationManagement
                     attempt.SlatedForRemoval = false; //Reset the removal state so that future adds will add back references, since we're about to remove them.
                     attempt.RemoveReferencesFromConnectedMembers();
                     bool triedToSplit = false;
-                    for (int i = 0; i < attempt.entries.count; i++)
+                    for (int i = 0; i < attempt.entries.count; ++i)
                     {
                         for (int j = i + 1; j < attempt.entries.count; j++)
                         {
@@ -362,7 +362,7 @@ namespace BEPUphysics.DeactivationManagement
                 if (connection.entries.count > 0)
                 {
                     var island = connection.entries.Elements[0].Member.SimulationIsland;
-                    for (int i = 1; i < connection.entries.count; i++)
+                    for (int i = 1; i < connection.entries.count; ++i)
                     {
                         SimulationIsland opposingIsland;
                         if (island != (opposingIsland = connection.entries.Elements[i].Member.SimulationIsland))
@@ -454,7 +454,7 @@ namespace BEPUphysics.DeactivationManagement
                 splitAttempts.Enqueue(connection);
 
                 //connection.RemoveReferencesFromConnectedMembers();
-                //for (int i = 0; i < connection.members.count; i++)
+                //for (int i = 0; i < connection.members.count; ++i)
                 //{
                 //    for (int j = i + 1; j < connection.members.count; j++)
                 //    {
@@ -510,7 +510,7 @@ namespace BEPUphysics.DeactivationManagement
 
 
                 SimulationIslandMember currentNode = member1Friends.Dequeue();
-                for (int i = 0; i < currentNode.connections.count; i++)
+                for (int i = 0; i < currentNode.connections.count; ++i)
                 {
                     for (int j = 0; j < currentNode.connections.Elements[i].entries.count; j++)
                     {
@@ -538,7 +538,7 @@ namespace BEPUphysics.DeactivationManagement
                 }
 
                 currentNode = member2Friends.Dequeue();
-                for (int i = 0; i < currentNode.connections.count; i++)
+                for (int i = 0; i < currentNode.connections.count; ++i)
                 {
                     for (int j = 0; j < currentNode.connections.Elements[i].entries.count; j++)
                     {
@@ -575,7 +575,7 @@ namespace BEPUphysics.DeactivationManagement
             {
 
                 //Member 1 is isolated, give it its own simulation island!
-                for (int i = 0; i < searchedMembers1.Count; i++)
+                for (int i = 0; i < searchedMembers1.Count; ++i)
                 {
                     searchedMembers1[i].simulationIsland.Remove(searchedMembers1[i]);
                     newIsland.Add(searchedMembers1[i]);
@@ -586,7 +586,7 @@ namespace BEPUphysics.DeactivationManagement
             {
 
                 //Member 2 is isolated, give it its own simulation island!
-                for (int i = 0; i < searchedMembers2.Count; i++)
+                for (int i = 0; i < searchedMembers2.Count; ++i)
                 {
                     searchedMembers2[i].simulationIsland.Remove(searchedMembers2[i]);
                     newIsland.Add(searchedMembers2[i]);
@@ -605,11 +605,11 @@ namespace BEPUphysics.DeactivationManagement
 
 
         ResetSearchStates:
-            for (int i = 0; i < searchedMembers1.Count; i++)
+            for (int i = 0; i < searchedMembers1.Count; ++i)
             {
                 searchedMembers1[i].searchState = SimulationIslandSearchState.Unclaimed;
             }
-            for (int i = 0; i < searchedMembers2.Count; i++)
+            for (int i = 0; i < searchedMembers2.Count; ++i)
             {
                 searchedMembers2[i].searchState = SimulationIslandSearchState.Unclaimed;
             }
@@ -652,7 +652,7 @@ namespace BEPUphysics.DeactivationManagement
             }
             if (member.connections.count > 0)
             {
-                for (int i = 0; i < member.Connections.Count; i++)
+                for (int i = 0; i < member.Connections.Count; ++i)
                 {
                     //Find a member with a non-null island to represent connection i.
                     SimulationIslandMember representativeA = null;
@@ -722,7 +722,7 @@ namespace BEPUphysics.DeactivationManagement
             {
                 SimulationIsland island = null;
                 //Find a simulation starting island to live in.
-                for (int i = 0; i < member.Connections.Count; i++)
+                for (int i = 0; i < member.Connections.Count; ++i)
                 {
                     for (int j = 0; j < member.connections.Elements[i].entries.count; j++)
                     {
@@ -752,7 +752,7 @@ namespace BEPUphysics.DeactivationManagement
 
                 //Becoming dynamic adds a new path.
                 //Merges must be attempted between its connected members.
-                for (int i = 0; i < member.connections.count; i++)
+                for (int i = 0; i < member.connections.count; ++i)
                 {
                     for (int j = 0; j < member.connections.Elements[i].entries.count; j++)
                     {

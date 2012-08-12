@@ -161,7 +161,7 @@ namespace Nine.Graphics
             if (template != null)
             {
                 var count = template.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                     meshes.Add(new InstancedModelMesh(this, i));
             }
             UpdateBounds();
@@ -169,11 +169,7 @@ namespace Nine.Graphics
 
         private void UpdateBounds()
         {
-            IBoundable boundable = template as IBoundable;
-            if (boundable != null)
-                orientedBoundingBox = boundable.BoundingBox;
-            else
-                orientedBoundingBox = new BoundingBox();
+            orientedBoundingBox = template.BoundingBox;
 
             if (instanceTransforms != null && instanceTransforms.Length > 0)
             {
@@ -181,7 +177,7 @@ namespace Nine.Graphics
                 instanceBounds.Min = Vector3.One * float.MaxValue;
                 instanceBounds.Max = Vector3.One * float.MinValue;
 
-                for (int i = 0; i < instanceTransforms.Length; i++)
+                for (int i = 0; i < instanceTransforms.Length; ++i)
                 {
                     // TODO: Include scale & rotation
                     if (instanceTransforms[i].M41 > instanceBounds.Max.X)

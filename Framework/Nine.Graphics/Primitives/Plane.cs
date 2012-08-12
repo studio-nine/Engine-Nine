@@ -68,7 +68,7 @@
 
             for (int z = 0; z < tessellationZ; z++)
             {
-                for (int x = 0; x < tessellationX; x++)
+                for (int x = 0; x < tessellationX; ++x)
                 {
                     Vector3 position = new Vector3();
 
@@ -87,7 +87,7 @@
 
             for (int z = 0; z < tessellationZ - 1; z++)
             {
-                for (int x = 0; x < tessellationX - 1; x++)
+                for (int x = 0; x < tessellationX - 1; ++x)
                 {
                     AddIndex((ushort)(z * tessellationX + x));
                     AddIndex((ushort)(z * tessellationX + x + 1));

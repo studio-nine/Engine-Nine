@@ -52,7 +52,7 @@ namespace BEPUphysics.Paths
             //Vector3.Add(ref tangentA, ref tangentB, out tangentA);
             tangents.Add(tangentA);
 
-            for (int i = 1; i < ControlPoints.Count - 1; i++)
+            for (int i = 1; i < ControlPoints.Count - 1; ++i)
             {
                 previous = current;
                 current = next;

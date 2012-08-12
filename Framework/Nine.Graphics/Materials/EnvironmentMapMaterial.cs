@@ -14,36 +14,36 @@ namespace Nine.Graphics.Materials
 
         public float FresnelFactor
         {
-            get { return fresnelFactor.HasValue ? fresnelFactor.Value : MaterialConstants.FresnelFactor; }
-            set { fresnelFactor = (value == MaterialConstants.FresnelFactor ? (float?)null : value); }
+            get { return fresnelFactor.HasValue ? fresnelFactor.Value : Constants.FresnelFactor; }
+            set { fresnelFactor = (value == Constants.FresnelFactor ? (float?)null : value); }
         }
         private float? fresnelFactor;
 
         public Vector3 DiffuseColor
         {
-            get { return diffuseColor.HasValue ? diffuseColor.Value : MaterialConstants.DiffuseColor; }
-            set { diffuseColor = (value == MaterialConstants.DiffuseColor ? (Vector3?)null : value); }
+            get { return diffuseColor.HasValue ? diffuseColor.Value : Constants.DiffuseColor; }
+            set { diffuseColor = (value == Constants.DiffuseColor ? (Vector3?)null : value); }
         }
         private Vector3? diffuseColor;
 
         public Vector3 EmissiveColor
         {
-            get { return emissiveColor.HasValue ? emissiveColor.Value : MaterialConstants.EmissiveColor; }
-            set { emissiveColor = (value == MaterialConstants.EmissiveColor ? (Vector3?)null : value); }
+            get { return emissiveColor.HasValue ? emissiveColor.Value : Constants.EmissiveColor; }
+            set { emissiveColor = (value == Constants.EmissiveColor ? (Vector3?)null : value); }
         }
         private Vector3? emissiveColor;
 
         public float EnvironmentMapAmount
         {
-            get { return environmentMapAmount.HasValue ? environmentMapAmount.Value : MaterialConstants.EnvironmentMapAmount; }
-            set { environmentMapAmount = (value == MaterialConstants.EnvironmentMapAmount ? (float?)null : value); }
+            get { return environmentMapAmount.HasValue ? environmentMapAmount.Value : Constants.EnvironmentMapAmount; }
+            set { environmentMapAmount = (value == Constants.EnvironmentMapAmount ? (float?)null : value); }
         }
         private float? environmentMapAmount;
 
         public Vector3 EnvironmentMapSpecular
         {
-            get { return environmentMapSpecular.HasValue ? environmentMapSpecular.Value : MaterialConstants.EnvironmentMapSpecular; }
-            set { environmentMapSpecular = (value == MaterialConstants.EnvironmentMapSpecular ? (Vector3?)null : value); }
+            get { return environmentMapSpecular.HasValue ? environmentMapSpecular.Value : Constants.EnvironmentMapSpecular; }
+            set { environmentMapSpecular = (value == Constants.EnvironmentMapSpecular ? (Vector3?)null : value); }
         }
         private Vector3? environmentMapSpecular;
 
@@ -90,7 +90,7 @@ namespace Nine.Graphics.Materials
                 fogHelper.Apply(context, effect);
             }
 
-            if (alpha != MaterialConstants.Alpha)
+            if (alpha != Constants.Alpha)
                 effect.Alpha = alpha;
             if (diffuseColor.HasValue)
                 effect.DiffuseColor = diffuseColor.Value;
@@ -119,21 +119,21 @@ namespace Nine.Graphics.Materials
 
         protected override void OnEndApply(DrawingContext context)
         {
-            if (alpha != MaterialConstants.Alpha)
-                effect.Alpha = MaterialConstants.Alpha;
+            if (alpha != Constants.Alpha)
+                effect.Alpha = Constants.Alpha;
             if (diffuseColor.HasValue)
-                effect.DiffuseColor = MaterialConstants.DiffuseColor;
+                effect.DiffuseColor = Constants.DiffuseColor;
             if (emissiveColor.HasValue)
-                effect.EmissiveColor = MaterialConstants.EmissiveColor;
+                effect.EmissiveColor = Constants.EmissiveColor;
             if (environmentMapAmount.HasValue)
-                effect.EnvironmentMapAmount = MaterialConstants.EnvironmentMapAmount;
+                effect.EnvironmentMapAmount = Constants.EnvironmentMapAmount;
             if (environmentMapSpecular.HasValue)
-                effect.EnvironmentMapSpecular = MaterialConstants.EnvironmentMapSpecular;
+                effect.EnvironmentMapSpecular = Constants.EnvironmentMapSpecular;
             if (environmentMapSpecular.HasValue)
-                effect.FresnelFactor = MaterialConstants.FresnelFactor;
+                effect.FresnelFactor = Constants.FresnelFactor;
 
             if (SamplerState != null)
-                GraphicsDevice.SamplerStates[0] = context.Settings.DefaultSamplerState;
+                GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
         }
 
         protected override Material OnResolveMaterial(MaterialUsage usage, Material existingInstance)

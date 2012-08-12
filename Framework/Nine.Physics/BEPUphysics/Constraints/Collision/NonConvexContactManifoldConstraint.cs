@@ -62,7 +62,7 @@ namespace BEPUphysics.Constraints.Collision
             penetrationConstraints = new RawList<ContactPenetrationConstraint>(4);
             frictionConstraints = new RawList<ContactFrictionConstraint>(4);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 var penetrationConstraint = new ContactPenetrationConstraint();
                 penetrationConstraintPool.Push(penetrationConstraint);
@@ -138,7 +138,7 @@ namespace BEPUphysics.Constraints.Collision
         {
 
             ContactPenetrationConstraint penetrationConstraint = null;
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
             {
                 if ((penetrationConstraint = penetrationConstraints.Elements[i]).contact == contact)
                 {
@@ -179,9 +179,9 @@ namespace BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public sealed override void Update(float dt)
         {
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
                 UpdateUpdateable(penetrationConstraints.Elements[i], dt);
-            for (int i = 0; i < frictionConstraints.count; i++)
+            for (int i = 0; i < frictionConstraints.count; ++i)
                 UpdateUpdateable(frictionConstraints.Elements[i], dt);
         }
 
@@ -193,9 +193,9 @@ namespace BEPUphysics.Constraints.Collision
         /// </summary>
         public sealed override void ExclusiveUpdate()
         {
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
                 ExclusiveUpdateUpdateable(penetrationConstraints.Elements[i]);
-            for (int i = 0; i < frictionConstraints.count; i++)
+            for (int i = 0; i < frictionConstraints.count; ++i)
                 ExclusiveUpdateUpdateable(frictionConstraints.Elements[i]);
         }
 
@@ -207,9 +207,9 @@ namespace BEPUphysics.Constraints.Collision
         public sealed override float SolveIteration()
         {
             int activeConstraints = 0;
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
                 SolveUpdateable(penetrationConstraints.Elements[i], ref activeConstraints);
-            for (int i = 0; i < frictionConstraints.count; i++)
+            for (int i = 0; i < frictionConstraints.count; ++i)
                 SolveUpdateable(frictionConstraints.Elements[i], ref activeConstraints);
             isActiveInSolver = activeConstraints > 0;
             return solverSettings.minimumImpulse + 1; //Never let the system deactivate due to low impulses; solver group takes care of itself.

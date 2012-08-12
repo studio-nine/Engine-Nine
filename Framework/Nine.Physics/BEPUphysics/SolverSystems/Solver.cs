@@ -266,14 +266,14 @@ namespace BEPUphysics.SolverSystems
         {
 
             int totalUpdateableCount = solverUpdateables.count;
-            for (int i = 0; i < totalUpdateableCount; i++)
+            for (int i = 0; i < totalUpdateableCount; ++i)
             {
                 UnsafePrestep(solverUpdateables.Elements[i]);
             }
 
             int totalCount = iterationLimit * totalUpdateableCount;
             ComputeIterationCoefficient();
-            for (int i = 0; i < totalCount; i++)
+            for (int i = 0; i < totalCount; ++i)
             {
                 UnsafeSolveIteration(solverUpdateables.Elements[(i * prime) % totalUpdateableCount]);
             }

@@ -44,7 +44,7 @@ namespace BEPUphysics.Paths
         protected override void ComputeTangents()
         {
             tangents.Add(Vector3.Zero);
-            for (int i = 1; i < ControlPoints.Count - 1; i++)
+            for (int i = 1; i < ControlPoints.Count - 1; ++i)
             {
                 Vector3 tangent;
                 Vector3 previous = ControlPoints[i - 1].Value;

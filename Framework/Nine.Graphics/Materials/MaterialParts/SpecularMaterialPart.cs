@@ -55,8 +55,8 @@
         /// </summary>
         public float SpecularPower
         {
-            get { return specularPower.HasValue ? specularPower.Value : MaterialConstants.SpecularPower; }
-            set { specularPower = (value == MaterialConstants.SpecularPower ? (float?)null : value); }
+            get { return specularPower.HasValue ? specularPower.Value : Constants.SpecularPower; }
+            set { specularPower = (value == Constants.SpecularPower ? (float?)null : value); }
         }
         private float? specularPower;
 
@@ -91,7 +91,7 @@
             if (specularColor.HasValue && specularColorParameter != null)
                 specularColorParameter.SetValue(Vector3.One);
             if (specularPower.HasValue && specularPowerParameter != null)
-                specularPowerParameter.SetValue(MaterialConstants.SpecularPower);
+                specularPowerParameter.SetValue(Constants.SpecularPower);
         }
 
         /// <summary>

@@ -156,7 +156,7 @@
     <Compile Include="Materials\EnvironmentMapMaterial.cs" />
     <Compile Include="Materials\DualTextureMaterial.cs" />
     <Compile Include="Materials\SkinnedMaterial.cs" />
-    <Compile Include="Materials\MaterialConstants.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="InstancedModel.cs" />
     <Compile Include="DirectionalLightCollection.cs" />
     <Compile Include="Materials\SoftParticleMaterial.cs" />
@@ -170,7 +170,7 @@
     <Compile Include="PostEffects\PostEffectGroup.cs" />
     <Compile Include="PostEffects\ThresholdMaterial.cs" />
     <Compile Include="Primitives\Cross.cs" />
-    <Compile Include="Primitives\PrimitiveGroup.cs" />
+    <Compile Include="Primitives\DynamicPrimitive.cs" />
     <Compile Include="Drawing\PassCollection.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Decal.cs" />
@@ -226,7 +226,7 @@
     <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
     <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />
-    <Compile Include="Primitives\PrimitiveGroupExtensions.cs" />
+    <Compile Include="Primitives\DynamicPrimitiveExtensions.cs" />
     <Compile Include="GraphicsResources.cs" />
     <Compile Include="Materials\MaterialParts\DiffuseMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\NormalMapMaterialPart.cs" />
@@ -281,7 +281,7 @@
       <LastGenOutput>Nine.Graphics.Materials.Generated.cs</LastGenOutput>
     </None>
     <None Include="Shaders\RestoreDepthBuffer.fx" />
-    <None Include="Shaders\VertexPassThrough.fx" />
+    <None Include="Shaders\VertexPassThrough2.fx" />
     <None Include="Shaders\ShadowEffect.fx" />
     <None Include="Shaders\DecalEffect.fx" />
     <None Include="Shaders\ClearEffect.fx" />
@@ -311,5 +311,11 @@
   <ItemGroup>
     <None Include="Shaders\Fxaa3_11.fxh" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\VertexPassThrough3.fx" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy /y "$(TargetPath)" "$(SolutionDir)..\Samples\Tutorial\Tutorial\bin\x86\$(ConfigurationName)\$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -74,7 +74,7 @@ namespace BEPUphysics.Constraints.Collision
 
 
             //Order matters in this adding process.  Sliding friction computes some information used by the twist friction, and both use penetration impulses.
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; ++i)
             {
                 var penetrationConstraint = new ContactPenetrationConstraint();
                 Add(penetrationConstraint);
@@ -135,7 +135,7 @@ namespace BEPUphysics.Constraints.Collision
         ///<param name="contact">Contact to remove.</param>
         public override void RemoveContact(Contact contact)
         {
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
             {
                 ContactPenetrationConstraint penetrationConstraint;
                 if ((penetrationConstraint = penetrationConstraints.Elements[i]).contact == contact)
@@ -169,7 +169,7 @@ namespace BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public sealed override void Update(float dt)
         {
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
                 UpdateUpdateable(penetrationConstraints.Elements[i], dt);
             UpdateUpdateable(slidingFriction, dt);
             UpdateUpdateable(twistFriction, dt);
@@ -184,7 +184,7 @@ namespace BEPUphysics.Constraints.Collision
         /// </summary>
         public sealed override void ExclusiveUpdate()
         {
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
                 ExclusiveUpdateUpdateable(penetrationConstraints.Elements[i]);
             ExclusiveUpdateUpdateable(slidingFriction);
             ExclusiveUpdateUpdateable(twistFriction);
@@ -199,7 +199,7 @@ namespace BEPUphysics.Constraints.Collision
         {
 
             int activeConstraints = 0;
-            for (int i = 0; i < penetrationConstraints.count; i++)
+            for (int i = 0; i < penetrationConstraints.count; ++i)
                 SolveUpdateable(penetrationConstraints.Elements[i], ref activeConstraints);
             SolveUpdateable(slidingFriction, ref activeConstraints);
             SolveUpdateable(twistFriction, ref activeConstraints);

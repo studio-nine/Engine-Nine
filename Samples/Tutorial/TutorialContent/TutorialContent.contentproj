@@ -343,13 +343,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Bitmap1.bmp">
-      <Name>Bitmap1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Tutorials\07. Lights.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>07. Lights</Name>

@@ -74,7 +74,7 @@ namespace Nine
             height = 0;
             normal = Vector3.Zero;
 
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; ++i)
             {
                 var surface = this[i];
                 if (surface != null &&

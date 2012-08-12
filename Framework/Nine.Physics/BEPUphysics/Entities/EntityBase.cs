@@ -491,7 +491,7 @@ namespace BEPUphysics.Entities
         Action<Material> materialChangedDelegate;
         void OnMaterialChanged(Material newMaterial)
         {
-            for (int i = 0; i < collisionInformation.pairs.Count; i++)
+            for (int i = 0; i < collisionInformation.pairs.Count; ++i)
             {
                 collisionInformation.pairs[i].UpdateMaterialProperties();
             }
@@ -1088,7 +1088,7 @@ namespace BEPUphysics.Entities
             //I must order the pairs to compute a time of impact.
 
             //The pair method works in such a way that, when this method is run asynchronously, there will be no race conditions.
-            for (int i = 0; i < collisionInformation.pairs.count; i++)
+            for (int i = 0; i < collisionInformation.pairs.count; ++i)
             {
                 //Only perform CCD if we're either supposed to test against no solver pairs or if this isn't a no solver pair.
                 if (MotionSettings.PairAllowsCCD(this, collisionInformation.pairs.Elements[i]))
@@ -1099,7 +1099,7 @@ namespace BEPUphysics.Entities
         void ICCDPositionUpdateable.UpdatePositionContinuously(float dt)
         {
             float minimumToi = 1;
-            for (int i = 0; i < collisionInformation.pairs.Count; i++)
+            for (int i = 0; i < collisionInformation.pairs.Count; ++i)
             {
                 if (collisionInformation.pairs.Elements[i].timeOfImpact < minimumToi)
                     minimumToi = collisionInformation.pairs.Elements[i].timeOfImpact;

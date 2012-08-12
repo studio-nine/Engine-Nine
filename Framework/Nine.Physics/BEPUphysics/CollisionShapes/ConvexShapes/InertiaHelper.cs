@@ -57,7 +57,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         public static Vector3 AveragePoints(RawList<Vector3> pointContributions)
         {
             var center = new Vector3();
-            for (int i = 0; i < pointContributions.Count; i++)
+            for (int i = 0; i < pointContributions.Count; ++i)
             {
                 center += pointContributions[i]; //Every point has equal weight.
             }
@@ -107,7 +107,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
         {
             var volumeDistribution = new Matrix3X3();
             float pointWeight = 1f / pointContributions.Count;
-            for (int i = 0; i < pointContributions.Count; i++)
+            for (int i = 0; i < pointContributions.Count; ++i)
             {
                 Matrix3X3 contribution;
                 GetPointContribution(pointWeight, ref center, pointContributions[i], out contribution);
@@ -180,7 +180,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
 
             Ray oppositeRay;
             volume = 0;
-            for (int i = 0; i < NumberOfSamplesPerDimension; i++)
+            for (int i = 0; i < NumberOfSamplesPerDimension; ++i)
             {
                 for (int j = 0; j < NumberOfSamplesPerDimension; j++)
                 {
@@ -224,7 +224,7 @@ namespace BEPUphysics.CollisionShapes.ConvexShapes
 
             volume = 0;
 
-            for (int i = (int)(startHit.T / rayIncrement); i <= (int)((maxLength - endHit.T) / rayIncrement); i++)
+            for (int i = (int)(startHit.T / rayIncrement); i <= (int)((maxLength - endHit.T) / rayIncrement); ++i)
             {
                 Vector3 position;
                 Vector3.Multiply(ref ray.Direction, (i + .5f) * rayIncrement, out position);

@@ -245,8 +245,8 @@ namespace Nine
             Point min = PositionToSegment(Clamp(position.X - size.X / 2, position.Y - size.Y / 2));
             Point max = PositionToSegment(Clamp(position.X + size.X / 2, position.Y + size.Y / 2));
 
-            for (int y = min.Y; y <= max.Y; y++)
-                for (int x = min.X; x <= max.X; x++)
+            for (int y = min.Y; y <= max.Y; ++y)
+                for (int x = min.X; x <= max.X; ++x)
                     if (!result(new Point(x, y)))
                         return;
         }
@@ -275,7 +275,7 @@ namespace Nine
                 offset.X = offset.Y = -r;
                 for (int currentDirection = 0; currentDirection < 4; currentDirection++)
                 {
-                    for (int i = 0; i < r * 2; i++)
+                    for (int i = 0; i < r * 2; ++i)
                     {
                         offset.X += Directions[currentDirection].X;
                         offset.Y += Directions[currentDirection].Y;
@@ -407,7 +407,7 @@ namespace Nine
             int ystep;
             int y = y0;
             if (y0 < y1) ystep = 1; else ystep = -1;
-            for (int x = x0; x <= x1; x++)
+            for (int x = x0; x <= x1; ++x)
             {
                 if (steep)
                 {

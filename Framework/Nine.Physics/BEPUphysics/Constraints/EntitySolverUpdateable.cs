@@ -60,7 +60,7 @@ namespace BEPUphysics.Constraints
         /// </summary>
         public override void EnterLock()
         {
-            for (int i = 0; i < numberOfInvolvedEntities; i++)
+            for (int i = 0; i < numberOfInvolvedEntities; ++i)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                 {
@@ -90,7 +90,7 @@ namespace BEPUphysics.Constraints
         /// <returns>Whether or not the lock was entered successfully.</returns>
         public override bool TryEnterLock()
         {
-            for (int i = 0; i < numberOfInvolvedEntities; i++)
+            for (int i = 0; i < numberOfInvolvedEntities; ++i)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                     if (!involvedEntities.Elements[i].locker.TryEnter())
@@ -106,7 +106,7 @@ namespace BEPUphysics.Constraints
             }
             return true;
 
-            //for (int i = 0; i < numberOfInvolvedEntities; i++)
+            //for (int i = 0; i < numberOfInvolvedEntities; ++i)
             //{
             //    if (involvedEntities[i].isDynamic) //Only need to lock dynamic entities.
             //        if (!Monitor.TryEnter(involvedEntities[i].locker))
@@ -137,7 +137,7 @@ namespace BEPUphysics.Constraints
             CollectInvolvedEntities(newInvolvedEntities);
             if (newInvolvedEntities.count == involvedEntities.count)
             {
-                for (int i = 0; i < newInvolvedEntities.Count; i++)
+                for (int i = 0; i < newInvolvedEntities.Count; ++i)
                 {
                     if (newInvolvedEntities.Elements[i] != involvedEntities.Elements[i])
                     {
@@ -155,7 +155,7 @@ namespace BEPUphysics.Constraints
             {
                 //Probably need to wake things up given that such a significant change was made.
 
-                for (int i = 0; i < involvedEntities.count; i++)
+                for (int i = 0; i < involvedEntities.count; ++i)
                 {
                     Entity e = involvedEntities.Elements[i];
                     if (e.isDynamic)
@@ -174,7 +174,7 @@ namespace BEPUphysics.Constraints
                     SolverGroup.OnInvolvedEntitiesChanged();
 
                 //We woke up the FORMER involved entities, now wake up the current involved entities.
-                for (int i = 0; i < involvedEntities.count; i++)
+                for (int i = 0; i < involvedEntities.count; ++i)
                 {
                     Entity e = involvedEntities.Elements[i];
                     if (e.isDynamic)
@@ -237,7 +237,7 @@ namespace BEPUphysics.Constraints
             //So create a new one!
             //Assume we've already dealt with the old connection.
             simulationIslandConnection = Resources.GetSimulationIslandConnection();
-            for (int i = 0; i < involvedEntities.count; i++)
+            for (int i = 0; i < involvedEntities.count; ++i)
             {
                 simulationIslandConnection.Add(involvedEntities.Elements[i].activityInformation);
             }

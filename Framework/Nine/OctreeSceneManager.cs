@@ -319,7 +319,7 @@ namespace Nine
             if (node.Value != null)
             {
                 var count = node.Value.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value[i];
                     val.BoundingBox.Intersects(ref ray, out intersection);
@@ -357,7 +357,7 @@ namespace Nine
             if (node.Value != null)
             {
                 var count = node.Value.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value[i];
                     ContainmentType objectContainment;
@@ -394,7 +394,7 @@ namespace Nine
             if (node.Value != null)
             {
                 var count = node.Value.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value[i];
                     ContainmentType objectContainment;
@@ -431,7 +431,7 @@ namespace Nine
             if (node.Value != null)
             {
                 var count = node.Value.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var val = node.Value[i];
                     if (boundingFrustum.Contains(val.BoundingBox) != ContainmentType.Disjoint)
@@ -453,14 +453,14 @@ namespace Nine
                 if (node.Value != null)
                 {
                     var count = node.Value.Count;
-                    for (int i = 0; i < count; i++)
+                    for (int i = 0; i < count; ++i)
                     {
                         result.Add(node.Value[i]);
                     }
                 }
 
                 var children = node.Children;
-                for (int i = 0; i < children.Count; i++)
+                for (int i = 0; i < children.Count; ++i)
                     DesedentsStack.Push(children[i]);
             }
         }        

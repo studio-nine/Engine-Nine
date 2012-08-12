@@ -132,9 +132,11 @@ namespace Tutorial
         {
             var quad = scene["Debug"] as FullScreenQuad;
             if (quad != null)
-                quad.Visible = Keyboard.GetState().IsKeyDown(Keys.Space);
+                quad.Visible = Keyboard.GetState().IsKeyDown(Keys.D);
 
             scene.Draw(GraphicsDevice, gameTime.ElapsedGameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                scene.DrawDebugOverlay(GraphicsDevice, gameTime.ElapsedGameTime);
 
             base.Draw(gameTime);
         }

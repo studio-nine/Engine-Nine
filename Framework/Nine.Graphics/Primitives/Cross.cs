@@ -49,9 +49,9 @@
             Vector2 uv = new Vector2();
             Vector3 position = new Vector3();
 
-            for (int y = 0; y < tessellation; y++)
+            for (int y = 0; y < tessellation; ++y)
             {
-                for (int x = 0; x < 2; x++)
+                for (int x = 0; x < 2; ++x)
                 {
                     position.X = x - 0.5f;
                     position.Y = y / (tessellation - 1);
@@ -64,7 +64,7 @@
                 }
             }
 
-            for (int y = 0; y < tessellation; y++)
+            for (int y = 0; y < tessellation; ++y)
             {
                 for (int z = 0; z < 2; z++)
                 {
@@ -79,7 +79,7 @@
                 }
             }
 
-            for (int y = 0; y < tessellation - 1; y++)
+            for (int y = 0; y < tessellation - 1; ++y)
             {
                 AddIndex((ushort)(y * tessellation));
                 AddIndex((ushort)((y + 1) * tessellation + 1));

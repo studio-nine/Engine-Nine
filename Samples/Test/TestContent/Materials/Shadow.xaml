@@ -1,0 +1,4 @@
+﻿<MaterialGroup xmlns="http://schemas.microsoft.com/nine/2011/xaml" >
+    <ShadowMapMaterialPart />
+    <DirectionalLightMaterialPart />
+</MaterialGroup>

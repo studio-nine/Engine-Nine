@@ -132,7 +132,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
             Vector3.Multiply(ref mobileMesh.entity.linearVelocity, dt, out sweep);
             mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref mesh.worldTransform, ref sweep, out localBoundingBox);
             mesh.Shape.GetOverlaps(localBoundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.count; i++)
+            for (int i = 0; i < overlappedElements.count; ++i)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }

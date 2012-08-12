@@ -44,8 +44,8 @@
         /// </summary>
         public Vector3 EmissiveColor
         {
-            get { return emissiveColor.HasValue ? emissiveColor.Value : MaterialConstants.EmissiveColor; }
-            set { emissiveColor = (value == MaterialConstants.EmissiveColor ? (Vector3?)null : value); }
+            get { return emissiveColor.HasValue ? emissiveColor.Value : Constants.EmissiveColor; }
+            set { emissiveColor = (value == Constants.EmissiveColor ? (Vector3?)null : value); }
         }
         private Vector3? emissiveColor;
 

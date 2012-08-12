@@ -145,7 +145,7 @@
             // Update
             watch.Restart();
 
-            for (int i = 0; i < updatedObjects.Length; i++)
+            for (int i = 0; i < updatedObjects.Length; ++i)
             {
                 objects[i].BoundingBox = updatedObjects[i].BoundingBox;
             }
@@ -163,7 +163,7 @@
             // Remove
             watch.Restart();
 
-            for (int i = 0; i < all.Length; i++)
+            for (int i = 0; i < all.Length; ++i)
             {
                 scene.Remove(all[i]);
             }

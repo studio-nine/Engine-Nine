@@ -40,9 +40,10 @@
         private static Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>> SharedBuffers;
 
         /// <summary>
-        /// Always use this pass through material as the vertex shader when drawing fullscreen quads.
+        /// Always use this pass through material as the vertex shader when drawing full screen quads.
         /// </summary>
-        private VertexPassThroughMaterial vertexPassThrough;
+        private VertexPassThrough2Material vertexPassThrough2;
+        private VertexPassThrough3Material vertexPassThrough3;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FullScreenQuad"/> class.
@@ -54,7 +55,7 @@
 
             Visible = true;
             GraphicsDevice = graphics;
-            vertexPassThrough = new VertexPassThroughMaterial(graphics);
+            vertexPassThrough2 = new VertexPassThrough2Material(graphics);
 
             KeyValuePair<VertexBuffer, IndexBuffer> sharedBuffer;     
                    
@@ -99,16 +100,18 @@
             try
             {
                 // Use vs 2_0
-                vertexPassThrough.Apply(0);
+                vertexPassThrough2.BeginApply(context);
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
             }
             catch (InvalidOperationException)
             {
-                if (context.GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)
+                if (context.graphics.GraphicsProfile != GraphicsProfile.HiDef)
                     throw;
 
                 // Use vs 3_0
-                vertexPassThrough.Apply(1);
+                if (vertexPassThrough3 == null)
+                    vertexPassThrough3 = new VertexPassThrough3Material(GraphicsDevice);
+                vertexPassThrough3.BeginApply(context);
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
             }
 

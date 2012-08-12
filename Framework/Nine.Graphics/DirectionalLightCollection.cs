@@ -112,7 +112,7 @@ namespace Nine.Graphics
 
         public bool Remove(DirectionalLight item)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
                 if (item == elements[i])
                 {
                     RemoveAt(i);

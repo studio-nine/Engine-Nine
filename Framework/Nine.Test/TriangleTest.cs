@@ -50,12 +50,12 @@
 
             Stopwatch watch = new Stopwatch();
             watch.Restart();
-            for (int i = 0; i < 100000000; i++)
+            for (int i = 0; i < 100000000; ++i)
                 p0.Field = i;
             Trace.WriteLine(watch.ElapsedTicks);
 
             watch.Restart();
-            for (int i = 0; i < 100000000; i++)
+            for (int i = 0; i < 100000000; ++i)
                 p1.Field = i;
             Trace.WriteLine(watch.ElapsedTicks);
         }

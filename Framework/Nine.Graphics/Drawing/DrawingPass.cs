@@ -55,7 +55,7 @@ namespace Nine.Graphics.Drawing
         /// Draws this pass using the specified drawing context.
         /// </summary>
         /// <param name="drawables">
-        /// A list of drawables about to be drawed in this drawing pass.
+        /// A list of drawables about to be rendered in this drawing pass.
         /// </param>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
@@ -63,41 +63,39 @@ namespace Nine.Graphics.Drawing
             if (count <= 0)
                 return;
 
-            var graphics = context.GraphicsDevice;
+            var graphics = context.graphics;
             var dominantMaterial = Material;
             var defaultMaterial = DefaultMaterial ?? (DefaultMaterial = new BasicMaterial(graphics) { LightingEnabled = true });
 
             try
             {
                 // Begin Draw
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < count; ++i)
                 {
                     var drawable = drawables[i];
-                    if (drawable != null && drawable.Visible)
-                    {
-                        var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
-                        if (MaterialUsage != MaterialUsage.Default)
-                            material = material.GetMaterialByUsage(MaterialUsage);
 
-                        while (material != null)
+                    var material = dominantMaterial ?? drawable.Material ?? defaultMaterial;
+                    if (MaterialUsage != MaterialUsage.Default)
+                        material = material.GetMaterialByUsage(MaterialUsage);
+
+                    while (material != null)
+                    {
+                        var twoSided = material.TwoSided;
+                        if (material.IsTransparent)
                         {
-                            var twoSided = material.TwoSided;
-                            if (material.IsTransparent)
-                            {
-                                if (twoSided)
-                                    transparentTwoSided.Add(drawable, material);
-                                else
-                                    transparent.Add(drawable, material);
-                            }
+                            if (twoSided)
+                                transparentTwoSided.Add(drawable, material);
                             else
-                            {
-                                if (twoSided)
-                                    opaqueTwoSided.Add(drawable, material);
-                                else
-                                    opaque.Add(drawable, material);
-                            }
-                            material = material.NextMaterial;
+                                transparent.Add(drawable, material);
                         }
+                        else
+                        {
+                            if (twoSided)
+                                opaqueTwoSided.Add(drawable, material);
+                            else
+                                opaque.Add(drawable, material);
+                        }
+                        material = material.NextMaterial;
                     }
                 }
 
@@ -125,7 +123,7 @@ namespace Nine.Graphics.Drawing
                 // - During the drawing pass, the first sampler state is reset to default
                 //   to correct the changes made in post processing.
                 //---------------------------------------------------------------------
-                graphics.SamplerStates[0] = context.Settings.DefaultSamplerState;
+                graphics.SamplerStates[0] = context.settings.SamplerState;
 
                 // Draw opaque objects     
                 graphics.DepthStencilState = DepthStencilState.Default;
@@ -135,7 +133,7 @@ namespace Nine.Graphics.Drawing
                 {
                     graphics.RasterizerState = RasterizerState.CullCounterClockwise;
 
-                    for (int i = 0; i < opaque.Count; i++)
+                    for (int i = 0; i < opaque.Count; ++i)
                     {
                         var entry = opaque.Elements[i];
                         entry.Drawable.Draw(context, entry.Material);
@@ -146,7 +144,7 @@ namespace Nine.Graphics.Drawing
                 {
                     graphics.RasterizerState = RasterizerState.CullNone;
 
-                    for (int i = 0; i < opaqueTwoSided.Count; i++)
+                    for (int i = 0; i < opaqueTwoSided.Count; ++i)
                     {
                         var entry = opaqueTwoSided.Elements[i];
                         entry.Drawable.Draw(context, entry.Material);
@@ -161,7 +159,7 @@ namespace Nine.Graphics.Drawing
                 {
                     graphics.RasterizerState = RasterizerState.CullCounterClockwise;
 
-                    for (int i = 0; i < transparent.Count; i++)
+                    for (int i = 0; i < transparent.Count; ++i)
                     {
                         var entry = transparent.Elements[i];
                         graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;
@@ -175,7 +173,7 @@ namespace Nine.Graphics.Drawing
                 {
                     graphics.RasterizerState = RasterizerState.CullNone;
 
-                    for (int i = 0; i < transparentTwoSided.Count; i++)
+                    for (int i = 0; i < transparentTwoSided.Count; ++i)
                     {
                         var entry = transparentTwoSided.Elements[i];
                         graphics.BlendState = entry.Material.IsAdditive ? BlendState.Additive : BlendState.AlphaBlend;

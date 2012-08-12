@@ -30,9 +30,9 @@
             PixelBitmapContent<Vector3> source = input.Faces[0][0] as PixelBitmapContent<Vector3>;
             PixelBitmapContent<Alpha8> bitmap = new PixelBitmapContent<Alpha8>(source.Width, source.Height);
 
-            for (int y = 0; y < source.Height; y++)
+            for (int y = 0; y < source.Height; ++y)
             {
-                for (int x = 0; x < source.Width; x++)
+                for (int x = 0; x < source.Width; ++x)
                 {
                     Vector3 src = source.GetPixel(x, y);
 

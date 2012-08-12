@@ -142,7 +142,7 @@ namespace BEPUphysics.UpdateableSystems
 
         protected override void UpdateMultithreaded()
         {
-            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
+            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; ++i)
             {
                 SequentialUpdate(i);
             }
@@ -151,11 +151,11 @@ namespace BEPUphysics.UpdateableSystems
 
         protected override void UpdateSingleThreaded()
         {
-            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
+            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; ++i)
             {
                 SequentialUpdate(i);
             }
-            for (int i = 0; i < simultaneouslyUpdatedUpdateables.Count; i++)
+            for (int i = 0; i < simultaneouslyUpdatedUpdateables.Count; ++i)
             {
                 MultithreadedUpdate(i);
             }

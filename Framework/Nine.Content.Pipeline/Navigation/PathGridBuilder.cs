@@ -20,7 +20,7 @@ namespace Nine.Content.Pipeline.Navigation
 
             var pathGrid = new PathGrid(heightmap.BoundingBox.Min.X, heightmap.BoundingBox.Min.Z,
                                         heightmap.Size.X, heightmap.Size.Z, heightmap.Width, heightmap.Height);
-            for (int i = 0; i < collisionMap.Length; i++)
+            for (int i = 0; i < collisionMap.Length; ++i)
                 if (collisionMap[i])
                     pathGrid.Mark(i % pathGrid.SegmentCountX, i / pathGrid.SegmentCountX);
             return pathGrid;
@@ -44,11 +44,11 @@ namespace Nine.Content.Pipeline.Navigation
             var heightmap = new float[width * height];
             /*
             Parallel.For(0, height, y =>
-            //for (int y = 0; y < height; y++)
+            //for (int y = 0; y < height; ++y)
             {
                 var rayPicks = new List<FindResult>();
 
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; ++x)
                 {
                     var pickRay = new Ray();
                     pickRay.Position.X = bounds.Min.X + x * step;
@@ -74,8 +74,8 @@ namespace Nine.Content.Pipeline.Navigation
                             lock (SyncRoot)
                             {
                                 // Force lazy initialization;
-                                i += geometry.Indices.Length;
-                                i += geometry.Positions.Length;
+                                i += indices.Length;
+                                i += positions.Length;
 
                                 var pickResult = pickRay.Intersects(geometry);
                                 if (pickResult.HasValue && pickResult.Value < min)
@@ -103,9 +103,9 @@ namespace Nine.Content.Pipeline.Navigation
             var heights = heightmap.Heights;
 
             Parallel.For(0, heightmap.Height, y =>
-            //for (int y = 0; y < heightmap.Height; y++)
+            //for (int y = 0; y < heightmap.Height; ++y)
             {
-                for (int x = 0; x < heightmap.Width; x++)
+                for (int x = 0; x < heightmap.Width; ++x)
                 {
                     var p1 = heights[x + y * width];
                     var p2 = heights[x + 1 + y * width];
@@ -130,11 +130,11 @@ namespace Nine.Content.Pipeline.Navigation
             var bounds = heightmap.BoundingBox;
             
             Parallel.For(0, heightmap.Height, y =>
-            //for (int y = 0; y < heightmap.Height; y++)
+            //for (int y = 0; y < heightmap.Height; ++y)
             {
                 var obstacles = new List<Model>();
 
-                for (int x = 0; x < heightmap.Width; x++)
+                for (int x = 0; x < heightmap.Width; ++x)
                 {
                     var index = x + y * width;
                     if (collisionMap[index])
@@ -164,9 +164,10 @@ namespace Nine.Content.Pipeline.Navigation
                         int i = 0;
                         lock (SyncRoot)
                         {
+                            /*
                             // Force lazy initialization;
-                            i += geometry.Indices.Length;
-                            i += geometry.Positions.Length;
+                            i += indices.Length;
+                            i += positions.Length;
 
                             var containment = boundingBox.Contains(geometry);
                             if (containment != ContainmentType.Disjoint)
@@ -174,6 +175,7 @@ namespace Nine.Content.Pipeline.Navigation
                                 collisionMap[index] = true;
                                 break;
                             }
+                             */
                         }
                     }
                     obstacles.Clear();

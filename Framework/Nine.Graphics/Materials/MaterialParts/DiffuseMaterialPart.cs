@@ -90,15 +90,15 @@
             get { return diffuseColor; }
             set { diffuseColor = value; }
         }
-        private Vector3 diffuseColor = MaterialConstants.DiffuseColor;
+        private Vector3 diffuseColor = Constants.DiffuseColor;
 
         /// <summary>
         /// Gets or sets the overlay color when texture alpha is used as overlay.
         /// </summary>
         public Vector3 OverlayColor
         {
-            get { return overlayColor.HasValue ? overlayColor.Value : MaterialConstants.DiffuseColor; }
-            set { overlayColor = (value == MaterialConstants.DiffuseColor ? (Vector3?)null : value); }
+            get { return overlayColor.HasValue ? overlayColor.Value : Constants.DiffuseColor; }
+            set { overlayColor = (value == Constants.DiffuseColor ? (Vector3?)null : value); }
         }
         private Vector3? overlayColor;
 
@@ -156,7 +156,7 @@
         protected internal override void EndApplyLocalParameters(DrawingContext context)
         {
             if (overlayColorParameter != null && overlayColor.HasValue)
-                overlayColorParameter.SetValue(MaterialConstants.DiffuseColor);
+                overlayColorParameter.SetValue(Constants.DiffuseColor);
         }
 
         /// <summary>

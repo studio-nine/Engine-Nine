@@ -168,7 +168,7 @@
                 }
             }
         }
-        Heightmap heightmap;
+        internal Heightmap heightmap;
         private bool heightmapNeedsUpdate = true;
 
         /// <summary>
@@ -219,17 +219,12 @@
         private MaterialLevelOfDetail materialLevels = new MaterialLevelOfDetail();
 
         /// <summary>
-        /// Gets or sets a value indicating whether lighting is enabled.
-        /// </summary>
-        public bool LightingEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this model casts shadow.
+        /// Gets or sets a value indicating whether this object casts shadow.
         /// </summary>
         public bool CastShadow { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this model casts shadow.
+        /// Gets or sets a value indicating whether this object receives shadow.
         /// </summary>
         public bool ReceiveShadow { get; set; }
         #endregion
@@ -273,7 +268,7 @@
         protected override void OnTransformChanged()
         {
             if (patches != null)
-                for (int i = 0; i < patches.Count; i++)
+                for (int i = 0; i < patches.Count; ++i)
                     patches[i].UpdatePosition();
         }
 
@@ -317,7 +312,6 @@
             GraphicsDevice = graphics;
             LevelOfDetailStart = 100;
             LevelOfDetailEnd = 1000;
-            LightingEnabled = true;
             Visible = true;
             ReceiveShadow = true;
             Material = null;
@@ -487,7 +481,7 @@
                 var patchArray = new SurfacePatch[patchCountX * patchCountZ];
 
                 for (int z = 0; z < patchCountZ; z++)
-                    for (int x = 0; x < patchCountX; x++)
+                    for (int x = 0; x < patchCountX; ++x)
                         patchArray[i++] = new SurfacePatch<T>(this, x, z);
                 patches = new SurfacePatchCollection(this, patchArray);
 
@@ -614,7 +608,7 @@
 
             float patchDistance;
 
-            for (int i = 0; i < patches.Count; i++)
+            for (int i = 0; i < patches.Count; ++i)
             {
                 Vector3.Distance(ref patches[i].center, ref eyePosition, out patchDistance);
                 
@@ -627,7 +621,7 @@
                 patches[i].DetailLevel = patchLod;
             }
 
-            for (int i = 0; i < patches.Count; i++)
+            for (int i = 0; i < patches.Count; ++i)
             {
                 patches[i].UpdateLevelOfDetail();
             }

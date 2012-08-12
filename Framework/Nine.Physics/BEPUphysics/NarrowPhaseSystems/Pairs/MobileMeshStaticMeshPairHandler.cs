@@ -108,7 +108,7 @@ namespace BEPUphysics.NarrowPhaseSystems.Pairs
         {
             var overlappedElements = Resources.GetIntList();
             mesh.Mesh.Tree.GetOverlaps(mobileMesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.count; i++)
+            for (int i = 0; i < overlappedElements.count; ++i)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }

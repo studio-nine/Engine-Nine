@@ -19,7 +19,7 @@
         /// </summary>
         public bool Visible
         {
-            get { return visible && Surface.Visible; }
+            get { return visible && surface.Visible; }
             set { visible = value; }
         }
         private bool visible = true;
@@ -27,7 +27,11 @@
         /// <summary>
         /// Gets the number of segments of this patch.
         /// </summary>
-        public int SegmentCount { get; internal set; }
+        public int SegmentCount
+        {
+            get { return segmentCount; }
+        }
+        internal int segmentCount;
 
         /// <summary>
         /// Gets the x index of the patch on the parent surface.
@@ -87,13 +91,17 @@
         /// </summary>
         public Matrix Transform
         {
-            get { return Surface.AbsoluteTransform; } 
+            get { return surface.AbsoluteTransform; } 
         }
 
         /// <summary>
         /// Gets the parent surface.
         /// </summary>
-        public Surface Surface { get; private set; }
+        public Surface Surface 
+        {
+            get { return surface; }
+        }
+        internal Surface surface;
 
         /// <summary>
         /// Gets or sets any user data.
@@ -139,9 +147,8 @@
         }
         private Material materialForRendering;
 
-        bool ILightable.CastShadow { get { return Surface.CastShadow; } }
-        bool ILightable.ReceiveShadow { get { return Surface.ReceiveShadow; } }
-        bool ILightable.LightingEnabled { get { return Surface.LightingEnabled; } }
+        bool ILightable.CastShadow { get { return surface.CastShadow; } }
+        bool ILightable.ReceiveShadow { get { return surface.ReceiveShadow; } }
 
         int ILightable.MaxReceivedShadows { get { return 4; } }
         int ILightable.MaxAffectingLights { get { return 1; } }
@@ -155,52 +162,41 @@
         #region IContainedObject
         object IComponent.Parent
         {
-            get { return Surface; }
+            get { return surface; }
             set { throw new InvalidOperationException(); }
         }
         #endregion
 
         #region IGeometry
-        Matrix? IGeometry.Transform { get { return Transform; } }
-
-        Vector3[] IGeometry.Positions
+        /// <summary>
+        /// Gets the triangle vertices of the target geometry.
+        /// </summary>        
+        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
-            get
+            if (this.geometryPositions == null)
             {
-                if (positions == null)
+                int i = 0;
+                this.geometryPositions = new Vector3[(segmentCount + 1) * (segmentCount + 1)];
+                for (int z = 0; z <= segmentCount; z++)
                 {
-                    int i = 0;
-                    positions = new Vector3[(SegmentCount + 1) * (SegmentCount + 1)];
-                    for (int z = 0; z <= SegmentCount; z++)
+                    for (int x = 0; x <= segmentCount; ++x)
                     {
-                        for (int x = 0; x <= SegmentCount; x++)
-                        {
-                            int xSurface = (x + (X * SegmentCount));
-                            int zSurface = (z + (Z * SegmentCount));
+                        int xSurface = (x + (X * segmentCount));
+                        int zSurface = (z + (Z * segmentCount));
 
-                            positions[i++] = Surface.Heightmap.GetPosition(xSurface, zSurface);
-                        }
+                        geometryPositions[i++] = surface.heightmap.GetPosition(xSurface, zSurface);
                     }
                 }
-                return positions;
-            }
-        }
-        Vector3[] positions;
 
-        ushort[] IGeometry.Indices
-        {
-            get
-            {
-                if (indices == null)
-                {
-                    int count = SurfaceGeometry.GetIndicesForLevel(SegmentCount, 0, false, false, false, false, null, 0); 
-                    indices = new ushort[count];
-                    SurfaceGeometry.GetIndicesForLevel(SegmentCount, 0, false, false, false, false, indices, 0);
-                }
-                return indices;
+                int count = SurfaceGeometry.GetIndicesForLevel(segmentCount, 0, false, false, false, false, null, 0);
+                geometryIndices = new ushort[count];
+                SurfaceGeometry.GetIndicesForLevel(segmentCount, 0, false, false, false, false, geometryIndices, 0);
             }
+            vertices = this.geometryPositions;
+            indices = this.geometryIndices;
         }
-        ushort[] indices;
+        Vector3[] geometryPositions;
+        ushort[] geometryIndices;
         #endregion
 
         #region Methods
@@ -216,10 +212,10 @@
             if (!IsPowerOfTwo(patchSegmentCount))
                 throw new ArgumentOutOfRangeException("PatchSegmentCount must be a power of two.");
 
-            this.Surface = surface;
+            this.surface = surface;
             this.heightmap = surface.Heightmap;
             this.GraphicsDevice = surface.GraphicsDevice;
-            this.SegmentCount = patchSegmentCount;
+            this.segmentCount = patchSegmentCount;
             this.X = xPatch;
             this.Z = zPatch;
 
@@ -235,8 +231,8 @@
 
         private IEnumerable<Vector3> EnumeratePositions()
         {
-            for (int x = X * SegmentCount; x <= (X + 1) * SegmentCount; x++)
-                for (int y = Z * SegmentCount; y <= (Z + 1) * SegmentCount; y++)
+            for (int x = X * segmentCount; x <= (X + 1) * segmentCount; ++x)
+                for (int y = Z * segmentCount; y <= (Z + 1) * segmentCount; ++y)
                     yield return heightmap.GetPosition(x, y);
         }
 
@@ -244,20 +240,20 @@
         {
             BoundingBox box;
 
-            box.Min = baseBounds.Min + Surface.AbsolutePosition;
-            box.Max = baseBounds.Max + Surface.AbsolutePosition;
+            box.Min = baseBounds.Min + surface.AbsolutePosition;
+            box.Max = baseBounds.Max + surface.AbsolutePosition;
 
             BoundingBox = box;
             
             var offset = new Vector3();
-            offset.X = X * heightmap.Step * SegmentCount;
-            offset.Z = Z * heightmap.Step * SegmentCount;
+            offset.X = X * heightmap.Step * segmentCount;
+            offset.Z = Z * heightmap.Step * segmentCount;
             offset.Y = 0;
 
-            Position = Surface.AbsolutePosition + offset;
+            Position = surface.AbsolutePosition + offset;
 
-            offset.X = 0.5f * heightmap.Step * SegmentCount;
-            offset.Z = 0.5f * heightmap.Step * SegmentCount;
+            offset.X = 0.5f * heightmap.Step * segmentCount;
+            offset.Z = 0.5f * heightmap.Step * segmentCount;
                         
             center = Position + offset;
 
@@ -278,18 +274,18 @@
         {
             int startIndex, primitiveCount;
             {
-                Surface.Geometry.GetLevel(DetailLevel,
+                surface.Geometry.GetLevel(DetailLevel,
                     GetLevelOfDetail(X - 1, Z), GetLevelOfDetail(X + 1, Z),
                     GetLevelOfDetail(X, Z - 1), GetLevelOfDetail(X, Z + 1), out startIndex, out primitiveCount);
             }
             StartIndex = startIndex;
             PrimitiveCount = primitiveCount;
-            IndexBuffer = Surface.Geometry.IndexBuffer;
+            IndexBuffer = surface.Geometry.IndexBuffer;
         }
 
         private int GetLevelOfDetail(int x, int z)
         {
-            var patch = Surface.Patches[x, z];
+            var patch = surface.Patches[x, z];
             return patch != null ? patch.DetailLevel : DetailLevel;
         }
         #endregion
@@ -300,8 +296,8 @@
         /// </summary>
         public void BeginDraw(DrawingContext context)
         {
-            materialForRendering = Surface.Material ??
-                Surface.MaterialLevels.UpdateLevelOfDetail(Vector3.Distance(context.EyePosition, Center));
+            materialForRendering = surface.Material ??
+                surface.MaterialLevels.UpdateLevelOfDetail(Vector3.Distance(context.EyePosition, Center));
         }
 
         /// <summary>
@@ -312,7 +308,7 @@
             GraphicsDevice.Indices = IndexBuffer;
             context.SetVertexBuffer(VertexBuffer, 0);
 
-            material.world = Surface.AbsoluteTransform;
+            material.world = surface.AbsoluteTransform;
             material.BeginApply(context);
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VertexCount, StartIndex, PrimitiveCount);
             material.EndApply(context);
@@ -367,7 +363,7 @@
         /// </summary>
         internal override void Invalidate()
         {
-            SegmentCount = Surface.PatchSegmentCount;
+            segmentCount = surface.PatchSegmentCount;
 
             UpdateVertexBuffer();
             UpdateLevelOfDetail();
@@ -378,8 +374,8 @@
         private void UpdateVertexBuffer()
         {
             // Reuse the array to avoid creating large chunk of data.
-            VertexCount = (SegmentCount + 1) * (SegmentCount + 1);
-            int indexCount = 6 * SegmentCount * SegmentCount;
+            VertexCount = (segmentCount + 1) * (segmentCount + 1);
+            int indexCount = 6 * segmentCount * segmentCount;
 
             T[] vertices = null;
             if (WeakVertices == null)
@@ -396,11 +392,11 @@
             // Fill vertices
             int i = 0;
             VertexPositionNormalTexture vertex = new VertexPositionNormalTexture();
-            for (int z = 0; z <= SegmentCount; z++)
+            for (int z = 0; z <= segmentCount; z++)
             {
-                for (int x = 0; x <= SegmentCount; x++)
+                for (int x = 0; x <= segmentCount; ++x)
                 {
-                    Surface.PopulateVertex(X, Z, x, z, ref vertex, ref vertex);
+                    surface.PopulateVertex(X, Z, x, z, ref vertex, ref vertex);
                     if (FillVertex != null)
                         FillVertex(X, Z, x, z, ref vertex, ref vertices[i]);
                     i++;

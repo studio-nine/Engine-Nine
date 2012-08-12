@@ -69,7 +69,7 @@
         protected internal override void GetDependentPasses(ICollection<Type> passTypes)
         {
             var count = effects.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 var effect = effects[i];
                 if (effect.Enabled)
@@ -84,7 +84,7 @@
         {
             if (Enabled)
             {
-                for (int i = 0; i < effects.Count; i++)
+                for (int i = 0; i < effects.Count; ++i)
                     if (effects[i].Enabled)
                         effects[i].GetActivePasses(result);
             }
@@ -95,8 +95,8 @@
         /// </summary>
         void ISceneObject.OnAdded(DrawingContext context)
         {
-            context.RootPass.Passes.Add(this);
-            AddDependency(context.MainPass);
+            context.rootPass.Passes.Add(this);
+            AddDependency(context.mainPass);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@
         /// </summary>
         void ISceneObject.OnRemoved(DrawingContext context)
         {
-            context.RootPass.Passes.Remove(this);
+            context.rootPass.Passes.Remove(this);
         }
 
         /// <summary>

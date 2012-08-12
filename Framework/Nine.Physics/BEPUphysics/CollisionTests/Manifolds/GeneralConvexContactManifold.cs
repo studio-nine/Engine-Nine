@@ -132,7 +132,7 @@ namespace BEPUphysics.CollisionTests.Manifolds
 
         private bool IsContactUnique(ref ContactData contactCandidate)
         {
-            for (int i = 0; i < contacts.count; i++)
+            for (int i = 0; i < contacts.count; ++i)
             {
                 float distanceSquared;
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);

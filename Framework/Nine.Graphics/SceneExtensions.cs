@@ -42,7 +42,7 @@ namespace Nine.Graphics
             var context = GetDrawingContext(scene);
             if (context == null)
                 SetDrawingContext(scene, context = new DrawingContext(graphics, scene));
-            else if (context.GraphicsDevice != graphics)
+            else if (context.graphics != graphics)
                 throw new ArgumentException("graphics");
 
             return context;
@@ -75,6 +75,14 @@ namespace Nine.Graphics
         public static void Draw(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
         {
             GetDrawingContext(scene, graphics).Draw(elapsedTime);
+        }
+
+        /// <summary>
+        /// Draws the debug overlay of the target scene.
+        /// </summary>
+        public static void DrawDebugOverlay(this Scene scene, GraphicsDevice graphics, TimeSpan elapsedTime)
+        {
+            GetDrawingContext(scene, graphics).DrawDebugOverlay();
         }
 
         /// <summary>

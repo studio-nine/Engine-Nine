@@ -89,7 +89,7 @@
             int[] indices = input.ReadObject<int[]>();
             existingInstance.spriteNames = input.ReadObject<Dictionary<string, int>>();
 
-            for (int i = 0; i < indices.Length; i++)
+            for (int i = 0; i < indices.Length; ++i)
             {
                 existingInstance.Add(textures[indices[i]], rectangles[i]);
             }

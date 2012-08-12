@@ -25,7 +25,7 @@
                 
                 var hashString = new StringBuilder();
                 var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(input.ShaderCode));
-                for (int i = 0; i < hash.Length; i++)
+                for (int i = 0; i < hash.Length; ++i)
                 {
                     hashString.Append(hash[i].ToString("X2"));
                 }

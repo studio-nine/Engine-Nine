@@ -142,7 +142,7 @@
             startIndices.Add(0);
             while (lod <= MaxLevelOfDetail)
             {
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < 16; ++i)
                 {
                     if (LevelOfDetailEnabled || (lod == 0 && i == 0))
                     {
@@ -180,16 +180,16 @@
         public static int GetIndicesForLevel(int patchSegmentCount, int level, bool left, bool right, bool bottom, bool top, ushort[] indices, int startIndex)
         {
             int step = patchSegmentCount;
-            for (int i = 0; i < level; i++)
+            for (int i = 0; i < level; ++i)
                 step >>= 1;
 
             int n = Math.Max(step / 2, 1);
             int lengh = step == 1 ? 6 : Indices.Length;
-            for (int y = 0; y < n; y++)
+            for (int y = 0; y < n; ++y)
             {
-                for (int x = 0; x < n; x++)
+                for (int x = 0; x < n; ++x)
                 {
-                    for (int i = 0; i < lengh; i++)
+                    for (int i = 0; i < lengh; ++i)
                     {
                         Point point = Indices[i /*InvertWindingOrder(i)*/];
                         if (left && x == 0 && point.Y == 1 && point.X == 0)
@@ -274,7 +274,7 @@
             }
 
             int n = (x % 2) + (y % 2) * 2;
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 6; ++i)
             {
                 Point pt = Indices[i + n * 6];
 

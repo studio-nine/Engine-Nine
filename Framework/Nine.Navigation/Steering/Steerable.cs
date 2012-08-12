@@ -153,7 +153,7 @@ namespace Nine.Navigation.Steering
             Skin = MaxSpeed * elapsedTime * 2;
 
             // Accumulate force of each behavior
-            for (int i = 0; i < Behaviors.Count; i++)
+            for (int i = 0; i < Behaviors.Count; ++i)
             {
                 Vector2 steeringForce = Behaviors.GetWeightByIndex(i) * Behaviors[i].UpdateSteeringForce(elapsedTime, this);
                 if (BlendMode == SteeringBehaviorBlendMode.WeightedSum)
@@ -227,7 +227,7 @@ namespace Nine.Navigation.Steering
 
             // FindAll the min penetration depth.
             float? minPenetration = null;
-            for (int i = 0; i < Behaviors.Count; i++)
+            for (int i = 0; i < Behaviors.Count; ++i)
             {
                 var behavior = Behaviors[i];
                 float? penetration = behavior.Collides(from, to, elapsedTime, this);

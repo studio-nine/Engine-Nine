@@ -35,7 +35,7 @@ namespace BEPUphysics.Constraints.SolverGroups
         {
             foreach (EntitySolverUpdateable item in solverUpdateables)
             {
-                for (int i = 0; i < item.involvedEntities.count; i++)
+                for (int i = 0; i < item.involvedEntities.count; ++i)
                 {
                     if (!outputInvolvedEntities.Contains(item.involvedEntities.Elements[i]))
                     {
@@ -55,7 +55,7 @@ namespace BEPUphysics.Constraints.SolverGroups
             if (isActive)
             {
                 isActiveInSolver = false;
-                for (int i = 0; i < solverUpdateables.count; i++)
+                for (int i = 0; i < solverUpdateables.count; ++i)
                 {
                     var item = solverUpdateables.Elements[i];
                     item.UpdateSolverActivity();
@@ -88,7 +88,7 @@ namespace BEPUphysics.Constraints.SolverGroups
         ///<param name="dt">Timestep duration.</param>
         public override void Update(float dt)
         {
-            for (int i = 0; i < solverUpdateables.count; i++)
+            for (int i = 0; i < solverUpdateables.count; ++i)
             {
                 UpdateUpdateable(solverUpdateables.Elements[i], dt);
             }
@@ -103,7 +103,7 @@ namespace BEPUphysics.Constraints.SolverGroups
         /// </summary>
         public override void ExclusiveUpdate()
         {
-            for (int i = 0; i < solverUpdateables.count; i++)
+            for (int i = 0; i < solverUpdateables.count; ++i)
             {
                 ExclusiveUpdateUpdateable(solverUpdateables.Elements[i]);
             }
@@ -157,7 +157,7 @@ namespace BEPUphysics.Constraints.SolverGroups
         public override float SolveIteration()
         {
             int activeConstraints = 0;
-            for (int i = 0; i < solverUpdateables.count; i++)
+            for (int i = 0; i < solverUpdateables.count; ++i)
             {
                 SolveUpdateable(solverUpdateables.Elements[i], ref activeConstraints);
             }
@@ -219,7 +219,7 @@ namespace BEPUphysics.Constraints.SolverGroups
         /// <param name="newSpace"></param>
         public override void OnAdditionToSpace(ISpace newSpace)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; ++i)
             {
                 solverUpdateables[i].OnAdditionToSpace(newSpace);
             }
@@ -230,7 +230,7 @@ namespace BEPUphysics.Constraints.SolverGroups
         /// </summary>
         public override void OnRemovalFromSpace(ISpace oldSpace)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; ++i)
             {
                 solverUpdateables[i].OnRemovalFromSpace(oldSpace);
             }
@@ -248,7 +248,7 @@ namespace BEPUphysics.Constraints.SolverGroups
             internal set
             {
                 base.Solver = value;
-                for (int i = 0; i < solverUpdateables.count; i++)
+                for (int i = 0; i < solverUpdateables.count; ++i)
                 {
                     solverUpdateables.Elements[i].Solver = value;
                 }

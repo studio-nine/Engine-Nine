@@ -30,11 +30,6 @@ namespace Nine
         private List<ISceneManager<ISpatialQueryable>> sceneManagers;
 
         /// <summary>
-        /// Gets the spatial query that can find all the top level objects.
-        /// </summary>
-        private Dictionary<Type, object> typedQueries;
-
-        /// <summary>
         /// Keeps track of all the objects, only used under debug mode.
         /// </summary>
         private List<object> objectTracker;
@@ -42,13 +37,13 @@ namespace Nine
 
         #region Events
         /// <summary>
-        /// Occurs when any of the desecendant node is removed from the scene either
+        /// Occurs when any of the descendant node is removed from the scene either
         /// directly or through the removal from a subtree.
         /// </summary>
         public event Action<object> RemovedFromScene;
 
         /// <summary>
-        /// Occurs when any of the desecendant node is added to the scene either
+        /// Occurs when any of the descendant node is added to the scene either
         /// directly or through the addition of a subtree.
         /// </summary>
         public event Action<object> AddedToScene;
@@ -134,12 +129,12 @@ namespace Nine
             ContainerTraverser.Traverse<object>(child, InternalAdd);
         }
 
-        private TraverseOptions InternalAdd(object desecendant)
+        private TraverseOptions InternalAdd(object descendant)
         {
-            if (desecendant == null)
-                throw new ArgumentNullException("desecendant");
+            if (descendant == null)
+                throw new ArgumentNullException("descendant");
             
-            var queryable = desecendant as ISpatialQueryable;
+            var queryable = descendant as ISpatialQueryable;
             if (queryable != null)
             {
                 // Choose the right scene manager for the target object
@@ -149,28 +144,28 @@ namespace Nine
                     defaultSceneManager.Add(queryable);
             }
 
-            var collectionChanged = desecendant as INotifyCollectionChanged<object>;
+            var collectionChanged = descendant as INotifyCollectionChanged<object>;
             if (collectionChanged != null)
             {
                 collectionChanged.Added += OnDesecendantAdded;
                 collectionChanged.Removed += OnDesecendantRemoved;
             }
 
-            TrackObject(desecendant);
-            OnAddedToScene(desecendant);
+            TrackObject(descendant);
+            OnAddedToScene(descendant);
 
             var addedToScene = AddedToScene;
             if (addedToScene != null)
-                addedToScene(desecendant);
+                addedToScene(descendant);
 
             return TraverseOptions.Continue;
         }
 
         /// <summary>
-        /// Called when any of the desecendant node is added to the scene either
-        /// directly or through the addition of a subtree.
+        /// Called when any of the descendant node is added to the scene either
+        /// directly or through the addition of a sub tree.
         /// </summary>
-        protected virtual void OnAddedToScene(object desecendant)
+        protected virtual void OnAddedToScene(object descendant)
         {
 
         }
@@ -184,44 +179,44 @@ namespace Nine
             ContainerTraverser.Traverse<object>(child, InternalRemove);
         }
 
-        private TraverseOptions InternalRemove(object desecendant)
+        private TraverseOptions InternalRemove(object descendant)
         {
-            if (desecendant == null)
-                throw new ArgumentNullException("desecendant");
+            if (descendant == null)
+                throw new ArgumentNullException("descendant");
 
-            var queryable = desecendant as ISpatialQueryable;
+            var queryable = descendant as ISpatialQueryable;
             if (queryable != null)
                 defaultSceneManager.Remove(queryable);
 
-            var collectionChanged = desecendant as INotifyCollectionChanged<object>;
+            var collectionChanged = descendant as INotifyCollectionChanged<object>;
             if (collectionChanged != null)
             {
                 collectionChanged.Added -= OnDesecendantAdded;
                 collectionChanged.Removed -= OnDesecendantRemoved;
             }
 
-            UnTrackObject(desecendant);
-            OnRemovedFromScene(desecendant);
+            UnTrackObject(descendant);
+            OnRemovedFromScene(descendant);
 
             var removedFromScene = RemovedFromScene;
             if (removedFromScene != null)
-                removedFromScene(desecendant);
+                removedFromScene(descendant);
 
             return TraverseOptions.Continue;
         }
 
 
         /// <summary>
-        /// Called when any of the desecendant node is added to the scene either
-        /// directly or through the addition of a subtree.
+        /// Called when any of the descendant node is added to the scene either
+        /// directly or through the addition of a sub tree.
         /// </summary>
-        protected virtual void OnRemovedFromScene(object desecendant)
+        protected virtual void OnRemovedFromScene(object descendant)
         {
 
         }
         
         /// <summary>
-        /// Ensures OnAddedToScene is called when a desecendant is added to a subtree.
+        /// Ensures OnAddedToScene is called when a descendant is added to a sub tree.
         /// </summary>
         private void OnDesecendantAdded(object value)
         {
@@ -229,7 +224,7 @@ namespace Nine
         }
 
         /// <summary>
-        /// Ensures OnRemovedFromScene is called when a desecendant is removed from a subtree.
+        /// Ensures OnRemovedFromScene is called when a descendant is removed from a sub tree.
         /// </summary>
         private void OnDesecendantRemoved(object value)
         {
@@ -257,51 +252,44 @@ namespace Nine
         /// <summary>
         /// Create a spatial query of the specified type from this scene.
         /// </summary>
-        public ISpatialQuery<T> CreateSpatialQuery<T>() where T : class
+        public ISpatialQuery<T> CreateSpatialQuery<T>(Predicate<T> condition) where T : class
         {
-            object result = null;
-            if (typedQueries != null && typedQueries.TryGetValue(typeof(T), out result))
-                return (ISpatialQuery<T>)result;
-            if (typedQueries == null)
-                typedQueries = new Dictionary<Type, object>();
-            var query = new SceneQuery<T>(sceneManagers, Children);
-            typedQueries[typeof(T)] = query;
-            return query;
+            return new SceneQuery<T>(sceneManagers, Children, condition);
         }
 
         /// <summary>
-        /// Finds all the scene objects and the original volumn for intersection test that is contained by or
+        /// Finds all the scene objects and the original volume for intersection test that is contained by or
         /// intersects the specified bounding sphere.
         /// </summary>
-        public void FindAll<T>(ref BoundingSphere boundingSphere, ICollection<T> result) where T : class
+        public void FindAll<T>(ref BoundingSphere boundingSphere, Predicate<T> condition, ICollection<T> result) where T : class
         {
-            CreateSpatialQuery<T>().FindAll(ref boundingSphere, result);
+            CreateSpatialQuery<T>(condition).FindAll(ref boundingSphere, result);
         }
 
         /// <summary>
-        /// Finds all the scene objects and the original volumn for intersection test that intersects the specified ray.
+        /// Finds all the scene objects and the original volume for intersection test that intersects the specified ray.
         /// </summary>
-        public void FindAll<T>(ref Ray ray, ICollection<T> result) where T : class
+        public void FindAll<T>(ref Ray ray, Predicate<T> condition, ICollection<T> result) where T : class
         {
-            CreateSpatialQuery<T>().FindAll(ref ray, result);
+            CreateSpatialQuery<T>(condition).FindAll(ref ray, result);
         }
 
         /// <summary>
-        /// Finds all the scene objects and the original volumn for intersection test that is contained by or
+        /// Finds all the scene objects and the original volume for intersection test that is contained by or
         /// intersects the specified bounding box.
         /// </summary>
-        public void FindAll<T>(ref BoundingBox boundingBox, ICollection<T> result) where T : class
+        public void FindAll<T>(ref BoundingBox boundingBox, Predicate<T> condition, ICollection<T> result) where T : class
         {
-            CreateSpatialQuery<T>().FindAll(ref boundingBox, result);
+            CreateSpatialQuery<T>(condition).FindAll(ref boundingBox, result);
         }
 
         /// <summary>
-        /// Finds all the scene objects and the original volumn for intersection test that is contained by or
+        /// Finds all the scene objects and the original volume for intersection test that is contained by or
         /// intersects the specified bounding frustum.
         /// </summary>
-        public void FindAll<T>(BoundingFrustum boundingFrustum, ICollection<T> result) where T : class
+        public void FindAll<T>(BoundingFrustum boundingFrustum, Predicate<T> condition, ICollection<T> result) where T : class
         {
-            CreateSpatialQuery<T>().FindAll(boundingFrustum, result);
+            CreateSpatialQuery<T>(condition).FindAll(boundingFrustum, result);
         }
         #endregion
     }
