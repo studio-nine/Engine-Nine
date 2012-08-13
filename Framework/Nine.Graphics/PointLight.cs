@@ -111,11 +111,6 @@ namespace Nine.Graphics
             base.Draw(context, primitive);
         }
 
-        protected override void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> bounds, out Matrix shadowFrustum)
-        {
-            throw new NotImplementedException();
-        }
-
         #region IDeferredLight
         /// <summary>
         /// Gets the light geometry for deferred lighting.

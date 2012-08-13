@@ -172,7 +172,7 @@ namespace Nine.Graphics
                 throw new ArgumentNullException();
 
             this.model = model;
-            this.Name = mesh.Name;
+            this.name = mesh.Name;
 
             var tag = part.Tag as ModelMeshPartTag;
             if (tag != null && tag.Textures != null && tag.Textures.Count > 0)

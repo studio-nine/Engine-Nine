@@ -53,7 +53,7 @@ namespace Nine
                 for (int i = 0; i < count; ++i)
                 {
                     var child = children[i] as Nine.Object;
-                    if (child != null && child.Name == name)
+                    if (child != null && child.name == name)
                         return child;
                 }
                 return null;
@@ -181,34 +181,27 @@ namespace Nine
         /// Computes the axis aligned bounding box that exactly contains the bounds of all child node.
         /// </summary>
         /// <remarks>
-        /// Any children that implements <see cref="ISpatialQueryable"/> will be included in the final bounding box.
+        /// Any desendant that implements <see cref="ISpatialQueryable"/> will be included in the final bounding box.
         /// </remarks>
-        public BoundingBox BoundingBox
+        public BoundingBox ComputeBounds()
         {
-            get
+            var hasBoundable = false;
+            var bounds = new BoundingBox();
+            ContainerTraverser.Traverse<ISpatialQueryable>(this, boundable =>
             {
-                var hasBoundable = false;
-                var bounds = new BoundingBox();
-                var count = children.Count;
-                for (int i = 0; i < count; ++i)
+                if (hasBoundable)
                 {
-                    var boundable = children[i] as ISpatialQueryable;
-                    if (boundable != null)
-                    {
-                        if (hasBoundable)
-                        {
-                            var childBounds = boundable.BoundingBox;
-                            BoundingBox.CreateMerged(ref bounds, ref childBounds, out bounds);
-                        }
-                        else
-                        {
-                            bounds = boundable.BoundingBox;
-                            hasBoundable = true;
-                        }
-                    }
+                    var childBounds = boundable.BoundingBox;
+                    BoundingBox.CreateMerged(ref bounds, ref childBounds, out bounds);
                 }
-                return bounds;
-            }
+                else
+                {
+                    bounds = boundable.BoundingBox;
+                    hasBoundable = true;
+                }
+                return TraverseOptions.Continue;
+            });
+            return bounds;
         }
         #endregion
 
@@ -257,7 +250,7 @@ namespace Nine
 
         #region Find
         /// <summary>
-        /// Performs a depth first search and finds the first desecant transformables with the specified name.
+        /// Performs a depth first search and finds the first desendant transformables with the specified name.
         /// </summary>
         public T FindName<T>(string name) where T : class
         {
@@ -265,13 +258,14 @@ namespace Nine
                 throw new ArgumentException("name");
 
             T result = null;
-            ContainerTraverser.Traverse<T>(this, delegate(T desendant)
+            ContainerTraverser.Traverse<Object>(this, desendant =>
             {
-                var transformable = desendant as Object;
-                if (transformable != null && transformable.Name == name)
+                result = desendant as T;
+                if (result != null)
                 {
-                    result = desendant;
-                    return TraverseOptions.Stop;
+                    if (desendant.name == name)
+                        return TraverseOptions.Stop;
+                    result = null;
                 }
                 return TraverseOptions.Continue;
             });

@@ -1,6 +1,7 @@
 namespace Nine.Graphics.Drawing
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
@@ -8,14 +9,14 @@ namespace Nine.Graphics.Drawing
     using Nine.Graphics;
     using Nine.Graphics.Cameras;
     using Nine.Graphics.Materials;
-    using Nine.Graphics.Primitives;
     using Nine.Graphics.PostEffects;
+    using Nine.Graphics.Primitives;
     using DirectionalLight = Nine.Graphics.DirectionalLight;
 
     /// <summary>
     /// A drawing context contains commonly used global parameters for rendering.
     /// </summary>
-    public class DrawingContext
+    public class DrawingContext : ISpatialQuery
     {
         #region Properties
         /// <summary>
@@ -83,6 +84,17 @@ namespace Nine.Graphics.Drawing
             get { return drawables; }
         }
         internal ISpatialQuery<IDrawableObject> drawables;
+
+        /// <summary>
+        /// Gets the bounding box of the current drawing context.
+        /// </summary>
+        public BoundingBox BoundingBox
+        {
+            get { UpdateBounds(); return boundingBox; }
+        }
+        private BoundingBox boundingBox;
+        private ISpatialQuery<ISpatialQueryable> boundsQuery;
+        private bool boundingBoxNeedsUpdate = true;
 
         /// <summary>
         /// Gets the main pass that is used to render the scene.
@@ -250,6 +262,18 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Initializes a new instance of the <see cref="DrawingContext"/> class.
         /// </summary>
+        public DrawingContext(GraphicsDevice graphics) : this(graphics, new SpatialQuery())
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
+        /// </summary>
+        public DrawingContext(GraphicsDevice graphics, IEnumerable objects) : this(graphics, new SpatialQuery(objects))
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DrawingContext"/> class.
+        /// </summary>
         public DrawingContext(GraphicsDevice graphics, ISpatialQuery spatialQuery)
         {
             if (graphics == null)
@@ -271,9 +295,9 @@ namespace Nine.Graphics.Drawing
             this.directionalLights = new DirectionalLightCollection(defaultLight);
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
-            this.mainPass = new PassGroup() { Name = "MainPass" };
+            this.mainPass = new PassGroup() { name = "MainPass" };
             this.mainPass.Passes.Add(new DrawingPass());
-            this.rootPass = new PassGroup() { Name = "RootPass" };
+            this.rootPass = new PassGroup() { name = "RootPass" };
             this.rootPass.Passes.Add(mainPass);
         }
 
@@ -324,6 +348,34 @@ namespace Nine.Graphics.Drawing
         {
             return spatialQuery.CreateSpatialQuery<T>(condition);
         }
+
+        /// <summary>
+        /// Updates the axis aligned bounding box that exactly contains the bounds of all objects.
+        /// </summary>
+        private void UpdateBounds()
+        {
+            var maxBounds = 1E6F;
+            var hasBoundable = false;
+            var bounds = new BoundingBox();
+            var queryBounds = new BoundingBox(Vector3.One * maxBounds, -Vector3.One * maxBounds);
+            if (boundsQuery == null)
+                boundsQuery = spatialQuery.CreateSpatialQuery<ISpatialQueryable>();
+            boundsQuery.FindAll(ref queryBounds, boundable =>
+            {
+                if (hasBoundable)
+                {
+                    var childBounds = boundable.BoundingBox;
+                    BoundingBox.CreateMerged(ref bounds, ref childBounds, out bounds);
+                }
+                else
+                {
+                    bounds = boundable.BoundingBox;
+                    hasBoundable = true;
+                }
+            });
+
+            boundingBoxNeedsUpdate = false;
+        }
         
         /// <summary>
         /// Draws the specified scene.
@@ -358,6 +410,7 @@ namespace Nine.Graphics.Drawing
             this.totalTime += elapsedTime;
             this.elapsedSeconds = (float)elapsedTime.TotalSeconds;
             this.totalSeconds = (float)totalTime.TotalSeconds;
+            this.boundingBoxNeedsUpdate = true;
 
             UpdateDefaultSamplerStates();
 

@@ -1,10 +1,12 @@
 ﻿namespace Nine.Graphics
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
 
     /// <summary>
     /// Helper class to create color matrices.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ColorMatrix
     {
         /// <summary>

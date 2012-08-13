@@ -179,11 +179,10 @@ namespace Nine.Graphics
         }
 
         static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
-
-        protected override void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> bounds, out Matrix shadowFrustum)
-        {
-            throw new NotImplementedException();
+        
             /*
+        protected override void UpdateShadowFrustum(DrawingContext context, out Matrix shadowFrustum)
+        {
             if (shadowCastersInLightFrustum.Count <= 0)
             {
                 frustumMatrix = new Matrix();
@@ -244,8 +243,8 @@ namespace Nine.Graphics
                                                      Math.Max(NearPlane * 2, farZ), out projection);
             Matrix.Multiply(ref view, ref projection, out frustumMatrix);
             return true;
-             */
-        }
+           
+        }  */
 
         public override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {

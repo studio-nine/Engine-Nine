@@ -1,11 +1,13 @@
 ﻿namespace Nine.Graphics
 {
+    using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     /// <summary>
     /// Helper class to create texture transformation matrices.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class TextureTransform
     {
         /// <summary>

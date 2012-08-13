@@ -1,5 +1,6 @@
 namespace Nine.Graphics
 {
+    using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
@@ -10,8 +11,27 @@ namespace Nine.Graphics
     /// Defines a skybox.
     /// </summary>
     [ContentSerializable]
-    public class SkyBox : Drawable
+    public class SkyBox : Nine.Object, IDrawableObject, IDisposable
     {
+        /// <summary>
+        /// Gets or sets whether the drawable is visible.
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is disposed.
+        /// </summary>
+        public bool IsDisposed { get; private set; }
+
+        /// <summary>
+        /// Gets the material used by this drawable.
+        /// </summary>
+        Material IDrawableObject.Material
+        {
+            get { throw new NotImplementedException(); }
+        }
+        private SkyBoxMaterial material;
+
         /// <summary>
         /// Gets or sets the color of the skybox.
         /// </summary>
@@ -29,35 +49,55 @@ namespace Nine.Graphics
             get { return material.Texture; }
             set { material.Texture = value; }
         }
-
-        protected override Material MaterialValue
-        {
-            get { return material; }
-        }
-
         private Box cube;
-        private SkyBoxMaterial material;
 
         public SkyBox(GraphicsDevice graphics)
         {
+            Visible = true;
             material = new SkyBoxMaterial(graphics);
             cube = new Box(graphics) { InvertWindingOrder = true, Material = material, };
         }
 
-        public override void Draw(DrawingContext context, Material material)
+        public void Draw(DrawingContext context, Material material)
         {
-            if (material is SkyBoxMaterial)
-            {
-                // Skybox cannot be rendered using other materials.
+            if (material == null)
+                cube.Draw(context, this.material);
 
+            // Skybox cannot be rendered using other materials.
+            else if (material is SkyBoxMaterial)
                 cube.Draw(context, material);
-            }
         }
 
-        protected override void Dispose(bool disposing)
+        void IDrawableObject.BeginDraw(DrawingContext context) { }
+        void IDrawableObject.Draw(DrawingContext context, Material material) { }
+        void IDrawableObject.EndDraw(DrawingContext context) { }
+
+        #region IDisposable
+        /// <summary>
+        /// Disposes any resources associated with this instance.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            IsDisposed = true;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing) 
         {
             if (disposing)
                 cube.Dispose();
         }
+
+        ~SkyBox()
+        {
+            Dispose(false);
+            IsDisposed = true;
+        }
+        #endregion
     }
 }

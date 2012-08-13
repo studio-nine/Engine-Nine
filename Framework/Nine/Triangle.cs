@@ -96,7 +96,15 @@ namespace Nine
         }
 
         /// <summary>
-        /// Clips a triangle against a plane and split the input triangle when they interests.
+        /// Clips a triangle against a box and split the input triangle when they interests.
+        /// </summary>
+        public int Intersects(ref BoundingBox box, Vector3[] intersections, int startIndex)
+        {
+            return Intersects(ref V1, ref V2, ref V3, ref box, intersections, startIndex);
+        }
+
+        /// <summary>
+        /// Clips a triangle against a box and split the input triangle when they interests.
         /// </summary>
         /// <returns>The count of new vertices added to the output array</returns>
         /// <remarks>
@@ -106,7 +114,7 @@ namespace Nine
         /// http://blog.wolfire.com/2009/06/how-to-project-decals/.
         /// By the way, Overgrowth is AWEOSOME!!!
         /// </remarks>
-        public int Intersects(BoundingBox box, Vector3[] intersections, int startIndex)
+        internal static int Intersects(ref Vector3 v1, ref Vector3 v2, ref Vector3 v3, ref BoundingBox box, Vector3[] intersections, int startIndex)
         {
             var mid = new Vector3();
             var source = intersections;
@@ -114,9 +122,9 @@ namespace Nine
             var sourceCount = 3;
             var targetCount = 0;
 
-            source[0] = V1;
-            source[1] = V2;
-            source[3] = V3;
+            source[0] = v1;
+            source[1] = v2;
+            source[3] = v3;
 
             #region Clip against -X plane
             for (var i = 0; i < sourceCount; ++i)
@@ -156,6 +164,7 @@ namespace Nine
             #endregion
 
             #region Clip against +X plane
+            sourceCount = 0;
             for (var i = 0; i < targetCount; ++i)
             {
                 var start = target[i];
@@ -193,6 +202,7 @@ namespace Nine
             #endregion
             
             #region Clip against -Y plane
+            targetCount = 0;
             for (var i = 0; i < sourceCount; ++i)
             {
                 var start = source[i];
@@ -230,6 +240,7 @@ namespace Nine
             #endregion
 
             #region Clip against +Y plane
+            sourceCount = 0;
             for (var i = 0; i < targetCount; ++i)
             {
                 var start = target[i];
@@ -267,6 +278,7 @@ namespace Nine
             #endregion
 
             #region Clip against -Z plane
+            targetCount = 0;
             for (var i = 0; i < sourceCount; ++i)
             {
                 var start = source[i];
@@ -304,6 +316,7 @@ namespace Nine
             #endregion
 
             #region Clip against +Z plane
+            sourceCount = 0;
             for (var i = 0; i < targetCount; ++i)
             {
                 var start = target[i];
@@ -347,19 +360,6 @@ namespace Nine
         /// Box triangle have at most 32 intersection points.
         /// </summary>
         static Vector3[] IntersectionPoints = new Vector3[32];
-
-        /// <summary>
-        /// These are the indices used to tessellate a box into a list of triangles. 
-        /// </summary>
-        static readonly ushort[] BoxTriangleIndices = new ushort[]
-        {
-            0,1,2,  1,2,3,
-            4,5,6,  5,6,7,
-            0,2,4,  2,4,6,
-            1,3,5,  3,5,7,
-            0,1,4,  1,4,5,
-            2,3,6,  3,6,7 
-        };
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

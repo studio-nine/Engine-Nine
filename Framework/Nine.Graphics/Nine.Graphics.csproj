@@ -184,7 +184,6 @@
     <Compile Include="Materials\MaterialGroup.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="Cameras\Camera.cs" />
-    <Compile Include="TransformBinding.cs" />
     <Compile Include="Fog.cs" />
     <Compile Include="SurfaceGeometry.cs" />
     <Compile Include="TextureUsage.cs" />
@@ -196,7 +195,6 @@
     <Compile Include="DirectionalLight.cs" />
     <Compile Include="PointLight.cs" />
     <Compile Include="SpotLight.cs" />
-    <Compile Include="Drawable.cs" />
     <Compile Include="Drawing\DrawingContext.cs" />
     <Compile Include="Drawing\Settings.cs" />
     <Compile Include="Drawing\Statistics.cs" />

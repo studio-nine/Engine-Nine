@@ -107,7 +107,6 @@ namespace Nine.Graphics
         }
         private ShadowMap shadowMap;
         private DrawingContext context;
-        private HashSet<ISpatialQueryable> shadowCasters;
 
         /// <summary>
         /// Gets the shadow frustum of this light.
@@ -116,7 +115,7 @@ namespace Nine.Graphics
         {
             get { return shadowFrustum; } 
         }
-        private BoundingFrustum shadowFrustum;
+        internal BoundingFrustum shadowFrustum;
         #endregion
 
         #region Methods
@@ -186,50 +185,18 @@ namespace Nine.Graphics
 
         /// <summary>
         /// Computes the shadow frustum of this light based on the current
-        /// view frustum and objects in the current scene;
+        /// view frustum and objects in the current view frustum;
         /// </summary>
-        public void UpdateShadowFrustum(BoundingFrustum viewFrustum, IList<IDrawableObject> drawables)
+        public virtual void UpdateShadowFrustum(DrawingContext context, ISpatialQuery<IDrawableObject> shadowCasterQuery)
         {
-            // TODO: This value can be calculated once per frame.
-            UpdateShadowCasters(drawables);
 
-            Matrix shadowFrustumMatrix;
-            UpdateShadowFrustum(viewFrustum, shadowCasters, out shadowFrustumMatrix);
-            shadowFrustum.Matrix = shadowFrustumMatrix;
         }
-        
-        /// <summary>
-        /// Computes the shadow frustum of this light based on the current
-        /// view frustum and objects in the current scene;
-        /// </summary>
-        protected abstract void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> shadowCasters, out Matrix shadowFrustum);
 
-        /// <summary>
-        /// Finds all the shadow casters based on drawables.
-        /// </summary>
-        private void UpdateShadowCasters(IList<IDrawableObject> drawables)
-        {
-            if (shadowCasters == null)
-                shadowCasters = new HashSet<ISpatialQueryable>();
-
-            shadowCasters.Clear();
-            for (int currentDrawable = 0; currentDrawable < drawables.Count; currentDrawable++)
-            {
-                var drawable = drawables[currentDrawable];
-                var lightable = drawable as ILightable;
-                if (lightable != null && lightable.CastShadow)
-                {
-                    var parentSpatialQueryable = ContainerTraverser.FindParentContainer<ISpatialQueryable>(drawable);
-                    if (parentSpatialQueryable != null)
-                        shadowCasters.Add(parentSpatialQueryable);
-                }
-            }
-        }
-        
         bool IDebugDrawable.Visible
         {
             get { return enabled; }
         }
+
         /// <summary>
         /// Draws the light frustum.
         /// </summary>

@@ -42,7 +42,8 @@ namespace Nine.Graphics
         }
         internal int version;
 
-        private FastList<ISpatialQueryable> shadowCasters;
+        private FastList<IDrawableObject> shadowCasters;
+        private HashSet<ISpatialQueryable> shadowCasterBounds;
         private static Vector3[] Corners = new Vector3[BoundingBox.CornerCount];
 
         /// <summary>
@@ -58,35 +59,103 @@ namespace Nine.Graphics
         /// Computes the shadow frustum of this light based on the current
         /// view frustum and objects in the current scene;
         /// </summary>
-        protected override void UpdateShadowFrustum(BoundingFrustum viewFrustum, HashSet<ISpatialQueryable> shadowCasters, out Matrix shadowFrustum)
+        public override void UpdateShadowFrustum(DrawingContext context, ISpatialQuery<IDrawableObject> shadowCasterQuery)
         {
-            // 1. Find the bounds of all the shadow casters in the current view frustum
-            //    from the respect to the light source.
+            // 1. Compute the intersection points of the view frustum and the bounding box of the scene
+            int length;
+            Vector3[] intersections;
+            ContainmentType containment;
+            BoundingBox sceneBounds = context.BoundingBox;
+            sceneBounds.Intersects(context.matrices.ViewFrustum, out containment, out intersections, out length);
+            
+            if (containment == ContainmentType.Disjoint)
+            {
+                shadowFrustum.Matrix = Matrix.Identity;
+                return;
+            }
+
+            if (containment == ContainmentType.Contains)
+            {
+                length = BoundingFrustum.CornerCount;
+                context.matrices.ViewFrustum.GetCorners(intersections);
+            }
+
+            // 2. Compute bounds in light space
             Matrix view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.Up);
             if (float.IsNaN(view.M11))
                 view = Matrix.CreateLookAt(Vector3.Zero, Direction, Vector3.UnitX);
 
-            Vector3 point;
-            float nearZ = float.MaxValue;
-            float farZ = float.MinValue;
+            var point = new Vector3();
+            var far = float.MinValue;
+            var left = float.MaxValue;
+            var right = float.MinValue;
+            var bottom = float.MaxValue;
+            var top = float.MinValue;
 
-            float left = float.MaxValue;
-            float right = float.MinValue;
-            float bottom = float.MaxValue;
-            float top = float.MinValue;
-
-            foreach (var shadowCaster in shadowCasters)
+            for (int i = 0; i < length; ++i)
             {
-                shadowCaster.BoundingBox.GetCorners(Corners);
+                // Transform the intersection point to light space.
+                Vector3.Transform(ref intersections[i], ref view, out point); 
+                
+                if (point.Z > far)
+                    far = point.Z;
+                if (point.X < left)
+                    left = point.X;
+                if (point.X > right)
+                    right = point.X;
+                if (point.Y < bottom)
+                    bottom = point.Y;
+                if (point.Y > top)
+                    top = point.Y;
+            }
+
+            // 3. Extend the near plane to include objects that are not inside the view frustum
+            //    but will still have shadows
+            Vector3 cross;
+            Vector3.Subtract(ref sceneBounds.Max, ref sceneBounds.Min, out cross);
+            var near = far - cross.Length();
+            
+            // 4. Creates the shadow frustum from light space bounds
+            Matrix shadowFrustumMatrix;
+            Matrix.CreateOrthographicOffCenter(left, right, bottom, top, near, far, out shadowFrustumMatrix);
+            Matrix.Multiply(ref view, ref shadowFrustumMatrix, out shadowFrustumMatrix);
+            shadowFrustum.Matrix = shadowFrustumMatrix;
+
+            // 5. Query all the shadow caster bounds based on the above rough frustum and continue
+            //    trim the above frustum to fit shadow casters as tight as possible.
+            if (shadowCasterBounds == null)
+            {
+                shadowCasters = new FastList<IDrawableObject>();
+                shadowCasterBounds = new HashSet<ISpatialQueryable>();
+            }
+            else
+            {
+                shadowCasters.Clear();
+                shadowCasterBounds.Clear();
+            }
+            
+            shadowCasterQuery.FindAll(shadowFrustum, shadowCasters);
+            
+            for (int i = 0; i < shadowCasters.Count; ++i)
+            {
+                // Multiple shadow casters may map to the same bound object, so store them in a hash set.
+                var casterBound = ContainerTraverser.FindParentContainer<ISpatialQueryable>(shadowCasters[i]);
+                if (casterBound != null)
+                    shadowCasterBounds.Add(casterBound);
+            }
+
+            foreach (var casterBound in shadowCasterBounds)
+            {
+                casterBound.BoundingBox.GetCorners(Corners);
                 for (int i = 0; i < BoundingBox.CornerCount; ++i)
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
 
-                    float z = -point.Z;
-                    if (z < nearZ)
-                        nearZ = z;
-                    if (z > farZ)
-                        farZ = z;
+                    if (point.Z < near)
+                        near = point.Z;
+                    if (point.Z > far)
+                        far = point.Z;
+
                     if (point.X < left)
                         left = point.X;
                     if (point.X > right)
@@ -98,12 +167,10 @@ namespace Nine.Graphics
                 }
             }
 
-            Matrix projection;
-            Matrix.CreateOrthographicOffCenter(left, right, bottom, top, nearZ, farZ, out projection);
-            Matrix.Multiply(ref view, ref projection, out shadowFrustum);
-
-            // 2. Now extend the above frustum to include objects that are outside the
-            //    view frustum. E.g. a bird might cast a shadow even if it is not visible.
+            // 6. Recreate the final shadow frustum
+            Matrix.CreateOrthographicOffCenter(left, right, bottom, top, near, far, out shadowFrustumMatrix);
+            Matrix.Multiply(ref view, ref shadowFrustumMatrix, out shadowFrustumMatrix);
+            shadowFrustum.Matrix = shadowFrustumMatrix;
         }
 
         protected override void OnAdded(DrawingContext context)

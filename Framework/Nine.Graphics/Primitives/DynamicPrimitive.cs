@@ -14,7 +14,7 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Primitives")]    
-    public class DynamicPrimitive : IDrawableObject
+    public class DynamicPrimitive : Nine.Object, IDrawableObject
     {
         /// <summary>
         /// Gets the underlying graphics device.

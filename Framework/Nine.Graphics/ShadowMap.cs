@@ -183,7 +183,6 @@
         /// </summary>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            light.UpdateShadowFrustum(context.ViewFrustum, drawables);
             if (shadowCasterQuery == null)
             {
                 shadowCasterQuery = context.CreateSpatialQuery<IDrawableObject>(drawable =>
@@ -194,6 +193,7 @@
                     return lightable != null && lightable.CastShadow;
                 });
             }
+            light.UpdateShadowFrustum(context, shadowCasterQuery);
             shadowCasterQuery.FindAll(light.ShadowFrustum, shadowCasters);
 
             Matrix oldView = context.matrices.view;

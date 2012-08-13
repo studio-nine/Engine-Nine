@@ -1,6 +1,7 @@
 namespace Nine
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using Microsoft.Xna.Framework;
 
@@ -8,7 +9,7 @@ namespace Nine
     /// Represents an adapter class that filters and converts the result of
     /// an existing <c>SpatialQuery</c>.
     /// </summary>
-    public class SpatialQuery<TInput, TOutput> : ISpatialQuery<TOutput>
+    class SpatialQuery<TInput, TOutput> : ISpatialQuery<TOutput>
     {
         /// <summary>
         /// Gets or sets the inner query.
@@ -116,24 +117,29 @@ namespace Nine
     /// <summary>
     /// Represents a basic query from fixed list.
     /// </summary>
-    public class SpatialQuery<T> : ISpatialQuery<T>
+    class SpatialQuery<T> : ISpatialQuery<T> where T : class
     {
-        public IList<T> Objects { get; private set; }
+        private IList<object> objects; 
+        private Predicate<T> condition;
 
-        public SpatialQuery() { }
-
-        public SpatialQuery(IList<T> objects)
+        public SpatialQuery(IList<object> objects, Predicate<T> condition)
         {
-            if (objects == null)
-                throw new ArgumentNullException("objects");
-            this.Objects = objects;
+            this.objects = objects;
+            this.condition = condition;
         }
 
         private void Find(ICollection<T> result)
         {
-            var count = Objects.Count;
-            for (int i = 0; i < count; ++i)
-                result.Add(Objects[i]);
+            if (objects != null)
+            {
+                var count = objects.Count;
+                for (int i = 0; i < count; ++i)
+                {
+                    var t = objects[i] as T;
+                    if (t != null && (condition == null || condition(t)))
+                        result.Add(t);
+                }
+            }
         }
 
         public void FindAll(ref BoundingSphere boundingSphere, ICollection<T> result)
@@ -157,16 +163,26 @@ namespace Nine
         }
     }
 
-    abstract class SpatialQueryCollectionAdapter<T> : ICollection<T>
+    /// <summary>
+    /// Defines a dummy spatial query.
+    /// </summary>
+    class SpatialQuery : ISpatialQuery
     {
-        public abstract void Add(T item);
-        public void Clear() { throw new InvalidOperationException(); }
-        public bool Contains(T item) { throw new InvalidOperationException(); }
-        public void CopyTo(T[] array, int arrayIndex) { throw new InvalidOperationException(); }
-        public int Count { get { throw new InvalidOperationException(); } }
-        public bool IsReadOnly { get { throw new InvalidOperationException(); } }
-        public bool Remove(T item) { throw new InvalidOperationException(); }
-        public IEnumerator<T> GetEnumerator() { throw new InvalidOperationException(); }
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { throw new InvalidOperationException(); }
+        private List<object> objects;
+
+        public SpatialQuery() { }
+        public SpatialQuery(IEnumerable objects)
+        {
+            if (objects == null)
+                throw new ArgumentNullException("objects");
+            this.objects = new List<object>();
+            foreach (var obj in objects)
+                this.objects.Add(obj);
+        }
+
+        public ISpatialQuery<T> CreateSpatialQuery<T>(Predicate<T> condition) where T : class
+        {
+            return new SpatialQuery<T>(objects, condition);
+        }
     }
 }

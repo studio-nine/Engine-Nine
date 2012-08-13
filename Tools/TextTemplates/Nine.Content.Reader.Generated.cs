@@ -91,7 +91,7 @@ namespace Nine
             }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -131,7 +131,7 @@ namespace Nine
             }
             existingInstance.Animations = input.ReadObject<Nine.Animations.AnimationPlayer>();
             existingInstance.Transform = input.ReadMatrix();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -188,7 +188,7 @@ namespace Nine.Animations
                     existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
             }
             existingInstance.Repeat = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -234,7 +234,7 @@ namespace Nine.Animations
                     existingInstance.Animations.Add(input.ReadObject<Nine.Animations.IAnimation>());
             }
             existingInstance.Repeat = input.ReadInt32();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -267,7 +267,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -300,7 +300,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -333,7 +333,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -366,7 +366,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -399,7 +399,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -418,7 +418,7 @@ namespace Nine.Animations
             if (existingInstance == null)
                 existingInstance = new DelayAnimation();
             existingInstance.Duration = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -451,7 +451,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -484,7 +484,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -517,7 +517,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -550,7 +550,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -583,7 +583,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -616,7 +616,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -649,7 +649,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -682,7 +682,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -715,7 +715,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -745,7 +745,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -778,7 +778,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -811,7 +811,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -844,7 +844,7 @@ namespace Nine.Animations
             existingInstance.Direction = input.ReadObject<Nine.Animations.AnimationDirection>();
             existingInstance.Repeat = input.ReadSingle();
             existingInstance.Position = input.ReadObject<System.TimeSpan>();
-            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
