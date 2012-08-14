@@ -28,7 +28,7 @@ namespace Nine.Graphics
         /// </summary>
         Material IDrawableObject.Material
         {
-            get { throw new NotImplementedException(); }
+            get { return material; }
         }
         private SkyBoxMaterial material;
 
@@ -60,16 +60,12 @@ namespace Nine.Graphics
 
         public void Draw(DrawingContext context, Material material)
         {
-            if (material == null)
-                cube.Draw(context, this.material);
-
             // Skybox cannot be rendered using other materials.
-            else if (material is SkyBoxMaterial)
-                cube.Draw(context, material);
+            if (material == null || material == this.material)
+                cube.Draw(context, this.material);
         }
 
         void IDrawableObject.BeginDraw(DrawingContext context) { }
-        void IDrawableObject.Draw(DrawingContext context, Material material) { }
         void IDrawableObject.EndDraw(DrawingContext context) { }
 
         #region IDisposable

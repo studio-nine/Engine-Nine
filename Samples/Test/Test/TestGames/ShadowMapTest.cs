@@ -10,7 +10,7 @@ namespace Test
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
 
-    public class ShadowMapTest : ITestGame
+    public class ShadowMapTest// : ITestGame
     {
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {

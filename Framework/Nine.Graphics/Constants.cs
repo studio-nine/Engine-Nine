@@ -17,6 +17,10 @@ namespace Nine.Graphics
         public const float FogEnd = 10000;
         public const float BlurAmount = 2;
 
+        public const float TinyLineWidth = 1;
+        public const float MiddleLineWidth = 2;
+        public const float LargeLineWidth = 4;
+
         public readonly static Vector3 DiffuseColor = Vector3.One;
         public readonly static Vector4 DiffuseColor4 = Vector4.One;
         public readonly static Vector3 EmissiveColor = Vector3.Zero;

@@ -107,7 +107,7 @@ namespace Nine.Graphics
 
         public override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
-            primitive.AddSphere(BoundingSphere, 8, null, Constants.LightFrustumColor);
+            primitive.AddSphere(BoundingSphere, 8, null, Constants.LightFrustumColor, Constants.MiddleLineWidth);
             base.Draw(context, primitive);
         }
 

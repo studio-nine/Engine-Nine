@@ -202,7 +202,7 @@ namespace Nine.Graphics
         /// </summary>
         public virtual void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
-            primitive.AddFrustum(ShadowFrustum, null, Constants.ShadowFrustumColor);
+            primitive.AddFrustum(ShadowFrustum, null, Constants.ShadowFrustumColor, Constants.TinyLineWidth);
         }
         #endregion
     }

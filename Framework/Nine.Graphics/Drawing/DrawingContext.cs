@@ -630,7 +630,7 @@ namespace Nine.Graphics.Drawing
 
             for (int i = 0; i < debugBoundsInViewFrustum.Count; ++i)
             {
-                debugPrimitive.AddBox(debugBoundsInViewFrustum[i].BoundingBox, null, Constants.BoundingBoxColor);
+                debugPrimitive.AddBox(debugBoundsInViewFrustum[i].BoundingBox, null, Constants.BoundingBoxColor, Constants.MiddleLineWidth);
             }
             
             for (int i = 0; i < debugDrawablesInViewFrustum.Count; ++i)

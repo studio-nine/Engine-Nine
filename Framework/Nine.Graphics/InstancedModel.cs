@@ -169,7 +169,7 @@ namespace Nine.Graphics
 
         private void UpdateBounds()
         {
-            orientedBoundingBox = template.BoundingBox;
+            orientedBoundingBox = (template != null) ? template.BoundingBox : new BoundingBox();
 
             if (instanceTransforms != null && instanceTransforms.Length > 0)
             {

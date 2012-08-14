@@ -248,7 +248,7 @@ namespace Nine.Graphics
 
         public override void Draw(DrawingContext context, DynamicPrimitive primitive)
         {
-            primitive.AddFrustum(BoundingFrustum, null, Constants.LightFrustumColor);
+            primitive.AddFrustum(BoundingFrustum, null, Constants.LightFrustumColor, Constants.MiddleLineWidth);
             base.Draw(context, primitive);
         }
 

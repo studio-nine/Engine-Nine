@@ -64,7 +64,7 @@ namespace Nine.Graphics
         /// </summary>
         public Material Material
         {
-            get { return material; }
+            get { return Material; }
             //set { material = value ?? (new DecalMaterial(GraphicsDevice)); UpdateDecalMaterial(); }
             set { }
         }
@@ -294,11 +294,11 @@ namespace Nine.Graphics
 
         private void UpdateDecalMaterial()
         {
-            material.texture = Texture;
-            material.SetTexture(TextureUsage.Decal, Texture);
-            material.SetTexture(TextureUsage.NormalMap, NormalMap);
+            Material.texture = Texture;
+            Material.SetTexture(TextureUsage.Decal, Texture);
+            Material.SetTexture(TextureUsage.NormalMap, NormalMap);
             
-            material.Alpha = Alpha;
+            Material.Alpha = Alpha;
             
             // effectMaterial.DiffuseColor = Color;
         }

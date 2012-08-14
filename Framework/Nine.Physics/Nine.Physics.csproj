@@ -478,6 +478,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy /y "$(TargetPath)" "$(SolutionDir)..\Samples\Tutorial\Tutorial\bin\x86\$(ConfigurationName)\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

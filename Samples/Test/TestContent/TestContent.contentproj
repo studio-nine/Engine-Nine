@@ -67,12 +67,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Content\Models\Tank\tank.fbx">
-      <Link>Models\tank.fbx</Link>
-      <Name>tank</Name>
-      <Importer>FbxImporter</Importer>
+    <Compile Include="..\..\Content\Models\Palm\AlphaPalm.X">
+      <Link>Models\AlphaPalm.X</Link>
+      <Name>AlphaPalm</Name>
+      <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_Scale>0.01</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

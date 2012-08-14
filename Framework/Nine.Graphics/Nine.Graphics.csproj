@@ -107,6 +107,7 @@
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
     <Compile Include="FastList.cs" />
+    <Compile Include="Materials\ThickLineMaterial.cs" />
     <Compile Include="ModelAttachment.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="SceneExtensions.cs" />
@@ -135,7 +136,7 @@
     <Compile Include="PostEffects\RestoreDepthBufferMaterial.cs" />
     <Compile Include="PostEffects\LuminanceMaterial.cs" />
     <Compile Include="PostEffects\ToneMappingMaterial.cs" />
-    <Compile Include="PostEffects\VertexPassThroughMaterial.cs" />
+    <Compile Include="Materials\VertexPassThroughMaterial.cs" />
     <Compile Include="PostEffects\LuminanceChain.cs" />
     <Compile Include="PostEffects\DepthOfFieldMaterial.cs" />
     <Compile Include="Materials\MaterialPaintGroup.cs" />
@@ -312,8 +313,12 @@
   <ItemGroup>
     <None Include="Shaders\VertexPassThrough3.fx" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\ThickLine.fx" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy /y "$(TargetPath)" "$(SolutionDir)..\Samples\Tutorial\Tutorial\bin\x86\$(ConfigurationName)\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -30,9 +30,13 @@
         public bool Visible { get; set; }
 
         /// <summary>
-        /// Gets or sets the material of the object.
+        /// Gets or sets the depth bias of this dynamic primitive.
         /// </summary>
-        public Material Material { get; set; }
+        public float DepthBias
+        {
+            get { return -rasterizerState.DepthBias; }
+            set { rasterizerState.DepthBias = -value; }
+        }
 
         /// <summary>
         /// Gets a list of contained primitives
@@ -43,6 +47,14 @@
         }
 
         /// <summary>
+        /// Gets the material of the object.
+        /// </summary>
+        Material IDrawableObject.Material
+        {
+            get { return material; }
+        }
+
+        /// <summary>
         /// Provides an optimization hint to skip comparison between primitives.
         /// </summary>
         internal bool AlwaysMergePrimitives = false;
@@ -50,11 +62,14 @@
         private bool hasPrimitiveBegin = false;
 
         private GraphicsDevice graphics;
+        private Material material;
+        private ThickLineMaterial thickLineMaterial;
+        private RasterizerState rasterizerState;
         private List<Primitive<VertexPositionColorTexture>> primitives;
         
         private DynamicVertexBuffer vertexBuffer;
         private DynamicIndexBuffer indexBuffer;
-        private VertexPositionColorTexture[] vertexData;
+        private VertexPositionColorNormalTexture[] vertexData;
         private ushort[] indexData;
 
         private FastList<PrimitiveGroupEntry> batches = new FastList<PrimitiveGroupEntry>();
@@ -70,6 +85,8 @@
         private int baseSegmentVertex;
         private int baseSegmentIndex;
         private int beginSegment;
+
+        private int lastLineVertex;
 
         private int initialBufferCapacity;
         private int maxBufferSizePerPrimitive;
@@ -94,12 +111,31 @@
             this.graphics = graphics;
             this.initialBufferCapacity = initialBufferCapacity;
             this.maxBufferSizePerPrimitive = maxBufferSizePerPrimitive;
-            this.Material = new BasicMaterial(graphics) { LightingEnabled = false, VertexColorEnabled = true };
+            this.rasterizerState = new RasterizerState()
+            {
+                CullMode = CullMode.None,
+                DepthBias = -0.001f,
+            };
+            this.material = new BasicMaterial(graphics) 
+            {
+                LightingEnabled = false, 
+                VertexColorEnabled = true, 
+                TwoSided = true,
+            };
 
-            this.vertexData = new VertexPositionColorTexture[4];
+            this.DepthBias = 0.001f;
+            this.vertexData = new VertexPositionColorNormalTexture[512];
             this.indexData = new ushort[6];
 
             Clear();
+        }
+        
+        /// <summary>
+        /// Begins a new primitive.
+        /// </summary>
+        public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture)
+        {
+            BeginPrimitive(primitiveType, texture, null, 1);
         }
 
         /// <summary>
@@ -107,11 +143,21 @@
         /// </summary>
         public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world)
         {
+            BeginPrimitive(primitiveType, texture, null, 1);
+        }
+
+        /// <summary>
+        /// Begins a new primitive.
+        /// </summary>
+        public void BeginPrimitive(PrimitiveType primitiveType, Texture2D texture, Matrix? world, float lineWidth)
+        {
             if (hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+            
             hasPrimitiveBegin = true;
 
             currentPrimitive = new PrimitiveGroupEntry();
+            currentPrimitive.LineWidth = lineWidth;
             currentPrimitive.World = world;
             currentPrimitive.PrimitiveType = primitiveType;
             currentPrimitive.Texture = texture;
@@ -122,6 +168,8 @@
             currentBaseIndex = currentIndex;
 
             beginSegment = currentSegment;
+            
+            lastLineVertex = -1;
         }
 
         /// <summary>
@@ -137,20 +185,10 @@
         /// </summary>
         public void AddVertex(ref Vector3 position, Color color)
         {
-            if (!hasPrimitiveBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
-
-            var index = baseSegmentVertex + currentVertex;
-            if (index >= vertexData.Length)
-                Array.Resize(ref vertexData, vertexData.Length * 2);
-
-            if (currentVertex >= maxBufferSizePerPrimitive)
-                AdvanceSegment();
-
-            vertexData[index].Position = position;
-            vertexData[index].Color = color;
-            vertexData[index].TextureCoordinate = Vector2.Zero;
-            currentVertex++;
+            VertexPositionColorTexture vertex = new VertexPositionColorTexture();
+            vertex.Position = position;
+            vertex.Color = color;
+            AddVertex(ref vertex);
         }
 
         /// <summary>
@@ -166,26 +204,69 @@
         /// </summary>
         public void AddVertex(ref Vector3 position, Color color, ref Vector2 texCoord)
         {
-            if (!hasPrimitiveBegin)
-                throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
+            VertexPositionColorTexture vertex = new VertexPositionColorTexture();
+            vertex.Position = position;
+            vertex.Color = color;
+            vertex.TextureCoordinate = texCoord;
+            AddVertex(ref vertex);
+        }
+        
+        /// <summary>
+        /// Adds the vertex.
+        /// </summary>
+        public void AddVertex(ref VertexPositionColorTexture vertex)
+        {
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList)
+            {
+                ExpandLineVertex(ref vertex, true);
+                return;
+            }
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
+            {
+                ExpandLineVertex(ref vertex, false);
+                return;
+            }
+            Vector3 zero = new Vector3();
+            AddVertexInternal(ref vertex, ref zero);
+        }
 
-            var index = baseSegmentVertex + currentVertex;
-            if (index >= vertexData.Length)
-                Array.Resize(ref vertexData, vertexData.Length * 2);
+        /// <summary>
+        /// Expands a line list to triangle strips.
+        /// </summary>
+        private void ExpandLineVertex(ref VertexPositionColorTexture vertex, bool isLineList)
+        {
+            var normal1 = new Vector3();
+            var normal2 = new Vector3();
 
-            if (currentVertex >= maxBufferSizePerPrimitive)
-                AdvanceSegment();
+            var v1 = new VertexPositionColorTexture();
+            var v2 = new VertexPositionColorTexture();
 
-            vertexData[index].Position = position;
-            vertexData[index].Color = color;
-            vertexData[index].TextureCoordinate = texCoord;
-            currentVertex++;
+            v1.Position = v2.Position = vertex.Position;
+            v1.Color = v2.Color = vertex.Color;
+
+            var storeIndex = true;
+            if (lastLineVertex >= 0)
+            {
+                vertexData[lastLineVertex].Normal = vertex.Position;
+                vertexData[lastLineVertex + 1].Normal =
+                    vertexData[lastLineVertex + 1].Position * 2 - vertex.Position;
+
+                normal1 = v1.Position * 2 - vertexData[lastLineVertex].Position;
+                normal2 = vertexData[lastLineVertex + 1].Position;
+                if (isLineList)
+                    storeIndex = false;
+                    lastLineVertex = -1;
+            }
+
+            var last = AddVertexInternal(ref v1, ref normal1);
+            AddVertexInternal(ref v2, ref normal2);
+            lastLineVertex = storeIndex ? last : -1;
         }
 
         /// <summary>
         /// Adds the vertex.
         /// </summary>
-        public void AddVertex(ref VertexPositionColorTexture vertex)
+        private int AddVertexInternal(ref VertexPositionColorTexture vertex, ref Vector3 normal)
         {
             if (!hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
@@ -197,14 +278,43 @@
             if (currentVertex >= maxBufferSizePerPrimitive)
                 AdvanceSegment();
 
-            vertexData[index] = vertex;
+            vertexData[index].Position = vertex.Position;
+            vertexData[index].Color = vertex.Color;
+            vertexData[index].Normal = normal;
+            vertexData[index].TextureCoordinate = vertex.TextureCoordinate;
             currentVertex++;
+            return index;
+        }
+        /// <summary>
+        /// Adds the index.
+        /// </summary>
+        public void AddIndex(int index)
+        {
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList)
+            {
+                if (index % 2 == 0)
+                {
+                    AddIndexInternal(index * 2);
+                    AddIndexInternal(index * 2 + 1);
+                    AddIndexInternal(index * 2 + 2);
+
+                    AddIndexInternal(index * 2 + 2);
+                    AddIndexInternal(index * 2 + 1);
+                    AddIndexInternal(index * 2 + 3);
+                }
+                return;
+            }
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
+            {
+                throw new NotImplementedException();
+            }
+            AddIndexInternal(index);
         }
 
         /// <summary>
         /// Adds the index.
         /// </summary>
-        public void AddIndex(int index)
+        private void AddIndexInternal(int index)
         {
             if (!hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);        
@@ -247,6 +357,14 @@
         /// </summary>
         public void EndPrimitive()
         {
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList)
+            {
+                if (currentPrimitive.IndexCount <= 0)
+                    for (var index = 0; index < (currentVertex - currentPrimitive.StartVertex) / 2; ++index)
+                        AddIndex(index);
+                currentPrimitive.PrimitiveType = PrimitiveType.TriangleList;
+            }
+
             hasPrimitiveBegin = false;
             currentPrimitive.Segment = currentSegment;
             currentPrimitive.VertexCount = currentVertex - currentPrimitive.StartVertex;
@@ -270,6 +388,8 @@
         private static bool CanMerge(ref PrimitiveGroupEntry oldBatch, ref PrimitiveGroupEntry newBatch)
         {
             if (oldBatch.PrimitiveType != newBatch.PrimitiveType)
+                return false;
+            if (oldBatch.LineWidth != newBatch.LineWidth)
                 return false;
             if (oldBatch.PrimitiveType != PrimitiveType.LineList && oldBatch.PrimitiveType != PrimitiveType.TriangleList)
                 return false;
@@ -311,28 +431,45 @@
         {
             if (hasPrimitiveBegin)
                 throw new InvalidOperationException(Strings.AlreadyInBeginEndPair);
-            if (material == null)
-                material = this.Material;
-            var count = batches.Count;
-            for (int i = 0; i < count; ++i)
-                DrawBatch(context, ref batches.Elements[i], material);
+
+            if (material == null || material == this.material)
+            {
+                var count = batches.Count;
+                if (count > 0)
+                {
+                    var previousRasterizerState = graphics.RasterizerState;
+                    graphics.RasterizerState = rasterizerState;
+                    for (int i = 0; i < count; ++i)
+                        DrawBatch(context, ref batches.Elements[i]);
+                    graphics.RasterizerState = previousRasterizerState;
+                }
+            }
         }
 
-        private void DrawBatch(DrawingContext context, ref PrimitiveGroupEntry entry, Material material)
+        private void DrawBatch(DrawingContext context, ref PrimitiveGroupEntry entry)
         {
             if (entry.VertexCount <= 0 && entry.IndexCount <= 0)
                 return;
 
             material.texture = entry.Texture;
-            material.World = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
+            material.world = entry.World.HasValue ? entry.World.Value : Matrix.Identity;
             material.BeginApply(context);
+
+            if (entry.LineWidth > 0)
+            {
+                if (thickLineMaterial == null)
+                    thickLineMaterial = new ThickLineMaterial(graphics);
+                thickLineMaterial.Thickness = entry.LineWidth;
+                thickLineMaterial.world = material.world;
+                thickLineMaterial.BeginApply(context);
+            }
 
             var vertexBufferSize = vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment];
             if (vertexBuffer == null || vertexBuffer.VertexCount < vertexBufferSize || vertexBuffer.IsContentLost)
             {
                 if (vertexBuffer != null)
                     vertexBuffer.Dispose();
-                vertexBuffer = new DynamicVertexBuffer(graphics, typeof(VertexPositionColorTexture), Math.Max(initialBufferCapacity, vertexBufferSize), BufferUsage.WriteOnly);
+                vertexBuffer = new DynamicVertexBuffer(graphics, typeof(VertexPositionColorNormalTexture), Math.Max(initialBufferCapacity, vertexBufferSize), BufferUsage.WriteOnly);
             }
 
             context.SetVertexBuffer(null, 0);
@@ -397,6 +534,7 @@
     {
         public Matrix? World;
         public Texture2D Texture;
+        public float LineWidth;
         public PrimitiveType PrimitiveType;
         public int StartVertex;
         public int VertexCount;

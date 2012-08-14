@@ -7,7 +7,7 @@
 
     /// <summary>
     /// Vertex format for shader vertex format used all over the place.
-    /// It contains: Position, Normal vector, 2 texture coords
+    /// It contains: Position, Normal vector, color and texture coords
     /// </summary>
 #if WINDOWS
     [Serializable()]

@@ -18,7 +18,7 @@ namespace Test
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
-            var tank = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/tank");
+            var tank = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/AlphaPalm");
 
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = -Vector3.One });
             scene.Add(new Nine.Graphics.Model(tank) { Transform = Matrix.CreateTranslation(20, 0, 20) });
@@ -74,8 +74,7 @@ namespace Test
                     var triangle = new Triangle(positions[indices[i]], positions[indices[i + 1]], positions[indices[i + 2]]);
                     if (triangle.Intersects(ray).HasValue)
                     {
-                        primitive.AddTriangle(triangle, geometry.Transform, Color.Yellow);
-                        break;
+                        primitive.AddTriangle(triangle, geometry.Transform, Color.Yellow, 2);
                     }
                 }
             }

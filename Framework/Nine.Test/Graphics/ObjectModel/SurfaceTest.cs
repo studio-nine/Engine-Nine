@@ -2,6 +2,8 @@
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Xna.Framework;
+    using Nine.Graphics.Drawing;
+    using Nine.Graphics.Materials;
 
     [TestClass()]
     public class SurfaceTest : GraphicsTest
@@ -19,7 +21,7 @@
         }
 
         [TestMethod()]
-        public void DrawableSurfaceContructorTest()
+        public void SurfaceContructorTest()
         {
             Surface surface = new Surface(
                 GraphicsDevice, new Heightmap(1, 2, 2), 2);
@@ -38,6 +40,19 @@
                 surface.BoundingBox);
 
             Assert.AreEqual<BoundingBox>(surface.BoundingBox, surface.Patches[0].BoundingBox);
+        }
+
+        [TestMethod()]
+        public void SurfaceDrawTest()
+        {
+            var material = new BasicMaterial(GraphicsDevice);
+            var surface = new Surface(GraphicsDevice, new Heightmap(1, 2, 2), 2);
+            var context = new DrawingContext(GraphicsDevice);
+
+            foreach (var patch in surface.Patches)
+            {
+                patch.Draw(context, material);
+            }
         }
         /*
         [TestMethod()]
