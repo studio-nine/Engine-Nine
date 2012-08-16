@@ -41,7 +41,6 @@ namespace Nine.Graphics.Materials
 
         #region Fields
         private AlphaTestEffect effect;
-        private MaterialFogHelper fogHelper;
 
         private static Texture2D previousTexture;
         #endregion
@@ -71,7 +70,7 @@ namespace Nine.Graphics.Materials
                 effect.View = context.View;
                 effect.Projection = context.Projection;
 
-                fogHelper.Apply(context, effect);
+                ApplyFog(context, effect);
             }
 
             if (alpha != Constants.Alpha)

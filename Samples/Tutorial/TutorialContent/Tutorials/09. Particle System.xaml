@@ -11,7 +11,7 @@
     </Surface>
 
     <!-- Create an instance of particle system using the ParticleEffect element -->
-    <ParticleEffect Name="Fire" Transform.Position="10, 4, 10" Texture="{ContentReference ../Textures/fire}">
+    <ParticleEffect Name="Fire" Transform.Position="10, 0, -10" Texture="{ContentReference ../Textures/fire}">
         <!-- 
             An emitter is used to create new particles. It affects the initial properties of each particle, 
             such as speed, position, color and size.
@@ -79,7 +79,7 @@
  -->
     </Group>
 
-    <ParticleEffect Transform.Position="20, 0, -20" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
+    <ParticleEffect Transform.Position="10, 0, 10" Texture="{ContentReference ../Textures/smoke}" SoftParticleEnabled="True">
         <!-- 
             Create an instance of soft particle effect by the SoftParticleEnabled flag. When drawing 3D soft
             particles, each pixel of the particle is compare against the current depth buffer to eliminate the

@@ -37,7 +37,7 @@ namespace Test
             get { return true; }
         }
 
-        public Material Material        
+        public Material Material
         {
             get { return null; }
         }
@@ -52,8 +52,7 @@ namespace Test
                 geometryQuery = context.CreateSpatialQuery<IGeometry>(null);
 
             var mouseState = Mouse.GetState();
-            var pickRay = context.GraphicsDevice.Viewport.CreatePickRay(mouseState.X, mouseState.Y,
-                      context.View, context.Projection);
+            var pickRay = context.GraphicsDevice.Viewport.CreatePickRay(mouseState.X, mouseState.Y, context.View, context.Projection);
             
             geometries.Clear();
             geometryQuery.FindAll(ref pickRay, geometries);

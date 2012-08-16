@@ -29,7 +29,6 @@ namespace Nine.Graphics.Materials
 
         #region Fields
         private DualTextureEffect effect;
-        private MaterialFogHelper fogHelper;
 
         private static Texture2D previousTexture;
         private static Texture2D previousTexture2;
@@ -65,7 +64,7 @@ namespace Nine.Graphics.Materials
                 effect.View = context.View;
                 effect.Projection = context.Projection;
 
-                fogHelper.Apply(context, effect);
+                ApplyFog(context, effect);
             }
             
             if (alpha != Constants.Alpha)

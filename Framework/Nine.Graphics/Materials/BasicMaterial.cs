@@ -50,8 +50,6 @@ namespace Nine.Graphics.Materials
 
         #region Fields
         private BasicEffect effect;
-        private MaterialLightHelper lightHelper;
-        private MaterialFogHelper fogHelper;
 
         private static Texture2D previousTexture;
         #endregion
@@ -86,8 +84,8 @@ namespace Nine.Graphics.Materials
                 effect.Projection = context.Projection;
 
                 if (LightingEnabled)
-                    lightHelper.Apply(context, effect);
-                fogHelper.Apply(context, effect);
+                    ApplyLights(context, effect);
+                ApplyFog(context, effect);
             }
             
             // Update per instance shader parameters only when the value does not equal to

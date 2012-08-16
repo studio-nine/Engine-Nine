@@ -56,8 +56,6 @@ namespace Nine.Graphics.Materials
 
         #region Fields
         private SkinnedEffect effect;
-        private MaterialLightHelper lightHelper;
-        private MaterialFogHelper fogHelper;
 
         private static Texture2D previousTexture;
         #endregion
@@ -91,8 +89,8 @@ namespace Nine.Graphics.Materials
                 effect.View = context.View;
                 effect.Projection = context.Projection;
                 
-                lightHelper.Apply(context, effect);
-                fogHelper.Apply(context, effect);
+                ApplyLights(context, effect);
+                ApplyFog(context, effect);
             }
 
             if (alpha != Constants.Alpha)

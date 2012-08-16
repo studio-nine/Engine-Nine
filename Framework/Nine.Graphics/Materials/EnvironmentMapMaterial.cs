@@ -55,8 +55,6 @@ namespace Nine.Graphics.Materials
 
         #region Fields
         private EnvironmentMapEffect effect;
-        private MaterialLightHelper lightHelper;
-        private MaterialFogHelper fogHelper;
 
         private static Texture2D previousTexture;
         private static TextureCube previousEnvironmentMap;
@@ -86,8 +84,8 @@ namespace Nine.Graphics.Materials
                 effect.View = context.View;
                 effect.Projection = context.Projection;
 
-                lightHelper.Apply(context, effect);
-                fogHelper.Apply(context, effect);
+                ApplyLights(context, effect);
+                ApplyFog(context, effect);
             }
 
             if (alpha != Constants.Alpha)

@@ -6,7 +6,6 @@
 
     public class FogMaterialPart : MaterialPart
     {
-        private int fogVersion;
         private EffectParameter fogColorParameter;
         private EffectParameter fogVectorParameter;
 
@@ -18,11 +17,8 @@
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            if (fogVersion != context.fogVersion && fogColorParameter != null)
-            {
+            if (fogColorParameter != null)
                 fogColorParameter.SetValue(context.fogColor);
-                fogVersion = context.fogVersion;
-            }
         }
 
         protected internal override void BeginApplyLocalParameters(DrawingContext context, MaterialGroup material)

@@ -149,7 +149,6 @@
     <Compile Include="Materials\MaterialParts\EndPaintGroupMaterialPart.cs" />
     <Compile Include="Materials\MaterialParts\EndLightMaterialPart.cs" />
     <Compile Include="Materials\MaterialUsage.cs" />
-    <Compile Include="Materials\MaterialHelper.cs" />
     <Compile Include="Materials\SkyBoxMaterial.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Materials\BasicMaterial.cs" />

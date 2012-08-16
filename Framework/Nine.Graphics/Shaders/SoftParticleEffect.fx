@@ -2,18 +2,9 @@ float4x4 worldView;
 float4x4 Projection;
 float4x4 projectionInverse;
 float DepthFade = 1;
-texture Texture;
-texture DepthBuffer;
 
-sampler Sampler : register(s0) = sampler_state
-{
-    Texture = (Texture);
-};
-
-sampler DepthSampler : register(s1) = sampler_state
-{
-    Texture = (DepthBuffer);
-};
+sampler Sampler : register(s0);
+sampler DepthSampler : register(s1);
 
 void Vert(float4 Pos : POSITION,
           float2 UV  : TEXCOORD0,

@@ -185,10 +185,9 @@ namespace Nine.Graphics.Drawing
         public Vector3 AmbientLightColor
         {
             get { return ambientLightColor; }
-            set { ambientLightColor = value; ambientLightColorVersion++; }
+            set { ambientLightColor = value; }
         }
         internal Vector3 ambientLightColor;
-        internal int ambientLightColorVersion;
 
         /// <summary>
         /// Gets a global sorted collection of directional lights of this <see cref="DrawingContext"/>.
@@ -216,7 +215,7 @@ namespace Nine.Graphics.Drawing
         public Vector3 FogColor
         {
             get { return fogColor; }
-            set { fogColor = value; fogVersion++; }
+            set { fogColor = value; }
         }
         internal Vector3 fogColor = Constants.FogColor;
 
@@ -226,7 +225,7 @@ namespace Nine.Graphics.Drawing
         public float FogEnd
         {
             get { return fogEnd; }
-            set { fogEnd = value; fogVersion++; }
+            set { fogEnd = value; }
         }
         internal float fogEnd = Constants.FogEnd;
 
@@ -236,10 +235,9 @@ namespace Nine.Graphics.Drawing
         public float FogStart
         {
             get { return fogStart; }
-            set { fogStart = value; fogVersion++; }
+            set { fogStart = value; }
         }
         internal float fogStart = Constants.FogStart;
-        internal int fogVersion;
         #endregion
 
         #region Fields

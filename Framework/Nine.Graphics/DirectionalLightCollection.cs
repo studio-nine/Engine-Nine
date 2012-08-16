@@ -15,7 +15,7 @@ namespace Nine.Graphics
         static IComparer<DirectionalLight> comparer = new DirectionalLightComparer();
 
         int count;
-        int version;
+        int version = Constants.Random.Next(999999);
         DirectionalLight defaultLight;
         DirectionalLight[] elements;
 

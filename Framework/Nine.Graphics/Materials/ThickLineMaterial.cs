@@ -12,19 +12,19 @@ namespace Nine.Graphics.Materials
         {
             var scale = new Vector2();
             var viewport = GraphicsDevice.Viewport;
-            var aspectRatio = viewport.AspectRatio;
-
-            // Calculate the magic scale
             scale.X = 1f / viewport.Width;
-            scale.Y = 1f / viewport.Width * aspectRatio;
-
+            scale.Y = 1f / viewport.Height;
             effect.Scale.SetValue(scale);
+            effect.NearPlane.SetValue(MatrixHelper.GetNearClip(context.Projection));
+            effect.Projection.SetValue(context.matrices.projection);
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, ThickLineMaterial previousMaterial)
         {
-            effect.WorldViewProjection.SetValue(world * context.matrices.ViewProjection);
-            effect.Thickness.SetValue(Thickness);
+            Matrix worldView;
+            Matrix.Multiply(ref world, ref context.matrices.view, out worldView);
+            effect.WorldView.SetValue(worldView);
+            effect.Thickness.SetValue(Thickness);            
         }
     }
 }

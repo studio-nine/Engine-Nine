@@ -140,7 +140,7 @@
             set
             {
                 softParticleFade = value;
-                SoftParticleMaterial spm = material as SoftParticleMaterial;
+                var spm = material as SoftParticleMaterial;
                 if (spm != null)
                     spm.DepthFade = softParticleFade;
             }
@@ -156,6 +156,15 @@
             set { Interlocked.Exchange(ref isAsync, value ? 1 : 0); }
         }
         private int isAsync = 1;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return isDisposed; }
+        }
+        private bool isDisposed;
 
         /// <summary>
         /// Gets the absolute position of this particle effect.
@@ -554,7 +563,6 @@
 
         /// <summary>
         /// Updates using the elapsed time saved from last frame.
-
         /// </summary>
         private void Update()
         {
@@ -662,7 +670,6 @@
         public void Dispose()
         {
             Dispose(true);
-
             GC.SuppressFinalize(this);
         }
 
@@ -671,11 +678,9 @@
             if (disposing)
             {
                 if (primitive != null)
-                {
                     primitive.Dispose();
-                    primitive = null;
-                }
             }
+            isDisposed = true;
         }
 
         ~ParticleEffect()

@@ -40,7 +40,7 @@ namespace Nine.Graphics
         {
             get { return version; }
         }
-        internal int version;
+        internal int version = Constants.Random.Next(999999);
 
         private FastList<IDrawableObject> shadowCasters;
         private HashSet<ISpatialQueryable> shadowCasterBounds;

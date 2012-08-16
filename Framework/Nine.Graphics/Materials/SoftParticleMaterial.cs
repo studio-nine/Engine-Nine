@@ -1,35 +1,48 @@
 ﻿namespace Nine.Graphics.Materials
 {
+    using System;
+    using System.Collections.Generic;
     using Nine.Graphics.Drawing;
+    using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework;
 
     [NotContentSerializable]
     partial class SoftParticleMaterial
     {
         public float DepthFade
         {
-            get { return depthFade.HasValue ? depthFade.Value : Constants.SoftParticleFade; }
-            set { depthFade = (value == Constants.SoftParticleFade ? (float?)null : value); }
+            get { return depthFade; }
+            set { depthFade = value; }
         }
-        private float? depthFade;
+        private float depthFade = Constants.SoftParticleFade;
+
+        public override void GetDependentPasses(ICollection<Type> passTypes)
+        {
+            passTypes.Add(typeof(DepthPrePass));
+        }
 
         partial void ApplyGlobalParameters(DrawingContext context)
         {
             effect.Projection.SetValue(context.Projection);
             effect.projectionInverse.SetValue(context.matrices.ProjectionInverse);
-            effect.DepthBuffer.SetValue(context.textures[TextureUsage.DepthBuffer]);
         }
 
         partial void BeginApplyLocalParameters(DrawingContext context, SoftParticleMaterial previousMaterial)
         {
-            effect.Texture.SetValue(texture);
-            if (depthFade.HasValue)
-                effect.DepthFade.SetValue(depthFade.Value);
+            context.graphics.Textures[0] = texture;
+            context.graphics.Textures[1] = context.textures[TextureUsage.DepthBuffer];
+            context.graphics.SamplerStates[1] = SamplerState.PointClamp;
+
+            Matrix worldView;
+            Matrix.Multiply(ref world, ref context.matrices.view, out worldView);
+            effect.worldView.SetValue(worldView);
+            effect.DepthFade.SetValue(depthFade);
         }
 
         partial void EndApplyLocalParameters(DrawingContext context)
         {
-            if (depthFade.HasValue)
-                effect.DepthFade.SetValue(Constants.SoftParticleFade);
+            context.graphics.Textures[1] = null;
+            context.graphics.SamplerStates[1] = context.settings.SamplerState;
         }
     }
 }

@@ -157,7 +157,13 @@
         }
         private float spread = MathHelper.Pi;
 
-        public Vector3 Up { get; set; }
+        public Vector3 Up
+        {
+            get { return up; }
+            set { value.Normalize(); up = value; }
+        }
+        private Vector3 up;
+
         public float Radius { get; set; }
 
         protected override BoundingBox BoundingBoxValue
@@ -181,16 +187,16 @@
             if (!Shell)
                 radius *= (float)Random.NextDouble();
 
-            position.Z = 0;
+            position.Z = (float)Math.Sin(angle);
             position.X = (float)Math.Cos(angle);
-            position.Y = (float)Math.Sin(angle);
+            position.Y = 0;
 
             bool needTransform = false;
             Matrix transform = new Matrix();
-            if (Up != Vector3.Up)
+            if (up != Vector3.Up)
             {
                 needTransform = true;
-                transform = MatrixHelper.CreateRotation(Vector3.Up, Up);
+                transform = MatrixHelper.CreateRotation(Vector3.Up, up);
             }
 
             if (Radiate)
@@ -201,9 +207,9 @@
                     velocity = position;
             }
 
-            position.Z = -Height * 0.5f + (float)Random.NextDouble() * Height;
+            position.Y = -Height * 0.5f + (float)Random.NextDouble() * Height;
             position.X *= radius;
-            position.Y *= radius;
+            position.Z *= radius;
 
             if (needTransform)
             {

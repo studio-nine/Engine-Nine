@@ -12,195 +12,195 @@
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DynamicPrimitiveExtensions
     {
-        public static void AddGeometry(this DynamicPrimitive primitiveBatch, IGeometry geometry, Color color)
+        public static void AddGeometry(this DynamicPrimitive dynamicPrimitive, IGeometry geometry, Color color)
         {
             Vector3[] positions;
             ushort[] indices;
             geometry.GetTriangles(out positions, out indices);
             var transform = geometry.Transform;
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, transform);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, transform);
             {
                 foreach (Vector3 position in positions)
                 {
-                    primitiveBatch.AddVertex(position, color);
+                    dynamicPrimitive.AddVertex(position, color);
                 }
 
                 for (int i = 0; i < indices.Length; i += 3)
                 {
-                    primitiveBatch.AddIndex(indices[i + 0]);
-                    primitiveBatch.AddIndex(indices[i + 1]);
-                    primitiveBatch.AddIndex(indices[i + 1]);
-                    primitiveBatch.AddIndex(indices[i + 2]);
-                    primitiveBatch.AddIndex(indices[i + 2]);
-                    primitiveBatch.AddIndex(indices[i + 0]);
+                    dynamicPrimitive.AddIndex(indices[i + 0]);
+                    dynamicPrimitive.AddIndex(indices[i + 1]);
+                    dynamicPrimitive.AddIndex(indices[i + 1]);
+                    dynamicPrimitive.AddIndex(indices[i + 2]);
+                    dynamicPrimitive.AddIndex(indices[i + 2]);
+                    dynamicPrimitive.AddIndex(indices[i + 0]);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddRectangle(this DynamicPrimitive primitiveBatch, Vector2 min, Vector2 max, Matrix? world, Color color, float lineWidth)
+        public static void AddRectangle(this DynamicPrimitive dynamicPrimitive, Vector2 min, Vector2 max, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                primitiveBatch.AddVertex(new Vector3(min.X, min.Y, 0), color);
-                primitiveBatch.AddVertex(new Vector3(min.X, max.Y, 0), color);
-                primitiveBatch.AddVertex(new Vector3(max.X, max.Y, 0), color);
-                primitiveBatch.AddVertex(new Vector3(max.X, min.Y, 0), color);
+                dynamicPrimitive.AddVertex(new Vector3(min.X, min.Y, 0), color);
+                dynamicPrimitive.AddVertex(new Vector3(min.X, max.Y, 0), color);
+                dynamicPrimitive.AddVertex(new Vector3(max.X, max.Y, 0), color);
+                dynamicPrimitive.AddVertex(new Vector3(max.X, min.Y, 0), color);
 
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(0);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(0);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddRectangle(this DynamicPrimitive primitiveBatch, Vector2 min, Vector2 max, Vector3 up, Matrix? world, Color color, float lineWidth)
+        public static void AddRectangle(this DynamicPrimitive dynamicPrimitive, Vector2 min, Vector2 max, Vector3 up, Matrix? world, Color color, float lineWidth)
         {
-            Matrix transform = MatrixHelper.CreateRotation(Vector3.UnitZ, up);
+            Matrix transform = MatrixHelper.CreateRotation(Vector3.Up, up);
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(min.X, min.Y, 0), transform), color);
-                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(min.X, max.Y, 0), transform), color);
-                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(max.X, max.Y, 0), transform), color);
-                primitiveBatch.AddVertex(Vector3.TransformNormal(new Vector3(max.X, min.Y, 0), transform), color);
+                dynamicPrimitive.AddVertex(Vector3.TransformNormal(new Vector3(min.X, min.Y, 0), transform), color);
+                dynamicPrimitive.AddVertex(Vector3.TransformNormal(new Vector3(min.X, max.Y, 0), transform), color);
+                dynamicPrimitive.AddVertex(Vector3.TransformNormal(new Vector3(max.X, max.Y, 0), transform), color);
+                dynamicPrimitive.AddVertex(Vector3.TransformNormal(new Vector3(max.X, min.Y, 0), transform), color);
 
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(0);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(0);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddBox(this DynamicPrimitive primitiveBatch, Vector3 center, Vector3 size, Matrix? world, Color color, float lineWidth)
+        public static void AddBox(this DynamicPrimitive dynamicPrimitive, Vector3 center, Vector3 size, Matrix? world, Color color, float lineWidth)
         {
-            AddBox(primitiveBatch, new BoundingBox(center - size / 2, center + size / 2), world, color, lineWidth);
+            AddBox(dynamicPrimitive, new BoundingBox(center - size / 2, center + size / 2), world, color, lineWidth);
         }
 
-        public static void AddBox(this DynamicPrimitive primitiveBatch, BoundingBox boundingBox, Matrix? world, Color color, float lineWidth)
+        public static void AddBox(this DynamicPrimitive dynamicPrimitive, BoundingBox boundingBox, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
                 Vector3[] corners = boundingBox.GetCorners();
 
-                primitiveBatch.AddVertex(corners[0], color);
-                primitiveBatch.AddVertex(corners[1], color);
+                dynamicPrimitive.AddVertex(corners[0], color);
+                dynamicPrimitive.AddVertex(corners[1], color);
 
-                primitiveBatch.AddVertex(corners[1], color);
-                primitiveBatch.AddVertex(corners[2], color);
+                dynamicPrimitive.AddVertex(corners[1], color);
+                dynamicPrimitive.AddVertex(corners[2], color);
 
-                primitiveBatch.AddVertex(corners[2], color);
-                primitiveBatch.AddVertex(corners[3], color);
+                dynamicPrimitive.AddVertex(corners[2], color);
+                dynamicPrimitive.AddVertex(corners[3], color);
 
-                primitiveBatch.AddVertex(corners[3], color);
-                primitiveBatch.AddVertex(corners[0], color);
+                dynamicPrimitive.AddVertex(corners[3], color);
+                dynamicPrimitive.AddVertex(corners[0], color);
 
-                primitiveBatch.AddVertex(corners[4], color);
-                primitiveBatch.AddVertex(corners[5], color);
+                dynamicPrimitive.AddVertex(corners[4], color);
+                dynamicPrimitive.AddVertex(corners[5], color);
 
-                primitiveBatch.AddVertex(corners[5], color);
-                primitiveBatch.AddVertex(corners[6], color);
+                dynamicPrimitive.AddVertex(corners[5], color);
+                dynamicPrimitive.AddVertex(corners[6], color);
 
-                primitiveBatch.AddVertex(corners[6], color);
-                primitiveBatch.AddVertex(corners[7], color);
+                dynamicPrimitive.AddVertex(corners[6], color);
+                dynamicPrimitive.AddVertex(corners[7], color);
 
-                primitiveBatch.AddVertex(corners[7], color);
-                primitiveBatch.AddVertex(corners[4], color);
+                dynamicPrimitive.AddVertex(corners[7], color);
+                dynamicPrimitive.AddVertex(corners[4], color);
 
-                primitiveBatch.AddVertex(corners[0], color);
-                primitiveBatch.AddVertex(corners[4], color);
+                dynamicPrimitive.AddVertex(corners[0], color);
+                dynamicPrimitive.AddVertex(corners[4], color);
 
-                primitiveBatch.AddVertex(corners[1], color);
-                primitiveBatch.AddVertex(corners[5], color);
+                dynamicPrimitive.AddVertex(corners[1], color);
+                dynamicPrimitive.AddVertex(corners[5], color);
 
-                primitiveBatch.AddVertex(corners[2], color);
-                primitiveBatch.AddVertex(corners[6], color);
+                dynamicPrimitive.AddVertex(corners[2], color);
+                dynamicPrimitive.AddVertex(corners[6], color);
 
-                primitiveBatch.AddVertex(corners[3], color);
-                primitiveBatch.AddVertex(corners[7], color);
+                dynamicPrimitive.AddVertex(corners[3], color);
+                dynamicPrimitive.AddVertex(corners[7], color);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddSolidBox(this DynamicPrimitive primitiveBatch, Vector3 center, Vector3 size, Matrix? world, Color color)
+        public static void AddSolidBox(this DynamicPrimitive dynamicPrimitive, Vector3 center, Vector3 size, Matrix? world, Color color)
         {
-            AddSolidBox(primitiveBatch, new BoundingBox(center - size / 2, center + size / 2), world, color);
+            AddSolidBox(dynamicPrimitive, new BoundingBox(center - size / 2, center + size / 2), world, color);
         }
 
-        public static void AddSolidBox(this DynamicPrimitive primitiveBatch, BoundingBox boundingBox, Matrix? world, Color color)
+        public static void AddSolidBox(this DynamicPrimitive dynamicPrimitive, BoundingBox boundingBox, Matrix? world, Color color)
         {
             Vector3[] corners = boundingBox.GetCorners();
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
-                primitiveBatch.AddVertex(corners[0], color);
-                primitiveBatch.AddVertex(corners[1], color);
-                primitiveBatch.AddVertex(corners[2], color);
-                primitiveBatch.AddVertex(corners[3], color);
-                primitiveBatch.AddVertex(corners[4], color);
-                primitiveBatch.AddVertex(corners[5], color);
-                primitiveBatch.AddVertex(corners[6], color);
-                primitiveBatch.AddVertex(corners[7], color);
+                dynamicPrimitive.AddVertex(corners[0], color);
+                dynamicPrimitive.AddVertex(corners[1], color);
+                dynamicPrimitive.AddVertex(corners[2], color);
+                dynamicPrimitive.AddVertex(corners[3], color);
+                dynamicPrimitive.AddVertex(corners[4], color);
+                dynamicPrimitive.AddVertex(corners[5], color);
+                dynamicPrimitive.AddVertex(corners[6], color);
+                dynamicPrimitive.AddVertex(corners[7], color);
 
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(2);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(2);
 
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(7);
-                primitiveBatch.AddIndex(6);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(7);
+                dynamicPrimitive.AddIndex(6);
 
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(7);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(7);
 
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(4);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(4);
 
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(1);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(1);
 
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(7);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(7);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddCircle(this DynamicPrimitive primitiveBatch, Vector3 center, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddCircle(this DynamicPrimitive dynamicPrimitive, Vector3 center, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineStrip, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineStrip, null, world, lineWidth);
             {
                 if (tessellation < 3)
                     throw new ArgumentOutOfRangeException("tessellation");
@@ -217,19 +217,19 @@
 
                     Vector3 normal = new Vector3(dx, dy, 0);
 
-                    primitiveBatch.AddVertex(normal * radius + center, color);
+                    dynamicPrimitive.AddVertex(normal * radius + center, color);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddCircle(this DynamicPrimitive primitiveBatch, Vector3 center, float radius, Vector3 up, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddCircle(this DynamicPrimitive dynamicPrimitive, Vector3 center, float radius, Vector3 up, int tessellation, Matrix? world, Color color, float lineWidth)
         {
             Matrix transform = Matrix.CreateScale(radius) *
-                               MatrixHelper.CreateRotation(Vector3.UnitZ, up) *
+                               MatrixHelper.CreateRotation(Vector3.Up, up) *
                                Matrix.CreateTranslation(center);
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineStrip, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineStrip, null, world, lineWidth);
             {
                 if (tessellation < 3)
                     throw new ArgumentOutOfRangeException("tessellation");
@@ -246,30 +246,35 @@
 
                     Vector3 normal = new Vector3(dx, dy, 0);
 
-                    primitiveBatch.AddVertex(Vector3.Transform(normal, transform), color);
+                    dynamicPrimitive.AddVertex(Vector3.Transform(normal, transform), color);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddSphere(this DynamicPrimitive primitiveBatch, Vector3 center, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddSphere(this DynamicPrimitive dynamicPrimitive, Vector3 center, float radius, Color color, float lineWidth)
         {
-            AddSphere(primitiveBatch, new BoundingSphere(center, radius), tessellation, world, color, lineWidth);
+            AddSphere(dynamicPrimitive, new BoundingSphere(center, radius), 4, null, color, lineWidth);
         }
 
-        public static void AddSphere(this DynamicPrimitive primitiveBatch, BoundingSphere boundingSphere, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddSphere(this DynamicPrimitive dynamicPrimitive, Vector3 center, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            AddSphere(dynamicPrimitive, new BoundingSphere(center, radius), tessellation, world, color, lineWidth);
+        }
+
+        public static void AddSphere(this DynamicPrimitive dynamicPrimitive, BoundingSphere boundingSphere, int tessellation, Matrix? world, Color color, float lineWidth)
+        {
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
                 if (tessellation < 3)
                     throw new ArgumentOutOfRangeException("tessellation");
 
                 int currentVertex = 2;
                 int verticalSegments = tessellation;
-                int horizontalSegments = tessellation * 2;
+                int horizontalSegments = tessellation;
 
                 // Start with a single vertex at the bottom of the sphere.
-                primitiveBatch.AddVertex(Vector3.Down * boundingSphere.Radius + boundingSphere.Center, color);
+                dynamicPrimitive.AddVertex(Vector3.Down * boundingSphere.Radius + boundingSphere.Center, color);
 
                 // Create rings of vertices at progressively higher latitudes.
                 for (int i = 0; i < verticalSegments - 1; ++i)
@@ -290,19 +295,19 @@
 
                         Vector3 normal = new Vector3(dx, dy, dz);
 
-                        primitiveBatch.AddVertex(normal * boundingSphere.Radius + boundingSphere.Center, color);
+                        dynamicPrimitive.AddVertex(normal * boundingSphere.Radius + boundingSphere.Center, color);
                         currentVertex++;
                     }
                 }
 
                 // Finish with a single vertex at the top of the sphere.
-                primitiveBatch.AddVertex(Vector3.Up * boundingSphere.Radius + boundingSphere.Center, color);
+                dynamicPrimitive.AddVertex(Vector3.Up * boundingSphere.Radius + boundingSphere.Center, color);
 
                 // Create a fan connecting the bottom vertex to the bottom latitude ring.
                 for (int i = 0; i < horizontalSegments; ++i)
                 {
-                    primitiveBatch.AddIndex(0);
-                    primitiveBatch.AddIndex(1 + (i + 1) % horizontalSegments);
+                    dynamicPrimitive.AddIndex(0);
+                    dynamicPrimitive.AddIndex(1 + (i + 1) % horizontalSegments);
                 }
 
                 // Fill the sphere body with triangles joining each pair of latitude rings.
@@ -312,36 +317,41 @@
                     {
                         int nextI = i + 1;
                         int nextJ = (j + 1) % horizontalSegments;
+                        
+                        dynamicPrimitive.AddIndex(1 + i * horizontalSegments + j);
+                        dynamicPrimitive.AddIndex(1 + i * horizontalSegments + nextJ);
 
-                        primitiveBatch.AddIndex(1 + i * horizontalSegments + j);
-                        primitiveBatch.AddIndex(1 + i * horizontalSegments + nextJ);
+                        dynamicPrimitive.AddIndex(1 + i * horizontalSegments + nextJ);
+                        dynamicPrimitive.AddIndex(1 + nextI * horizontalSegments + nextJ);
 
-                        primitiveBatch.AddIndex(1 + i * horizontalSegments + nextJ);
-                        primitiveBatch.AddIndex(1 + nextI * horizontalSegments + nextJ);
-
-                        primitiveBatch.AddIndex(1 + nextI * horizontalSegments + j);
-                        primitiveBatch.AddIndex(1 + nextI * horizontalSegments + j);
+                        dynamicPrimitive.AddIndex(1 + nextI * horizontalSegments + j);
+                        dynamicPrimitive.AddIndex(1 + nextI * horizontalSegments + j);
                     }
                 }
 
                 // Create a fan connecting the top vertex to the top latitude ring.
                 for (int i = 0; i < horizontalSegments; ++i)
                 {
-                    primitiveBatch.AddIndex(currentVertex - 1);
-                    primitiveBatch.AddIndex(currentVertex - 2 - (i + 1) % horizontalSegments);
+                    dynamicPrimitive.AddIndex(currentVertex - 1);
+                    dynamicPrimitive.AddIndex(currentVertex - 2 - (i + 1) % horizontalSegments);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddSolidSphere(this DynamicPrimitive primitiveBatch, Vector3 center, float radius, int tessellation, Matrix? world, Color color)
+        public static void AddSolidSphere(this DynamicPrimitive dynamicPrimitive, Vector3 center, float radius, Color color)
         {
-            AddSolidSphere(primitiveBatch, new BoundingSphere(center, radius), tessellation, world, color);
+            AddSolidSphere(dynamicPrimitive, new BoundingSphere(center, radius), 8, null, color);
         }
 
-        public static void AddSolidSphere(this DynamicPrimitive primitiveBatch, BoundingSphere boundingSphere, int tessellation, Matrix? world, Color color)
+        public static void AddSolidSphere(this DynamicPrimitive dynamicPrimitive, Vector3 center, float radius, int tessellation, Matrix? world, Color color)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
+            AddSolidSphere(dynamicPrimitive, new BoundingSphere(center, radius), tessellation, world, color);
+        }
+
+        public static void AddSolidSphere(this DynamicPrimitive dynamicPrimitive, BoundingSphere boundingSphere, int tessellation, Matrix? world, Color color)
+        {
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
                 if (tessellation < 3)
                     throw new ArgumentOutOfRangeException("tessellation");
@@ -351,7 +361,7 @@
                 int horizontalSegments = tessellation * 2;
 
                 // Start with a single vertex at the bottom of the sphere.
-                primitiveBatch.AddVertex(Vector3.Down * boundingSphere.Radius + boundingSphere.Center, color);
+                dynamicPrimitive.AddVertex(Vector3.Down * boundingSphere.Radius + boundingSphere.Center, color);
 
                 // Create rings of vertices at progressively higher latitudes.
                 for (int i = 0; i < verticalSegments - 1; ++i)
@@ -372,20 +382,20 @@
 
                         Vector3 normal = new Vector3(dx, dy, dz);
 
-                        primitiveBatch.AddVertex(normal * boundingSphere.Radius + boundingSphere.Center, color);
+                        dynamicPrimitive.AddVertex(normal * boundingSphere.Radius + boundingSphere.Center, color);
                         currentVertex++;
                     }
                 }
 
                 // Finish with a single vertex at the top of the sphere.
-                primitiveBatch.AddVertex(Vector3.Up * boundingSphere.Radius + boundingSphere.Center, color);
+                dynamicPrimitive.AddVertex(Vector3.Up * boundingSphere.Radius + boundingSphere.Center, color);
 
                 // Create a fan connecting the bottom vertex to the bottom latitude ring.
                 for (int i = 0; i < horizontalSegments; ++i)
                 {
-                    primitiveBatch.AddIndex(0);
-                    primitiveBatch.AddIndex(1 + (i + 1) % horizontalSegments);
-                    primitiveBatch.AddIndex(1 + i);
+                    dynamicPrimitive.AddIndex(0);
+                    dynamicPrimitive.AddIndex(1 + (i + 1) % horizontalSegments);
+                    dynamicPrimitive.AddIndex(1 + i);
                 }
 
                 // Fill the sphere body with triangles joining each pair of latitude rings.
@@ -396,350 +406,337 @@
                         int nextI = i + 1;
                         int nextJ = (j + 1) % horizontalSegments;
 
-                        primitiveBatch.AddIndex(1 + i * horizontalSegments + j);
-                        primitiveBatch.AddIndex(1 + i * horizontalSegments + nextJ);
-                        primitiveBatch.AddIndex(1 + nextI * horizontalSegments + j);
+                        dynamicPrimitive.AddIndex(1 + i * horizontalSegments + j);
+                        dynamicPrimitive.AddIndex(1 + i * horizontalSegments + nextJ);
+                        dynamicPrimitive.AddIndex(1 + nextI * horizontalSegments + j);
 
-                        primitiveBatch.AddIndex(1 + i * horizontalSegments + nextJ);
-                        primitiveBatch.AddIndex(1 + nextI * horizontalSegments + nextJ);
-                        primitiveBatch.AddIndex(1 + nextI * horizontalSegments + j);
+                        dynamicPrimitive.AddIndex(1 + i * horizontalSegments + nextJ);
+                        dynamicPrimitive.AddIndex(1 + nextI * horizontalSegments + nextJ);
+                        dynamicPrimitive.AddIndex(1 + nextI * horizontalSegments + j);
                     }
                 }
 
                 // Create a fan connecting the top vertex to the top latitude ring.
                 for (int i = 0; i < horizontalSegments; ++i)
                 {
-                    primitiveBatch.AddIndex(currentVertex - 1);
-                    primitiveBatch.AddIndex(currentVertex - 2 - (i + 1) % horizontalSegments);
-                    primitiveBatch.AddIndex(currentVertex - 2 - i);
+                    dynamicPrimitive.AddIndex(currentVertex - 1);
+                    dynamicPrimitive.AddIndex(currentVertex - 2 - (i + 1) % horizontalSegments);
+                    dynamicPrimitive.AddIndex(currentVertex - 2 - i);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddFrustum(this DynamicPrimitive primitiveBatch, BoundingFrustum boundingFrustum, Matrix? world, Color color, float lineWidth)
+        public static void AddFrustum(this DynamicPrimitive dynamicPrimitive, BoundingFrustum boundingFrustum, Matrix? world, Color color, float lineWidth)
         {
             Vector3[] corners = boundingFrustum.GetCorners();
 
             // near plane
-            primitiveBatch.AddLine(corners[0], corners[1], color, lineWidth);
-            primitiveBatch.AddLine(corners[1], corners[2], color, lineWidth);
-            primitiveBatch.AddLine(corners[2], corners[3], color, lineWidth);
-            primitiveBatch.AddLine(corners[3], corners[0], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[0], corners[1], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[1], corners[2], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[2], corners[3], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[3], corners[0], color, lineWidth);
 
             // connections
-            primitiveBatch.AddLine(corners[0], corners[4], color, lineWidth);
-            primitiveBatch.AddLine(corners[1], corners[5], color, lineWidth);
-            primitiveBatch.AddLine(corners[2], corners[6], color, lineWidth);
-            primitiveBatch.AddLine(corners[3], corners[7], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[0], corners[4], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[1], corners[5], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[2], corners[6], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[3], corners[7], color, lineWidth);
 
             // far plane
-            primitiveBatch.AddLine(corners[4], corners[5], color, lineWidth);
-            primitiveBatch.AddLine(corners[5], corners[6], color, lineWidth);
-            primitiveBatch.AddLine(corners[6], corners[7], color, lineWidth);
-            primitiveBatch.AddLine(corners[7], corners[4], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[4], corners[5], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[5], corners[6], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[6], corners[7], color, lineWidth);
+            dynamicPrimitive.AddLine(corners[7], corners[4], color, lineWidth);
         }
 
-        public static void AddSolidFrustum(this DynamicPrimitive primitiveBatch, BoundingFrustum boundingFrustum, Matrix? world, Color color)
+        public static void AddSolidFrustum(this DynamicPrimitive dynamicPrimitive, BoundingFrustum boundingFrustum, Matrix? world, Color color)
         {
             Vector3[] corners = boundingFrustum.GetCorners();
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
-                primitiveBatch.AddVertex(corners[0], color);
-                primitiveBatch.AddVertex(corners[1], color);
-                primitiveBatch.AddVertex(corners[2], color);
-                primitiveBatch.AddVertex(corners[3], color);
-                primitiveBatch.AddVertex(corners[4], color);
-                primitiveBatch.AddVertex(corners[5], color);
-                primitiveBatch.AddVertex(corners[6], color);
-                primitiveBatch.AddVertex(corners[7], color);
+                dynamicPrimitive.AddVertex(corners[0], color);
+                dynamicPrimitive.AddVertex(corners[1], color);
+                dynamicPrimitive.AddVertex(corners[2], color);
+                dynamicPrimitive.AddVertex(corners[3], color);
+                dynamicPrimitive.AddVertex(corners[4], color);
+                dynamicPrimitive.AddVertex(corners[5], color);
+                dynamicPrimitive.AddVertex(corners[6], color);
+                dynamicPrimitive.AddVertex(corners[7], color);
 
                 // near plane
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(2);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(2);
 
                 // far plane
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(7);
-                primitiveBatch.AddIndex(6);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(7);
+                dynamicPrimitive.AddIndex(6);
                 
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(4);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(7);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(4);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(7);
 
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(1);
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(0);
-                primitiveBatch.AddIndex(4);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(1);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(0);
+                dynamicPrimitive.AddIndex(4);
 
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(5);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(1);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(5);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(1);
 
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(2);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(3);
-                primitiveBatch.AddIndex(6);
-                primitiveBatch.AddIndex(7);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(2);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(3);
+                dynamicPrimitive.AddIndex(6);
+                dynamicPrimitive.AddIndex(7);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddCentrum(this DynamicPrimitive primitiveBatch, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddCentrum(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                primitiveBatch.AddVertex(position + Vector3.UnitZ * height, color);
+                dynamicPrimitive.AddVertex(position + Vector3.Up * height, color);
 
                 for (int i = 0; i < tessellation; ++i)
                 {
                     float angle = i * MathHelper.TwoPi / tessellation;
 
                     float dx = (float)Math.Cos(angle);
-                    float dy = (float)Math.Sin(angle);
+                    float dz = (float)Math.Sin(angle);
 
-                    Vector3 normal = new Vector3(dx, dy, 0);
+                    Vector3 normal = new Vector3(dx, 0, dz);
 
-                    primitiveBatch.AddVertex(position + normal * radius, color);
+                    dynamicPrimitive.AddVertex(position + normal * radius, color);
 
-                    primitiveBatch.AddIndex(0);
-                    primitiveBatch.AddIndex(1 + i);
+                    dynamicPrimitive.AddIndex(0);
+                    dynamicPrimitive.AddIndex(1 + i);
 
-                    primitiveBatch.AddIndex(1 + i);
-                    primitiveBatch.AddIndex(1 + (i + 1) % tessellation);
+                    dynamicPrimitive.AddIndex(1 + i);
+                    dynamicPrimitive.AddIndex(1 + (i + 1) % tessellation);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddSolidCentrum(this DynamicPrimitive primitiveBatch, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color)
+        public static void AddSolidCentrum(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
-                primitiveBatch.AddVertex(position + Vector3.UnitZ * height, color);
-                primitiveBatch.AddVertex(position, color);
+                dynamicPrimitive.AddVertex(position + Vector3.Up * height, color);
+                dynamicPrimitive.AddVertex(position, color);
 
                 for (int i = 0; i < tessellation; ++i)
                 {
                     float angle = i * MathHelper.TwoPi / tessellation;
 
                     float dx = (float)Math.Cos(angle);
-                    float dy = (float)Math.Sin(angle);
+                    float dz = (float)Math.Sin(angle);
 
-                    Vector3 normal = new Vector3(dx, dy, 0);
+                    Vector3 normal = new Vector3(dx, 0, dz);
 
-                    primitiveBatch.AddVertex(position + normal * radius, color);
+                    dynamicPrimitive.AddVertex(position + normal * radius, color);
 
-                    primitiveBatch.AddIndex(0);
-                    primitiveBatch.AddIndex(2 + i);
-                    primitiveBatch.AddIndex(2 + (i + 1) % tessellation);
+                    dynamicPrimitive.AddIndex(0);
+                    dynamicPrimitive.AddIndex(2 + i);
+                    dynamicPrimitive.AddIndex(2 + (i + 1) % tessellation);
 
-                    primitiveBatch.AddIndex(1);
-                    primitiveBatch.AddIndex(2 + (i + 1) % tessellation);
-                    primitiveBatch.AddIndex(2 + i);
+                    dynamicPrimitive.AddIndex(1);
+                    dynamicPrimitive.AddIndex(2 + (i + 1) % tessellation);
+                    dynamicPrimitive.AddIndex(2 + i);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddCylinder(this DynamicPrimitive primitiveBatch, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddCylinder(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color, float lineWidth)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                primitiveBatch.AddVertex(position + Vector3.UnitZ * height, color);
-                primitiveBatch.AddVertex(position, color);
+                dynamicPrimitive.AddVertex(position + Vector3.Up * height, color);
+                dynamicPrimitive.AddVertex(position, color);
 
                 for (int i = 0; i < tessellation; ++i)
                 {
                     float angle = i * MathHelper.TwoPi / tessellation;
 
                     float dx = (float)Math.Cos(angle);
-                    float dy = (float)Math.Sin(angle);
+                    float dz = (float)Math.Sin(angle);
 
-                    Vector3 normal = new Vector3(dx, dy, 0);
+                    Vector3 normal = new Vector3(dx, 0, dz);
 
-                    primitiveBatch.AddVertex(position + normal * radius + Vector3.UnitZ * height, color);
-                    primitiveBatch.AddVertex(position + normal * radius, color);
+                    dynamicPrimitive.AddVertex(position + normal * radius + Vector3.Up * height, color);
+                    dynamicPrimitive.AddVertex(position + normal * radius, color);
 
-                    primitiveBatch.AddIndex(2 + i * 2);
-                    primitiveBatch.AddIndex(2 + i * 2 + 1);
+                    dynamicPrimitive.AddIndex(2 + i * 2);
+                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
 
-                    primitiveBatch.AddIndex(2 + i * 2);
-                    primitiveBatch.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + i * 2);
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
 
-                    primitiveBatch.AddIndex(2 + i * 2 + 1);
-                    primitiveBatch.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddSolidCylinder(this DynamicPrimitive primitiveBatch, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color)
+        public static void AddSolidCylinder(this DynamicPrimitive dynamicPrimitive, Vector3 position, float height, float radius, int tessellation, Matrix? world, Color color)
         {
             if (tessellation < 3)
                 throw new ArgumentOutOfRangeException("tessellation");
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
-                primitiveBatch.AddVertex(position + Vector3.UnitZ * height, color);
-                primitiveBatch.AddVertex(position, color);
+                dynamicPrimitive.AddVertex(position + Vector3.Up * height, color);
+                dynamicPrimitive.AddVertex(position, color);
 
                 for (int i = 0; i < tessellation; ++i)
                 {
                     float angle = i * MathHelper.TwoPi / tessellation;
 
                     float dx = (float)Math.Cos(angle);
-                    float dy = (float)Math.Sin(angle);
+                    float dz = (float)Math.Sin(angle);
 
-                    Vector3 normal = new Vector3(dx, dy, 0);
+                    Vector3 normal = new Vector3(dx, 0, dz);
 
-                    primitiveBatch.AddVertex(position + normal * radius + Vector3.UnitZ * height, color);
-                    primitiveBatch.AddVertex(position + normal * radius, color);
+                    dynamicPrimitive.AddVertex(position + normal * radius + Vector3.Up * height, color);
+                    dynamicPrimitive.AddVertex(position + normal * radius, color);
 
-                    primitiveBatch.AddIndex(2 + i * 2);
-                    primitiveBatch.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
-                    primitiveBatch.AddIndex(2 + i * 2 + 1);
+                    dynamicPrimitive.AddIndex(2 + i * 2);
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
 
-                    primitiveBatch.AddIndex(2 + i * 2 + 1);
-                    primitiveBatch.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
-                    primitiveBatch.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
 
-                    primitiveBatch.AddIndex(0);
-                    primitiveBatch.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
-                    primitiveBatch.AddIndex(2 + i * 2);
+                    dynamicPrimitive.AddIndex(0);
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + i * 2);
 
-                    primitiveBatch.AddIndex(1);
-                    primitiveBatch.AddIndex(2 + i * 2 + 1);
-                    primitiveBatch.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(1);
+                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
+                    dynamicPrimitive.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddPlane(this DynamicPrimitive primitiveBatch, Microsoft.Xna.Framework.Plane plane, float size, int tessellation, Matrix? world, Color color, float lineWidth)
+        public static void AddPlane(this DynamicPrimitive dynamicPrimitive, Microsoft.Xna.Framework.Plane plane, float size, int tessellation, Matrix? world, Color color, float lineWidth)
         {
-            Matrix transform = MatrixHelper.CreateRotation(Vector3.UnitZ, plane.Normal) * 
+            Matrix transform = MatrixHelper.CreateRotation(Vector3.Up, plane.Normal) * 
                                Matrix.CreateTranslation(plane.Normal * plane.D);
 
             if (world.HasValue)
                 transform *= world.Value;
 
-            AddGrid(primitiveBatch, 0, 0, 0, size, size, tessellation, tessellation, transform, color, lineWidth);
+            AddGrid(dynamicPrimitive, 0, 0, 0, size, size, tessellation, tessellation, transform, color, lineWidth);
         }
 
-        public static void AddTriangle(this DynamicPrimitive primitiveBatch, Triangle triangle, Matrix? world, Color color, float lineWidth)
+        public static void AddTriangle(this DynamicPrimitive dynamicPrimitive, Triangle triangle, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
-            primitiveBatch.AddVertex(ref triangle.V1, color);
-            primitiveBatch.AddVertex(ref triangle.V2, color);
-            primitiveBatch.AddVertex(ref triangle.V2, color);
-            primitiveBatch.AddVertex(ref triangle.V3, color);
-            primitiveBatch.AddVertex(ref triangle.V3, color);
-            primitiveBatch.AddVertex(ref triangle.V1, color);
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.AddVertex(ref triangle.V1, color);
+            dynamicPrimitive.AddVertex(ref triangle.V2, color);
+            dynamicPrimitive.AddVertex(ref triangle.V2, color);
+            dynamicPrimitive.AddVertex(ref triangle.V3, color);
+            dynamicPrimitive.AddVertex(ref triangle.V3, color);
+            dynamicPrimitive.AddVertex(ref triangle.V1, color);
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddGrid(this DynamicPrimitive primitiveBatch, float step, int countX, int countY, Matrix? world, Color color, float lineWidth)
+        public static void AddGrid(this DynamicPrimitive dynamicPrimitive, float step, int countX, int countZ, Matrix? world, Color color, float lineWidth)
         {
-            AddGrid(primitiveBatch, -step * countX * 0.5f, -step * countY * 0.5f, 0, step * countX, step * countY, countX, countY, world, color, lineWidth);
+            AddGrid(dynamicPrimitive, -step * countX * 0.5f, 0, -step * countZ * 0.5f, step * countX, step * countZ, countX, countZ, world, color, lineWidth);
         }
 
-        public static void AddGrid(this DynamicPrimitive primitiveBatch, float x, float y, float z, float step, int countX, int countY, Matrix? world, Color color, float lineWidth)
+        public static void AddGrid(this DynamicPrimitive dynamicPrimitive, float x, float y, float z, float step, int countX, int countZ, Matrix? world, Color color, float lineWidth)
         {
-            AddGrid(primitiveBatch, x, y, z, step * countX, step * countY, countX, countY, world, color, lineWidth);
+            AddGrid(dynamicPrimitive, x, y, z, step * countX, step * countZ, countX, countZ, world, color, lineWidth);
         }
 
-        public static void AddGrid(this DynamicPrimitive primitiveBatch, float x, float y, float z, float width, float height, int countX, int countY, Matrix? world, Color color, float lineWidth)
+        public static void AddGrid(this DynamicPrimitive dynamicPrimitive, float x, float y, float z, float width, float height, int countX, int countZ, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
                 float incU = width / countX;
-                float incV = height / countY;
+                float incV = height / countZ;
 
                 for (int u = 0; u <= countX; u++)
                 {
-                    primitiveBatch.AddVertex(new Vector3(x + 0, y + u * incU, z), color);
-                    primitiveBatch.AddVertex(new Vector3(x + height, y + u * incU, z), color);
+                    dynamicPrimitive.AddVertex(new Vector3(x + 0, y, z + u * incU), color);
+                    dynamicPrimitive.AddVertex(new Vector3(x + height, y, z + u * incU), color);
                 }
 
-                for (int v = 0; v <= countY; v++)
+                for (int v = 0; v <= countZ; v++)
                 {
-                    primitiveBatch.AddVertex(new Vector3(x + v * incV, y + 0, z), color);
-                    primitiveBatch.AddVertex(new Vector3(x + v * incV, y + width, z), color);
+                    dynamicPrimitive.AddVertex(new Vector3(x + v * incV, y, z + 0), color);
+                    dynamicPrimitive.AddVertex(new Vector3(x + v * incV, y, z + width), color);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddGrid(this DynamicPrimitive primitiveBatch, UniformGrid grid, Matrix? world, Color color, float lineWidth)
+        public static void AddGrid(this DynamicPrimitive dynamicPrimitive, UniformGrid grid, Matrix? world, Color color, float lineWidth)
         {
-            AddGrid(primitiveBatch, grid.Position.X, grid.Position.Y, 0, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, world, color, lineWidth);
+            AddGrid(dynamicPrimitive, grid.Position.X, grid.Position.Y, 0, grid.Size.X, grid.Size.Y, grid.SegmentCountX, grid.SegmentCountY, world, color, lineWidth);
         }
 
-        public static void AddRay(this DynamicPrimitive primitiveBatch, Ray ray, float length, Matrix? world, Color color, Vector3 cameraPosition)
+        public static void AddRay(this DynamicPrimitive dynamicPrimitive, Ray ray, float length, Color color, float lineWidth)
         {
-            AddArrow(primitiveBatch, ray.Position, ray.Position + ray.Direction * length, world, color, cameraPosition);
+            AddArrow(dynamicPrimitive, ray.Position, ray.Position + ray.Direction * length, color, lineWidth);
         }
 
-        public static void AddArrow(this DynamicPrimitive primitiveBatch, Vector3 start, Vector3 end, Matrix? world, Color color, Vector3 cameraPosition)
-        {           
+        public static void AddArrow(this DynamicPrimitive dynamicPrimitive, Vector3 start, Vector3 end, Color color, float lineWidth)
+        {
             const float Ratio = 0.2f;
+            var mid = Vector3.Lerp(end, start, Ratio);
+            var head = (end - start).Length() * Ratio;
 
-            float length = Vector3.Subtract(start, end).Length();
-            float width = length * Ratio * 0.8f;
-            Vector3 mid = Vector3.Lerp(end, start, Ratio);
-
-            primitiveBatch.AddConstrainedBillboard(null, start, mid, length * 0.04f, null, world, color, cameraPosition);
-
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world);
-            {
-                Vector3 aa = new Vector3();
-                Vector3 ab = new Vector3();
-                Vector3 ba = new Vector3();
-                Vector3 bb = new Vector3();
-
-                CreateBillboard(mid, end, width, cameraPosition, out aa, out ab, out ba, out bb);
-                primitiveBatch.AddVertex((aa + ab) * 0.5f, color);
-                primitiveBatch.AddVertex(bb, color);
-                primitiveBatch.AddVertex(ba, color);
-            }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.AddLine(start, mid, null, color, lineWidth);
+            dynamicPrimitive.AddSolidCentrum(Vector3.Zero, head, head * 0.5f, 24,
+                MatrixHelper.CreateRotation(Vector3.Up, Vector3.Normalize(end - start)) *
+                Matrix.CreateTranslation(mid), color);
         }
 
-        public static void AddAxis(this DynamicPrimitive primitiveBatch, Matrix world, Vector3 cameraPosition)
+        public static void AddAxis(this DynamicPrimitive dynamicPrimitive, Matrix world, float lineWidth)
         {
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX, world), null, new Color(255, 0, 0), cameraPosition);
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY, world), null, new Color(0, 255, 0), cameraPosition);
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ, world), null, new Color(0, 0, 255), cameraPosition);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitX, world), new Color(255, 0, 0), lineWidth);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitY, world), new Color(0, 255, 0), lineWidth);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitZ, world), new Color(0, 0, 255), lineWidth);
         }
 
-        public static void AddAxis(this DynamicPrimitive primitiveBatch, Matrix world, float length, Vector3 cameraPosition)
+        public static void AddAxis(this DynamicPrimitive dynamicPrimitive, Matrix world, float length, float lineWidth)
         {
             Vector3 scale;
             Vector3 translation;
@@ -749,12 +746,12 @@
             world = Matrix.CreateFromQuaternion(rotation);
             world.Translation = translation;
 
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), null, new Color(255, 0, 0), cameraPosition);
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), null, new Color(0, 255, 0), cameraPosition);
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), null, new Color(0, 0, 255), cameraPosition);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), new Color(255, 0, 0), lineWidth);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), new Color(0, 255, 0), lineWidth);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), new Color(0, 0, 255), lineWidth);
         }
 
-        public static void AddAxis(this DynamicPrimitive primitiveBatch, Matrix world, float length, Color colorX, Color colorY, Color colorZ, Vector3 cameraPosition)
+        public static void AddAxis(this DynamicPrimitive dynamicPrimitive, Matrix world, float length, Color colorX, Color colorY, Color colorZ, float lineWidth)
         {
             Vector3 scale;
             Vector3 translation;
@@ -764,21 +761,21 @@
             world = Matrix.CreateFromQuaternion(rotation);
             world.Translation = translation;
 
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), null, colorX, cameraPosition);
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), null, colorY, cameraPosition);
-            AddArrow(primitiveBatch, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), null, colorZ, cameraPosition);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitX * length, world), colorX, lineWidth);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitY * length, world), colorY, lineWidth);
+            AddArrow(dynamicPrimitive, world.Translation, Vector3.Transform(Vector3.UnitZ * length, world), colorZ, lineWidth);
         }
 
-        public static void AddSkeleton(this DynamicPrimitive primitiveBatch, Microsoft.Xna.Framework.Graphics.Model model, Matrix? world, Color color, float lineWidth)
+        public static void AddSkeleton(this DynamicPrimitive dynamicPrimitive, Microsoft.Xna.Framework.Graphics.Model model, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                AddSkeleton(primitiveBatch, model.Root, Matrix.Identity, world, color);
+                AddSkeleton(dynamicPrimitive, model.Root, Matrix.Identity, world, color);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        private static void AddSkeleton(this DynamicPrimitive primitiveBatch, ModelBone node, Matrix parentTransform, Matrix? world, Color color)
+        private static void AddSkeleton(this DynamicPrimitive dynamicPrimitive, ModelBone node, Matrix parentTransform, Matrix? world, Color color)
         {
             Matrix start = parentTransform;
             Matrix end = node.Transform * parentTransform;
@@ -787,48 +784,48 @@
             {
                 if (Vector3.Subtract(end.Translation, start.Translation).LengthSquared() > 0)
                 {
-                    primitiveBatch.AddVertex(start.Translation, color);
-                    primitiveBatch.AddVertex(end.Translation, color);
+                    dynamicPrimitive.AddVertex(start.Translation, color);
+                    dynamicPrimitive.AddVertex(end.Translation, color);
                 }
             }
 
             foreach (ModelBone child in node.Children)
             {
-                AddSkeleton(primitiveBatch, child, end, world, color);
+                AddSkeleton(dynamicPrimitive, child, end, world, color);
             }
         }
 
-        public static void AddSkeleton(this DynamicPrimitive primitiveBatch, Skeleton skeleton, Matrix? world, Color color, float lineWidth)
+        public static void AddSkeleton(this DynamicPrimitive dynamicPrimitive, Skeleton skeleton, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                AddSkeleton(primitiveBatch, skeleton, 0, Matrix.Identity, color);
+                AddSkeleton(dynamicPrimitive, skeleton, 0, Matrix.Identity, color);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        private static void AddSkeleton(this DynamicPrimitive primitiveBatch, Skeleton skeleton, int bone, Matrix parentTransform, Color color)
+        private static void AddSkeleton(this DynamicPrimitive dynamicPrimitive, Skeleton skeleton, int bone, Matrix parentTransform, Color color)
         {
             Matrix start = parentTransform;
             Matrix end = skeleton.GetBoneTransform(bone) * parentTransform;
 
             if (Vector3.Subtract(end.Translation, start.Translation).LengthSquared() > 0)
             {
-                primitiveBatch.AddVertex(start.Translation, color);
-                primitiveBatch.AddVertex(end.Translation, color);
+                dynamicPrimitive.AddVertex(start.Translation, color);
+                dynamicPrimitive.AddVertex(end.Translation, color);
                 
                 Vector3.Subtract(end.Translation, start.Translation).Length();
             }
 
             foreach (int child in skeleton.GetChildBones(bone))
             {
-                AddSkeleton(primitiveBatch, skeleton, child, end, color);
+                AddSkeleton(dynamicPrimitive, skeleton, child, end, color);
             }
         }
         
         static Matrix[] bones;
 
-        public static void AddCollision(this DynamicPrimitive primitiveBatch, Microsoft.Xna.Framework.Graphics.Model model, Matrix? world, Color color)
+        public static void AddCollision(this DynamicPrimitive dynamicPrimitive, Microsoft.Xna.Framework.Graphics.Model model, Matrix? world, Color color)
         {
             if (bones == null || bones.Length < model.Bones.Count)
                 bones = new Matrix[model.Bones.Count];
@@ -850,7 +847,7 @@
                 tree.Traverse(node =>
                 {
                     if (!node.HasChildren && node.Value)
-                        primitiveBatch.AddSolidBox(node.Bounds, transform, color);
+                        dynamicPrimitive.AddSolidBox(node.Bounds, transform, color);
                     return TraverseOptions.Continue;
                 });
             }
@@ -860,28 +857,28 @@
                 for (int i = 0; i < model.Meshes.Count; ++i)
                 {
                     var mesh = model.Meshes[i];
-                    primitiveBatch.AddSolidSphere(mesh.BoundingSphere, 18, bones[mesh.ParentBone.Index] * transform, color);
+                    dynamicPrimitive.AddSolidSphere(mesh.BoundingSphere, 18, bones[mesh.ParentBone.Index] * transform, color);
                 }
             }
         }
 
-        public static void AddLineSegment(this DynamicPrimitive primitiveBatch, LineSegment line, float z, Matrix? world, Color color, float lineWidth)
+        public static void AddLineSegment(this DynamicPrimitive dynamicPrimitive, LineSegment line, float z, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.AddLine(new Vector3(line.Start, z), new Vector3(line.End, z), world, color, lineWidth);
+            dynamicPrimitive.AddLine(new Vector3(line.Start, z), new Vector3(line.End, z), world, color, lineWidth);
         }
 
-        public static void AddLineSegment(this DynamicPrimitive primitiveBatch, LineSegment line, float z, float arrowLength, Matrix? world, Color color, Vector3 cameraPosition, float lineWidth)
+        public static void AddLineSegment(this DynamicPrimitive dynamicPrimitive, LineSegment line, float z, float arrowLength, Color color, float lineWidth)
         {
-            primitiveBatch.AddLine(new Vector3(line.Start, z), new Vector3(line.End, z), world, color, lineWidth);
-            primitiveBatch.AddArrow(new Vector3(line.Center, z), new Vector3(line.Center + line.Normal * arrowLength, z), world, color, cameraPosition);
+            dynamicPrimitive.AddLine(new Vector3(line.Start, z), new Vector3(line.End, z), color, lineWidth);
+            dynamicPrimitive.AddArrow(new Vector3(line.Center, z), new Vector3(line.Center + line.Normal * arrowLength, z), color, lineWidth);
         }
 
-        public static void AddBillboard(this DynamicPrimitive primitiveBatch, Texture2D texture, Vector3 position, float size, Color color, Vector3 cameraPosition)
+        public static void AddBillboard(this DynamicPrimitive dynamicPrimitive, Texture2D texture, Vector3 position, float size, Color color, Vector3 cameraPosition)
         {
-            AddBillboard(primitiveBatch, texture, ref position, size, size, 0, null, null, color, ref cameraPosition);
+            AddBillboard(dynamicPrimitive, texture, ref position, size, size, 0, null, null, color, ref cameraPosition);
         }
 
-        public static void AddBillboard(this DynamicPrimitive primitiveBatch, Texture2D texture, ref Vector3 position, float width, float height, float rotation, Matrix? textureTransform, Matrix? world, Color color, ref Vector3 cameraPosition)
+        public static void AddBillboard(this DynamicPrimitive dynamicPrimitive, Texture2D texture, ref Vector3 position, float width, float height, float rotation, Matrix? textureTransform, Matrix? world, Color color, ref Vector3 cameraPosition)
         {
             //      aa --- ab
             //       |     |
@@ -951,25 +948,25 @@
             aa.Color = ab.Color =
             ba.Color = bb.Color = color;
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
             {
                 // Add new vertices and indices
-                primitiveBatch.AddIndex((ushort)(0));
-                primitiveBatch.AddIndex((ushort)(1));
-                primitiveBatch.AddIndex((ushort)(2));
-                primitiveBatch.AddIndex((ushort)(1));
-                primitiveBatch.AddIndex((ushort)(3));
-                primitiveBatch.AddIndex((ushort)(2));
+                dynamicPrimitive.AddIndex((ushort)(0));
+                dynamicPrimitive.AddIndex((ushort)(1));
+                dynamicPrimitive.AddIndex((ushort)(2));
+                dynamicPrimitive.AddIndex((ushort)(1));
+                dynamicPrimitive.AddIndex((ushort)(3));
+                dynamicPrimitive.AddIndex((ushort)(2));
 
-                primitiveBatch.AddVertex(ref aa);
-                primitiveBatch.AddVertex(ref ab);
-                primitiveBatch.AddVertex(ref ba);
-                primitiveBatch.AddVertex(ref bb);
+                dynamicPrimitive.AddVertex(ref aa);
+                dynamicPrimitive.AddVertex(ref ab);
+                dynamicPrimitive.AddVertex(ref ba);
+                dynamicPrimitive.AddVertex(ref bb);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddBillboard(this DynamicPrimitive primitiveBatch, Texture2D texture, ref Vector3 position, float width, float height, float rotation, Matrix? textureTransform, Matrix? world, Color color, ref Matrix viewInverse)
+        public static void AddBillboard(this DynamicPrimitive dynamicPrimitive, Texture2D texture, ref Vector3 position, float width, float height, float rotation, Matrix? textureTransform, Matrix? world, Color color, ref Matrix viewInverse)
         {
             // http://www.flipcode.com/archives/Really_Fast_Billboarding_Alignment_Without_VP_Tricks.shtml
 
@@ -1044,52 +1041,52 @@
             aa.Color = ab.Color =
             ba.Color = bb.Color = color;
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
             {
                 // Add new vertices and indices
-                primitiveBatch.AddIndex((ushort)(0));
-                primitiveBatch.AddIndex((ushort)(2));
-                primitiveBatch.AddIndex((ushort)(1));
-                primitiveBatch.AddIndex((ushort)(1));
-                primitiveBatch.AddIndex((ushort)(2));
-                primitiveBatch.AddIndex((ushort)(3));
+                dynamicPrimitive.AddIndex((ushort)(0));
+                dynamicPrimitive.AddIndex((ushort)(2));
+                dynamicPrimitive.AddIndex((ushort)(1));
+                dynamicPrimitive.AddIndex((ushort)(1));
+                dynamicPrimitive.AddIndex((ushort)(2));
+                dynamicPrimitive.AddIndex((ushort)(3));
 
-                primitiveBatch.AddVertex(ref aa);
-                primitiveBatch.AddVertex(ref ab);
-                primitiveBatch.AddVertex(ref ba);
-                primitiveBatch.AddVertex(ref bb);
+                dynamicPrimitive.AddVertex(ref aa);
+                dynamicPrimitive.AddVertex(ref ab);
+                dynamicPrimitive.AddVertex(ref ba);
+                dynamicPrimitive.AddVertex(ref bb);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddLine(this DynamicPrimitive primitiveBatch, Vector3 v1, Vector3 v2, Color color, float lineWidth)
+        public static void AddLine(this DynamicPrimitive dynamicPrimitive, Vector3 v1, Vector3 v2, Color color, float lineWidth)
         {
-            AddLine(primitiveBatch, v1, v2, null, color, lineWidth);
+            AddLine(dynamicPrimitive, v1, v2, null, color, lineWidth);
         }
 
-        public static void AddLine(this DynamicPrimitive primitiveBatch, Vector3 v1, Vector3 v2, Matrix? world, Color color, float lineWidth)
+        public static void AddLine(this DynamicPrimitive dynamicPrimitive, Vector3 v1, Vector3 v2, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
-                primitiveBatch.AddVertex(v1, color);
-                primitiveBatch.AddVertex(v2, color);
+                dynamicPrimitive.AddVertex(v1, color);
+                dynamicPrimitive.AddVertex(v2, color);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddLine(this DynamicPrimitive primitiveBatch, IEnumerable<Vector3> lineStrip, Matrix? world, Color color, float lineWidth)
+        public static void AddLine(this DynamicPrimitive dynamicPrimitive, IEnumerable<Vector3> lineStrip, Matrix? world, Color color, float lineWidth)
         {
-            primitiveBatch.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
             {
                 foreach (Vector3 position in lineStrip)
                 {
-                    primitiveBatch.AddVertex(position, color);
+                    dynamicPrimitive.AddVertex(position, color);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddConstrainedBillboard(this DynamicPrimitive primitiveBatch, Texture2D texture, Vector3 start, Vector3 end, float width, Matrix? textureTransform, Matrix? world, Color color, Vector3 cameraPosition)
+        public static void AddConstrainedBillboard(this DynamicPrimitive dynamicPrimitive, Texture2D texture, Vector3 start, Vector3 end, float width, Matrix? textureTransform, Matrix? world, Color color, Vector3 cameraPosition)
         {
             //      aa --- ab
             //       |     |
@@ -1121,25 +1118,25 @@
             aa.Color = ab.Color =
             ba.Color = bb.Color = color;
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
             {
                 // Add new vertices and indices
-                primitiveBatch.AddIndex((ushort)(0));
-                primitiveBatch.AddIndex((ushort)(1));
-                primitiveBatch.AddIndex((ushort)(2));
-                primitiveBatch.AddIndex((ushort)(1));
-                primitiveBatch.AddIndex((ushort)(3));
-                primitiveBatch.AddIndex((ushort)(2));
+                dynamicPrimitive.AddIndex((ushort)(0));
+                dynamicPrimitive.AddIndex((ushort)(1));
+                dynamicPrimitive.AddIndex((ushort)(2));
+                dynamicPrimitive.AddIndex((ushort)(1));
+                dynamicPrimitive.AddIndex((ushort)(3));
+                dynamicPrimitive.AddIndex((ushort)(2));
 
-                primitiveBatch.AddVertex(ref aa);
-                primitiveBatch.AddVertex(ref ab);
-                primitiveBatch.AddVertex(ref ba);
-                primitiveBatch.AddVertex(ref bb);
+                dynamicPrimitive.AddVertex(ref aa);
+                dynamicPrimitive.AddVertex(ref ab);
+                dynamicPrimitive.AddVertex(ref ba);
+                dynamicPrimitive.AddVertex(ref bb);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void AddConstrainedBillboard(this DynamicPrimitive primitiveBatch, Texture2D texture, IEnumerable<Vector3> lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color, Vector3 cameraPosition)
+        public static void AddConstrainedBillboard(this DynamicPrimitive dynamicPrimitive, Texture2D texture, IEnumerable<Vector3> lineStrip, float width, Matrix? textureTransform, Matrix? world, Color color, Vector3 cameraPosition)
         {
             if (lineStrip == null)
                 throw new ArgumentNullException("lineStrip");
@@ -1177,7 +1174,7 @@
                 previous = enumerator.Current;
             }
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, texture, world);
             {
                 enumerator.Reset();
                 enumerator.MoveNext();
@@ -1226,15 +1223,15 @@
 
                     int startIndex = vertexCount;
 
-                    primitiveBatch.AddIndex((ushort)(startIndex + 0));
-                    primitiveBatch.AddIndex((ushort)(startIndex + 3));
-                    primitiveBatch.AddIndex((ushort)(startIndex + 1));
-                    primitiveBatch.AddIndex((ushort)(startIndex + 0));
-                    primitiveBatch.AddIndex((ushort)(startIndex + 2));
-                    primitiveBatch.AddIndex((ushort)(startIndex + 3));
+                    dynamicPrimitive.AddIndex((ushort)(startIndex + 0));
+                    dynamicPrimitive.AddIndex((ushort)(startIndex + 3));
+                    dynamicPrimitive.AddIndex((ushort)(startIndex + 1));
+                    dynamicPrimitive.AddIndex((ushort)(startIndex + 0));
+                    dynamicPrimitive.AddIndex((ushort)(startIndex + 2));
+                    dynamicPrimitive.AddIndex((ushort)(startIndex + 3));
 
-                    primitiveBatch.AddVertex(ref ba);
-                    primitiveBatch.AddVertex(ref bb);
+                    dynamicPrimitive.AddVertex(ref ba);
+                    dynamicPrimitive.AddVertex(ref bb);
 
                     vertexCount += 2;
 
@@ -1255,48 +1252,48 @@
                     ab.TextureCoordinate = Vector2.UnitX;
                 }
 
-                primitiveBatch.AddVertex(ref aa);
-                primitiveBatch.AddVertex(ref ab);
+                dynamicPrimitive.AddVertex(ref aa);
+                dynamicPrimitive.AddVertex(ref ab);
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void Add(this DynamicPrimitive primitiveBatch, IEnumerable<Vector3> vertices, IEnumerable<int> indices, Matrix? world, Color color, float lineWidth)
+        public static void Add(this DynamicPrimitive dynamicPrimitive, IEnumerable<Vector3> vertices, IEnumerable<int> indices, Matrix? world, Color color, float lineWidth)
         {
             if (vertices == null)
                 throw new ArgumentNullException("vertices");
 
-            primitiveBatch.BeginPrimitive(PrimitiveType.TriangleList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world, lineWidth);
             {
                 foreach (Vector3 position in vertices)
-                    primitiveBatch.AddVertex(position, color);
+                    dynamicPrimitive.AddVertex(position, color);
 
                 if (indices != null)
                 {
                     foreach (var index in indices)
-                        primitiveBatch.AddIndex(index);
+                        dynamicPrimitive.AddIndex(index);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
-        public static void Add(this DynamicPrimitive primitiveBatch, PrimitiveType primitiveType, Texture2D texture, IEnumerable<VertexPositionColorTexture> vertices, IEnumerable<ushort> indices, Matrix? world)
+        public static void Add(this DynamicPrimitive dynamicPrimitive, PrimitiveType primitiveType, Texture2D texture, IEnumerable<VertexPositionColorTexture> vertices, IEnumerable<ushort> indices, Matrix? world)
         {
             if (vertices == null)
                 throw new ArgumentNullException("vertices");
 
-            primitiveBatch.BeginPrimitive(primitiveType, texture, world);
+            dynamicPrimitive.BeginPrimitive(primitiveType, texture, world);
             {
                 foreach (var vertex in vertices)
-                    ;// TODO: primitiveBatch.AddVertex(ref vertex);
+                    ;// TODO: dynamicPrimitive.AddVertex(ref vertex);
 
                 if (indices != null)
                 {
                     foreach (var index in indices)
-                        primitiveBatch.AddIndex(index);
+                        dynamicPrimitive.AddIndex(index);
                 }
             }
-            primitiveBatch.EndPrimitive();
+            dynamicPrimitive.EndPrimitive();
         }
 
         /// <summary>

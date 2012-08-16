@@ -5,7 +5,6 @@
 
     class BeginLightMaterialPart : MaterialPart
     {
-        private int ambientLightVersion;
         private EffectParameter eyePositionParameter;
         private EffectParameter ambientLightColorParameter;
 
@@ -17,15 +16,11 @@
 
         protected internal override void ApplyGlobalParameters(DrawingContext context)
         {
-            if (eyePositionParameter == null)
-                return;
-
-            if (ambientLightVersion != context.ambientLightColorVersion)
+            if (eyePositionParameter != null)
             {
                 ambientLightColorParameter.SetValue(context.ambientLightColor);
-                ambientLightVersion = context.ambientLightColorVersion;
+                eyePositionParameter.SetValue(context.EyePosition);
             }
-            eyePositionParameter.SetValue(context.EyePosition);
         }
 
         protected internal override MaterialPart Clone()
