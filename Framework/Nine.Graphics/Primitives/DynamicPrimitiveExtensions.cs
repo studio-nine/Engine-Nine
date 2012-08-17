@@ -144,56 +144,11 @@
 
             dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
-                dynamicPrimitive.AddVertex(corners[0], color);
-                dynamicPrimitive.AddVertex(corners[1], color);
-                dynamicPrimitive.AddVertex(corners[2], color);
-                dynamicPrimitive.AddVertex(corners[3], color);
-                dynamicPrimitive.AddVertex(corners[4], color);
-                dynamicPrimitive.AddVertex(corners[5], color);
-                dynamicPrimitive.AddVertex(corners[6], color);
-                dynamicPrimitive.AddVertex(corners[7], color);
+                for (int i = 0; i < BoundingBox.CornerCount; ++i)
+                    dynamicPrimitive.AddVertex(ref corners[i], color);
 
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(1);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(2);
-
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(7);
-                dynamicPrimitive.AddIndex(6);
-
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(7);
-
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(1);
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(4);
-
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(1);
-
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(7);
+                for (int i = 0; i < BoundingBoxExtensions.TriangleIndices.Length; ++i)
+                    dynamicPrimitive.AddIndex(BoundingBoxExtensions.TriangleIndices[i]);
             }
             dynamicPrimitive.EndPrimitive();
         }
@@ -456,58 +411,11 @@
 
             dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world);
             {
-                dynamicPrimitive.AddVertex(corners[0], color);
-                dynamicPrimitive.AddVertex(corners[1], color);
-                dynamicPrimitive.AddVertex(corners[2], color);
-                dynamicPrimitive.AddVertex(corners[3], color);
-                dynamicPrimitive.AddVertex(corners[4], color);
-                dynamicPrimitive.AddVertex(corners[5], color);
-                dynamicPrimitive.AddVertex(corners[6], color);
-                dynamicPrimitive.AddVertex(corners[7], color);
+                for (int i = 0; i < BoundingFrustum.CornerCount; ++i)
+                    dynamicPrimitive.AddVertex(ref corners[i], color);
 
-                // near plane
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(1);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(2);
-
-                // far plane
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(7);
-                dynamicPrimitive.AddIndex(6);
-                
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(4);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(7);
-
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(1);
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(0);
-                dynamicPrimitive.AddIndex(4);
-
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(5);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(1);
-
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(2);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(3);
-                dynamicPrimitive.AddIndex(6);
-                dynamicPrimitive.AddIndex(7);
+                for (int i = 0; i < BoundingBoxExtensions.TriangleIndices.Length; ++i)
+                    dynamicPrimitive.AddIndex(BoundingBoxExtensions.TriangleIndices[i]);
             }
             dynamicPrimitive.EndPrimitive();
         }
@@ -598,13 +506,13 @@
                     dynamicPrimitive.AddVertex(position + normal * radius, color);
 
                     dynamicPrimitive.AddIndex(2 + i * 2);
-                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
+                    dynamicPrimitive.AddIndex(3 + i * 2);
 
                     dynamicPrimitive.AddIndex(2 + i * 2);
-                    dynamicPrimitive.AddIndex(2 + (i * 2 + 2) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(2 + ((i + 1) % tessellation) * 2);
 
-                    dynamicPrimitive.AddIndex(2 + i * 2 + 1);
-                    dynamicPrimitive.AddIndex(2 + (i * 2 + 3) % (tessellation * 2));
+                    dynamicPrimitive.AddIndex(3 + i * 2);
+                    dynamicPrimitive.AddIndex(3 + ((i + 1) % tessellation) * 2);
                 }
             }
             dynamicPrimitive.EndPrimitive();
@@ -1076,7 +984,7 @@
 
         public static void AddLine(this DynamicPrimitive dynamicPrimitive, IEnumerable<Vector3> lineStrip, Matrix? world, Color color, float lineWidth)
         {
-            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineList, null, world, lineWidth);
+            dynamicPrimitive.BeginPrimitive(PrimitiveType.LineStrip, null, world, lineWidth);
             {
                 foreach (Vector3 position in lineStrip)
                 {

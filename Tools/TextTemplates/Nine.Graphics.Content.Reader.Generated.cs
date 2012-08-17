@@ -2405,11 +2405,6 @@ namespace Nine.Graphics.Primitives
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.DepthBias = input.ReadSingle();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; ++i)
-                    existingInstance.Primitives.Add(input.ReadObject<Nine.Graphics.Primitives.Primitive<Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture>>());
-            }
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.Tag = input.ReadObject<System.Object>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();

@@ -122,7 +122,6 @@
 #if WINDOWS
         /// <summary>
         /// Enables profiling using nVidia PerfHud.
-
         /// </summary>
         public static void EnablePerfHudProfiling(this GraphicsDeviceManager graphicsDeviceManager)
         {
@@ -184,7 +183,6 @@
         public static Ray CreatePickRay(this Viewport viewport, int x, int y, Matrix view, Matrix projection)
         {
             // create 2 positions in screen space using the cursor position. 0 is as
-
             // close as possible to the camera, 1 is as far away as possible.
             Vector3 nearSource = new Vector3(x, y, 0f);
             Vector3 farSource = new Vector3(x, y, 1f);

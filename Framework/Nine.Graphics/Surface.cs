@@ -16,7 +16,7 @@
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Material")]
-    public class Surface : Transformable, Nine.IContainer, IDrawableObject, ISurface, IPickable, INotifyCollectionChanged<object>, IDisposable
+    public class Surface : Transformable, Nine.IContainer, ISceneObject, IDrawableObject, ISurface, IPickable, INotifyCollectionChanged<object>, IDisposable
     {
         #region Properties
         /// <summary>
@@ -279,6 +279,7 @@
         {
             get
             {
+                EnsureHeightmapUpToDate();
                 BoundingBox box;
                 Vector3 absolutePosition = AbsolutePosition;
                 box.Min = boundingBox.Min + absolutePosition;
@@ -373,7 +374,7 @@
             this.heightmapNeedsUpdate = true;
         }
 
-        private void EnsureHeightmapUpToDate()
+        internal void EnsureHeightmapUpToDate()
         {
             if (heightmapNeedsUpdate)
             {
@@ -785,13 +786,15 @@
         /// <summary>
         /// We only want to hook to the pre draw event to update level of detail.
         /// </summary>
-        void IDrawableObject.BeginDraw(DrawingContext context)
+        void IDrawableObject.OnAddedToView(DrawingContext context)
         {
             UpdateLevelOfDetail(context.EyePosition);
         }
 
-        void IDrawableObject.Draw(DrawingContext context, Material material) { }
-        void IDrawableObject.EndDraw(DrawingContext context) { }
+        void IDrawableObject.Draw(DrawingContext context, Material material) 
+        {
+
+        }
         #endregion
 
         #region IContainer
@@ -807,6 +810,14 @@
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public event Action<object> Removed;
+        #endregion
+
+        #region ISceneObject
+        void ISceneObject.OnAdded(DrawingContext context) 
+        {
+            EnsureHeightmapUpToDate();
+        }
+        void ISceneObject.OnRemoved(DrawingContext context) { }
         #endregion
 
         #region IDisposable

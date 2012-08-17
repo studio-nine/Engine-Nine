@@ -344,8 +344,10 @@ namespace Nine.Graphics
             material.EndApply(context);
         }
 
-        void IDrawableObject.BeginDraw(DrawingContext context) { }
-        void IDrawableObject.EndDraw(DrawingContext context) { }
+        void IDrawableObject.OnAddedToView(DrawingContext context) 
+        {
+
+        }
 
         bool IDrawableObject.Visible
         {

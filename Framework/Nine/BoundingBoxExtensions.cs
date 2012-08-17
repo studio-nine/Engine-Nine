@@ -53,19 +53,19 @@ namespace Nine
         /// <summary>
         /// Clips a box against a frustum and split the input triangle when they interests.
         /// </summary>
-        public static void Intersects(this BoundingBox box, BoundingFrustum frustum, out ContainmentType containmentType, out Vector3[] intersections, out int length)
+        public static void Intersects(this BoundingBox box, BoundingFrustum frustum, out Vector3[] intersections, out int length)
         {
             if (Intersections == null)
                 Intersections = new Vector3[32 * 12];
             intersections = Intersections;
-            length = Intersects(box, frustum, out containmentType, intersections, 0);
+            length = Intersects(box, frustum, intersections, 0);
         }
         static Vector3[] Intersections;
 
         /// <summary>
         /// Clips a box against a frustum and split the input triangle when they interests.
         /// </summary>
-        public static int Intersects(this BoundingBox box, BoundingFrustum frustum, out ContainmentType containmentType, Vector3[] intersections, int startIndex)
+        public static int Intersects(this BoundingBox box, BoundingFrustum frustum, Vector3[] intersections, int startIndex)
         {
             var count = 0;
             frustum.GetCorners(FrustumCorners);            
@@ -74,18 +74,7 @@ namespace Nine
                 count += Triangle.Intersects(ref FrustumCorners[TriangleIndices[i]],
                                              ref FrustumCorners[TriangleIndices[i + 1]],
                                              ref FrustumCorners[TriangleIndices[i + 2]],
-                                             ref box, intersections, startIndex);
-            }
-
-            if (count > 0)
-            {
-                containmentType = ContainmentType.Intersects;
-            }
-            else
-            {
-                // If the scene and the view frustum has no intersections, that means either the scene
-                // contains the frustum, or the frustum contains the scene, or they are disjoint.
-                box.Contains(ref FrustumCorners[0], out containmentType);
+                                             ref box, intersections, startIndex + count);
             }
             return startIndex + count;
         }
@@ -95,14 +84,14 @@ namespace Nine
         /// <summary>
         /// These are the indices used to tessellate a box/frustum into a list of triangles. 
         /// </summary>
-        static readonly ushort[] TriangleIndices = new ushort[]
+        internal static readonly ushort[] TriangleIndices = new ushort[]
         {
-            0,1,2,  1,2,3,
-            4,5,6,  5,6,7,
-            0,2,4,  2,4,6,
-            1,3,5,  3,5,7,
-            0,1,4,  1,4,5,
-            2,3,6,  3,6,7 
+            0,1,2,  3,0,2,
+            4,6,5,  4,7,6,
+            0,3,4,  4,3,7,
+            5,1,0,  5,0,4,
+            5,6,2,  5,2,1,
+            3,2,6,  3,6,7,
         };
 
         /// <summary>

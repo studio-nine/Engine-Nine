@@ -56,7 +56,7 @@ namespace Test
             testGames = (from type in Assembly.GetExecutingAssembly().GetTypes().OrderBy(type => type.Name)
                          where type.IsClass && typeof(ITestGame).IsAssignableFrom(type)
                          select (ITestGame)Activator.CreateInstance(type)).ToArray();
-            //testGames = new ITestGame[] { new DynamicPrimitiveTest() };
+            //testGames = new ITestGame[] { new ShadowMapTest() };
             testScenes = new Scene[testGames.Length];
 
             // Shows the next scene

@@ -259,35 +259,28 @@ namespace Nine.Graphics.Drawing
             if (lightGeometry == null || !lightGeometry.Visible)
                 return;
 
+            lightGeometry.OnAddedToView(context);
+
+            var lightMaterial = lightGeometry.Material;
+            if (lightMaterial == null)
+                return;
+
+            lightMaterial.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
+            lightMaterial.SetTexture(TextureUsage.NormalMap, normalBuffer);
+
             try
             {
-                lightGeometry.BeginDraw(context);
+                lightMaterial.BeginApply(context);
 
-                var lightMaterial = lightGeometry.Material;
-                if (lightMaterial == null)
-                    return;
+                // Draw the model, using the specified effect.
+                // Setup correct cull mode so that each pixel is rendered only once.
+                GraphicsDevice.DepthStencilState = greaterDepth;
 
-                lightMaterial.SetTexture(TextureUsage.DepthBuffer, depthBuffer);
-                lightMaterial.SetTexture(TextureUsage.NormalMap, normalBuffer);
-
-                try
-                {
-                    lightMaterial.BeginApply(context);
-
-                    // Draw the model, using the specified effect.
-                    // Setup correct cull mode so that each pixel is rendered only once.
-                    GraphicsDevice.DepthStencilState = greaterDepth;
-
-                    lightGeometry.Draw(context, lightMaterial);
-                }
-                finally
-                {
-                    lightMaterial.EndApply(context);
-                }
+                lightGeometry.Draw(context, lightMaterial);
             }
             finally
             {
-                lightGeometry.EndDraw(context);
+                lightMaterial.EndApply(context);
             }
         }
 

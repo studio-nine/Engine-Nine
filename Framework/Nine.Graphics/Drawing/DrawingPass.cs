@@ -65,7 +65,10 @@ namespace Nine.Graphics.Drawing
 
             var graphics = context.graphics;
             var dominantMaterial = Material;
-            var defaultMaterial = DefaultMaterial ?? (DefaultMaterial = new BasicMaterial(graphics) { LightingEnabled = true });
+            var defaultMaterial = DefaultMaterial ?? (DefaultMaterial = new BasicMaterial(graphics) 
+            {
+                LightingEnabled = true, PreferPerPixelLighting = true,
+            });
 
             try
             {

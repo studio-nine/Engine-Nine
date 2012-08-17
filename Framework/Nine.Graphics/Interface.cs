@@ -63,19 +63,14 @@ namespace Nine.Graphics
         Material Material { get; }
 
         /// <summary>
-        /// Perform any updates before anything is rendered in the scene.
+        /// Called every frame when this object is added to the current view frustum.
         /// </summary>
-        void BeginDraw(DrawingContext context);
+        void OnAddedToView(DrawingContext context);
 
         /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
         void Draw(DrawingContext context, Material material);
-
-        /// <summary>
-        /// Perform any updates after everything is rendered in the scene.
-        /// </summary>
-        void EndDraw(DrawingContext context);
     }
 
     /// <summary>

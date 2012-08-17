@@ -33,7 +33,7 @@ namespace Nine.Graphics
         public readonly static Color BoundingBoxColor = new Color(70, 130, 180, 255);
         public readonly static Color LightFrustumColor = new Color(255, 255, 0, 255);
         public readonly static Color ShadowFrustumColor = new Color(255, 192, 203, 255);
-        public readonly static Color SceneManagerColor = new Color(255, 255, 255, 255);
+        public readonly static Color SceneBoundsColor = new Color(200, 200, 255, 255);
 
         public readonly static Random Random = new Random(20120816);
     }

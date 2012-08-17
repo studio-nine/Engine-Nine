@@ -610,12 +610,10 @@
             }
         }
 
-        public void BeginDraw(DrawingContext context)
+        public void OnAddedToView(DrawingContext context)
         {
             InsideViewFrustum = true;
         }
-
-        void IDrawableObject.EndDraw(DrawingContext context) { }
         #endregion
 
         #region Threading

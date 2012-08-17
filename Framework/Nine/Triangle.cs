@@ -122,15 +122,15 @@ namespace Nine
             var sourceCount = 3;
             var targetCount = 0;
 
-            source[0] = v1;
-            source[1] = v2;
-            source[3] = v3;
+            source[startIndex + 0] = v1;
+            source[startIndex + 1] = v2;
+            source[startIndex + 2] = v3;
 
             #region Clip against -X plane
             for (var i = 0; i < sourceCount; ++i)
             {
-                var start = source[i];
-                var end = source[(i + 1) % sourceCount];
+                var start = source[startIndex + i];
+                var end = source[startIndex + (i + 1) % sourceCount];
 
                 var insideStart = start.X >= box.Min.X;
                 var insideEnd = end.X >= box.Min.X;
@@ -141,11 +141,13 @@ namespace Nine
                 if (insideStart && insideEnd)
                 {
                     target[targetCount++] = start;
-                    target[targetCount++] = end;
                     continue;
                 }
 
                 var delta = (box.Min.X - start.X) / (end.X - start.X);
+                if (delta <= float.Epsilon || delta >= 1 - float.Epsilon)
+                    continue;
+
                 mid.X = start.X + (end.X - start.X) * delta;
                 mid.Y = start.Y + (end.Y - start.Y) * delta;
                 mid.Z = start.Z + (end.Z - start.Z) * delta;
@@ -158,7 +160,6 @@ namespace Nine
                 else
                 {
                     target[targetCount++] = mid;
-                    target[targetCount++] = end;
                 }
             }
             #endregion
@@ -178,25 +179,26 @@ namespace Nine
 
                 if (insideStart && insideEnd)
                 {
-                    source[sourceCount++] = start;
-                    source[sourceCount++] = end;
+                    source[startIndex + sourceCount++] = start;
                     continue;
                 }
 
                 var delta = (box.Max.X - start.X) / (end.X - start.X);
+                if (delta <= float.Epsilon || delta >= 1 - float.Epsilon)
+                    continue;
+
                 mid.X = start.X + (end.X - start.X) * delta;
                 mid.Y = start.Y + (end.Y - start.Y) * delta;
                 mid.Z = start.Z + (end.Z - start.Z) * delta;
 
                 if (insideStart)
                 {
-                    source[sourceCount++] = start;
-                    source[sourceCount++] = mid;
+                    source[startIndex + sourceCount++] = start;
+                    source[startIndex + sourceCount++] = mid;
                 }
                 else
                 {
-                    source[sourceCount++] = mid;
-                    source[sourceCount++] = end;
+                    source[startIndex + sourceCount++] = mid;
                 }
             }
             #endregion
@@ -205,8 +207,8 @@ namespace Nine
             targetCount = 0;
             for (var i = 0; i < sourceCount; ++i)
             {
-                var start = source[i];
-                var end = source[(i + 1) % sourceCount];
+                var start = source[startIndex + i];
+                var end = source[startIndex + (i + 1) % sourceCount];
 
                 var insideStart = start.Y >= box.Min.Y;
                 var insideEnd = end.Y >= box.Min.Y;
@@ -217,11 +219,13 @@ namespace Nine
                 if (insideStart && insideEnd)
                 {
                     target[targetCount++] = start;
-                    target[targetCount++] = end;
                     continue;
                 }
 
                 var delta = (box.Min.Y - start.Y) / (end.Y - start.Y);
+                if (delta <= float.Epsilon || delta >= 1 - float.Epsilon)
+                    continue;
+
                 mid.X = start.X + (end.X - start.X) * delta;
                 mid.Y = start.Y + (end.Y - start.Y) * delta;
                 mid.Z = start.Z + (end.Z - start.Z) * delta;
@@ -234,7 +238,6 @@ namespace Nine
                 else
                 {
                     target[targetCount++] = mid;
-                    target[targetCount++] = end;
                 }
             }
             #endregion
@@ -254,25 +257,26 @@ namespace Nine
 
                 if (insideStart && insideEnd)
                 {
-                    source[sourceCount++] = start;
-                    source[sourceCount++] = end;
+                    source[startIndex + sourceCount++] = start;
                     continue;
                 }
 
                 var delta = (box.Max.Y - start.Y) / (end.Y - start.Y);
+                if (delta <= float.Epsilon || delta >= 1 - float.Epsilon)
+                    continue;
+
                 mid.X = start.X + (end.X - start.X) * delta;
                 mid.Y = start.Y + (end.Y - start.Y) * delta;
                 mid.Z = start.Z + (end.Z - start.Z) * delta;
 
                 if (insideStart)
                 {
-                    source[sourceCount++] = start;
-                    source[sourceCount++] = mid;
+                    source[startIndex + sourceCount++] = start;
+                    source[startIndex + sourceCount++] = mid;
                 }
                 else
                 {
-                    source[sourceCount++] = mid;
-                    source[sourceCount++] = end;
+                    source[startIndex + sourceCount++] = mid;
                 }
             }
             #endregion
@@ -281,8 +285,8 @@ namespace Nine
             targetCount = 0;
             for (var i = 0; i < sourceCount; ++i)
             {
-                var start = source[i];
-                var end = source[(i + 1) % sourceCount];
+                var start = source[startIndex + i];
+                var end = source[startIndex + (i + 1) % sourceCount];
 
                 var insideStart = start.Z >= box.Min.Z;
                 var insideEnd = end.Z >= box.Min.Z;
@@ -293,11 +297,13 @@ namespace Nine
                 if (insideStart && insideEnd)
                 {
                     target[targetCount++] = start;
-                    target[targetCount++] = end;
                     continue;
                 }
 
                 var delta = (box.Min.Z - start.Z) / (end.Z - start.Z);
+                if (delta <= float.Epsilon || delta >= 1 - float.Epsilon)
+                    continue;
+
                 mid.X = start.X + (end.X - start.X) * delta;
                 mid.Y = start.Y + (end.Y - start.Y) * delta;
                 mid.Z = start.Z + (end.Z - start.Z) * delta;
@@ -310,7 +316,6 @@ namespace Nine
                 else
                 {
                     target[targetCount++] = mid;
-                    target[targetCount++] = end;
                 }
             }
             #endregion
@@ -330,30 +335,31 @@ namespace Nine
 
                 if (insideStart && insideEnd)
                 {
-                    source[sourceCount++] = start;
-                    source[sourceCount++] = end;
+                    source[startIndex + sourceCount++] = start;
                     continue;
                 }
 
                 var delta = (box.Max.Z - start.Z) / (end.Z - start.Z);
+                if (delta <= float.Epsilon || delta >= 1 - float.Epsilon)
+                    continue;
+
                 mid.X = start.X + (end.X - start.X) * delta;
                 mid.Y = start.Y + (end.Y - start.Y) * delta;
                 mid.Z = start.Z + (end.Z - start.Z) * delta;
 
                 if (insideStart)
                 {
-                    source[sourceCount++] = start;
-                    source[sourceCount++] = mid;
+                    source[startIndex + sourceCount++] = start;
+                    source[startIndex + sourceCount++] = mid;
                 }
                 else
                 {
-                    source[sourceCount++] = mid;
-                    source[sourceCount++] = end;
+                    source[startIndex + sourceCount++] = mid;
                 }
             }
             #endregion
-            
-            return targetCount;
+
+            return sourceCount;
         }
 
         /// <summary>

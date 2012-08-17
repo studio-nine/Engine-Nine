@@ -3697,11 +3697,6 @@ namespace Nine.Content.Pipeline.Graphics.Primitives
         {
             output.Write(value.Visible);
             output.Write(value.DepthBias);
-            {
-                output.Write(value.Primitives.Count);
-                for (var i = 0; i < value.Primitives.Count; ++i)
-                    output.WriteObject(value.Primitives[i]);
-            }
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);

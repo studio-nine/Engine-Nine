@@ -10,16 +10,16 @@ namespace Test
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
 
-    public class ShadowMapTest// : ITestGame
+    public class ShadowMapTest : ITestGame
     {
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
             var shadowMaterial = content.Load<Material>("Materials/Shadow");
 
-            scene.Add(new Surface(graphics, 1, 256, 256, 8) { Material = shadowMaterial });
-            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = -Vector3.One, CastShadow = true });
-
+            scene.Add(new Surface(graphics, 1, 256, 256, 32) { Material = shadowMaterial });
+            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
+            
             var size = 20;
             var step = 10;
             var random = new Random(0);

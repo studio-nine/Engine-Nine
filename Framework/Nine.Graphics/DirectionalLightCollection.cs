@@ -15,7 +15,6 @@ namespace Nine.Graphics
         static IComparer<DirectionalLight> comparer = new DirectionalLightComparer();
 
         int count;
-        int version = Constants.Random.Next(999999);
         DirectionalLight defaultLight;
         DirectionalLight[] elements;
 
@@ -28,22 +27,12 @@ namespace Nine.Graphics
         private void SortAndIncrementVersion()
         {
             Array.Sort(elements, 0, count, comparer);
-            version++;
         }
 
         private void EnsureCapacity()
         {
             if (count >= elements.Length)
                 Array.Resize(ref elements, count * 2);
-        }
-
-        /// <summary>
-        /// Gets the version of this collection. This value increments each time
-        /// any new item is added, replaced or removed from this collection.
-        /// </summary>
-        public int Version
-        {
-            get { return version; }
         }
 
         public int IndexOf(DirectionalLight item)
@@ -87,7 +76,6 @@ namespace Nine.Graphics
         {
             Array.Clear(elements, 0, count);
             count = 0;
-            version++;
         }
 
         public bool Contains(DirectionalLight item)

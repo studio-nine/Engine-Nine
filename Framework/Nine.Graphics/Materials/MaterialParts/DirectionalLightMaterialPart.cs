@@ -44,20 +44,10 @@
                 return;
 
             var light = context.directionalLights[lightIndex];
-            if (light.version != lightVersion)
-            {
-                directionParameter.SetValue(light.Direction);
-                diffuseColorParameter.SetValue(light.DiffuseColor);
-                specularColorParameter.SetValue(light.SpecularColor);
-                lightVersion = light.version;
-            }
 
-            if (lightCollectionVersion != context.directionalLights.Version && light == null)
-            {
-                directionParameter.SetValue(Vector3.Zero);
-                directionParameter.SetValue(Vector3.Zero);
-                lightCollectionVersion = context.directionalLights.Version;
-            }
+            directionParameter.SetValue(light.Direction);
+            diffuseColorParameter.SetValue(light.DiffuseColor);
+            specularColorParameter.SetValue(light.SpecularColor);
         }
 
         protected internal override MaterialPart Clone()

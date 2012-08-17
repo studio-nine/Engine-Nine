@@ -370,13 +370,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\08. Shadows.xaml">
+    <Compile Include="Tutorials\08. Shadows.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>08. Shadows</Name>
       <SubType>Designer</SubType>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

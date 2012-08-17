@@ -14,33 +14,22 @@ namespace Nine.Graphics
         public Vector3 Direction
         {
             get { return AbsoluteTransform.Forward; }
-            set { Transform = MatrixHelper.CreateWorld(Vector3.Zero, value); version++; }
+            set { Transform = MatrixHelper.CreateWorld(Vector3.Zero, value); }
         }
 
         public Vector3 SpecularColor
         {
             get { return specularColor; }
-            set { specularColor = value; version++; }
+            set { specularColor = value; }
         }
         private Vector3 specularColor;
 
         public Vector3 DiffuseColor
         {
             get { return diffuseColor; }
-            set { diffuseColor = value; version++; }
+            set { diffuseColor = value; }
         }
         private Vector3 diffuseColor;
-
-        /// <summary>
-        /// Gets or sets the version of this light. This value increases each
-        /// time the color or direction property changed. It can be used to
-        /// detect whether this light has changed to a new state very quickly.
-        /// </summary>
-        public int Version
-        {
-            get { return version; }
-        }
-        internal int version = Constants.Random.Next(999999);
 
         private FastList<IDrawableObject> shadowCasters;
         private HashSet<ISpatialQueryable> shadowCasterBounds;
@@ -64,20 +53,26 @@ namespace Nine.Graphics
             // 1. Compute the intersection points of the view frustum and the bounding box of the scene
             int length;
             Vector3[] intersections;
-            ContainmentType containment;
-            BoundingBox sceneBounds = context.BoundingBox;
-            sceneBounds.Intersects(context.matrices.ViewFrustum, out containment, out intersections, out length);
-            
-            if (containment == ContainmentType.Disjoint)
+            ContainmentType containmentType;
+
+            var sceneBounds = context.BoundingBox;
+            var viewFrustum = context.matrices.ViewFrustum;
+            sceneBounds.Intersects(viewFrustum, out intersections, out length);
+
+            viewFrustum.GetCorners(Corners);
+            for (int i = 0; i < BoundingFrustum.CornerCount; i++)
             {
-                shadowFrustum.Matrix = Matrix.Identity;
-                return;
+                sceneBounds.Contains(ref Corners[i], out containmentType);
+                if (containmentType == ContainmentType.Contains)
+                    intersections[length++] = Corners[i];
             }
 
-            if (containment == ContainmentType.Contains)
+            sceneBounds.GetCorners(Corners);
+            for (int i = 0; i < BoundingFrustum.CornerCount; i++)
             {
-                length = BoundingFrustum.CornerCount;
-                context.matrices.ViewFrustum.GetCorners(intersections);
+                viewFrustum.Contains(ref Corners[i], out containmentType);
+                if (containmentType == ContainmentType.Contains)
+                    intersections[length++] = Corners[i];
             }
 
             // 2. Compute bounds in light space
@@ -95,8 +90,9 @@ namespace Nine.Graphics
             for (int i = 0; i < length; ++i)
             {
                 // Transform the intersection point to light space.
-                Vector3.Transform(ref intersections[i], ref view, out point); 
-                
+                Vector3.Transform(ref intersections[i], ref view, out point);
+
+                point.Z = -point.Z;
                 if (point.Z > far)
                     far = point.Z;
                 if (point.X < left)
@@ -151,6 +147,7 @@ namespace Nine.Graphics
                 {
                     Vector3.Transform(ref Corners[i], ref view, out point);
 
+                    point.Z = -point.Z;
                     if (point.Z < near)
                         near = point.Z;
                     if (point.Z > far)

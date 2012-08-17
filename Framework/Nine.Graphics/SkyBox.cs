@@ -65,8 +65,10 @@ namespace Nine.Graphics
                 cube.Draw(context, this.material);
         }
 
-        void IDrawableObject.BeginDraw(DrawingContext context) { }
-        void IDrawableObject.EndDraw(DrawingContext context) { }
+        void IDrawableObject.OnAddedToView(DrawingContext context) 
+        {
+
+        }
 
         #region IDisposable
         /// <summary>

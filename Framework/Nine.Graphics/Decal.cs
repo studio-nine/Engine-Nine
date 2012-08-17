@@ -484,8 +484,7 @@ namespace Nine.Graphics
         static ushort[] Indices;
         static ushort[] IndexTracker;
 
-        void IDrawableObject.BeginDraw(DrawingContext context) { }
-        void IDrawableObject.EndDraw(DrawingContext context) { }
+        void IDrawableObject.OnAddedToView(DrawingContext context) { }
         #endregion
 
         #region Dispose

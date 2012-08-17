@@ -39,14 +39,6 @@
         }
 
         /// <summary>
-        /// Gets a list of contained primitives
-        /// </summary>
-        public IList<Primitive<VertexPositionColorTexture>> Primitives
-        {
-            get { return primitives ?? (primitives = new List<Primitive<VertexPositionColorTexture>>()); }
-        }
-
-        /// <summary>
         /// Gets the material of the object.
         /// </summary>
         Material IDrawableObject.Material
@@ -65,13 +57,14 @@
         private Material material;
         private ThickLineMaterial thickLineMaterial;
         private RasterizerState rasterizerState;
-        private List<Primitive<VertexPositionColorTexture>> primitives;
         
         private DynamicVertexBuffer vertexBuffer;
         private DynamicIndexBuffer indexBuffer;
         private VertexPositionColorNormalTexture[] vertexData;
         private ushort[] indexData;
 
+        private VertexPositionColorTexture[] lineVertices;
+        private FastList<int> lineIndices = new FastList<int>();
         private FastList<PrimitiveGroupEntry> batches = new FastList<PrimitiveGroupEntry>();
         private FastList<int> vertexSegments = new FastList<int>();
         private FastList<int> indexSegments = new FastList<int>();
@@ -86,8 +79,8 @@
         private int baseSegmentIndex;
         private int beginSegment;
 
+        private int currentLineVertex;
         private int lastLineVertex;
-        private int lastLineListIndex;
 
         private int initialBufferCapacity;
         private int maxBufferSizePerPrimitive;
@@ -115,7 +108,7 @@
             this.rasterizerState = new RasterizerState()
             {
                 CullMode = CullMode.None,
-                DepthBias = -0.001f,
+                DepthBias = 0f,
             };
             this.material = new BasicMaterial(graphics) 
             {
@@ -124,7 +117,6 @@
                 TwoSided = true,
             };
 
-            this.DepthBias = 0.001f;
             this.vertexData = new VertexPositionColorNormalTexture[512];
             this.indexData = new ushort[6];
 
@@ -169,9 +161,10 @@
             currentBaseIndex = currentIndex;
 
             beginSegment = currentSegment;
-            
+
+            lineIndices.Clear();
+            currentLineVertex = 0;
             lastLineVertex = -1;
-            lastLineListIndex = -1;
         }
 
         /// <summary>
@@ -198,15 +191,15 @@
         /// </summary>
         public void AddVertex(Vector3 position, Color color, Vector2 texCoord)
         {
-            AddVertex(ref position, color, ref texCoord);
+            AddVertex(ref position, ref texCoord, color);
         }
 
         /// <summary>
         /// Adds the vertex.
         /// </summary>
-        public void AddVertex(ref Vector3 position, Color color, ref Vector2 texCoord)
+        public void AddVertex(ref Vector3 position, ref Vector2 texCoord, Color color)
         {
-            VertexPositionColorTexture vertex = new VertexPositionColorTexture();
+            var vertex = new VertexPositionColorTexture();
             vertex.Position = position;
             vertex.Color = color;
             vertex.TextureCoordinate = texCoord;
@@ -218,52 +211,19 @@
         /// </summary>
         public void AddVertex(ref VertexPositionColorTexture vertex)
         {
-            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList)
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
+                currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
-                ExpandLineVertex(ref vertex, true);
+                if (lineVertices == null)
+                    lineVertices = new VertexPositionColorTexture[64];
+                if (lineVertices.Length <= currentLineVertex)
+                    Array.Resize(ref lineVertices, lineVertices.Length * 2);
+                lineVertices[currentLineVertex++] = vertex;
                 return;
             }
-            if (currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
-            {
-                ExpandLineVertex(ref vertex, false);
-                return;
-            }
+
             Vector3 zero = new Vector3();
             AddVertexInternal(ref vertex, ref zero);
-        }
-
-        /// <summary>
-        /// Expands a line list to triangle strips.
-        /// </summary>
-        private void ExpandLineVertex(ref VertexPositionColorTexture vertex, bool isLineList)
-        {
-            var normal1 = new Vector3();
-            var normal2 = new Vector3();
-
-            var v1 = new VertexPositionColorTexture();
-            var v2 = new VertexPositionColorTexture();
-
-            v1.Position = v2.Position = vertex.Position;
-            v1.Color = v2.Color = vertex.Color;
-
-            var storeIndex = true;
-            if (lastLineVertex >= 0)
-            {
-                vertexData[lastLineVertex].Normal = vertexData[lastLineVertex + 1].Normal = vertex.Position;
-                vertexData[lastLineVertex].TextureCoordinate.X = 0;
-                vertexData[lastLineVertex + 1].TextureCoordinate.X = 1;
-
-                normal1 = normal2 = vertexData[lastLineVertex + 1].Position;
-                v1.TextureCoordinate.X = 1;
-                v2.TextureCoordinate.X = 0;
-
-                if (isLineList)
-                    storeIndex = false;
-            }
-
-            var last = AddVertexInternal(ref v1, ref normal1);
-            AddVertexInternal(ref v2, ref normal2);
-            lastLineVertex = storeIndex ? last : -1;
         }
 
         /// <summary>
@@ -293,30 +253,13 @@
         /// </summary>
         public void AddIndex(int index)
         {
-            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList)
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
+                currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
-                if (lastLineListIndex >= 0)
-                {
-                    AddIndexInternal(lastLineListIndex * 2);
-                    AddIndexInternal(lastLineListIndex * 2 + 1);
-                    AddIndexInternal(index * 2);
-
-                    AddIndexInternal(index * 2);
-                    AddIndexInternal(lastLineListIndex * 2 + 1);
-                    AddIndexInternal(index * 2 + 1);
-
-                    lastLineListIndex = -1;
-                }
-                else
-                {
-                    lastLineListIndex = index;
-                }
+                lineIndices.Add(index);
                 return;
             }
-            if (currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
-            {
-                throw new NotImplementedException();
-            }
+
             AddIndexInternal(index);
         }
 
@@ -366,23 +309,24 @@
         /// </summary>
         public void EndPrimitive()
         {
-            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList)
+            if (currentPrimitive.PrimitiveType == PrimitiveType.LineList ||
+                currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
             {
-                if (currentIndex - currentPrimitive.StartIndex <= 0)
-                {
-                    for (var index = 0; index < (currentVertex - currentPrimitive.StartVertex) / 2; ++index)
-                        AddIndex(index);
-                }
-                currentPrimitive.PrimitiveType = PrimitiveType.TriangleList;
-            }
-            else if (currentPrimitive.PrimitiveType == PrimitiveType.LineStrip)
-            {
+                ExpandLineVertices(currentPrimitive.PrimitiveType == PrimitiveType.LineList);
                 for (var index = 0; index < (currentVertex - currentPrimitive.StartVertex) / 2; ++index)
                 {
-                    AddIndexInternal(index * 2);
-                    AddIndexInternal(index * 2 + 1);
+                    if (index % 2 == 0)
+                    {
+                        AddIndexInternal(index * 2);
+                        AddIndexInternal(index * 2 + 1);
+                        AddIndexInternal(index * 2 + 2);
+
+                        AddIndexInternal(index * 2 + 2);
+                        AddIndexInternal(index * 2 + 1);
+                        AddIndexInternal(index * 2 + 3);
+                    }
                 }
-                currentPrimitive.PrimitiveType = PrimitiveType.TriangleStrip;
+                currentPrimitive.PrimitiveType = PrimitiveType.TriangleList;
             }
 
             hasPrimitiveBegin = false;
@@ -405,6 +349,82 @@
             batches.Add(currentPrimitive);
         }
 
+        /// <summary>
+        /// Copy the line vertices to the real vertex data buffer.
+        /// </summary>
+        private void ExpandLineVertices(bool isLineList)
+        {
+            if (lineIndices.Count > 0)
+            {
+                // Need create a new vertex even when the two index points
+                // to the same vertex. Because even if AB and BC shares 
+                // vertex B, the pointing direction is different when
+                // expanding B for line AB and BC.
+                if (!isLineList)
+                    throw new NotSupportedException("Line strip does not support indexing.");
+
+                for (var x = 0; x < lineIndices.Count; ++x)
+                {
+                    var xx = lineIndices[x];
+                    if (xx >= currentLineVertex)
+                    {
+                        throw new ArgumentOutOfRangeException(
+                            string.Format("Cannot find a vertex from index {0}", xx));
+                    }
+                    ExpandLineVertex(ref lineVertices[xx]);
+                }
+            }
+            else if (isLineList)
+            {
+                for (var x = 0; x < currentLineVertex; ++x)
+                    ExpandLineVertex(ref lineVertices[x]);
+            }
+            else
+            {
+                for (var x = 0; x < currentLineVertex - 1; ++x)
+                {
+                    ExpandLineVertex(ref lineVertices[x]);
+                    ExpandLineVertex(ref lineVertices[x + 1]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Expands a line list to triangle strips.
+        /// </summary>
+        private void ExpandLineVertex(ref VertexPositionColorTexture vertex)
+        {
+            var normal1 = new Vector3();
+            var normal2 = new Vector3();
+
+            var v1 = new VertexPositionColorTexture();
+            var v2 = new VertexPositionColorTexture();
+
+            v1.Position = v2.Position = vertex.Position;
+            v1.Color = v2.Color = vertex.Color;
+
+            var storeIndex = true;
+            if (lastLineVertex >= 0)
+            {
+                vertexData[lastLineVertex].Normal = vertexData[lastLineVertex + 1].Normal = vertex.Position;
+                vertexData[lastLineVertex].TextureCoordinate.X = 0;
+                vertexData[lastLineVertex + 1].TextureCoordinate.X = 1;
+
+                normal1 = normal2 = vertexData[lastLineVertex + 1].Position;
+                v1.TextureCoordinate.X = 1;
+                v2.TextureCoordinate.X = 0;
+
+                storeIndex = false;
+            }
+
+            var last = AddVertexInternal(ref v1, ref normal1);
+            AddVertexInternal(ref v2, ref normal2);
+            lastLineVertex = storeIndex ? last : -1;
+        }
+
+        /// <summary>
+        /// Determines if two batches can be merged into a single batch.
+        /// </summary>
         private static bool CanMerge(ref PrimitiveGroupEntry oldBatch, ref PrimitiveGroupEntry newBatch)
         {
             if (oldBatch.PrimitiveType != newBatch.PrimitiveType)
@@ -546,8 +566,7 @@
             Dispose(false);
         }
 
-        void IDrawableObject.BeginDraw(DrawingContext context) { }
-        void IDrawableObject.EndDraw(DrawingContext context) { }
+        void IDrawableObject.OnAddedToView(DrawingContext context) { }
     }
 
     struct PrimitiveGroupEntry

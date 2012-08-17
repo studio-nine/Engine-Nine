@@ -40,9 +40,26 @@ namespace Nine.Graphics.Materials
         }
         private float? specularPower;
 
-        public bool VertexColorEnabled { get; set; }
-        public bool LightingEnabled { get; set; }
-        public bool PreferPerPixelLighting { get; set; }
+        public bool VertexColorEnabled
+        {
+            get { return vertexColorEnabled; }
+            set { vertexColorEnabled = value; }
+        }
+        private bool vertexColorEnabled;
+
+        public bool LightingEnabled
+        {
+            get { return lightingEnabled; }
+            set { lightingEnabled = value;}
+        }
+        private bool lightingEnabled;
+
+        public bool PreferPerPixelLighting
+        {
+            get { return preferPerPixelLighting; }
+            set { preferPerPixelLighting = value; }
+        }
+        private bool preferPerPixelLighting;
 
         [TypeConverter(typeof(SamplerStateConverter))]
         public SamplerState SamplerState { get; set; }
@@ -76,7 +93,7 @@ namespace Nine.Graphics.Materials
             // guarantee that the current shader has all the correct global parameters, and
             // there's no need to set them again.
             var previousBasicMaterial = previousMaterial as BasicMaterial;
-            if (previousBasicMaterial == null)
+            if (previousBasicMaterial == null || previousBasicMaterial.lightingEnabled != lightingEnabled)
             {
                 // Update parameters that are global and shared between different instances.
                 // This includes view projection matrices and global directional lights.
@@ -112,9 +129,9 @@ namespace Nine.Graphics.Materials
 
             // Update shader parameters that has little or no overhead.
             effect.TextureEnabled = texture != null;
-            effect.LightingEnabled = LightingEnabled;
-            effect.PreferPerPixelLighting = PreferPerPixelLighting;
-            effect.VertexColorEnabled = VertexColorEnabled;
+            effect.LightingEnabled = lightingEnabled;
+            effect.PreferPerPixelLighting = preferPerPixelLighting;
+            effect.VertexColorEnabled = vertexColorEnabled;
             
             // Finally apply the shader.
             effect.CurrentTechnique.Passes[0].Apply();

@@ -328,7 +328,7 @@
         /// <summary>
         /// Draws this object with the specified material.
         /// </summary>
-        public void BeginDraw(DrawingContext context)
+        public void OnAddedToView(DrawingContext context)
         {
             InsideViewFrustum = true;
             materialForRendering = Material ?? 
@@ -402,8 +402,6 @@
         {
             Dispose(false);
         }
-
-        void IDrawableObject.EndDraw(DrawingContext context) { }
         #endregion
 
         #region ISupportInstancing

@@ -192,7 +192,7 @@ namespace Nine.Graphics
         /// <summary>
         /// Perform any updates before this object is drawed.
         /// </summary>
-        public void BeginDraw(DrawingContext context)
+        public void OnAddedToView(DrawingContext context)
         {
             model.insideViewFrustum = true;
             model.UpdateBoneTransforms();
@@ -279,11 +279,6 @@ namespace Nine.Graphics
                 return skinningEnabled;
             }
             return false;
-        }
-
-        void IDrawableObject.EndDraw(DrawingContext context) 
-        {
-
         }
         #endregion
     }

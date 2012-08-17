@@ -352,27 +352,31 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         private void UpdateBounds()
         {
-            var maxBounds = 1E6F;
-            var hasBoundable = false;
-            var bounds = new BoundingBox();
-            var queryBounds = new BoundingBox(Vector3.One * maxBounds, -Vector3.One * maxBounds);
-            if (boundsQuery == null)
-                boundsQuery = spatialQuery.CreateSpatialQuery<ISpatialQueryable>();
-            boundsQuery.FindAll(ref queryBounds, boundable =>
+            if (boundingBoxNeedsUpdate)
             {
-                if (hasBoundable)
+                var maxBounds = 1E6F;
+                var hasBoundable = false;                
+                var queryBounds = new BoundingBox(-Vector3.One * maxBounds, Vector3.One * maxBounds);
+                if (boundsQuery == null)
+                    boundsQuery = spatialQuery.CreateSpatialQuery<ISpatialQueryable>();
+                
+                boundingBox.Min = Vector3.Zero;
+                boundingBox.Max = Vector3.Zero;
+                boundsQuery.FindAll(ref queryBounds, boundable =>
                 {
-                    var childBounds = boundable.BoundingBox;
-                    BoundingBox.CreateMerged(ref bounds, ref childBounds, out bounds);
-                }
-                else
-                {
-                    bounds = boundable.BoundingBox;
-                    hasBoundable = true;
-                }
-            });
-
-            boundingBoxNeedsUpdate = false;
+                    if (hasBoundable)
+                    {
+                        var childBounds = boundable.BoundingBox;
+                        BoundingBox.CreateMerged(ref boundingBox, ref childBounds, out boundingBox);
+                    }
+                    else
+                    {
+                        boundingBox = boundable.BoundingBox;
+                        hasBoundable = true;
+                    }
+                });
+                boundingBoxNeedsUpdate = false;
+            }
         }
         
         /// <summary>
@@ -423,7 +427,7 @@ namespace Nine.Graphics.Drawing
 
                 // Notify each drawable when the frame begins
                 for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                    drawablesInViewFrustum[currentDrawable].BeginDraw(this);
+                    drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
 
                 UpdatePasses();
 
@@ -480,17 +484,10 @@ namespace Nine.Graphics.Drawing
 
                     if (overrideViewFrustum || overrideViewFrustumLastPass)
                     {
-                        // Notify drawables when view frustum has changed
-                        for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                            drawablesInViewFrustum[currentDrawable].EndDraw(this);
-
                         drawablesInViewFrustum.Clear();
                         BoundingFrustum frustum = matrices.ViewFrustum;
                         drawables.FindAll(frustum, drawablesInViewFrustum);
                         overrideViewFrustumLastPass = overrideViewFrustum;
-
-                        for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                            drawablesInViewFrustum[currentDrawable].EndDraw(this);
                     }
 
                     try
@@ -532,7 +529,7 @@ namespace Nine.Graphics.Drawing
 
                 // Notify each drawable when the frame begins
                 for (int currentDrawable = 0; currentDrawable < drawablesInViewFrustum.Count; currentDrawable++)
-                    drawablesInViewFrustum[currentDrawable].BeginDraw(this);
+                    drawablesInViewFrustum[currentDrawable].OnAddedToView(this);
             }
         }
 
@@ -617,7 +614,7 @@ namespace Nine.Graphics.Drawing
             {
                 debugDrawables = CreateSpatialQuery<IDebugDrawable>(drawable => drawable.Visible);
                 debugBounds = CreateSpatialQuery<ISpatialQueryable>(queryable => true);
-                debugPrimitive = new DynamicPrimitive(graphics);
+                debugPrimitive = new DynamicPrimitive(graphics) { DepthBias = 0.0002f };
                 debugDrawablesInViewFrustum = new FastList<IDebugDrawable>();
                 debugBoundsInViewFrustum = new FastList<ISpatialQueryable>();                
             }
@@ -625,6 +622,8 @@ namespace Nine.Graphics.Drawing
             BoundingFrustum viewFrustum = ViewFrustum;
             debugDrawables.FindAll(viewFrustum, debugDrawablesInViewFrustum);
             debugBounds.FindAll(viewFrustum, debugBoundsInViewFrustum);
+
+            debugPrimitive.AddBox(BoundingBox, null, Constants.SceneBoundsColor, 4);
 
             for (int i = 0; i < debugBoundsInViewFrustum.Count; ++i)
             {
@@ -636,6 +635,7 @@ namespace Nine.Graphics.Drawing
                 debugDrawablesInViewFrustum[i].Draw(this, debugPrimitive);
             }
 
+            graphics.DepthStencilState = DepthStencilState.Default;
             debugPrimitive.Draw(this, null);
             debugPrimitive.Clear();
             debugDrawablesInViewFrustum.Clear();

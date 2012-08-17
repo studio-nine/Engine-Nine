@@ -113,7 +113,11 @@
         /// <summary>
         /// Gets the axis aligned bounding box of this surface patch.
         /// </summary>
-        public BoundingBox BoundingBox { get; private set; }
+        public BoundingBox BoundingBox
+        {
+            get { surface.EnsureHeightmapUpToDate(); return boundingBox; }
+        }
+        private BoundingBox boundingBox;
 
         /// <summary>
         /// Occurs when the bounding box changed.
@@ -238,12 +242,8 @@
 
         internal void UpdatePosition()
         {
-            BoundingBox box;
-
-            box.Min = baseBounds.Min + surface.AbsolutePosition;
-            box.Max = baseBounds.Max + surface.AbsolutePosition;
-
-            BoundingBox = box;
+            boundingBox.Min = baseBounds.Min + surface.AbsolutePosition;
+            boundingBox.Max = baseBounds.Max + surface.AbsolutePosition;
             
             var offset = new Vector3();
             offset.X = X * heightmap.Step * segmentCount;
@@ -294,7 +294,7 @@
         /// <summary>
         /// Perform any updates before this object is drawed.
         /// </summary>
-        public void BeginDraw(DrawingContext context)
+        public void OnAddedToView(DrawingContext context)
         {
             materialForRendering = surface.Material ??
                 surface.MaterialLevels.UpdateLevelOfDetail(Vector3.Distance(context.EyePosition, Center));
@@ -313,8 +313,6 @@
             GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, VertexCount, StartIndex, PrimitiveCount);
             material.EndApply(context);
         }
-
-        void IDrawableObject.EndDraw(DrawingContext context) { }
         #endregion
 
         #region Dispose
