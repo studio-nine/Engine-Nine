@@ -99,5 +99,16 @@ namespace Nine.Physics
             if (entity != null)
                 oldSpace.Remove(Entity);
         }
+
+        /// <summary>
+        /// Teleport the body. Resets all the bodys Velocitys.
+        /// </summary>
+        /// <param name="position">Teleport To</param>
+        public void TeleportTo(Vector3 position)
+        {
+            Entity.Position = position;
+            Entity.LinearVelocity = Vector3.Zero;
+            Entity.AngularVelocity = Vector3.Zero;
+        }
     }
 }
