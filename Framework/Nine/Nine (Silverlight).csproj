@@ -55,9 +55,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="Microsoft.Xna.Framework.Content, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Content, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\References\Silverlight\Microsoft.Xna.Framework.Content.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework.Math, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Silverlight\Microsoft.Xna.Framework.Math.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
@@ -78,18 +81,19 @@
     </Compile>
     <Compile Include="AddHelper.cs" />
     <Compile Include="Animations\Animation.cs" />
+    <Compile Include="Animations\AnimationGroup.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\AnimationSequence.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
     <Compile Include="Animations\KeyframeAnimation.cs" />
-    <Compile Include="Animations\LayeredAnimation.cs" />
-    <Compile Include="Animations\SequentialAnimation.cs" />
     <Compile Include="Animations\TimelineAnimation.cs" />
     <Compile Include="Animations\TweenAnimation.cs" />
+    <Compile Include="Animations\TweenAnimations.cs" />
+    <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="BoundingBoxExtensions.cs" />
     <Compile Include="BoundingCircle.cs" />
     <Compile Include="BoundingRectangle.cs" />
-    <Compile Include="Component.cs" />
     <Compile Include="Components\GameServiceContainer.cs" />
     <Compile Include="Components\GameComponentCollectionExtensions.cs" />
     <Compile Include="Components\GameTime.cs" />
@@ -100,17 +104,27 @@
     <Compile Include="Components\IGameComponent.cs" />
     <Compile Include="Components\IUpdateable.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="ContentManagerExtensions.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
+    <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
+    <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
+    <Compile Include="Content\ContentProperties.cs" />
+    <Compile Include="AttachedPropertyStore.cs" />
+    <Compile Include="DependencyGraph.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="Input\IInputSource.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputComponent.cs" />
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\XnaInputSource.cs" />
-    <Compile Include="ObjectFactory.cs" />
+    <Compile Include="Object.cs" />
     <Compile Include="QuadTreeSceneManager.cs" />
-    <Compile Include="Serialization.cs" />
-    <Compile Include="TimeEventArgs.cs" />
+    <Compile Include="RayExtensions.cs" />
+    <Compile Include="Scene.cs" />
+    <Compile Include="SceneQuery.cs" />
+    <Compile Include="SpatialQueryExtensions.cs" />
+    <Compile Include="Transformable.cs" />
     <Compile Include="WeakReference.Silverlight.cs" />
     <Compile Include="Curves.cs" />
     <Compile Include="Extensions.cs" />
@@ -129,21 +143,19 @@
     <Compile Include="NotificationCollection.cs" />
     <Compile Include="Octree.cs" />
     <Compile Include="OctreeSceneManager.cs" />
-    <Compile Include="Pickable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyExpression.cs" />
     <Compile Include="QuadTree.cs" />
     <Compile Include="Range.cs" />
-    <Compile Include="SceneManager.cs" />
     <Compile Include="SpacePartitionTree.cs" />
     <Compile Include="SpatialQuery.cs" />
     <Compile Include="Strings.Designer.cs" />
     <Compile Include="Surface.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="UniformGrid.cs" />
-    <Compile Include="World.cs" />
-    <Compile Include="WorldObject.cs" />
-    <Compile Include="XamlAttributes.cs" />
+    <Compile Include="Xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Tools\TextTemplates\Nine.Content.Reader.tt">

@@ -63,7 +63,7 @@ namespace Nine.Graphics
         Material Material { get; }
 
         /// <summary>
-        /// Called every frame when this object is added to the current view frustum.
+        /// Called every frame when this object is added to the main view frustum.
         /// </summary>
         void OnAddedToView(DrawingContext context);
 

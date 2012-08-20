@@ -452,6 +452,7 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "Material", value.Material);
             WriteObject(output, value, "MaterialLevels", value.MaterialLevels);
             output.Write(value.Visible);
+            output.Write(value.AnimationCullingEnabled);
             output.Write(value.UseModelTextures);
             output.Write(value.MultiPassLightingEnabled);
             output.Write(value.MaxAffectingLights);

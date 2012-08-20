@@ -190,23 +190,12 @@ namespace Nine.Graphics
 
         #region Draw
         /// <summary>
-        /// Perform any updates before this object is drawed.
+        /// Perform any updates when this object has entered the main view frustum
         /// </summary>
         public void OnAddedToView(DrawingContext context)
         {
             model.insideViewFrustum = true;
             model.UpdateBoneTransforms();
-
-            // Manually do some optimization here.
-            if (model.isAbsoluteTransformDirty)
-            {
-                Matrix absoluteTransform = model.AbsoluteTransform;
-                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref absoluteTransform, out worldTransform);
-            }
-            else
-            {
-                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref model.absoluteTransform, out worldTransform);
-            }
 
             if ((materialForRendering = material) == null)
             {
@@ -235,6 +224,8 @@ namespace Nine.Graphics
                 ApplyTextures(material);
             ApplySkinTransform(material);
 
+            model.UpdateBoneTransforms();
+
             material.world = worldTransform;
             material.BeginApply(context);
 
@@ -256,6 +247,20 @@ namespace Nine.Graphics
             // aren't likely to be used by other object types, so don't restore them.
             if (applyTexture)
                 material.texture = null;
+        }
+
+        internal void UpdateTransform()
+        {
+            // Manually do some optimization here.
+            if (model.isAbsoluteTransformDirty)
+            {
+                Matrix absoluteTransform = model.AbsoluteTransform;
+                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref absoluteTransform, out worldTransform);
+            }
+            else
+            {
+                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref model.absoluteTransform, out worldTransform);
+            }
         }
 
         internal void ApplyTextures(Material material)

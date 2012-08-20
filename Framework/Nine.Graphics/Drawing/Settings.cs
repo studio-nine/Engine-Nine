@@ -9,7 +9,6 @@ namespace Nine.Graphics.Drawing
     using Keys = System.Windows.Input.Key;
 #endif
 
-    [Serializable]
     public class Settings
     {
         /// <summary>

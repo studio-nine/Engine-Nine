@@ -3,7 +3,6 @@ namespace Nine.Graphics.Materials
     using System.ComponentModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
-    using Nine.Graphics.Design;
     using Nine.Graphics.Drawing;
 
     [ContentSerializable]
@@ -49,7 +48,9 @@ namespace Nine.Graphics.Materials
 
         public TextureCube EnvironmentMap { get; set; }
 
-        [TypeConverter(typeof(SamplerStateConverter))]
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
+#endif
         public SamplerState SamplerState { get; set; }
         #endregion
 

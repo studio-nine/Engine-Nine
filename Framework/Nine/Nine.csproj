@@ -86,7 +86,6 @@
     <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="Content\ContentReflector.cs" />
     <Compile Include="AttachedPropertyChangedEventArgs.cs" />
     <Compile Include="Content\ContentProperties.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />

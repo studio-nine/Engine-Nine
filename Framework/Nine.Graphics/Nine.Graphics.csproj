@@ -176,7 +176,6 @@
     <Compile Include="Decal.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Surface.cs" />
-    <Compile Include="Services.cs" />
     <Compile Include="Components\ScreenshotCapturer.cs" />
     <Compile Include="Materials\CustomMaterial.cs" />
     <Compile Include="Materials\MaterialParts\DetailMaterialPart.cs" />

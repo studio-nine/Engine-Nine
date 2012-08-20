@@ -6,7 +6,7 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework;
 
     /// <summary>
-    /// Defines a list of materials that are sorted from lowest quanlity to highest quanlity.
+    /// Defines a list of materials that are sorted from lowest quality to highest quality.
     /// </summary>
     [ContentSerializable]
     [ContentProperty("MaterialLevels")]

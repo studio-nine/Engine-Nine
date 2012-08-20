@@ -1,23 +1,19 @@
-#region Copyright 2011 (c) Engine Nine
-//=============================================================================
-//
-//  Copyright 2011 (c) Engine Nine. All Rights Reserved.
-//
-//=============================================================================
-#endregion
-
-#region Using Directives
-using System;
-#endregion
-
 namespace System.Windows.Markup
 {
+#if !SILVERLIGHT
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ContentPropertyAttribute : Attribute
     {
         public ContentPropertyAttribute() { }
         public ContentPropertyAttribute(string name) { Name = name; }
         public string Name { get; private set; }
+    }
+#endif
+
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class DependsOnAttribute : Attribute
+    {
+        public DependsOnAttribute(string name) { }
     }
 
     [AttributeUsage(AttributeTargets.Class)]

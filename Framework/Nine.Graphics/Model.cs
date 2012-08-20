@@ -108,7 +108,7 @@ namespace Nine.Graphics
         /// Gets a value indicating whether model animations should only be updated when the model
         /// is visible and inside the view frustum.
         /// </summary>
-        public bool AnimationCullingEnabled { get; private set; }
+        public bool AnimationCullingEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets whether to use the default model diffuse texture, normal map, specular map, etc.
@@ -261,6 +261,7 @@ namespace Nine.Graphics
             UseModelTextures = true;
             MaxAffectingLights = 4;
             MaxReceivedShadows = 1;
+            AnimationCullingEnabled = true;
             GraphicsDevice = graphicsDevice;
             modelMeshes = new List<ModelMesh>();
             children = new List<object>();
@@ -350,7 +351,11 @@ namespace Nine.Graphics
         #region BoneTransform
         bool boneTransformNeedUpdate = true;
         
-        internal void UpdateBoneTransforms()
+        /// <summary>
+        /// Updates the bone transform and skin transform of this model.
+        /// Returns true if any of the bones changed.
+        /// </summary>
+        internal bool UpdateBoneTransforms()
         {
             if (source != null && boneTransformNeedUpdate)
             {
@@ -377,8 +382,13 @@ namespace Nine.Graphics
                     }
                 }
 
+                var count = modelMeshes.Count;
+                for (var i = 0; i < count; ++i)
+                    modelMeshes[i].UpdateTransform();
                 boneTransformNeedUpdate = false;
+                return true;
             }
+            return false;
         }
 
         internal Matrix[] SkinTransforms;
@@ -393,7 +403,7 @@ namespace Nine.Graphics
         public void Update(TimeSpan elapsedTime)
         {
             // Skip updating the animation when animation culling is enabled.
-            if (animations != null && !(AnimationCullingEnabled && !InsideViewFrustum))
+            if (animations != null && (!AnimationCullingEnabled || insideViewFrustum))
             {
                 // Turn off the animation when skeleton is shared
                 if ((IsSkinned && sharedSkeleton == null) || !IsSkinned)

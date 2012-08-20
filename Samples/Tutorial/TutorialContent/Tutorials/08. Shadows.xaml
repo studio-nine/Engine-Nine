@@ -30,7 +30,7 @@
         To enable self shadow, mark the model as receive shadow and choose a material that supports 
         shadow mapping. Adjust shadow bias to eliminate possible depth fight artifacts.
     -->
-    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-20, 0, 0" ReceiveShadow="True">
+    <Model Source="{ContentReference ../Models/Dude}" Transform.Position="-20, 0, 0" ReceiveShadow="True" AnimationCullingEnabled="False">
         <Model.Material>
             <MaterialGroup>
                 <SkinnedMaterialPart />

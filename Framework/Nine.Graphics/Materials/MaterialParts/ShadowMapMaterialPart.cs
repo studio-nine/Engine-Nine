@@ -23,17 +23,14 @@
 
         public int SampleCount
         {
-            get { return sampleCount; }
+            get { return sampleSize * sampleSize; }
             set
             {
-                if (value != sampleCount)
-                {
-                    sampleCount = value;
-                    NotifyShaderChanged();
-                }
+                sampleSize = Math.Max(1, (int)Math.Sqrt(value));
+                NotifyShaderChanged();
             }
         }
-        private int sampleCount = 1;
+        private int sampleSize = 1;
 
         public int Seed
         {
@@ -110,7 +107,7 @@
                 ShadowColor = this.ShadowColor,
                 ShadowMap = this.ShadowMap,
                 LightViewProjection = this.LightViewProjection,
-                sampleCount = this.sampleCount,
+                sampleSize = this.sampleSize,
             };
         }
 
@@ -124,18 +121,18 @@
         {
             if (usage != MaterialUsage.Default)
                 return null;
-            return GetShaderCode("ShadowMap").Replace("{$SAMPLECOUNT}", (sampleCount * sampleCount).ToString())
+            return GetShaderCode("ShadowMap").Replace("{$SAMPLECOUNT}", (sampleSize * sampleSize).ToString())
                                              .Replace("{$FILTERTAPS}", CreateFilterTaps());
         }
 
         private string CreateFilterTaps()
         {
             var taps = new StringBuilder();
-            var inv = 1.0 / sampleCount;
+            var inv = 1.0 / sampleSize;
             var random = new Random(seed);
-            for (int x = 0; x < sampleCount; ++x)
+            for (int x = 0; x < sampleSize; ++x)
             {
-                for (int y = 0; y < sampleCount; ++y)
+                for (int y = 0; y < sampleSize; ++y)
                 {
                     // Create a random filter disc base on
                     // http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter17.html

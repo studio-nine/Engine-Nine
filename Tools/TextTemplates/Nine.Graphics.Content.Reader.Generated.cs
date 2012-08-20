@@ -321,6 +321,7 @@ namespace Nine.Graphics
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
             existingInstance.MaterialLevels = input.ReadObject<Nine.Graphics.Materials.MaterialLevelOfDetail>();
             existingInstance.Visible = input.ReadBoolean();
+            existingInstance.AnimationCullingEnabled = input.ReadBoolean();
             existingInstance.UseModelTextures = input.ReadBoolean();
             existingInstance.MultiPassLightingEnabled = input.ReadBoolean();
             existingInstance.MaxAffectingLights = input.ReadInt32();

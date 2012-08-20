@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
-using Microsoft.Xna.Framework.Toolkit;
 
 namespace Microsoft.Xna.Framework.Graphics
 {

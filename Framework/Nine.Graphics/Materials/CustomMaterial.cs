@@ -7,7 +7,6 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
-    using Nine.Graphics.Design;
 
     #region CustomMaterial
     /// <summary>
@@ -53,7 +52,9 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Gets or sets the sampler state for this custom material.
         /// </summary>
-        [TypeConverter(typeof(SamplerStateConverter))]
+#if WINDOWS
+        [TypeConverter(typeof(Nine.Graphics.Design.SamplerStateConverter))]
+#endif
         public SamplerState SamplerState { get; set; }
 
         /// <summary>

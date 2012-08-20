@@ -19,6 +19,7 @@ namespace Test
 
             scene.Add(new Surface(graphics, 1, 256, 256, 32) { Material = shadowMaterial });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
+            //scene.Add(new FullScreenQuad(graphics) { Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });
             
             var size = 20;
             var step = 10;
@@ -31,7 +32,7 @@ namespace Test
                         CastShadow = true,
                         ReceiveShadow = true,
                         Material = shadowMaterial,
-                        Transform = Matrix.CreateScale(1, random.Next(5, 15), 1) * Matrix.CreateTranslation(28 + x * step, 0, 28 + z * step)
+                        Transform = Matrix.CreateScale(1, random.Next(5, 15), 1) * Matrix.CreateTranslation(28 + x * step, random.Next(-2, 2), 28 + z * step)
                     });
                 }
 

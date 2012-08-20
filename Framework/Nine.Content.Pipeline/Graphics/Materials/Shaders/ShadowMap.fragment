@@ -3,10 +3,17 @@ float3	ShadowColor = 0.5;
 float	DepthBias = 0.005f;
 float2  ShadowMapTexelSize;
 
-// Poison filter pseudo random filter positions for PCF
-float2 FilterTaps[{$SAMPLECOUNT}] =
+float3 Coef[32] =
 {
-{$FILTERTAPS}
+    {0,0,0}, {0,0,1}, {0,0,0}, {0,0,1},
+    {0,0,0}, {0,0,1}, {-1,1,0}, {0,0,1},
+    {0,0,0}, {0,0,1}, {0,0,0}, {0,0,1},
+    {1,1,-1}, {0,0,1}, {0,0,0}, {0,0,1},
+
+    {0,0,0}, {0,0,1}, {-1,-1,1}, {0,0,1},
+    {0,0,0}, {0,0,1}, {0,0,0}, {0,0,1},
+    {1,-1,0}, {0,0,1}, {0,0,0}, {0,0,1},
+    {0,0,0}, {0,0,1}, {0,0,0}, {0,0,1},
 };
 
 texture2D ShadowMap;
@@ -19,18 +26,27 @@ void VertexShader(float4 positionWorld, out float3 positionShadow)
 {
     float4 shadow = mul(positionWorld, LightViewProjection);
 
-    positionShadow.x   	=  shadow.x / shadow.w / 2.0f + 0.5f;
-    positionShadow.y   	= -shadow.y / shadow.w / 2.0f + 0.5f;
+    positionShadow.x   	=  shadow.x / shadow.w * 0.5f + 0.5f + 0.5f * ShadowMapTexelSize;
+    positionShadow.y   	= -shadow.y / shadow.w * 0.5f + 0.5f + 0.5f * ShadowMapTexelSize;
     positionShadow.z   	=  shadow.z / shadow.w;
 }
 
 void PixelShader(float3 positionShadow, out float3 shadow:COLOR0)
 {
-    float intensity = 0;
-    [unroll]
-    for (int i=0; i<{$SAMPLECOUNT}; i++)
-    {
-		intensity += saturate(positionShadow.z) > DepthBias + tex2D(ShadowMapSampler, positionShadow.xy + FilterTaps[i] * ShadowMapTexelSize).x ? 1.0f / {$SAMPLECOUNT} : 0;
-    }
+    float2 uv = positionShadow.xy;
+    float2 uvFrac = frac(uv / ShadowMapTexelSize);
+    float z = saturate(positionShadow.z) - DepthBias;
+    float t = ShadowMapTexelSize;
+
+    float index = 0;
+    index += z > tex2D(ShadowMapSampler, uv).x ? 1 : 0;
+    index += z > tex2D(ShadowMapSampler, uv + float2(-t, 0)).x ? 2 : 0;
+    index += z > tex2D(ShadowMapSampler, uv + float2(0, t)).x ? 4 : 0;
+    index += z > tex2D(ShadowMapSampler, uv + float2(t, 0)).x ? 8 : 0;
+    index += z > tex2D(ShadowMapSampler, uv + float2(0, -t)).x ? 16 : 0;
+
+    float3 c = Coef[index];
+    float intensity = uvFrac.x * c.x + uvFrac.y * c.y + c.z > 0 ? 1 : 0;
+
     shadow = lerp(1, ShadowColor, intensity);
 }

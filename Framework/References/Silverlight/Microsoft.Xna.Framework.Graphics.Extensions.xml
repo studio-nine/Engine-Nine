@@ -1,0 +1,819 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.Xna.Framework.Graphics.Extensions</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Xna.Framework.ColorExtensions">
+      <summary>Performs conversions of colors and vectors.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.ColorExtensions.FromVector3(Microsoft.Xna.Framework.Vector3)">
+      <summary>Creates a color from a <see cref="T:Microsoft.Xna.Framework.Vector3" />.</summary>
+      <returns>The created color.</returns>
+      <param name="value">The vector to create the color from.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.ColorExtensions.FromVector4(Microsoft.Xna.Framework.Vector4)">
+      <summary>Creates a color from a <see cref="T:Microsoft.Xna.Framework.Vector4" />.</summary>
+      <returns>The created color.</returns>
+      <param name="value">The vector to create the color from.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.ColorExtensions.ToVector3(Microsoft.Xna.Framework.Color)">
+      <summary>Converts the specified color into a <see cref="T:Microsoft.Xna.Framework.Vector3" />.</summary>
+      <returns>The converted vector.</returns>
+      <param name="color">The color to convert.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.ColorExtensions.ToVector4(Microsoft.Xna.Framework.Color)">
+      <summary>Converts the specified color into a <see cref="T:Microsoft.Xna.Framework.Vector4" />.</summary>
+      <returns>The converted vector.</returns>
+      <param name="color">The color to convert.</param>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.AlphaTestEffect">
+      <summary>Contains a configurable effect that supports alpha testing.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.#ctor(Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.AlphaTestEffect" /> class.</summary>
+      <param name="device">A graphics device</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.Alpha">
+      <summary>Gets or sets the material alpha which determines its transparency. Range is between 1 (fully opaque) and 0 (fully transparent).</summary>
+      <returns>Material's alpha value.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.AlphaFunction">
+      <summary>Gets or sets the compare function for alpha test. The default value is Greater.</summary>
+      <returns>The comparison function.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.DiffuseColor">
+      <summary>Gets or sets the diffuse color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The material's diffuse color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.FogColor">
+      <summary>Gets or sets the fog color, the range of color values is from 0 to 1.</summary>
+      <returns>The fog color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.FogEnabled">
+      <summary>Gets or sets the fog enable flag.</summary>
+      <returns>True to enable fog; otherwise false.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.FogEnd">
+      <summary>Gets or sets the maximum z value for fog.</summary>
+      <returns>The distance from the camera to stop adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.FogStart">
+      <summary>Gets or sets the minimum z value for fog.</summary>
+      <returns>The distance from the camera to begin adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.Projection">
+      <summary>Gets or sets the projection matrix.</summary>
+      <returns>A matrix that contains the projection transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.ReferenceAlpha">
+      <summary>Gets or sets the reference alpha value, the default value is 0.</summary>
+      <returns>The reference alpha value.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.Texture">
+      <summary>Gets or sets the current texture.</summary>
+      <returns>The current texture.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.VertexColorEnabled">
+      <summary>Gets or sets whether vertex color is enabled.</summary>
+      <returns>True to enable per-vertex color; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.View">
+      <summary>Gets or sets the view matrix.</summary>
+      <returns>A matrix that contains the view transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.AlphaTestEffect.World">
+      <summary>Gets or sets the world matrix.</summary>
+      <returns>A matrix that contains the world transform.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.BasicEffect">
+      <summary>Contains a basic rendering effect.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.BasicEffect.#ctor(Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.BasicEffect" /> class.</summary>
+      <param name="device">A device.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.Alpha">
+      <summary>Gets or sets the material alpha which determines its transparency. Range is between 1 (fully opaque) and 0 (fully transparent).</summary>
+      <returns>The alpha of this effect material.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.AmbientLightColor">
+      <summary>Gets or sets the ambient color for a light, the range of color values is from 0 to 1.</summary>
+      <returns>The ambient light color of this effect. Valid values are between 0 and 1.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.DiffuseColor">
+      <summary>Gets or sets the diffuse color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The diffuse color of this effect material. Valid values are between 0 and 1.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.DirectionalLight0">
+      <summary>Gets the first directional light for this effect.</summary>
+      <returns>A directional light for this effect.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.DirectionalLight1">
+      <summary>Gets the second directional light for this effect.</summary>
+      <returns>A directional light for this effect.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.DirectionalLight2">
+      <summary>Gets the third directional light for this effect.</summary>
+      <returns>A directional light for this effect.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.EmissiveColor">
+      <summary>Gets or sets the emissive color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The emissive color of the effect material.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.BasicEffect.EnableDefaultLighting">
+      <summary>Enables default lighting for this effect.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.FogColor">
+      <summary>Gets or sets the fog color, the range of color values is from 0 to 1.</summary>
+      <returns>A three-component color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.FogEnabled">
+      <summary>Enables fog.</summary>
+      <returns>True to enable fog; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.FogEnd">
+      <summary>Gets or sets the maximum z value for fog.</summary>
+      <returns>The distance from the camera to stop adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.FogStart">
+      <summary>Gets or sets the minimum z value for fog.</summary>
+      <returns>The distance from the camera to begin adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.LightingEnabled">
+      <summary>Enables lighting for this effect.</summary>
+      <returns>true to enable lighting; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.PreferPerPixelLighting">
+      <summary>Gets or sets a value indicating that per-pixel lighting should be used if it is available for the current adapter. Per-pixel lighting is available if a graphics adapter supports Pixel Shader Model 2.0.</summary>
+      <returns>true to use per-pixel lighting if it is available; false to disable per-pixel lighting. The default value is true. When <see cref="P:Microsoft.Xna.Framework.Graphics.BasicEffect.PreferPerPixelLighting" /> is true, if the graphics adapter does not support a minimum of Pixel Shader Model 2.0, <see cref="T:Microsoft.Xna.Framework.Graphics.BasicEffect" /> will automatically fall-back to per-vertex lighting. When <see cref="P:Microsoft.Xna.Framework.Graphics.BasicEffect.PreferPerPixelLighting" /> is false, per-vertex lighting is used regardless of whether per-pixel lighting is supported by the graphics adapter.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.Projection">
+      <summary>Gets or sets the projection matrix. Use this matrix to change how a 3D image is converted to a 2D image that is rendered to the computer screen.</summary>
+      <returns>The projection matrix.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.SpecularColor">
+      <summary>Gets or sets the specular color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The specular color of this effect material. Valid values are between 0 and 1.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.SpecularPower">
+      <summary>Gets or sets the specular power of this effect material.</summary>
+      <returns>The specular power of this effect material.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.Texture">
+      <summary>Gets or sets a texture to be applied by this effect.</summary>
+      <returns>Texture to be applied by this effect.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.TextureEnabled">
+      <summary>Enables textures for this effect.</summary>
+      <returns>true to enable textures; false otherwise. </returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.VertexColorEnabled">
+      <summary>Enables use vertex colors for this effect.</summary>
+      <returns>true to enable vertex colors; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.View">
+      <summary>Gets or sets the view matrix. Use this matrix to change the position and direction of the camera.</summary>
+      <returns>The view matrix.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.BasicEffect.World">
+      <summary>Gets or sets the world matrix. Use this matrix to change the position of the model, using world coordinates.</summary>
+      <returns>The world matrix.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.DirectionalLight">
+      <summary>Creates a <see cref="T:Microsoft.Xna.Framework.Graphics.DirectionalLight" /> object.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DirectionalLight.DiffuseColor">
+      <summary>Gets or sets the diffuse color of the light.</summary>
+      <returns>The diffuse color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DirectionalLight.Direction">
+      <summary>Gets or sets the light direction. This value must be a unit vector.</summary>
+      <returns>The light direction.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DirectionalLight.Enabled">
+      <summary>Gets or sets light enable flag.</summary>
+      <returns>The light enable flag.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DirectionalLight.SpecularColor">
+      <summary>Gets or sets the specular color of the light.</summary>
+      <returns>The specular color.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.DualTextureEffect">
+      <summary>Contains a configurable effect that supports two-layer multitexturing.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.DualTextureEffect.#ctor(Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.DualTextureEffect" /> class.</summary>
+      <param name="device">The graphics device.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.Alpha">
+      <summary>Gets or sets the material alpha which determines its transparency. Range is between 1 (fully opaque) and 0 (fully transparent).</summary>
+      <returns>The material alpha value.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.DiffuseColor">
+      <summary>Gets or sets the diffuse color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>Returns <see cref="T:Microsoft.Xna.Framework.Vector3" />.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.FogColor">
+      <summary>Gets or sets the fog color, the range of color values is from 0 to 1.</summary>
+      <returns>The fog color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.FogEnabled">
+      <summary>Gets or sets the fog enable flag.</summary>
+      <returns>The fog enable flag.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.FogEnd">
+      <summary>Gets or sets the maximum z value for fog.</summary>
+      <returns>The distance from the camera to stop adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.FogStart">
+      <summary>Gets or sets the minimum z value for fog.</summary>
+      <returns>The distance from the camera to begin adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.Projection">
+      <summary>Gets or sets the projection matrix.</summary>
+      <returns>A matrix that contains the projection transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.Texture">
+      <summary>Gets or sets the current base texture.</summary>
+      <returns>The base texture.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.Texture2">
+      <summary>Gets or sets the current overlay texture.</summary>
+      <returns>The overlay texture.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.VertexColorEnabled">
+      <summary>Gets or sets whether per-vertex color is enabled.</summary>
+      <returns>true to enable per-vertex color; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.View">
+      <summary>Gets or sets the view matrix.</summary>
+      <returns>A matrix that contains a view transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.DualTextureEffect.World">
+      <summary>Gets or sets the world matrix.</summary>
+      <returns>A matrix that contains a world transform.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.Effect">
+      <summary>Used to set and query effects, and to choose techniques.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.Effect.#ctor(Microsoft.Xna.Framework.Graphics.EffectTechnique[])">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.Effect" /> class.</summary>
+      <param name="techniques">The technique.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.Effect.CurrentTechnique">
+      <summary>Gets or sets the active technique.</summary>
+      <returns>The current technique.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.Effect.Dispose">
+      <summary>Immediately releases the unmanaged resources used by this object. </summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.Effect.Dispose(System.Boolean)">
+      <summary>Releases the unmanaged resources used by the <see cref="T:Microsoft.Xna.Framework.Graphics.Effect" /> and optionally releases the managed resources.</summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.Effect.Finalize">
+      <summary>Allows this object to attempt to free resources and perform other cleanup operations before garbage collection reclaims the object. </summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.Effect.IsDisposed">
+      <summary>Gets a value that indicates whether the object is disposed.</summary>
+      <returns>true if the object is disposed; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.Effect.Techniques">
+      <summary>Gets a collection of techniques that are defined for this effect.</summary>
+      <returns>A collection of techniques that are defined for this effect.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.EffectPass">
+      <summary>Contains rendering state for drawing with an effect; an effect can contain one or more passes.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EffectPass.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.EffectPass" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EffectPass.Apply">
+      <summary>Begins this pass.</summary>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.EffectPassCollection">
+      <summary>Manipulates a collection of <see cref="T:Microsoft.Xna.Framework.Graphics.EffectPass" /> objects.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EffectPassCollection.Count">
+      <summary>Gets the number of objects in the collection.</summary>
+      <returns>The number of objects in the collection.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EffectPassCollection.GetEnumerator">
+      <summary>Gets an enumerator that can iterate through the <see cref="T:Microsoft.Xna.Framework.Graphics.EffectPassCollection" />.</summary>
+      <returns>Enumerator for the <see cref="T:Microsoft.Xna.Framework.Graphics.EffectPassCollection" />. </returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EffectPassCollection.Item(System.Int32)">
+      <summary>Gets an element in the collection by using an index value.</summary>
+      <returns>The object at index index.</returns>
+      <param name="index">The index.</param>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.EffectTechnique">
+      <summary>Represents an effect technique.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EffectTechnique.#ctor(Microsoft.Xna.Framework.Graphics.EffectPass[])">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.EffectTechnique" /> class.</summary>
+      <param name="passes">The Passes.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EffectTechnique.Passes">
+      <summary>Gets the collection of <see cref="T:Microsoft.Xna.Framework.Graphics.EffectPass" /> objects this rendering technique requires.</summary>
+      <returns>The collection of <see cref="T:Microsoft.Xna.Framework.Graphics.EffectPass" /> objects this rendering technique requires.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.EffectTechniqueCollection">
+      <summary>Manipulates a collection of <see cref="T:Microsoft.Xna.Framework.Graphics.EffectTechnique" /> objects.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EffectTechniqueCollection.Count">
+      <summary>Gets the number of objects in the collection.</summary>
+      <returns>The number of objects in the collection.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EffectTechniqueCollection.GetEnumerator">
+      <summary>Gets an enumerator that can iterate through the <see cref="T:Microsoft.Xna.Framework.Graphics.EffectTechniqueCollection" />.</summary>
+      <returns>Enumerator of the <see cref="T:Microsoft.Xna.Framework.Graphics.EffectTechniqueCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EffectTechniqueCollection.Item(System.Int32)">
+      <summary>Gets a specific element in the collection by using an index value.</summary>
+      <returns>The object at index <paramref name="index" />. </returns>
+      <param name="index">The index valuw of the element in the collection.</param>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect">
+      <summary>Contains a configurable effect that supports environment mapping.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.#ctor(Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect" /> class.</summary>
+      <param name="device">The graphics device.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.Alpha">
+      <summary>Gets or sets the material alpha which determines its transparency. Range is between 1 (fully opaque) and 0 (fully transparent).</summary>
+      <returns>The alpha value.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.AmbientLightColor">
+      <summary>Gets or sets the ambient color for a light, the range of color values is from 0 to 1.</summary>
+      <returns>The ambient color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.DiffuseColor">
+      <summary>Gets or sets the diffuse color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The diffuse color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.DirectionalLight0">
+      <summary>Gets the first directional light.</summary>
+      <returns>The first light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.DirectionalLight1">
+      <summary>Gets the second directional light.</summary>
+      <returns>The second light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.DirectionalLight2">
+      <summary>Gets the third directional light.</summary>
+      <returns>The third light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.EmissiveColor">
+      <summary>Gets or sets the emissive color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The emissive color.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.EnableDefaultLighting">
+      <summary>Sets up standard key, fill, and back lighting for an <see cref="T:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect" />.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.EnvironmentMap">
+      <summary>Gets or sets the current environment map texture.</summary>
+      <returns>The environment map texture.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.EnvironmentMapAmount">
+      <summary>Gets or sets the amount of the environment map color (RGB) that will be blended over the base texture. The value ranges from 0 to 1; the default value is 1.</summary>
+      <returns>The RGB blend factor.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.EnvironmentMapSpecular">
+      <summary>Gets or sets the amount of the environment map alpha value that will be added to the base texture. The value ranges from 0 to 1; the default value is 0.</summary>
+      <returns>The environment map alpha value.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.FogColor">
+      <summary>Gets or sets the fog color, the range of color values is from 0 to 1.</summary>
+      <returns>The fog color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.FogEnabled">
+      <summary>Gets or sets the fog enable flag.</summary>
+      <returns>true to enable fog; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.FogEnd">
+      <summary>Gets or sets the maximum z value for fog.</summary>
+      <returns>The distance from the camera to stop adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.FogStart">
+      <summary>Gets or sets the minimum z value for fog.</summary>
+      <returns>The distance from the camera to begin adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.FresnelFactor">
+      <summary>Gets or sets the Fresnel factor used for the environment map blending.</summary>
+      <returns>The Fresnel factor.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.Microsoft#Xna#Framework#Graphics#IEffectLights#LightingEnabled">
+      <summary>Enables lighting in an <see cref="T:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect" />.</summary>
+      <returns>True to enable lighting; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.Projection">
+      <summary>Gets or sets the projection matrix.</summary>
+      <returns>A matrix that contains a projection transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.Texture">
+      <summary>Gets or sets the current texture.</summary>
+      <returns>The current texture.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.View">
+      <summary>Gets or sets the view matrix.</summary>
+      <returns>A matrix that contains a view transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.EnvironmentMapEffect.World">
+      <summary>Gets or sets the world matrix.</summary>
+      <returns>A matrix that contains a world transform.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.IEffectFog">
+      <summary>Gets or sets fog parameters for the current effect.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectFog.FogColor">
+      <summary>Gets or sets the fog color.</summary>
+      <returns>Three-component color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectFog.FogEnabled">
+      <summary>Enables or disables fog.</summary>
+      <returns>True to enable fog, false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectFog.FogEnd">
+      <summary>Gets or sets maximum z value for fog.</summary>
+      <returns>The distance from the camera to stop adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectFog.FogStart">
+      <summary>Gets or sets minimum z value for fog.</summary>
+      <returns>The distance from the camera to begin adding fog, in world space.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.IEffectLights">
+      <summary>Gets or sets lighting parameters for the current effect.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectLights.AmbientLightColor">
+      <summary>Gets or sets the ambient light color for the current effect.</summary>
+      <returns>Three-component color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectLights.DirectionalLight0">
+      <summary>Gets the first directional light for the current effect.</summary>
+      <returns>The directional light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectLights.DirectionalLight1">
+      <summary>Gets the second directional light for the current effect.</summary>
+      <returns>The directional light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectLights.DirectionalLight2">
+      <summary>Gets the third directional light for the current effect.</summary>
+      <returns>The directional light.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.IEffectLights.EnableDefaultLighting">
+      <summary>Enables default lighting for the current effect.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectLights.LightingEnabled">
+      <summary>Enables or disables lighting in an <see cref="T:Microsoft.Xna.Framework.Graphics.IEffectLights" />.</summary>
+      <returns>True to enable lighting; false otherwise.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.IEffectMatrices">
+      <summary>Gets or sets transformation matrix parameters for the current effect.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectMatrices.Projection">
+      <summary>Gets or sets the projection matrix in the current effect.</summary>
+      <returns>The projection transformation matrix.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectMatrices.View">
+      <summary>Gets or sets the view matrix in the current effect.</summary>
+      <returns>The view transformation matrix.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.IEffectMatrices.World">
+      <summary>Gets or sets the world matrix in the current effect.</summary>
+      <returns>The world transformation matrix.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.SkinnedEffect">
+      <summary>Contains a configurable effect for rendering skinned character models.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.SkinnedEffect.#ctor(Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.SkinnedEffect" /> class.</summary>
+      <param name="device">The graphics device.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.Alpha">
+      <summary>Gets or sets the material alpha which determines its transparency. Range is between 1 (fully opaque) and 0 (fully transparent).</summary>
+      <returns>The material alpha value.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.AmbientLightColor">
+      <summary>Gets or sets the ambient color for a light, the range of color values is from 0 to 1.</summary>
+      <returns>The ambient color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.DiffuseColor">
+      <summary>Gets or sets the diffuse color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The diffuse color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.DirectionalLight0">
+      <summary>Gets the first directional light.</summary>
+      <returns>The first light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.DirectionalLight1">
+      <summary>Gets the second directional light.</summary>
+      <returns>The second light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.DirectionalLight2">
+      <summary>Gets the third directional light.</summary>
+      <returns>The third light.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.EmissiveColor">
+      <summary>Gets or sets the emissive color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The emissive color.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.SkinnedEffect.EnableDefaultLighting">
+      <summary>Sets up standard key, fill, and back lighting for a <see cref="T:Microsoft.Xna.Framework.Graphics.SkinnedEffect" />.</summary>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.FogColor">
+      <summary>Gets or sets the fog color, the range of color values is from 0 to 1.</summary>
+      <returns>The fog color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.FogEnabled">
+      <summary>Gets or sets the fog enable flag.</summary>
+      <returns>True to enable fog; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.FogEnd">
+      <summary>Gets or sets the maximum z value for fog.</summary>
+      <returns>The distance from the camera to stop adding fog, in world space.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.FogStart">
+      <summary>Gets or sets the minimum z value for fog.</summary>
+      <returns>The distance from the camera to begin adding fog, in world space.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.SkinnedEffect.GetBoneTransforms(System.Int32)">
+      <summary>Gets the bone transform matrices for a <see cref="T:Microsoft.Xna.Framework.Graphics.SkinnedEffect" />.</summary>
+      <returns>An array of matrices which contain bone transforms.</returns>
+      <param name="count">The number of matrices.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.SkinnedEffect.MaxBones">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.MaxBones" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.MaxBones" /> dependency property.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.Microsoft#Xna#Framework#Graphics#IEffectLights#LightingEnabled">
+      <summary>Enables lighting in an <see cref="T:Microsoft.Xna.Framework.Graphics.SkinnedEffect" />.</summary>
+      <returns>True to enable lighting; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.PreferPerPixelLighting">
+      <summary>Gets or sets the per-pixel prefer lighting flag.</summary>
+      <returns>True to prefer per-pixel lighting; false otherwise.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.Projection">
+      <summary>Gets or sets the projection matrix.</summary>
+      <returns>A matrix that contains a projection transform.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.SkinnedEffect.SetBoneTransforms(Microsoft.Xna.Framework.Matrix[])">
+      <summary>Sets an array of bone transform matrices for a <see cref="T:Microsoft.Xna.Framework.Graphics.SkinnedEffect" />.</summary>
+      <param name="boneTransforms">An array of bone transformation matrices; the maximum number of bones (matrices) allowed is 72.</param>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.SpecularColor">
+      <summary>Gets or sets the specular color for a material, the range of color values is from 0 to 1.</summary>
+      <returns>The specular color.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.SpecularPower">
+      <summary>Gets or sets the material specular power.</summary>
+      <returns>The specular power.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.Texture">
+      <summary>Gets or sets the current texture.</summary>
+      <returns>The current texture.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.View">
+      <summary>Gets or sets the view matrix.</summary>
+      <returns>A matrix that contains a view transform.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.WeightsPerVertex">
+      <summary>Gets or sets the number of per-vertex skinning weights to evaluate, which is either 1, 2, or 4.</summary>
+      <returns>The number of per-vertex skinning weights.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.SkinnedEffect.World">
+      <summary>Gets or sets the world matrix.</summary>
+      <returns>A matrix that contains a world transform.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.VertexPositionColor">
+      <summary>Describes a custom vertex format structure that contains position and color information.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColor.#ctor(Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Color)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionColor" /> class.</summary>
+      <param name="position">The position of the vertex.</param>
+      <param name="color">The color of the vertex.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Color">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Color" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Color" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Equals(System.Object)">
+      <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+      <returns>true if the objects are the same; false otherwise.</returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionColor" />.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColor.GetHashCode">
+      <summary>Gets the hash code for this instance.</summary>
+      <returns>Hash code for this object.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Microsoft#Xna#Framework#Graphics#IVertexType#VertexDeclaration">
+      <summary>Gets a vertex declaration.</summary>
+      <returns>A vertex declaration.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColor.op_Equality(Microsoft.Xna.Framework.Graphics.VertexPositionColor,Microsoft.Xna.Framework.Graphics.VertexPositionColor)">
+      <summary>Compares two objects to determine whether they are the same.</summary>
+      <returns>true if the objects are the same; false otherwise.</returns>
+      <param name="left">Object to the left of the equality operator.</param>
+      <param name="right">Object to the right of the equality operator.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColor.op_Inequality(Microsoft.Xna.Framework.Graphics.VertexPositionColor,Microsoft.Xna.Framework.Graphics.VertexPositionColor)">
+      <summary>Compares two objects to determine whether they are different.</summary>
+      <returns>true if the objects are different; false otherwise. </returns>
+      <param name="left">Object to the left of the inequality operator.</param>
+      <param name="right">Object to the right of the inequality operator.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Position">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Position" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.Position" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColor.ToString">
+      <summary>Retrieves a string representation of this object.</summary>
+      <returns>String representation of this object.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColor.VertexDeclaration">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.VertexDeclaration" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColor.VertexDeclaration" /> dependency property.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture">
+      <summary>Describes a custom vertex format structure that contains position, color, and one set of texture coordinates.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.#ctor(Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture" /> class.</summary>
+      <param name="position">Position of the vertex.</param>
+      <param name="color">Color of the vertex.</param>
+      <param name="textureCoordinate">Texture coordinate of the vertex.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Color">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Color" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Color" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Equals(System.Object)">
+      <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+      <returns>true if the objects are the same; false otherwise.</returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture" />.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.GetHashCode">
+      <summary>Gets the hash code for this instance.</summary>
+      <returns>Hash code for this object.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Microsoft#Xna#Framework#Graphics#IVertexType#VertexDeclaration">
+      <summary>Gets a vertex declaration.</summary>
+      <returns>A vertex declaration.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.op_Equality(Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture,Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture)">
+      <summary>Compares two objects to determine whether they are the same.</summary>
+      <returns>true if the objects are the same; false otherwise. </returns>
+      <param name="left">Object to the left of the equality operator.</param>
+      <param name="right">Object to the right of the equality operator.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.op_Inequality(Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture,Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture)">
+      <summary>Compares two objects to determine whether they are the same.</summary>
+      <returns>true if the objects are different; false otherwise.</returns>
+      <param name="left">Object to the left of the inequality operator.</param>
+      <param name="right">Object to the right of the inequality operator.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Position">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Position" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.Position" /> dependency property.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.TextureCoordinate">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.TextureCoordinate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.TextureCoordinate" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.ToString">
+      <summary>Retrieves a string representation of this object.</summary>
+      <returns>String representation of this object.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.VertexDeclaration">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.VertexDeclaration" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionColorTexture.VertexDeclaration" /> dependency property.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture">
+      <summary>Describes a custom vertex format structure that contains position, normal data, and one set of texture coordinates.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.#ctor(Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector2)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture" /> class.</summary>
+      <param name="position">Position of the vertex.</param>
+      <param name="normal">The vertex normal.</param>
+      <param name="textureCoordinate">The texture coordinate.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Equals(System.Object)">
+      <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+      <returns>true if the objects are the same; false otherwise. </returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture" />.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.GetHashCode">
+      <summary>Gets the hash code for this instance.</summary>
+      <returns>Hash code for this object.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Microsoft#Xna#Framework#Graphics#IVertexType#VertexDeclaration">
+      <summary>Gets a vertex declaration.</summary>
+      <returns>A vertex declaration.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Normal">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Normal" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Normal" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.op_Equality(Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture,Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture)">
+      <summary>Compares two objects to determine whether they are the same.</summary>
+      <returns>true if the objects are the same; false otherwise. </returns>
+      <param name="left">Object to the left of the equality operator.</param>
+      <param name="right">Object to the right of the equality operator.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.op_Inequality(Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture,Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture)">
+      <summary>Compares two objects to determine whether they are different.</summary>
+      <returns>true if the objects are different; false otherwise. </returns>
+      <param name="left">Object to the left of the inequality operator.</param>
+      <param name="right">Object to the right of the inequality operator.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Position">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Position" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.Position" /> dependency property.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.TextureCoordinate">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.TextureCoordinate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.TextureCoordinate" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.ToString">
+      <summary>Retrieves a string representation of this object.</summary>
+      <returns>String representation of this object.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.VertexDeclaration">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.VertexDeclaration" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionNormalTexture.VertexDeclaration" /> dependency property.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.VertexPositionTexture">
+      <summary>Describes a custom vertex format structure that contains position and one set of texture coordinates.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.#ctor(Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Vector2)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionTexture" /> class.</summary>
+      <param name="position">Position of the vertex.</param>
+      <param name="textureCoordinate">Texture coordinate of the vertex.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.Equals(System.Object)">
+      <summary>Returns a value that indicates whether the current instance is equal to a specified object.</summary>
+      <returns>true if the objects are the same; false otherwise.</returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Xna.Framework.Graphics.VertexPositionTexture" />.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.GetHashCode">
+      <summary>Gets the hash code for this instance.</summary>
+      <returns>Hash code for this object.</returns>
+    </member>
+    <member name="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.Microsoft#Xna#Framework#Graphics#IVertexType#VertexDeclaration">
+      <summary>Gets a vertex declaration.</summary>
+      <returns>A vertex declaration.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.op_Equality(Microsoft.Xna.Framework.Graphics.VertexPositionTexture,Microsoft.Xna.Framework.Graphics.VertexPositionTexture)">
+      <summary>Compares two objects to determine whether they are the same.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="left">Object to the left of the equality operator.</param>
+      <param name="right">Object to the right of the equality operator.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.op_Inequality(Microsoft.Xna.Framework.Graphics.VertexPositionTexture,Microsoft.Xna.Framework.Graphics.VertexPositionTexture)">
+      <summary>Compares two objects to determine whether they are different.</summary>
+      <returns>true if the objects are different; false otherwise. </returns>
+      <param name="left">Object to the left of the inequality operator.</param>
+      <param name="right">Object to the right of the inequality operator.</param>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.Position">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.Position" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.Position" /> dependency property.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.TextureCoordinate">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.TextureCoordinate" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.TextureCoordinate" /> dependency property.</returns>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.ToString">
+      <summary>Retrieves a string representation of this object.</summary>
+      <returns>String representation of this object.</returns>
+    </member>
+    <member name="F:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.VertexDeclaration">
+      <summary>Identifies the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.VertexDeclaration" /> dependency property.</summary>
+      <returns>The identifier for the <see cref="P:Microsoft.Xna.Framework.Graphics.VertexPositionTexture.VertexDeclaration" /> dependency property.</returns>
+    </member>
+    <member name="T:Microsoft.Xna.Framework.Graphics.ViewportExtensions">
+      <summary>Defines the window dimensions of a render-target surface onto which a 3D volume projects.</summary>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.ViewportExtensions.Project(Microsoft.Xna.Framework.Graphics.Viewport,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+      <summary>Projects a 3D vector from object space into screen space.</summary>
+      <returns>The vector in screen space.</returns>
+      <param name="viewport">The viewport object</param>
+      <param name="source">The vector to project.</param>
+      <param name="projection">The projection matrix.</param>
+      <param name="view">The view matrix.</param>
+      <param name="world">The world matrix.</param>
+    </member>
+    <member name="M:Microsoft.Xna.Framework.Graphics.ViewportExtensions.Unproject(Microsoft.Xna.Framework.Graphics.Viewport,Microsoft.Xna.Framework.Vector3,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Matrix)">
+      <summary>Converts a screen space point into a corresponding point in world space.</summary>
+      <returns>The vector in the object space.</returns>
+      <param name="viewport">The viewport object</param>
+      <param name="source">The vector to project.</param>
+      <param name="projection">The projection matrix.</param>
+      <param name="view">The view matrix.</param>
+      <param name="world">The world matrix.</param>
+    </member>
+  </members>
+</doc>

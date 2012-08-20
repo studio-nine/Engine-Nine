@@ -566,17 +566,19 @@
         /// </summary>
         private void Update()
         {
-            var dt = Math.Min(1.0f / 30, elapsedSeconds);
-
-            lock (particles)
+            if (!isDisposed)
             {
-                UpdateEmitter(dt);
-                UpdateParticles(dt);
-                RetireParticles();
-
-                lock (primitive)
+                var dt = Math.Min(1.0f / 30, elapsedSeconds);
+                lock (particles)
                 {
-                    UpdateParticlePrimitive();
+                    UpdateEmitter(dt);
+                    UpdateParticles(dt);
+                    RetireParticles();
+
+                    lock (primitive)
+                    {
+                        UpdateParticlePrimitive();
+                    }
                 }
             }
         }
