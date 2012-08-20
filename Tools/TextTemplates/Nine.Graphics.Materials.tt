@@ -39,8 +39,6 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
 #if SILVERLIGHT
     using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
-    using Microsoft.Xna.Framework.Graphics;
-    using EffectParameterCollection = Microsoft.Xna.Framework.Graphics.SilverlightEffectParametersCollection;
 #endif
 
 <#
@@ -102,16 +100,17 @@ namespace Nine.Graphics.Materials
             : base(graphics, graphics.GraphicsProfile == GraphicsProfile.Reach ? ReachEffectCode :
                                                                                  HiDefEffectCode)
 #else
-            : base(graphics, ReachEffectCode)
+            : base(ReachEffectCode)
 #endif
         {
 <#
         if (compiler.HiDef)
         {
 #>
+#if !SILVERLIGHT
             if (GraphicsDevice.GraphicsProfile != GraphicsProfile.HiDef)
                 throw new InvalidOperationException("<#= className #> requires GraphicsProfile.HiDef.");
-
+#endif
 <#
         }
         foreach (var parameter in compiler.EffectParameters)

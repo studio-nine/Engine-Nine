@@ -91,6 +91,10 @@
             context.SetVertexBuffer(vertexBuffer, 0);
             GraphicsDevice.Indices = indexBuffer;
 
+#if SILVERLIGHT
+            vertexPassThrough2.BeginApply(context);
+            GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+#else
             // Apply a vertex pass through material in case the specified material does
             // not have a vertex shader.
             //
@@ -114,6 +118,7 @@
                 vertexPassThrough3.BeginApply(context);
                 GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
             }
+#endif
 
             material.EndApply(context);
         }

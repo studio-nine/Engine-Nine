@@ -55,6 +55,7 @@
             Passes.Add(luminanceChain = new LuminanceChain(graphics));
         }
 
+#if !SILVERLIGHT
         /// <summary>
         /// Gets the preferred surface format for the input texture.
         /// </summary>
@@ -62,6 +63,7 @@
         {
             get { return SurfaceFormat.HdrBlendable; }
         }
+#endif
 
         [ContentSerializerIgnore]
         public override IList<PostEffectChain> Passes

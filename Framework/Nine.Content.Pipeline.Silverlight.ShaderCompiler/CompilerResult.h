@@ -2,7 +2,7 @@
 
 using namespace System;
 
-namespace SilverlightShaderCompiler
+namespace SilverlightShaderCompiler 
 {
 	public ref class CompilerResult
 	{

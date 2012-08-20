@@ -17,9 +17,6 @@
             output.Write((byte)value.ColorDestinationBlend);
             output.Write((byte)value.ColorSourceBlend);
             output.Write((byte)value.ColorWriteChannels);
-            output.Write((byte)value.ColorWriteChannels1);
-            output.Write((byte)value.ColorWriteChannels2);
-            output.Write((byte)value.ColorWriteChannels3);
             output.Write(value.MultiSampleMask);
         }
 

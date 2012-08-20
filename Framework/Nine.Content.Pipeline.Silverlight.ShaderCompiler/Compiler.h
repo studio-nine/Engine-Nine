@@ -18,7 +18,7 @@ using namespace System::Text::RegularExpressions;
 using namespace msclr::interop; 
 
 
-namespace SilverlightShaderCompiler
+namespace SilverlightShaderCompiler 
 {
     public ref class Compiler
     {

@@ -7,7 +7,6 @@ namespace Nine.Animations
     /// This is usually used with <c>SequentialAnimation</c> to delay
     /// the playing of subsequent animations.
     /// </summary>
-    [ContentSerializable]
     public class DelayAnimation : Animation
     {
         /// <summary>

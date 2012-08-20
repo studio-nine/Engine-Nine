@@ -126,7 +126,6 @@ namespace Nine.Graphics.Drawing
                         samplerState = new SamplerState();
                         samplerState.AddressU = TextureAddressMode.Wrap;
                         samplerState.AddressV = TextureAddressMode.Wrap;
-                        samplerState.AddressW = TextureAddressMode.Wrap;
                         samplerState.Filter = textureFilter;
                         samplerState.MaxAnisotropy = maxAnisotropy;
                         samplerStateNeedsUpdate = false;

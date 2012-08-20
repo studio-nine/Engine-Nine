@@ -231,7 +231,11 @@ namespace Nine.Graphics
                 instanceTransformsNeedsUpdate = true;
             }
 
+#if SILVERLIGHT
+            if (instanceTransformsNeedsUpdate)
+#else
             if (instanceTransformsNeedsUpdate || instanceBuffer.IsContentLost)
+#endif
             {
                 instanceBuffer.SetData(instanceTransforms, 0, instanceTransforms.Length, SetDataOptions.Discard);
                 instanceTransformsNeedsUpdate = false;
@@ -303,6 +307,9 @@ namespace Nine.Graphics
         /// </summary>
         public void Draw(DrawingContext context, Material material)
         {
+#if SILVERLIGHT
+            throw new NotSupportedException();
+#else
             if (model.template == null)
                 return;
 
@@ -342,6 +349,7 @@ namespace Nine.Graphics
             material.BeginApply(context);
             model.GraphicsDevice.DrawInstancedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, startIndex, primitiveCount, model.instanceTransforms.Length);
             material.EndApply(context);
+#endif
         }
 
         void IDrawableObject.OnAddedToView(DrawingContext context) 

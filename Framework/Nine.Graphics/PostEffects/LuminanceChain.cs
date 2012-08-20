@@ -37,7 +37,11 @@
             size = Math.Max(1, UtilityExtensions.UpperPowerOfTwo(size));
 
             scale = 4;
+#if SILVERLIGHT
+            Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Color });
+#else
             Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Vector2 });
+#endif
             size = Math.Max(1, size / scale);
 
             while (size >= 1)

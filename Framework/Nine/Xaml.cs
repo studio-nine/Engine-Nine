@@ -10,7 +10,7 @@ namespace System.Windows.Markup
     }
 #endif
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class DependsOnAttribute : Attribute
     {
         public DependsOnAttribute(string name) { }

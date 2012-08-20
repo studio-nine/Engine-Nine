@@ -58,7 +58,7 @@ namespace Nine.Content.Pipeline.Animations
     {
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.SpriteAnimation value)
         {
-            WriteObject(output, value, "TextureList", value.TextureList);
+            WriteObject(output, value, "TextureList", value.Source);
             WriteObject(output, value, "TargetProperty", value.TargetProperty);
             output.WriteObject(value.BeginFrame);
             output.WriteObject(value.EndFrame);

@@ -25,7 +25,7 @@ namespace Nine.Graphics.Materials
             set 
             {
                 if (!string.IsNullOrEmpty(usages = value))
-                    shaderUsages = value.Split(',').Select(str => (MaterialUsage)Enum.Parse(typeof(MaterialUsage), str.Trim())).ToArray();
+                    shaderUsages = value.Split(',').Select(str => (MaterialUsage)Enum.Parse(typeof(MaterialUsage), str.Trim(), false)).ToArray();
             }
         }
         private string usages;

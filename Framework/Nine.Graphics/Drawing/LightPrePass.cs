@@ -110,7 +110,11 @@ namespace Nine.Graphics.Drawing
 
             this.GraphicsDevice = graphics;
             this.NormalBufferFormat = SurfaceFormat.Color;
+#if SILVERLIGHT
+            this.DepthBufferFormat = SurfaceFormat.Color;
+#else
             this.DepthBufferFormat = SurfaceFormat.Single;
+#endif
             this.LightBufferFormat = SurfaceFormat.Color;
             this.gBufferMaterial = new DepthAndNormalMaterial(graphics);
 
@@ -234,8 +238,8 @@ namespace Nine.Graphics.Drawing
             lightBuffer.Begin();
 
             // Setup render states for light rendering
-            // Clear specular intensity to 0
-            GraphicsDevice.Clear(new Color(new Vector4(context.AmbientLightColor, 0)));
+            // Clear specular intensity to 0            
+            GraphicsDevice.Clear(new Color(context.ambientLightColor.X, context.ambientLightColor.Y, context.ambientLightColor.Z, 0));
 
             // Set render state for lights
             GraphicsDevice.BlendState = lightBlendState;
@@ -308,7 +312,11 @@ namespace Nine.Graphics.Drawing
         private void CreateDepthNormalBuffers()
         {
             if (depthBuffer == null || depthBuffer.Format != DepthBufferFormat ||
+#if SILVERLIGHT
+                depthBuffer.IsDisposed ||
+#else
                 depthBuffer.IsDisposed || depthBuffer.IsContentLost ||
+#endif
                 depthBuffer.Width != GraphicsDevice.Viewport.Width ||
                 depthBuffer.Height != GraphicsDevice.Viewport.Height)
             {
@@ -321,7 +329,11 @@ namespace Nine.Graphics.Drawing
             }
 
             if (normalBuffer == null || normalBuffer.Format != NormalBufferFormat ||
+#if SILVERLIGHT
+                normalBuffer.IsDisposed ||
+#else
                 normalBuffer.IsDisposed || normalBuffer.IsContentLost ||
+#endif
                 normalBuffer.Width != GraphicsDevice.Viewport.Width ||
                 normalBuffer.Height != GraphicsDevice.Viewport.Height)
             {
@@ -337,7 +349,11 @@ namespace Nine.Graphics.Drawing
         private void CreateLightBuffer()
         {
             if (lightBuffer == null || lightBuffer.Format != LightBufferFormat ||
+#if SILVERLIGHT
+                lightBuffer.IsDisposed ||
+#else
                 lightBuffer.IsDisposed || lightBuffer.IsContentLost ||
+#endif
                 lightBuffer.Width != GraphicsDevice.Viewport.Width ||
                 lightBuffer.Height != GraphicsDevice.Viewport.Height)
             {

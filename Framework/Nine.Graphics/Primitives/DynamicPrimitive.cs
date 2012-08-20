@@ -505,7 +505,11 @@
             }
 
             var vertexBufferSize = vertexSegments[entry.Segment + 1] - vertexSegments[entry.Segment];
+#if SILVERLIGHT
+            if (vertexBuffer == null || vertexBuffer.VertexCount < vertexBufferSize)
+#else
             if (vertexBuffer == null || vertexBuffer.VertexCount < vertexBufferSize || vertexBuffer.IsContentLost)
+#endif
             {
                 if (vertexBuffer != null)
                     vertexBuffer.Dispose();
@@ -521,7 +525,11 @@
             if (entry.IndexCount > 0)
             {
                 var indexBufferSize = indexSegments[entry.Segment + 1] - indexSegments[entry.Segment];
+#if SILVERLIGHT
+                if (indexBuffer == null || indexBuffer.IndexCount < indexBufferSize)
+#else
                 if (indexBuffer == null || indexBuffer.IndexCount < indexBufferSize || indexBuffer.IsContentLost)
+#endif
                 {
                     if (indexBuffer != null)
                         indexBuffer.Dispose();

@@ -6,51 +6,28 @@
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
+    using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Nine.Graphics;
 
-    #region BoneAnimationClip
     /// <summary>
-    /// Defines a bone animation clip.
+    /// Represents a controller that manipulates the bone transforms of a model.
     /// </summary>
-    [ContentSerializable]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class BoneAnimationClip
+    public interface IBoneAnimationController
     {
         /// <summary>
-        /// Gets animation frame rate.
+        /// Tries to get the local transform and blend weight of the specified bone.
         /// </summary>
-        [ContentSerializer]
-        public int FramesPerSecond { get; internal set; }
-
-        /// <summary>
-        /// Gets total number of frames.
-        /// </summary>
-        [ContentSerializer]
-        public int TotalFrames { get; internal set; }
-
-        /// <summary>
-        /// Gets the preferred ending style.
-        /// </summary>
-        [ContentSerializer]
-        public KeyframeEnding PreferredEnding { get; internal set; }
-
-        /// <summary>
-        /// Gets all the channels in this animation clip.
-        /// The transform is ordered by bone index then ordered by frame number.
-        /// </summary>
-        [ContentSerializer]
-        public Matrix[][] Transforms { get; internal set; }
+        bool TryGetBoneTransform(int bone, out Matrix transform, out float blendWeight);
     }
-    #endregion
 
-    #region BoneAnimation
     /// <summary>
     /// Represents the animation of a skeleton that can be controlled by
     /// either the predefined animation clip or by custom controllers.
     /// </summary>
-    public class BoneAnimation : Animation, IBoneAnimationController
+    [ContentProperty("Controllers")]
+    public class BoneAnimation : Animation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BoneAnimation"/> class.
@@ -433,7 +410,6 @@
         public Matrix Transform;
     }
 
-    #region WeightedBoneAnimationController
     /// <summary>
     /// Represents a BoneAnimation that has a weight associated with each bone.
     /// </summary>
@@ -675,6 +651,4 @@
             return GetEnumerator();
         }
     }
-    #endregion
-    #endregion
 }

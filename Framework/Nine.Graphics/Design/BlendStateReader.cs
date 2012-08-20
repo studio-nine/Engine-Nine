@@ -18,11 +18,6 @@
             existingInstance.ColorDestinationBlend = (Blend)input.ReadByte();
             existingInstance.ColorSourceBlend = (Blend)input.ReadByte();
             existingInstance.ColorWriteChannels = (ColorWriteChannels)input.ReadByte();
-#if !SILVERLIGHT
-            existingInstance.ColorWriteChannels1 = (ColorWriteChannels)input.ReadByte();
-            existingInstance.ColorWriteChannels2 = (ColorWriteChannels)input.ReadByte();
-            existingInstance.ColorWriteChannels3 = (ColorWriteChannels)input.ReadByte();
-#endif
             existingInstance.MultiSampleMask = input.ReadInt32();
 
             if (BlendStateEquals(existingInstance, BlendState.Opaque))
@@ -46,9 +41,6 @@
                    a.ColorDestinationBlend == b.ColorDestinationBlend &&
                    a.ColorSourceBlend == b.ColorSourceBlend &&
                    a.ColorWriteChannels == b.ColorWriteChannels &&
-                   a.ColorWriteChannels1 == b.ColorWriteChannels1 &&
-                   a.ColorWriteChannels2 == b.ColorWriteChannels2 &&
-                   a.ColorWriteChannels3 == b.ColorWriteChannels3 &&
                    a.MultiSampleMask == b.MultiSampleMask;
         }
     }

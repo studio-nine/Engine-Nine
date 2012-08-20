@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
 
-namespace Nine.Content.Pipeline.Silverlight
+using System.Collections.Generic;
+
+namespace SilverlightContentPipeline
 {
-    class EffectTechniqueBinary
+    public class EffectTechniqueBinary
     {
         public string Name { get; set; }
         public List<EffectPassBinary> PassBinaries { get; private set; } 

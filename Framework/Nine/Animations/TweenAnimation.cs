@@ -52,7 +52,6 @@ namespace Nine.Animations
         /// <summary>
         /// Gets or sets where then tween ends.
         /// Specify null to control the end position using <c>By</c>.
-
         /// </summary>
         public T? To { get; set; }
 

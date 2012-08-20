@@ -7,6 +7,9 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
+#if SILVERLIGHT
+    using Effect = Microsoft.Xna.Framework.Graphics.SilverlightEffect;
+#endif
 
     /// <summary>
     /// Defines a material that is grouped by material fragments.
@@ -236,7 +239,11 @@ namespace Nine.Graphics.Materials
             
             base.InsertItem(index, item);
             item.MaterialGroup = materialGroup;
+#if WINDOWS
             if (!MaterialPart.IsContentBuild && materialGroup != null)
+#else
+            if (materialGroup != null)
+#endif
                 item.OnBind();
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
@@ -249,7 +256,11 @@ namespace Nine.Graphics.Materials
             
             base.SetItem(index, item);
             item.MaterialGroup = materialGroup;
+#if WINDOWS
             if (!MaterialPart.IsContentBuild && materialGroup != null)
+#else
+            if (materialGroup != null)
+#endif
                 item.OnBind();
             if (materialGroup != null)
                 materialGroup.OnShaderChanged();
@@ -290,7 +301,9 @@ namespace Nine.Graphics.Materials
 
             try
             {
+#if WINDOWS
                 MaterialPart.IsContentRead = true;
+#endif
                 count = input.ReadInt32();
                 for (Index = 0; Index < count; Index++)
                     existingInstance.MaterialParts.Add(input.ReadObject<MaterialPart>());
@@ -298,7 +311,9 @@ namespace Nine.Graphics.Materials
             finally
             {
                 Index = -1;
+#if WINDOWS
                 MaterialPart.IsContentRead = false;
+#endif
             }
             existingInstance.ExtendedMaterials = input.ReadObject<Dictionary<MaterialUsage, MaterialGroup>>();
             return existingInstance;

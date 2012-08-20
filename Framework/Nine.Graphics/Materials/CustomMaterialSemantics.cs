@@ -191,7 +191,11 @@ namespace Nine.Graphics.Materials
 
                 Entry entry = new Entry();
                 if ((entry.Parameter = parameter) != null)
+                {
+#if !SILVERLIGHT
                     entry.DefaultValue = parameter.GetValue();
+#endif
+                }
                 entry.Value = value;
                 values.Add(entry);
 
@@ -390,7 +394,11 @@ namespace Nine.Graphics.Materials
             // Materials and textures
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.alpha); } },
+#if SILVERLIGHT
+            new CustomEffectParameterBinding { Bind = (parameter, context, material) => { parameter.SetValue(material.texture); } },
+#else
             new CustomEffectParameterBinding { Bind = (parameter, context, material) => { if (parameter.ParameterType == EffectParameterType.Texture2D) parameter.SetValue(material.texture); } },
+#endif
         };
     }
     #endregion

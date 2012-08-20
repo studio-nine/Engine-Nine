@@ -76,6 +76,7 @@
     /// <summary>
     /// Defines a basic avatar animation controller from presets.
     /// </summary>
+    [NotContentSerializable]
     public class AvatarAnimationController : Animation, IBoneAnimationController, ITimelineAnimation
     {
         public bool Loop { get; set; }

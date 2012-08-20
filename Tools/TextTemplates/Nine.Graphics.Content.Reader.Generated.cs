@@ -41,7 +41,7 @@ namespace Nine.Animations
         {
             if (existingInstance == null)
                 existingInstance = new SpriteAnimation();
-            existingInstance.TextureList = input.ReadObject<Nine.Graphics.TextureList>();
+            existingInstance.Source = input.ReadObject<Nine.Graphics.TextureList>();
             existingInstance.TargetProperty = input.ReadObject<System.String>();
             existingInstance.BeginFrame = input.ReadObject<System.Nullable<System.Int32>>();
             existingInstance.EndFrame = input.ReadObject<System.Nullable<System.Int32>>();

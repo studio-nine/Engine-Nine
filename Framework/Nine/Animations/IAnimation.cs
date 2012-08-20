@@ -39,17 +39,17 @@ namespace Nine.Animations
         void Play();
 
         /// <summary>
-        /// Stops the animation and position.
+        /// Stops the animation at the current position.
         /// </summary>
         void Stop();
 
         /// <summary>
-        /// Pauses the animation.
+        /// Pauses the animation at the current position.
         /// </summary>
         void Pause();
 
         /// <summary>
-        /// Resumes the animation.
+        /// Resumes the animation from the current position.
         /// </summary>
         void Resume();
 

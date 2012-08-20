@@ -88,8 +88,10 @@ namespace Nine.Graphics.Materials
         /// </summary>
         protected EffectParameter GetParameter(string parameterName)
         {
+#if WINDOWS
             if (IsContentBuild)
                 return null;
+#endif
             return MaterialGroup.Effect.Parameters[string.Concat(parameterName, ParameterSuffix)];
         }
 
@@ -103,8 +105,10 @@ namespace Nine.Graphics.Materials
         {
             parameter = null;
             index = -1;
+#if WINDOWS
             if (IsContentBuild)
                 return;
+#endif
             var parameters = MaterialGroup.Effect.Parameters;
             parameter = parameters[string.Concat(parameterName, ParameterSuffix)];
             if (parameter == null)
@@ -129,12 +133,17 @@ namespace Nine.Graphics.Materials
 
         private bool IsTexture(EffectParameter parameter)
         {
+#if SILVERLIGHT
+            // We cannot get the parameter type in silverlight, so using naming convensions.
+            return parameter.Name.StartsWith("t_");
+#else
             return parameter.ParameterClass == EffectParameterClass.Object && (
                    parameter.ParameterType == EffectParameterType.Texture ||
                    parameter.ParameterType == EffectParameterType.Texture1D ||
                    parameter.ParameterType == EffectParameterType.Texture2D ||
                    parameter.ParameterType == EffectParameterType.Texture3D ||
                    parameter.ParameterType == EffectParameterType.TextureCube);
+#endif
         }
 
 #if !SILVERLIGHT
@@ -154,6 +163,7 @@ namespace Nine.Graphics.Materials
 #endif
 
         #region GetShaderCode
+#if WINDOWS
         static MaterialPart()
         {
             var pipelineAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "Nine.Content.Pipeline");
@@ -163,6 +173,11 @@ namespace Nine.Graphics.Materials
                 IsContentBuild = true;
             }
         }
+
+        private static System.Resources.ResourceManager ShaderResources;
+        internal static bool IsContentBuild = false;
+        internal static bool IsContentRead = false;
+#endif
 
         /// <summary>
         /// Gets the shader coder from the content pipeline assembly.
@@ -177,11 +192,6 @@ namespace Nine.Graphics.Materials
             throw new NotSupportedException();
 #endif
         }
-#if WINDOWS
-        private static System.Resources.ResourceManager ShaderResources;
-        internal static bool IsContentBuild = false;
-        internal static bool IsContentRead = false;
-#endif
         #endregion
     }
 }

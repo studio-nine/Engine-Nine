@@ -67,7 +67,6 @@
         {
             return a.AddressU == b.AddressU &&
                    a.AddressV == b.AddressV &&
-                   a.AddressW == b.AddressW &&
                    a.Filter == b.Filter &&
                    a.MaxAnisotropy == b.MaxAnisotropy &&
                    a.MaxMipLevel == b.MaxMipLevel &&

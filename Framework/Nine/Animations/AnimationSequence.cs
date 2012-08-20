@@ -10,7 +10,6 @@ namespace Nine.Animations
     /// Contains several animation clips that are played one after another.
     /// The animation completes when the last animation has finished playing.
     /// </summary>
-    [ContentSerializable]
     [ContentProperty("Animations")]
     public class AnimationSequence : Animation, IEnumerable<IAnimation>
     {

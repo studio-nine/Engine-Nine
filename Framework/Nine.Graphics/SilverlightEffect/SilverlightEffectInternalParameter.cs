@@ -1,4 +1,9 @@
-﻿using System;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+using System;
 using System.Diagnostics;
 
 namespace Microsoft.Xna.Framework.Graphics
@@ -11,27 +16,27 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         #region Instance Data
 
-        bool isDirty = true;
         readonly GraphicsDevice device;
+
+        bool isDirty = true;
         Vector4[] data;
+        int dataLength;
 
         #endregion
 
         #region Internal properties
 
-        internal int VertexShaderRegisterIndex { get; set; }
-        
-        internal int PixelShaderRegisterIndex { get; set; }
-        
-        internal int RegisterCount { get; set; }
+        internal int VertexShaderRegisterIndex;
 
-        internal Vector4[] Data
+        internal int PixelShaderRegisterIndex;
+
+        internal int RegisterCount;
+
+        internal void SetData(Vector4[] data, int length)
         {
-            set
-            {
-                isDirty = true;
-                data = value;
-            }
+            isDirty = true;
+            this.data = data;
+            this.dataLength = length;
         }
 
         #endregion
@@ -73,7 +78,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 return;
 
             // Compute correct register size
-            int size = Math.Min(RegisterCount, data.Length);
+            int size = Math.Min(RegisterCount, dataLength);
 
             // Transmit to device
             for (int index = 0; index < size; index++)

@@ -11,7 +11,6 @@ namespace Nine.Animations
     /// The animation completes when all of its containing animations
     /// had finished playing.
     /// </summary>
-    [ContentSerializable]
     [ContentProperty("Animations")]
     public class AnimationGroup : Animation, IEnumerable<IAnimation>
     {

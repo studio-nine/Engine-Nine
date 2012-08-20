@@ -1,8 +1,14 @@
-﻿using System;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Nine.Graphics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
@@ -30,7 +36,7 @@ namespace Microsoft.Xna.Framework.Graphics
         /// </summary>
         public string Name { get; private set; }
 
-        internal SilverlightEffect ParentEffect { get; set; }
+        internal SilverlightEffect ParentEffect;
 
         internal List<SilverlightEffectInternalParameter> Parameters
         {
@@ -50,10 +56,8 @@ namespace Microsoft.Xna.Framework.Graphics
             this.device = device;
             Name = name;
             // Shaders
-            if (vertexShaderCode != null)
-                vertexShader = VertexShader.FromStream(device, vertexShaderCode);
-            if (pixelShaderCode != null)
-                pixelShader = PixelShader.FromStream(device, pixelShaderCode);
+            vertexShader = VertexShader.FromStream(device, vertexShaderCode);
+            pixelShader = PixelShader.FromStream(device, pixelShaderCode);
 
             // Assembly codes
             Dictionary<string, SilverlightEffectInternalParameter> tempParameters = new Dictionary<string, SilverlightEffectInternalParameter>();
@@ -122,9 +126,6 @@ namespace Microsoft.Xna.Framework.Graphics
 
         void ExtractConstantsRegisters(Stream stream, bool isForPixelShader, Dictionary<string, SilverlightEffectInternalParameter> tempParameters)
         {
-            if (stream == null)
-                return;
-
             XmlReader xmlReader = XmlReader.Create(stream);
 
             while (xmlReader.ReadToFollowing("Constant"))

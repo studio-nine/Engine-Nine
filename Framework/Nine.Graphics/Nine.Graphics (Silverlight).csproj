@@ -65,9 +65,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Silverlight\Microsoft.Xna.Framework.Math.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Toolkit">
-      <HintPath>..\References\Silverlight\Microsoft.Xna.Framework.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -194,6 +191,8 @@
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="ModelMesh.cs" />
     <Compile Include="ModelSkeleton.cs" />
+    <Compile Include="ParticleEffects\ConcurrentQueue.cs" />
+    <Compile Include="ParticleEffects\ObjectPool.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
@@ -235,6 +234,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SceneExtensions.cs" />
     <Compile Include="ShadowMap.cs" />
+    <Compile Include="SilverlightEffect\SilverlightEffect.cs" />
+    <Compile Include="SilverlightEffect\SilverlightEffectInternalParameter.cs" />
+    <Compile Include="SilverlightEffect\SilverlightEffectParameter.cs" />
+    <Compile Include="SilverlightEffect\SilverlightEffectParametersCollection.cs" />
+    <Compile Include="SilverlightEffect\SilverlightEffectPass.cs" />
+    <Compile Include="SilverlightEffect\SilverlightEffectReader.cs" />
+    <Compile Include="SilverlightEffect\States\SilverlightEffectBlendState.cs" />
+    <Compile Include="SilverlightEffect\States\SilverlightEffectDepthStencilState.cs" />
+    <Compile Include="SilverlightEffect\States\SilverlightEffectRasterizerState.cs" />
+    <Compile Include="SilverlightEffect\States\SilverlightEffectSamplerState.cs" />
+    <Compile Include="SilverlightEffect\States\SilverlightEffectState.cs" />
     <Compile Include="SkyBox.cs" />
     <Compile Include="SpotLight.cs" />
     <Compile Include="Sprite.cs" />

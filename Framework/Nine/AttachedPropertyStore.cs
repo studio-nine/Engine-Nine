@@ -52,4 +52,59 @@ namespace System.Xaml
         void SetProperty(AttachableMemberIdentifier attachableMemberIdentifier, object value);
         bool TryGetProperty(AttachableMemberIdentifier attachableMemberIdentifier, out object value);
     }
+
+    public class AttachablePropertyServices
+    {
+        public static void CopyPropertiesTo(object instance, KeyValuePair<AttachableMemberIdentifier, object>[] array, int index)
+        {
+            var store = instance as IAttachedPropertyStore;
+            if (store != null)
+                store.CopyPropertiesTo(array, index);
+        }
+        
+        public static int GetAttachedPropertyCount(object instance)
+        {
+            var store = instance as IAttachedPropertyStore;
+            if (store != null)
+                return store.PropertyCount;
+            return 0;
+        }
+        
+        public static bool RemoveProperty(object instance, AttachableMemberIdentifier name)
+        {
+            var store = instance as IAttachedPropertyStore;
+            if (store != null)
+                return store.RemoveProperty(name);
+            return false;
+        }
+        
+        public static void SetProperty(object instance, AttachableMemberIdentifier name, object value)
+        {
+            var store = instance as IAttachedPropertyStore;
+            if (store != null)
+                store.SetProperty(name, value);
+        }
+        
+        public static bool TryGetProperty(object instance, AttachableMemberIdentifier name, out object value)
+        {
+            var store = instance as IAttachedPropertyStore;
+            if (store != null)
+                return store.TryGetProperty(name, out value);
+            value = null;
+            return false;
+        }
+        
+        public static bool TryGetProperty<T>(object instance, AttachableMemberIdentifier name, out T value)
+        {
+            object obj;
+            var store = instance as IAttachedPropertyStore;
+            if (store != null && store.TryGetProperty(name, out obj) && obj is T)
+            {
+                value = (T)obj;
+                return true;
+            }
+            value = default(T);
+            return false;
+        }
+    }
 }

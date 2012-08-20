@@ -1,10 +1,15 @@
-﻿using System;
+// (c) Copyright Microsoft Corporation.
+// This source is subject to the Microsoft Public License (Ms-PL).
+// Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
+// All other rights reserved.
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Nine.Content.Pipeline.Silverlight
+namespace SilverlightContentPipeline
 {
-    class EffectPass
+    public class EffectPass
     {
         string _sourceCode;
         readonly Dictionary<string, string> renderStates = new Dictionary<string, string>();
@@ -40,9 +45,6 @@ namespace Nine.Content.Pipeline.Silverlight
         /// </summary>
         private void ExtractRenderStates()
         {
-            // FIXME:
-            return;
-
             Regex regex = new Regex("(?<name>.*?)=(?<value>.*?);");
 
             foreach (Match match in regex.Matches(SourceCode))
@@ -50,10 +52,13 @@ namespace Nine.Content.Pipeline.Silverlight
                 RenderStates.Add(match.Groups["name"].Value.Trim().ToLower(), match.Groups["value"].Value.Trim());
             }
 
-            string vertexShaderLine;
-            string pixelShaderLine;
-            RenderStates.TryGetValue("vertexshader", out vertexShaderLine);
-            RenderStates.TryGetValue("pixelshader", out pixelShaderLine);
+            if (!RenderStates.ContainsKey("vertexshader"))
+                ExceptionHelper.RaiseException(String.Format("Invalid effect file. Unable to find vertex shader in pass \"{0}\"", Name));
+            if (!RenderStates.ContainsKey("pixelshader"))
+                ExceptionHelper.RaiseException(String.Format("Invalid effect file. Unable to find pixel shader in pass \"{0}\"", Name));
+
+            string vertexShaderLine = RenderStates["vertexshader"];
+            string pixelShaderLine = RenderStates["pixelshader"];
 
             VertexShaderEntryPoint = ExtractEntryPoint(vertexShaderLine);
             RenderStates.Remove("vertexshader");
@@ -67,9 +72,6 @@ namespace Nine.Content.Pipeline.Silverlight
         /// </summary>
         string ExtractEntryPoint(string codeLine)
         {
-            if (string.IsNullOrEmpty(codeLine))
-                return null;
-
             Regex regex = new Regex(@".*\s(?<entryPoint>.*?)\(\)", RegexOptions.IgnoreCase);
             Match match = regex.Match(codeLine);
 

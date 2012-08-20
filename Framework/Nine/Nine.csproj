@@ -83,6 +83,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Nine.Content.Reader.tt</DependentUpon>
     </Compile>
+    <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\TweenAnimations.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="Container.cs" />

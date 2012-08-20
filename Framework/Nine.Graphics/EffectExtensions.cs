@@ -189,24 +189,10 @@ namespace Nine.Graphics
         {
             if (value is Texture)
                 parameter.SetValue((Texture)value);
-            else if (value is string)
-                parameter.SetValue((string)value);
             else if (value is float)
                 parameter.SetValue((float)value);
             else if (value is float[])
                 parameter.SetValue((float[])value);
-            else if (value is int)
-                parameter.SetValue((int)value);
-            else if (value is int[])
-                parameter.SetValue((int[])value);
-            else if (value is bool)
-                parameter.SetValue((bool)value);
-            else if (value is bool[])
-                parameter.SetValue((bool[])value);
-            else if (value is Quaternion)
-                parameter.SetValue((Quaternion)value);
-            else if (value is Quaternion[])
-                parameter.SetValue((Quaternion[])value);
             else if (value is Matrix)
                 parameter.SetValue((Matrix)value);
             else if (value is Matrix[])
@@ -229,6 +215,7 @@ namespace Nine.Graphics
         #endregion
 
         #region GetValue
+#if !SILVERLIGHT
         public static object GetValue(this EffectParameter parameter)
         {
             if (parameter.ParameterClass == EffectParameterClass.Object)
@@ -260,6 +247,7 @@ namespace Nine.Graphics
 
             throw new NotSupportedException();
         }
+#endif
         #endregion
     }
 }

@@ -67,7 +67,11 @@
 
                 // Disable the adoption effect when we don't have a valid last frame texture
                 // or when the adoption effect has been suspended for several frames.
+#if SILVERLIGHT
+                if (lastFrame == null || lastFrame.IsDisposed)
+#else
                 if (lastFrame == null || lastFrame.IsDisposed || lastFrame.IsContentLost)
+#endif
                 {
                     CopyToScreen(context, drawables);
                 }
