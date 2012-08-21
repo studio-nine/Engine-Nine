@@ -63,9 +63,19 @@ namespace Nine
         /// <summary>
         /// Initializes a new instance of the <see cref="Scene"/> class.
         /// </summary>
-        public Scene() : this(null)
+        public Scene() : this((ISceneManager<ISpatialQueryable>)null)
         {
 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Scene"/> class.
+        /// </summary>
+        public Scene(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+            this.defaultSceneManager = new OctreeSceneManager();
+            this.sceneManagers = new List<ISceneManager<ISpatialQueryable>>();
+            this.sceneManagers.Add(this.defaultSceneManager);
         }
 
         /// <summary>

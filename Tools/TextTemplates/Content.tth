@@ -49,13 +49,14 @@
                 TypeMapping.Add("Microsoft.Xna.Framework.Curve", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Curve>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.BlendState", "Microsoft.Xna.Framework.Graphics.BlendState");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.SamplerState", "Microsoft.Xna.Framework.Graphics.SamplerState");
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.SpriteFont", "Microsoft.Xna.Framework.Graphics.SpriteFont");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture1D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture1DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture2D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture2DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture3D", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.Texture3DContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.TextureCube", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureCubeContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Texture", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Graphics.TextureContent>");
                 TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Model", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.ModelContent>");
-                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");                
+                TypeMapping.Add("Microsoft.Xna.Framework.Graphics.Effect", "Nine.Content.Pipeline.ContentReference<Microsoft.Xna.Framework.Content.Pipeline.Processors.CompiledEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ParticleEffects.ParticleEffectCollection", "System.Collections.Generic.List<Nine.Content.Pipeline.Graphics.ParticleEffects.ParticleEffectContent>");
                 TypeMapping.Add("Nine.Graphics.ScreenEffects.ScreenEffect", "Nine.Content.Pipeline.ContentReference<Nine.Content.Pipeline.Graphics.ScreenEffects.ScreenEffectContent>");
@@ -498,6 +499,12 @@
         {
             return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public,
                                        null, new Type[0], null) != null;
+        }
+
+        bool HasDefaultServiceProviderConstructor(Type type)
+        {
+            return type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, 
+                                       null, new Type[] { typeof(IServiceProvider) }, null) != null;
         }
 
         bool HasDefaultGraphicsDeviceConstructor(Type type)

@@ -4,13 +4,11 @@ namespace Nine
     using System.ComponentModel;
     using System.Reflection;
     using Microsoft.Xna.Framework.Content;
-
-
+    
     /// <summary>
     /// Contains extension methods for ContentManager.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public static class ContentManagerExtensions
+    static class ContentManagerExtensions
     {
         static Type[] ReadAssetParameterTypes = new Type[] { typeof(string), typeof(Action<IDisposable>) };
 
@@ -19,13 +17,13 @@ namespace Nine
         /// </summary>
         public static T Create<T>(this ContentManager content, string assetName)
         {
-            if (content is ContentFactory)
+            if (content is ContentLoader)
             {
-                return ((ContentFactory)content).CreateInternal<T>(assetName);
+                return ((ContentLoader)content).CreateInternal<T>(assetName);
             }
 
 #if WINDOWS_PHONE
-            throw new NotSupportedException("ContentManager.Create only works for ObjectFactoryContentManager");
+            throw new NotSupportedException("ContentManager.Create only works for ContentFactory");
 #else
             // Hack into ReadAsset using reflection.
 
@@ -44,13 +42,16 @@ namespace Nine
     }
 
     /// <summary>
-    /// Defines a content manager that can create a new instance for the same asset name.
+    /// Defines a content loader that supports the infrastructure of the loading system.
     /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class ContentFactory : ContentManager
+    public class ContentLoader : ContentManager
     {
-        public ContentFactory(IServiceProvider services) : base(services) { }
-        public ContentFactory(ContentManager innerContent) : base(innerContent.ServiceProvider) 
+        public ContentLoader(IServiceProvider services) : base(services) 
+        {
+            Group.EnsureDefaultServiceProvider(this);
+        }
+
+        public ContentLoader(ContentManager innerContent) : this(innerContent.ServiceProvider) 
         {
             RootDirectory = innerContent.RootDirectory;
         }

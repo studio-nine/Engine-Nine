@@ -12,8 +12,6 @@
     /// Represents a full screen quad.
     /// </summary>
     [ContentSerializable]
-    [RuntimeNameProperty("Name")]
-    [DictionaryKeyProperty("Name")]
     [ContentProperty("Material")]
     public class FullScreenQuad : Nine.Object, IDrawableObject
     {
@@ -37,7 +35,6 @@
         /// </summary>
         private VertexBuffer vertexBuffer;
         private IndexBuffer indexBuffer;
-        private static Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>> SharedBuffers;
 
         /// <summary>
         /// Always use this pass through material as the vertex shader when drawing full screen quads.
@@ -57,31 +54,7 @@
             GraphicsDevice = graphics;
             vertexPassThrough2 = new VertexPassThrough2Material(graphics);
 
-            KeyValuePair<VertexBuffer, IndexBuffer> sharedBuffer;     
-                   
-            if (SharedBuffers == null)
-                SharedBuffers = new Dictionary<GraphicsDevice, KeyValuePair<VertexBuffer, IndexBuffer>>();
-
-            if (!SharedBuffers.TryGetValue(graphics, out sharedBuffer))
-            {
-                sharedBuffer = new KeyValuePair<VertexBuffer, IndexBuffer>(
-                    new VertexBuffer(graphics, typeof(VertexPositionTexture), 4, BufferUsage.WriteOnly)
-                  , new IndexBuffer(graphics, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly));
-
-                sharedBuffer.Key.SetData(new[] 
-                {
-                    new VertexPositionTexture() { Position = new Vector3(-1, 1, 0), TextureCoordinate = new Vector2(0, 0) },
-                    new VertexPositionTexture() { Position = new Vector3(1, 1, 0), TextureCoordinate = new Vector2(1, 0) },
-                    new VertexPositionTexture() { Position = new Vector3(1, -1, 0), TextureCoordinate = new Vector2(1, 1) },
-                    new VertexPositionTexture() { Position = new Vector3(-1, -1, 0), TextureCoordinate = new Vector2(0, 1) },
-                });
-
-                sharedBuffer.Value.SetData<ushort>(new ushort[] { 0, 1, 2, 0, 2, 3 });
-                SharedBuffers.Add(graphics, sharedBuffer);
-            }
-
-            vertexBuffer = sharedBuffer.Key;
-            indexBuffer = sharedBuffer.Value;
+            Sprite.GetSpriteBuffers(graphics, out vertexBuffer, out indexBuffer);
         }
 
         public void Draw(DrawingContext context, Material material)

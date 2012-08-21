@@ -273,16 +273,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Content\ParticleEffects\Fireworks.xaml">
-      <Link>Fireworks.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <Name>Fireworks</Name>
-      <Importer>XamlImporter</Importer>
-      <Processor>DefaultContentProcessor</Processor>
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Tutorials\10. Post Processing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -370,13 +360,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\08. Shadows.xaml">
+    <None Include="Tutorials\08. Shadows.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>08. Shadows</Name>
       <SubType>Designer</SubType>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Tutorials\14. Sprites.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Name>14. Sprites</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

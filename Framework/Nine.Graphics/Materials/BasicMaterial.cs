@@ -16,21 +16,21 @@ namespace Nine.Graphics.Materials
             get { return diffuseColor.HasValue ? diffuseColor.Value : Constants.DiffuseColor; }
             set { diffuseColor = (value == Constants.DiffuseColor ? (Vector3?)null : value); }
         }
-        private Vector3? diffuseColor;
+        internal Vector3? diffuseColor;
 
         public Vector3 EmissiveColor
         {
             get { return emissiveColor.HasValue ? emissiveColor.Value : Constants.EmissiveColor; }
             set { emissiveColor = (value == Constants.EmissiveColor ? (Vector3?)null : value); }
         }
-        private Vector3? emissiveColor;
+        internal Vector3? emissiveColor;
 
         public Vector3 SpecularColor
         {
             get { return specularColor.HasValue ? specularColor.Value : Constants.SpecularColor; }
             set { specularColor = (value == Constants.SpecularColor ? (Vector3?)null : value); }
         }
-        private Vector3? specularColor;
+        internal Vector3? specularColor;
         
         public float SpecularPower
         {

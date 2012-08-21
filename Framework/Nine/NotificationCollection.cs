@@ -15,7 +15,8 @@ namespace Nine
     [EditorBrowsable(EditorBrowsableState.Never)]
     class NotificationCollection<T> : IList<T>, IList, INotifyCollectionChanged<T>
     {
-        private List<T> elements = null;
+        internal List<T> Elements = null;
+
         private List<T> copy = null;
         private bool isDirty = true;
 
@@ -50,7 +51,7 @@ namespace Nine
         {
             if (!EnableManipulationWhenEnumerating)
             {
-                return new NotificationCollectionEnumerator<T>() { List = elements ?? Empty, CurrentIndex = -1 };
+                return new NotificationCollectionEnumerator<T>() { List = Elements ?? Empty, CurrentIndex = -1 };
             }
 
             // Copy a new list while iterating it
@@ -61,9 +62,9 @@ namespace Nine
                 else
                     copy.Clear();
 
-                if (elements != null)
+                if (Elements != null)
                 {
-                    foreach (T e in elements)
+                    foreach (T e in Elements)
                         copy.Add(e);
                 }
 
@@ -90,11 +91,11 @@ namespace Nine
         /// </summary>
         public void Add(T value)
         {
-            if (elements == null)
-                elements = new List<T>();
+            if (Elements == null)
+                Elements = new List<T>();
 
             isDirty = true;
-            elements.Add(value);
+            Elements.Add(value);
 
             OnAdded(value);
         }
@@ -113,15 +114,15 @@ namespace Nine
         /// </summary>
         public bool Remove(T value)
         {
-            if (elements == null)
+            if (Elements == null)
                 return false;
 
             isDirty = true;
-            int index = elements.IndexOf(value);
+            int index = Elements.IndexOf(value);
             if (index < 0)
                 return false;
 
-            elements.RemoveAt(index);
+            Elements.RemoveAt(index);
 
             OnRemoved(value);
 
@@ -133,15 +134,15 @@ namespace Nine
         /// </summary>
         public void Clear()
         {
-            if (elements != null)
+            if (Elements != null)
             {
                 isDirty = true;
-                List<T> temp = elements;
-                elements = null;
+                List<T> temp = Elements;
+                Elements = null;
 
-                if (elements != null)
-                    for (int i = 0; i < elements.Count; ++i)
-                        OnRemoved(elements[i]);
+                if (Elements != null)
+                    for (int i = 0; i < Elements.Count; ++i)
+                        OnRemoved(Elements[i]);
 
                 temp.Clear();
             }
@@ -160,7 +161,7 @@ namespace Nine
         /// </summary>
         public int Count
         {
-            get { return elements != null ? elements.Count : 0; }
+            get { return Elements != null ? Elements.Count : 0; }
         }
 
         /// <summary>
@@ -168,7 +169,7 @@ namespace Nine
         /// </summary>
         public bool Contains(T item)
         {
-            return elements != null ? elements.Contains(item) : false;
+            return Elements != null ? Elements.Contains(item) : false;
         }
 
         /// <summary>
@@ -176,8 +177,8 @@ namespace Nine
         /// </summary>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (elements != null)
-                elements.CopyTo(array, arrayIndex);
+            if (Elements != null)
+                Elements.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Nine
         /// </summary>
         public int IndexOf(T item)
         {
-            return elements != null ?  elements.IndexOf(item) : -1;
+            return Elements != null ?  Elements.IndexOf(item) : -1;
         }
 
         /// <summary>
@@ -193,11 +194,11 @@ namespace Nine
         /// </summary>
         public void Insert(int index, T item)
         {
-            if (elements == null)
-                elements = new List<T>();
+            if (Elements == null)
+                Elements = new List<T>();
 
             isDirty = true;
-            elements.Insert(index, item);
+            Elements.Insert(index, item);
 
             OnAdded(item);
         }
@@ -207,11 +208,11 @@ namespace Nine
         /// </summary>
         public void RemoveAt(int index)
         {
-            if (elements != null)
+            if (Elements != null)
             {
                 isDirty = true;
-                T e = elements[index];
-                elements.RemoveAt(index);
+                T e = Elements[index];
+                Elements.RemoveAt(index);
 
                 OnRemoved(e);
             }
@@ -222,20 +223,20 @@ namespace Nine
         /// </summary>
         public int RemoveAll(Predicate<T> match)
         {
-            if (elements == null)
+            if (Elements == null)
                 return 0;
 
             isDirty = true;
 
             int count = 0;
 
-            for (int i = 0; i < elements.Count; ++i)
+            for (int i = 0; i < Elements.Count; ++i)
             {
-                if (match(elements[i]))
+                if (match(Elements[i]))
                 {
-                    T e = elements[i];
+                    T e = Elements[i];
 
-                    elements.RemoveAt(i);
+                    Elements.RemoveAt(i);
 
                     OnRemoved(e);
 
@@ -254,17 +255,17 @@ namespace Nine
         {
             get 
             {
-                return elements != null ? elements[index] : default(T); 
+                return Elements != null ? Elements[index] : default(T); 
             }
             
             set
             {
-                if (elements == null)
-                    elements = new List<T>();
+                if (Elements == null)
+                    Elements = new List<T>();
 
-                T oldValue = elements[index];
+                T oldValue = Elements[index];
                 OnRemoved(oldValue);
-                elements[index] = value;
+                Elements[index] = value;
                 isDirty = true;
                 OnAdded(value);
             }
@@ -335,8 +336,8 @@ namespace Nine
 
         void ICollection.CopyTo(Array array, int index)
         {
-            if (elements != null)
-                ((IList)elements).CopyTo(array, index);
+            if (Elements != null)
+                ((IList)Elements).CopyTo(array, index);
         }
 
         bool ICollection.IsSynchronized

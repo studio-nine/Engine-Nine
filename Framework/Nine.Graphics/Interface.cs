@@ -1,11 +1,13 @@
 namespace Nine.Graphics
 {
-    using System.Collections.ObjectModel;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
     using Nine.Graphics.Primitives;
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Defines an interface for objects that can be added to or removed 

@@ -108,7 +108,10 @@
     <Compile Include="Animations\SpriteAnimation.cs" />
     <Compile Include="Components\FrameRate.cs" />
     <Compile Include="Components\GameConsole.cs" />
+    <Compile Include="TextSprite.cs" />
+    <Compile Include="Drawing\SpritePass.cs" />
     <Compile Include="FastList.cs" />
+    <Compile Include="Materials\SpriteMaterial.cs" />
     <Compile Include="Materials\ThickLineMaterial.cs" />
     <Compile Include="ModelAttachment.cs" />
     <Compile Include="Sprite.cs" />
@@ -315,6 +318,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\ThickLine.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Sprite.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

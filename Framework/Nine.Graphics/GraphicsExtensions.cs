@@ -203,7 +203,6 @@
             direction.Normalize();
 
             // and then create a new ray using nearPoint as the source.
-
             return new Ray(nearPoint, direction);
         }
 

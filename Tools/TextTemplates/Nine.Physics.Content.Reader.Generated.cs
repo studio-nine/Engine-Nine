@@ -20,6 +20,7 @@ namespace Nine.Physics
     {
         protected override Nine.Physics.RigidBody Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.RigidBody existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new RigidBody();
             existingInstance.Collider = input.ReadObject<Nine.Physics.Colliders.Collider>();
@@ -42,6 +43,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.BoxCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.BoxCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new BoxCollider();
             existingInstance.Size = input.ReadVector3();
@@ -66,6 +68,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.CapsuleCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.CapsuleCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CapsuleCollider();
             existingInstance.Height = input.ReadSingle();
@@ -91,6 +94,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.CompoundCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.CompoundCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CompoundCollider();
             {
@@ -119,6 +123,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.ConeCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.ConeCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ConeCollider();
             existingInstance.Height = input.ReadSingle();
@@ -144,6 +149,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.CylinderCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.CylinderCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new CylinderCollider();
             existingInstance.Height = input.ReadSingle();
@@ -169,6 +175,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.ModelCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.ModelCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new ModelCollider();
             existingInstance.Source = input.ReadObject<Microsoft.Xna.Framework.Graphics.Model>();
@@ -194,6 +201,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.SphereCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.SphereCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new SphereCollider();
             existingInstance.Radius = input.ReadSingle();
@@ -218,6 +226,7 @@ namespace Nine.Physics.Colliders
     {
         protected override Nine.Physics.Colliders.TerrainCollider Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Physics.Colliders.TerrainCollider existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
             if (existingInstance == null)
                 existingInstance = new TerrainCollider();
             existingInstance.Heightmap = input.ReadObject<Nine.Graphics.Heightmap>();

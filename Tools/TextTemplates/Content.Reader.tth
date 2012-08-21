@@ -50,6 +50,7 @@ namespace <#= namespaceGroup.Key #>
     {
         protected override <#= classFullName #> Read(Microsoft.Xna.Framework.Content.ContentReader input, <#= classFullName #> existingInstance)
         {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
 <#
     if (HasDefaultGraphicsDeviceConstructor(type))
     {
@@ -64,6 +65,13 @@ namespace <#= namespaceGroup.Key #>
 #endif
                 existingInstance = new <#= className #>(graphicsDevice);
             }
+<#
+    }
+    else if (HasDefaultServiceProviderConstructor(type))
+    {
+#>
+            if (existingInstance == null)
+                existingInstance = new <#= className #>(input.ContentManager.ServiceProvider);
 <#
     }
     else if (HasDefaultConstructor(type))

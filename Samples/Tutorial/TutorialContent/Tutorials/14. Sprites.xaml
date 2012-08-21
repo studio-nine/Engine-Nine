@@ -1,0 +1,8 @@
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml">
+    
+    <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
+    <Sprite Texture="{ContentReference ../Textures/checker}" Position="10,0" />
+
+    <TextSprite Text="Press any key to continue..." Font="{ContentReference ../Consolas}" />
+    
+</Scene>

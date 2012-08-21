@@ -166,4 +166,15 @@ namespace Nine
         /// <returns>Distance to the start of the ray.</returns>
         float? Intersects(Ray ray);
     }
+
+    /// <summary>
+    /// Interface for creating new types of objects.
+    /// </summary>
+    public interface IObjectFactory
+    {
+        /// <summary>
+        /// Creates a new instance of the object using the specified service provider.
+        /// </summary>
+        object CreateInstance(IServiceProvider serviceProvider);
+    }
 }

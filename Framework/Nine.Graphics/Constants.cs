@@ -22,6 +22,8 @@ namespace Nine.Graphics
         public const float MiddleLineWidth = 2;
         public const float LargeLineWidth = 4;
 
+        public const int SpritePassOrder = 100;
+
         public readonly static Vector3 DiffuseColor = Vector3.One;
         public readonly static Vector4 DiffuseColor4 = Vector4.One;
         public readonly static Vector3 EmissiveColor = Vector3.Zero;
