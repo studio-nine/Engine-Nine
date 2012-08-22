@@ -237,16 +237,7 @@ namespace Nine.Graphics.Materials
         /// Applies all the shader parameters before drawing any primitives.
         /// </summary>
         protected abstract void OnEndApply(DrawingContext context);
-
-        /// <summary>
-        /// Creates a copy of this material.
-        /// </summary>
-        public virtual Material Clone() 
-        {
-            // TODO:
-            return null; 
-        }
-
+        
         /// <summary>
         /// Applies lights to the target effect from the drawing context.
         /// </summary>

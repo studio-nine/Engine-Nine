@@ -8,10 +8,10 @@ namespace Nine.Graphics.Cameras
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.
     /// </summary>
-    [ContentSerializable]
     public class Camera : Transformable, ICamera
     {
         #region View
+        private bool viewMatrixNeedsUpdate;
         private Matrix view = Matrix.Identity;
 
         /// <summary>
@@ -19,7 +19,15 @@ namespace Nine.Graphics.Cameras
         /// </summary>
         public Matrix View
         {
-            get { return view; }
+            get 
+            {
+                if (viewMatrixNeedsUpdate)
+                {
+                    view = Matrix.Invert(AbsoluteTransform);
+                    viewMatrixNeedsUpdate = false;
+                }
+                return view; 
+            }
         }
 
         /// <summary>
@@ -27,7 +35,7 @@ namespace Nine.Graphics.Cameras
         /// </summary>
         protected override void OnTransformChanged()
         {
-            view = Matrix.Invert(AbsoluteTransform);
+            viewMatrixNeedsUpdate = true;
         }
         #endregion
 
@@ -147,11 +155,9 @@ namespace Nine.Graphics.Cameras
         public GraphicsDevice GraphicsDevice { get; private set; }
         #endregion
 
-        #region Constructor
+        #region Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="Camera"/> class.
-        /// If a valid graphics device is specified, the camera will automatically adjust 
-        /// its aspect ratio based on the default viewport settings of the graphics device.
         /// </summary>
         public Camera(GraphicsDevice graphics)
         {

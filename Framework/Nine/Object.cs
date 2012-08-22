@@ -23,12 +23,7 @@ namespace Nine
             get { return name; }
             set { name = value; }
         }
-        internal string name = "";
-
-        /// <summary>
-        /// Gets or sets any user data.
-        /// </summary>
-        public object Tag { get; set; }
+        internal string name = string.Empty;
         #endregion
 
         #region IAttachedPropertyStore

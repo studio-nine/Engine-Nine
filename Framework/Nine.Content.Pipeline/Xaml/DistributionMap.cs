@@ -31,6 +31,21 @@
         public int Seed { get; set; }
 
         /// <summary>
+        /// Gets or sets whether rotation will be randomized.
+        /// </summary>
+        public bool RandomizeRotation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the randomized upper and lower bounds of vertical scaling.
+        /// </summary>
+        public Range<float> VerticalScale { get; set; }
+
+        /// <summary>
+        /// Gets or sets the randomized upper and lower bounds of horizontal scaling.
+        /// </summary>
+        public Range<float> HorizontalScale { get; set; }
+
+        /// <summary>
         /// Gets or sets the distribution texture.
         /// </summary>
         public ExternalReference<Texture2DContent> Texture { get; set; }
@@ -48,6 +63,8 @@
             Density = 5;
             Step = 1;
             Seed = 198749;
+            VerticalScale = 1;
+            HorizontalScale = 1;
         }
 
         private void Apply(InstancedModel model)
@@ -77,7 +94,17 @@
                         var xx = random.NextDouble();
                         var zz = random.NextDouble();
 
-                        Matrix transform = Matrix.Identity;
+                        Matrix transform = new Matrix();
+                        transform.M11 = transform.M33 = HorizontalScale.Min + (float)random.NextDouble() * (HorizontalScale.Max - HorizontalScale.Min);
+                        transform.M22 = VerticalScale.Min + (float)random.NextDouble() * (VerticalScale.Max - VerticalScale.Min);
+                        transform.M44 = 1;
+
+                        if (RandomizeRotation)
+                        {
+                            Matrix rotation;
+                            Matrix.CreateRotationY((float)random.NextDouble() * MathHelper.Pi * 2, out rotation);
+                            Matrix.Multiply(ref transform, ref rotation, out transform);
+                        }
 
                         transform.M41 = (x * Step) + (float)(xx * Step);
                         transform.M43 = (z * Step) + (float)(zz * Step);

@@ -12,11 +12,22 @@ namespace Nine.Graphics.Drawing
     public class DrawingPass : Pass
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the drawable list will be 
-        /// sorted based on material before they are rendered.
-        /// The default value is to sort the drawables.
+        /// Gets or sets a value indicating whether the background will be cleared to the background color
+        /// specified in settings. The default value is false.
         /// </summary>
-        public bool SortEnabled { get; set; }
+        public bool ClearBackground { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the drawable list will be sorted based on material before 
+        /// they are rendered. The default value is false.
+        /// </summary>
+        public bool MaterialSortEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether transparent objects will be sorted base on their distance
+        /// to the camera. The default value is false.
+        /// </summary>
+        public bool TransparencySortEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the dominant material used for this drawing pass. If this
@@ -36,7 +47,7 @@ namespace Nine.Graphics.Drawing
         /// with this specified material usage to draw each object.
         /// </summary>
         public MaterialUsage MaterialUsage { get; set; }
-        
+
         private DrawingQueue opaque = new DrawingQueue();
         private DrawingQueue opaqueTwoSided = new DrawingQueue();
 
@@ -48,7 +59,8 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public DrawingPass()
         {
-            this.SortEnabled = false;
+            this.MaterialSortEnabled = false;
+            this.TransparencySortEnabled = false;
         }
 
         /// <summary>
@@ -59,6 +71,9 @@ namespace Nine.Graphics.Drawing
         /// </param>
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
+            if (ClearBackground)
+                context.graphics.Clear(context.settings.BackgroundColor);
+
             var count = drawables.Count;
             if (count <= 0)
                 return;
@@ -102,12 +117,22 @@ namespace Nine.Graphics.Drawing
                     }
                 }
 
-                if (SortEnabled)
+                if (MaterialSortEnabled)
                 {
-                    opaque.Sort();
-                    opaqueTwoSided.Sort();
-                    transparent.Sort();
-                    transparentTwoSided.Sort();
+                    opaque.SortByMaterial();
+                    opaqueTwoSided.SortByMaterial();
+                    
+                    if (!TransparencySortEnabled)
+                    {
+                        transparent.SortByMaterial();
+                        transparentTwoSided.SortByMaterial();
+                    }
+                }
+                
+                if (TransparencySortEnabled)
+                {
+                    transparent.SortByViewDistance(ref context.matrices.cameraPosition);
+                    transparentTwoSided.SortByViewDistance(ref context.matrices.cameraPosition);
                 }
 
                 //---------------------------------------------------------------------

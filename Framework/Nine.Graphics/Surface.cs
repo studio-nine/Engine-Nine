@@ -788,12 +788,17 @@
         /// </summary>
         void IDrawableObject.OnAddedToView(DrawingContext context)
         {
-            UpdateLevelOfDetail(context.EyePosition);
+            UpdateLevelOfDetail(context.CameraPosition);
         }
 
         void IDrawableObject.Draw(DrawingContext context, Material material) 
         {
 
+        }
+
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return 0; 
         }
         #endregion
 

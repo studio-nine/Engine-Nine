@@ -552,6 +552,11 @@
             material.EndApply(context);
         }
 
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return 0;
+        }
+
         public void Dispose()
         {
             Dispose(true);

@@ -119,6 +119,7 @@
 
         private bool needsRebuild;
         private PrimitiveCache cachedPrimitive;
+        private float distanceToCamera;
 
         /// <summary>
         /// Properties used when building the primitives
@@ -331,9 +332,19 @@
         public void OnAddedToView(DrawingContext context)
         {
             InsideViewFrustum = true;
-            materialForRendering = Material ?? 
-                materialLevels.UpdateLevelOfDetail(
-                    Vector3.Distance(context.EyePosition, AbsoluteTransform.Translation));
+
+            var position = AbsoluteTransform.Translation;
+            Vector3.Distance(ref context.matrices.cameraPosition, ref position, out distanceToCamera);
+
+            materialForRendering = Material ?? materialLevels.UpdateLevelOfDetail(distanceToCamera);
+        }
+
+        /// <summary>
+        /// Gets the distance from the position of the object to the current camera.
+        /// </summary>
+        public float GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return distanceToCamera;
         }
 
         /// <summary>

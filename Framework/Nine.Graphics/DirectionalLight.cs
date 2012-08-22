@@ -8,15 +8,35 @@ namespace Nine.Graphics
     using Nine.Graphics.Drawing;
     using Nine.Graphics.Materials;
 
-    [ContentSerializable]
+    /// <summary>
+    /// Defines a directional light source.
+    /// </summary>
     public partial class DirectionalLight : Light, IDeferredLight
     {
+        /// <summary>
+        /// Gets or sets a value indicating the start distance of the region that can be
+        /// shadowed by this directional light from the camera's perspective.
+        /// </summary>
+        public float ShadowStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the end distance of the region that can be
+        /// shadowed by this directional light from the camera's perspective.
+        /// </summary>
+        public float ShadowEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets the direction of this light.
+        /// </summary>
         public Vector3 Direction
         {
             get { return AbsoluteTransform.Forward; }
             set { Transform = MatrixHelper.CreateWorld(Vector3.Zero, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the specular color of this light.
+        /// </summary>
         public Vector3 SpecularColor
         {
             get { return specularColor; }
@@ -24,6 +44,9 @@ namespace Nine.Graphics
         }
         private Vector3 specularColor;
 
+        /// <summary>
+        /// Gets or sets the diffuse color of this light.
+        /// </summary>
         public Vector3 DiffuseColor
         {
             get { return diffuseColor; }
@@ -40,6 +63,8 @@ namespace Nine.Graphics
         /// </summary>
         public DirectionalLight(GraphicsDevice graphics) : base(graphics)
         {
+            ShadowStart = 0;
+            ShadowEnd = float.MaxValue;
             DiffuseColor = Vector3.One;
             SpecularColor = Vector3.Zero;
         }
@@ -58,6 +83,9 @@ namespace Nine.Graphics
 
             var sceneBounds = context.BoundingBox;
             var viewFrustum = context.matrices.ViewFrustum;
+            
+            // Trim view frustum based on shadow start and shadow end.            
+
             sceneBounds.Intersects(viewFrustum, out intersections, out length);
 
             // Include the corners of the view frustum and scene bounds since
@@ -223,7 +251,7 @@ namespace Nine.Graphics
             }
             deferredMaterial.effect.CurrentTechnique = (specularColor != Vector3.Zero) ? deferredMaterial.effect.Techniques[0] : deferredMaterial.effect.Techniques[1];
             deferredMaterial.effect.ViewProjectionInverse.SetValue(context.matrices.ViewProjectionInverse);
-            deferredMaterial.effect.EyePosition.SetValue(context.EyePosition);
+            deferredMaterial.effect.EyePosition.SetValue(context.CameraPosition);
             deferredMaterial.effect.Direction.SetValue(Direction);
             deferredMaterial.effect.DiffuseColor.SetValue(diffuseColor);
             deferredMaterial.effect.SpecularColor.SetValue(specularColor);

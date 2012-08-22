@@ -2,7 +2,11 @@
     
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Sprite Texture="{ContentReference ../Textures/checker}" Position="10,0" />
+    <TextSprite Name="Wait" Text="Press any key to continue..." Font="{ContentReference ../Consolas}" />
 
-    <TextSprite Text="Press any key to continue..." Font="{ContentReference ../Consolas}" />
-    
+    <Scene.Animations>
+        <ColorAnimation TargetProperty="Wait.Color" Duration="00:00:00.5" From="White" To="Black"
+                        Curve="{x:Static Curves.Sin}" Repeat="99999999" AutoReverse="True" />
+    </Scene.Animations>
+  
 </Scene>

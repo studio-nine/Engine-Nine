@@ -33,7 +33,7 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public ICamera Camera
         {
-            get { return camera ?? (camera = new FreeCamera(graphics)); }
+            get { return camera; }
             set { camera = value; }
         }
         private ICamera camera;
@@ -153,11 +153,11 @@ namespace Nine.Graphics.Drawing
         }
 
         /// <summary>
-        /// Gets the eye position.
+        /// Gets the current camera position.
         /// </summary>
-        public Vector3 EyePosition
+        public Vector3 CameraPosition
         {
-            get { return matrices.eyePosition; }
+            get { return matrices.cameraPosition; }
         }
 
         /// <summary>
@@ -294,7 +294,7 @@ namespace Nine.Graphics.Drawing
             this.matrices = new MatrixCollection();
             this.textures = new TextureCollection();
             this.mainPass = new PassGroup() { name = "MainPass" };
-            this.mainPass.Passes.Add(new DrawingPass());
+            this.mainPass.Passes.Add(new DrawingPass() { ClearBackground = true, TransparencySortEnabled = true });
             this.rootPass = new PassGroup() { name = "RootPass" };
             this.rootPass.Passes.Add(mainPass);
         }
@@ -308,7 +308,6 @@ namespace Nine.Graphics.Drawing
         /// If you try to bind to multiple vertex buffers, use GraphicsDevice.SetVertexBuffer and
         /// call context.SetVertexBuffer(null, 0);
         /// </remarks>
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public void SetVertexBuffer(VertexBuffer vertexBuffer, int vertexOffset)
         {
             if (VertexBuffer != vertexBuffer || VertexOffset != vertexOffset)
@@ -385,12 +384,6 @@ namespace Nine.Graphics.Drawing
         public void Draw(TimeSpan elapsedTime)
         {
             var activeCamera = Camera;
-
-            // TODO: May update the camera twice if it has already been added to the scene
-            var updateable = activeCamera as Nine.IUpdateable;
-            if (updateable != null)
-                updateable.Update(elapsedTime);
-
             Draw(elapsedTime, activeCamera.View, activeCamera.Projection);
         }
 
@@ -438,7 +431,6 @@ namespace Nine.Graphics.Drawing
                 preferedFormats.Resize(activePasses.Count);
 
                 // Determines which pass should be rendered to a texture.
-                int lastPass = 0;
                 IPostEffect lastPostEffect = null;
                 for (int i = activePasses.Count - 1; i >= 0; i--)
                 {
@@ -455,11 +447,7 @@ namespace Nine.Graphics.Drawing
                     }
 
                     if (postEffect != null)
-                    {
                         lastPostEffect = postEffect;
-                        if (lastPass == 0)
-                            lastPass = i;
-                    }
                 }
 
                 RenderTarget2D lastRenderTarget = null;
@@ -508,12 +496,7 @@ namespace Nine.Graphics.Drawing
                         var postEffect = pass as IPostEffect;
                         if (postEffect != null)
                             postEffect.InputTexture = lastRenderTarget;
-
-                        // Clear the screen when we are drawing to the back buffer.
-                        //  --> Or when we are drawing to the main pass ???
-                        if (i == lastPass)
-                            graphics.Clear(settings.BackgroundColor);
-
+                        
                         pass.Draw(this, drawablesInViewFrustum);
                     }
                     finally

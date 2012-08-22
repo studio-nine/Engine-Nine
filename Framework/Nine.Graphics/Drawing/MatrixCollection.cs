@@ -33,9 +33,9 @@ namespace Nine.Graphics.Drawing
                 view = value;
                 matricesDirtyMask |= (ViewFrustumDirty | ViewProjectionDirty | ViewProjectionInverseDirty);
                 Matrix.Invert(ref view, out viewInverse);
-                eyePosition.X = viewInverse.M41;
-                eyePosition.Y = viewInverse.M42;
-                eyePosition.Z = viewInverse.M43;
+                cameraPosition.X = viewInverse.M41;
+                cameraPosition.Y = viewInverse.M42;
+                cameraPosition.Z = viewInverse.M43;
             }
         }
         internal Matrix view;
@@ -98,7 +98,7 @@ namespace Nine.Graphics.Drawing
             get { return viewInverse; }
         }
         internal Matrix viewInverse;
-        internal Vector3 eyePosition;
+        internal Vector3 cameraPosition;
 
         /// <summary>
         /// Gets the transposed view matrix.

@@ -191,7 +191,7 @@ namespace Nine.Graphics.Materials
         /// <summary>
         /// Creates a deep copy of this material.
         /// </summary>
-        public override Material Clone()
+        public MaterialGroup Clone()
         {
             var count = materialParts.Count;
             var result = new MaterialGroup();

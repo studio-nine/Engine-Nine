@@ -352,6 +352,12 @@ namespace Nine.Graphics
 #endif
         }
 
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            // There is really no way to calculate a correct distance for instanced models at the moment...
+            return 0;
+        }
+
         void IDrawableObject.OnAddedToView(DrawingContext context) 
         {
 

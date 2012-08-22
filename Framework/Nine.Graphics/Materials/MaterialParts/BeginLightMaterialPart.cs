@@ -19,7 +19,7 @@
             if (eyePositionParameter != null)
             {
                 ambientLightColorParameter.SetValue(context.ambientLightColor);
-                eyePositionParameter.SetValue(context.EyePosition);
+                eyePositionParameter.SetValue(context.CameraPosition);
             }
         }
 

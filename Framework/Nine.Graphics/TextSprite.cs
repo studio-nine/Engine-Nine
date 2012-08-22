@@ -11,7 +11,7 @@
     /// <summary>
     /// Defines a 2D text sprite.
     /// </summary>
-    public class TextSprite : Transformable, IDrawableObject, ISceneObject
+    public class TextSprite : Transformable, IDrawableObject, ISceneObject, ISprite
     {
         /// <summary>
         /// Gets the underlying graphics device.
@@ -86,12 +86,12 @@
         /// <summary>
         /// Gets or sets the z order of this sprite.
         /// </summary>
-        public float ZOrder
+        public int ZOrder
         {
             get { return zOrder; }
             set { zOrder = value; }
         }
-        private float zOrder;
+        private int zOrder;
 
         /// <summary>
         /// Gets or sets the texture of this sprite.
@@ -151,35 +151,24 @@
             anchorPoint.Y = size.Y * anchor.Y;
         }
 
-        /// <summary>
-        /// Draws this sprite using the specified sprite pass.
-        /// </summary>
-        internal void Draw(DrawingContext context, SpritePass spritePass)
-        {
-            if (spritePass != null && font != null)
-            {
-                SpriteBatch spriteBatch = IsAdditive ? spritePass.AdditiveBatch : spritePass.TransparentBatch;
-                if (spriteBatch == null)
-                    spriteBatch = spritePass.SpriteBatch;
-                Draw(context, spriteBatch);
-            }
-        }
-
-        void ISceneObject.OnAdded(DrawingContext context) 
+        void ISceneObject.OnAdded(DrawingContext context)
         {
             var passes = context.mainPass.Passes;
-            var count = passes.Count;
-            for (var i = 0; i < count; ++i)
+            for (var i = passes.Count - 1; i >= 0; --i)
             {
                 if (passes[i] is SpritePass)
                     return;
             }
-            passes.Add(new SpritePass(GraphicsDevice));
+            passes.Add(new SpritePass());
         }
 
         Material IDrawableObject.Material { get { return null; } }
+        bool ISprite.IsTransparent { get { return true; } }
+
         void IDrawableObject.OnAddedToView(DrawingContext context) { }
+        void ISprite.Draw(DrawingContext context, Material material) { }
         void IDrawableObject.Draw(DrawingContext context, Material material) { }
         void ISceneObject.OnRemoved(DrawingContext context) { }
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) { return 0; }
     }
 }

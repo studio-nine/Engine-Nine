@@ -749,9 +749,7 @@
             {
                 transform = bones[model.Meshes[0].ParentBone.Index] * transform;
                 Octree<bool> tree = tag.Collision.CollisionTree;
-
-                // TODO: This delegate will generate garbage.
-                //       But as this method is generally used for debug Adding, it shouldn't matter if it is not optimized.
+                
                 tree.Traverse(node =>
                 {
                     if (!node.HasChildren && node.Value)
@@ -1162,44 +1160,6 @@
 
                 dynamicPrimitive.AddVertex(ref aa);
                 dynamicPrimitive.AddVertex(ref ab);
-            }
-            dynamicPrimitive.EndPrimitive();
-        }
-
-        public static void Add(this DynamicPrimitive dynamicPrimitive, IEnumerable<Vector3> vertices, IEnumerable<int> indices, Matrix? world, Color color, float lineWidth)
-        {
-            if (vertices == null)
-                throw new ArgumentNullException("vertices");
-
-            dynamicPrimitive.BeginPrimitive(PrimitiveType.TriangleList, null, world, lineWidth);
-            {
-                foreach (Vector3 position in vertices)
-                    dynamicPrimitive.AddVertex(position, color);
-
-                if (indices != null)
-                {
-                    foreach (var index in indices)
-                        dynamicPrimitive.AddIndex(index);
-                }
-            }
-            dynamicPrimitive.EndPrimitive();
-        }
-
-        public static void Add(this DynamicPrimitive dynamicPrimitive, PrimitiveType primitiveType, Texture2D texture, IEnumerable<VertexPositionColorTexture> vertices, IEnumerable<ushort> indices, Matrix? world)
-        {
-            if (vertices == null)
-                throw new ArgumentNullException("vertices");
-
-            dynamicPrimitive.BeginPrimitive(primitiveType, texture, world);
-            {
-                foreach (var vertex in vertices)
-                    ;// TODO: dynamicPrimitive.AddVertex(ref vertex);
-
-                if (indices != null)
-                {
-                    foreach (var index in indices)
-                        dynamicPrimitive.AddIndex(index);
-                }
             }
             dynamicPrimitive.EndPrimitive();
         }

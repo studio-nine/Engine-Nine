@@ -385,7 +385,7 @@ namespace Nine.Graphics.Materials
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => { var viewport = context.graphics.Viewport; parameter.SetValue(new Vector2(0.5f / viewport.Width, 0.5f / viewport.Height)); } },
             
             // Eye Position
-            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.EyePosition) },
+            new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue(context.CameraPosition) },
 
             // Time
             new CustomEffectParameterBinding { IsGlobal = true, Bind = (parameter, context, material) => parameter.SetValue((float)context.totalSeconds) },

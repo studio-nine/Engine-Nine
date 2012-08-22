@@ -70,6 +70,11 @@ namespace Nine.Graphics
 
         }
 
+        float IDrawableObject.GetDistanceToCamera(Vector3 cameraPosition) 
+        {
+            return 0; 
+        }
+
         #region IDisposable
         /// <summary>
         /// Disposes any resources associated with this instance.

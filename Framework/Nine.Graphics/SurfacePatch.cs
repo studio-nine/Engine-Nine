@@ -142,6 +142,7 @@
 
         private BoundingBox baseBounds;
         private Heightmap heightmap;
+        private float distanceToCamera;
         #endregion
 
         #region ILightable
@@ -296,8 +297,16 @@
         /// </summary>
         public void OnAddedToView(DrawingContext context)
         {
-            materialForRendering = surface.Material ??
-                surface.MaterialLevels.UpdateLevelOfDetail(Vector3.Distance(context.EyePosition, Center));
+            Vector3.Distance(ref context.matrices.cameraPosition, ref center, out distanceToCamera);
+            materialForRendering = surface.Material ?? surface.MaterialLevels.UpdateLevelOfDetail(distanceToCamera);
+        }
+
+        /// <summary>
+        /// Gets the squared distance from the position of the object to the current camera.
+        /// </summary>
+        public float GetDistanceToCamera(Vector3 cameraPosition)
+        {
+            return distanceToCamera;
         }
 
         /// <summary>

@@ -224,7 +224,6 @@
     <Compile Include="ParticleEffects\ParticleControllers.cs" />
     <Compile Include="ParticleEffects\Particle.cs" />
     <Compile Include="ParticleEffects\ParticleController.cs" />
-    <Compile Include="Cameras\QuaternionCamera.cs" />
     <Compile Include="VertexTypes\VertexPositionNormalTangentBinormalTexture.cs" />
     <Compile Include="Materials\MaterialParts\SpotLightEffectPart.cs" />
     <Compile Include="Materials\MaterialParts\PointLightEffectPart.cs" />

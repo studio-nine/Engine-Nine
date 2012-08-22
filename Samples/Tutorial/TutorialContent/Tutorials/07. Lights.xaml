@@ -64,15 +64,15 @@
 
         <Group.Animations>
             <AnimationGroup>
-                <SingleAnimation TargetProperty="['Light1'].Attenuation" From="0" To="1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
-                <SingleAnimation TargetProperty="['Light2'].Range" From="0" To="10" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
-                <Vector3Animation TargetProperty="['Light3'].DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
+                <SingleAnimation TargetProperty="Light1.Attenuation" From="0" To="1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
+                <SingleAnimation TargetProperty="Light2.Range" From="0" To="10" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
+                <Vector3Animation TargetProperty="Light3.DiffuseColor" From="1, 1, 0" To="1, 0, 1" Curve="{x:Static Curves.Sin}" AutoReverse="True" Repeat="999999" />
 
                 <!-- 
                 The following transform animation will animate the spot light around a circle.
                 <AnimationSequence Repeat="999999">
-                    <MatrixAnimation TargetProperty="['Light4'].Transform" Duration="00:00:01" From="{Transform ;30, 0, 0;0, 0, 15;Yxz}" To=";30, 0, 180;0, 0, 15;Yxz"/>
-                    <MatrixAnimation TargetProperty="['Light4'].Transform" Duration="00:00:01" From=";30, 0, 180;0, 0, 15;Yxz" To=";30, 0, 360;0, 0, 15;Yxz"/>
+                    <MatrixAnimation TargetProperty="Light4.Transform" Duration="00:00:01" From="{Transform ;30, 0, 0;0, 0, 15;Yxz}" To=";30, 0, 180;0, 0, 15;Yxz"/>
+                    <MatrixAnimation TargetProperty="Light4.Transform" Duration="00:00:01" From=";30, 0, 180;0, 0, 15;Yxz" To=";30, 0, 360;0, 0, 15;Yxz"/>
                 </AnimationSequence>
                 -->
             </AnimationGroup>

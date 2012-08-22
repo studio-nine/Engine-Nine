@@ -22,8 +22,8 @@ namespace Nine.Content.Pipeline.Physics
         protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Physics.RigidBody value)
         {
             WriteObject(output, value, "Collider", value.Collider);
-            WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "Tag", value.Tag);
+            WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -68,7 +68,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -111,7 +110,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -157,7 +155,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -200,7 +197,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -243,7 +239,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -286,7 +281,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -328,7 +322,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -370,7 +363,6 @@ namespace Nine.Content.Pipeline.Physics.Colliders
             output.Write(value.Restitution);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         

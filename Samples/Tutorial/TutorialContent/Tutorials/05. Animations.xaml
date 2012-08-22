@@ -13,7 +13,7 @@
                 The following animation is a tween animation that changes the alpha property of the tank model.
                 Note that tween animation can only reference the direct children of the diplay object.
             -->
-            <SingleAnimation TargetProperty="['Tank'].Material.Alpha"
+            <SingleAnimation TargetProperty="Tank.Material.Alpha"
                              From="1" To="0" Curve="{x:Static Curves.Sin}" Repeat="999999" Easing="In" AutoReverse="True" />            
         </Group.Animations>
 
@@ -41,9 +41,9 @@
                 <AnimationGroup>    
                     <!-- Use AnimationSequence to create a spinner based on two rotation animations. -->            
                     <AnimationSequence Repeat="999999">
-                        <MatrixAnimation TargetProperty="['Dude'].Transform" Duration="00:00:05"
+                        <MatrixAnimation TargetProperty="Dude.Transform" Duration="00:00:05"
                                          From="{Transform RotationY={Degrees 0}}" To="{Transform RotationY={Degrees 180}}"/>
-                        <MatrixAnimation TargetProperty="['Dude'].Transform" Duration="00:00:05"
+                        <MatrixAnimation TargetProperty="Dude.Transform" Duration="00:00:05"
                                          From="{Transform RotationY={Degrees 180}}" To="{Transform RotationY={Degrees 360}}"/>
                     </AnimationSequence>                    
                 </AnimationGroup>

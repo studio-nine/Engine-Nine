@@ -165,7 +165,6 @@ namespace Nine.Content.Pipeline
             WriteObject(output, value, "Animations", value.Animations);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -210,7 +209,6 @@ namespace Nine.Content.Pipeline
                 }
             }
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -286,7 +284,6 @@ namespace Nine.Content.Pipeline
             WriteObject(output, value, "Animations", value.Animations);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -397,7 +394,6 @@ namespace Nine.Content.Pipeline.Animations
             }
             output.Write(value.Repeat);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -475,7 +471,6 @@ namespace Nine.Content.Pipeline.Animations
         {
             WriteObject(output, value, "TargetProperty", value.TargetProperty);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -517,7 +512,6 @@ namespace Nine.Content.Pipeline.Animations
             }
             output.Write(value.Repeat);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -568,7 +562,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -619,7 +612,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -670,7 +662,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -721,7 +712,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -772,7 +762,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -809,7 +798,6 @@ namespace Nine.Content.Pipeline.Animations
         {
             WriteObject(output, value, "Duration", value.Duration);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -860,7 +848,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -911,7 +898,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -962,7 +948,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1013,7 +998,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1064,7 +1048,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1115,7 +1098,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1166,7 +1148,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1217,7 +1198,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1268,7 +1248,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1316,7 +1295,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1367,7 +1345,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1418,7 +1395,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         
@@ -1469,7 +1445,6 @@ namespace Nine.Content.Pipeline.Animations
             output.Write(value.Repeat);
             WriteObject(output, value, "Position", value.Position);
             WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "Tag", value.Tag);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
         

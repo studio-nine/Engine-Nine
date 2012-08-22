@@ -516,8 +516,7 @@
                     {
                         for (int i = startIndex; i < startIndex + partCount; ++i)
                         {
-                            // TODO: May overflow here
-                            indices[i] = (ushort)(baseVertex + indices[i]);
+                            indices[i] = (ushort)(checked(baseVertex + indices[i]));
                         }
                     }
                     startIndex += partCount;

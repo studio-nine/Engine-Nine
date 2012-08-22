@@ -13,67 +13,121 @@ namespace Nine.Graphics.Drawing
     /// </summary>
     sealed class SpritePass : Pass, IDisposable
     {
-        private bool drawing;
-        private GraphicsDevice graphics;
-
-        internal SpriteBatch SpriteBatch
-        {
-            get 
-            {
-                if (spriteBatch == null)
-                {
-                    spriteBatch = new SpriteBatch(graphics);
-                    if (drawing)
-                        spriteBatch.Begin(0, BlendState.Opaque);
-                }
-                return spriteBatch; 
-            }
-        }
+        private bool isDrawing;
         private SpriteBatch spriteBatch;
+        private BlendState currentBlendState;
+        private FastList<Entry> positiveSprites = new FastList<Entry>();
+        private FastList<Entry> negativeSprites = new FastList<Entry>();
+        private FastList<Entry> zeroOrderSprites = new FastList<Entry>();
+        private SpriteSortComparer sortComparer = new SpriteSortComparer();
 
-        public SpritePass(GraphicsDevice graphics)
+        public SpritePass()
         {
-            this.graphics = graphics;
             this.order = Constants.SpritePassOrder;
         }
 
         public override void Draw(DrawingContext context, IList<IDrawableObject> drawables)
         {
-            drawing = true;
+            FindSprites(drawables);
 
-            if (spriteBatch != null)
-                spriteBatch.Begin(0, BlendState.Opaque);
-            if (transparentBatch != null)
-                transparentBatch.Begin(0, BlendState.AlphaBlend);
-            if (additiveBatch != null)
-                additiveBatch.Begin(0, BlendState.Additive);
+            if (positiveSprites.Count > 1)
+                Array.Sort(positiveSprites.Elements, 0, positiveSprites.Count, sortComparer);
+            if (negativeSprites.Count > 1)
+                Array.Sort(negativeSprites.Elements, 0, negativeSprites.Count, sortComparer);
 
+            if (positiveSprites.Count + negativeSprites.Count + zeroOrderSprites.Count > 0)
+            {
+                if (spriteBatch == null)
+                    spriteBatch = new SpriteBatch(context.graphics);
+            }
+
+            isDrawing = false;
+
+            DrawSprites(context, negativeSprites);
+            DrawSprites(context, zeroOrderSprites);
+            DrawSprites(context, positiveSprites);
+
+            if (isDrawing)
+                spriteBatch.End();
+
+            positiveSprites.Clear();
+            negativeSprites.Clear();
+            zeroOrderSprites.Clear();
+        }
+
+        private void DrawSprites(DrawingContext context, FastList<Entry> sprites)
+        {
+            for (var i = 0; i < sprites.Count; ++i)
+            {
+                var sprite = sprites[i].Sprite;
+                var material = sprites[i].Material;
+                if (material != null)
+                {
+                    if (isDrawing)
+                    {
+                        isDrawing = false;
+                        spriteBatch.End();
+                    }
+                    context.graphics.BlendState = GetBlendState(sprite);
+                    currentBlendState = null;
+                    sprite.Draw(context, material);
+                }
+                else
+                {
+                    var blendState = GetBlendState(sprite);
+                    if (blendState != currentBlendState)
+                    {
+                        if (isDrawing)
+                            spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Deferred, currentBlendState = blendState);
+                        isDrawing = true;
+                    }
+                }
+            }
+        }
+
+        private void FindSprites(IList<IDrawableObject> drawables)
+        {
             var count = drawables.Count;
             for (var i = 0; i < count; ++i)
             {
                 var drawable = drawables[i];
-                var sprite = drawable as Sprite;
+                var sprite = drawable as ISprite;
                 if (sprite != null)
                 {
-                    if (sprite.Material == null)
-                        sprite.Draw(context, this);
-                }
-                else
-                {
-                    var textSprite = drawable as TextSprite;
-                    if (textSprite != null)
-                        textSprite.Draw(context, this);
+                    var zOrder = sprite.ZOrder;
+                    if (zOrder > 0)
+                        positiveSprites.Add(new Entry { Sprite = sprite, Material = drawable.Material, ZOrder = zOrder });
+                    else if (zOrder < 0)
+                        negativeSprites.Add(new Entry { Sprite = sprite, Material = drawable.Material, ZOrder = zOrder });
+                    else
+                        zeroOrderSprites.Add(new Entry { Sprite = sprite, Material = drawable.Material });
                 }
             }
+        }
 
-            if (spriteBatch != null)    
-                spriteBatch.End();
-            if (transparentBatch != null)
-                transparentBatch.End();
-            if (additiveBatch != null)
-                additiveBatch.End();
-            
-            drawing = false;
+        private BlendState GetBlendState(ISprite sprite)
+        {
+            if (sprite.IsAdditive)
+                return BlendState.Additive;
+            if (sprite.IsTransparent)
+                return BlendState.AlphaBlend;
+            return BlendState.Opaque;
+        }
+
+        struct Entry
+        {
+            public ISprite Sprite;
+            public Material Material;
+            public int ZOrder;
+        }
+
+        class SpriteSortComparer : IComparer<Entry>
+        {
+            public int Compare(Entry x, Entry y)
+            {
+                return x.ZOrder - y.ZOrder;
+            }
         }
 
         public void Dispose()
@@ -82,18 +136,6 @@ namespace Nine.Graphics.Drawing
             {
                 spriteBatch.Dispose();
                 spriteBatch = null;
-            }
-
-            if (transparentBatch != null)
-            {
-                transparentBatch.Dispose();
-                transparentBatch = null;
-            }
-
-            if (additiveBatch != null)
-            {
-                additiveBatch.Dispose();
-                additiveBatch = null;
             }
             GC.SuppressFinalize(this);
         }

@@ -72,10 +72,17 @@ namespace Nine
                 var objectFactory = value as IObjectFactory;
                 if (objectFactory != null)
                 {
-                    var createdInstance = objectFactory.CreateInstance(serviceProvider);
+                    // The value very likely to be added to the tail of the element
+                    for (var i = children.Elements.Count - 1; i >= 0; --i)
+                    {
+                        if (children.Elements[i] == value)
+                        {
+                            children.Elements.RemoveAt(i);
+                            break;
+                        }
+                    }
 
-                    // TODO: This can be made faster if we know the index of the element
-                    children.Elements.Remove(value);
+                    var createdInstance = objectFactory.CreateInstance(serviceProvider);
                     if (createdInstance != null)
                     {
                         children.Add(createdInstance);
