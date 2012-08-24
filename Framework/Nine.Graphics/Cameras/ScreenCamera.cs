@@ -3,6 +3,7 @@
     using System;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
+    using Nine.Graphics.Drawing;
 
     /// <summary>
     /// Defines the coordinate system used by ScreenCamera.
@@ -27,13 +28,11 @@
     /// <summary>
     /// Defines a 2D orthographic screen camera.
     /// </summary>
-    public class ScreenCamera : ICamera
+    [ContentSerializable]
+    public class ScreenCamera : Nine.Object, ICamera, ISceneObject
     {
-        public Input Input { get; private set; }
+        public bool Enabled { get; set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
-
-        public Viewport? Viewport { get; set; }
-
         public ScreenCameraCoordinate CoordinateType { get; set; }
 
         public float Zoom { get; set; }
@@ -44,8 +43,9 @@
         public float Z { get; set; }
         public float NearClip { get; set; }
         public float FarClip { get; set; }
-        public float Sensitivity { get; set; }
+        public float WheelSpeed { get; set; }
 
+        private Input input;
         private Vector2 startMouse = Vector2.Zero;
         private Vector2 startPosition = Vector2.Zero;
 
@@ -101,23 +101,27 @@
             GraphicsDevice = graphics;
             CoordinateType = coordinateType;
 
+            Enabled = true;
             Z = 1000;
             Zoom = 1;
             MinZoom = 0.01f;
             MaxZoom = 10f;
-            Sensitivity = 1;
+            WheelSpeed = 1;
             NearClip = 0;
             FarClip = 10000;
 
-            Input = new Input();
+            input = new Input();
 
-            Input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
-            Input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
-            Input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
+            input.MouseDown += new EventHandler<MouseEventArgs>(Input_ButtonDown);
+            input.MouseMove += new EventHandler<MouseEventArgs>(Input_MouseMove);
+            input.MouseWheel += new EventHandler<MouseEventArgs>(Input_Wheel);
         }
 
         private void Input_ButtonDown(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
+
 #if WINDOWS_PHONE
             if (e.Button == MouseButtons.Left)
 #else
@@ -133,6 +137,8 @@
 
         private void Input_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
             if (e.IsButtonDown(MouseButtons.Right))
             {
                 X = startPosition.X - (e.X - startMouse.X) / Zoom;
@@ -146,11 +152,14 @@
 
         private void Input_Wheel(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             float zoom = NormalizeZoom(this.Zoom);
             float maxZoom = NormalizeZoom(this.MaxZoom);
             float minZoom = NormalizeZoom(this.MinZoom);
 
-            zoom += e.WheelDelta * (maxZoom - minZoom) * 0.0001f * Sensitivity;
+            zoom += e.WheelDelta * (maxZoom - minZoom) * 0.0001f * WheelSpeed;
             zoom = MathHelper.Clamp(zoom, minZoom, maxZoom);
             this.Zoom = DenormalizeZoom(zoom);
         }
@@ -169,6 +178,18 @@
             if (zoom >= 0)
                 return zoom = 1 + zoom;
             return zoom = 1.0f / (1 - zoom);
+        }
+
+        void ISceneObject.OnAdded(DrawingContext context)
+        {
+            if (context.camera == null)
+                context.camera = this;
+        }
+
+        void ISceneObject.OnRemoved(DrawingContext context)
+        {
+            if (context.camera == this)
+                context.camera = null;
         }
     }
 }

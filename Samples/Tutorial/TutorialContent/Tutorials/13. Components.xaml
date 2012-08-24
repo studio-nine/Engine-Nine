@@ -1,4 +1,8 @@
-﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" xmlns:my="clr-namespace:TutorialData;assembly=TutorialData">
+﻿<Scene xmlns="http://schemas.microsoft.com/nine/2011/xaml" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:my="clr-namespace:TutorialData;assembly=TutorialData"
+       xmlns:xna="clr-namespace:Microsoft.Xna.Framework;assembly=Microsoft.Xna.Framework">
+    
     <SkyBox Texture="{ContentReference ../Textures/SkyCubeMap}" />
     <Fog Name="MyFog" FogColor="1, 1, 1" FogStart="50" FogEnd="500" />
     <AmbientLight AmbientLightColor="0.2, 0.2, 0.2" />
@@ -10,5 +14,16 @@
         
         <!-- Write your own component to extend the behavior of the parent group. -->
         <my:ExampleController Speed="10" />
-    </Group>    
+    </Group>
+    
+    <!--
+        Use instance to create multiple different objects from the same template.
+        Each instance can override the name, transform and other properties of the template.        
+    -->
+    <Instance Name="Dude1" Template="Templates/Player" Transform.Position="-10,0,0" />
+
+    <Instance Name="Dude2" Template="Templates/Player" Transform.Position="10,0,0">
+        <xna:Vector3 x:Key="Dude.Material.DiffuseColor">1,0,0</xna:Vector3>
+    </Instance>
+    
 </Scene>

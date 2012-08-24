@@ -105,11 +105,7 @@
             this.graphics = graphics;
             this.initialBufferCapacity = initialBufferCapacity;
             this.maxBufferSizePerPrimitive = maxBufferSizePerPrimitive;
-            this.rasterizerState = new RasterizerState()
-            {
-                CullMode = CullMode.None,
-                DepthBias = 0f,
-            };
+            this.rasterizerState = new RasterizerState() { CullMode = CullMode.None };
             this.material = new BasicMaterial(graphics) 
             {
                 LightingEnabled = false, 

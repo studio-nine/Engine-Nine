@@ -5,12 +5,6 @@ namespace Nine
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Input;
     using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-#if SILVERLIGHT
-    using Keys = System.Windows.Input.Key;
-#else
-    using Microsoft.Xna.Framework.Input.Touch;
-    using Keys = Microsoft.Xna.Framework.Input.Keys;
-#endif
     
     #region KeyboardEventArgs
     /// <summary>

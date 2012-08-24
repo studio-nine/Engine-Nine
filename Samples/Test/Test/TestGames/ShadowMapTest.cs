@@ -17,6 +17,7 @@ namespace Test
             var scene = new Scene();
             var shadowMaterial = content.Load<Material>("Materials/Shadow");
 
+            scene.Add(new Nine.Graphics.Cameras.BirdEyeCamera(graphics));
             scene.Add(new Surface(graphics, 1, 256, 256, 32) { Material = shadowMaterial });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
             //scene.Add(new FullScreenQuad(graphics) { Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });

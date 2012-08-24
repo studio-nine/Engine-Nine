@@ -74,6 +74,13 @@ namespace Nine.Graphics
         private BoundingBox orientedBoundingBox = new BoundingBox();
 
         /// <summary>
+        /// Gets or sets a value that is appended to the computed bounding box to
+        /// compensate scale & rotation loss, since the auto computed bounding box 
+        /// does not care about the scale & rotation of instance transforms.
+        /// </summary>
+        public Vector3 BoundingBoxPadding { get; set; }
+
+        /// <summary>
         /// Called when transform changed.
         /// </summary>
         protected override void OnTransformChanged()
@@ -201,6 +208,8 @@ namespace Nine.Graphics
             }
 
             Matrix transform = AbsoluteTransform;
+            orientedBoundingBox.Min -= BoundingBoxPadding;
+            orientedBoundingBox.Max += BoundingBoxPadding;
             orientedBoundingBox.CreateAxisAligned(ref transform, out boundingBox);
 
             if (BoundingBoxChanged != null)

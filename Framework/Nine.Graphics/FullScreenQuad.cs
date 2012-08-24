@@ -26,9 +26,14 @@
         public bool Visible { get; set; }
 
         /// <summary>
-        /// Gets the material of the object.
+        /// Gets or sets the material of the object.
         /// </summary>
         public Material Material { get; set; }
+
+        /// <summary>
+        /// Gets or sets the texture to display in this quad.
+        /// </summary>
+        public Texture2D Texture { get; set; }
 
         /// <summary>
         /// The vertex buffer and index buffers are shared between FullScreenQuads.
@@ -59,6 +64,8 @@
 
         public void Draw(DrawingContext context, Material material)
         {
+            if (Texture != null)
+                material.texture = Texture;
             material.BeginApply(context);
 
             context.SetVertexBuffer(vertexBuffer, 0);

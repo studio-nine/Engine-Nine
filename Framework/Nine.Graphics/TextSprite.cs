@@ -121,11 +121,12 @@
         /// </summary>
         public void Draw(DrawingContext context, SpriteBatch spriteBatch)
         {
+            var font = this.font ?? context.settings.Font;
             if (spriteBatch != null && font != null)
             {
                 Vector2 screenPosition;
                 Vector2 anchorPoint;
-                GetScreenPositionAndAnchorPoint(context, out screenPosition, out anchorPoint);
+                GetScreenPositionAndAnchorPoint(context, font, out screenPosition, out anchorPoint);
 
                 spriteBatch.DrawString(font, Text, screenPosition, color * alpha,
                                        Rotation, anchorPoint, Scale, SpriteEffects.None, zOrder);
@@ -133,7 +134,7 @@
         }
 
         private void GetScreenPositionAndAnchorPoint(
-            DrawingContext context, out Vector2 screenPosition, out Vector2 anchorPoint)
+            DrawingContext context, SpriteFont font, out Vector2 screenPosition, out Vector2 anchorPoint)
         {
             var projectedPosition = new Vector3();
             projectedPosition.X = position.X;

@@ -19,9 +19,9 @@ namespace Test
             //var scene = new Scene(new BruteForceSceneManager());
             var cube = content.Load<Microsoft.Xna.Framework.Graphics.Model>("Models/cube");
 
-            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Color.Red.ToVector3(), Direction = Vector3.UnitX });
-            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Color.Green.ToVector3(), Direction = Vector3.UnitY });
-            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Color.Blue.ToVector3(), Direction = Vector3.UnitZ });
+            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitX, Direction = -Vector3.UnitX });
+            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitY, Direction = -Vector3.UnitY });
+            scene.Add(new Nine.Graphics.DirectionalLight(graphics) { DiffuseColor = Vector3.UnitZ, Direction = -Vector3.UnitZ });
 
             var size = 20;
             var step = 2;

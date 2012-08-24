@@ -21,16 +21,19 @@
         public Matrix LightViewProjection { get; set; }
         public Texture2D ShadowMap { get; set; }
 
-        public int SampleCount
+        public int FilterSize
         {
-            get { return sampleSize * sampleSize; }
+            get { return filterSize; }
             set
             {
-                sampleSize = Math.Max(1, (int)Math.Sqrt(value));
-                NotifyShaderChanged();
+                if (filterSize != value)
+                {
+                    filterSize = value;
+                    NotifyShaderChanged();
+                }
             }
         }
-        private int sampleSize = 1;
+        private int filterSize = 3;
 
         public int Seed
         {
@@ -107,7 +110,7 @@
                 ShadowColor = this.ShadowColor,
                 ShadowMap = this.ShadowMap,
                 LightViewProjection = this.LightViewProjection,
-                sampleSize = this.sampleSize,
+                filterSize = this.filterSize,
             };
         }
 
@@ -121,18 +124,18 @@
         {
             if (usage != MaterialUsage.Default)
                 return null;
-            return GetShaderCode("ShadowMap").Replace("{$SAMPLECOUNT}", (sampleSize * sampleSize).ToString())
+            return GetShaderCode("ShadowMap").Replace("{$SAMPLECOUNT}", (filterSize * filterSize).ToString())
                                              .Replace("{$FILTERTAPS}", CreateFilterTaps());
         }
 
         private string CreateFilterTaps()
         {
             var taps = new StringBuilder();
-            var inv = 1.0 / sampleSize;
+            var inv = 1.0 / filterSize;
             var random = new Random(seed);
-            for (int x = 0; x < sampleSize; ++x)
+            for (int x = 0; x < filterSize; ++x)
             {
-                for (int y = 0; y < sampleSize; ++y)
+                for (int y = 0; y < filterSize; ++y)
                 {
                     // Create a random filter disc base on
                     // http://http.developer.nvidia.com/GPUGems2/gpugems2_chapter17.html

@@ -208,6 +208,7 @@ namespace Nine.Content.Pipeline
                     output.WriteObject(pair.Value);
                 }
             }
+            output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }

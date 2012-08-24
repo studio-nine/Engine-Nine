@@ -42,7 +42,7 @@
             get { return size; }
             set { size = value; }
         }
-        private int size = 512;
+        private int size = 2048;
 
         /// <summary>
         /// Gets or sets the preferred surface format of the shadow map texture.

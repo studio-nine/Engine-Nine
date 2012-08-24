@@ -253,7 +253,7 @@
     <Compile Include="ParticleEffects\ParticleEmitter.cs" />
     <Compile Include="Cameras\FreeCamera.cs" />
     <Compile Include="Cameras\ModelViewerCamera.cs" />
-    <Compile Include="Cameras\TopDownEditorCamera.cs" />
+    <Compile Include="Cameras\BirdEyeCamera.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="Heightmap.cs" />
     <Compile Include="ModelExtensions.cs" />

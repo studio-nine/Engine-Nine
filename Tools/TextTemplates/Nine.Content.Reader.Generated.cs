@@ -122,6 +122,7 @@ namespace Nine
                         input.ReadObject<System.String>(),
                         input.ReadObject<System.Object>());
             }
+            existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;

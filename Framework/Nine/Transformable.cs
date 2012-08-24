@@ -81,24 +81,26 @@ namespace Nine
         {
             get 
             {
-                if (isAbsoluteTransformDirty)
+                if ((absoluteTransformDirtyFlags & AbsoluteTransformDirty) != 0)
                 {
                     if (Parent == null)
                         absoluteTransform = transform;
                     else
                         absoluteTransform = transform * Parent.AbsoluteTransform;
-                    isAbsoluteTransformDirty = false;
+                    absoluteTransformDirtyFlags |= ~AbsoluteTransformDirty;
                 }
                 return absoluteTransform; 
             } 
         }
         internal Matrix absoluteTransform = Matrix.Identity;
-        internal bool isAbsoluteTransformDirty = false;
+        internal uint absoluteTransformDirtyFlags = 0;
+
+        const uint AbsoluteTransformDirty = 1;
 
         // To be used by DrawingGroup only.
         internal void NotifyTransformChanged()
         {
-            isAbsoluteTransformDirty = true;
+            absoluteTransformDirtyFlags = 0xFFFFFFFF;
             OnTransformChanged();
         }
         #endregion

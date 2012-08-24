@@ -87,6 +87,9 @@ namespace Nine
         /// </summary>
         public Input(InputComponent component)
         {
+            if (Nine.Content.ContentProperties.IsContentBuild)
+                return;
+
             if (component == null)
                 throw new InvalidOperationException(
                     "InputComponent must not be null, do you forget to add an InputComponent to the game's component collection?");

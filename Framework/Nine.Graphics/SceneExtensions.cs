@@ -21,7 +21,7 @@ namespace Nine.Graphics
         public static GraphicsDevice GetGraphicsDevice(this Group group)
         {
 #if SILVERLIGHT
-            return group.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
+            return System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
 #else
             return group.ServiceProvider.GetService<IGraphicsDeviceService>().GraphicsDevice;
 #endif
@@ -66,8 +66,8 @@ namespace Nine.Graphics
             else if (context.graphics != graphics)
                 throw new ArgumentException("graphics");
 
-            if (context.Camera == null)
-                scene.Add(context.Camera = new Nine.Graphics.Cameras.FreeCamera(graphics));
+            if (context.camera == null)
+                scene.Add(new Nine.Graphics.Cameras.FreeCamera(graphics, new Vector3(0, 10, 40)));
 
             return context;
         }
@@ -118,7 +118,7 @@ namespace Nine.Graphics
             {
                 var sceneObject = value as ISceneObject;
                 if (sceneObject != null)
-                    sceneObject.OnAdded(context);
+                    sceneObject.OnAdded(context);                
             };
             scene.RemovedFromScene += (value) =>
             {

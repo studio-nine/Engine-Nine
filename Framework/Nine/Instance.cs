@@ -5,6 +5,7 @@ namespace Nine
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+    using System.Xaml;
     using System.Windows.Markup;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
@@ -15,7 +16,7 @@ namespace Nine
     /// </summary>
     [ContentSerializable]
     [ContentProperty("Properties")]
-    public class Instance : Nine.Object, IObjectFactory
+    public class Instance : Transformable, IObjectFactory
     {
         /// <summary>
         /// Gets or sets the file name that contains the template.
@@ -44,7 +45,33 @@ namespace Nine
             if (contentManager == null)
                 throw new InvalidOperationException("Cannot find content manager in the service provider");
 
-            return ApplyProperties(contentManager.Create<T>(Template));
+            var createdInstance = ApplyProperties(contentManager.Create<T>(Template));
+
+            // Replace the name of the created instance
+            var instanceName = createdInstance as Nine.Object;
+            if (instanceName != null)
+                instanceName.name = name;
+
+            // Replace the transform of the created instance
+            var instanceTransform = createdInstance as Transformable;
+            if (instanceTransform != null)
+                instanceTransform.Transform = transform;
+
+            // Apply attached properties
+            var instanceAttachedProperties = createdInstance as IAttachedPropertyStore;
+            if (instanceAttachedProperties != null)
+            {
+                var store = (IAttachedPropertyStore)this;
+                if (store.PropertyCount > 0)
+                {
+                    var attachedProperties = new KeyValuePair<AttachableMemberIdentifier, object>[store.PropertyCount];
+                    store.CopyPropertiesTo(attachedProperties, 0);
+                    for (var i = 0; i < attachedProperties.Length; ++i)
+                        instanceAttachedProperties.SetProperty(attachedProperties[i].Key, attachedProperties[i].Value);
+                }
+            }
+
+            return createdInstance;
         }
 
         /// <summary>

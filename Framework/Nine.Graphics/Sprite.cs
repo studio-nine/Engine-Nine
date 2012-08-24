@@ -212,7 +212,8 @@
             Vector2 anchorPoint;
             GetScreenPositionAndAnchorPoint(context, out screenPosition, out anchorPoint);
 
-            material.texture = texture;
+            if (texture != null)
+                material.texture = texture;
             material.BeginApply(context);
             
             spriteMaterial.effect.ScreenPositionAndAnchorPoint.SetValue(

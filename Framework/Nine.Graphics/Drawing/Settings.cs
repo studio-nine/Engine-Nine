@@ -44,7 +44,7 @@ namespace Nine.Graphics.Drawing
         /// <summary>
         /// Gets or sets the default font.
         /// </summary>
-        public SpriteFont DefaultFont { get; set; }
+        public SpriteFont Font { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether default debug control is enabled.

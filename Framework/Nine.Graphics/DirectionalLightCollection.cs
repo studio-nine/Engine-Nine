@@ -46,7 +46,7 @@ namespace Nine.Graphics
                 throw new ArgumentOutOfRangeException();
 
             EnsureCapacity();
-            elements[++count] = elements[index];
+            elements[count++] = elements[index];
             elements[index] = item;
             SortAndIncrementVersion();
         }

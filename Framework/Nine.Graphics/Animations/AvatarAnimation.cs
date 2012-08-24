@@ -11,6 +11,7 @@
     /// <summary>
     /// Defines the skeleton for avatar.
     /// </summary>
+    [NotContentSerializable]
     public class AvatarSkeleton : Skeleton
     {
         Matrix[] boneTransforms;
@@ -157,6 +158,7 @@
     /// <summary>
     /// Provides methods and properties for animating an avatar using custom animations.
     /// </summary>
+    [NotContentSerializable]
     public class AvatarBoneAnimation : BoneAnimation, IAvatarAnimation
     {
         /// <summary>

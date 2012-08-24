@@ -4,67 +4,63 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
-#if SILVERLIGHT
-    using Keys = System.Windows.Input.Key;
-#endif
 
     /// <summary>
     /// A first person free camera.
     /// </summary>
-    public class FreeCamera : ICamera, Nine.IUpdateable
+    public class FreeCamera : Camera
     {
-        Vector2 mouseDown;
-
         public Vector3 Angle
         { 
             get { return angle; } 
             set { angle = value; }
         }
-        Vector3 angle;
+        private Vector3 angle;
 
         public Vector3 Position 
         { 
             get { return position; }
             set { position = value; } 
         }
-        Vector3 position;
+        private Vector3 position;
 
-        public Viewport? Viewport { get; set; }
-        public float Speed { get; set; }
         public float TurnSpeed { get; set; }
+        public float Speed { get; set; }
+        public float PrecisionModeSpeed { get; set; }
 
-        public Matrix View 
+        public Keys ForwardKey { get; set; }
+        public Keys BackwardKey { get; set; }
+        public Keys LeftKey { get; set; }
+        public Keys RightKey { get; set; }
+        public Keys UpKey { get; set; }
+        public Keys DownKey { get; set; }
+        public Keys PrecisionModeKey { get; set; }
+
+        private Vector2 mouseDown;
+
+        public FreeCamera(GraphicsDevice graphics) : this(graphics, Vector3.Zero, 10.0f, 16f) { }
+        public FreeCamera(GraphicsDevice graphics, Vector3 position) : this(graphics, position, 10.0f, 16f) { }
+        public FreeCamera(GraphicsDevice graphics, Vector3 position, float speed, float turnSpeed) : base(graphics)
         {
-            get { return view; }
-        }
-        Matrix view;
-
-        public Matrix Projection
-        {
-            get { return projection; }
-        }
-        Matrix projection;
-
-        public GraphicsDevice GraphicsDevice { get; private set; }
-
-        public FreeCamera(GraphicsDevice graphics) : this(graphics, Vector3.Zero, 10.0f, 20f) { }
-        public FreeCamera(GraphicsDevice graphics, Vector3 position) : this(graphics, position, 10.0f, 20f) { }
-        public FreeCamera(GraphicsDevice graphics, Vector3 position, float speed, float turnSpeed)
-        {
-            if (graphics == null)
-                throw new ArgumentNullException("graphics");
             this.Speed = speed;
+            this.PrecisionModeSpeed = speed / 5;
             this.TurnSpeed = turnSpeed;
             this.Position = position;
-            this.GraphicsDevice = graphics;
+            this.ForwardKey = Keys.W;
+            this.BackwardKey = Keys.S;
+            this.LeftKey = Keys.A;
+            this.RightKey = Keys.D;
+            this.UpKey = Keys.X;
+            this.DownKey = Keys.Z;
         }
 
-        public void Update(TimeSpan elapsedTime)
+        public override void Update(TimeSpan elapsedTime)
         {
             // Assume screen size always greater then 100
-            float delta = (float)elapsedTime.TotalSeconds;
-            Vector2 move = Vector2.Zero;
-
+            var delta = (float)elapsedTime.TotalSeconds;
+            var move = Vector2.Zero;
+            var speed = Speed;
+            
 #if !SILVERLIGHT
             GamePadState gamePad = GamePad.GetState(PlayerIndex.One);
             if (gamePad.IsConnected)
@@ -86,42 +82,37 @@
 
                 if (mouse.RightButton == ButtonState.Pressed)
                 {
-                    angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * 0.01f); // pitch
-                    angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * 0.01f); // yaw
+                    angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * delta); // pitch
+                    angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * delta); // yaw
                 }
 
                 mouseDown.X = mouse.X;
                 mouseDown.Y = mouse.Y;
 
-#if !SILVERLIGHT
-                if (keyboard.IsKeyDown(Keys.LeftShift))
-                    delta /= 3;
-#endif
-                if (keyboard.IsKeyDown(Keys.W))
-                    move.X += Speed * delta;
+                if (keyboard.IsKeyDown(PrecisionModeKey))
+                    speed = PrecisionModeSpeed;
 
-                if (keyboard.IsKeyDown(Keys.S))
-                    move.X -= Speed * delta;
-
-                if (keyboard.IsKeyDown(Keys.A))
-                    move.Y += Speed * delta;
-
-                if (keyboard.IsKeyDown(Keys.D))
+                if (keyboard.IsKeyDown(ForwardKey))
+                    move.X += speed * delta;
+                if (keyboard.IsKeyDown(BackwardKey))
+                    move.X -= speed * delta;
+                if (keyboard.IsKeyDown(LeftKey))
+                    move.Y += speed * delta;
+                if (keyboard.IsKeyDown(RightKey))
                     move.Y -= Speed * delta;
 
-                if (keyboard.IsKeyDown(Keys.Z))
-                    position += Vector3.Down * Speed * delta;
-
-                if (keyboard.IsKeyDown(Keys.X))
-                    position += Vector3.Up * Speed * delta;
+                if (keyboard.IsKeyDown(DownKey))
+                    position += Vector3.Down * speed * delta;
+                if (keyboard.IsKeyDown(UpKey))
+                    position += Vector3.Up * speed * delta;
             }
 
-            Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, GraphicsDevice.Viewport.AspectRatio, 1, 1000, out projection);
-            Matrix.CreateFromYawPitchRoll(-angle.Y, -angle.X, -angle.Z, out view);
-            view.M41 = position.X += view.Forward.X * move.X + view.Left.X * move.Y;
-            view.M42 = position.Y += view.Forward.Y * move.X + view.Left.Y * move.Y;
-            view.M43 = position.Z += view.Forward.Z * move.X + view.Left.Z * move.Y;
-            Matrix.Invert(ref view, out view);
+            Matrix.CreateFromYawPitchRoll(-angle.Y, -angle.X, -angle.Z, out transform);
+            transform.M41 = position.X += transform.Forward.X * move.X + transform.Left.X * move.Y;
+            transform.M42 = position.Y += transform.Forward.Y * move.X + transform.Left.Y * move.Y;
+            transform.M43 = position.Z += transform.Forward.Z * move.X + transform.Left.Z * move.Y;
+            
+            NotifyTransformChanged();
         }
     }
 }

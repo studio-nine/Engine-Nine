@@ -92,14 +92,15 @@
     </Compile>
     <Compile Include="AmbientLight.cs" />
     <Compile Include="Animations\BoneAnimation.cs" />
-    <Compile Include="Animations\BoneAnimationControllers.cs" />
+    <Compile Include="Animations\BoneAnimationClip.cs" />
+    <Compile Include="Animations\BoneAnimationController.cs" />
+    <Compile Include="Animations\LookAtController.cs" />
     <Compile Include="Animations\SpriteAnimation.cs" />
+    <Compile Include="Cameras\BirdEyeCamera.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Cameras\FreeCamera.cs" />
     <Compile Include="Cameras\ModelViewerCamera.cs" />
-    <Compile Include="Cameras\QuaternionCamera.cs" />
     <Compile Include="Cameras\ScreenCamera.cs" />
-    <Compile Include="Cameras\TopDownEditorCamera.cs" />
     <Compile Include="ColorMatrix.cs" />
     <Compile Include="Components\GameWindow.cs" />
     <Compile Include="Components\DrawableGameComponent.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Drawing\PassGroup.cs" />
     <Compile Include="Drawing\RenderTargetPool.cs" />
     <Compile Include="Drawing\Settings.cs" />
+    <Compile Include="Drawing\SpritePass.cs" />
     <Compile Include="Drawing\Statistics.cs" />
     <Compile Include="Drawing\TextureCollection.cs" />
     <Compile Include="EffectExtensions.cs">
@@ -252,6 +254,7 @@
     <Compile Include="SurfaceGeometry.cs" />
     <Compile Include="SurfacePatch.cs" />
     <Compile Include="SurfacePatchCollection.cs" />
+    <Compile Include="TextSprite.cs" />
     <Compile Include="TextureList.cs" />
     <Compile Include="TextureTransform.cs" />
     <Compile Include="TextureUsage.cs" />

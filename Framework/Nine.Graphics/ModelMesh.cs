@@ -41,7 +41,7 @@ namespace Nine.Graphics
         {
             get { return worldTransform; }
         }
-        private Matrix worldTransform = Matrix.Identity;
+        internal Matrix worldTransform = Matrix.Identity;
 
         /// <summary>
         /// Visibility can be controlled by both ModelPart and Model.
@@ -197,8 +197,6 @@ namespace Nine.Graphics
         public void OnAddedToView(DrawingContext context)
         {
             model.insideViewFrustum = true;
-            model.UpdateBoneTransforms();
-
             if ((materialForRendering = material) == null)
             {
                 var position = new Vector3();
@@ -234,12 +232,10 @@ namespace Nine.Graphics
         {
             var graphics = context.graphics;
             var applyTexture = material != this.material && (UseModelTextures ?? model.UseModelTextures);
-
+            
             if (applyTexture)
                 ApplyTextures(material);
             ApplySkinTransform(material);
-
-            model.UpdateBoneTransforms();
 
             material.world = worldTransform;
             material.BeginApply(context);
@@ -262,20 +258,6 @@ namespace Nine.Graphics
             // aren't likely to be used by other object types, so don't restore them.
             if (applyTexture)
                 material.texture = null;
-        }
-
-        internal void UpdateTransform()
-        {
-            // Manually do some optimization here.
-            if (model.isAbsoluteTransformDirty)
-            {
-                Matrix absoluteTransform = model.AbsoluteTransform;
-                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref absoluteTransform, out worldTransform);
-            }
-            else
-            {
-                Matrix.Multiply(ref model.BoneTransforms[parentBoneIndex], ref model.absoluteTransform, out worldTransform);
-            }
         }
 
         internal void ApplyTextures(Material material)

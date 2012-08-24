@@ -94,14 +94,19 @@ namespace Test
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.Camera = new FreeCamera(GraphicsDevice, new Vector3(0, 10, 40));
             drawingContext.Settings.BackgroundColor = Color.Gray;
-            drawingContext.Settings.DefaultFont = Content.Load<SpriteFont>("Consolas");
+            drawingContext.Settings.Font = Content.Load<SpriteFont>("Consolas");
             drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
 
             Window.Title = testGames[nextTest].GetType().Name;
 
             nextTest = (nextTest + 1) % testGames.Length;
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            scene.Update(gameTime.ElapsedGameTime);
+            base.Update(gameTime);
         }
 
         /// <summary>

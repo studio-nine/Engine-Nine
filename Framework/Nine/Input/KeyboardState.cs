@@ -34,49 +34,49 @@ namespace Microsoft.Xna.Framework.Input
         /// <summary>
         /// Returns the state of a particular key.
         /// </summary>
-        public KeyState this[Key key]
+        public KeyState this[Keys key]
         {
             get
             {
                 uint num;
-                switch ((Key) ((int) key >> 5))
+                switch ((Keys) ((int) key >> 5))
                 {
-                    case Key.None:
+                    case Keys.None:
                         {
                             num = currentState0;
                             break;
                         }
-                    case (Key) 1:
+                    case (Keys) 1:
                         {
                             num = currentState1;
                             break;
                         }
-                    case (Key) 2:
+                    case (Keys) 2:
                         {
                             num = currentState2;
                             break;
                         }
-                    case (Key)3:
+                    case (Keys)3:
                         {
                             num = currentState3;
                             break;
                         }
-                    case (Key)4:
+                    case (Keys)4:
                         {
                             num = currentState4;
                             break;
                         }
-                    case (Key)5:
+                    case (Keys)5:
                         {
                             num = currentState5;
                             break;
                         }
-                    case (Key)6:
+                    case (Keys)6:
                         {
                             num = currentState6;
                             break;
                         }
-                    case (Key)7:
+                    case (Keys)7:
                         {
                             num = currentState7;
                             break;
@@ -110,7 +110,7 @@ namespace Microsoft.Xna.Framework.Input
             stateMask6 = 4294967295u;
             stateMask7 = 4294967295u;
             KeyboardState keyboardState = default(KeyboardState);
-            foreach (Key key in Enum.GetValues(typeof(Key)))
+            foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
                 keyboardState.AddPressedKey(key);
             }
@@ -142,14 +142,14 @@ namespace Microsoft.Xna.Framework.Input
         /// <summary>
         /// Initializes a new instance of the KeyboardState class. 
         /// </summary>
-        public KeyboardState(params Key[] keys)
+        public KeyboardState(params Keys[] keys)
         {
             currentState0 = (currentState1 = (currentState2 = (currentState3 = (currentState4 = (currentState5 = (currentState6 = (currentState7 = 0u)))))));
             
             if (keys == null) 
                 return;
 
-            foreach (Key t in keys)
+            foreach (Keys t in keys)
             {
                 AddPressedKey(t);
             }
@@ -159,7 +159,7 @@ namespace Microsoft.Xna.Framework.Input
 
         #region Methods
 
-        internal void AddPressedKey(Key key)
+        internal void AddPressedKey(Keys key)
         {
             int keyValue = (int) key;
             uint num = 1u << keyValue;
@@ -212,7 +212,7 @@ namespace Microsoft.Xna.Framework.Input
             }
         }
 
-        internal void RemovePressedKey(Key key)
+        internal void RemovePressedKey(Keys key)
         {
             int keyValue = (int) key;
             uint num = 1u << keyValue;
@@ -268,7 +268,7 @@ namespace Microsoft.Xna.Framework.Input
         /// <summary>
         /// Returns whether a specified key is currently being pressed.
         /// </summary>
-        public bool IsKeyDown(Key key)
+        public bool IsKeyDown(Keys key)
         {
             return this[key] == KeyState.Down;
         }
@@ -276,7 +276,7 @@ namespace Microsoft.Xna.Framework.Input
         /// <summary>
         /// Returns whether a specified key is currently not pressed.
         /// </summary>
-        public bool IsKeyUp(Key key)
+        public bool IsKeyUp(Keys key)
         {
             return this[key] == KeyState.Up;
         }
@@ -284,7 +284,7 @@ namespace Microsoft.Xna.Framework.Input
         /// <summary>
         /// Gets an array of values that correspond to the keyboard keys that are currently being pressed.
         /// </summary>
-        public Key[] GetPressedKeys()
+        public Keys[] GetPressedKeys()
         {
             int num = 0;
             CheckPressedKeys(currentState0, 0, null, ref num);
@@ -295,7 +295,7 @@ namespace Microsoft.Xna.Framework.Input
             CheckPressedKeys(currentState5, 0, null, ref num);
             CheckPressedKeys(currentState6, 0, null, ref num);
             CheckPressedKeys(currentState7, 0, null, ref num);
-            Key[] array = new Key[num];
+            Keys[] array = new Keys[num];
 
             if (num > 0)
             {
@@ -312,7 +312,7 @@ namespace Microsoft.Xna.Framework.Input
             return array;
         }
 
-        static void CheckPressedKeys(uint packedState, int packedOffset, Key[] pressedKeys, ref int index)
+        static void CheckPressedKeys(uint packedState, int packedOffset, Keys[] pressedKeys, ref int index)
         {
             if (packedState == 0u)
             {
@@ -324,7 +324,7 @@ namespace Microsoft.Xna.Framework.Input
                 {
                     if (pressedKeys != null)
                     {
-                        pressedKeys[index] = (Key)(packedOffset * 32 + i);
+                        pressedKeys[index] = (Keys)(packedOffset * 32 + i);
                     }
                     index++;
                 }

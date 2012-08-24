@@ -4,11 +4,12 @@ namespace Nine.Graphics.Cameras
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics;
+    using Nine.Graphics.Drawing;
 
     /// <summary>
     /// Defines a camera that can be attacked to a <see cref="Transformable"/>.
     /// </summary>
-    public class Camera : Transformable, ICamera
+    public class Camera : Transformable, ICamera, ISceneObject, Nine.IUpdateable
     {
         #region View
         private bool viewMatrixNeedsUpdate;
@@ -130,7 +131,7 @@ namespace Nine.Graphics.Cameras
             get { return viewport; }
             set { viewport = value; projectionMatrixNeedsUpdate = true; }
         }
-        private Viewport? viewport;
+        internal Viewport? viewport;
 
         /// <summary>
         /// Gets or sets the scale factor that is applied to the viewport.
@@ -147,7 +148,12 @@ namespace Nine.Graphics.Cameras
         /// <summary>
         /// Gets a value indicating whether this <see cref="Camera"/> is enabled.
         /// </summary>
-        public bool Enabled { get; private set; }
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+        internal bool enabled = true;
 
         /// <summary>
         /// Gets the graphics device.
@@ -164,9 +170,34 @@ namespace Nine.Graphics.Cameras
             if (graphics == null)
                 throw new ArgumentNullException("graphics");
 
-            Enabled = true;
             GraphicsDevice = graphics;            
             projectionMatrixNeedsUpdate = true;
+        }
+
+        void Nine.IUpdateable.Update(TimeSpan elapsedTime)
+        {
+            if (Enabled)
+                Update(elapsedTime);
+        }
+
+        /// <summary>
+        /// Updates this camera.
+        /// </summary>
+        public virtual void Update(TimeSpan elapsedTime)
+        {
+
+        }
+
+        void ISceneObject.OnAdded(DrawingContext context)
+        {
+            if (context.camera == null)
+                context.camera = this;
+        }
+
+        void ISceneObject.OnRemoved(DrawingContext context)
+        {
+            if (context.camera == this)
+                context.camera = null;
         }
         #endregion
     }

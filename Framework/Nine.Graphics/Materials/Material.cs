@@ -265,7 +265,7 @@ namespace Nine.Graphics.Materials
                 effect.DirectionalLight1.SpecularColor = light1.SpecularColor;
             }
 
-            if (effect.DirectionalLight1.Enabled = light2.Enabled)
+            if (effect.DirectionalLight2.Enabled = light2.Enabled)
             {
                 effect.DirectionalLight2.Direction = light2.Direction;
                 effect.DirectionalLight2.DiffuseColor = light2.DiffuseColor;

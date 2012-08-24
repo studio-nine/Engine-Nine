@@ -133,14 +133,17 @@ namespace Nine
                     }
                 }
 
-                if (!hasItem && invocationMember == null)
+                if (!hasItem)
                 {
-                    throw new ArgumentException(string.Format(
-                        "Type {0} does not have a valid public property or field {1}.", targetType.FullName, currentProperty));
-                }
+                    if (invocationMember == null)
+                    {
+                        throw new ArgumentException(string.Format(
+                            "Type {0} does not have a valid public property or field {1}.", targetType.FullName, currentProperty));
+                    }
 
-                if (dot >= 0)
-                    invocationTarget = GetValue(target, invocationMember);
+                    if (dot >= 0)
+                        invocationTarget = GetValue(target, invocationMember);
+                }
             }
 
             if (dot >= 0)

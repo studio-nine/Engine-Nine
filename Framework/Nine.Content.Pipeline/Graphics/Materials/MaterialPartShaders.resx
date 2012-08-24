@@ -178,12 +178,6 @@
   <data name="PointLight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\pointlight.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="RadicalBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>shaders\radicalblur.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ScreenEffect" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>shaders\screeneffect.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="ShadowMap" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>shaders\shadowmap.fragment;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

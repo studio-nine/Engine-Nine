@@ -83,6 +83,7 @@
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Animations\AnimationGroup.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
+    <Compile Include="Animations\AnimationReference.cs" />
     <Compile Include="Animations\AnimationSequence.cs" />
     <Compile Include="Animations\DelayAnimation.cs" />
     <Compile Include="Animations\IAnimation.cs" />
@@ -105,7 +106,7 @@
     <Compile Include="Components\IUpdateable.cs" />
     <Compile Include="Components\ZipContentmanager.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="ContentManagerExtensions.cs" />
+    <Compile Include="ContentLoader.cs" />
     <Compile Include="ContentSerializableAttribute.cs" />
     <Compile Include="Content\AttachableMemberIdentifierExtensions.cs" />
     <Compile Include="Content\AttachableMemberIdentifierReader.cs" />
@@ -113,11 +114,13 @@
     <Compile Include="AttachedPropertyStore.cs" />
     <Compile Include="DependencyGraph.cs" />
     <Compile Include="Group.cs" />
+    <Compile Include="Input\Keys.cs" />
     <Compile Include="Input\IInputSource.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\InputComponent.cs" />
     <Compile Include="Input\InputEventArgs.cs" />
     <Compile Include="Input\XnaInputSource.cs" />
+    <Compile Include="Instance.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="QuadTreeSceneManager.cs" />
     <Compile Include="RayExtensions.cs" />

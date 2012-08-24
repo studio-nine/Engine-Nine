@@ -29,14 +29,18 @@ namespace Nine.Graphics.Drawing
         internal GraphicsDevice graphics;
 
         /// <summary>
-        /// Gets or sets the active camera.
+        /// Gets or sets the active camera of the current drawing frustum.
         /// </summary>
+        /// <remarks>
+        /// This camera will be initialized to first camera found in the scene.
+        /// If no cameras are found, then a default free camera is used.
+        /// </remarks>
         public ICamera Camera
         {
             get { return camera; }
             set { camera = value; }
         }
-        private ICamera camera;
+        internal ICamera camera;
         
         /// <summary>
         /// Gets the graphics settings
@@ -383,7 +387,7 @@ namespace Nine.Graphics.Drawing
         /// </summary>
         public void Draw(TimeSpan elapsedTime)
         {
-            var activeCamera = Camera;
+            var activeCamera = camera;
             Draw(elapsedTime, activeCamera.View, activeCamera.Projection);
         }
 

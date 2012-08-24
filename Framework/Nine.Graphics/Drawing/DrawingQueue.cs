@@ -13,8 +13,8 @@ namespace Nine.Graphics.Drawing
     /// </summary>
     class DrawingQueue
     {
-        private MaterialSortComparer materialSortComparer;
-        private ViewDistanceSortComparer viewDistanceSortComparer;
+        private MaterialSortComparer materialSortComparer = new MaterialSortComparer();
+        private ViewDistanceSortComparer viewDistanceSortComparer = new ViewDistanceSortComparer();
 
         public int Count;
         public DrawingQueueEntry[] Elements = new DrawingQueueEntry[32];
@@ -73,7 +73,7 @@ namespace Nine.Graphics.Drawing
         {
             public int Compare(DrawingQueueEntry x, DrawingQueueEntry y)
             {
-                return x.ViewDistanceSq.CompareTo(y.ViewDistanceSq);
+                return y.ViewDistanceSq.CompareTo(x.ViewDistanceSq);
             }
         }
     }

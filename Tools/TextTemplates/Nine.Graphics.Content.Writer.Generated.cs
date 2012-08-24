@@ -11,51 +11,6 @@
 namespace Nine.Content.Pipeline.Animations
 {
     /// <summary>
-    /// Content writer for <c>AvatarBoneAnimation</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
-    partial class AvatarBoneAnimationWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Animations.AvatarBoneAnimation>
-    {
-        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Animations.AvatarBoneAnimation value)
-        {
-            WriteObject(output, value, "CurrentPosition", value.CurrentPosition);
-            {
-                output.Write(value.Controllers.Count);
-                for (var i = 0; i < value.Controllers.Count; ++i)
-                    output.WriteObject(value.Controllers[i]);
-            }
-            output.Write(value.BlendEnabled);
-            WriteObject(output, value, "BlendDuration", value.BlendDuration);
-            WriteObject(output, value, "KeyController", value.KeyController);
-            output.Write(value.IsSychronized);
-            WriteObject(output, value, "Name", value.Name);
-            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
-        }
-        
-        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
-        {
-            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
-            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
-            if (serializationData.ContainsKey(propertyInstance))
-                output.WriteObject(serializationData[propertyInstance]);
-            else
-                output.WriteObject(value);
-        }
-
-        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Animations.AvatarBoneAnimationReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-
-        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
-        {
-            return "Nine.Animations.AvatarBoneAnimation, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
-        }
-    }
-    /// <summary>
     /// Content writer for <c>BoneAnimation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -419,6 +374,7 @@ namespace Nine.Content.Pipeline.Graphics
         {
             output.Write(value.Visible);
             WriteObject(output, value, "Material", value.Material);
+            WriteObject(output, value, "Texture", value.Texture);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
         }
@@ -538,6 +494,7 @@ namespace Nine.Content.Pipeline.Graphics
             WriteObject(output, value, "instanceTransforms", value.instanceTransforms);
             output.Write(value.Visible);
             WriteObject(output, value, "Template", value.Template);
+            output.Write(value.BoundingBoxPadding);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -591,6 +548,7 @@ namespace Nine.Content.Pipeline.Graphics
             output.Write(value.ReceiveShadow);
             output.Write(value.MaxReceivedShadows);
             output.Write(value.MultiPassShadowEnabled);
+            output.WriteObject(value.OrientedBoundingBox);
             WriteObject(output, value, "SharedSkeleton", value.SharedSkeleton);
             {
                 output.Write(value.Attachments.Count);
@@ -1159,6 +1117,58 @@ namespace Nine.Content.Pipeline.Graphics
 namespace Nine.Content.Pipeline.Graphics.Cameras
 {
     /// <summary>
+    /// Content writer for <c>BirdEyeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class BirdEyeCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.BirdEyeCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.BirdEyeCamera value)
+        {
+            output.Write(value.Yaw);
+            output.Write(value.Pitch);
+            output.Write(value.Radius);
+            output.Write(value.MinRadius);
+            output.Write(value.MaxRadius);
+            output.Write(value.WheelSpeed);
+            output.Write(value.Speed);
+            WriteObject(output, value, "RotateButton", value.RotateButton);
+            WriteObject(output, value, "TranslateButton", value.TranslateButton);
+            output.Write(value.LookAt);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.BirdEyeCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.BirdEyeCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
     /// Content writer for <c>Camera</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
@@ -1174,6 +1184,7 @@ namespace Nine.Content.Pipeline.Graphics.Cameras
             output.Write(value.FieldOfView);
             output.WriteObject(value.Viewport);
             WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
             output.Write(value.Transform);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
@@ -1197,6 +1208,156 @@ namespace Nine.Content.Pipeline.Graphics.Cameras
         public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
         {
             return "Nine.Graphics.Cameras.Camera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>FreeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class FreeCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.FreeCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.FreeCamera value)
+        {
+            output.Write(value.Angle);
+            output.Write(value.Position);
+            output.Write(value.TurnSpeed);
+            output.Write(value.Speed);
+            output.Write(value.PrecisionModeSpeed);
+            WriteObject(output, value, "ForwardKey", value.ForwardKey);
+            WriteObject(output, value, "BackwardKey", value.BackwardKey);
+            WriteObject(output, value, "LeftKey", value.LeftKey);
+            WriteObject(output, value, "RightKey", value.RightKey);
+            WriteObject(output, value, "UpKey", value.UpKey);
+            WriteObject(output, value, "DownKey", value.DownKey);
+            WriteObject(output, value, "PrecisionModeKey", value.PrecisionModeKey);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.FreeCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.FreeCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ModelViewerCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ModelViewerCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.ModelViewerCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.ModelViewerCamera value)
+        {
+            output.Write(value.Radius);
+            output.Write(value.MinRadius);
+            output.Write(value.MaxRadius);
+            output.Write(value.WheelSpeed);
+            output.Write(value.Center);
+            output.Write(value.MouseWheelEnabled);
+            WriteObject(output, value, "RotateButton", value.RotateButton);
+            output.Write(value.NearPlane);
+            output.Write(value.FarPlane);
+            output.Write(value.FieldOfView);
+            output.WriteObject(value.Viewport);
+            WriteObject(output, value, "ViewportScale", value.ViewportScale);
+            output.Write(value.Enabled);
+            output.Write(value.Transform);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ModelViewerCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ModelViewerCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+    }
+    /// <summary>
+    /// Content writer for <c>ScreenCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Writer.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    [Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter]
+    partial class ScreenCameraWriter : Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentTypeWriter<Nine.Graphics.Cameras.ScreenCamera>
+    {
+        protected override void Write(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, Nine.Graphics.Cameras.ScreenCamera value)
+        {
+            output.Write(value.Enabled);
+            WriteObject(output, value, "CoordinateType", value.CoordinateType);
+            output.Write(value.Zoom);
+            output.Write(value.MinZoom);
+            output.Write(value.MaxZoom);
+            output.Write(value.X);
+            output.Write(value.Y);
+            output.Write(value.Z);
+            output.Write(value.NearClip);
+            output.Write(value.FarClip);
+            output.Write(value.WheelSpeed);
+            output.Write(value.Position);
+            WriteObject(output, value, "Name", value.Name);
+            WriteObject(output, value, "AttachedProperties", value.AttachedProperties);
+        }
+        
+        private void WriteObject(Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler.ContentWriter output, System.Object parent, string member, System.Object value)
+        {
+            var propertyInstance = new Nine.Content.Pipeline.Xaml.PropertyInstance(parent, member);
+            var serializationData = Nine.Content.Pipeline.Xaml.XamlSerializer.SerializationData;
+            if (serializationData.ContainsKey(propertyInstance))
+                output.WriteObject(serializationData[propertyInstance]);
+            else
+                output.WriteObject(value);
+        }
+
+        public override string GetRuntimeReader(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ScreenCameraReader, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
+        }
+
+        public override string GetRuntimeType(Microsoft.Xna.Framework.Content.Pipeline.TargetPlatform targetPlatform)
+        {
+            return "Nine.Graphics.Cameras.ScreenCamera, Nine.Graphics, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ed8336b5652212a9";
         }
     }
 }
@@ -2302,7 +2463,7 @@ namespace Nine.Content.Pipeline.Graphics.Materials.MaterialParts
             output.Write(value.ShadowColor);
             output.Write(value.LightViewProjection);
             WriteObject(output, value, "ShadowMap", value.ShadowMap);
-            output.Write(value.SampleCount);
+            output.Write(value.FilterSize);
             output.Write(value.Seed);
             WriteObject(output, value, "Name", value.Name);
             WriteObject(output, value, "AttachedProperties", value.AttachedProperties);

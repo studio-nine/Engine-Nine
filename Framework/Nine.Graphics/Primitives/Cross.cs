@@ -54,7 +54,7 @@
                 for (int x = 0; x < 2; ++x)
                 {
                     position.X = x - 0.5f;
-                    position.Y = y / (tessellation - 1);
+                    position.Y = 1.0f * y / (tessellation - 1);
                     position.Z = 0;
 
                     uv.X = 1.0f * x;
@@ -69,7 +69,7 @@
                 for (int z = 0; z < 2; z++)
                 {
                     position.Z = z - 0.5f;
-                    position.Y = y / (tessellation - 1);
+                    position.Y = 1.0f * y / (tessellation - 1);
                     position.X = 0;
 
                     uv.X = 1.0f * z;
@@ -81,21 +81,21 @@
 
             for (int y = 0; y < tessellation - 1; ++y)
             {
-                AddIndex((ushort)(y * tessellation));
-                AddIndex((ushort)((y + 1) * tessellation + 1));
-                AddIndex((ushort)(y * tessellation + 1));
+                AddIndex((ushort)(y * 2));
+                AddIndex((ushort)((y + 1) * 2 + 1));
+                AddIndex((ushort)(y * 2 + 1));
 
-                AddIndex((ushort)(y * tessellation));
-                AddIndex((ushort)((y + 1) * tessellation));
-                AddIndex((ushort)((y + 1) * tessellation + 1));
+                AddIndex((ushort)(y * 2));
+                AddIndex((ushort)((y + 1) * 2));
+                AddIndex((ushort)((y + 1) * 2 + 1));
 
-                AddIndex((ushort)(tessellation * 2 + y * tessellation));
-                AddIndex((ushort)(tessellation * 2 + (y + 1) * tessellation + 1));
-                AddIndex((ushort)(tessellation * 2 + y * tessellation + 1));
+                AddIndex((ushort)(tessellation * 2 + y * 2));
+                AddIndex((ushort)(tessellation * 2 + (y + 1) * 2 + 1));
+                AddIndex((ushort)(tessellation * 2 + y * 2 + 1));
 
-                AddIndex((ushort)(tessellation * 2 + y * tessellation));
-                AddIndex((ushort)(tessellation * 2 + (y + 1) * tessellation));
-                AddIndex((ushort)(tessellation * 2 + (y + 1) * tessellation + 1));
+                AddIndex((ushort)(tessellation * 2 + y * 2));
+                AddIndex((ushort)(tessellation * 2 + (y + 1) * 2));
+                AddIndex((ushort)(tessellation * 2 + (y + 1) * 2 + 1));
             }
 
             tessellation--;

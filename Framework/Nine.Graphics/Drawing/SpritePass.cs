@@ -42,6 +42,7 @@ namespace Nine.Graphics.Drawing
             }
 
             isDrawing = false;
+            currentBlendState = null;
 
             DrawSprites(context, negativeSprites);
             DrawSprites(context, zeroOrderSprites);
@@ -82,6 +83,7 @@ namespace Nine.Graphics.Drawing
                         spriteBatch.Begin(SpriteSortMode.Deferred, currentBlendState = blendState);
                         isDrawing = true;
                     }
+                    sprite.Draw(context, spriteBatch);
                 }
             }
         }

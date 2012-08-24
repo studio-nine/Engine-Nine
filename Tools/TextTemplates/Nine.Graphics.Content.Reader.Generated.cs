@@ -11,32 +11,6 @@
 namespace Nine.Animations
 {
     /// <summary>
-    /// Content reader for <c>AvatarBoneAnimation</c>.
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
-    [System.Diagnostics.DebuggerStepThrough()]
-    [System.Runtime.CompilerServices.CompilerGenerated()]
-    partial class AvatarBoneAnimationReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Animations.AvatarBoneAnimation>
-    {
-        protected override Nine.Animations.AvatarBoneAnimation Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Animations.AvatarBoneAnimation existingInstance)
-        {
-            Group.EnsureDefaultServiceProvider(input.ContentManager);
-            existingInstance.CurrentPosition = input.ReadObject<System.TimeSpan>();
-            {
-                var count = input.ReadInt32();
-                for (var i = 0; i < count; ++i)
-                    existingInstance.Controllers.Add(input.ReadObject<Nine.Animations.IBoneAnimationController>());
-            }
-            existingInstance.BlendEnabled = input.ReadBoolean();
-            existingInstance.BlendDuration = input.ReadObject<System.TimeSpan>();
-            existingInstance.KeyController = input.ReadObject<Nine.Animations.ITimelineAnimation>();
-            existingInstance.IsSychronized = input.ReadBoolean();
-            existingInstance.Name = input.ReadObject<System.String>();
-            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
-            return existingInstance;
-        }
-    }
-    /// <summary>
     /// Content reader for <c>BoneAnimation</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -294,6 +268,7 @@ namespace Nine.Graphics
             }
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Material = input.ReadObject<Nine.Graphics.Materials.Material>();
+            existingInstance.Texture = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -370,6 +345,7 @@ namespace Nine.Graphics
             existingInstance.instanceTransforms = input.ReadObject<Microsoft.Xna.Framework.Matrix[]>();
             existingInstance.Visible = input.ReadBoolean();
             existingInstance.Template = input.ReadObject<Nine.Graphics.ISupportInstancing>();
+            existingInstance.BoundingBoxPadding = input.ReadVector3();
             existingInstance.Transform = input.ReadMatrix();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
@@ -414,6 +390,7 @@ namespace Nine.Graphics
             existingInstance.ReceiveShadow = input.ReadBoolean();
             existingInstance.MaxReceivedShadows = input.ReadInt32();
             existingInstance.MultiPassShadowEnabled = input.ReadBoolean();
+            existingInstance.OrientedBoundingBox = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.BoundingBox>>();
             existingInstance.SharedSkeleton = input.ReadObject<Nine.Graphics.Skeleton>();
             {
                 var count = input.ReadInt32();
@@ -798,6 +775,49 @@ namespace Nine.Graphics
 namespace Nine.Graphics.Cameras
 {
     /// <summary>
+    /// Content reader for <c>BirdEyeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class BirdEyeCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.BirdEyeCamera>
+    {
+        protected override Nine.Graphics.Cameras.BirdEyeCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.BirdEyeCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new BirdEyeCamera(graphicsDevice);
+            }
+            existingInstance.Yaw = input.ReadSingle();
+            existingInstance.Pitch = input.ReadSingle();
+            existingInstance.Radius = input.ReadSingle();
+            existingInstance.MinRadius = input.ReadSingle();
+            existingInstance.MaxRadius = input.ReadSingle();
+            existingInstance.WheelSpeed = input.ReadSingle();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.RotateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.TranslateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.LookAt = input.ReadVector3();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
     /// Content reader for <c>Camera</c>.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
@@ -823,7 +843,131 @@ namespace Nine.Graphics.Cameras
             existingInstance.FieldOfView = input.ReadSingle();
             existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
             existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
             existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>FreeCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class FreeCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.FreeCamera>
+    {
+        protected override Nine.Graphics.Cameras.FreeCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.FreeCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new FreeCamera(graphicsDevice);
+            }
+            existingInstance.Angle = input.ReadVector3();
+            existingInstance.Position = input.ReadVector3();
+            existingInstance.TurnSpeed = input.ReadSingle();
+            existingInstance.Speed = input.ReadSingle();
+            existingInstance.PrecisionModeSpeed = input.ReadSingle();
+            existingInstance.ForwardKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.BackwardKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.LeftKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.RightKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.UpKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.DownKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.PrecisionModeKey = input.ReadObject<Microsoft.Xna.Framework.Input.Keys>();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ModelViewerCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ModelViewerCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.ModelViewerCamera>
+    {
+        protected override Nine.Graphics.Cameras.ModelViewerCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.ModelViewerCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ModelViewerCamera(graphicsDevice);
+            }
+            existingInstance.Radius = input.ReadSingle();
+            existingInstance.MinRadius = input.ReadSingle();
+            existingInstance.MaxRadius = input.ReadSingle();
+            existingInstance.WheelSpeed = input.ReadSingle();
+            existingInstance.Center = input.ReadVector3();
+            existingInstance.MouseWheelEnabled = input.ReadBoolean();
+            existingInstance.RotateButton = input.ReadObject<Nine.MouseButtons>();
+            existingInstance.NearPlane = input.ReadSingle();
+            existingInstance.FarPlane = input.ReadSingle();
+            existingInstance.FieldOfView = input.ReadSingle();
+            existingInstance.Viewport = input.ReadObject<System.Nullable<Microsoft.Xna.Framework.Graphics.Viewport>>();
+            existingInstance.ViewportScale = input.ReadObject<Nine.BoundingRectangle>();
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.Transform = input.ReadMatrix();
+            existingInstance.Name = input.ReadObject<System.String>();
+            existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
+            return existingInstance;
+        }
+    }
+    /// <summary>
+    /// Content reader for <c>ScreenCamera</c>.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("Content.Reader.tt", "1.1.0.0")]
+    [System.Diagnostics.DebuggerStepThrough()]
+    [System.Runtime.CompilerServices.CompilerGenerated()]
+    partial class ScreenCameraReader : Microsoft.Xna.Framework.Content.ContentTypeReader<Nine.Graphics.Cameras.ScreenCamera>
+    {
+        protected override Nine.Graphics.Cameras.ScreenCamera Read(Microsoft.Xna.Framework.Content.ContentReader input, Nine.Graphics.Cameras.ScreenCamera existingInstance)
+        {
+            Group.EnsureDefaultServiceProvider(input.ContentManager);
+            if (existingInstance == null)
+            {
+#if SILVERLIGHT
+                var graphicsDevice = System.Windows.Graphics.GraphicsDeviceManager.Current.GraphicsDevice;
+#else
+                var graphicsDevice = ((Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService)input.ContentManager.ServiceProvider.GetService(
+                                typeof(Microsoft.Xna.Framework.Graphics.IGraphicsDeviceService))).GraphicsDevice;
+#endif
+                existingInstance = new ScreenCamera(graphicsDevice);
+            }
+            existingInstance.Enabled = input.ReadBoolean();
+            existingInstance.CoordinateType = input.ReadObject<Nine.Graphics.Cameras.ScreenCameraCoordinate>();
+            existingInstance.Zoom = input.ReadSingle();
+            existingInstance.MinZoom = input.ReadSingle();
+            existingInstance.MaxZoom = input.ReadSingle();
+            existingInstance.X = input.ReadSingle();
+            existingInstance.Y = input.ReadSingle();
+            existingInstance.Z = input.ReadSingle();
+            existingInstance.NearClip = input.ReadSingle();
+            existingInstance.FarClip = input.ReadSingle();
+            existingInstance.WheelSpeed = input.ReadSingle();
+            existingInstance.Position = input.ReadVector2();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();
             return existingInstance;
@@ -1536,7 +1680,7 @@ namespace Nine.Graphics.Materials.MaterialParts
             existingInstance.ShadowColor = input.ReadVector3();
             existingInstance.LightViewProjection = input.ReadMatrix();
             existingInstance.ShadowMap = input.ReadObject<Microsoft.Xna.Framework.Graphics.Texture2D>();
-            existingInstance.SampleCount = input.ReadInt32();
+            existingInstance.FilterSize = input.ReadInt32();
             existingInstance.Seed = input.ReadInt32();
             existingInstance.Name = input.ReadObject<System.String>();
             existingInstance.AttachedProperties = input.ReadObject<System.Collections.Generic.Dictionary<System.Xaml.AttachableMemberIdentifier, System.Object>>();

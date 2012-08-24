@@ -12,9 +12,10 @@
 
     <InstancedModel Transform.Position="-64, 0, -64">
         <DistributionMap.DistributionMap>
-            <DistributionMap Step="0.25" Density="10000" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
+            <DistributionMap Step="0.25" RandomizeRotation="True" VerticalScale="0.5~2" HorizontalScale="0.6~1.4"
+                             Density="10000" Texture="{ExternalReference ../../Content/Terrain/2.bmp}" />
         </DistributionMap.DistributionMap>
-        <Cross>
+        <Cross Tessellation="2">
             <MaterialGroup Texture="{ContentReference ../Textures/fgrass}" TwoSided="True">
                 <!-- 
                     Seting the ShaderUsages property to Depth to indicate that this CustomMaterialPart will be

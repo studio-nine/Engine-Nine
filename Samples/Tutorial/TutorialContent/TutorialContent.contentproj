@@ -222,9 +222,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\01. Empty Scene.xaml">
+    <None Include="Tutorials\01. Hello World.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <Name>01. Empty Scene</Name>
+      <Name>01. Hello World</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
@@ -342,13 +342,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\13. Components.xaml">
+    <Compile Include="Tutorials\13. Components.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>13. Components</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\12. Physics.xaml">
@@ -369,16 +369,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\14. Sprites.xaml">
+    <None Include="Tutorials\14. Sprites.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>14. Sprites</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </Compile>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Templates\" />
+    <Compile Include="Templates\Player.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Name>Player</Name>
+      <Importer>XamlImporter</Importer>
+      <Processor>DefaultContentProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
