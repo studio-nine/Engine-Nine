@@ -24,7 +24,7 @@ namespace Nine.Graphics.Materials
         partial void BeginApplyLocalParameters(DrawingContext context, DepthAndNormalMaterial previousMaterial)
         {
             if (previousMaterial == null || skinningEnabled != previousMaterial.skinningEnabled)
-                effect.shaderIndex.SetValue(skinningEnabled ? 1 : 0);
+                effect.CurrentTechnique = effect.Techniques[skinningEnabled ? 1 : 0];
             if (specularPower.HasValue)
                 effect.SpecularPower.SetValue(specularPower.Value);
             effect.World.SetValue(world);

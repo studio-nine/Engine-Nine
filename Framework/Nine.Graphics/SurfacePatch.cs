@@ -176,7 +176,7 @@
         /// <summary>
         /// Gets the triangle vertices of the target geometry.
         /// </summary>        
-        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        public bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
             if (this.geometryPositions == null)
             {
@@ -199,6 +199,7 @@
             }
             vertices = this.geometryPositions;
             indices = this.geometryIndices;
+            return true;
         }
         Vector3[] geometryPositions;
         ushort[] geometryIndices;

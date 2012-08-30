@@ -7,6 +7,7 @@ namespace Nine.Graphics.Materials
     using Nine.Graphics;
     using DirectionalLight = Nine.Graphics.DirectionalLight;
 
+    [NotContentSerializable]
     partial class RestoreDepthBufferMaterial
     {
         partial void ApplyGlobalParameters(DrawingContext context)

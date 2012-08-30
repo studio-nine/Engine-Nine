@@ -103,13 +103,29 @@ namespace Nine.Graphics.Materials
         /// </returns>
         protected void GetTextureParameter(string parameterName, out EffectParameter parameter, out int index)
         {
+            var parameters = MaterialGroup.Effect.Parameters;
+#if SILVERLIGHT
+            var param = parameters[string.Concat(parameterName, "Sampler", ParameterSuffix)];
+            if (param != null)
+            {
+                if (param.RegisterSet == EffectRegisterSet.Sampler &&
+                    param.SamplerIndex >= 0)
+                {
+                    parameter = param;
+                    index = param.SamplerIndex;
+                    return;
+                }
+            }
+
+            parameter = null;
+            index = -1;
+#else
             parameter = null;
             index = -1;
 #if WINDOWS
             if (IsContentBuild)
                 return;
 #endif
-            var parameters = MaterialGroup.Effect.Parameters;
             parameter = parameters[string.Concat(parameterName, ParameterSuffix)];
             if (parameter == null)
                 return;
@@ -129,22 +145,20 @@ namespace Nine.Graphics.Materials
 
             // If we cannot find the parameter, something must went wrong.
             throw new InvalidOperationException();
+#endif
         }
 
+#if !SILVERLIGHT
         private bool IsTexture(EffectParameter parameter)
         {
-#if SILVERLIGHT
-            // We cannot get the parameter type in silverlight, so using naming convensions.
-            return parameter.Name.StartsWith("t_");
-#else
             return parameter.ParameterClass == EffectParameterClass.Object && (
                    parameter.ParameterType == EffectParameterType.Texture ||
                    parameter.ParameterType == EffectParameterType.Texture1D ||
                    parameter.ParameterType == EffectParameterType.Texture2D ||
                    parameter.ParameterType == EffectParameterType.Texture3D ||
                    parameter.ParameterType == EffectParameterType.TextureCube);
-#endif
         }
+#endif
 
 #if !SILVERLIGHT
         /// <summary>
@@ -176,8 +190,8 @@ namespace Nine.Graphics.Materials
 
         private static System.Resources.ResourceManager ShaderResources;
         internal static bool IsContentBuild = false;
-        internal static bool IsContentRead = false;
 #endif
+        internal static bool IsContentRead = false;
 
         /// <summary>
         /// Gets the shader coder from the content pipeline assembly.

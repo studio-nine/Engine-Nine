@@ -55,14 +55,22 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             this.device = device;
             Name = name;
-            // Shaders
-            vertexShader = VertexShader.FromStream(device, vertexShaderCode);
-            pixelShader = PixelShader.FromStream(device, pixelShaderCode);
 
             // Assembly codes
             Dictionary<string, SilverlightEffectInternalParameter> tempParameters = new Dictionary<string, SilverlightEffectInternalParameter>();
-            ExtractConstantsRegisters(vertexShaderParameters, false, tempParameters);
-            ExtractConstantsRegisters(pixelShaderParameters, true, tempParameters);
+            
+            // Shaders
+            if (vertexShaderCode != null)
+            {
+                vertexShader = VertexShader.FromStream(device, vertexShaderCode);
+                ExtractConstantsRegisters(vertexShaderParameters, false, tempParameters);
+            }
+
+            if (pixelShaderCode != null)
+            {
+                pixelShader = PixelShader.FromStream(device, pixelShaderCode);
+                ExtractConstantsRegisters(pixelShaderParameters, true, tempParameters);
+            }
 
             parameters = new List<SilverlightEffectInternalParameter>(tempParameters.Values);
 
@@ -81,13 +89,13 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             // Shaders
             bool shadersChanged = false;
-            if (vertexShader != device.GetVertexShader())
+            if (vertexShader != null && vertexShader != device.GetVertexShader())
             {
                 device.SetVertexShader(vertexShader);
                 shadersChanged = true;
             }
 
-            if (pixelShader != device.GetPixelShader())
+            if (pixelShader != null && pixelShader != device.GetPixelShader())
             {
                 device.SetPixelShader(pixelShader);
                 shadersChanged = true;
@@ -98,7 +106,7 @@ namespace Microsoft.Xna.Framework.Graphics
             // force all registers as dirty.
             ParentEffect.Apply(shadersChanged);
 
-            foreach (SilverlightEffectInternalParameter effectParameter in Parameters)
+            foreach (var effectParameter in Parameters)
             {
                 effectParameter.Apply();
             }
@@ -126,37 +134,43 @@ namespace Microsoft.Xna.Framework.Graphics
 
         void ExtractConstantsRegisters(Stream stream, bool isForPixelShader, Dictionary<string, SilverlightEffectInternalParameter> tempParameters)
         {
-            XmlReader xmlReader = XmlReader.Create(stream);
-
-            while (xmlReader.ReadToFollowing("Constant"))
+            using (var reader = new BinaryReader(stream))
             {
-                xmlReader.ReadToDescendant("Name");
-                string name = xmlReader.ReadElementContentAsString();
+                var version = reader.ReadUInt32();
+                var creator = reader.ReadString();
+                var constantCount = reader.ReadUInt32();
 
-                SilverlightEffectInternalParameter effectParameter;
-                if (tempParameters.ContainsKey(name))
+                for (var i = 0; i < constantCount; ++i)
                 {
-                    effectParameter = tempParameters[name];
+                    var descCount = reader.ReadUInt32();
+                    if (descCount != 1)
+                        throw new NotSupportedException();
+
+                    var name = reader.ReadString();
+                    SilverlightEffectInternalParameter effectParameter;
+                    if (tempParameters.ContainsKey(name))
+                    {
+                        effectParameter = tempParameters[name];
+                    }
+                    else
+                    {
+                        effectParameter = new SilverlightEffectInternalParameter(device, name);
+                        tempParameters.Add(name, effectParameter);
+                    }
+
+                    effectParameter.RegisterSet = (EffectRegisterSet)reader.ReadInt32();
+                    effectParameter.SamplerIndex = reader.ReadInt32();
+
+                    if (isForPixelShader)
+                        effectParameter.PixelShaderRegisterIndex = reader.ReadInt32();
+                    else
+                        effectParameter.VertexShaderRegisterIndex = reader.ReadInt32();
+
+                    effectParameter.RegisterCount = Math.Max(effectParameter.RegisterCount, reader.ReadInt32());
+                    effectParameter.ParameterClass = (EffectParameterClass)reader.ReadUInt32();
+                    effectParameter.ParameterType = (EffectParameterType)reader.ReadUInt32();
                 }
-                else
-                {
-                    effectParameter = new SilverlightEffectInternalParameter(device, name);
-                    tempParameters.Add(name, effectParameter);
-                }
-
-                xmlReader.ReadToNextSibling("RegisterIndex");
-                int index = xmlReader.ReadElementContentAsInt();
-
-                if (isForPixelShader)
-                    effectParameter.PixelShaderRegisterIndex = index;
-                else
-                    effectParameter.VertexShaderRegisterIndex = index;
-
-                xmlReader.ReadToNextSibling("RegisterCount");
-                effectParameter.RegisterCount = Math.Max(effectParameter.RegisterCount, xmlReader.ReadElementContentAsInt());
             }
-
-            xmlReader.Close();
         }
 
         #endregion

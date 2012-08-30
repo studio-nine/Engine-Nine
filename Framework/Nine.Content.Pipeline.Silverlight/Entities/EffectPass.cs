@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SilverlightContentPipeline
+namespace Nine.Content.Pipeline.Silverlight
 {
     public class EffectPass
     {
@@ -51,20 +51,18 @@ namespace SilverlightContentPipeline
             {
                 RenderStates.Add(match.Groups["name"].Value.Trim().ToLower(), match.Groups["value"].Value.Trim());
             }
+            
+            if (RenderStates.ContainsKey("vertexshader"))
+            {
+                VertexShaderEntryPoint = ExtractEntryPoint(RenderStates["vertexshader"]);
+                RenderStates.Remove("vertexshader");
+            }
 
-            if (!RenderStates.ContainsKey("vertexshader"))
-                ExceptionHelper.RaiseException(String.Format("Invalid effect file. Unable to find vertex shader in pass \"{0}\"", Name));
-            if (!RenderStates.ContainsKey("pixelshader"))
-                ExceptionHelper.RaiseException(String.Format("Invalid effect file. Unable to find pixel shader in pass \"{0}\"", Name));
-
-            string vertexShaderLine = RenderStates["vertexshader"];
-            string pixelShaderLine = RenderStates["pixelshader"];
-
-            VertexShaderEntryPoint = ExtractEntryPoint(vertexShaderLine);
-            RenderStates.Remove("vertexshader");
-
-            PixelShaderEntryPoint = ExtractEntryPoint(pixelShaderLine);
-            RenderStates.Remove("pixelshader");
+            if (RenderStates.ContainsKey("pixelshader"))
+            {
+                PixelShaderEntryPoint = ExtractEntryPoint(RenderStates["pixelshader"]);
+                RenderStates.Remove("pixelshader");
+            }
         }
 
         /// <summary>

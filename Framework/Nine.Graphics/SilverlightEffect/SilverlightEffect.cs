@@ -74,7 +74,7 @@ namespace Microsoft.Xna.Framework.Graphics
                     {
                         if (!tempParameters.ContainsKey(parameter.Name))
                         {
-                            tempParameters.Add(parameter.Name, new EffectParameter(parameter.Name));
+                            tempParameters.Add(parameter.Name, new EffectParameter(parameter));
                         }
                     }
                 }
@@ -107,31 +107,52 @@ namespace Microsoft.Xna.Framework.Graphics
                 {
                     string passName = input.ReadString();
 
+                    MemoryStream vertexShaderCodeStream = null;
+                    MemoryStream vertexShaderParametersStream = null;
+
+                    MemoryStream pixelShaderCodeStream = null;
+                    MemoryStream pixelShaderParametersStream = null;
+
                     // Vertex shader
                     int vertexShaderByteCodeLength = input.ReadInt32();
-                    byte[] vertexShaderByteCode = input.ReadBytes(vertexShaderByteCodeLength);
-                    int vertexShaderParametersLength = input.ReadInt32();
-                    byte[] vertexShaderParameters = input.ReadBytes(vertexShaderParametersLength);
+                    if (vertexShaderByteCodeLength > 0)
+                    {
+                        byte[] vertexShaderByteCode = input.ReadBytes(vertexShaderByteCodeLength);
+                        int vertexShaderParametersLength = input.ReadInt32();
+                        byte[] vertexShaderParameters = input.ReadBytes(vertexShaderParametersLength);
+
+                        vertexShaderCodeStream = new MemoryStream(vertexShaderByteCode);
+                        vertexShaderParametersStream = new MemoryStream(vertexShaderParameters);
+                    }
 
                     // Pixel shader
                     int pixelShaderByteCodeLength = input.ReadInt32();
-                    byte[] pixelShaderByteCode = input.ReadBytes(pixelShaderByteCodeLength);
-                    int pixelShaderParametersLength = input.ReadInt32();
-                    byte[] pixelShaderParameters = input.ReadBytes(pixelShaderParametersLength);
+                    if (pixelShaderByteCodeLength > 0)
+                    {
+                        byte[] pixelShaderByteCode = input.ReadBytes(pixelShaderByteCodeLength);
+                        int pixelShaderParametersLength = input.ReadInt32();
+                        byte[] pixelShaderParameters = input.ReadBytes(pixelShaderParametersLength);
 
-                    MemoryStream vertexShaderCodeStream = new MemoryStream(vertexShaderByteCode);
-                    MemoryStream pixelShaderCodeStream = new MemoryStream(pixelShaderByteCode);
-                    MemoryStream vertexShaderParametersStream = new MemoryStream(vertexShaderParameters);
-                    MemoryStream pixelShaderParametersStream = new MemoryStream(pixelShaderParameters);
+                        pixelShaderCodeStream = new MemoryStream(pixelShaderByteCode);
+                        pixelShaderParametersStream = new MemoryStream(pixelShaderParameters);
+                    }
+
 
                     // Instanciate pass
                     SilverlightEffectPass currentPass = new SilverlightEffectPass(passName, GraphicsDeviceManager.Current.GraphicsDevice, vertexShaderCodeStream, pixelShaderCodeStream, vertexShaderParametersStream, pixelShaderParametersStream);
                     passes[passIndex] = currentPass;
 
-                    vertexShaderCodeStream.Dispose();
-                    pixelShaderCodeStream.Dispose();
-                    vertexShaderParametersStream.Dispose();
-                    pixelShaderParametersStream.Dispose();
+                    if (vertexShaderCodeStream != null)
+                    {
+                        vertexShaderCodeStream.Dispose();
+                        vertexShaderParametersStream.Dispose();
+                    }
+
+                    if (pixelShaderCodeStream != null)
+                    {
+                        pixelShaderCodeStream.Dispose();
+                        pixelShaderParametersStream.Dispose();
+                    }
 
                     // Render states
                     int renderStatesCount = input.ReadInt32();
@@ -155,20 +176,11 @@ namespace Microsoft.Xna.Framework.Graphics
         internal void Apply(bool force)
         {
             var count = parameters.Count;
-            for (var i = 0; i < parameters.Count; ++i)
+            for (var i = 0; i < count; ++i)
             {
                 var parameter = parameters[i];
                 if (parameter.IsDirty || force)
-                {
-                    // The SilverlightEffectParameters must transmit data to internal parameters if they are dirty
-                    foreach (var technique in Techniques)
-                    {
-                        foreach (SilverlightEffectPass pass in technique.Passes)
-                        {
-                            parameter.Apply(pass.Parameters);
-                        }
-                    }
-                }
+                    parameter.Apply();
             }
         }
 

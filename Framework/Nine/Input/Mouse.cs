@@ -39,7 +39,7 @@ namespace Microsoft.Xna.Framework.Input
                     _rootControl.MouseLeftButtonUp -= _rootControl_MouseLeftButtonUp;
                     _rootControl.MouseRightButtonDown -= _rootControl_MouseRightButtonDown;
                     _rootControl.MouseRightButtonUp -= _rootControl_MouseRightButtonUp;
-                    _rootControl.MouseWheel -= _rootControl_MouseWheel;
+                    _rootControl.MouseWheel -= _rootControl_MouseWheel;                    
                 }
 
                 _rootControl = value;

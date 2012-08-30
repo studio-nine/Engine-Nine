@@ -23,6 +23,16 @@
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ContentProcessorContextExtensions
     {
+        #region GetTargetPlatform
+        internal static TargetPlatforms GetTargetPlatform(this ContentProcessorContext context)
+        {
+            object result;
+            if (context.Parameters.TryGetValue("TargetPlatform", out result))
+                return (TargetPlatforms)result;
+            return TargetPlatforms.Auto;
+        }
+        #endregion
+
         #region BuildAsset
         // This value will be used by ContentReference when serialize using
         // reference relocation path.

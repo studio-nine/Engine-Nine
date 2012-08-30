@@ -231,6 +231,7 @@ namespace BEPUphysics.DataStructures
         /// <param name="indices">List to receive indices from the mesh.</param>
         public static void AddMesh(ModelMesh collisionModelMesh, Matrix transform, List<Vector3> vertices, IList<int> indices)
         {
+#if !SILVERLIGHT
             foreach (ModelMeshPart meshPart in collisionModelMesh.MeshParts)
             {
                 int startIndex = vertices.Count;
@@ -269,6 +270,7 @@ namespace BEPUphysics.DataStructures
 
                 }
             }
+#endif
 
 
 

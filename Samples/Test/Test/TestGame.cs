@@ -28,19 +28,22 @@ namespace Test
 
         public TestGame()
         {
+#if !SILVERLIGHT
             var graphics = new GraphicsDeviceManager(this);
 
-            graphics.PreferMultiSampling = true;
+            //graphics.PreferMultiSampling = true;
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 800;
             graphics.EnablePerfHudProfiling();
 
+            Window.AllowUserResizing = true;
+#endif
+
             Content.RootDirectory = "Content";
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
-            Window.AllowUserResizing = true;
         }
 
         /// <summary>
@@ -65,22 +68,21 @@ namespace Test
             // Create an event based input handler.
             // Note that you have to explictly keep a strong reference to the Input intance.
             input = new Input();
-            input.MouseDown += new EventHandler<MouseEventArgs>(Input_MouseDown);
-            input.ButtonDown += new EventHandler<GamePadEventArgs>(Input_ButtonDown);
+            input.MouseDown += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                    LoadNextScene();
+            };
+
+#if XBOX
+            input.ButtonDown += (sender, e) =>
+            {
+                if (e.Button == Buttons.A)
+                    LoadNextScene();
+            };
+#endif
 
             base.LoadContent();
-        }
-
-        private void Input_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-                LoadNextScene();
-        }
-
-        private void Input_ButtonDown(object sender, GamePadEventArgs e)
-        {
-            if (e.Button == Buttons.A)
-                LoadNextScene();
         }
 
         /// <summary>
@@ -94,7 +96,7 @@ namespace Test
 
             // Gets the drawing context to adjust drawing settings.
             var drawingContext = scene.GetDrawingContext(GraphicsDevice);
-            drawingContext.Settings.BackgroundColor = Color.Gray;
+            drawingContext.Settings.BackgroundColor = new Color(0.5f, 0.5f, 0.5f);
             drawingContext.Settings.Font = Content.Load<SpriteFont>("Consolas");
             drawingContext.Settings.TextureFilter = TextureFilter.Anisotropic;
 
@@ -120,6 +122,7 @@ namespace Test
             base.Draw(gameTime);
         }
 
+#if WINDOWS || XBOX
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -130,5 +133,6 @@ namespace Test
                 game.Run();
             }
         }
+#endif
     }
 }

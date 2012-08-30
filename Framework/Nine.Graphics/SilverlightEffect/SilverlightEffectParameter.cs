@@ -10,6 +10,29 @@ using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
+    public enum EffectParameterClass
+    {
+        Scalar = 0,
+        Vector = 1,
+        Matrix = 2,
+        Object = 3,
+        Struct = 4,
+    }
+
+    public enum EffectParameterType
+    {
+        Void = 0,
+        Bool = 1,
+        Int32 = 2,
+        Single = 3,
+        String = 4,
+        Texture = 5,
+        Texture1D = 6,
+        Texture2D = 7,
+        Texture3D = 8,
+        TextureCube = 9,
+    }
+
     /// <summary>
     /// Parameter class for SilverlightEffect
     /// </summary>
@@ -19,13 +42,14 @@ namespace Microsoft.Xna.Framework.Graphics
         bool isDirty = true;
         int dataLength;
         Vector4[] data;
+        SilverlightEffectInternalParameter internalParameter;
 
         #region Creation
 
         /// <summary>Creates a new effect parameter</summary>
-        internal EffectParameter(string name)
+        internal EffectParameter(SilverlightEffectInternalParameter parameter)
         {
-            Name = name;
+            internalParameter = parameter;
         }
 
         #endregion
@@ -35,7 +59,30 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <summary>
         /// Get or set the name of the parameter
         /// </summary>
-        public string Name { get; internal set; }
+        public string Name
+        {
+            get { return internalParameter.Name; }
+        }
+
+        public EffectParameterClass ParameterClass
+        {
+            get { return internalParameter.ParameterClass; }
+        }
+
+        public EffectParameterType ParameterType
+        {
+            get { return internalParameter.ParameterType; }
+        }
+
+        internal EffectRegisterSet RegisterSet
+        {
+            get { return internalParameter.RegisterSet; }
+        }
+
+        internal int SamplerIndex
+        {
+            get { return internalParameter.SamplerIndex; }
+        }
 
         // TODO:
         public string Semantic { get; internal set; }
@@ -58,7 +105,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         public void SetValue(Texture texture)
         {
-            throw new NotImplementedException();
+            internalParameter.device.Textures[internalParameter.SamplerIndex] = texture;
         }
 
         /// <summary>
@@ -133,10 +180,10 @@ namespace Microsoft.Xna.Framework.Graphics
         public void SetValue(Matrix matrix)
         {
             EnsureDataSize(4);
-            data[0] = new Vector4(matrix.M11, matrix.M12, matrix.M13, matrix.M14);
-            data[1] = new Vector4(matrix.M21, matrix.M22, matrix.M23, matrix.M24);
-            data[2] = new Vector4(matrix.M31, matrix.M32, matrix.M33, matrix.M34);
-            data[3] = new Vector4(matrix.M41, matrix.M42, matrix.M43, matrix.M44);
+            data[0] = new Vector4(matrix.M11, matrix.M21, matrix.M31, matrix.M41);
+            data[1] = new Vector4(matrix.M12, matrix.M22, matrix.M32, matrix.M42);
+            data[2] = new Vector4(matrix.M13, matrix.M23, matrix.M33, matrix.M43);
+            data[3] = new Vector4(matrix.M14, matrix.M24, matrix.M34, matrix.M44);
             isDirty = true;
         }
 
@@ -146,10 +193,10 @@ namespace Microsoft.Xna.Framework.Graphics
         public void SetValueTranspose(Matrix matrix)
         {
             EnsureDataSize(4);
-            data[0] = new Vector4(matrix.M11, matrix.M21, matrix.M31, matrix.M41);
-            data[1] = new Vector4(matrix.M12, matrix.M22, matrix.M32, matrix.M42);
-            data[2] = new Vector4(matrix.M13, matrix.M23, matrix.M33, matrix.M43);
-            data[3] = new Vector4(matrix.M14, matrix.M24, matrix.M34, matrix.M44);
+            data[0] = new Vector4(matrix.M11, matrix.M12, matrix.M13, matrix.M14);
+            data[1] = new Vector4(matrix.M21, matrix.M22, matrix.M23, matrix.M24);
+            data[2] = new Vector4(matrix.M31, matrix.M32, matrix.M33, matrix.M34);
+            data[3] = new Vector4(matrix.M41, matrix.M42, matrix.M43, matrix.M44);
             isDirty = true;
         }
 
@@ -186,17 +233,10 @@ namespace Microsoft.Xna.Framework.Graphics
 
         #region Internal methods
 
-        internal void Apply(List<SilverlightEffectInternalParameter> parameters)
+        internal void Apply()
         {
             isDirty = false;
-            foreach (SilverlightEffectInternalParameter parameter in parameters)
-            {
-                if (parameter.Name == Name)
-                {
-                    parameter.SetData(data, dataLength);
-                    break;
-                }
-            }
+            internalParameter.SetData(data, dataLength);
         }
 
         #endregion        

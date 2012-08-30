@@ -57,14 +57,9 @@
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Content, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="Microsoft.Xna.Framework.Graphics.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Graphics.Shaders" />
-    <Reference Include="Microsoft.Xna.Framework.Math, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Silverlight\Microsoft.Xna.Framework.Math.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Math, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -206,6 +201,7 @@
     <Compile Include="PostEffects\AntiAliasEffect.cs" />
     <Compile Include="PostEffects\AntiAliasMaterial.cs" />
     <Compile Include="PostEffects\BloomEffect.cs" />
+    <Compile Include="PostEffects\BloomMaterial.cs" />
     <Compile Include="PostEffects\BlurEffect.cs" />
     <Compile Include="PostEffects\BlurMaterial.cs" />
     <Compile Include="PostEffects\DepthOfFieldEffect.cs" />
@@ -289,27 +285,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shaders\Adaption.fx" />
-    <Content Include="Shaders\AntiAliasEffect.fx" />
-    <Content Include="Shaders\BlurEffect.fx" />
-    <Content Include="Shaders\ClearEffect.fx" />
-    <Content Include="Shaders\DecalEffect.fx" />
+    <Content Include="Shaders\AntiAlias.fx" />
+    <Content Include="Shaders\Bloom.fx" />
+    <Content Include="Shaders\Blur.fx" />
+    <Content Include="Shaders\Clear.fx" />
+    <Content Include="Shaders\Decal.fx" />
+    <Content Include="Shaders\Deferred.fx" />
     <Content Include="Shaders\DeferredDirectionalLight.fx" />
-    <Content Include="Shaders\DeferredEffect.fx" />
     <Content Include="Shaders\DeferredPointLight.fx" />
     <Content Include="Shaders\DeferredSpotLight.fx" />
-    <Content Include="Shaders\DepthAndNormalEffect.fx" />
-    <Content Include="Shaders\DepthEffect.fx" />
-    <Content Include="Shaders\DepthOfFieldEffect.fx" />
-    <Content Include="Shaders\LuminanceEffect.fx" />
-    <Content Include="Shaders\RadialBlurEffect.fx" />
+    <Content Include="Shaders\Depth.fx" />
+    <Content Include="Shaders\DepthAndNormal.fx" />
+    <Content Include="Shaders\DepthOfField.fx" />
+    <Content Include="Shaders\Luminance.fx" />
     <Content Include="Shaders\RestoreDepthBuffer.fx" />
-    <Content Include="Shaders\ScaleEffect.fx" />
-    <Content Include="Shaders\ShadowEffect.fx" />
-    <Content Include="Shaders\SkyBoxEffect.fx" />
-    <Content Include="Shaders\SoftParticleEffect.fx" />
+    <Content Include="Shaders\Scale.fx" />
+    <Content Include="Shaders\Shadow.fx" />
+    <Content Include="Shaders\SkyBox.fx" />
+    <Content Include="Shaders\SoftParticle.fx" />
+    <Content Include="Shaders\Sprite.fx" />
     <Content Include="Shaders\ThickLine.fx" />
-    <Content Include="Shaders\ThresholdEffect.fx" />
-    <Content Include="Shaders\ToneMappingEffect.fx" />
+    <Content Include="Shaders\Threshold.fx" />
+    <Content Include="Shaders\ToneMapping.fx" />
     <Content Include="Shaders\VertexPassThrough2.fx" />
     <Content Include="Shaders\VertexPassThrough3.fx" />
   </ItemGroup>

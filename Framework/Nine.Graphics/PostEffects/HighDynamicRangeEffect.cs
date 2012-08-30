@@ -9,7 +9,6 @@
     /// <summary>
     /// Represents a high dynamic range (HDR) post processing effect.
     /// </summary>
-    [ContentSerializable]
     public class HighDynamicRangeEffect : PostEffectGroup
     {
         public float Threshold
@@ -34,6 +33,12 @@
         {
             get { return toneMapping.Exposure; }
             set { toneMapping.Exposure = value; }
+        }
+
+        public float BloomIntensity
+        {
+            get { return toneMapping.BloomIntensity; }
+            set { toneMapping.BloomIntensity = value; }
         }
 
         BlurEffect blur;

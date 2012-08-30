@@ -174,7 +174,7 @@
                 fullScreenQuad.Draw(context, blur);
                 map = renderTarget.End();
             }
-
+            
             context.textures[TextureUsage.ShadowMap] = map;
             return Texture = map;
         }

@@ -89,6 +89,9 @@
 
         void Input_ButtonDown(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             if (e.Button == RotateButton)
             {
                 BeginRotation(e.X, e.Y);
@@ -97,14 +100,20 @@
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == RotateButton)
+            if (!Enabled)
+                return;
+
+            if (e.IsButtonDown(RotateButton))
             {
                 EndRotation(e.X, e.Y);
             }
         }
 
         void Input_Wheel(object sender, MouseEventArgs e)
-        {   
+        {
+            if (!Enabled)
+                return;
+
             Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
 
             if (Radius < MinRadius)

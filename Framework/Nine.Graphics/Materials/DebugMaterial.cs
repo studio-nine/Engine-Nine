@@ -1,6 +1,7 @@
 namespace Nine.Graphics.Materials
 {
     using System.ComponentModel;
+    using System.Collections.Generic;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
@@ -19,11 +20,20 @@ namespace Nine.Graphics.Materials
         public SamplerState SamplerState { get; set; }
 
         private BasicEffect effect;
+        private static Dictionary<GraphicsDevice, BasicEffect> cachedEffects = new Dictionary<GraphicsDevice, BasicEffect>();
 
         public DebugMaterial(GraphicsDevice graphics)
         {
-            effect = GraphicsResources<BasicEffect>.GetInstance(graphics);
             GraphicsDevice = graphics;
+            if (!cachedEffects.TryGetValue(graphics, out effect))
+            {
+                cachedEffects.Add(graphics, effect = new BasicEffect(graphics)
+                {
+                    LightingEnabled = false,
+                    FogEnabled = false,
+                    VertexColorEnabled = false
+                });
+            }
         }
 
         protected override void OnBeginApply(DrawingContext context, Material previousMaterial)
@@ -38,7 +48,10 @@ namespace Nine.Graphics.Materials
         protected override void OnEndApply(DrawingContext context)
         {
             if (SamplerState != null)
+            {
+                GraphicsDevice.Textures[0] = null;
                 GraphicsDevice.SamplerStates[0] = context.settings.SamplerState;
+            }
         }
     }
 }

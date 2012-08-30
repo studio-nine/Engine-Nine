@@ -21,7 +21,7 @@ namespace Nine.Graphics.Materials
                 halfTexel.Y = 0.5f / texture.Height;
                 effect.HalfTexel.SetValue(halfTexel);
             }
-            effect.shaderIndex.SetValue(IsDownScale ? 1 : 0);
+            effect.CurrentTechnique = effect.Techniques[IsDownScale ? 1 : 0];
         }
     }
 }

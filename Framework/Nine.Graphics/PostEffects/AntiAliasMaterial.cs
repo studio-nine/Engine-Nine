@@ -19,7 +19,11 @@
             effect.PixelSize.SetValue(pixelSize);
 
             graphics.Textures[0] = texture;
-            graphics.SamplerStates[0] = SamplerState.LinearClamp;
+            if (texture != null)
+            {
+                graphics.SamplerStates[0] = texture.Format == SurfaceFormat.Color ?
+                    SamplerState.LinearClamp : SamplerState.PointClamp;
+            }
         }
     }
 }

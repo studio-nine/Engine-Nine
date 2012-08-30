@@ -47,7 +47,8 @@
 
             directionParameter.SetValue(light.Direction);
             diffuseColorParameter.SetValue(light.DiffuseColor);
-            specularColorParameter.SetValue(light.SpecularColor);
+            if (specularColorParameter != null)
+                specularColorParameter.SetValue(light.SpecularColor);
         }
 
         protected internal override MaterialPart Clone()

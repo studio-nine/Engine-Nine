@@ -6,7 +6,7 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 using System;
 
-namespace SilverlightContentPipeline
+namespace Nine.Content.Pipeline.Silverlight
 {
     internal static class ExceptionHelper
     {

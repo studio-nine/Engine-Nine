@@ -46,7 +46,7 @@ namespace SilverlightShaderCompiler
                 const int minIndex = 36;
                 bool gotOne = false;
                 int index = maxIndex;
-
+                
                 // DirectX SDK's install new D3DX libraries by appending a version number.  Here, we start from a high
                 // number and count down until we find a library that contains the function we're looking for.  This
                 // thus gets us the most recently installed SDK.  If there are no SDKs installed, we _dxLibraryToUse remains
@@ -75,25 +75,20 @@ namespace SilverlightShaderCompiler
             return _dxLibraryToUse;
         }
 
-        String^ GetConstants(LPD3DXCONSTANTTABLE constantTable, List<String^>^ errors)
+        array<unsigned char>^ GetConstants(LPD3DXCONSTANTTABLE constantTable, List<String^>^ errors)
         {	
             // Get constant table description
             D3DXCONSTANTTABLE_DESC desc;
             HRESULT hr = constantTable->GetDesc(&desc);
 
-            // Create XML writer
-            StringBuilder^ output = gcnew StringBuilder();
-            XmlWriterSettings^ settings = gcnew XmlWriterSettings();
-            settings->Indent = true;
-            XmlWriter^ writer = XmlWriter::Create(output, settings);
+            // Create binary writer
+            MemoryStream^ output = gcnew MemoryStream();
+            BinaryWriter^ writer = gcnew BinaryWriter(output);
 
             // Write root element
-            writer->WriteStartElement("ShaderConstants");
-            Version^ version = gcnew Version(D3DSHADER_VERSION_MAJOR(desc.Version), D3DSHADER_VERSION_MINOR(desc.Version));
-            writer->WriteAttributeString("FileFormatVersion", "1.0");
-            writer->WriteAttributeString("Version", version->ToString());
-            writer->WriteAttributeString("Constants", (gcnew UInt32(desc.Constants))->ToString());	
-            writer->WriteAttributeString("Creator", gcnew String(desc.Creator));
+            writer->Write((unsigned int)desc.Version);
+            writer->Write(gcnew String(desc.Creator));
+            writer->Write(desc.Constants);
 
             for(unsigned int c = 0; c < desc.Constants; c++)
             {
@@ -124,138 +119,25 @@ namespace SilverlightShaderCompiler
                     continue;
                 }
 
-                writer->WriteStartElement("Constant");
-                writer->WriteAttributeString("Index", (gcnew UInt32(c))->ToString());
-                writer->WriteAttributeString("Descriptions", (gcnew UInt32(descCount))->ToString());
+                writer->Write(descCount);
 
                 for(unsigned int d = 0; d < descCount; d++)
                 {
-                    writer->WriteStartElement("Description");
+                    writer->Write(gcnew String(constantDesc[d].Name));
+                    writer->Write((unsigned int)constantDesc[d].RegisterSet);                    
+                    writer->Write(constantTable->GetSamplerIndex(constant));
 
-                    writer->WriteElementString("Name", gcnew String(constantDesc[d].Name));
-            
-                    switch(constantDesc[d].RegisterSet)
-                    {
-                    case D3DXRS_BOOL:
-                        writer->WriteElementString("RegisterSet", "Bool");
-                        break;
-                    case D3DXRS_INT4:
-                        writer->WriteElementString("RegisterSet", "Int4");
-                        break;
-                    case D3DXRS_FLOAT4:
-                        writer->WriteElementString("RegisterSet", "Float4");
-                        break;
-                    case D3DXRS_SAMPLER:
-                        writer->WriteElementString("RegisterSet", "Sampler");
-                        break;
-                    }
-                    writer->WriteElementString("RegisterIndex", (gcnew UInt32(constantDesc[d].RegisterIndex))->ToString());
-                    writer->WriteElementString("RegisterCount", (gcnew UInt32(constantDesc[d].RegisterCount))->ToString());
-
-                    writer->WriteElementString("Rows", (gcnew UInt32(constantDesc[d].Rows))->ToString());
-                    writer->WriteElementString("Columns", (gcnew UInt32(constantDesc[d].Columns))->ToString());
-                    writer->WriteElementString("Elements", (gcnew UInt32(constantDesc[d].Elements))->ToString());
-                    writer->WriteElementString("StructMembers", (gcnew UInt32(constantDesc[d].StructMembers))->ToString());
-
-                    writer->WriteElementString("Bytes", (gcnew UInt32(constantDesc[d].Bytes))->ToString());
-
-                    switch(constantDesc[d].Class)
-                    {
-                    case D3DXPC_SCALAR:
-                        writer->WriteElementString("Class", "Scalar");
-                        break;
-                    case D3DXPC_VECTOR:
-                        writer->WriteElementString("Class", "Vector");
-                        break;
-                    case D3DXPC_MATRIX_ROWS:
-                        writer->WriteElementString("Class", "Rows");
-                        break;
-                    case D3DXPC_MATRIX_COLUMNS:
-                        writer->WriteElementString("Class", "Columns");
-                        break;
-                    case D3DXPC_OBJECT:
-                        writer->WriteElementString("Class", "Object");
-                        break;
-                    case D3DXPC_STRUCT:
-                        writer->WriteElementString("Class", "Struct");
-                        break;
-                    }
-
-                    switch(constantDesc[d].Type)
-                    {
-                    case D3DXPT_VOID:
-                        writer->WriteElementString("Type", "Void");
-                        break;
-                    case D3DXPT_BOOL:
-                        writer->WriteElementString("Type", "Bool");
-                        break;
-                    case D3DXPT_INT:
-                        writer->WriteElementString("Type", "Int");
-                        break;
-                    case D3DXPT_FLOAT:
-                        writer->WriteElementString("Type", "Float");
-                        break;
-                    case D3DXPT_STRING:
-                        writer->WriteElementString("Type", "String");
-                        break;
-                    case D3DXPT_TEXTURE:
-                        writer->WriteElementString("Type", "Texture");
-                        break;
-                    case D3DXPT_TEXTURE1D:
-                        writer->WriteElementString("Type", "Texture1D");
-                        break;
-                    case D3DXPT_TEXTURE2D:
-                        writer->WriteElementString("Type", "Texture2D");
-                        break;
-                    case D3DXPT_TEXTURE3D:
-                        writer->WriteElementString("Type", "Texture3D");
-                        break;
-                    case D3DXPT_TEXTURECUBE:
-                        writer->WriteElementString("Type", "TextureCube");
-                        break;
-                    case D3DXPT_SAMPLER:
-                        writer->WriteElementString("Type", "Sampler");
-                        break;
-                    case D3DXPT_SAMPLER1D:
-                        writer->WriteElementString("Type", "Sampler1D");
-                        break;
-                    case D3DXPT_SAMPLER2D:
-                        writer->WriteElementString("Type", "Sampler2D");
-                        break;
-                    case D3DXPT_SAMPLER3D:
-                        writer->WriteElementString("Type", "Sampler3D");
-                        break;
-                    case D3DXPT_SAMPLERCUBE:
-                        writer->WriteElementString("Type", "SamplerCube");
-                        break;
-                    case D3DXPT_PIXELSHADER:
-                        writer->WriteElementString("Type", "PixelShader");
-                        break;
-                    case D3DXPT_VERTEXSHADER:
-                        writer->WriteElementString("Type", "VertexShader");
-                        break;
-                    case D3DXPT_PIXELFRAGMENT:
-                        writer->WriteElementString("Type", "PixelFragment");
-                        break;
-                    case D3DXPT_VERTEXFRAGMENT:
-                        writer->WriteElementString("Type", "VertexFragment");
-                        break;
-                    case D3DXPT_UNSUPPORTED:
-                        writer->WriteElementString("Type", "Unsupported");
-                        break;
-                    }
-
-                    writer->WriteEndElement(); // Description
+                    writer->Write(constantDesc[d].RegisterIndex);
+                    writer->Write(constantDesc[d].RegisterCount);
+                    
+                    writer->Write((unsigned int)constantDesc[d].Class);
+                    writer->Write((unsigned int)constantDesc[d].Type);
                 }
-
-                writer->WriteEndElement(); // Constant
             }
-
-            writer->WriteEndElement(); // ShaderConstants
             writer->Flush();
             writer->Close();
 
-            return output->ToString();
+            return output->ToArray();
         }
     public:
         Compiler()
@@ -263,7 +145,7 @@ namespace SilverlightShaderCompiler
             _calculatedDxLibraryToUse = false;
         }
 
-        CompilerResult^ Process(String^ shaderSourceCode, List<String^>^ errors, String^ shaderProfile, String^ entryPoint, int optimizationLevel, bool debug, bool packMatrixRowMajor)
+        CompilerResult^ Process(String^ shaderSourceCode, List<String^>^ errors, String^ shaderProfile, String^ entryPoint)
         {
             CompilerResult^ result;
             marshal_context^ context = gcnew marshal_context();
@@ -292,37 +174,19 @@ namespace SilverlightShaderCompiler
             LPCSTR lpShaderProfile = context->marshal_as<LPCSTR>(shaderProfile);
 
             // initialize flags
-            DWORD compilerFlags = 0;
+            DWORD compilerFlags = D3DXSHADER_PACKMATRIX_COLUMNMAJOR;
 
-            if (packMatrixRowMajor)
-                compilerFlags |= D3DXSHADER_PACKMATRIX_ROWMAJOR;
-            else
-                compilerFlags |= D3DXSHADER_PACKMATRIX_COLUMNMAJOR;
-
-            if (debug)
-                compilerFlags |= D3DXSHADER_DEBUG;
-
-            // Not supported on original DX9 compiler
-            switch (optimizationLevel)
+            D3DXMACRO defines[] = 
             {
-            case 0:
-                compilerFlags |= D3DXSHADER_OPTIMIZATION_LEVEL0;
-                break;
-            case 1:
-                compilerFlags |= D3DXSHADER_OPTIMIZATION_LEVEL1;
-                break;
-            case 2:
-                compilerFlags |= D3DXSHADER_OPTIMIZATION_LEVEL2;
-                break;
-            case 3:
-                compilerFlags |= D3DXSHADER_OPTIMIZATION_LEVEL3;
-                break;
-            }
+                { "SIVERLIGHT", "" },
+                { "Silverlight", "" },
+                { NULL, NULL },
+            };
 
             HRESULT compileResult = shaderCompiler(
                     lpShaderSourceCode,
                     shaderSourceCode->Length,
-                    NULL, // pDefines
+                    defines, // pDefines
                     NULL, // pIncludes
                     lpEntryPoint, // entrypoint
                     lpShaderProfile, // "ps_2_0", "vs_2_0", etc.

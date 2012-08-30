@@ -474,9 +474,13 @@ namespace Nine.Graphics
         /// <summary>
         /// Gets the triangle vertices of the target geometry.
         /// </summary>        
-        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        public bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
-#if !SILVERLIGHT
+#if SILVERLIGHT
+            vertices = null;
+            indices = null;
+            return false;
+#else
             if (geometryPositions == null && source != null)
             {
                 geometryPositions = new Vector3[source.CopyPositionsTo(null, 0)];
@@ -485,9 +489,11 @@ namespace Nine.Graphics
                 geometryIndices = new ushort[source.CopyIndicesTo(null, 0)];
                 source.CopyIndicesTo(geometryIndices, 0);
             }
-#endif
+
             vertices = this.geometryPositions;
             indices = this.geometryIndices;
+            return true;
+#endif
         }
         Vector3[] geometryPositions;
         ushort[] geometryIndices;

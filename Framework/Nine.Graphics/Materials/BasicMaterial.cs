@@ -127,7 +127,7 @@ namespace Nine.Graphics.Materials
 
             // Update shader parameters that are always different for each instance.
             effect.World = World;
-
+            
             // Update shader parameters that has little or no overhead.
             effect.TextureEnabled = texture != null;
             effect.LightingEnabled = lightingEnabled;

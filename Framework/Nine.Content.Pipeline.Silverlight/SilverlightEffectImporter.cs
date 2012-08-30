@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
-namespace SilverlightContentPipeline
+namespace Nine.Content.Pipeline.Silverlight
 {
     [ContentImporter(".fx", ".slfx", DisplayName = "Effect - Silverlight", DefaultProcessor = "SilverlightEffectProcessor")]
     public class SilverlightEffectImporter : ContentImporter<EffectSourceCode>

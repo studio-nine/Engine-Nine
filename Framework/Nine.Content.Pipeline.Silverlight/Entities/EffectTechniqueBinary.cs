@@ -5,11 +5,13 @@
 
 using System.Collections.Generic;
 
-namespace SilverlightContentPipeline
+namespace Nine.Content.Pipeline.Silverlight
 {
     public class EffectTechniqueBinary
     {
         public string Name { get; set; }
+
+        [Microsoft.Xna.Framework.Content.ContentSerializer]
         public List<EffectPassBinary> PassBinaries { get; private set; } 
 
         public EffectTechniqueBinary()

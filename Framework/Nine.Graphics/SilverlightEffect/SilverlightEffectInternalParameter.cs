@@ -8,6 +8,14 @@ using System.Diagnostics;
 
 namespace Microsoft.Xna.Framework.Graphics
 {
+    enum EffectRegisterSet
+    {
+        Bool,
+        Int,
+        Float,
+        Sampler,
+    }
+
     /// <summary>
     /// Internal parameter class for SilverlightEffect
     /// </summary>
@@ -16,7 +24,7 @@ namespace Microsoft.Xna.Framework.Graphics
     {
         #region Instance Data
 
-        readonly GraphicsDevice device;
+        internal readonly GraphicsDevice device;
 
         bool isDirty = true;
         Vector4[] data;
@@ -26,11 +34,13 @@ namespace Microsoft.Xna.Framework.Graphics
 
         #region Internal properties
 
+        internal EffectRegisterSet RegisterSet;
+        internal EffectParameterClass ParameterClass;
+        internal EffectParameterType ParameterType;
         internal int VertexShaderRegisterIndex;
-
         internal int PixelShaderRegisterIndex;
-
         internal int RegisterCount;
+        internal int SamplerIndex = -1;
 
         internal void SetData(Vector4[] data, int length)
         {
@@ -60,8 +70,8 @@ namespace Microsoft.Xna.Framework.Graphics
         /// <summary>
         /// Get or set the name of the parameter
         /// </summary>
-        public string Name { get; internal set; }
-        
+        public string Name;
+                
         #endregion
 
         #region Internal methods

@@ -13,7 +13,6 @@
     /// <summary>
     /// Defines a post processing effect that adapts to scene changes.
     /// </summary>
-    [ContentSerializable]
     public class AdaptationEffect : PostEffect
     {
         private RenderTarget2D lastFrame;

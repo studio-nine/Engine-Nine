@@ -18,10 +18,17 @@
     [ContentProcessor(DisplayName = "Content - Engine Nine")]
     public class DefaultContentProcessor : ContentProcessor<object, object>
     {
+        public Nine.Content.Pipeline.TargetPlatforms TargetPlatform { get; set; }
+
         /// <summary>
         /// A stack holding the current processor context.
         /// </summary>
         private Stack<ContentProcessorContext> contextStack = new Stack<ContentProcessorContext>();
+
+        public DefaultContentProcessor()
+        {
+            TargetPlatform = TargetPlatforms.Auto;
+        }
 
         /// <summary>
         /// Processes the specified input data and returns the result.
@@ -30,6 +37,8 @@
         {
             try
             {
+                context.Parameters["TargetPlatform"] = TargetPlatform;
+
                 contextStack.Push(context);
 
                 object output = Process(input);
@@ -41,6 +50,7 @@
             finally
             {
                 contextStack.Pop();
+                context.Parameters.Remove("TargetPlatform");
             }
             return input;
         }

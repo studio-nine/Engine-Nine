@@ -11,7 +11,6 @@
     /// <summary>
     /// Represents a blur post processing effect.
     /// </summary>
-    [ContentSerializable]
     public class BlurEffect : PostEffectChain
     {
         public GraphicsDevice GraphicsDevice { get; private set; }

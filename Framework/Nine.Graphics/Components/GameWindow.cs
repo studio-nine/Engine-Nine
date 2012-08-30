@@ -28,6 +28,8 @@ namespace Microsoft.Xna.Framework
         /// </summary>
         public IntPtr Handle { get { return IntPtr.Zero; } }
 
+        public string Title { get; set; }
+
         public event EventHandler<EventArgs> ClientSizeChanged;
 
         internal GameWindow(Game game)
@@ -38,6 +40,8 @@ namespace Microsoft.Xna.Framework
 
         void game_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            game.Surface.Width = e.NewSize.Width;
+            game.Surface.Height = e.NewSize.Height;
             if (ClientSizeChanged != null)
                 ClientSizeChanged(this, EventArgs.Empty);
         }

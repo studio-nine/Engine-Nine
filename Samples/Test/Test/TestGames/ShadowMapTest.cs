@@ -15,9 +15,14 @@ namespace Test
         public Scene CreateTestScene(GraphicsDevice graphics, ContentManager content)
         {
             var scene = new Scene();
+
+            // NOTE: If you are targeting silverlight, make sure to set the TargetPlatform property
+            //       of the content processor to Silverlight.
             var shadowMaterial = content.Load<Material>("Materials/Shadow");
 
-            scene.Add(new Nine.Graphics.Cameras.BirdEyeCamera(graphics));
+            //((Nine.Graphics.Drawing.DrawingPass)scene.GetDrawingContext(graphics).MainPass.Passes[0]).MaterialUsage = MaterialUsage.Depth;
+
+            //scene.Add(new Nine.Graphics.Cameras.BirdEyeCamera(graphics));
             scene.Add(new Surface(graphics, 1, 256, 256, 32) { Material = shadowMaterial });
             scene.Add(new Nine.Graphics.DirectionalLight(graphics) { Direction = new Vector3(-1, -1, -1), CastShadow = true });
             //scene.Add(new FullScreenQuad(graphics) { Material = new DebugMaterial(graphics) { SamplerState = SamplerState.PointClamp, TextureUsage = TextureUsage.ShadowMap } });

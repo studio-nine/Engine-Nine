@@ -33,6 +33,12 @@ namespace Nine
         /// Keeps track of all the objects, only used under debug mode.
         /// </summary>
         private List<object> objectTracker;
+
+        /// <summary>
+        /// When objects are added or removed, they are added to this temporary queue.
+        /// </summary>
+        private List<INotifyCollectionChanged<object>> workingExpandables = new List<INotifyCollectionChanged<object>>();
+        private int workingExpandablesDepth = 0;
         #endregion
 
         #region Events
@@ -136,14 +142,33 @@ namespace Nine
         /// </summary>
         protected override void OnAdded(object child)
         {
+            ++workingExpandablesDepth;
             ContainerTraverser.Traverse<object>(child, InternalAdd);
+            if (--workingExpandablesDepth == 0)
+            {
+                var count = workingExpandables.Count;
+                for (var i = 0; i < count; ++i)
+                {
+                    var collectionChanged = workingExpandables[i];
+                    if (collectionChanged != null)
+                    {
+                        collectionChanged.Added += OnDesecendantAdded;
+                        collectionChanged.Removed += OnDesecendantRemoved;
+                    }      
+                }
+                workingExpandables.Clear();
+            }
         }
 
         private TraverseOptions InternalAdd(object descendant)
         {
             if (descendant == null)
                 throw new ArgumentNullException("descendant");
-            
+
+            var collectionChanged = descendant as INotifyCollectionChanged<object>;
+            if (collectionChanged != null)
+                workingExpandables.Add(collectionChanged);
+
             var queryable = descendant as ISpatialQueryable;
             if (queryable != null)
             {
@@ -152,13 +177,6 @@ namespace Nine
                     currentSceneManagerForAddition.Add(queryable);
                 else
                     defaultSceneManager.Add(queryable);
-            }
-
-            var collectionChanged = descendant as INotifyCollectionChanged<object>;
-            if (collectionChanged != null)
-            {
-                collectionChanged.Added += OnDesecendantAdded;
-                collectionChanged.Removed += OnDesecendantRemoved;
             }
 
             TrackObject(descendant);
@@ -186,7 +204,22 @@ namespace Nine
         /// <param name="child"></param>
         protected override void OnRemoved(object child)
         {
+            ++workingExpandablesDepth;
             ContainerTraverser.Traverse<object>(child, InternalRemove);
+            if (--workingExpandablesDepth == 0)
+            {
+                var count = workingExpandables.Count;
+                for (var i = 0; i < count; ++i)
+                {
+                    var collectionChanged = workingExpandables[i];
+                    if (collectionChanged != null)
+                    {
+                        collectionChanged.Added -= OnDesecendantAdded;
+                        collectionChanged.Removed -= OnDesecendantRemoved;
+                    }
+                }
+                workingExpandables.Clear();
+            }
         }
 
         private TraverseOptions InternalRemove(object descendant)
@@ -200,10 +233,7 @@ namespace Nine
 
             var collectionChanged = descendant as INotifyCollectionChanged<object>;
             if (collectionChanged != null)
-            {
-                collectionChanged.Added -= OnDesecendantAdded;
-                collectionChanged.Removed -= OnDesecendantRemoved;
-            }
+                workingExpandables.Add(collectionChanged);
 
             UnTrackObject(descendant);
             OnRemovedFromScene(descendant);

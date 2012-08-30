@@ -96,7 +96,7 @@
         {
             Vector3[] positions;
             ushort[] indices;
-            geometry.GetTriangles(out positions, out indices);
+            geometry.TryGetTriangles(out positions, out indices);
             return positions;
         }
 
@@ -104,17 +104,18 @@
         {
             Vector3[] positions;
             ushort[] indices;
-            geometry.GetTriangles(out positions, out indices);
+            geometry.TryGetTriangles(out positions, out indices);
             return indices;
         }
 
         /// <summary>
         /// Gets the triangle vertices of the target geometry.
         /// </summary>
-        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        public bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
             vertices = this.positions;
             indices = this.indices;
+            return true;
         }
         
         public bool TryGetHeightAndNormal(Vector3 position, out float height, out Vector3 normal)

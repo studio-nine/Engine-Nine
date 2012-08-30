@@ -42,7 +42,10 @@ namespace Nine
         /// </summary>
         /// <param name="vertices">Output vertex buffer</param>
         /// <param name="indices">Output index buffer</param>
-        void GetTriangles(out Vector3[] vertices, out ushort[] indices);
+        /// <returns>
+        /// Returns whether the result contains any triangles.
+        /// </returns>
+        bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices);
     }
 
     /// <summary>

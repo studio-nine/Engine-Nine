@@ -139,6 +139,7 @@
         {
             if (!Enabled)
                 return;
+
             if (e.IsButtonDown(MouseButtons.Right))
             {
                 X = startPosition.X - (e.X - startMouse.X) / Zoom;
@@ -148,7 +149,6 @@
                     Y = startPosition.Y + (e.Y - startMouse.Y) / Zoom;
             }
         }
-
 
         private void Input_Wheel(object sender, MouseEventArgs e)
         {

@@ -34,7 +34,7 @@ void PixelShader(float3 positionShadow, out float3 shadow:COLOR0)
     {
         float2 uv = positionShadow.xy + FilterTaps[i] * ShadowMapTexelSize;
         float2 f = frac(uv / ShadowMapTexelSize);
-		intensity += comparand > tex2D(ShadowMapSampler, uv).x ? 1.0f / {$SAMPLECOUNT} : 0;
+        intensity += comparand > tex2D(ShadowMapSampler, uv).x ? 1.0f / {$SAMPLECOUNT} : 0;
     }
 
     shadow = lerp(1, ShadowColor, intensity);

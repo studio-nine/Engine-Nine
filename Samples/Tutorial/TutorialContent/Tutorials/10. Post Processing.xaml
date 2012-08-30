@@ -60,7 +60,7 @@
         </CustomMaterial>
     </PostEffect>
     <Scene.Animations>
-        <SingleAnimation TargetProperty="['Hdr'].Exposure" From="0" To="1" Curve="{x:Static Curves.Sin}" Repeat="999999" Duration="00:00:10" AutoReverse="True" />
+        <SingleAnimation TargetProperty="Hdr.Exposure" From="0" To="1" Curve="{x:Static Curves.Sin}" Repeat="999999" Duration="00:00:10" AutoReverse="True" />
     </Scene.Animations>
     
     <BloomEffect Name="Bloom" BlurAmount="5" Threshold="0.5"/>

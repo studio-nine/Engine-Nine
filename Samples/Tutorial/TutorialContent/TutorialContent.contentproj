@@ -306,13 +306,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tutorials\11. Instancing.xaml">
+    <Compile Include="Tutorials\11. Instancing.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <Name>11. Instancing</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
-    </None>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Content\Textures\nine.png">
@@ -342,13 +342,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tutorials\13. Components.xaml">
+    <None Include="Tutorials\13. Components.xaml">
       <Generator>MSBuild:Compile</Generator>
       <Name>13. Components</Name>
       <Importer>XamlImporter</Importer>
       <Processor>DefaultContentProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorials\12. Physics.xaml">

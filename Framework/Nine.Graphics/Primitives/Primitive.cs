@@ -382,10 +382,11 @@
         /// <summary>
         /// Gets the triangle vertices of the target geometry.
         /// </summary>
-        public void GetTriangles(out Vector3[] vertices, out ushort[] indices)
+        public bool TryGetTriangles(out Vector3[] vertices, out ushort[] indices)
         {
             vertices = cachedPrimitive.Positions;
             indices = cachedPrimitive.Indices;
+            return true;
         }
 
         /// <summary>

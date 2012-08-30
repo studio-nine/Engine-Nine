@@ -78,15 +78,16 @@ namespace Test
 
             geometryQuery.FindAll(ref pickRay, geometry =>
             {
-                geometry.GetTriangles(out positions, out indices);
-
-                var rayInGeometrySpace = pickRay.Transform(Matrix.Invert(geometry.Transform));
-                for (int i = 0; i < indices.Length; i += 3)
+                if (geometry.TryGetTriangles(out positions, out indices))
                 {
-                    var triangle = new Triangle(positions[indices[i]], positions[indices[i + 1]], positions[indices[i + 2]]);
-                    if (triangle.Intersects(rayInGeometrySpace).HasValue)
+                    var rayInGeometrySpace = pickRay.Transform(Matrix.Invert(geometry.Transform));
+                    for (int i = 0; i < indices.Length; i += 3)
                     {
-                        primitive.AddTriangle(triangle, geometry.Transform, Color.Yellow, 2);
+                        var triangle = new Triangle(positions[indices[i]], positions[indices[i + 1]], positions[indices[i + 2]]);
+                        if (triangle.Intersects(rayInGeometrySpace).HasValue)
+                        {
+                            primitive.AddTriangle(triangle, geometry.Transform, new Color(255, 255, 0), 2);
+                        }
                     }
                 }
             });
@@ -130,33 +131,34 @@ namespace Test
             geometryQuery.FindAll(ref pickBox, geometry =>
             {
                 Matrix transform = geometry.Transform;
-                geometry.GetTriangles(out positions, out indices);
-                
-                for (int i = 0; i < indices.Length; i += 3)
+                if (geometry.TryGetTriangles(out positions, out indices))
                 {
-                    var triangle = new Triangle(positions[indices[i]], positions[indices[i + 1]], positions[indices[i + 2]]);
-
-                    Vector3.Transform(ref triangle.V1, ref transform, out triangle.V1);
-                    Vector3.Transform(ref triangle.V2, ref transform, out triangle.V2);
-                    Vector3.Transform(ref triangle.V3, ref transform, out triangle.V3);
-
-                    var count = triangle.Intersects(ref pickBox, intersections, 0);
-                    if (count > 2)
+                    for (int i = 0; i < indices.Length; i += 3)
                     {
-                        intersections[count++] = intersections[0];
-                        primitive.AddLine(intersections.Take(count), null, Color.Red, 1);
+                        var triangle = new Triangle(positions[indices[i]], positions[indices[i + 1]], positions[indices[i + 2]]);
+
+                        Vector3.Transform(ref triangle.V1, ref transform, out triangle.V1);
+                        Vector3.Transform(ref triangle.V2, ref transform, out triangle.V2);
+                        Vector3.Transform(ref triangle.V3, ref transform, out triangle.V3);
+
+                        var count = triangle.Intersects(ref pickBox, intersections, 0);
+                        if (count > 2)
+                        {
+                            intersections[count++] = intersections[0];
+                            primitive.AddLine(intersections.Take(count), null, new Color(255, 0, 0), 1);
+                        }
                     }
-                }                
+                }
             });         
    
 
             // Box Frustum test
-            primitive.AddFrustum(testFrustum, null, Color.Green * 0.2f, 4);
+            primitive.AddFrustum(testFrustum, null, new Color(0, 128, 0) * 0.2f, 4);
             var intersectionCount = pickBox.Intersects(testFrustum, intersections, 0);
             if (intersectionCount > 2)
             {
                 intersections[intersectionCount++] = intersections[0];
-                primitive.AddLine(intersections.Take(intersectionCount), null, Color.Blue, 4);
+                primitive.AddLine(intersections.Take(intersectionCount), null, new Color(0, 0, 255), 4);
             }
 
             primitive.Draw(context, null);

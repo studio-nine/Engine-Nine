@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 
-namespace SilverlightContentPipeline
+namespace Nine.Content.Pipeline.Silverlight
 {
     public class EffectPassBinary
     {

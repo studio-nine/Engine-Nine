@@ -112,7 +112,7 @@ namespace Nine
             ushort[] indices;
             bool? containsLastTriangle = null;
             Matrix matrix = geometry.Transform;
-            geometry.GetTriangles(out positions, out indices);
+            geometry.TryGetTriangles(out positions, out indices);
 
             for (int i = 0; i < indices.Length; i += 3)
             {

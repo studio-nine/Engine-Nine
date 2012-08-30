@@ -12,9 +12,8 @@
     /// <summary>
     /// Represents luminance chain used in high dynamic range (HDR) post processing effect.
     /// </summary>
-    [ContentSerializable]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public class LuminanceChain : PostEffectChain
+    [NotContentSerializable]
+    class LuminanceChain : PostEffectChain
     {
         /// <summary>
         /// Gets or sets the speed that determine how fast the eye adapts to the changes
@@ -40,7 +39,7 @@
 #if SILVERLIGHT
             Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Color });
 #else
-            Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Vector2 });
+            Effects.Add(new PostEffect { Material = new LuminanceMaterial(graphics), RenderTargetSize = Vector2.One * size, SurfaceFormat = SurfaceFormat.Single });
 #endif
             size = Math.Max(1, size / scale);
 

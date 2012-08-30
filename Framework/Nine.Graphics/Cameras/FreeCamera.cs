@@ -82,7 +82,7 @@
 
                 if (mouse.RightButton == ButtonState.Pressed)
                 {
-                    angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * delta); // pitch
+                    angle.X += MathHelper.ToRadians((mouse.Y - centerY) * TurnSpeed * delta) / AspectRatio; // pitch
                     angle.Y += MathHelper.ToRadians((mouse.X - centerX) * TurnSpeed * delta); // yaw
                 }
 

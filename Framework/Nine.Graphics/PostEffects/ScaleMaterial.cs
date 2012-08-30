@@ -5,8 +5,8 @@ namespace Nine.Graphics.Materials
     using Microsoft.Xna.Framework.Graphics;
     using Nine.Graphics.Drawing;
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class ScaleMaterial
+    [NotContentSerializable]
+    partial class ScaleMaterial
     {
         partial void ApplyGlobalParameters(DrawingContext context)
         {

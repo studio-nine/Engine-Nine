@@ -68,7 +68,8 @@
         </Model>
     </InstancedModel>
 
-    <DepthOfFieldEffect BlurAmount="20"/>
     <AntiAliasEffect />
+    <DepthOfFieldEffect BlurAmount="5"/>
+    <HighDynamicRangeEffect Name="Hdr" Exposure="0.5" BloomIntensity="0.25" />
 
 </Scene>

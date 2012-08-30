@@ -184,6 +184,8 @@ namespace Nine.Graphics.Materials
         {
 #if WINDOWS
             if (!MaterialPart.IsContentBuild && !MaterialPart.IsContentRead)
+#else
+            if (!MaterialPart.IsContentRead)
 #endif
                 throw new InvalidOperationException("The material state can only be modified at content build time.");
         }
@@ -301,9 +303,8 @@ namespace Nine.Graphics.Materials
 
             try
             {
-#if WINDOWS
                 MaterialPart.IsContentRead = true;
-#endif
+
                 count = input.ReadInt32();
                 for (Index = 0; Index < count; Index++)
                     existingInstance.MaterialParts.Add(input.ReadObject<MaterialPart>());
@@ -311,9 +312,7 @@ namespace Nine.Graphics.Materials
             finally
             {
                 Index = -1;
-#if WINDOWS
                 MaterialPart.IsContentRead = false;
-#endif
             }
             existingInstance.ExtendedMaterials = input.ReadObject<Dictionary<MaterialUsage, MaterialGroup>>();
             return existingInstance;

@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine", "Nine\Nine.csproj", "{E4F84943-5258-4F67-9C6C-739C18A47120}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Pipeline", "Nine.Content.Pipeline\Nine.Content.Pipeline.csproj", "{926CE988-9E75-40DD-80F1-1709A91F8C35}"
@@ -11,6 +11,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Test", "Nine.Test\Nine.Test.csproj", "{411E5108-42A6-4829-AE8A-C022868E4E1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Physics", "Nine.Physics\Nine.Physics.csproj", "{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Content.Pipeline.Silverlight", "Nine.Content.Pipeline.Silverlight\Nine.Content.Pipeline.Silverlight.csproj", "{AC6F35A9-124E-447E-99DD-21F68A0C226B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nine.Content.Pipeline.Silverlight.ShaderCompiler", "Nine.Content.Pipeline.Silverlight.ShaderCompiler\SilverlightShaderCompiler.vcxproj", "{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +137,40 @@ Global
 		{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}.Release|x86.ActiveCfg = Release|x86
 		{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}.Release|x86.Build.0 = Release|x86
 		{5E8A4935-1FA4-4BEB-8E9C-6003C0C296B7}.Release|Xbox 360.ActiveCfg = Release|x86
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC6F35A9-124E-447E-99DD-21F68A0C226B}.Release|Xbox 360.ActiveCfg = Release|Any CPU
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Win32.Build.0 = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Windows Phone.ActiveCfg = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|x86.ActiveCfg = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|x86.Build.0 = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Debug|Xbox 360.ActiveCfg = Debug|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Any CPU.ActiveCfg = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Win32.ActiveCfg = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Win32.Build.0 = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Windows Phone.ActiveCfg = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|x86.ActiveCfg = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|x86.Build.0 = Release|Win32
+		{F6A5DD71-68AD-4A7E-9FA2-6586DBE59C91}.Release|Xbox 360.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

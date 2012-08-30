@@ -8,7 +8,7 @@ namespace SilverlightShaderCompiler
 	{
 	public:
 		property array<unsigned char>^ ShaderCode;
-		property String^ ConstantsDefinition;
+		property array<unsigned char>^ ConstantsDefinition;
 	};
 }
 

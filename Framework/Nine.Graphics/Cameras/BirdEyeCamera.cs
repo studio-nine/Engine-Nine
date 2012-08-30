@@ -70,6 +70,9 @@
 
         void Input_Update(object sender, EventArgs e)
         {
+            if (!Enabled)
+                return;
+
 #if XBOX
             GamePadState state = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
             if (state.Buttons.LeftShoulder == ButtonState.Pressed)
@@ -93,6 +96,9 @@
 
         void Input_Wheel(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             Radius -= e.WheelDelta * (MaxRadius - MinRadius) * 0.0001f * WheelSpeed;
 
             if (Radius < MinRadius)
@@ -103,6 +109,9 @@
 
         void Input_MouseDown(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             if (e.Button == RotateButton || e.Button == TranslateButton)
             {
                 startPoint.X = e.X;
@@ -112,6 +121,9 @@
 
         void Input_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!Enabled)
+                return;
+
             if (e.IsButtonDown(TranslateButton))
             {
                 float dx = e.X - startPoint.X;
