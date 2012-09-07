@@ -563,22 +563,29 @@ namespace Nine.Graphics
         #endregion
         
         #region INotifyCollectionChanged
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public event Action<object> Added;
+        private Action<object> added;
+        private Action<object> removed;
+        
+        event Action<object> INotifyCollectionChanged<object>.Added
+        {
+            add { added += value; }
+            remove { added -= value; }
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public event Action<object> Removed;
+        event Action<object> INotifyCollectionChanged<object>.Removed
+        {
+            add { removed += value; }
+            remove { removed -= value; }
+        }
 
         internal void NotifyAdded(object item)
         {
-            var added = Added;
             if (added != null)
                 added(item);
         }
 
         internal void NotifyRemoved(object item)
         {
-            var removed = Removed;
             if (removed != null)
                 removed(item);
         }

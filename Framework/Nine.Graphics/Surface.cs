@@ -394,7 +394,6 @@
                 segmentCountX = segmentCountZ = 0;
                 patches = null;
 
-                var removed = Removed;
                 if (removed != null && removedPatches != null)
                     foreach (var patch in removedPatches)
                         removed(patch);
@@ -420,7 +419,6 @@
             if (newPatchCountX != patchCountX || newPatchCountZ != patchCountZ)
             {
                 patches = null;
-                var removed = Removed;
                 if (removed != null && removedPatches != null)
                     foreach (var patch in removedPatches)
                         removed(patch);
@@ -471,7 +469,6 @@
                 {
                     foreach (SurfacePatch patch in patches)
                     {
-                        var removed = Removed;
                         if (removed != null)
                             removed(patch);
                         patch.Dispose();
@@ -486,7 +483,6 @@
                         patchArray[i++] = new SurfacePatch<T>(this, x, z);
                 patches = new SurfacePatchCollection(this, patchArray);
 
-                var added = Added;
                 if (added != null)
                     foreach (SurfacePatch patch in patches)
                         added(patch);
@@ -645,7 +641,7 @@
         {
             if (heightmap == null)
                 return 0;
-            return AbsolutePosition.Z + heightmap.GetHeight(x - AbsolutePosition.X, z - AbsolutePosition.Z);
+            return AbsolutePosition.Y + heightmap.GetHeight(x - AbsolutePosition.X, z - AbsolutePosition.Z);
         }
 
         /// <summary>
@@ -684,7 +680,7 @@
             float baseHeight;
             if (heightmap != null && heightmap.TryGetHeightAndNormal(x - AbsolutePosition.X, z - AbsolutePosition.Z, out baseHeight, out normal))
             {
-                height = baseHeight + AbsolutePosition.Z;
+                height = baseHeight + AbsolutePosition.Y;
                 return true;
             }
             normal = Vector3.Zero;
@@ -810,11 +806,20 @@
         #endregion
 
         #region INotifyCollectionChanged
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public event Action<object> Added;
+        private Action<object> added;
+        private Action<object> removed;
+        
+        event Action<object> INotifyCollectionChanged<object>.Added
+        {
+            add { added += value; }
+            remove { added -= value; }
+        }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public event Action<object> Removed;
+        event Action<object> INotifyCollectionChanged<object>.Removed
+        {
+            add { removed += value; }
+            remove { removed -= value; }
+        }
         #endregion
 
         #region ISceneObject
